@@ -131,7 +131,7 @@ const UI={
     announcementText:"Authentic Lebanese pantry essentials · Since 2006",
     announcementOrder:"Order on WhatsApp",
     brand:"Zayt w Mouneh",
-    navShop:"Shop",navCategories:"Categories",navAbout:"About & mission",navContact:"Contact",
+    navShop:"Shop",navCategories:"Categories",navAbout:"About & mission",navContact:"Contact & visit",
     cartLabel:"Cart",
     heroEyebrow:"Rooted in Lebanese heritage",
     heroTitle:'A pantry of<br><em>Lebanese memory.</em>',
@@ -185,7 +185,7 @@ const UI={
     announcementText:"مونة لبنانية أصيلة · منذ 2006",
     announcementOrder:"اطلب عبر واتساب",
     brand:"زيت ومونة",
-    navShop:"المتجر",navCategories:"الأقسام",navAbout:"من نحن ورسالتنا",navContact:"تواصل معنا",
+    navShop:"المتجر",navCategories:"الأقسام",navAbout:"من نحن ورسالتنا",navContact:"تواصل وزيارة",
     cartLabel:"السلة",
     heroEyebrow:"متجذّرون في التراث اللبناني",
     heroTitle:'مونة تحفظ<br><em>ذاكرة لبنان.</em>',
@@ -255,7 +255,7 @@ const EXTRA_UI={
     giftSend:"Send gift request on WhatsApp ↗",giftNote:"Gift packing, final availability and delivery details are confirmed on WhatsApp before the order is final.",
     giftOccasions:["Birthday","Thank you","Visit / hosting","Holiday","Just because","Other"],
     giftPackings:["Classic pantry gift","Celebration gift","Custom arrangement"],
-    giftNeedItems:"Add products to your cart first, then come back to Make a gift.",
+    giftNeedItems:"Choose at least one product for the gift first.",
     socialEyebrow:"From our pantry",socialTitle:"See what’s happening at the shop.",socialCopy:"Follow Zayt w Mouneh for pantry ideas, shop updates and everyday mouneh inspiration.",
     footerDelivery:"Delivery all over Lebanon · Orders confirmed on WhatsApp",footerExploreTitle:"Explore",footerGift:"Make a gift",footerContactTitle:"Contact",
     mobileReview:"Review & WhatsApp",
@@ -282,7 +282,7 @@ const EXTRA_UI={
     giftSend:"إرسال طلب الهدية عبر واتساب ↗",giftNote:"يتم تأكيد التغليف والتوفر وتفاصيل التوصيل عبر واتساب قبل تثبيت الطلب.",
     giftOccasions:["عيد ميلاد","شكر","زيارة / ضيافة","مناسبة أو عيد","من دون مناسبة","أخرى"],
     giftPackings:["هدية مونة كلاسيكية","تغليف احتفالي","تنسيق مخصص"],
-    giftNeedItems:"أضف منتجات إلى السلة أولاً ثم عد إلى قسم الهدية.",
+    giftNeedItems:"اختر منتجاً واحداً على الأقل للهدية أولاً.",
     socialEyebrow:"من مونة المحل",socialTitle:"تابع أخبار المونة والمتجر.",socialCopy:"تابع زيت ومونة على إنستغرام لأفكار المونة وتحديثات المحل وإلهام يومي.",
     footerDelivery:"توصيل إلى كل لبنان · تأكيد الطلب عبر واتساب",footerExploreTitle:"استكشف",footerGift:"حضّر هدية",footerContactTitle:"تواصل",
     mobileReview:"راجع واطلب عبر واتساب",
@@ -998,7 +998,7 @@ function renderGiftPickerResults(){
       <b>${already?"✓":escapeHtml(EXTRA_UI[lang].giftAdd)}</b>
     </button>`;
   }).join("");
-  $("[data-gift-add]").forEach(btn=>btn.addEventListener("click",()=>addGiftItem(btn.dataset.giftAdd,defaultVariant(productById(btn.dataset.giftAdd)).id,1)));
+  document.querySelectorAll("[data-gift-add]").forEach(btn=>btn.addEventListener("click",()=>addGiftItem(btn.dataset.giftAdd,defaultVariant(productById(btn.dataset.giftAdd)).id,1)));
 }
 function renderGiftSummary(){
   const rows=giftRows(),summary=$("#giftSummary");if(!summary)return;
@@ -1014,9 +1014,9 @@ function renderGiftSummary(){
     <strong class="gift-line-total">${money(r.v.price*r.qty)}</strong>
     <button type="button" class="gift-remove" data-gift-remove="${escapeHtml(r.key)}">×</button>
   </article>`).join(""):`<p id="giftEmpty">${escapeHtml(EXTRA_UI[lang].giftEmpty)}</p>`;
-  $("[data-gift-q]").forEach(btn=>btn.addEventListener("click",()=>changeGiftQty(btn.dataset.key,Number(btn.dataset.giftQ))));
-  $("[data-gift-remove]").forEach(btn=>btn.addEventListener("click",()=>removeGiftItem(btn.dataset.giftRemove)));
-  $("[data-gift-variant]").forEach(sel=>sel.addEventListener("change",()=>changeGiftVariant(sel.dataset.giftVariant,sel.dataset.giftProduct,sel.value)));
+  document.querySelectorAll("[data-gift-q]").forEach(btn=>btn.addEventListener("click",()=>changeGiftQty(btn.dataset.key,Number(btn.dataset.giftQ))));
+  document.querySelectorAll("[data-gift-remove]").forEach(btn=>btn.addEventListener("click",()=>removeGiftItem(btn.dataset.giftRemove)));
+  document.querySelectorAll("[data-gift-variant]").forEach(sel=>sel.addEventListener("change",()=>changeGiftVariant(sel.dataset.giftVariant,sel.dataset.giftProduct,sel.value)));
 }
 function useCartForGift(){
   for(const r of cartRows())addGiftItem(r.p.id,r.v.id,r.qty);
@@ -1078,7 +1078,6 @@ function applyExtraLanguage(){
   renderGiftPickerResults();
   renderRecent();
   renderGiftSummary();
-  renderGiftPickerResults();
   renderFavoritesCount();
   renderMobileOrderBar();
 }
@@ -1223,16 +1222,21 @@ function prewarmLanguageFonts(){
 
 function setupNav(){
   const t=$("#navToggle"),n=$("#navLinks");
-  t.addEventListener("click",()=>{
+  const close=()=>{
+    n.classList.remove("is-open");
+    document.body.classList.remove("menu-open");
+    t.setAttribute("aria-expanded","false");
+  };
+  t.addEventListener("click",e=>{
+    e.stopPropagation();
     const open=n.classList.toggle("is-open");
     document.body.classList.toggle("menu-open",open);
     t.setAttribute("aria-expanded",String(open));
   });
-  $$("#navLinks a").forEach(a=>a.addEventListener("click",()=>{
-    n.classList.remove("is-open");
-    document.body.classList.remove("menu-open");
-    t.setAttribute("aria-expanded","false");
-  }));
+  n.addEventListener("click",e=>e.stopPropagation());
+  document.querySelectorAll("#navLinks a").forEach(a=>a.addEventListener("click",close));
+  document.addEventListener("click",()=>{if(n.classList.contains("is-open"))close()});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
 }
 
 function setupProgress(){

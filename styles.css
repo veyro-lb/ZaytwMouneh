@@ -2289,3 +2289,120 @@ body[data-page="contact"] .nav-links a[href="contact.html"]{
   [dir="rtl"] .nav-links{left:10px!important;right:10px!important}
   .menu-utility{grid-template-columns:1fr!important}
 }
+
+
+/* ===== v16 catalogue recovery + full gift browsing ===== */
+
+/* Keep the shop page balanced even before/while cards render. */
+body[data-page="shop"] .shop{
+  padding-top:72px!important;
+}
+body[data-page="shop"] .shop-head{
+  grid-template-columns:minmax(0,1.05fr) minmax(300px,.72fr)!important;
+  gap:42px!important;
+}
+body[data-page="shop"] .shop-head h2{
+  max-width:9.5ch;
+  font-size:clamp(3.1rem,5.4vw,5.6rem)!important;
+  line-height:.92!important;
+}
+body[data-page="shop"] .shop-note{
+  max-width:46ch;
+  justify-self:end;
+}
+body[data-page="shop"] .catalog-toolbar{
+  margin-top:34px!important;
+}
+body[data-page="shop"] .product-grid{
+  margin-top:30px!important;
+}
+body[data-page="shop"] .load-more-wrap{
+  margin-top:34px!important;
+  min-height:0!important;
+}
+
+/* Gift page can browse the complete catalogue, not only search it. */
+.gift-browse-controls{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(160px,210px);
+  gap:8px;
+  align-items:stretch;
+}
+.gift-browse-controls .gift-product-search{
+  margin:0!important;
+}
+#giftCategorySelect{
+  width:100%;
+  min-height:46px;
+  border:1px solid #ddd3c0;
+  border-radius:14px;
+  background:#fff;
+  color:var(--green);
+  padding:0 34px 0 12px;
+  outline:none;
+  font:inherit;
+  font-size:.68rem;
+  font-weight:800;
+}
+#giftCategorySelect:focus{
+  border-color:rgba(15,74,32,.42);
+  box-shadow:0 0 0 3px rgba(15,74,32,.07);
+}
+.gift-product-results{
+  max-height:330px!important;
+}
+.gift-load-more{
+  width:100%;
+  min-height:40px;
+  margin-top:9px;
+  border:1px solid #ded3bf;
+  border-radius:12px;
+  background:#fffaf0;
+  color:var(--green);
+  font-size:.66rem;
+  font-weight:900;
+}
+.gift-load-more:hover{
+  background:#fff;
+  border-color:rgba(15,74,32,.28);
+}
+.gift-load-more[hidden]{display:none!important}
+.gift-no-results{
+  grid-column:1/-1;
+  margin:0;
+  padding:18px;
+  border:1px dashed #dacfb9;
+  border-radius:14px;
+  color:#7d7568;
+  font-size:.7rem;
+  text-align:center;
+}
+
+/* Make the gift cards easier to scan while showing more catalogue items. */
+.gift-result{
+  min-height:70px!important;
+}
+.gift-result>span:nth-child(2) em{
+  white-space:normal;
+  line-height:1.3;
+}
+
+/* Tab icon/logo: browsers use the actual logo SVG created in /assets/favicon.svg. */
+@media(max-width:980px){
+  body[data-page="shop"] .shop-head{
+    grid-template-columns:1fr!important;
+    gap:20px!important;
+  }
+  body[data-page="shop"] .shop-note{
+    justify-self:start;
+  }
+}
+@media(max-width:760px){
+  body[data-page="shop"] .shop{padding-top:52px!important}
+  body[data-page="shop"] .shop-head h2{
+    max-width:10ch;
+    font-size:clamp(2.8rem,12vw,4.2rem)!important;
+  }
+  .gift-browse-controls{grid-template-columns:1fr}
+  #giftCategorySelect{min-height:44px}
+}

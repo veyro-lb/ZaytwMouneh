@@ -659,3 +659,41 @@ body.welcome-open{overflow:hidden}
 @media(max-width:500px){
   .language-welcome{padding-left:12px;padding-right:12px}
 }
+
+
+/* ===== popup + language-switch stability ===== */
+.language-welcome{
+  display:grid;
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+.language-welcome:not(.is-open){
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+body.welcome-open .language-welcome.is-open{
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+}
+.lang-switching *,
+.lang-switching *::before,
+.lang-switching *::after{
+  transition:none!important;
+  animation-play-state:paused!important;
+}
+.lang-switching .product-grid,
+.lang-switching .category-grid,
+.lang-switching .cart-drawer,
+.lang-switching .product-modal-card{
+  contain:layout paint;
+}
+.language-switch button{
+  transform:translateZ(0);
+  -webkit-tap-highlight-color:transparent;
+}
+.language-switch button:active{
+  transform:scale(.96);
+}

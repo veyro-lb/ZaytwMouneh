@@ -762,21 +762,22 @@ function startScenes(){
 
 function openLanguageWelcome(){
   const modal=$("#languageWelcome");
-  if(!modal||sessionStorage.getItem(WELCOME_KEY)==="1")return;
+  if(!modal)return;
   modal.hidden=false;
+  modal.classList.add("is-open");
+  modal.setAttribute("aria-hidden","false");
   document.body.classList.add("welcome-open");
-  requestAnimationFrame(()=>modal.classList.add("is-open"));
   const first=modal.querySelector("[data-welcome-lang]");
-  setTimeout(()=>first?.focus(),120);
+  setTimeout(()=>first?.focus({preventScroll:true}),80);
 }
 function chooseWelcomeLanguage(next){
-  sessionStorage.setItem(WELCOME_KEY,"1");
   applyLanguage(next);
   const modal=$("#languageWelcome");
   if(!modal)return;
   modal.classList.remove("is-open");
+  modal.setAttribute("aria-hidden","true");
   document.body.classList.remove("welcome-open");
-  setTimeout(()=>{modal.hidden=true},320);
+  setTimeout(()=>{modal.hidden=true},220);
 }
 
 function setupNav(){

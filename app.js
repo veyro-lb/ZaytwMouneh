@@ -785,7 +785,7 @@ function openLanguageWelcome(){
   document.body.classList.add("welcome-open");
 }
 function chooseWelcomeLanguage(next,event){
-  if(event){event.preventDefault?.();event.stopPropagation?.();}
+  if(event){event.preventDefault?.();event.stopImmediatePropagation?.();}
   applyLanguage(next,{immediate:true});
   const modal=$("#languageWelcome");
   if(!modal)return;

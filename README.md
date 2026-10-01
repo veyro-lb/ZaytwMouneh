@@ -1,27 +1,45 @@
 # Zayt w Mouneh
 
-Premium animated catalogue and WhatsApp storefront for **Zayt w Mouneh**.
+Premium, responsive static storefront for Zayt w Mouneh.
 
-## Included
-- Complete 337-product catalogue across 21 categories
-- Search, category filters, progressive product loading
-- Persistent cart with quantity controls
-- WhatsApp order flow to +961 81 581 230
-- Responsive mobile / tablet / desktop layout
-- Brand palette based on the supplied catalogue: deep green, heritage gold and warm cream
-- Animated hero, marquee, scroll reveals, progress indicator and subtle parallax
-- Heritage, contact and ordering sections
-- Reduced-motion accessibility support
+## What is included
+
+- 337 products across all 21 catalogue categories
+- Responsive desktop, tablet and mobile layouts
+- Search + category filters + horizontal quick-browse rail
+- Product detail popup with short descriptions
+- Quantity controls on cards, popup and cart
+- Persistent cart using localStorage
+- WhatsApp order handoff to +961 81 581 230
+- Animated hero with a real honey-motion layer plus graceful CSS fallback
+- Rope, wood, cream, heritage green and gold visual language
+- Reduced-motion support for accessibility
+- No framework and no build step
+
+## Cloudflare Pages
+
+This project is intentionally static. **Wrangler is not required.**
+
+Recommended settings:
+
+- Framework preset: None
+- Build command: leave empty
+- Build output directory: /
+- Root directory: /
+
+If this repository is already connected to a Cloudflare Pages project, new commits to `main` should trigger a new deployment automatically.
+
+## Motion asset
+
+The hero includes a muted decorative honey clip from Pexels, with an animated CSS fallback so the hero still looks complete if the remote video is unavailable.
+
+Source: https://www.pexels.com/video/honey-close-up-7281326/
 
 ## Files
-- `index.html` — site structure and content
-- `styles.css` — responsive visual system and animation
-- `app.js` — catalogue, search, cart and WhatsApp order logic
-- `assets/logo.svg` — vector brand mark derived from the supplied catalogue artwork
-- `.nojekyll` — static hosting compatibility
 
-## Run locally
-Open `index.html` in a browser, or serve the repository with any static web server.
-
-## Deployment
-The site is static and can be deployed directly from the repository root with GitHub Pages, Netlify, Vercel, Cloudflare Pages or similar static hosting.
+- `index.html`
+- `styles.css`
+- `app.js`
+- `assets/logo.svg`
+- `.nojekyll`
+- `_headers`

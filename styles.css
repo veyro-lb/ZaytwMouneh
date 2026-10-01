@@ -2749,3 +2749,31 @@ html[lang="ar"] .page-intro h1{max-width:13ch;line-height:1.15}
 
 /* Remove optional shop filter controls; keep the compact original toolbar */
 .catalog-toolbar .catalog-select-wrap{display:none!important}
+
+
+/* ===== v19 product info layering + full gift catalogue ===== */
+/* Product details must sit above the shared blurred backdrop. */
+.product-modal{
+  z-index:1600!important;
+}
+.product-modal-card{
+  position:relative;
+  z-index:1;
+}
+.product-modal-close{
+  z-index:4!important;
+}
+.toast{
+  z-index:1800!important;
+}
+
+/* Gift builder exposes the complete catalogue; the list itself scrolls. */
+body[data-page="gift"] .gift-product-results{
+  max-height:min(620px,62vh)!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable;
+}
+body[data-page="gift"] .gift-load-more{
+  display:none!important;
+}

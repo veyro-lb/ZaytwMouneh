@@ -3168,3 +3168,17 @@ html[dir="rtl"] .contact-intro-links a:hover{transform:translateX(-3px)}
   font-size:1.2rem!important;
   line-height:1;
 }
+
+
+/* ===== v22 safe gift badge ===== */
+.gift-icon-badge{
+  overflow:hidden;
+  isolation:isolate;
+}
+.gift-icon-badge>span{
+  display:block;
+  font-size:1.65rem;
+  line-height:1;
+  transform:translateY(-1px);
+}
+.gift-icon-badge svg{display:none!important}

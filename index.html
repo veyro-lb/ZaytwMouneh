@@ -78,8 +78,24 @@
           </div>
         </div>
         <div class="hero-mark-wrap hero-reveal" id="heroMarkWrap">
-          <div class="orbit orbit-one" aria-hidden="true"></div><div class="orbit orbit-two" aria-hidden="true"></div>
-          <div class="hero-mark"><img src="assets/logo.svg" alt="Zayt w Mouneh logo" /></div>
+          <div class="hero-cinema">
+            <div class="hero-video-fallback" aria-hidden="true">
+              <span class="fallback-grain g1"></span><span class="fallback-grain g2"></span><span class="fallback-grain g3"></span><span class="fallback-grain g4"></span>
+              <span class="fallback-honey h1"></span><span class="fallback-honey h2"></span>
+            </div>
+            <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+              <source src="https://videos.pexels.com/video-files/7281326/7281326-hd_1080_1920_25fps.mp4" type="video/mp4" />
+            </video>
+            <div class="hero-film-shade" aria-hidden="true"></div>
+            <div class="hero-logo-badge">
+              <img src="assets/logo.svg" alt="Zayt w Mouneh logo" />
+            </div>
+            <div class="hero-video-copy">
+              <span>Pantry in motion</span>
+              <strong>Honey · harvest · home</strong>
+            </div>
+          </div>
+          <div class="rope-orbit" aria-hidden="true"></div>
           <div class="hero-note">Curated with care</div>
         </div>
       </div>
@@ -123,6 +139,13 @@
         <div class="catalog-toolbar reveal">
           <label class="search-box" for="productSearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg><input id="productSearch" type="search" placeholder="Search zaatar, honey, oils, spices…" autocomplete="off" /><kbd>⌘ K</kbd></label>
           <div class="catalog-meta"><strong id="resultCount">337</strong> products</div>
+        </div>
+        <div class="quick-rail-block reveal">
+          <div class="quick-rail-heading">
+            <div><p class="eyebrow">Quick browse</p><strong>Slide through the pantry</strong></div>
+            <span>Swipe or scroll horizontally →</span>
+          </div>
+          <div class="quick-rail" id="quickRail" aria-label="Quick category browse"></div>
         </div>
         <div class="filter-row" id="filterRow" aria-label="Filter by category"></div>
         <div class="product-grid" id="productGrid" aria-live="polite"></div>
@@ -171,6 +194,11 @@
   <div class="cart-backdrop" id="cartBackdrop" hidden></div>
   <aside class="cart-drawer" id="cartDrawer" aria-hidden="true" aria-label="Shopping cart">
     <div class="cart-head"><div><p class="eyebrow">Your pantry list</p><h2>Cart <span id="drawerCount">0</span></h2></div><button class="icon-button" id="cartClose" aria-label="Close cart">×</button></div>
+    <div class="cart-summary">
+      <div><strong id="cartSummaryCount">0</strong><span>items</span></div>
+      <div><strong>WhatsApp</strong><span>checkout</span></div>
+      <div><strong>Saved</strong><span>on this device</span></div>
+    </div>
     <div class="cart-items" id="cartItems"></div>
     <div class="cart-empty" id="cartEmpty"><div class="empty-jar" aria-hidden="true"></div><h3>Your cart is empty.</h3><p>Add products from the catalogue and they’ll appear here.</p><button class="button button-green" id="cartBrowse">Browse products</button></div>
     <form class="order-form" id="orderForm" hidden>
@@ -180,6 +208,30 @@
       <p class="form-note">This opens WhatsApp with your order already formatted. You can review it before sending.</p>
     </form>
   </aside>
+
+  <section class="product-modal" id="productModal" aria-hidden="true" aria-label="Product details">
+    <div class="product-modal-card" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+      <button class="icon-button product-modal-close" id="productModalClose" aria-label="Close product details">×</button>
+      <div class="product-modal-visual">
+        <div class="product-modal-mark" id="productModalMark">ZW</div>
+        <div class="modal-rope" aria-hidden="true"></div>
+      </div>
+      <div class="product-modal-copy">
+        <p class="eyebrow" id="productModalCategory">Pantry</p>
+        <h2 id="productModalTitle">Product</h2>
+        <p class="product-modal-description" id="productModalDescription"></p>
+        <div class="product-modal-points" id="productModalPoints"></div>
+        <div class="product-modal-actions">
+          <div class="qty-control modal-qty">
+            <button type="button" id="modalQtyMinus" aria-label="Decrease quantity">−</button>
+            <span id="productModalQty">1</span>
+            <button type="button" id="modalQtyPlus" aria-label="Increase quantity">+</button>
+          </div>
+          <button class="button button-green" id="productModalAdd" type="button">Add to cart</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastText">Added to cart</span></div>
   <script src="app.js"></script>

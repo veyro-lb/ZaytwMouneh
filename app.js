@@ -448,7 +448,7 @@ function applyLanguage(next,{immediate=false}={}){
   renderProducts();
   renderCart();
     if(currentModalProduct) renderModal(currentModalProduct.id,currentModalVariant?.id);
-    requestAnimationFrame(()=>document.documentElement.classList.remove("lang-switching"));
+    clearTimeout(window.__zwmLangTimer);window.__zwmLangTimer=setTimeout(()=>document.documentElement.classList.remove("lang-switching"),320);
   };
 
   if(languageFrame)cancelAnimationFrame(languageFrame);

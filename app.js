@@ -347,7 +347,7 @@ function originFor(p){
     const labels={"Bekaa":"البقاع","Koura":"الكورة","Mount Lebanon":"جبل لبنان","Chouf":"الشوف"};
     return `${isDebes?"مصدر الدبس":"المصدر"} · ${labels[key]||key}`;
   }
-  return `${isDebes?"Debes origin":"Origin"} · ${key}, Lebanon`;
+  return `${isDebes?"Debes source":"Source"} · ${key}, Lebanon`;
 }
 function plainArabic(s){
   return String(s||"")
@@ -757,6 +757,34 @@ function renderCategorySelect(){
   select.value=activeCategory;
 }
 
+function renderFilterSelects(){
+  const origin=$("#originSelect"),price=$("#priceSelect"),sort=$("#sortSelect");
+  if(origin){
+    const current=originFilter;
+    const opts=lang==="ar"
+      ? [["All","كل المصادر"],["Bekaa","البقاع"],["Koura","الكورة"],["Mount Lebanon","جبل لبنان"],["Chouf","الشوف"]]
+      : [["All","All sources"],["Bekaa","Bekaa"],["Koura","Koura"],["Mount Lebanon","Mount Lebanon"],["Chouf","Chouf"]];
+    origin.innerHTML=opts.map(([v,label])=>`<option value="${escapeHtml(v)}">${escapeHtml(label)}</option>`).join("");
+    origin.value=current;
+  }
+  if(price){
+    const current=priceFilter;
+    const opts=lang==="ar"
+      ? [["All","كل الأسعار"],["under5","أقل من $5"],["5to10","$5–$10"],["over10","أكثر من $10"]]
+      : [["All","All prices"],["under5","Under $5"],["5to10","$5–$10"],["over10","Over $10"]];
+    price.innerHTML=opts.map(([v,label])=>`<option value="${escapeHtml(v)}">${escapeHtml(label)}</option>`).join("");
+    price.value=current;
+  }
+  if(sort){
+    const current=sortMode;
+    const opts=lang==="ar"
+      ? [["featured","ترتيب الكتالوج"],["price-low","السعر: من الأقل"],["price-high","السعر: من الأعلى"],["name","الاسم"]]
+      : [["featured","Catalogue order"],["price-low","Price: low to high"],["price-high","Price: high to low"],["name","Name A–Z"]];
+    sort.innerHTML=opts.map(([v,label])=>`<option value="${escapeHtml(v)}">${escapeHtml(label)}</option>`).join("");
+    sort.value=current;
+  }
+}
+
 function filteredProducts(){
   const q=query.trim();
   const rows=PRODUCTS_DATA
@@ -936,9 +964,16 @@ function renderCart(){
   $$("[data-cart-view]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.cartView)));
 }
 
+function syncProductUrl(id){
+  if(CURRENT_PAGE!=="shop"||!history.replaceState)return;
+  const url=new URL(location.href);
+  if(id)url.searchParams.set("product",id);else url.searchParams.delete("product");
+  history.replaceState({product:id||null},"",url.pathname+url.search+url.hash);
+}
 function openProduct(id){
   const p=productById(id);
   if(!p)return;
+  syncProductUrl(id);
   addRecent(id);
   closeCart();
   currentModalProduct=p;
@@ -990,6 +1025,7 @@ function closeProduct(){
   document.body.classList.remove("modal-open");
   $("#productModal").classList.remove("is-open");
   $("#productModal").setAttribute("aria-hidden","true");
+  syncProductUrl(null);
   backdropMaybeOff();
 }
 
@@ -1151,7 +1187,8 @@ function sendGiftOrder(){
     `${lang==="ar"?"المرسل":"Sender"}: ${sender}`,"",
     lang==="ar"?"يرجى تأكيد التغليف والتوفر والتوصيل والمجموع النهائي. شكراً!":"Please confirm gift packing, availability, delivery and the final total. Thank you!"
   ];
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(lines.join("\n"))}`,"_blank","noopener,noreferrer");
+  const opened=window.open(`https://wa.me/${WA}?text=${encodeURIComponent(lines.join("\n"))}`,"_blank","noopener,noreferrer");
+  if(opened)toast(lang==="ar"?"تم فتح واتساب مع طلب الهدية":"WhatsApp opened with your gift request");
 }
 function renderMobileOrderBar(){
   const bar=$("#mobileOrderBar");if(!bar)return;
@@ -1182,6 +1219,7 @@ function applyExtraLanguage(){
   if($("#giftSender"))$("#giftSender").placeholder=t.giftSenderPlaceholder;
   renderGiftOptions();
   renderGiftCategorySelect();
+  renderFilterSelects();
   renderGiftPickerResults();
   renderRecent();
   renderGiftSummary();
@@ -1236,7 +1274,8 @@ function order(){
     "",
     t.orderConfirm
   ];
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(lines.join("\n"))}`,"_blank","noopener,noreferrer");
+  const opened=window.open(`https://wa.me/${WA}?text=${encodeURIComponent(lines.join("\n"))}`,"_blank","noopener,noreferrer");
+  if(opened)toast(lang==="ar"?"تم فتح واتساب مع طلبك":"WhatsApp opened with your order");
 }
 
 function openCart(){
@@ -1391,12 +1430,14 @@ function init(){
   if(requestedCategory&&CATEGORY_ORDER.includes(requestedCategory))activeCategory=requestedCategory;
   const requestedQuery=params.get("q");
   if(requestedQuery){query=requestedQuery;if($("#productSearch"))$("#productSearch").value=requestedQuery;}
+  const requestedProduct=params.get("product");
   applyLanguage(lang,{immediate:true});
   prewarmLanguageFonts();
   if(CURRENT_PAGE==="home"){showScene(0);startScenes();}
   setupNav();
   setupProgress();
   setupPerformance();
+  if(requestedProduct&&productById(requestedProduct))openProduct(requestedProduct);
 
   if($("#productSearch")){
     $("#productSearch").addEventListener("input",e=>{query=e.target.value;if(query.trim())activeCategory="All";visibleLimit=PAGE_SIZE;renderCategorySelect();renderProducts();renderSearchSuggestions()});

@@ -370,7 +370,7 @@ function healthNoteFor(p){
   const nutSeedMatch=/(almond|loz|walnut|joz |pecan|cashew|kajo|pistach|fustuq|chia|shea seed|sesame|somsom|flax|ketan|pumpkin seed|yaqtin|sunflower seed|dwar el shames|pine nut|snoubar|blackseed|habet el barakeh)/.test(n);
   const flourMatch=/(whole wheat flour|almond flour|barley flour|oat flour|shoufen flour)/.test(n);
 
-  if((p.category==="Pulses"&&pulseMatch)||pulseMatch){
+  if(p.category==="Pulses"&&pulseMatch){
     return lang==="ar"
       ? {badge:"خيار مُغذٍ",text:"البقوليات مثل العدس والحمص والفاصوليا مصدر نباتي للبروتين والألياف، ويمكن أن تكون جزءاً ممتازاً من وجبة متوازنة."}
       : {badge:"Nutritious choice",text:"Pulses such as lentils, chickpeas and beans naturally provide plant protein and fiber, making them a strong choice in a balanced meal."};

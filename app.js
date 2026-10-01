@@ -1,91 +1,799 @@
-const CATALOG={"Condiments":["BAKING POWDER","BROWN SUGAR","CARBONATE","CHINESE SALT","HAMOD EL LAYMOUN","HIMALAYAN SALT","ICING SUGAR","IODIZED SALT","PAKMAYA YEAST","SEA SALT","SEKKAR NABET","WHITE SUGAR"],"Dates":["DATE PASTE"],"Debsy Carob":["BISCO CHOCO","CARAMEL CRAZE","CAROB BISCUIT","CAROB COOKIES","CAROB DATE BITES","CAROB MAACROUN","CAROB MOLASSES GLASS JAR","CAROB MOLASSES PLASTIC JAR","CAROBELLA","CHERRY CRAZE","CHOCO COOKIES","CHOCO PEANUT COOKIES","CHOCOPEAS","COCONUT CAROB BALLS","COCONUT COOKIES","CRAZE CONTROL","CRUNCHY CRAZE","CRUNCHY SEEDS","DEBSY MIX","DEBSY PRETZY","DEBSY SPREAD","GINGER BISCUIT","HAZELNUT CRAZE","MIX AND EAT CHICKPEAS","NUTTY BITES","OAT KAAK WITH CHEESE","OAT KAAK WITH SESAME","OAT KAAK WITH SUNFLOWER SEEDS","OAT KAAK WITH THYME","OATMEAL COOKIES","PEANUT BUTTER AND MOLASSES","PEANUTS CAROB BAR","RAISIN COOKIES","RICKY RICARDO","SESAME CAROB BAR","SESAME COOKIES","TAHINI"],"Distillates + Syrups":["JELLEB","MAKATTAR ASIIN","MAKATTAR ZAAROUR","MAKATTAR ZAATAR","MAY WARD","MAY ZAHER","SHARAB EL TOUT","SHARAB EL WARD","SUGAR-FREE JELLEB","SUGAR-FREE MULBERRY"],"Dried Foods":["AMAR EL DIN KOTAA","BARKOUK MUJAFAF","CRANBERRIES","DRIED FRUITS MIX","GOJI BERRIES","GRATED COCONUT","MESHMOSH MUJAFAF","SUN-DRIED TOMATOES","TEEN HIBAL","TEEN MUJAFAF","ZARSHAK","ZBEEB ASHLAMISH","ZBEEB ASWAD","ZBEEB CHILEAN"],"Flour":["ALL-PURPOSE FLOUR","ALMOND FLOUR","BARLEY FLOUR","CORN FLOUR","SHOUFEN FLOUR","THEEN FARKHA","WHOLE WHEAT FLOUR","ZERO FLOUR"],"Grains":["AMERICAN RICE","BALDO ITALIAN RICE","BARLEY","BULGUR ABYAD FAKSH","BULGUR ABYAD KHESHEN","BULGUR ABYAD NAEM","BULGUR ASMAR FAKSH","BULGUR ASMAR KHESHEN","BULGUR ASMAR NAEM","DRIED MOGHRABIEH","EGYPTIAN RICE","FREEKEH","GOLDEN SILA BASMATI RICE","KAMEH HABBE KEMLEH","KAMEH MAKSHOUR","LONG GRAIN BROWN RICE","MAKHLOUTET HBOUB","POPCORN","POPCORN JUMBO","QUINOA BAYDA","RICE NAEM","SHAARIEH","SHOUFEN","SILA RICE XXL","SMEED"],"Herbs":["AASFOR","CHAMOMILE","DRIED ROSE PETALS","DRIED ROSEMARY","GREEN TEA","HABAA","KARKADEH","KHALTET EL MANAA","KHALTET EL UNOUTHA","MARDAKOUSH","MOLOKHIYA","MORINGA TEA","NAANAA YEBES","OREGANO","OSHROK","SALAMKI","SHEEH","SILANI TEA","WARAK GHAR","ZHOURAT","ZOUFAH"],"Honey":["AASAL BSHAHDO","AVOCADO & ORANGE BLOSSOM HONEY","BEE POLLEN","CEDAR HONEY","FLOWER HONEY","IMMUNE BOOSTING HONEY BLEND","LOKMET EL NAHEL","MOUNET EL NAHEL HONEY BLEND","OAK HONEY","PROPOLIS WITH ETHANOL","PROPOLIS WITH OLIVE OIL","RAW PROPOLIS","WHITE HONEY BLEND","WILD THISTLE HONEY"],"Molasses":["DEBES EL ENAB","DEBES EL REMMEN"],"Mouneh":["BANDOURA MUJAFAFEH","BEMYEH YEBSEH","DEBES EL FLEYFLEH","DEBES EL FLEYFLEH HAR","KISHEK AKHDAR BEL JOZ","KISHEK BAKARI BEQAA","KISHEK BAKARI ZAYT W MOUNEH","KISHEK MEEZEH BEQAA","LABNEH MKAAZLEH HABBET BARAKEH","LABNEH MKAAZLEH HAR","LABNEH MKAAZLEH NAANAA","LABNEH MKAAZLEH SEDAH","LABNEH MKAAZLEH ZAATAR","MAKDOUS EL BEQAA HAR","MAKDOUS EL BEQAA SEDAH","MAKDOUS EL LOZ","MRABBA EL FRAISE","MRABBA EL KARAZ","MRABBA EL MESHMOSH","MRABBA EL SFARJEL","MRABBA EL TEEN MAMROUT","MRABBA EL TEEN YEBES","MRABBA EL TOUT","MRABBA EL WARD","MRABBA EL YAQTIN","QAWARMA","RUBB EL BANDOURA","SHANKLEESH HAR","SHANKLEESH ZAATAR","SUGAR-FREE ROSE JAM","SUGAR-FREE STRAWBERRY JAM","WARAK ENAB","WARAK ENAB BEL LABNEH","WARAK ENAB BEL MAY","ZAATAR BALADI EXTRA","ZAATAR HALABI","ZAATAR JORDANIAN BLEND","ZAATAR MANAKISH","ZAATAR WITH NUTS","ZAATAR ZAHRA MATHOUN"],"Nuts + Seeds":["BEZER DOWWAR EL SHAMES","BEZER EL KETTAN","BEZER EL YAQTIN","BRAZILIAN NUT","CHIA SEEDS","ELIXIR","FUSTUQ HALABI HABB","FUSTUQ HALABI KASR","HABB EL RASHAD","HABBET EL BARAKEH","JOZ FARASHE","JOZ FARASHEH","KAJU FALKAT","KRIKRI","LOZ HABB BE QESHROH","LOZ MAKSHOUR","LOZ MKATTAA","QLOUBET NAYYEH","RAW NUTS ENERGY MIX","RAW PECANS","RAW PEELED PEANUTS","ROASTED CHEESE CORN","ROASTED CHICKPEAS","ROASTED SALTED CORN","SNOUBAR","SOMSOM BE QESHROH","SOMSOM MHAMAS","SOMSOM NAYY","SUGARED CHICKPEAS"],"Oils":["ARGAN OIL","BITTER ALMOND OIL","BLACK SEED OIL","CASTOR SEED OIL","COCONUT OIL","MINT OIL","PUMPKIN SEED OIL","ROSE OIL","ROSEMARY OIL","SAAD OIL","SWEET ALMOND OIL","VIVENTIA ROSEMARY OIL"],"Olive Oil":["EXTRA VIRGIN OLIVE OIL"],"Olives":["ZAYTOUN AKHDAR BALADI","ZAYTOUN AKHDAR BEQAA","ZAYTOUN AKHDAR KOURA","ZAYTOUN AKHDAR MEHSHEH HAR","ZAYTOUN ASWAD BALADI","ZAYTOUN ASWAD BEQAA","ZAYTOUN JARJEER"],"Pickles":["ARDI SHAWKEH","CORNICHON","KABEES EL LOZ","KABEES HAR","KABEES KHYAR","KABEES LEFT","KABEES MALFOUF","KABEES MEETEH","KABEES MSHAKAL","KABEES QARNABEET"],"Pulses":["AADAS AARID","AADAS MAJROUSH","AUSTRALIAN AADAS","BAZELAH YEBSEH","FASOLYA AARIDEH","FASOLYA SNOUBARIEH","FOUL AARID","FOUL MDAMAS","HUMMUS AMREEKI","HUMMUS BALADI","HUMMUS FAHLEH","TERMOS HELO","TERMOS MORR"],"Soap":["BEE POLLEN SOAP","CHARCOAL SOAP","HIVE SOAP","HONEY SOAP","OLIVE OIL SOAP"],"Spices":["ARABIC GUM","BHAR ABYAD","BHAR ASWAD HABB","BHAR ASWAD HAR","BHAR BATATA","BHAR CRISPY","BHAR DAJAJ","BHAR EL ESCALOPE","BHAR EL RIZ","BHAR EL SALEK","BHAR EL TAWOUK","BHAR FAJITA","BHAR HELO","BHAR KABSEH","BHAR LAHMEH","BHAR LAHMEH BAAJEEN","BHAR MAGGI","BHAR MAKLOUBEH","BHAR MANSAF","BHAR MASHEWE","BHAR MOGHRABIEH","BHAR OUZI","BHAR PHILADELPHIA","BHAR SAMAK","BHAR SHAWARMA DJEJ","BHAR SHAWARMA LAHMEH","BODRET EL BASAL","BODRET EL THOUM","DAQET EL KAAK","DAQET EL KEBBEH HABB","DAQET EL KEBBEH NAEM","DAQET KAAK EL ABBAS","GREEK MASTIC","HAIL HABB","HAIL NAEM","HAR KHESHEN","HAR NAEM","HELBEH HABB","JOZET EL TEEB HABB","JOZET EL TEEB NAEM","KAMOUN HABB","KAMOUN NAEM","KARY HAR","KARY HELO","KORFEH","KORFEH CIGAR","KORFEH OUD","KORFEH SILANI","KORONFOL","KOZBARAH YEBSEH HABB","KOZBARAH YEBSEH NAEM","KRAWYAH","KURKUM","KURKUM HABB","LOUBAN EL ZAKAR","LOUMI","LOUMI MATHOUN","MAHLAB","PAPRIKA","PAPRIKA MDAKHANEH","SABAA BHARAT","SEMAQ","SHOUMAR HABB","SHOUMAR NAEM","VANILLA","YANSOUN HABB","YANSOUN NAEM","YANSOUN NAJMEH","ZANJABEEL"],"Sweets + Candy":["BONBON","SABO"],"Vinegars":["HAMOD EL HOSRUM BEQAA","HAMOD EL HOSRUM KOURA","HONEY VINEGAR","KHAL EL ENAB","KHAL EL TEFEH"]};
-const ENGLISH_NAME={"HAMOD EL LAYMOUN":"Citric Acid (Lemon Salt)","SEKKAR NABET":"Rock Sugar","MAY WARD":"Rose Water","MAY ZAHER":"Orange Blossom Water","SHARAB EL TOUT":"Mulberry Syrup","SHARAB EL WARD":"Rose Syrup","BARKOUK MUJAFAF":"Prunes","MESHMOSH MUJAFAF":"Dried Apricots","TEEN MUJAFAF":"Dried Figs","ZARSHAK":"Barberries","ZBEEB ASWAD":"Black Raisins","ZBEEB CHILEAN":"Chilean Raisins","SHOUFEN FLOUR":"Oat Flour","KAMEH HABBE KEMLEH":"Whole Wheat Berries","KAMEH MAKSHOUR":"Cracked Wheat","MAKHLOUTET HBOUB":"Mixed Grains","SHAARIEH":"Vermicelli","SHOUFEN":"Oats","SMEED":"Semolina","BULGUR ABYAD KHESHEN":"Coarse White Bulgur","BULGUR ABYAD NAEM":"Fine White Bulgur","BULGUR ASMAR KHESHEN":"Coarse Brown Bulgur","BULGUR ASMAR NAEM":"Fine Brown Bulgur","AASFOR":"Safflower","KARKADEH":"Hibiscus","MARDAKOUSH":"Marjoram","MOLOKHIYA":"Dried Molokhia","NAANAA YEBES":"Dried Mint","SHEEH":"Wormwood","WARAK GHAR":"Bay Leaves","ZOUFAH":"Hyssop","AASAL BSHAHDO":"Honey with Honeycomb","DEBES EL ENAB":"Grape Molasses","DEBES EL REMMEN":"Pomegranate Molasses","BANDOURA MUJAFAFEH":"Sun-Dried Tomatoes","BEMYEH YEBSEH":"Dried Okra","DEBES EL FLEYFLEH":"Sweet Red Pepper Paste","DEBES EL FLEYFLEH HAR":"Spicy Red Pepper Paste","LABNEH MKAAZLEH HABBET BARAKEH":"Labneh Balls with Nigella Seeds","LABNEH MKAAZLEH HAR":"Spicy Labneh Balls","LABNEH MKAAZLEH NAANAA":"Labneh Balls with Mint","LABNEH MKAAZLEH SEDAH":"Plain Labneh Balls","LABNEH MKAAZLEH ZAATAR":"Labneh Balls with Za’atar","MAKDOUS EL BEQAA HAR":"Spicy Bekaa Makdous","MAKDOUS EL BEQAA SEDAH":"Plain Bekaa Makdous","MAKDOUS EL LOZ":"Almond Makdous","MRABBA EL FRAISE":"Strawberry Jam","MRABBA EL KARAZ":"Cherry Jam","MRABBA EL MESHMOSH":"Apricot Jam","MRABBA EL SFARJEL":"Quince Jam","MRABBA EL TOUT":"Mulberry Jam","MRABBA EL WARD":"Rose Jam","MRABBA EL YAQTIN":"Pumpkin Jam","RUBB EL BANDOURA":"Tomato Paste","SHANKLEESH HAR":"Spicy Shanklish","SHANKLEESH ZAATAR":"Za’atar Shanklish","WARAK ENAB":"Grape Leaves","WARAK ENAB BEL LABNEH":"Grape Leaves with Labneh","ZAATAR BALADI EXTRA":"Extra Baladi Za’atar","ZAATAR HALABI":"Aleppo Za’atar","ZAATAR MANAKISH":"Manakish Za’atar","ZAATAR WITH NUTS":"Za’atar with Nuts","BEZER DOWWAR EL SHAMES":"Sunflower Seeds","BEZER EL KETTAN":"Flax Seeds","BEZER EL YAQTIN":"Pumpkin Seeds","FUSTUQ HALABI HABB":"Whole Pistachios","FUSTUQ HALABI KASR":"Shelled Pistachios","HABB EL RASHAD":"Garden Cress Seeds","HABBET EL BARAKEH":"Nigella Seeds (Black Seed)","JOZ FARASHE":"Walnuts","JOZ FARASHEH":"Walnuts","LOZ HABB BE QESHROH":"Almonds in Shell","LOZ MAKSHOUR":"Shelled Almonds","LOZ MKATTAA":"Sliced Almonds","SNOUBAR":"Pine Nuts","SOMSOM MHAMAS":"Toasted Sesame","SOMSOM NAYY":"Raw Sesame","ZAYTOUN AKHDAR BALADI":"Local Green Olives","ZAYTOUN AKHDAR BEQAA":"Bekaa Green Olives","ZAYTOUN AKHDAR KOURA":"Koura Green Olives","ZAYTOUN AKHDAR MEHSHEH HAR":"Spicy Stuffed Green Olives","ZAYTOUN ASWAD BALADI":"Local Black Olives","ZAYTOUN ASWAD BEQAA":"Bekaa Black Olives","ARDI SHAWKEH":"Pickled Artichoke","CORNICHON":"Gherkins","KABEES HAR":"Spicy Pickles","KABEES KHYAR":"Pickled Cucumber","KABEES LEFT":"Pickled Turnip","KABEES MALFOUF":"Pickled Cabbage","KABEES MSHAKAL":"Mixed Pickles","KABEES QARNABEET":"Pickled Cauliflower","AADAS MAJROUSH":"Split Lentils","AUSTRALIAN AADAS":"Australian Lentils","BAZELAH YEBSEH":"Dried Peas","FOUL AARID":"Large Fava Beans","FOUL MDAMAS":"Fava Beans for Foul Mdammas","HUMMUS AMREEKI":"American Chickpeas","HUMMUS BALADI":"Local Chickpeas","TERMOS HELO":"Sweet Lupini Beans","TERMOS MORR":"Bitter Lupini Beans","BHAR ABYAD":"White Pepper","BHAR ASWAD HABB":"Whole Black Pepper","BHAR BATATA":"Potato Seasoning","BHAR CRISPY":"Crispy Seasoning","BHAR DAJAJ":"Chicken Seasoning","BHAR EL ESCALOPE":"Escalope Seasoning","BHAR EL RIZ":"Rice Seasoning","BHAR EL TAWOUK":"Shish Tawook Seasoning","BHAR FAJITA":"Fajita Seasoning","BHAR HELO":"Allspice","BHAR KABSEH":"Kabsa Seasoning","BHAR LAHMEH":"Meat Seasoning","BHAR LAHMEH BAAJEEN":"Lahm bi Ajeen Seasoning","BHAR MAGGI":"Maggi Seasoning","BHAR MAKLOUBEH":"Maqluba Seasoning","BHAR MANSAF":"Mansaf Seasoning","BHAR MASHEWE":"Grilling Seasoning","BHAR MOGHRABIEH":"Moghrabieh Seasoning","BHAR OUZI":"Ouzi Seasoning","BHAR SAMAK":"Fish Seasoning","BHAR SHAWARMA DJEJ":"Chicken Shawarma Seasoning","BHAR SHAWARMA LAHMEH":"Meat Shawarma Seasoning","BODRET EL BASAL":"Onion Powder","BODRET EL THOUM":"Garlic Powder","DAQET EL KAAK":"Kaak Spice Mix","DAQET EL KEBBEH HABB":"Whole Kibbeh Spice","DAQET EL KEBBEH NAEM":"Ground Kibbeh Spice","HAIL HABB":"Whole Cardamom","HAIL NAEM":"Ground Cardamom","HAR KHESHEN":"Coarse Hot Pepper","HAR NAEM":"Fine Hot Pepper","HELBEH HABB":"Fenugreek Seeds","JOZET EL TEEB HABB":"Whole Nutmeg","JOZET EL TEEB NAEM":"Ground Nutmeg","KAMOUN HABB":"Cumin Seeds","KAMOUN NAEM":"Ground Cumin","KARY HAR":"Hot Curry","KARY HELO":"Mild Curry","KORFEH":"Cinnamon","KORFEH CIGAR":"Cinnamon Sticks","KORFEH OUD":"Cinnamon Sticks","KORFEH SILANI":"Ceylon Cinnamon","KORONFOL":"Cloves","KOZBARAH YEBSEH HABB":"Coriander Seeds","KOZBARAH YEBSEH NAEM":"Ground Coriander","KRAWYAH":"Caraway","KURKUM":"Turmeric","KURKUM HABB":"Whole Turmeric","LOUBAN EL ZAKAR":"Frankincense","LOUMI":"Dried Lime","LOUMI MATHOUN":"Ground Dried Lime","MAHLAB":"Mahleb","SABAA BHARAT":"Seven Spice","SEMAQ":"Sumac","SHOUMAR HABB":"Fennel Seeds","SHOUMAR NAEM":"Ground Fennel","YANSOUN HABB":"Anise Seeds","YANSOUN NAEM":"Ground Anise","YANSOUN NAJMEH":"Star Anise","ZANJABEEL":"Ginger","HAMOD EL HOSRUM BEQAA":"Bekaa Verjuice","HAMOD EL HOSRUM KOURA":"Koura Verjuice","KHAL EL ENAB":"Grape Vinegar","KHAL EL TEFEH":"Apple Vinegar"};
 
-const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
-const WA="96181581230", CART_KEY="zwm-cart", NAME_MODE_KEY="zwm-name-mode", PAGE_SIZE=24;
-const norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-const slug=s=>norm(s).replace(/\+/g,"plus").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
-const title=s=>String(s).toLowerCase().split(/\s+/).map(x=>x?x[0].toUpperCase()+x.slice(1):x).join(" ").replace(/Za’atar/g,"Za’atar");
-const CATEGORY_INFO={
-"Condiments":{what:"Pantry basics for seasoning, baking and everyday kitchen preparation.",use:"Use according to the ingredient: baking, seasoning, sweetening or basic food preparation."},
-"Dates":{what:"A date-based pantry ingredient with natural sweetness and a soft, dense texture.",use:"Use in fillings, desserts, energy bites or as a natural sweetener."},
-"Debsy Carob":{what:"Carob-focused snacks, spreads and sweets from the Debsy Carob range.",use:"Enjoy as a snack, dessert component or sweet pantry treat."},
-"Distillates + Syrups":{what:"Traditional floral waters, syrups and aromatic drinks.",use:"Mix into drinks, desserts, sweets or traditional recipes."},
-"Dried Foods":{what:"Fruit and pantry ingredients preserved by drying for longer keeping and concentrated flavour.",use:"Snack on them, bake with them, or add them to breakfast, desserts and savoury dishes."},
-"Flour":{what:"Milled grain or nut flour used as a base ingredient in baking and cooking.",use:"Use for dough, bread, batters, pastries and other recipes according to the flour type."},
-"Grains":{what:"Rice, wheat and grain staples for filling everyday meals.",use:"Cook as a side, pilaf, soup ingredient, salad base or family meal staple."},
-"Herbs":{what:"Dried leaves, flowers and herbal ingredients with aromatic or infusion uses.",use:"Brew as an infusion when appropriate, or add to cooking for aroma and flavour."},
-"Honey":{what:"Honey and bee-derived pantry products with naturally rich flavour.",use:"Serve at breakfast, stir into drinks, pair with cheese, or use in desserts and dressings."},
-"Molasses":{what:"Concentrated fruit molasses with sweet, tart and deep flavour.",use:"Use in dressings, marinades, sauces and traditional Lebanese pairings."},
-"Mouneh":{what:"Traditional preserved pantry foods prepared to extend seasonal ingredients through the year.",use:"Serve at breakfast or mezze, spread, cook with, or add to home-style meals depending on the item."},
-"Nuts + Seeds":{what:"Whole, cut or roasted nuts and seeds for pantry use and snacking.",use:"Snack, bake, garnish salads, add to breakfast bowls or use in sweets."},
-"Oils":{what:"Plant, seed or botanical oils from the shop’s oil collection.",use:"Uses vary by oil. Ask Zayt w Mouneh for the appropriate use and available bottle size."},
-"Olive Oil":{what:"Extra virgin olive oil — a central ingredient of the Lebanese pantry.",use:"Drizzle, dress, dip, marinate or cook with it."},
-"Olives":{what:"Green or black olives prepared for the table.",use:"Serve with breakfast, mezze, cheeses, salads and shared platters."},
-"Pickles":{what:"Vegetables preserved in brine for acidity, crunch and long keeping.",use:"Serve beside sandwiches, grilled foods, mezze and hearty meals."},
-"Pulses":{what:"Dried legumes such as lentils, beans, chickpeas and lupini beans.",use:"Cook in soups, stews, salads, dips and traditional home dishes."},
-"Soap":{what:"Traditional-inspired soap from the shop’s natural-care selection.",use:"Use for everyday washing and gifting according to the soap type."},
-"Spices":{what:"Whole, ground or blended spices for building aroma and flavour.",use:"Season rice, meat, chicken, fish, vegetables, marinades and traditional dishes according to the blend."},
-"Sweets + Candy":{what:"Small sweets and candy for sharing or a quick treat.",use:"Enjoy as a snack or serve with coffee and gatherings."},
-"Vinegars":{what:"Fruit vinegar or verjuice used to add acidity and brightness.",use:"Use in salads, dressings, marinades, sauces and preserved dishes."}
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const WA="96181581230";
+const CART_KEY="zwm-cart-v5";
+const LANG_KEY="zwm-lang-v2";
+const PAGE_SIZE=24;
+
+const CATEGORY_ORDER=[
+  "Condiments","Dates","Debsy Carob","Distillates + Syrups","Dried Foods","Flour","Grains","Herbs","Honey","Molasses","Mouneh","Nuts + Seeds","Oils","Olive Oil","Olives","Pickles","Pulses","Soap","Spices","Sweets + Candy","Vinegars"
+];
+
+const CATEGORY_AR={
+  "Condiments":"مستلزمات المطبخ",
+  "Dates":"تمر",
+  "Debsy Carob":"دبسي خروب",
+  "Distillates + Syrups":"مقطرات وشرابات",
+  "Dried Foods":"أطعمة مجففة",
+  "Flour":"طحين",
+  "Grains":"حبوب",
+  "Herbs":"أعشاب",
+  "Honey":"عسل",
+  "Molasses":"دبس",
+  "Mouneh":"مونة",
+  "Nuts + Seeds":"مكسرات وبذور",
+  "Oils":"زيوت",
+  "Olive Oil":"زيت زيتون",
+  "Olives":"زيتون",
+  "Pickles":"مخللات",
+  "Pulses":"بقوليات",
+  "Soap":"صابون",
+  "Spices":"بهارات",
+  "Sweets + Candy":"حلويات وسكاكر",
+  "Vinegars":"خل"
 };
-const CATEGORIES=Object.entries(CATALOG).map(([name,items],i)=>({id:i+1,name,count:items.length,info:CATEGORY_INFO[name]}));
-const PRODUCTS=Object.entries(CATALOG).flatMap(([category,names])=>names.map((raw,i)=>({id:slug(category)+"-"+(i+1),raw,category,english:ENGLISH_NAME[raw]||null})));
-let active="All",query="",limit=PAGE_SIZE,currentModal=null,draftQty={},toastTimer,sceneIndex=0,sceneTimer,nameMode=localStorage.getItem(NAME_MODE_KEY)==="english"?"english":"original";
-function displayName(p){return nameMode==="english"&&p.english?p.english:title(p.raw)}
-function originalName(p){return title(p.raw)}
-function hasEnglish(p){return Boolean(p.english&&norm(p.english)!==norm(originalName(p)))}
-function infoFor(p){const base=CATEGORY_INFO[p.category]||{what:"A curated pantry product.",use:"Ask us for the best way to use it."};const n=(p.english||p.raw).toLowerCase();let what=base.what,use=base.use;
- if(n.includes("cumin")){what="Cumin is a warm, earthy spice available here whole or ground.";use="Use in meat, rice, legumes, soups, marinades and spice blends."}
- else if(n.includes("cardamom")){what="Cardamom is a fragrant spice with citrusy, floral warmth.";use="Use in coffee, tea, rice, sweets and selected savoury dishes."}
- else if(n.includes("cinnamon")){what="Cinnamon is a sweet-warm aromatic spice, available in ground or stick form.";use="Use in desserts, warm drinks, rice, stews and baking."}
- else if(n.includes("sumac")){what="Sumac is a deep red spice with a bright, tangy flavour.";use="Sprinkle over salads, onions, grilled foods, fattoush and mezze."}
- else if(n.includes("za’atar")||n.includes("zaatar")){what="Za’atar is a Levantine herb-and-spice pantry blend; the exact blend varies by style.";use="Mix with olive oil for manakish, sprinkle over labneh, eggs, breads and salads."}
- else if(n.includes("lentil")||p.raw.startsWith("AADAS")){what="Lentils are dried pulses valued for quick cooking, protein and earthy flavour.";use="Cook in soups, mujadara-style dishes, stews and salads."}
- else if(n.includes("chickpea")||p.raw.startsWith("HUMMUS")){what="Chickpeas are dried pulses with a nutty flavour and creamy texture when cooked.";use="Use for hummus, stews, salads, soups and roasted snacks."}
- else if(n.includes("bulgur")){what="Bulgur is parboiled, dried cracked wheat, available in different colours and grinds.";use="Use for tabbouleh, kibbeh, pilafs, stuffing and grain salads."}
- else if(n.includes("rice")){what="Rice is a staple grain selected for everyday cooking.";use="Use for pilafs, stuffed vegetables, side dishes and family meals."}
- else if(n.includes("olive oil")){what="Extra virgin olive oil is fresh-pressed olive oil with no refining.";use="Use for dipping, dressings, mezze, marinades and cooking."}
- else if(n.includes("honey")){what="Honey is a naturally sweet bee-made pantry food; flavour depends on floral source and blend.";use="Use at breakfast, in drinks, dressings, desserts or alongside cheese."}
- else if(n.includes("molasses")){what="Fruit molasses is concentrated fruit juice cooked down to a thick, intense syrup.";use="Use in dressings, marinades, sauces and Lebanese sweet-sour pairings."}
- else if(n.includes("jam")){what="A fruit or flower preserve cooked with sweetness for a spreadable pantry staple.";use="Serve with bread, labneh, breakfast plates, pastries or desserts."}
- else if(n.includes("pickled")||p.category==="Pickles"){what="A brined preserve made for sharpness, crunch and long keeping.";use="Serve with sandwiches, mezze, grilled foods and rich dishes."}
- else if(n.includes("labneh")){what="Labneh is strained yogurt; these mouneh-style balls are preserved for a rich, tangy bite.";use="Serve with olive oil, bread, breakfast, mezze and herbs."}
- else if(n.includes("makdous")){what="Makdous is a traditional preserved stuffed eggplant preparation.";use="Serve at breakfast or mezze with bread, vegetables and olive oil."}
- else if(n.includes("vinegar")||n.includes("verjuice")){what="A bright acidic pantry ingredient made from fruit vinegar or unripe grape juice.";use="Use in dressings, marinades, sauces and preserved foods."}
- else if(n.includes("soap")){what="A bar soap from the shop’s care collection.";use="Use for everyday washing according to the soap type and your preference."}
- return{what,use};}
-function loadCart(){try{const raw=JSON.parse(localStorage.getItem(CART_KEY)||"{}");const out={};for(const [id,item] of Object.entries(raw||{})){const p=PRODUCTS.find(x=>x.id===id);if(p)out[id]={id,qty:Math.max(1,Number(item?.qty)||1)};}return out}catch{return{}}}
+
+const CATEGORY_INFO={
+  "Condiments":{
+    en:["Pantry basics for seasoning, baking and everyday kitchen preparation.","Use according to the ingredient for baking, seasoning, sweetening or food preparation."],
+    ar:["أساسيات للمطبخ تُستخدم في التتبيل والخبز والتحضير اليومي.","تُستخدم بحسب الصنف في الخَبز أو التتبيل أو التحلية أو التحضير."]
+  },
+  "Dates":{
+    en:["Date-based pantry products with natural sweetness and a soft, dense texture.","Use in fillings, desserts, energy bites or as a naturally sweet ingredient."],
+    ar:["منتجات من التمر بطعم حلو طبيعي وقوام غني.","تُستخدم في الحشوات والحلويات ولقيمات الطاقة أو كمكوّن للتحلية."]
+  },
+  "Debsy Carob":{
+    en:["Carob-focused snacks, spreads and sweets from the Debsy range.","Enjoy as a snack, dessert component or sweet pantry treat."],
+    ar:["وجبات خفيفة وحلويات ومنتجات أساسها الخروب من مجموعة دبسي.","تُؤكل كوجبة خفيفة أو تُستخدم في الحلويات أو كتحلية من المونة."]
+  },
+  "Distillates + Syrups":{
+    en:["Traditional floral waters, distillates and syrups for drinks and desserts.","Use in cold drinks, desserts, sweets and traditional recipes."],
+    ar:["مياه زهرية ومقطرات وشرابات تقليدية للمشروبات والحلويات.","تُستخدم في المشروبات الباردة والحلويات والوصفات التقليدية."]
+  },
+  "Dried Foods":{
+    en:["Fruits and pantry ingredients preserved by drying for concentrated flavour and longer keeping.","Snack on them or add them to breakfast, baking, desserts and savoury dishes."],
+    ar:["فواكه ومكونات مونة محفوظة بالتجفيف لنكهة مركزة وحفظ أطول.","تُؤكل كوجبة خفيفة أو تُضاف إلى الفطور والخبز والحلويات والأطباق المالحة."]
+  },
+  "Flour":{
+    en:["Milled grain or nut flour used as a base ingredient in baking and cooking.","Use for dough, bread, batters, pastries and recipes suited to each flour."],
+    ar:["طحين من الحبوب أو المكسرات يُستخدم أساساً في الخَبز والطبخ.","يُستخدم للعجين والخبز والمعجنات والوصفات المناسبة لكل نوع."]
+  },
+  "Grains":{
+    en:["Rice, wheat and grain staples for filling everyday meals.","Cook as a side, pilaf, soup ingredient, salad base or family meal staple."],
+    ar:["أرز وقمح وحبوب أساسية للوجبات اليومية.","تُطبخ كطبق جانبي أو مع الأرز والحساء والسلطات والوجبات العائلية."]
+  },
+  "Herbs":{
+    en:["Dried leaves, flowers and herbal ingredients with aromatic or infusion uses.","Brew as an infusion when appropriate, or add to cooking for aroma and flavour."],
+    ar:["أوراق وزهور وأعشاب مجففة تُستخدم للعطر أو للنقع.","تُنقع كمشروب عند ملاءمة الصنف أو تُضاف إلى الطبخ للنكهة والرائحة."]
+  },
+  "Honey":{
+    en:["Honey and bee-derived pantry products with naturally rich flavour.","Serve at breakfast, stir into drinks, pair with cheese or use in desserts and dressings."],
+    ar:["عسل ومنتجات من خلية النحل بنكهة طبيعية غنية.","يُقدّم مع الفطور أو المشروبات والجبنة أو في الحلويات والتتبيلات."]
+  },
+  "Molasses":{
+    en:["Concentrated fruit molasses with deep sweet-tart flavour.","Use in dressings, marinades, sauces and classic Lebanese sweet-sour pairings."],
+    ar:["دبس فاكهة مركز بطعم غني يجمع الحلاوة والحموضة.","يُستخدم في التتبيلات والصلصات والماريناد والوصفات اللبنانية الحلوة الحامضة."]
+  },
+  "Mouneh":{
+    en:["Traditional preserved pantry foods prepared to carry seasonal ingredients through the year.","Serve at breakfast or mezze, spread, cook with or add to home-style meals depending on the item."],
+    ar:["أصناف مونة تقليدية تحفظ خيرات الموسم طوال السنة.","تُقدّم على الفطور أو المازة أو تُستخدم في الطبخ بحسب الصنف."]
+  },
+  "Nuts + Seeds":{
+    en:["Whole, cut or roasted nuts and seeds for snacking and pantry use.","Snack on them, bake with them, garnish salads or add to breakfast and sweets."],
+    ar:["مكسرات وبذور كاملة أو مقطعة أو محمصة للتسالي والمطبخ.","تُؤكل كتسالي أو تُستخدم في الخَبز والسلطات والفطور والحلويات."]
+  },
+  "Oils":{
+    en:["Plant, seed or botanical oils from the shop’s oil collection.","Uses vary by oil; choose the bottle size you need and ask us if you want guidance."],
+    ar:["زيوت نباتية وزيوت بذور من مجموعة الزيوت في المتجر.","تختلف الاستخدامات بحسب الزيت؛ اختر الحجم المناسب واسألنا عند الحاجة."]
+  },
+  "Olive Oil":{
+    en:["Extra virgin olive oil — a central ingredient of the Lebanese pantry.","Drizzle, dress, dip, marinate or cook with it."],
+    ar:["زيت زيتون بكر ممتاز، من أساسيات المونة اللبنانية.","يُستخدم للتغميس والتتبيل والماريناد والطبخ."]
+  },
+  "Olives":{
+    en:["Green or black olives prepared for the table.","Serve with breakfast, mezze, cheeses, salads and shared platters."],
+    ar:["زيتون أخضر أو أسود محضّر للمائدة.","يُقدّم مع الفطور والمازة والأجبان والسلطات."]
+  },
+  "Pickles":{
+    en:["Vegetables preserved in brine for acidity, crunch and long keeping.","Serve beside sandwiches, grilled foods, mezze and hearty meals."],
+    ar:["خضار محفوظة بالمحلول الملحي لطعم حامض وقوام مقرمش.","تُقدّم مع السندويشات والمشاوي والمازة والوجبات الدسمة."]
+  },
+  "Pulses":{
+    en:["Dried legumes such as lentils, beans, chickpeas and lupini beans.","Cook in soups, stews, salads, dips and traditional home dishes."],
+    ar:["بقوليات مجففة مثل العدس والفاصوليا والحمص والترمس.","تُطبخ في الحساء واليخنات والسلطات والغموس والأطباق البيتية."]
+  },
+  "Soap":{
+    en:["Traditional-inspired soap from the shop’s care collection.","Use for everyday washing according to the soap type and your preference."],
+    ar:["صابون من مجموعة العناية بطابع تقليدي.","يُستخدم للتنظيف اليومي بحسب نوع الصابون وتفضيلك."]
+  },
+  "Spices":{
+    en:["Whole, ground or blended spices for building aroma and flavour.","Season rice, meat, chicken, fish, vegetables, marinades and traditional dishes."],
+    ar:["بهارات كاملة أو مطحونة أو خلطات لإضافة النكهة والرائحة.","تُستخدم مع الأرز واللحوم والدجاج والسمك والخضار والماريناد."]
+  },
+  "Sweets + Candy":{
+    en:["Small sweets and candy for sharing or a quick treat.","Enjoy as a snack or serve with coffee and gatherings."],
+    ar:["حلويات وسكاكر صغيرة للمشاركة أو كتحلية سريعة.","تُقدّم كتسالي أو مع القهوة والضيافة."]
+  },
+  "Vinegars":{
+    en:["Fruit vinegar or verjuice used to add acidity and brightness.","Use in salads, dressings, marinades, sauces and preserved dishes."],
+    ar:["خل فواكه أو حصرم لإضافة الحموضة والانتعاش إلى الأكل.","يُستخدم في السلطات والتتبيلات والماريناد والصلصات والمخللات."]
+  }
+};
+
+const UI={
+  en:{
+    skipLink:"Skip to catalogue",
+    announcementText:"Authentic Lebanese pantry essentials · Since 2006",
+    announcementOrder:"Order on WhatsApp",
+    brand:"Zayt w Mouneh",
+    navShop:"Shop",navCategories:"Categories",navAbout:"About & mission",navContact:"Contact",
+    cartLabel:"Cart",
+    heroEyebrow:"Rooted in Lebanese heritage",
+    heroTitle:'A pantry of<br><em>Lebanese memory.</em>',
+    heroLede:"Authentic pantry essentials, thoughtfully curated — with current pack sizes and prices ready to browse.",
+    heroExplore:"Explore the pantry <span>↘</span>",
+    heroWhatsApp:"WhatsApp us",
+    heroVariantLabel:"priced options",heroCategoryLabel:"categories",heroSinceLabel:"since",
+    scene1Kicker:"Pantry film · 01",scene1Title:"Honey, slow and golden.",scene1Copy:"One texture in a pantry full of grains, herbs, mouneh, oils and more.",
+    scene2Kicker:"Pantry film · 02",scene2Title:"Lentils & everyday staples.",scene2Copy:"Warm, useful ingredients for real home cooking.",
+    scene3Kicker:"Pantry film · 03",scene3Title:"Wheat, harvest & season.",scene3Copy:"A calm reminder of the ingredients, seasons and tables behind mouneh.",
+    heroScript:"Curated with care",
+    categoriesEyebrow:"The pantry, chapter by chapter",
+    categoriesTitle:'Twenty-one ways<br>to bring home <em>mouneh.</em>',
+    categoriesCopy:"Every category is part of the same inheritance — harvested, preserved, offered and passed from one generation to the next.",
+    aboutEyebrow:"Our story & mission",
+    aboutTitle:'More than a shelf.<br><em>Memory kept within reach.</em>',
+    aboutP1:"Since 2006, Zayt w Mouneh has grown from one simple thought: that the Lebanese pantry is more than a shelf — it is memory kept within reach. It lives in herbs drying in summer light, olives resting in brine, olive oil pressed from the grove, and jars prepared patiently for colder months.",
+    aboutP2:"Our mission is to keep that inheritance alive in a way that belongs to today: to choose authentic Lebanese pantry essentials with respect for origin, craft and flavour; to present them with clarity and care; and to make the generosity of mouneh easy to bring home.",
+    value1Title:"Origin",value1Copy:"Respect where ingredients come from.",
+    value2Title:"Craft",value2Copy:"Preserve the patience behind pantry traditions.",
+    value3Title:"Care",value3Copy:"Make every choice clear, useful and welcoming.",
+    signKicker:"Zayt w Mouneh · since 2006",signTitle:"A pantry worth<br>coming back to.",signCopy:"Old-market warmth, modern clarity, and Lebanese pantry character — all in one place.",signCta:"Enter the pantry <b>↘</b>",
+    shopEyebrow:"Current product catalogue",shopTitle:'Names, sizes and<br><em>prices — clearly.</em>',shopNote:"Choose a category, search a product, select the exact pack size, then add it to your pantry list. Prices below come from the supplied retail price list.",
+    searchPlaceholder:"Search zaatar, lentils, honey, grains, spices…",categorySelectLabel:"Category",resultLabel:"products",
+    emptyTitle:"Nothing found.",emptyCopy:"Try a different spelling or another category.",clearFilters:"Clear filters",loadMore:"Load more products",
+    orderEyebrow:"Simple ordering",orderTitle:'From shelf to<br><em>WhatsApp.</em>',orderIntroCopy:"No complicated checkout. Build your pantry list here, then send one clear message.",
+    step1Title:"Choose",step1Copy:"Open a product and pick the exact size you want.",
+    step2Title:"Review",step2Copy:"Check quantities, prices and your estimated total.",
+    step3Title:"Send",step3Copy:"WhatsApp opens with your complete order ready to review.",
+    contactEyebrow:"Contact & orders",contactTitle:'Bring the pantry <em>home.</em>',contactCopy:"Questions, availability, delivery or a custom pantry list — reach us directly.",
+    phone:"Phone",whatsapp:"WhatsApp",instagram:"Instagram",location:"Location",lebanon:"Lebanon",
+    footerCopy:"A pantry of Lebanese memory, curated with care.",footerCatalogue:"Catalogue",footerAbout:"About",
+    cartEyebrow:"Your pantry list",cartTitle:"Cart",cartSaved:"Saved on this device",cartEmptyTitle:"Your cart is empty.",cartEmptyCopy:"Add products from the catalogue and they’ll appear here.",browseProducts:"Browse products",
+    total:"Estimated total",orderDetailsTitle:"Order details",orderDetailsNote:"Sent only when you press WhatsApp",
+    yourName:"Your name",namePlaceholder:"Name",area:"Area / location",areaPlaceholder:"e.g. Baabda",notes:"Order notes",notesPlaceholder:"Delivery notes, substitutions, anything we should know…",
+    sendOrder:"Send order on WhatsApp <span>↗</span>",priceNote:"Prices are shown from the supplied retail list; final availability is confirmed on WhatsApp.",
+    what:"What it is",use:"Use it for",chooseSize:"Choose size",add:"Add to cart",update:"Update cart",view:"View",from:"From",sizeOptions:"size options",
+    remove:"Remove",details:"View details",qty:"Qty",unitPrice:"Unit",subtotal:"Subtotal",
+    standard:"Standard",added:"Added to cart",updated:"Cart updated",removed:"Removed",
+    categoryAll:"All categories",
+    cartProducts:(n)=>`${n} ${n===1?"product":"products"}`,
+    cartItems:(n)=>`${n} ${n===1?"item":"items"}`,
+    orderHello:"Hello Zayt w Mouneh 👋",
+    orderIntro:"I would like to place an order:",
+    customer:"Name",orderArea:"Area / location",orderNotes:"Notes",orderTotal:"Estimated total",
+    orderConfirm:"Please confirm availability and the final order total. Thank you!"
+  },
+  ar:{
+    skipLink:"الانتقال إلى المنتجات",
+    announcementText:"مونة لبنانية أصيلة · منذ 2006",
+    announcementOrder:"اطلب عبر واتساب",
+    brand:"زيت ومونة",
+    navShop:"المتجر",navCategories:"الأقسام",navAbout:"من نحن ورسالتنا",navContact:"تواصل معنا",
+    cartLabel:"السلة",
+    heroEyebrow:"متجذّرون في التراث اللبناني",
+    heroTitle:'مونة تحفظ<br><em>ذاكرة لبنان.</em>',
+    heroLede:"أساسيات مونة أصيلة مختارة بعناية، مع الأحجام والأسعار الحالية لتتسوّق بوضوح وسهولة.",
+    heroExplore:"استكشف المونة <span>↙</span>",
+    heroWhatsApp:"راسلنا على واتساب",
+    heroVariantLabel:"خياراً مسعّراً",heroCategoryLabel:"قسماً",heroSinceLabel:"منذ",
+    scene1Kicker:"من المونة · 01",scene1Title:"عسل ينساب ببطء.",scene1Copy:"تفصيل واحد من مونة أوسع تضم الحبوب والأعشاب والزيوت والمخللات والمزيد.",
+    scene2Kicker:"من المونة · 02",scene2Title:"عدس وحبوب للبيت.",scene2Copy:"مكونات يومية دافئة ومفيدة للطبخ الحقيقي في البيت.",
+    scene3Kicker:"من المونة · 03",scene3Title:"قمح وموسم وحصاد.",scene3Copy:"صورة هادئة عن الأرض والمواسم والموائد التي تعيش فيها المونة.",
+    heroScript:"مختارة بعناية",
+    categoriesEyebrow:"المونة، فصلاً بعد فصل",
+    categoriesTitle:'واحد وعشرون قسماً<br>من <em>المونة.</em>',
+    categoriesCopy:"كل قسم هو فصل من الإرث نفسه — يُحصد ويُحفظ ويُقدّم وينتقل من جيل إلى جيل.",
+    aboutEyebrow:"قصتنا ورسالتنا",
+    aboutTitle:'أكثر من رفّ.<br><em>ذاكرة تبقى في متناول اليد.</em>',
+    aboutP1:"منذ عام 2006، انطلقت زيت ومونة من فكرة بسيطة: أن المونة اللبنانية أكثر من مجرد رفّ، بل ذاكرة تبقى في متناول اليد. تعيش في رائحة الأعشاب التي تجف تحت شمس الصيف، وفي الزيتون الذي يرتاح في الملوحة، وفي زيت الزيتون الآتي من المعصرة، وفي المرطبانات التي تُحضّر بصبر للأشهر الباردة.",
+    aboutP2:"رسالتنا هي أن نبقي هذا الإرث حيّاً بطريقة تنتمي إلى يومنا: أن نختار أساسيات المونة اللبنانية الأصيلة باحترام للمصدر والحرفة والنكهة، وأن نقدّمها بوضوح وعناية، وأن نجعل كرم المونة سهلاً ليصل إلى كل بيت.",
+    value1Title:"المصدر",value1Copy:"نحترم أصل المكونات ومن أين تأتي.",
+    value2Title:"الحرفة",value2Copy:"نحافظ على الصبر والخبرة خلف تقاليد المونة.",
+    value3Title:"العناية",value3Copy:"نجعل كل اختيار واضحاً ومفيداً ومرحّباً.",
+    signKicker:"زيت ومونة · منذ 2006",signTitle:"مونة تستحق<br>أن تعود إليها.",signCopy:"دفء السوق القديم، وضوح عصري، وروح المونة اللبنانية في مكان واحد.",signCta:"ادخل إلى المونة <b>↙</b>",
+    shopEyebrow:"لائحة المنتجات الحالية",shopTitle:'الأسماء والأحجام<br><em>والأسعار بوضوح.</em>',shopNote:"اختر القسم وابحث عن المنتج وحدّد الحجم المطلوب ثم أضفه إلى لائحة المونة. الأسعار أدناه مأخوذة من لائحة أسعار البيع المرفقة.",
+    searchPlaceholder:"ابحث عن زعتر، عدس، عسل، حبوب، بهارات…",categorySelectLabel:"القسم",resultLabel:"منتج",
+    emptyTitle:"لا توجد نتائج.",emptyCopy:"جرّب اسماً آخر أو قسماً مختلفاً.",clearFilters:"إلغاء الفلاتر",loadMore:"عرض المزيد",
+    orderEyebrow:"طلب بسيط",orderTitle:'من الرفّ إلى<br><em>واتساب.</em>',orderIntroCopy:"من دون خطوات معقّدة. جهّز لائحة المونة هنا ثم أرسلها برسالة واحدة واضحة.",
+    step1Title:"اختر",step1Copy:"افتح المنتج وحدّد الحجم الذي تريده.",
+    step2Title:"راجع",step2Copy:"تأكد من الكميات والأسعار والمجموع التقديري.",
+    step3Title:"أرسل",step3Copy:"يفتح واتساب مع الطلب كاملاً وجاهزاً للمراجعة.",
+    contactEyebrow:"التواصل والطلبات",contactTitle:'خذ المونة <em>إلى البيت.</em>',contactCopy:"للاستفسار عن التوفر أو التوصيل أو تجهيز لائحة خاصة، تواصل معنا مباشرة.",
+    phone:"الهاتف",whatsapp:"واتساب",instagram:"إنستغرام",location:"الموقع",lebanon:"لبنان",
+    footerCopy:"مونة من ذاكرة لبنان، مختارة بعناية.",footerCatalogue:"المنتجات",footerAbout:"من نحن",
+    cartEyebrow:"لائحة المونة",cartTitle:"السلة",cartSaved:"محفوظة على هذا الجهاز",cartEmptyTitle:"السلة فارغة.",cartEmptyCopy:"أضف منتجات من المتجر وستظهر هنا.",browseProducts:"تصفّح المنتجات",
+    total:"المجموع التقديري",orderDetailsTitle:"تفاصيل الطلب",orderDetailsNote:"لا تُرسل إلا عند الضغط على واتساب",
+    yourName:"الاسم",namePlaceholder:"اسمك",area:"المنطقة / الموقع",areaPlaceholder:"مثلاً بعبدا",notes:"ملاحظات الطلب",notesPlaceholder:"ملاحظات التوصيل أو الاستبدال أو أي تفاصيل إضافية…",
+    sendOrder:"إرسال الطلب عبر واتساب <span>↗</span>",priceNote:"الأسعار مأخوذة من لائحة البيع المرفقة؛ يتم تأكيد التوفر والمجموع النهائي عبر واتساب.",
+    what:"ما هو",use:"كيف يُستخدم",chooseSize:"اختر الحجم",add:"أضف إلى السلة",update:"حدّث السلة",view:"عرض",from:"ابتداءً من",sizeOptions:"خيارات أحجام",
+    remove:"حذف",details:"عرض التفاصيل",qty:"الكمية",unitPrice:"السعر",subtotal:"المجموع",
+    standard:"قياس واحد",added:"تمت الإضافة إلى السلة",updated:"تم تحديث السلة",removed:"تم الحذف",
+    categoryAll:"كل الأقسام",
+    cartProducts:(n)=>`${n} ${n===1?"منتج":"منتجات"}`,
+    cartItems:(n)=>`${n} ${n===1?"قطعة":"قطع"}`,
+    orderHello:"مرحباً زيت ومونة 👋",
+    orderIntro:"أرغب في طلب:",
+    customer:"الاسم",orderArea:"المنطقة / الموقع",orderNotes:"الملاحظات",orderTotal:"المجموع التقديري",
+    orderConfirm:"يرجى تأكيد التوفر والمجموع النهائي للطلب. شكراً!"
+  }
+};
+
+let lang=localStorage.getItem(LANG_KEY)==="ar"?"ar":"en";
+let activeCategory="All";
+let query="";
+let visibleLimit=PAGE_SIZE;
 let cart=loadCart();
+let draftQty={};
+let cardVariant={};
+let currentModalProduct=null;
+let currentModalVariant=null;
+let sceneIndex=0;
+let sceneTimer=null;
+let toastTimer=null;
+
+const CATEGORY_COUNTS=Object.fromEntries(CATEGORY_ORDER.map(cat=>[cat,PRODUCTS_DATA.filter(p=>p.category===cat).length]));
+const TOTAL_VARIANTS=PRODUCTS_DATA.reduce((sum,p)=>sum+p.variants.length,0);
+
+function money(n){return `$${Number(n).toFixed(2)}`}
+function currentName(p){return lang==="ar"?plainArabic(p.nameAr):p.nameEn}
+function categoryName(cat){return lang==="ar"?(CATEGORY_AR[cat]||cat):cat}
+function plainArabic(s){
+  return String(s||"")
+    .replace(/[\u202A-\u202E\u2066-\u2069]/g,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+function normalize(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function productById(id){return PRODUCTS_DATA.find(p=>p.id===id)}
+function variantById(p,id){return p?.variants.find(v=>v.id===id)||p?.variants[0]}
+function defaultVariant(p){return p.variants[0]}
+function cardVariantFor(p){return variantById(p,cardVariant[p.id])||defaultVariant(p)}
+function qtyFor(key){return Math.max(1,Number(draftQty[key]||1))}
+function cartKey(productId,variantId){return `${productId}::${variantId}`}
+
+function loadCart(){
+  try{
+    const raw=JSON.parse(localStorage.getItem(CART_KEY)||"{}");
+    const valid={};
+    for(const [key,item] of Object.entries(raw||{})){
+      const p=productById(item.productId);
+      const v=variantById(p,item.variantId);
+      if(p&&v) valid[key]={productId:p.id,variantId:v.id,qty:Math.max(1,Number(item.qty)||1)};
+    }
+    return valid;
+  }catch{return{}}
+}
 function saveCart(){localStorage.setItem(CART_KEY,JSON.stringify(cart))}
-function qtyFor(id){return Math.max(1,draftQty[id]??cart[id]?.qty??1)}
-function setDraft(id,q){draftQty[id]=Math.max(1,Number(q)||1);syncQty(id)}
-function syncQty(id){$$(`[data-qty-display="${id}"]`).forEach(n=>n.textContent=qtyFor(id));if(currentModal===id)$("#productModalQty").textContent=qtyFor(id)}
-function initials(name){const p=name.split(/\s+/).filter(Boolean);return((p[0]?.[0]||"Z")+(p[1]?.[0]||p[0]?.[1]||"W")).toUpperCase()}
-function marquee(){}
-function renderCategories(){$("#categoryGrid").innerHTML=CATEGORIES.map(c=>`<a class="category-card reveal" href="#shop" data-cat="${c.name}"><div class="category-card-top"><span class="category-index">${String(c.id).padStart(2,"0")}</span><span>${c.count} ${c.count===1?"product":"products"}</span></div><div class="category-name">${c.name}</div><div class="category-arrow">↘</div></a>`).join("");$$('[data-cat]').forEach(a=>a.onclick=()=>{active=a.dataset.cat;query="";$("#productSearch").value="";limit=PAGE_SIZE;filters();products()})}
-function quickRail(){}
-function filters(){const select=$("#categorySelect");if(!select)return;const opts=[{name:"All",count:PRODUCTS.length},...CATEGORIES];const current=active;select.innerHTML=opts.map(c=>`<option value="${c.name}">${c.name} · ${c.count}</option>`).join("");select.value=current;}
-function filtered(){const q=norm(query.trim());return PRODUCTS.filter(p=>(active==="All"||p.category===active)&&(!q||norm([p.raw,p.english||"",p.category,infoFor(p).what,infoFor(p).use].join(" ")).includes(q)))}
-function products(){const f=filtered(),shown=f.slice(0,limit);$("#resultCount").textContent=f.length;$("#productGrid").innerHTML=shown.map(p=>{const nm=displayName(p),info=infoFor(p),q=qtyFor(p.id),inCart=Boolean(cart[p.id]);return`<article class="product-card" data-product="${p.id}" tabindex="0" role="button" aria-label="View ${nm}"><div class="product-top"><div class="product-visual"><span class="product-monogram">${initials(nm)}</span></div><button class="product-view" type="button" data-view="${p.id}">View</button></div><p class="product-category">${p.category}</p><h3 class="product-name">${nm}</h3>${nameMode==="english"&&hasEnglish(p)?`<p class="product-original">Original: ${originalName(p)}</p>`:""}<p class="product-description">${info.what}</p><p class="product-use"><strong>Use:</strong> ${info.use}</p><div class="product-actions"><div class="product-buy-row"><div class="card-qty"><button type="button" data-card-q="-1" data-id="${p.id}" aria-label="Decrease quantity">−</button><span data-qty-display="${p.id}">${q}</span><button type="button" data-card-q="1" data-id="${p.id}" aria-label="Increase quantity">+</button></div><button class="add-button ${inCart?"is-added":""}" type="button" data-add="${p.id}">${inCart?"Update cart":"Add to cart"}</button></div></div></article>`}).join("");$("#catalogEmpty").hidden=f.length>0;$("#loadMore").parentElement.hidden=f.length===0||limit>=f.length;
- $$('[data-card-q]').forEach(b=>b.onclick=e=>{e.stopPropagation();setDraft(b.dataset.id,qtyFor(b.dataset.id)+Number(b.dataset.cardQ))});$$('[data-add]').forEach(b=>b.onclick=e=>{e.stopPropagation();upsert(b.dataset.add,qtyFor(b.dataset.add))});$$('[data-view]').forEach(b=>b.onclick=e=>{e.stopPropagation();openProduct(b.dataset.view)});$$('[data-product]').forEach(c=>{c.onclick=e=>{if(!e.target.closest("button"))openProduct(c.dataset.product)};c.onkeydown=e=>{if((e.key==="Enter"||e.key===" ")&&!e.target.closest("button")){e.preventDefault();openProduct(c.dataset.product)}}})}
-function setNameMode(mode){nameMode=mode;localStorage.setItem(NAME_MODE_KEY,mode);$$('[data-name-mode]').forEach(b=>b.classList.toggle("is-active",b.dataset.nameMode===mode));products();drawCart();if(currentModal)renderModal(currentModal)}
-function upsert(id,q){const p=PRODUCTS.find(x=>x.id===id);if(!p)return;cart[id]={id,qty:Math.max(1,Number(q)||1)};draftQty[id]=cart[id].qty;saveCart();products();drawCart();syncQty(id);toast(displayName(p)+" added to cart")}
-function removeItem(id){if(!cart[id])return;const p=PRODUCTS.find(x=>x.id===id);delete cart[id];delete draftQty[id];saveCart();products();drawCart();toast((p?displayName(p):"Item")+" removed")}
-function cartQty(id,d){if(!cart[id])return;cart[id].qty=Math.max(1,cart[id].qty+d);draftQty[id]=cart[id].qty;saveCart();drawCart();products();syncQty(id)}
-function drawCart(){const rows=Object.values(cart).map(i=>({p:PRODUCTS.find(x=>x.id===i.id),qty:i.qty})).filter(x=>x.p);const total=rows.reduce((s,x)=>s+x.qty,0);$("#cartCount").textContent=total;$("#drawerCount").textContent=total;$("#cartSubline").textContent=rows.length?`${rows.length} ${rows.length===1?"product":"products"} · ${total} ${total===1?"item":"items"} · saved on this device`:"Saved on this device";$("#cartEmpty").hidden=rows.length>0;$("#orderForm").hidden=rows.length===0;$("#cartItems").innerHTML=rows.map(({p,qty})=>{const info=infoFor(p);return`<article class="cart-item"><div><h3>${displayName(p)}</h3><p>${p.category}${nameMode==="english"&&hasEnglish(p)?` · ${originalName(p)}`:""}</p></div><div class="qty-control"><button type="button" data-cart-q="-1" data-id="${p.id}">−</button><span>${qty}</span><button type="button" data-cart-q="1" data-id="${p.id}">+</button></div><div class="cart-item-description">${info.what}</div><div class="cart-item-footer"><button class="product-view" type="button" data-cart-view="${p.id}">View details</button><button class="cart-remove" type="button" data-remove="${p.id}">Remove</button></div></article>`}).join("");$$('[data-cart-q]').forEach(b=>b.onclick=()=>cartQty(b.dataset.id,Number(b.dataset.cartQ)));$$('[data-remove]').forEach(b=>b.onclick=()=>removeItem(b.dataset.remove));$$('[data-cart-view]').forEach(b=>b.onclick=()=>openProduct(b.dataset.cartView))}
-function backdropOn(){const b=$("#cartBackdrop");b.hidden=false;requestAnimationFrame(()=>b.classList.add("is-visible"))}function backdropMaybeOff(){if(document.body.classList.contains("cart-open")||document.body.classList.contains("modal-open"))return;const b=$("#cartBackdrop");b.classList.remove("is-visible");setTimeout(()=>{if(!document.body.classList.contains("cart-open")&&!document.body.classList.contains("modal-open"))b.hidden=true},310)}
-function openCart(){closeProduct();document.body.classList.add("cart-open");backdropOn();$("#cartDrawer").classList.add("is-open");$("#cartDrawer").setAttribute("aria-hidden","false")}function closeCart(){document.body.classList.remove("cart-open");$("#cartDrawer").classList.remove("is-open");$("#cartDrawer").setAttribute("aria-hidden","true");backdropMaybeOff()}
-function renderModal(id){const p=PRODUCTS.find(x=>x.id===id);if(!p)return;const info=infoFor(p);$("#productModalMark").textContent=initials(displayName(p));$("#productModalCategory").textContent=p.category;$("#productModalTitle").textContent=displayName(p);$("#productModalOriginal").textContent=nameMode==="english"&&hasEnglish(p)?"Original name: "+originalName(p):"";$("#productModalDescription").textContent=info.what;$("#productModalUse").textContent=info.use;$("#productModalTranslationNote").hidden=!(nameMode==="english"&&hasEnglish(p));$("#productModalQty").textContent=qtyFor(id);$("#productModalAdd").textContent=cart[id]?"Update cart":"Add to cart"}
-function openProduct(id){closeCart();currentModal=id;renderModal(id);document.body.classList.add("modal-open");backdropOn();$("#productModal").classList.add("is-open");$("#productModal").setAttribute("aria-hidden","false")}function closeProduct(){if(!$("#productModal"))return;currentModal=null;document.body.classList.remove("modal-open");$("#productModal").classList.remove("is-open");$("#productModal").setAttribute("aria-hidden","true");backdropMaybeOff()}
-function order(){const rows=Object.values(cart).map(i=>({p:PRODUCTS.find(x=>x.id===i.id),qty:i.qty})).filter(x=>x.p);if(!rows.length)return;const lines=["Hello Zayt w Mouneh 👋","","I would like to place an order:","",...rows.map((x,i)=>`${i+1}. ${displayName(x.p)}${nameMode==="english"&&hasEnglish(x.p)?` [${originalName(x.p)}]`:""} — Qty: ${x.qty} (${x.p.category})`),"",`Name: ${$("#customerName").value.trim()||"—"}`,`Area / location: ${$("#customerArea").value.trim()||"—"}`,`Notes: ${$("#orderNotes").value.trim()||"—"}`,"","Please confirm available sizes, prices and final order details. Thank you!"];window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(lines.join("\n")),"_blank","noopener,noreferrer")}
-function toast(m){$("#toastText").textContent=m;$("#toast").classList.add("is-visible");clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("#toast").classList.remove("is-visible"),1700)}
-function reveals(){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("is-visible");io.unobserve(e.target)}}),{threshold:.1,rootMargin:"0px 0px -25px"});$$(".reveal").forEach(e=>io.observe(e))}
-function progress(){const f=()=>{const d=document.documentElement,m=d.scrollHeight-innerHeight;$("#pageProgress").style.width=(m?scrollY/m*100:0)+"%"};f();addEventListener("scroll",f,{passive:true})}
-function nav(){const t=$("#navToggle"),n=$("#navLinks");t.onclick=()=>{const o=n.classList.toggle("is-open");document.body.classList.toggle("menu-open",o);t.setAttribute("aria-expanded",String(o))};$$("#navLinks a").forEach(a=>a.onclick=()=>{n.classList.remove("is-open");document.body.classList.remove("menu-open");t.setAttribute("aria-expanded","false")})}
-function buildLentils(){const box=$("#lentilStream");if(!box)return;box.innerHTML=Array.from({length:28},(_,i)=>`<i class="lentil" style="left:${(i*31)%84}%;--x:${(i%5)*2-4}px;--drift:${(i%7)*3-9}px;animation-delay:${-(i%12)*.17}s"></i>`).join("")}
-function showScene(i,manual=false){const scenes=$$("[data-scene]"),dots=$$("[data-scene-dot]");if(!scenes.length)return;sceneIndex=(i+scenes.length)%scenes.length;scenes.forEach((s,n)=>{const activeNow=n===sceneIndex;s.classList.toggle("is-active",activeNow);const v=s.querySelector("video");if(v){if(activeNow){const play=v.play();if(play&&play.catch)play.catch(()=>{});}else{v.pause();}}});dots.forEach((d,n)=>d.classList.toggle("is-active",n===sceneIndex));if(manual)startScenes()}
-function startScenes(){clearInterval(sceneTimer);if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;sceneTimer=setInterval(()=>showScene(sceneIndex+1),6000)}
-function init(){marquee();renderCategories();quickRail();filters();products();drawCart();setNameMode(nameMode);showScene(0);$("#year").textContent=new Date().getFullYear();$("#productSearch").oninput=e=>{query=e.target.value;limit=PAGE_SIZE;products()};$("#categorySelect").onchange=e=>{active=e.target.value;limit=PAGE_SIZE;products()};$("#loadMore").onclick=()=>{limit+=PAGE_SIZE;products()};$("#clearSearch").onclick=()=>{query="";active="All";$("#productSearch").value="";limit=PAGE_SIZE;filters();products()};$$('[data-name-mode]').forEach(b=>b.onclick=()=>setNameMode(b.dataset.nameMode));$("#cartButton").onclick=openCart;$("#cartClose").onclick=closeCart;$("#cartBackdrop").onclick=()=>{closeCart();closeProduct()};$("#cartBrowse").onclick=()=>{closeCart();location.hash="shop"};$("#orderForm").onsubmit=e=>{e.preventDefault();order()};$("#productModalClose").onclick=closeProduct;$("#modalQtyMinus").onclick=()=>currentModal&&setDraft(currentModal,qtyFor(currentModal)-1);$("#modalQtyPlus").onclick=()=>currentModal&&setDraft(currentModal,qtyFor(currentModal)+1);$("#productModalAdd").onclick=()=>currentModal&&upsert(currentModal,qtyFor(currentModal));$$('[data-scene-dot]').forEach(b=>b.onclick=()=>showScene(Number(b.dataset.sceneDot),true));document.onkeydown=e=>{if(e.key==="Escape"){closeCart();closeProduct()}if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("#productSearch").focus();location.hash="shop"}};addEventListener("storage",e=>{if(e.key===CART_KEY){cart=loadCart();products();drawCart()}if(e.key===NAME_MODE_KEY){nameMode=e.newValue==="english"?"english":"original";setNameMode(nameMode)}});reveals();progress();nav();startScenes()}
-window.addEventListener("load",()=>$$(".reveal").forEach(e=>e.classList.add("is-visible")));
+
+function infoFor(p){
+  const base=CATEGORY_INFO[p.category]||CATEGORY_INFO["Condiments"];
+  let enWhat=base.en[0],enUse=base.en[1],arWhat=base.ar[0],arUse=base.ar[1];
+  const n=p.nameEn.toLowerCase();
+  if(n.includes("cumin")){
+    enWhat="Cumin is a warm, earthy spice available whole or ground.";
+    enUse="Use in meat, rice, legumes, soups, marinades and spice blends.";
+    arWhat="الكمون بهار دافئ وترابي النكهة، ويتوفر حباً أو مطحوناً.";
+    arUse="يُستخدم مع اللحوم والأرز والبقوليات والحساء والماريناد وخلطات البهار.";
+  }else if(n.includes("cardamom")){
+    enWhat="Cardamom is a fragrant spice with citrusy, floral warmth.";
+    enUse="Use in coffee, tea, rice, sweets and selected savoury dishes.";
+    arWhat="الهيل بهار عطري بنفحات حمضية وزهرية دافئة.";
+    arUse="يُستخدم في القهوة والشاي والأرز والحلويات وبعض الأطباق المالحة.";
+  }else if(n.includes("cinnamon")){
+    enWhat="Cinnamon is a sweet-warm aromatic spice, available ground or as sticks.";
+    enUse="Use in desserts, warm drinks, rice, stews and baking.";
+    arWhat="القرفة بهار عطري دافئ وحلو، متوفر مطحوناً أو عيداناً.";
+    arUse="تُستخدم في الحلويات والمشروبات الساخنة والأرز واليخنات والخَبز.";
+  }else if(n.includes("sumac")){
+    enWhat="Sumac is a deep red spice with a bright, tangy flavour.";
+    enUse="Sprinkle over salads, onions, grilled foods, fattoush and mezze.";
+    arWhat="السماق بهار أحمر داكن بطعم حامض ومنعش.";
+    arUse="يُرش على السلطات والبصل والمشاوي والفتوش والمازة.";
+  }else if(n.includes("za'atar")||n.includes("za’atar")||n.includes("zaatar")){
+    enWhat="Za’atar is a Levantine herb-and-spice pantry staple; the blend varies by style.";
+    enUse="Mix with olive oil for manakish, or serve with labneh, eggs, breads and salads.";
+    arWhat="الزعتر من أساسيات المونة الشامية، وتختلف الخلطة بحسب النوع.";
+    arUse="يُخلط مع زيت الزيتون للمناقيش أو يُقدّم مع اللبنة والبيض والخبز والسلطات.";
+  }else if(n.includes("lentil")){
+    enWhat="Lentils are dried pulses valued for quick cooking, protein and earthy flavour.";
+    enUse="Cook in soups, mujadara-style dishes, stews and salads.";
+    arWhat="العدس من البقوليات المجففة، سريع الطبخ وغني ومناسب للوجبات اليومية.";
+    arUse="يُستخدم في الشوربات والمجدرة واليخنات والسلطات.";
+  }else if(n.includes("chickpea")){
+    enWhat="Chickpeas are dried pulses with a nutty flavour and creamy texture when cooked.";
+    enUse="Use for hummus, stews, salads, soups and roasted snacks.";
+    arWhat="الحمص من البقوليات المجففة بطعم جوزي وقوام كريمي بعد الطبخ.";
+    arUse="يُستخدم للحمص واليخنات والسلطات والشوربات أو للتحميص.";
+  }else if(n.includes("bulgur")){
+    enWhat="Bulgur is parboiled, dried cracked wheat, offered in different grinds.";
+    enUse="Use for tabbouleh, kibbeh, pilafs, stuffing and grain salads.";
+    arWhat="البرغل قمح مسلوق ومجفف ومجروش، ويتوفر بدرجات خشونة مختلفة.";
+    arUse="يُستخدم في التبولة والكبة والبرغل المفلفل والحشوات وسلطات الحبوب.";
+  }else if(n.includes("olive oil")){
+    enWhat="Extra virgin olive oil is a central ingredient of the Lebanese pantry.";
+    enUse="Use for dipping, dressings, mezze, marinades and cooking.";
+    arWhat="زيت الزيتون البكر الممتاز من أساسيات المونة اللبنانية.";
+    arUse="يُستخدم للتغميس والتتبيلات والمازة والماريناد والطبخ.";
+  }else if(n.includes("honey")){
+    enWhat="Honey is a naturally sweet bee-made pantry food; flavour varies by floral source and blend.";
+    enUse="Use at breakfast, in drinks, dressings, desserts or alongside cheese.";
+    arWhat="العسل غذاء طبيعي حلو من النحل، وتختلف نكهته بحسب مصدر الرحيق والخلطة.";
+    arUse="يُستخدم مع الفطور والمشروبات والتتبيلات والحلويات أو مع الجبنة.";
+  }else if(n.includes("molasses")){
+    enWhat="Fruit molasses is concentrated fruit juice cooked down to a thick, intense syrup.";
+    enUse="Use in dressings, marinades, sauces and Lebanese sweet-sour pairings.";
+    arWhat="الدبس عصير فاكهة مركز يُطبخ حتى يصبح كثيفاً وغني النكهة.";
+    arUse="يُستخدم في التتبيلات والماريناد والصلصات والوصفات اللبنانية الحلوة الحامضة.";
+  }else if(n.includes("jam")){
+    enWhat="A fruit or flower preserve cooked into a spreadable pantry staple.";
+    enUse="Serve with bread, labneh, breakfast plates, pastries or desserts.";
+    arWhat="مربّى من الفاكهة أو الورد محضّر ليكون قابلاً للدهن والحفظ.";
+    arUse="يُقدّم مع الخبز واللبنة والفطور والمعجنات والحلويات.";
+  }else if(n.includes("labneh")){
+    enWhat="Labneh is strained yogurt; these mouneh-style balls are preserved for a rich, tangy bite.";
+    enUse="Serve with olive oil, bread, breakfast, mezze and herbs.";
+    arWhat="اللبنة لبن مصفّى، وتُحفظ هنا على شكل كرات مونة بطعم غني وحامض لطيف.";
+    arUse="تُقدّم مع زيت الزيتون والخبز والفطور والمازة والأعشاب.";
+  }else if(n.includes("makdous")){
+    enWhat="Makdous is a traditional preserved stuffed eggplant preparation.";
+    enUse="Serve at breakfast or mezze with bread, vegetables and olive oil.";
+    arWhat="المكدوس باذنجان محشي ومحفوظ على الطريقة التقليدية.";
+    arUse="يُقدّم على الفطور أو المازة مع الخبز والخضار وزيت الزيتون.";
+  }else if(n.includes("vinegar")||n.includes("verjuice")){
+    enWhat="A bright acidic pantry ingredient made from fruit vinegar or unripe grape juice.";
+    enUse="Use in dressings, marinades, sauces and preserved foods.";
+    arWhat="مكوّن حامض ومنعش من خل الفاكهة أو عصير العنب غير الناضج.";
+    arUse="يُستخدم في التتبيلات والماريناد والصلصات والمونة.";
+  }
+  return lang==="ar"?{what:arWhat,use:arUse}:{what:enWhat,use:enUse};
+}
+
+function applyLanguage(next){
+  lang=next==="ar"?"ar":"en";
+  localStorage.setItem(LANG_KEY,lang);
+  document.documentElement.lang=lang;
+  document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+  const t=UI[lang];
+
+  const textMap={
+    skipLink:"skipLink",announcementText:"announcementText",announcementOrder:"announcementOrder",brandWordmark:"brand",
+    navShop:"navShop",navCategories:"navCategories",navAbout:"navAbout",navContact:"navContact",cartLabel:"cartLabel",
+    heroEyebrow:"heroEyebrow",heroLede:"heroLede",heroWhatsApp:"heroWhatsApp",heroVariantLabel:"heroVariantLabel",heroCategoryLabel:"heroCategoryLabel",heroSinceLabel:"heroSinceLabel",
+    scene1Kicker:"scene1Kicker",scene1Title:"scene1Title",scene1Copy:"scene1Copy",scene2Kicker:"scene2Kicker",scene2Title:"scene2Title",scene2Copy:"scene2Copy",scene3Kicker:"scene3Kicker",scene3Title:"scene3Title",scene3Copy:"scene3Copy",heroScript:"heroScript",
+    categoriesEyebrow:"categoriesEyebrow",categoriesCopy:"categoriesCopy",aboutEyebrow:"aboutEyebrow",aboutP1:"aboutP1",aboutP2:"aboutP2",
+    value1Title:"value1Title",value1Copy:"value1Copy",value2Title:"value2Title",value2Copy:"value2Copy",value3Title:"value3Title",value3Copy:"value3Copy",signKicker:"signKicker",signCopy:"signCopy",
+    shopEyebrow:"shopEyebrow",shopNote:"shopNote",categorySelectLabel:"categorySelectLabel",resultLabel:"resultLabel",emptyTitle:"emptyTitle",emptyCopy:"emptyCopy",
+    orderEyebrow:"orderEyebrow",orderIntroCopy:"orderIntroCopy",step1Title:"step1Title",step1Copy:"step1Copy",step2Title:"step2Title",step2Copy:"step2Copy",step3Title:"step3Title",step3Copy:"step3Copy",
+    contactEyebrow:"contactEyebrow",contactCopy:"contactCopy",contactPhoneLabel:"phone",contactWaLabel:"whatsapp",contactIgLabel:"instagram",contactLocationLabel:"location",contactLocationValue:"lebanon",
+    footerBrand:"brand",footerCopy:"footerCopy",footerCatalogue:"footerCatalogue",footerAbout:"footerAbout",copyrightBrand:"brand",
+    cartEyebrow:"cartEyebrow",cartTitle:"cartTitle",cartEmptyTitle:"cartEmptyTitle",cartEmptyCopy:"cartEmptyCopy",cartTotalLabel:"total",
+    orderDetailsTitle:"orderDetailsTitle",orderDetailsNote:"orderDetailsNote",customerNameLabel:"yourName",customerAreaLabel:"area",orderNotesLabel:"notes",priceNote:"priceNote",
+    whatLabel:"what",useLabel:"use",chooseSizeLabel:"chooseSize"
+  };
+  Object.entries(textMap).forEach(([id,key])=>{const el=$("#"+id);if(el&&t[key]!==undefined)el.textContent=t[key]});
+
+  const htmlMap={heroTitle:"heroTitle",heroExplore:"heroExplore",categoriesTitle:"categoriesTitle",aboutTitle:"aboutTitle",signTitle:"signTitle",signCta:"signCta",shopTitle:"shopTitle",orderTitle:"orderTitle",contactTitle:"contactTitle",sendOrderButton:"sendOrder"};
+  Object.entries(htmlMap).forEach(([id,key])=>{const el=$("#"+id);if(el&&t[key]!==undefined)el.innerHTML=t[key]});
+
+  $("#productSearch").placeholder=t.searchPlaceholder;
+  $("#customerName").placeholder=t.namePlaceholder;
+  $("#customerArea").placeholder=t.areaPlaceholder;
+  $("#orderNotes").placeholder=t.notesPlaceholder;
+  $("#clearSearch").textContent=t.clearFilters;
+  $("#loadMore").textContent=t.loadMore;
+  $("#cartBrowse").textContent=t.browseProducts;
+
+  $$("[data-lang]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.lang===lang));
+  renderCategories();
+  renderCategorySelect();
+  renderProducts();
+  renderCart();
+  if(currentModalProduct) renderModal(currentModalProduct.id,currentModalVariant?.id);
+}
+
+function renderCategories(){
+  $("#categoryGrid").innerHTML=CATEGORY_ORDER.map((cat,index)=>{
+    const count=CATEGORY_COUNTS[cat]||0;
+    const info=CATEGORY_INFO[cat]?.[lang]||["",""];
+    return `<a class="category-card reveal" href="#shop" data-cat="${escapeHtml(cat)}">
+      <div class="category-card-top"><span class="category-index">${String(index+1).padStart(2,"0")}</span><span class="category-count">${count} ${lang==="ar"?"منتج":"products"}</span></div>
+      <div>
+        <div class="category-name">${escapeHtml(categoryName(cat))}</div>
+        <p class="category-blurb">${escapeHtml(info[0])}</p>
+      </div>
+      <div class="category-card-bottom"><span class="text-link">${lang==="ar"?"استكشف":"Explore"}</span><div class="category-arrow">${lang==="ar"?"↙":"↘"}</div></div>
+    </a>`;
+  }).join("");
+  $$("[data-cat]").forEach(a=>a.addEventListener("click",()=>{
+    activeCategory=a.dataset.cat;
+    query="";
+    visibleLimit=PAGE_SIZE;
+    $("#productSearch").value="";
+    renderCategorySelect();
+    renderProducts();
+  }));
+}
+
+function renderCategorySelect(){
+  const select=$("#categorySelect");
+  const options=[{key:"All",label:UI[lang].categoryAll,count:PRODUCTS_DATA.length},...CATEGORY_ORDER.map(cat=>({key:cat,label:categoryName(cat),count:CATEGORY_COUNTS[cat]||0}))];
+  select.innerHTML=options.map(o=>`<option value="${escapeHtml(o.key)}">${escapeHtml(o.label)} · ${o.count}</option>`).join("");
+  select.value=activeCategory;
+}
+
+function filteredProducts(){
+  const q=normalize(query.trim());
+  return PRODUCTS_DATA.filter(p=>{
+    const catOk=activeCategory==="All"||p.category===activeCategory;
+    if(!catOk)return false;
+    if(!q)return true;
+    const infoEn=CATEGORY_INFO[p.category]?.en?.join(" ")||"";
+    const infoAr=CATEGORY_INFO[p.category]?.ar?.join(" ")||"";
+    return normalize([p.nameEn,plainArabic(p.nameAr),p.original,p.category,CATEGORY_AR[p.category]||"",infoEn,infoAr].join(" ")).includes(q);
+  });
+}
+
+function productPriceSummary(p){
+  const prices=p.variants.map(v=>Number(v.price));
+  const min=Math.min(...prices);
+  const max=Math.max(...prices);
+  return {min,max,same:min===max};
+}
+
+function renderProducts(){
+  const t=UI[lang];
+  const filtered=filteredProducts();
+  const shown=filtered.slice(0,visibleLimit);
+  $("#resultCount").textContent=filtered.length;
+
+  $("#productGrid").innerHTML=shown.map(p=>{
+    const info=infoFor(p);
+    const selected=cardVariantFor(p);
+    const q=qtyFor("card:"+p.id);
+    const ps=productPriceSummary(p);
+    const sizeOptions=p.variants.length>1
+      ? `<select class="card-variant-select" data-card-variant="${p.id}" aria-label="${escapeHtml(t.chooseSize)}">${p.variants.map(v=>`<option value="${escapeHtml(v.id)}"${v.id===selected.id?" selected":""}>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${money(v.price)}</option>`).join("")}</select>`
+      : `<div class="single-size">${escapeHtml(lang==="ar"?selected.sizeAr:selected.sizeEn)}</div>`;
+
+    return `<article class="product-card" data-product="${escapeHtml(p.id)}" tabindex="0" role="button" aria-label="${escapeHtml(t.view+" "+currentName(p))}">
+      <div class="product-top">
+        <div class="product-visual"><span class="product-monogram">${escapeHtml(initials(currentName(p)))}</span></div>
+        <button class="product-view" type="button" data-view="${escapeHtml(p.id)}">${escapeHtml(t.view)}</button>
+      </div>
+      <p class="product-category">${escapeHtml(categoryName(p.category))}</p>
+      <h3 class="product-name">${escapeHtml(currentName(p))}</h3>
+      <p class="product-description">${escapeHtml(info.what)}</p>
+      <p class="product-use"><strong>${escapeHtml(t.use)}:</strong> ${escapeHtml(info.use)}</p>
+      <div class="product-price-row">
+        <div class="product-price"><small>${p.variants.length>1?escapeHtml(t.from):""}</small><strong class="money">${money(ps.min)}</strong></div>
+        <div class="product-size-summary">${p.variants.length>1?`${p.variants.length} ${escapeHtml(t.sizeOptions)}`:escapeHtml(lang==="ar"?selected.sizeAr:selected.sizeEn)}</div>
+      </div>
+      <div class="product-actions">
+        ${sizeOptions}
+        <div class="product-buy-row">
+          <div class="card-qty">
+            <button type="button" data-card-q="-1" data-id="${escapeHtml(p.id)}" aria-label="Decrease quantity">−</button>
+            <span data-card-qty="${escapeHtml(p.id)}">${q}</span>
+            <button type="button" data-card-q="1" data-id="${escapeHtml(p.id)}" aria-label="Increase quantity">+</button>
+          </div>
+          <button class="add-button" type="button" data-add="${escapeHtml(p.id)}">${escapeHtml(t.add)}</button>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+
+  $("#catalogEmpty").hidden=filtered.length>0;
+  $("#loadMore").parentElement.hidden=filtered.length===0||visibleLimit>=filtered.length;
+
+  $$("[data-card-variant]").forEach(sel=>sel.addEventListener("change",e=>{
+    e.stopPropagation();
+    cardVariant[sel.dataset.cardVariant]=sel.value;
+  }));
+  $$("[data-card-q]").forEach(btn=>btn.addEventListener("click",e=>{
+    e.stopPropagation();
+    const key="card:"+btn.dataset.id;
+    draftQty[key]=Math.max(1,qtyFor(key)+Number(btn.dataset.cardQ));
+    const display=$(`[data-card-qty="${cssEscape(btn.dataset.id)}"]`);
+    if(display)display.textContent=draftQty[key];
+  }));
+  $$("[data-add]").forEach(btn=>btn.addEventListener("click",e=>{
+    e.stopPropagation();
+    const p=productById(btn.dataset.add);
+    if(!p)return;
+    addToCart(p,cardVariantFor(p),qtyFor("card:"+p.id));
+  }));
+  $$("[data-view]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();openProduct(btn.dataset.view)}));
+  $$("[data-product]").forEach(card=>{
+    card.addEventListener("click",e=>{if(!e.target.closest("button,select"))openProduct(card.dataset.product)});
+    card.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!e.target.closest("button,select")){e.preventDefault();openProduct(card.dataset.product)}});
+  });
+}
+
+function addToCart(p,v,qty){
+  const key=cartKey(p.id,v.id);
+  cart[key]={productId:p.id,variantId:v.id,qty:Math.max(1,Number(qty)||1)};
+  saveCart();
+  renderCart();
+  toast(`${currentName(p)} · ${lang==="ar"?v.sizeAr:v.sizeEn} — ${UI[lang].added}`);
+}
+
+function changeCartQty(key,delta){
+  if(!cart[key])return;
+  cart[key].qty=Math.max(1,cart[key].qty+delta);
+  saveCart();
+  renderCart();
+}
+
+function removeCart(key){
+  const item=cart[key];
+  const p=item?productById(item.productId):null;
+  delete cart[key];
+  saveCart();
+  renderCart();
+  toast(`${p?currentName(p):""} — ${UI[lang].removed}`);
+}
+
+function cartRows(){
+  return Object.entries(cart).map(([key,item])=>{
+    const p=productById(item.productId);
+    const v=variantById(p,item.variantId);
+    return p&&v?{key,p,v,qty:item.qty}:null;
+  }).filter(Boolean);
+}
+
+function renderCart(){
+  const t=UI[lang];
+  const rows=cartRows();
+  const totalQty=rows.reduce((s,r)=>s+r.qty,0);
+  const total=rows.reduce((s,r)=>s+r.qty*Number(r.v.price),0);
+  $("#cartCount").textContent=totalQty;
+  $("#drawerCount").textContent=totalQty;
+  $("#cartSubline").textContent=rows.length?`${t.cartProducts(rows.length)} · ${t.cartItems(totalQty)} · ${t.cartSaved}`:t.cartSaved;
+  $("#cartEmpty").hidden=rows.length>0;
+  $("#orderForm").hidden=rows.length===0;
+  $("#cartTotal").textContent=money(total);
+
+  $("#cartItems").innerHTML=rows.map(({key,p,v,qty})=>`
+    <article class="cart-item">
+      <div>
+        <h3>${escapeHtml(currentName(p))}</h3>
+        <p class="cart-item-meta">${escapeHtml(categoryName(p.category))} · ${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)}</p>
+        <p class="cart-item-price">${money(v.price)} × ${qty}</p>
+      </div>
+      <div class="qty-control">
+        <button type="button" data-cart-q="-1" data-key="${escapeHtml(key)}">−</button>
+        <span>${qty}</span>
+        <button type="button" data-cart-q="1" data-key="${escapeHtml(key)}">+</button>
+      </div>
+      <div class="cart-item-footer">
+        <button class="product-view" type="button" data-cart-view="${escapeHtml(p.id)}">${escapeHtml(t.details)}</button>
+        <span class="cart-line-total">${money(v.price*qty)}</span>
+        <button class="cart-remove" type="button" data-remove="${escapeHtml(key)}">${escapeHtml(t.remove)}</button>
+      </div>
+    </article>
+  `).join("");
+
+  $$("[data-cart-q]").forEach(btn=>btn.addEventListener("click",()=>changeCartQty(btn.dataset.key,Number(btn.dataset.cartQ))));
+  $$("[data-remove]").forEach(btn=>btn.addEventListener("click",()=>removeCart(btn.dataset.remove)));
+  $$("[data-cart-view]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.cartView)));
+}
+
+function openProduct(id){
+  const p=productById(id);
+  if(!p)return;
+  closeCart();
+  currentModalProduct=p;
+  currentModalVariant=cardVariantFor(p);
+  draftQty["modal"]=1;
+  renderModal(p.id,currentModalVariant.id);
+  document.body.classList.add("modal-open");
+  backdropOn();
+  $("#productModal").classList.add("is-open");
+  $("#productModal").setAttribute("aria-hidden","false");
+}
+
+function renderModal(productId,variantId){
+  const p=productById(productId);
+  if(!p)return;
+  const v=variantById(p,variantId)||defaultVariant(p);
+  currentModalProduct=p;
+  currentModalVariant=v;
+  const t=UI[lang],info=infoFor(p);
+  $("#productModalMark").textContent=initials(currentName(p));
+  $("#productModalCategory").textContent=categoryName(p.category);
+  $("#productModalTitle").textContent=currentName(p);
+  $("#productModalOriginal").textContent=lang==="en"&&normalize(p.nameEn)!==normalize(p.original)?`Catalogue name: ${p.original}`:"";
+  $("#productModalDescription").textContent=info.what;
+  $("#productModalUse").textContent=info.use;
+  $("#modalPrice").textContent=money(v.price);
+  $("#productModalQty").textContent=qtyFor("modal");
+  $("#productModalAdd").textContent=t.add;
+  $("#variantOptions").innerHTML=p.variants.map(option=>`<button type="button" class="variant-option ${option.id===v.id?"is-active":""}" data-modal-variant="${escapeHtml(option.id)}">${escapeHtml(lang==="ar"?option.sizeAr:option.sizeEn)} · ${money(option.price)}</button>`).join("");
+  $$("[data-modal-variant]").forEach(btn=>btn.addEventListener("click",()=>{
+    currentModalVariant=variantById(p,btn.dataset.modalVariant);
+    renderModal(p.id,currentModalVariant.id);
+  }));
+}
+
+function closeProduct(){
+  if(!$("#productModal"))return;
+  currentModalProduct=null;
+  currentModalVariant=null;
+  document.body.classList.remove("modal-open");
+  $("#productModal").classList.remove("is-open");
+  $("#productModal").setAttribute("aria-hidden","true");
+  backdropMaybeOff();
+}
+
+function order(){
+  const rows=cartRows();
+  if(!rows.length)return;
+  const t=UI[lang];
+  const total=rows.reduce((s,r)=>s+r.qty*Number(r.v.price),0);
+  const name=$("#customerName").value.trim()||"—";
+  const area=$("#customerArea").value.trim()||"—";
+  const notes=$("#orderNotes").value.trim()||"—";
+  const lines=[
+    t.orderHello,"",t.orderIntro,"",
+    ...rows.map((r,i)=>{
+      const itemName=currentName(r.p);
+      const size=lang==="ar"?r.v.sizeAr:r.v.sizeEn;
+      const subtotal=money(r.v.price*r.qty);
+      return `${i+1}. ${itemName} — ${size} — ${t.qty}: ${r.qty} — ${money(r.v.price)} — ${t.subtotal}: ${subtotal}`;
+    }),
+    "",
+    `${t.orderTotal}: ${money(total)}`,
+    `${t.customer}: ${name}`,
+    `${t.orderArea}: ${area}`,
+    `${t.orderNotes}: ${notes}`,
+    "",
+    t.orderConfirm
+  ];
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(lines.join("\n"))}`,"_blank","noopener,noreferrer");
+}
+
+function openCart(){
+  closeProduct();
+  document.body.classList.add("cart-open");
+  backdropOn();
+  $("#cartDrawer").classList.add("is-open");
+  $("#cartDrawer").setAttribute("aria-hidden","false");
+}
+function closeCart(){
+  document.body.classList.remove("cart-open");
+  $("#cartDrawer").classList.remove("is-open");
+  $("#cartDrawer").setAttribute("aria-hidden","true");
+  backdropMaybeOff();
+}
+function backdropOn(){
+  const b=$("#cartBackdrop");
+  b.hidden=false;
+  requestAnimationFrame(()=>b.classList.add("is-visible"));
+}
+function backdropMaybeOff(){
+  if(document.body.classList.contains("cart-open")||document.body.classList.contains("modal-open"))return;
+  const b=$("#cartBackdrop");
+  b.classList.remove("is-visible");
+  setTimeout(()=>{if(!document.body.classList.contains("cart-open")&&!document.body.classList.contains("modal-open"))b.hidden=true},310);
+}
+
+function showScene(i,manual=false){
+  const scenes=$$("[data-scene]"),dots=$$("[data-scene-dot]");
+  if(!scenes.length)return;
+  sceneIndex=(i+scenes.length)%scenes.length;
+  scenes.forEach((scene,n)=>{
+    const activeNow=n===sceneIndex;
+    scene.classList.toggle("is-active",activeNow);
+    const video=scene.querySelector("video");
+    if(video){
+      if(activeNow){
+        const play=video.play();
+        if(play&&play.catch)play.catch(()=>{});
+      }else video.pause();
+    }
+  });
+  dots.forEach((dot,n)=>dot.classList.toggle("is-active",n===sceneIndex));
+  if(manual)startScenes();
+}
+function startScenes(){
+  clearInterval(sceneTimer);
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  sceneTimer=setInterval(()=>showScene(sceneIndex+1),6500);
+}
+
+function setupNav(){
+  const t=$("#navToggle"),n=$("#navLinks");
+  t.addEventListener("click",()=>{
+    const open=n.classList.toggle("is-open");
+    document.body.classList.toggle("menu-open",open);
+    t.setAttribute("aria-expanded",String(open));
+  });
+  $$("#navLinks a").forEach(a=>a.addEventListener("click",()=>{
+    n.classList.remove("is-open");
+    document.body.classList.remove("menu-open");
+    t.setAttribute("aria-expanded","false");
+  }));
+}
+
+function setupProgress(){
+  const update=()=>{
+    const d=document.documentElement,max=d.scrollHeight-innerHeight;
+    $("#pageProgress").style.width=`${max?scrollY/max*100:0}%`;
+  };
+  update();
+  addEventListener("scroll",update,{passive:true});
+}
+
+function toast(message){
+  $("#toastText").textContent=message;
+  $("#toast").classList.add("is-visible");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>$("#toast").classList.remove("is-visible"),1800);
+}
+function initials(name){
+  const parts=String(name).replace(/[^\p{L}\p{N}\s]/gu,"").split(/\s+/).filter(Boolean);
+  return ((parts[0]?.[0]||"Z")+(parts[1]?.[0]||parts[0]?.[1]||"W")).toUpperCase();
+}
+function escapeHtml(value){
+  return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[ch]));
+}
+function cssEscape(value){
+  if(window.CSS&&CSS.escape)return CSS.escape(value);
+  return String(value).replace(/["\\]/g,"\\$&");
+}
+
+function init(){
+  $("#heroVariantCount").textContent=TOTAL_VARIANTS;
+  $("#heroCategoryCount").textContent=CATEGORY_ORDER.length;
+  $("#year").textContent=new Date().getFullYear();
+
+  applyLanguage(lang);
+  showScene(0);
+  startScenes();
+  setupNav();
+  setupProgress();
+
+  $("#productSearch").addEventListener("input",e=>{query=e.target.value;visibleLimit=PAGE_SIZE;renderProducts()});
+  $("#categorySelect").addEventListener("change",e=>{activeCategory=e.target.value;visibleLimit=PAGE_SIZE;renderProducts()});
+  $("#loadMore").addEventListener("click",()=>{visibleLimit+=PAGE_SIZE;renderProducts()});
+  $("#clearSearch").addEventListener("click",()=>{query="";activeCategory="All";visibleLimit=PAGE_SIZE;$("#productSearch").value="";renderCategorySelect();renderProducts()});
+
+  $$("[data-lang]").forEach(btn=>btn.addEventListener("click",()=>applyLanguage(btn.dataset.lang)));
+
+  $("#cartButton").addEventListener("click",openCart);
+  $("#cartClose").addEventListener("click",closeCart);
+  $("#cartBackdrop").addEventListener("click",()=>{closeCart();closeProduct()});
+  $("#cartBrowse").addEventListener("click",()=>{closeCart();location.hash="shop"});
+  $("#orderForm").addEventListener("submit",e=>{e.preventDefault();order()});
+
+  $("#productModalClose").addEventListener("click",closeProduct);
+  $("#modalQtyMinus").addEventListener("click",()=>{draftQty.modal=Math.max(1,qtyFor("modal")-1);$("#productModalQty").textContent=draftQty.modal});
+  $("#modalQtyPlus").addEventListener("click",()=>{draftQty.modal=qtyFor("modal")+1;$("#productModalQty").textContent=draftQty.modal});
+  $("#productModalAdd").addEventListener("click",()=>{if(currentModalProduct&&currentModalVariant)addToCart(currentModalProduct,currentModalVariant,qtyFor("modal"))});
+
+  $$("[data-scene-dot]").forEach(btn=>btn.addEventListener("click",()=>showScene(Number(btn.dataset.sceneDot),true)));
+
+  document.addEventListener("keydown",e=>{
+    if(e.key==="Escape"){closeCart();closeProduct()}
+    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("#productSearch").focus();location.hash="shop"}
+  });
+
+  addEventListener("storage",e=>{
+    if(e.key===CART_KEY){cart=loadCart();renderCart()}
+    if(e.key===LANG_KEY){applyLanguage(e.newValue==="ar"?"ar":"en")}
+  });
+}
+
 document.addEventListener("DOMContentLoaded",init);

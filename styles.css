@@ -3182,3 +3182,22 @@ html[dir="rtl"] .contact-intro-links a:hover{transform:translateX(-3px)}
   transform:translateY(-1px);
 }
 .gift-icon-badge svg{display:none!important}
+
+
+/* ===== v23 single gift icon in stamp position ===== */
+.gift-icon-badge-corner{
+  left:auto!important;
+  right:25px!important;
+  top:24px!important;
+  width:72px!important;
+  height:72px!important;
+  border-radius:50%!important;
+  background:rgba(233,173,23,.08)!important;
+  border:1px dashed rgba(233,173,23,.72)!important;
+}
+.gift-icon-badge-corner>span{
+  font-size:2rem!important;
+}
+.gift-intro-board>.intro-stamp{
+  display:none!important;
+}

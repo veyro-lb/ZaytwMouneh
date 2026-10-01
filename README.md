@@ -31,3 +31,24 @@ This repository is a plain static site.
 - Root directory: /
 
 If Cloudflare Pages is connected to this repository and watches `main`, commits deploy directly.
+
+
+## Commerce UX added
+
+- Delivery messaging for all of Lebanon, with final delivery details confirmed on WhatsApp
+- Fuzzy search that tolerates common spelling mistakes and searches English, Arabic and Arabizi/transliterated catalogue names
+- Search suggestions while typing
+- Saved/favorite products
+- Recently viewed products
+- Product badges for useful factual context such as multiple sizes, traditional mouneh and baking/breakfast use
+- Related products in the product detail view
+- Mobile review/order bar tied to the live cart
+- "Make a gift" builder that turns the current pantry list into a gift request with recipient, occasion, packing preference, message and delivery area
+- Expanded trust, delivery, social and footer sections
+- Hero videos pause when off-screen or the tab is hidden to reduce unnecessary work
+
+## Future visual upgrades
+
+Intentionally left for a later phase:
+1. Real product photography
+2. Curated / seasonal collections

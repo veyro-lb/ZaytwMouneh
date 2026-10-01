@@ -7,6 +7,7 @@ const LANG_KEY="zwm-lang-v2";
 const WELCOME_KEY="zwm-welcome-seen-v1";
 const FAV_KEY="zwm-favorites-v1";
 const RECENT_KEY="zwm-recent-v1";
+const GIFT_KEY="zwm-gift-items-v1";
 const PAGE_SIZE=24;
 
 const CATEGORY_ORDER=[
@@ -237,7 +238,7 @@ const UI={
 
 const EXTRA_UI={
   en:{
-    navGift:"Make a gift",
+    navGift:"Make a gift",menuLabel:"Menu",menuHeading:"Explore Zayt w Mouneh",menuSubheading:"Everything has its own place.",menuLocation:"Sebline · Directions",
     trustEyebrow:"Why shop with us",trustTitle:"Old pantry values. Clear modern service.",
     trustSinceTitle:"Since 2006",trustSinceCopy:"A long-running Lebanese pantry built around mouneh, everyday staples and careful selection.",
     trustDeliveryTitle:"Delivery all over Lebanon",trustDeliveryCopy:"We deliver across Lebanon. Availability, timing and delivery details are confirmed directly on WhatsApp.",
@@ -248,7 +249,7 @@ const EXTRA_UI={
     giftEyebrow:"Make a gift",giftTitle:"Build a pantry gift, your way.",
     giftCopy:"Choose anything from the shop, then turn your current pantry list into a packed gift for someone. Add the recipient, occasion and a message; we’ll confirm presentation, availability and delivery on WhatsApp.",
     giftPerk1:"Choose any products",giftPerk2:"Packed as a gift",giftPerk3:"Delivery across Lebanon",
-    giftBrowse:"Choose products first ↗",giftBuilderLabel:"Your gift basket",giftEmpty:"Add products to your cart and they’ll appear here as your gift contents.",
+    giftBrowse:"Browse the shop ↗",giftBuilderLabel:"Your gift basket",giftEmpty:"Choose products above and they’ll appear here.",giftProductsLabel:"Choose what goes inside",giftProductsHint:"Search the full catalogue and add products directly to this gift.",giftProductPlaceholder:"Search products for the gift…",giftUseCart:"Add my cart items",giftSelectedTitle:"Inside the gift",giftClear:"Clear",giftAdd:"Add",giftRemove:"Remove",
     giftRecipient:"Recipient name",giftRecipientPlaceholder:"Who is the gift for?",giftOccasion:"Occasion",giftPackaging:"Packing style",giftArea:"Delivery area",giftAreaPlaceholder:"Area in Lebanon",
     giftMessage:"Gift message",giftMessagePlaceholder:"Write a short note for the recipient…",giftSender:"Your name",giftSenderPlaceholder:"Your name",
     giftSend:"Send gift request on WhatsApp ↗",giftNote:"Gift packing, final availability and delivery details are confirmed on WhatsApp before the order is final.",
@@ -260,11 +261,11 @@ const EXTRA_UI={
     mobileReview:"Review & WhatsApp",
     related:"You may also like",
     badgeMulti:"Multiple sizes",badgeTraditional:"Traditional mouneh",badgeClassic:"Lebanese classic",badgeBaking:"Baking staple",badgeBreakfast:"Breakfast pantry",
-    contactCopy:"Questions, availability, gift orders or delivery anywhere in Lebanon — reach us directly.",
+    contactCopy:"Questions, availability, gift orders or delivery anywhere in Lebanon — reach us directly.",locationValue:"JC9Q+Q7X · Sebline, Lebanon",contactHoursLabel:"Opening hours",contactHoursValue:"Mon–Sat 9:00–20:00 · Sun 12:00–20:00",footerLocation:"Sebline · Get directions",
     searchNoSuggestions:"No close matches yet"
   },
   ar:{
-    navGift:"حضّر هدية",
+    navGift:"حضّر هدية",menuLabel:"القائمة",menuHeading:"استكشف زيت ومونة",menuSubheading:"كل شيء في مكانه.",menuLocation:"سبلين · الاتجاهات",
     trustEyebrow:"لماذا زيت ومونة",trustTitle:"قيم المونة القديمة. خدمة واضحة وعصرية.",
     trustSinceTitle:"منذ 2006",trustSinceCopy:"مونة لبنانية عريقة تجمع أساسيات البيت والأصناف التقليدية والاختيار بعناية.",
     trustDeliveryTitle:"توصيل إلى كل لبنان",trustDeliveryCopy:"نوصّل إلى جميع المناطق في لبنان. يتم تأكيد التوفر والوقت وتفاصيل التوصيل مباشرة عبر واتساب.",
@@ -275,7 +276,7 @@ const EXTRA_UI={
     giftEyebrow:"حضّر هدية",giftTitle:"حضّر هدية مونة على ذوقك.",
     giftCopy:"اختر أي منتجات من المتجر، ثم حوّل لائحة المونة الحالية إلى هدية مغلّفة لشخص تحبه. أضف اسم المستلم والمناسبة والرسالة، ونؤكد التغليف والتوفر والتوصيل عبر واتساب.",
     giftPerk1:"اختر أي منتجات",giftPerk2:"تغليف كهدية",giftPerk3:"توصيل إلى كل لبنان",
-    giftBrowse:"اختر المنتجات أولاً ↗",giftBuilderLabel:"سلة الهدية",giftEmpty:"أضف منتجات إلى السلة وستظهر هنا كمحتويات الهدية.",
+    giftBrowse:"تصفّح المتجر ↗",giftBuilderLabel:"سلة الهدية",giftEmpty:"اختر المنتجات أعلاه وستظهر هنا.",giftProductsLabel:"اختر ما تريد داخل الهدية",giftProductsHint:"ابحث في كامل المنتجات وأضف الأصناف مباشرة إلى الهدية.",giftProductPlaceholder:"ابحث عن منتجات للهدية…",giftUseCart:"أضف منتجات سلتي",giftSelectedTitle:"داخل الهدية",giftClear:"مسح",giftAdd:"أضف",giftRemove:"حذف",
     giftRecipient:"اسم المستلم",giftRecipientPlaceholder:"لمن الهدية؟",giftOccasion:"المناسبة",giftPackaging:"طريقة التغليف",giftArea:"منطقة التوصيل",giftAreaPlaceholder:"أي منطقة في لبنان",
     giftMessage:"رسالة الهدية",giftMessagePlaceholder:"اكتب رسالة قصيرة للمستلم…",giftSender:"اسمك",giftSenderPlaceholder:"اسمك",
     giftSend:"إرسال طلب الهدية عبر واتساب ↗",giftNote:"يتم تأكيد التغليف والتوفر وتفاصيل التوصيل عبر واتساب قبل تثبيت الطلب.",
@@ -287,7 +288,7 @@ const EXTRA_UI={
     mobileReview:"راجع واطلب عبر واتساب",
     related:"قد يعجبك أيضاً",
     badgeMulti:"عدة أحجام",badgeTraditional:"مونة تقليدية",badgeClassic:"كلاسيكي لبناني",badgeBaking:"أساسي للخَبز",badgeBreakfast:"من مونة الفطور",
-    contactCopy:"للاستفسار عن التوفر أو الهدايا أو التوصيل إلى أي منطقة في لبنان، تواصل معنا مباشرة.",
+    contactCopy:"للاستفسار عن التوفر أو الهدايا أو التوصيل إلى أي منطقة في لبنان، تواصل معنا مباشرة.",locationValue:"JC9Q+Q7X · سبلين، لبنان",contactHoursLabel:"ساعات العمل",contactHoursValue:"الإثنين–السبت 9:00–20:00 · الأحد 12:00–20:00",footerLocation:"سبلين · الاتجاهات",
     searchNoSuggestions:"لا توجد نتائج قريبة بعد"
   }
 };
@@ -307,7 +308,9 @@ let toastTimer=null;
 let languageFrame=null;
 let favorites=loadFavorites();
 let recentViews=loadRecent();
+let giftItems=loadGiftItems();
 let favoritesOnly=false;
+const CURRENT_PAGE=document.body?.dataset.page||"home";
 let heroVisible=true;
 
 const CATEGORY_COUNTS=Object.fromEntries(CATEGORY_ORDER.map(cat=>[cat,PRODUCTS_DATA.filter(p=>p.category===cat).length]));
@@ -431,6 +434,45 @@ function loadCart(){
   }catch{return{}}
 }
 function saveCart(){localStorage.setItem(CART_KEY,JSON.stringify(cart))}
+function loadGiftItems(){
+  try{
+    const raw=JSON.parse(localStorage.getItem(GIFT_KEY)||"{}"),valid={};
+    for(const [key,item] of Object.entries(raw||{})){
+      const p=productById(item.productId),v=variantById(p,item.variantId);
+      if(p&&v)valid[key]={productId:p.id,variantId:v.id,qty:Math.max(1,Number(item.qty)||1)};
+    }
+    return valid;
+  }catch{return{}}
+}
+function saveGiftItems(){localStorage.setItem(GIFT_KEY,JSON.stringify(giftItems))}
+function giftRows(){
+  return Object.entries(giftItems).map(([key,item])=>{
+    const p=productById(item.productId),v=variantById(p,item.variantId);
+    return p&&v?{key,p,v,qty:item.qty}:null;
+  }).filter(Boolean);
+}
+function addGiftItem(productId,variantId,qty=1){
+  const p=productById(productId);if(!p)return;
+  const v=variantById(p,variantId)||defaultVariant(p),key=cartKey(p.id,v.id);
+  if(giftItems[key])giftItems[key].qty+=Math.max(1,Number(qty)||1);
+  else giftItems[key]={productId:p.id,variantId:v.id,qty:Math.max(1,Number(qty)||1)};
+  saveGiftItems();renderGiftSummary();renderGiftPickerResults();
+}
+function removeGiftItem(key){delete giftItems[key];saveGiftItems();renderGiftSummary();renderGiftPickerResults()}
+function changeGiftQty(key,delta){
+  if(!giftItems[key])return;
+  giftItems[key].qty=Math.max(1,giftItems[key].qty+delta);
+  saveGiftItems();renderGiftSummary();
+}
+function changeGiftVariant(oldKey,productId,variantId){
+  const old=giftItems[oldKey];if(!old)return;
+  const p=productById(productId),v=variantById(p,variantId);if(!p||!v)return;
+  delete giftItems[oldKey];
+  const newKey=cartKey(p.id,v.id);
+  if(giftItems[newKey])giftItems[newKey].qty+=old.qty;
+  else giftItems[newKey]={productId:p.id,variantId:v.id,qty:old.qty};
+  saveGiftItems();renderGiftSummary();renderGiftPickerResults();
+}
 function loadFavorites(){
   try{return new Set(JSON.parse(localStorage.getItem(FAV_KEY)||"[]"))}catch{return new Set()}
 }
@@ -653,7 +695,8 @@ function renderCategories(){
   $("#categoryGrid").innerHTML=CATEGORY_ORDER.map((cat,index)=>{
     const count=CATEGORY_COUNTS[cat]||0;
     const info=CATEGORY_INFO[cat]?.[lang]||["",""];
-    return `<a class="category-card reveal" href="#shop" data-cat="${escapeHtml(cat)}">
+    const href=CURRENT_PAGE==="shop"?"#shop":`shop.html?category=${encodeURIComponent(cat)}#shop`;
+    return `<a class="category-card reveal" href="${href}" data-cat="${escapeHtml(cat)}">
       <div class="category-card-top"><span class="category-index">${String(index+1).padStart(2,"0")}</span><span class="category-count">${count} ${lang==="ar"?"منتج":"products"}</span></div>
       <div>
         <div class="category-name">${escapeHtml(categoryName(cat))}</div>
@@ -662,13 +705,15 @@ function renderCategories(){
       <div class="category-card-bottom"><span class="text-link">${lang==="ar"?"استكشف":"Explore"}</span><div class="category-arrow">${lang==="ar"?"↙":"↘"}</div></div>
     </a>`;
   }).join("");
-  $$("[data-cat]").forEach(a=>a.addEventListener("click",()=>{
+  if(CURRENT_PAGE==="shop")$("[data-cat]").forEach(a=>a.addEventListener("click",e=>{
+    e.preventDefault();
     activeCategory=a.dataset.cat;
     query="";
     visibleLimit=PAGE_SIZE;
     $("#productSearch").value="";
     renderCategorySelect();
     renderProducts();
+    location.hash="shop";
   }));
 }
 
@@ -939,18 +984,47 @@ function renderGiftOptions(){
   if([...occ.options].some(o=>o.value===occValue))occ.value=occValue;
   if([...pack.options].some(o=>o.value===packValue))pack.value=packValue;
 }
+function renderGiftPickerResults(){
+  const box=$("#giftProductResults"),input=$("#giftProductSearch");if(!box||!input)return;
+  const q=input.value.trim();
+  let items=PRODUCTS_DATA.map(p=>({p,score:q?searchScore(p,q):1})).filter(x=>!q||x.score>0);
+  if(q)items.sort((a,b)=>b.score-a.score);
+  items=items.slice(0,8);
+  box.innerHTML=items.map(({p})=>{
+    const v=defaultVariant(p),already=giftRows().some(r=>r.p.id===p.id);
+    return `<button type="button" class="gift-result ${already?"is-added":""}" data-gift-add="${escapeHtml(p.id)}">
+      <span class="gift-result-mark">${escapeHtml(initials(currentName(p)))}</span>
+      <span><small>${escapeHtml(categoryName(p.category))}</small><strong>${escapeHtml(currentName(p))}</strong><em>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${money(v.price)}</em></span>
+      <b>${already?"✓":escapeHtml(EXTRA_UI[lang].giftAdd)}</b>
+    </button>`;
+  }).join("");
+  $("[data-gift-add]").forEach(btn=>btn.addEventListener("click",()=>addGiftItem(btn.dataset.giftAdd,defaultVariant(productById(btn.dataset.giftAdd)).id,1)));
+}
 function renderGiftSummary(){
-  const rows=cartRows(),summary=$("#giftSummary");
-  if(!summary)return;
-  const totalQty=rows.reduce((s,r)=>s+r.qty,0);
-  const total=rows.reduce((s,r)=>s+r.qty*Number(r.v.price),0);
+  const rows=giftRows(),summary=$("#giftSummary");if(!summary)return;
+  const totalQty=rows.reduce((s,r)=>s+r.qty,0),total=rows.reduce((s,r)=>s+r.qty*Number(r.v.price),0);
   $("#giftBasketCount").textContent=lang==="ar"?`${totalQty} قطعة`:`${totalQty} ${totalQty===1?"item":"items"}`;
   $("#giftBasketTotal").textContent=money(total);
-  summary.innerHTML=rows.length?rows.slice(0,6).map(r=>`<div><span>${escapeHtml(currentName(r.p))} · ${escapeHtml(lang==="ar"?r.v.sizeAr:r.v.sizeEn)}</span><strong>×${r.qty}</strong></div>`).join("")+(rows.length>6?`<p>+${rows.length-6} ${lang==="ar"?"منتجات أخرى":"more products"}</p>`:""):`<p id="giftEmpty">${escapeHtml(EXTRA_UI[lang].giftEmpty)}</p>`;
+  summary.innerHTML=rows.length?rows.map(r=>`<article class="gift-selected-row">
+    <div class="gift-selected-name"><strong>${escapeHtml(currentName(r.p))}</strong><small>${escapeHtml(categoryName(r.p.category))}</small></div>
+    <select data-gift-variant="${escapeHtml(r.key)}" data-gift-product="${escapeHtml(r.p.id)}" aria-label="${escapeHtml(UI[lang].chooseSize)}">
+      ${r.p.variants.map(v=>`<option value="${escapeHtml(v.id)}"${v.id===r.v.id?" selected":""}>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${money(v.price)}</option>`).join("")}
+    </select>
+    <div class="gift-selected-controls"><button type="button" data-gift-q="-1" data-key="${escapeHtml(r.key)}">−</button><span>${r.qty}</span><button type="button" data-gift-q="1" data-key="${escapeHtml(r.key)}">+</button></div>
+    <strong class="gift-line-total">${money(r.v.price*r.qty)}</strong>
+    <button type="button" class="gift-remove" data-gift-remove="${escapeHtml(r.key)}">×</button>
+  </article>`).join(""):`<p id="giftEmpty">${escapeHtml(EXTRA_UI[lang].giftEmpty)}</p>`;
+  $("[data-gift-q]").forEach(btn=>btn.addEventListener("click",()=>changeGiftQty(btn.dataset.key,Number(btn.dataset.giftQ))));
+  $("[data-gift-remove]").forEach(btn=>btn.addEventListener("click",()=>removeGiftItem(btn.dataset.giftRemove)));
+  $("[data-gift-variant]").forEach(sel=>sel.addEventListener("change",()=>changeGiftVariant(sel.dataset.giftVariant,sel.dataset.giftProduct,sel.value)));
+}
+function useCartForGift(){
+  for(const r of cartRows())addGiftItem(r.p.id,r.v.id,r.qty);
+  toast(lang==="ar"?"تمت إضافة منتجات السلة إلى الهدية":"Cart items added to the gift");
 }
 function sendGiftOrder(){
-  const rows=cartRows(),t=EXTRA_UI[lang],base=UI[lang];
-  if(!rows.length){toast(t.giftNeedItems);location.hash="shop";return}
+  const rows=giftRows(),t=EXTRA_UI[lang],base=UI[lang];
+  if(!rows.length){toast(t.giftNeedItems);return}
   const recipient=$("#giftRecipient").value.trim()||"—";
   const occasion=t.giftOccasions[Number($("#giftOccasion").value)||0];
   const packing=t.giftPackings[Number($("#giftPackaging").value)||0];
@@ -960,7 +1034,7 @@ function sendGiftOrder(){
   const total=rows.reduce((s,r)=>s+r.qty*Number(r.v.price),0);
   const lines=[
     lang==="ar"?"مرحباً زيت ومونة 👋":"Hello Zayt w Mouneh 👋","",
-    lang==="ar"?"أرغب بتحضير هذا الطلب كهدية:":"I would like to prepare this order as a gift:","",
+    lang==="ar"?"أرغب بتحضير هذه الهدية:":"I would like to prepare this gift:","",
     ...rows.map((r,i)=>`${i+1}. ${currentName(r.p)} — ${lang==="ar"?r.v.sizeAr:r.v.sizeEn} — ${base.qty}: ${r.qty} — ${money(r.v.price*r.qty)}`),
     "",`${base.orderTotal}: ${money(total)}`,
     `${lang==="ar"?"المستلم":"Recipient"}: ${recipient}`,
@@ -984,24 +1058,27 @@ function renderMobileOrderBar(){
 function applyExtraLanguage(){
   const t=EXTRA_UI[lang];
   const text={
-    navGift:"navGift",trustEyebrow:"trustEyebrow",trustSinceTitle:"trustSinceTitle",trustSinceCopy:"trustSinceCopy",trustDeliveryTitle:"trustDeliveryTitle",trustDeliveryCopy:"trustDeliveryCopy",
+    navGift:"navGift",menuLabel:"menuLabel",menuHeading:"menuHeading",menuSubheading:"menuSubheading",menuLocation:"menuLocation",trustEyebrow:"trustEyebrow",trustSinceTitle:"trustSinceTitle",trustSinceCopy:"trustSinceCopy",trustDeliveryTitle:"trustDeliveryTitle",trustDeliveryCopy:"trustDeliveryCopy",
     trustPriceTitle:"trustPriceTitle",trustPriceCopy:"trustPriceCopy",trustWhatsAppTitle:"trustWhatsAppTitle",trustWhatsAppCopy:"trustWhatsAppCopy",
     favoritesFilterLabel:"favorites",recentEyebrow:"recentEyebrow",recentTitle:"recentTitle",clearRecent:"clearRecent",
-    giftEyebrow:"giftEyebrow",giftCopy:"giftCopy",giftPerk1:"giftPerk1",giftPerk2:"giftPerk2",giftPerk3:"giftPerk3",giftBuilderLabel:"giftBuilderLabel",
+    giftEyebrow:"giftEyebrow",giftCopy:"giftCopy",giftPerk1:"giftPerk1",giftPerk2:"giftPerk2",giftPerk3:"giftPerk3",giftBuilderLabel:"giftBuilderLabel",giftProductsLabel:"giftProductsLabel",giftProductsHint:"giftProductsHint",giftUseCart:"giftUseCart",giftSelectedTitle:"giftSelectedTitle",giftClear:"giftClear",
     giftRecipientLabel:"giftRecipient",giftOccasionLabel:"giftOccasion",giftPackagingLabel:"giftPackaging",giftAreaLabel:"giftArea",giftMessageLabel:"giftMessage",giftSenderLabel:"giftSender",giftNote:"giftNote",
     socialEyebrow:"socialEyebrow",socialCopy:"socialCopy",footerDelivery:"footerDelivery",footerExploreTitle:"footerExploreTitle",footerGift:"footerGift",footerContactTitle:"footerContactTitle",
-    relatedLabel:"related",contactCopy:"contactCopy"
+    relatedLabel:"related",contactCopy:"contactCopy",contactLocationValue:"locationValue",contactHoursLabel:"contactHoursLabel",contactHoursValue:"contactHoursValue",footerLocation:"footerLocation"
   };
   Object.entries(text).forEach(([id,key])=>{const el=$("#"+id);if(el&&t[key]!==undefined)el.textContent=t[key]});
   const html={trustTitle:"trustTitle",giftTitle:"giftTitle",giftBrowse:"giftBrowse",giftSend:"giftSend",socialTitle:"socialTitle"};
   Object.entries(html).forEach(([id,key])=>{const el=$("#"+id);if(el&&t[key]!==undefined)el.textContent=t[key]});
+  $("#giftProductSearch").placeholder=t.giftProductPlaceholder;
   $("#giftRecipient").placeholder=t.giftRecipientPlaceholder;
   $("#giftArea").placeholder=t.giftAreaPlaceholder;
   $("#giftMessage").placeholder=t.giftMessagePlaceholder;
   $("#giftSender").placeholder=t.giftSenderPlaceholder;
   renderGiftOptions();
+  renderGiftPickerResults();
   renderRecent();
   renderGiftSummary();
+  renderGiftPickerResults();
   renderFavoritesCount();
   renderMobileOrderBar();
 }
@@ -1100,6 +1177,13 @@ function startScenes(){
 function openLanguageWelcome(){
   const modal=$("#languageWelcome");
   if(!modal)return;
+  if(sessionStorage.getItem(WELCOME_KEY)==="1"){
+    modal.hidden=true;
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden","true");
+    document.body.classList.remove("welcome-open");
+    return;
+  }
   modal.hidden=false;
   modal.classList.add("is-open");
   modal.setAttribute("aria-hidden","false");
@@ -1107,6 +1191,7 @@ function openLanguageWelcome(){
 }
 function chooseWelcomeLanguage(next,event){
   if(event){event.preventDefault?.();event.stopImmediatePropagation?.();}
+  sessionStorage.setItem(WELCOME_KEY,"1");
   const modal=$("#languageWelcome");
 
   if(modal){
@@ -1182,10 +1267,14 @@ function init(){
   $("#heroCategoryCount").textContent=CATEGORY_ORDER.length;
   $("#year").textContent=new Date().getFullYear();
 
+  const params=new URLSearchParams(location.search);
+  const requestedCategory=params.get("category");
+  if(requestedCategory&&CATEGORY_ORDER.includes(requestedCategory))activeCategory=requestedCategory;
+  const requestedQuery=params.get("q");
+  if(requestedQuery){query=requestedQuery;$("#productSearch").value=requestedQuery;}
   applyLanguage(lang,{immediate:true});
   prewarmLanguageFonts();
-  showScene(0);
-  startScenes();
+  if(CURRENT_PAGE==="home"){showScene(0);startScenes();}
   setupNav();
   setupProgress();
   setupPerformance();
@@ -1205,9 +1294,12 @@ function init(){
   $("#cartButton").addEventListener("click",openCart);
   $("#cartClose").addEventListener("click",closeCart);
   $("#cartBackdrop").addEventListener("click",()=>{closeCart();closeProduct()});
-  $("#cartBrowse").addEventListener("click",()=>{closeCart();location.hash="shop"});
+  $("#cartBrowse").addEventListener("click",()=>{closeCart();location.href="shop.html#shop"});
   $("#orderForm").addEventListener("submit",e=>{e.preventDefault();order()});
   $("#giftForm").addEventListener("submit",e=>{e.preventDefault();sendGiftOrder()});
+  $("#giftProductSearch").addEventListener("input",renderGiftPickerResults);
+  $("#giftUseCart").addEventListener("click",useCartForGift);
+  $("#giftClear").addEventListener("click",()=>{giftItems={};saveGiftItems();renderGiftSummary();renderGiftPickerResults()});
   $("#mobileOrderBar").addEventListener("click",openCart);
 
   $("#productModalClose").addEventListener("click",closeProduct);
@@ -1220,13 +1312,14 @@ function init(){
 
   document.addEventListener("keydown",e=>{
     if(e.key==="Escape"){closeCart();closeProduct()}
-    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("#productSearch").focus();location.hash="shop"}
+    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();if(CURRENT_PAGE==="shop"){$("#productSearch").focus();location.hash="shop"}else location.href="shop.html#shop"}
   });
 
   addEventListener("storage",e=>{
     if(e.key===CART_KEY){cart=loadCart();renderCart()}
     if(e.key===LANG_KEY){applyLanguage(e.newValue==="ar"?"ar":"en",{immediate:true})}
     if(e.key===FAV_KEY){favorites=loadFavorites();renderProducts();renderRecent();renderFavoritesCount()}
+    if(e.key===GIFT_KEY){giftItems=loadGiftItems();renderGiftSummary();renderGiftPickerResults()}
   });
 
   renderRecent();

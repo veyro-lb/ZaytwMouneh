@@ -5,6 +5,8 @@ const WA="96181581230";
 const CART_KEY="zwm-cart-v5";
 const LANG_KEY="zwm-lang-v2";
 const WELCOME_KEY="zwm-welcome-seen-v1";
+const FAV_KEY="zwm-favorites-v1";
+const RECENT_KEY="zwm-recent-v1";
 const PAGE_SIZE=24;
 
 const CATEGORY_ORDER=[
@@ -233,6 +235,63 @@ const UI={
   }
 };
 
+const EXTRA_UI={
+  en:{
+    navGift:"Make a gift",
+    trustEyebrow:"Why shop with us",trustTitle:"Old pantry values. Clear modern service.",
+    trustSinceTitle:"Since 2006",trustSinceCopy:"A long-running Lebanese pantry built around mouneh, everyday staples and careful selection.",
+    trustDeliveryTitle:"Delivery all over Lebanon",trustDeliveryCopy:"We deliver across Lebanon. Availability, timing and delivery details are confirmed directly on WhatsApp.",
+    trustPriceTitle:"Clear sizes & prices",trustPriceCopy:"Choose the exact listed pack size and see the retail price before sending your order.",
+    trustWhatsAppTitle:"Direct WhatsApp ordering",trustWhatsAppCopy:"Your full pantry list, quantities and estimated total are prepared into one clear message.",
+    favorites:"Saved",favorite:"Save",favorited:"Saved",favoritesEmpty:"You have no saved products yet.",
+    recentEyebrow:"Recently viewed",recentTitle:"Pick up where you left off.",clearRecent:"Clear",
+    giftEyebrow:"Make a gift",giftTitle:"Build a pantry gift, your way.",
+    giftCopy:"Choose anything from the shop, then turn your current pantry list into a packed gift for someone. Add the recipient, occasion and a message; we’ll confirm presentation, availability and delivery on WhatsApp.",
+    giftPerk1:"Choose any products",giftPerk2:"Packed as a gift",giftPerk3:"Delivery across Lebanon",
+    giftBrowse:"Choose products first ↗",giftBuilderLabel:"Your gift basket",giftEmpty:"Add products to your cart and they’ll appear here as your gift contents.",
+    giftRecipient:"Recipient name",giftRecipientPlaceholder:"Who is the gift for?",giftOccasion:"Occasion",giftPackaging:"Packing style",giftArea:"Delivery area",giftAreaPlaceholder:"Area in Lebanon",
+    giftMessage:"Gift message",giftMessagePlaceholder:"Write a short note for the recipient…",giftSender:"Your name",giftSenderPlaceholder:"Your name",
+    giftSend:"Send gift request on WhatsApp ↗",giftNote:"Gift packing, final availability and delivery details are confirmed on WhatsApp before the order is final.",
+    giftOccasions:["Birthday","Thank you","Visit / hosting","Holiday","Just because","Other"],
+    giftPackings:["Classic pantry gift","Celebration gift","Custom arrangement"],
+    giftNeedItems:"Add products to your cart first, then come back to Make a gift.",
+    socialEyebrow:"From our pantry",socialTitle:"See what’s happening at the shop.",socialCopy:"Follow Zayt w Mouneh for pantry ideas, shop updates and everyday mouneh inspiration.",
+    footerDelivery:"Delivery all over Lebanon · Orders confirmed on WhatsApp",footerExploreTitle:"Explore",footerGift:"Make a gift",footerContactTitle:"Contact",
+    mobileReview:"Review & WhatsApp",
+    related:"You may also like",
+    badgeMulti:"Multiple sizes",badgeTraditional:"Traditional mouneh",badgeClassic:"Lebanese classic",badgeBaking:"Baking staple",badgeBreakfast:"Breakfast pantry",
+    contactCopy:"Questions, availability, gift orders or delivery anywhere in Lebanon — reach us directly.",
+    searchNoSuggestions:"No close matches yet"
+  },
+  ar:{
+    navGift:"حضّر هدية",
+    trustEyebrow:"لماذا زيت ومونة",trustTitle:"قيم المونة القديمة. خدمة واضحة وعصرية.",
+    trustSinceTitle:"منذ 2006",trustSinceCopy:"مونة لبنانية عريقة تجمع أساسيات البيت والأصناف التقليدية والاختيار بعناية.",
+    trustDeliveryTitle:"توصيل إلى كل لبنان",trustDeliveryCopy:"نوصّل إلى جميع المناطق في لبنان. يتم تأكيد التوفر والوقت وتفاصيل التوصيل مباشرة عبر واتساب.",
+    trustPriceTitle:"أحجام وأسعار واضحة",trustPriceCopy:"اختر الحجم المدرج وشاهد سعر البيع قبل إرسال الطلب.",
+    trustWhatsAppTitle:"طلب مباشر عبر واتساب",trustWhatsAppCopy:"نجهّز لائحة المونة كاملة مع الكميات والمجموع التقديري في رسالة واضحة واحدة.",
+    favorites:"المحفوظات",favorite:"حفظ",favorited:"محفوظ",favoritesEmpty:"لا توجد منتجات محفوظة بعد.",
+    recentEyebrow:"شوهدت مؤخراً",recentTitle:"تابع من حيث توقفت.",clearRecent:"مسح",
+    giftEyebrow:"حضّر هدية",giftTitle:"حضّر هدية مونة على ذوقك.",
+    giftCopy:"اختر أي منتجات من المتجر، ثم حوّل لائحة المونة الحالية إلى هدية مغلّفة لشخص تحبه. أضف اسم المستلم والمناسبة والرسالة، ونؤكد التغليف والتوفر والتوصيل عبر واتساب.",
+    giftPerk1:"اختر أي منتجات",giftPerk2:"تغليف كهدية",giftPerk3:"توصيل إلى كل لبنان",
+    giftBrowse:"اختر المنتجات أولاً ↗",giftBuilderLabel:"سلة الهدية",giftEmpty:"أضف منتجات إلى السلة وستظهر هنا كمحتويات الهدية.",
+    giftRecipient:"اسم المستلم",giftRecipientPlaceholder:"لمن الهدية؟",giftOccasion:"المناسبة",giftPackaging:"طريقة التغليف",giftArea:"منطقة التوصيل",giftAreaPlaceholder:"أي منطقة في لبنان",
+    giftMessage:"رسالة الهدية",giftMessagePlaceholder:"اكتب رسالة قصيرة للمستلم…",giftSender:"اسمك",giftSenderPlaceholder:"اسمك",
+    giftSend:"إرسال طلب الهدية عبر واتساب ↗",giftNote:"يتم تأكيد التغليف والتوفر وتفاصيل التوصيل عبر واتساب قبل تثبيت الطلب.",
+    giftOccasions:["عيد ميلاد","شكر","زيارة / ضيافة","مناسبة أو عيد","من دون مناسبة","أخرى"],
+    giftPackings:["هدية مونة كلاسيكية","تغليف احتفالي","تنسيق مخصص"],
+    giftNeedItems:"أضف منتجات إلى السلة أولاً ثم عد إلى قسم الهدية.",
+    socialEyebrow:"من مونة المحل",socialTitle:"تابع أخبار المونة والمتجر.",socialCopy:"تابع زيت ومونة على إنستغرام لأفكار المونة وتحديثات المحل وإلهام يومي.",
+    footerDelivery:"توصيل إلى كل لبنان · تأكيد الطلب عبر واتساب",footerExploreTitle:"استكشف",footerGift:"حضّر هدية",footerContactTitle:"تواصل",
+    mobileReview:"راجع واطلب عبر واتساب",
+    related:"قد يعجبك أيضاً",
+    badgeMulti:"عدة أحجام",badgeTraditional:"مونة تقليدية",badgeClassic:"كلاسيكي لبناني",badgeBaking:"أساسي للخَبز",badgeBreakfast:"من مونة الفطور",
+    contactCopy:"للاستفسار عن التوفر أو الهدايا أو التوصيل إلى أي منطقة في لبنان، تواصل معنا مباشرة.",
+    searchNoSuggestions:"لا توجد نتائج قريبة بعد"
+  }
+};
+
 let lang=localStorage.getItem(LANG_KEY)==="ar"?"ar":"en";
 let activeCategory="All";
 let query="";
@@ -246,6 +305,10 @@ let sceneIndex=0;
 let sceneTimer=null;
 let toastTimer=null;
 let languageFrame=null;
+let favorites=loadFavorites();
+let recentViews=loadRecent();
+let favoritesOnly=false;
+let heroVisible=true;
 
 const CATEGORY_COUNTS=Object.fromEntries(CATEGORY_ORDER.map(cat=>[cat,PRODUCTS_DATA.filter(p=>p.category===cat).length]));
 const TOTAL_VARIANTS=PRODUCTS_DATA.reduce((sum,p)=>sum+p.variants.length,0);
@@ -259,7 +322,95 @@ function plainArabic(s){
     .replace(/\s+/g," ")
     .trim();
 }
-function normalize(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function normalize(s){
+  return String(s||"")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/[\u064B-\u065F\u0670]/g,"")
+    .replace(/[أإآٱ]/g,"ا")
+    .replace(/ى/g,"ي")
+    .replace(/ة/g,"ه")
+    .replace(/ؤ/g,"و")
+    .replace(/ئ/g,"ي");
+}
+function arabiziNormalize(s){
+  return normalize(s)
+    .replace(/7['’]?/g,"kh")
+    .replace(/3/g,"a")
+    .replace(/5/g,"kh")
+    .replace(/7/g,"h")
+    .replace(/8/g,"gh")
+    .replace(/9/g,"s")
+    .replace(/6/g,"t")
+    .replace(/2/g,"a");
+}
+function smartNormalize(s){
+  return arabiziNormalize(s)
+    .replace(/[^a-z0-9\u0600-\u06ff]+/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+}
+function levenshtein(a,b){
+  a=Array.from(a);b=Array.from(b);
+  const row=Array.from({length:b.length+1},(_,i)=>i);
+  for(let i=1;i<=a.length;i++){
+    let prev=row[0];row[0]=i;
+    for(let j=1;j<=b.length;j++){
+      const old=row[j];
+      row[j]=Math.min(row[j]+1,row[j-1]+1,prev+(a[i-1]===b[j-1]?0:1));
+      prev=old;
+    }
+  }
+  return row[b.length];
+}
+function searchAliasTerms(q){
+  const aliases={
+    "hummus":"chickpea hommos hommos humus","hommos":"chickpea hummus humus","humus":"chickpea hummus",
+    "aadas":"lentil lentils adas","adas":"lentil lentils aadas","zaatar":"zaatar thyme","zatar":"zaatar thyme",
+    "kamoun":"cumin","cumin":"kamoun","debs":"molasses dibs","dibs":"molasses debs","zeit":"oil zayt","zayt":"oil zeit",
+    "toum":"garlic thoum","thoum":"garlic toum","somak":"sumac","sumak":"sumac","sumac":"somak sumak",
+    "teen":"fig figs","tin":"fig figs","freekeh":"freek","freek":"freekeh","burghol":"bulgur","borghol":"bulgur"
+  };
+  return aliases[q]||"";
+}
+function productSearchText(p){
+  const infoEn=CATEGORY_INFO[p.category]?.en?.join(" ")||"";
+  const infoAr=CATEGORY_INFO[p.category]?.ar?.join(" ")||"";
+  return smartNormalize([p.nameEn,plainArabic(p.nameAr),p.original,p.category,CATEGORY_AR[p.category]||"",infoEn,infoAr].join(" "));
+}
+function fuzzyTokenMatch(qToken,hayTokens){
+  let best=99;
+  for(const token of hayTokens){
+    if(token===qToken)return 0;
+    if(token.startsWith(qToken)||qToken.startsWith(token))best=Math.min(best,0.25);
+    if(token.includes(qToken)||qToken.includes(token))best=Math.min(best,0.5);
+    if(qToken.length>=3&&token.length>=3){
+      const d=levenshtein(qToken,token);
+      const allowed=qToken.length<=4?1:Math.max(1,Math.floor(qToken.length*.28));
+      if(d<=allowed)best=Math.min(best,d);
+    }
+  }
+  return best;
+}
+function searchScore(p,rawQuery){
+  const q=smartNormalize(rawQuery);
+  if(!q)return 1;
+  const hay=productSearchText(p);
+  if(hay.includes(q))return 100;
+  const alias=searchAliasTerms(q);
+  const queryTokens=(q+" "+alias).trim().split(/\s+/).filter(Boolean);
+  const hayTokens=hay.split(/\s+/).filter(Boolean);
+  let total=0,matched=0;
+  for(const qt of queryTokens){
+    const d=fuzzyTokenMatch(qt,hayTokens);
+    if(d<99){matched++;total+=d}
+  }
+  const originalTokens=q.split(/\s+/).filter(Boolean);
+  const originalMatched=originalTokens.filter(qt=>fuzzyTokenMatch(qt,hayTokens)<99).length;
+  if(originalMatched<originalTokens.length)return 0;
+  return 70+matched*4-total;
+}
 function productById(id){return PRODUCTS_DATA.find(p=>p.id===id)}
 function variantById(p,id){return p?.variants.find(v=>v.id===id)||p?.variants[0]}
 function defaultVariant(p){return p.variants[0]}
@@ -280,6 +431,40 @@ function loadCart(){
   }catch{return{}}
 }
 function saveCart(){localStorage.setItem(CART_KEY,JSON.stringify(cart))}
+function loadFavorites(){
+  try{return new Set(JSON.parse(localStorage.getItem(FAV_KEY)||"[]"))}catch{return new Set()}
+}
+function saveFavorites(){localStorage.setItem(FAV_KEY,JSON.stringify([...favorites]))}
+function loadRecent(){
+  try{return (JSON.parse(localStorage.getItem(RECENT_KEY)||"[]")||[]).filter(id=>productById(id)).slice(0,10)}catch{return[]}
+}
+function saveRecent(){localStorage.setItem(RECENT_KEY,JSON.stringify(recentViews))}
+function toggleFavorite(id){
+  if(favorites.has(id))favorites.delete(id);else favorites.add(id);
+  saveFavorites();
+  renderProducts();
+  renderRecent();
+  renderFavoritesCount();
+  if(currentModalProduct?.id===id)renderModal(id,currentModalVariant?.id);
+}
+function addRecent(id){
+  recentViews=[id,...recentViews.filter(x=>x!==id)].slice(0,10);
+  saveRecent();
+  renderRecent();
+}
+function renderFavoritesCount(){
+  const el=$("#favoritesCount");if(el)el.textContent=favorites.size;
+  const btn=$("#favoritesOnly");if(btn){btn.classList.toggle("is-active",favoritesOnly);btn.setAttribute("aria-pressed",String(favoritesOnly))}
+}
+function badgesFor(p){
+  const t=EXTRA_UI[lang],n=p.nameEn.toLowerCase(),badges=[];
+  if(p.variants.length>1)badges.push(t.badgeMulti);
+  if(["Mouneh","Pickles","Olives"].includes(p.category))badges.push(t.badgeTraditional);
+  if(/zaatar|sumac|olive oil|labneh|makdous|molasses/.test(n))badges.push(t.badgeClassic);
+  if(p.category==="Flour"||/baking powder|yeast|vanilla/.test(n))badges.push(t.badgeBaking);
+  if(/honey|jam|labneh|zaatar|olive|molasses/.test(n))badges.push(t.badgeBreakfast);
+  return [...new Set(badges)].slice(0,2);
+}
 
 function infoFor(p){
   const base=CATEGORY_INFO[p.category]||CATEGORY_INFO["Condiments"];
@@ -448,6 +633,8 @@ function applyLanguage(next,{immediate=false}={}){
   renderProducts();
   renderCart();
     if(currentModalProduct) renderModal(currentModalProduct.id,currentModalVariant?.id);
+    applyExtraLanguage();
+    renderSearchSuggestions();
     clearTimeout(window.__zwmLangTimer);window.__zwmLangTimer=setTimeout(()=>document.documentElement.classList.remove("lang-switching"),320);
   };
 
@@ -493,15 +680,16 @@ function renderCategorySelect(){
 }
 
 function filteredProducts(){
-  const q=normalize(query.trim());
-  return PRODUCTS_DATA.filter(p=>{
-    const catOk=activeCategory==="All"||p.category===activeCategory;
-    if(!catOk)return false;
-    if(!q)return true;
-    const infoEn=CATEGORY_INFO[p.category]?.en?.join(" ")||"";
-    const infoAr=CATEGORY_INFO[p.category]?.ar?.join(" ")||"";
-    return normalize([p.nameEn,plainArabic(p.nameAr),p.original,p.category,CATEGORY_AR[p.category]||"",infoEn,infoAr].join(" ")).includes(q);
-  });
+  const q=query.trim();
+  return PRODUCTS_DATA
+    .map(p=>({p,score:q?searchScore(p,q):1}))
+    .filter(({p,score})=>{
+      const catOk=activeCategory==="All"||p.category===activeCategory;
+      const favOk=!favoritesOnly||favorites.has(p.id);
+      return catOk&&favOk&&(!q||score>0);
+    })
+    .sort((a,b)=>q?b.score-a.score:0)
+    .map(x=>x.p);
 }
 
 function productPriceSummary(p){
@@ -520,6 +708,8 @@ function renderProducts(){
   $("#productGrid").innerHTML=shown.map(p=>{
     const info=infoFor(p);
     const health=healthNoteFor(p);
+    const badges=badgesFor(p);
+    const isFav=favorites.has(p.id);
     const selected=cardVariantFor(p);
     const q=qtyFor("card:"+p.id);
     const ps=productPriceSummary(p);
@@ -530,8 +720,12 @@ function renderProducts(){
     return `<article class="product-card" data-product="${escapeHtml(p.id)}" tabindex="0" role="button" aria-label="${escapeHtml(t.view+" "+currentName(p))}">
       <div class="product-top">
         <div class="product-visual"><span class="product-monogram">${escapeHtml(initials(currentName(p)))}</span></div>
-        <button class="product-view" type="button" data-view="${escapeHtml(p.id)}">${escapeHtml(t.view)}</button>
+        <div class="product-top-actions">
+          <button class="product-favorite ${isFav?"is-active":""}" type="button" data-fav="${escapeHtml(p.id)}" aria-pressed="${isFav}" aria-label="${escapeHtml(EXTRA_UI[lang].favorite)}">${isFav?"♥":"♡"}</button>
+          <button class="product-view" type="button" data-view="${escapeHtml(p.id)}">${escapeHtml(t.view)}</button>
+        </div>
       </div>
+      ${badges.length?`<div class="product-badges">${badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("")}</div>`:""}
       <p class="product-category">${escapeHtml(categoryName(p.category))}</p>
       <h3 class="product-name">${escapeHtml(currentName(p))}</h3>
       <p class="product-description">${escapeHtml(info.what)}</p>
@@ -558,7 +752,8 @@ function renderProducts(){
   $("#catalogEmpty").hidden=filtered.length>0;
   $("#loadMore").parentElement.hidden=filtered.length===0||visibleLimit>=filtered.length;
 
-  $$("[data-card-variant]").forEach(sel=>sel.addEventListener("change",e=>{
+  $("[data-fav]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();toggleFavorite(btn.dataset.fav)}));
+  $("[data-card-variant]").forEach(sel=>sel.addEventListener("change",e=>{
     e.stopPropagation();
     cardVariant[sel.dataset.cardVariant]=sel.value;
   }));
@@ -625,6 +820,8 @@ function renderCart(){
   $("#cartEmpty").hidden=rows.length>0;
   $("#orderForm").hidden=rows.length===0;
   $("#cartTotal").textContent=money(total);
+  renderGiftSummary();
+  renderMobileOrderBar();
 
   $("#cartItems").innerHTML=rows.map(({key,p,v,qty})=>`
     <article class="cart-item">
@@ -654,6 +851,7 @@ function renderCart(){
 function openProduct(id){
   const p=productById(id);
   if(!p)return;
+  addRecent(id);
   closeCart();
   currentModalProduct=p;
   currentModalVariant=cardVariantFor(p);
@@ -671,11 +869,17 @@ function renderModal(productId,variantId){
   const v=variantById(p,variantId)||defaultVariant(p);
   currentModalProduct=p;
   currentModalVariant=v;
-  const t=UI[lang],info=infoFor(p),health=healthNoteFor(p);
+  const t=UI[lang],info=infoFor(p),health=healthNoteFor(p),badges=badgesFor(p);
   $("#productModalMark").textContent=initials(currentName(p));
   $("#productModalCategory").textContent=categoryName(p.category);
   $("#productModalTitle").textContent=currentName(p);
   $("#productModalOriginal").textContent=lang==="en"&&normalize(p.nameEn)!==normalize(p.original)?`Catalogue name: ${p.original}`:"";
+  $("#modalBadges").innerHTML=badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("");
+  const fav=$("#modalFavorite");
+  if(fav){const saved=favorites.has(p.id);fav.classList.toggle("is-active",saved);fav.setAttribute("aria-pressed",String(saved));fav.innerHTML=`${saved?"♥":"♡"} <span id="modalFavoriteLabel">${escapeHtml(saved?EXTRA_UI[lang].favorited:EXTRA_UI[lang].favorite)}</span>`;}
+  $("#relatedLabel").textContent=EXTRA_UI[lang].related;
+  $("#relatedProducts").innerHTML=PRODUCTS_DATA.filter(x=>x.category===p.category&&x.id!==p.id).slice(0,4).map(x=>`<button type="button" data-related="${escapeHtml(x.id)}"><span>${escapeHtml(currentName(x))}</span><strong>${money(productPriceSummary(x).min)}</strong></button>`).join("");
+  $("[data-related]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.related)));
   $("#productModalDescription").textContent=info.what;
   $("#productModalUse").textContent=info.use;
   $("#nutritionPanel").hidden=!health;
@@ -698,6 +902,123 @@ function closeProduct(){
   $("#productModal").classList.remove("is-open");
   $("#productModal").setAttribute("aria-hidden","true");
   backdropMaybeOff();
+}
+
+
+function renderSearchSuggestions(){
+  const box=$("#searchSuggestions");
+  if(!box)return;
+  const q=query.trim();
+  if(!q){box.hidden=true;box.innerHTML="";return}
+  const results=PRODUCTS_DATA
+    .map(p=>({p,score:searchScore(p,q)}))
+    .filter(x=>x.score>0)
+    .sort((a,b)=>b.score-a.score)
+    .slice(0,6);
+  box.innerHTML=results.length?results.map(({p})=>`<button type="button" data-suggest="${escapeHtml(p.id)}"><span><strong>${escapeHtml(currentName(p))}</strong><small>${escapeHtml(categoryName(p.category))}</small></span><b>${money(productPriceSummary(p).min)}</b></button>`).join(""):`<p>${escapeHtml(EXTRA_UI[lang].searchNoSuggestions)}</p>`;
+  box.hidden=false;
+  $("[data-suggest]").forEach(btn=>btn.addEventListener("mousedown",e=>{e.preventDefault();box.hidden=true;openProduct(btn.dataset.suggest)}));
+}
+
+function renderRecent(){
+  const section=$("#recentSection"),rail=$("#recentRail");
+  if(!section||!rail)return;
+  const items=recentViews.map(productById).filter(Boolean);
+  section.hidden=!items.length;
+  if(!items.length){rail.innerHTML="";return}
+  rail.innerHTML=items.map(p=>`<button type="button" class="recent-card" data-recent-view="${escapeHtml(p.id)}"><span class="recent-mark">${escapeHtml(initials(currentName(p)))}</span><span><small>${escapeHtml(categoryName(p.category))}</small><strong>${escapeHtml(currentName(p))}</strong></span><b>${money(productPriceSummary(p).min)}</b></button>`).join("");
+  $("[data-recent-view]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.recentView)));
+}
+
+function renderGiftOptions(){
+  const t=EXTRA_UI[lang],occ=$("#giftOccasion"),pack=$("#giftPackaging");
+  if(!occ||!pack)return;
+  const occValue=occ.value,packValue=pack.value;
+  occ.innerHTML=t.giftOccasions.map((v,i)=>`<option value="${i}">${escapeHtml(v)}</option>`).join("");
+  pack.innerHTML=t.giftPackings.map((v,i)=>`<option value="${i}">${escapeHtml(v)}</option>`).join("");
+  if([...occ.options].some(o=>o.value===occValue))occ.value=occValue;
+  if([...pack.options].some(o=>o.value===packValue))pack.value=packValue;
+}
+function renderGiftSummary(){
+  const rows=cartRows(),summary=$("#giftSummary");
+  if(!summary)return;
+  const totalQty=rows.reduce((s,r)=>s+r.qty,0);
+  const total=rows.reduce((s,r)=>s+r.qty*Number(r.v.price),0);
+  $("#giftBasketCount").textContent=lang==="ar"?`${totalQty} قطعة`:`${totalQty} ${totalQty===1?"item":"items"}`;
+  $("#giftBasketTotal").textContent=money(total);
+  summary.innerHTML=rows.length?rows.slice(0,6).map(r=>`<div><span>${escapeHtml(currentName(r.p))} · ${escapeHtml(lang==="ar"?r.v.sizeAr:r.v.sizeEn)}</span><strong>×${r.qty}</strong></div>`).join("")+(rows.length>6?`<p>+${rows.length-6} ${lang==="ar"?"منتجات أخرى":"more products"}</p>`:""):`<p id="giftEmpty">${escapeHtml(EXTRA_UI[lang].giftEmpty)}</p>`;
+}
+function sendGiftOrder(){
+  const rows=cartRows(),t=EXTRA_UI[lang],base=UI[lang];
+  if(!rows.length){toast(t.giftNeedItems);location.hash="shop";return}
+  const recipient=$("#giftRecipient").value.trim()||"—";
+  const occasion=t.giftOccasions[Number($("#giftOccasion").value)||0];
+  const packing=t.giftPackings[Number($("#giftPackaging").value)||0];
+  const area=$("#giftArea").value.trim()||"—";
+  const message=$("#giftMessage").value.trim()||"—";
+  const sender=$("#giftSender").value.trim()||"—";
+  const total=rows.reduce((s,r)=>s+r.qty*Number(r.v.price),0);
+  const lines=[
+    lang==="ar"?"مرحباً زيت ومونة 👋":"Hello Zayt w Mouneh 👋","",
+    lang==="ar"?"أرغب بتحضير هذا الطلب كهدية:":"I would like to prepare this order as a gift:","",
+    ...rows.map((r,i)=>`${i+1}. ${currentName(r.p)} — ${lang==="ar"?r.v.sizeAr:r.v.sizeEn} — ${base.qty}: ${r.qty} — ${money(r.v.price*r.qty)}`),
+    "",`${base.orderTotal}: ${money(total)}`,
+    `${lang==="ar"?"المستلم":"Recipient"}: ${recipient}`,
+    `${lang==="ar"?"المناسبة":"Occasion"}: ${occasion}`,
+    `${lang==="ar"?"التغليف":"Packing"}: ${packing}`,
+    `${lang==="ar"?"منطقة التوصيل":"Delivery area"}: ${area}`,
+    `${lang==="ar"?"رسالة الهدية":"Gift message"}: ${message}`,
+    `${lang==="ar"?"المرسل":"Sender"}: ${sender}`,"",
+    lang==="ar"?"يرجى تأكيد التغليف والتوفر والتوصيل والمجموع النهائي. شكراً!":"Please confirm gift packing, availability, delivery and the final total. Thank you!"
+  ];
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(lines.join("\n"))}`,"_blank","noopener,noreferrer");
+}
+function renderMobileOrderBar(){
+  const bar=$("#mobileOrderBar");if(!bar)return;
+  const rows=cartRows(),qty=rows.reduce((s,r)=>s+r.qty,0),total=rows.reduce((s,r)=>s+r.qty*Number(r.v.price),0);
+  bar.hidden=!qty;
+  $("#mobileOrderText").textContent=EXTRA_UI[lang].mobileReview;
+  $("#mobileOrderMeta").textContent=lang==="ar"?`${qty} قطعة · ${money(total)}`:`${qty} ${qty===1?"item":"items"} · ${money(total)}`;
+}
+
+function applyExtraLanguage(){
+  const t=EXTRA_UI[lang];
+  const text={
+    navGift:"navGift",trustEyebrow:"trustEyebrow",trustSinceTitle:"trustSinceTitle",trustSinceCopy:"trustSinceCopy",trustDeliveryTitle:"trustDeliveryTitle",trustDeliveryCopy:"trustDeliveryCopy",
+    trustPriceTitle:"trustPriceTitle",trustPriceCopy:"trustPriceCopy",trustWhatsAppTitle:"trustWhatsAppTitle",trustWhatsAppCopy:"trustWhatsAppCopy",
+    favoritesFilterLabel:"favorites",recentEyebrow:"recentEyebrow",recentTitle:"recentTitle",clearRecent:"clearRecent",
+    giftEyebrow:"giftEyebrow",giftCopy:"giftCopy",giftPerk1:"giftPerk1",giftPerk2:"giftPerk2",giftPerk3:"giftPerk3",giftBuilderLabel:"giftBuilderLabel",
+    giftRecipientLabel:"giftRecipient",giftOccasionLabel:"giftOccasion",giftPackagingLabel:"giftPackaging",giftAreaLabel:"giftArea",giftMessageLabel:"giftMessage",giftSenderLabel:"giftSender",giftNote:"giftNote",
+    socialEyebrow:"socialEyebrow",socialCopy:"socialCopy",footerDelivery:"footerDelivery",footerExploreTitle:"footerExploreTitle",footerGift:"footerGift",footerContactTitle:"footerContactTitle",
+    relatedLabel:"related",contactCopy:"contactCopy"
+  };
+  Object.entries(text).forEach(([id,key])=>{const el=$("#"+id);if(el&&t[key]!==undefined)el.textContent=t[key]});
+  const html={trustTitle:"trustTitle",giftTitle:"giftTitle",giftBrowse:"giftBrowse",giftSend:"giftSend",socialTitle:"socialTitle"};
+  Object.entries(html).forEach(([id,key])=>{const el=$("#"+id);if(el&&t[key]!==undefined)el.textContent=t[key]});
+  $("#giftRecipient").placeholder=t.giftRecipientPlaceholder;
+  $("#giftArea").placeholder=t.giftAreaPlaceholder;
+  $("#giftMessage").placeholder=t.giftMessagePlaceholder;
+  $("#giftSender").placeholder=t.giftSenderPlaceholder;
+  renderGiftOptions();
+  renderRecent();
+  renderGiftSummary();
+  renderFavoritesCount();
+  renderMobileOrderBar();
+}
+
+function setupPerformance(){
+  const hero=$("#heroShowcase");
+  if(hero&&"IntersectionObserver" in window){
+    new IntersectionObserver(entries=>{
+      heroVisible=entries[0]?.isIntersecting??true;
+      if(heroVisible)showScene(sceneIndex);
+      else $("[data-scene] video").forEach(v=>v.pause());
+    },{threshold:.12}).observe(hero);
+  }
+  document.addEventListener("visibilitychange",()=>{
+    if(document.hidden)$("[data-scene] video").forEach(v=>v.pause());
+    else if(heroVisible)showScene(sceneIndex);
+  });
 }
 
 function order(){
@@ -761,7 +1082,7 @@ function showScene(i,manual=false){
     scene.classList.toggle("is-active",activeNow);
     const video=scene.querySelector("video");
     if(video){
-      if(activeNow){
+      if(activeNow&&heroVisible&&!document.hidden){
         const play=video.play();
         if(play&&play.catch)play.catch(()=>{});
       }else video.pause();
@@ -854,11 +1175,16 @@ function init(){
   startScenes();
   setupNav();
   setupProgress();
+  setupPerformance();
 
-  $("#productSearch").addEventListener("input",e=>{query=e.target.value;visibleLimit=PAGE_SIZE;renderProducts()});
+  $("#productSearch").addEventListener("input",e=>{query=e.target.value;visibleLimit=PAGE_SIZE;renderProducts();renderSearchSuggestions()});
+  $("#productSearch").addEventListener("focus",renderSearchSuggestions);
+  $("#productSearch").addEventListener("blur",()=>setTimeout(()=>{const b=$("#searchSuggestions");if(b)b.hidden=true},140));
   $("#categorySelect").addEventListener("change",e=>{activeCategory=e.target.value;visibleLimit=PAGE_SIZE;renderProducts()});
   $("#loadMore").addEventListener("click",()=>{visibleLimit+=PAGE_SIZE;renderProducts()});
-  $("#clearSearch").addEventListener("click",()=>{query="";activeCategory="All";visibleLimit=PAGE_SIZE;$("#productSearch").value="";renderCategorySelect();renderProducts()});
+  $("#clearSearch").addEventListener("click",()=>{query="";activeCategory="All";favoritesOnly=false;visibleLimit=PAGE_SIZE;$("#productSearch").value="";renderCategorySelect();renderProducts();renderFavoritesCount();renderSearchSuggestions()});
+  $("#favoritesOnly").addEventListener("click",()=>{favoritesOnly=!favoritesOnly;visibleLimit=PAGE_SIZE;renderFavoritesCount();renderProducts()});
+  $("#clearRecent").addEventListener("click",()=>{recentViews=[];saveRecent();renderRecent()});
 
   $$("[data-lang]").forEach(btn=>btn.addEventListener("click",()=>applyLanguage(btn.dataset.lang)));
   $$("[data-welcome-lang]").forEach(btn=>btn.addEventListener("click",e=>chooseWelcomeLanguage(btn.dataset.welcomeLang,e)));
@@ -868,11 +1194,14 @@ function init(){
   $("#cartBackdrop").addEventListener("click",()=>{closeCart();closeProduct()});
   $("#cartBrowse").addEventListener("click",()=>{closeCart();location.hash="shop"});
   $("#orderForm").addEventListener("submit",e=>{e.preventDefault();order()});
+  $("#giftForm").addEventListener("submit",e=>{e.preventDefault();sendGiftOrder()});
+  $("#mobileOrderBar").addEventListener("click",openCart);
 
   $("#productModalClose").addEventListener("click",closeProduct);
   $("#modalQtyMinus").addEventListener("click",()=>{draftQty.modal=Math.max(1,qtyFor("modal")-1);$("#productModalQty").textContent=draftQty.modal});
   $("#modalQtyPlus").addEventListener("click",()=>{draftQty.modal=qtyFor("modal")+1;$("#productModalQty").textContent=draftQty.modal});
   $("#productModalAdd").addEventListener("click",()=>{if(currentModalProduct&&currentModalVariant)addToCart(currentModalProduct,currentModalVariant,qtyFor("modal"))});
+  $("#modalFavorite").addEventListener("click",()=>{if(currentModalProduct)toggleFavorite(currentModalProduct.id)});
 
   $$("[data-scene-dot]").forEach(btn=>btn.addEventListener("click",()=>showScene(Number(btn.dataset.sceneDot),true)));
 
@@ -884,8 +1213,13 @@ function init(){
   addEventListener("storage",e=>{
     if(e.key===CART_KEY){cart=loadCart();renderCart()}
     if(e.key===LANG_KEY){applyLanguage(e.newValue==="ar"?"ar":"en",{immediate:true})}
+    if(e.key===FAV_KEY){favorites=loadFavorites();renderProducts();renderRecent();renderFavoritesCount()}
   });
 
+  renderRecent();
+  renderGiftSummary();
+  renderFavoritesCount();
+  renderMobileOrderBar();
   openLanguageWelcome();
 }
 

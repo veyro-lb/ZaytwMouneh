@@ -252,3 +252,391 @@
 .card-variant-select:focus{border-color:#0f4a2066;box-shadow:0 0 0 3px #0f4a200d}
 .single-size{display:flex;align-items:center}
 [dir="rtl"] .card-variant-select,[dir="rtl"] .single-size{text-align:right;direction:rtl}
+
+/* ===== first-visit language welcome + handwritten heritage + nutrition notes ===== */
+body.welcome-open{overflow:hidden}
+
+/* Welcome language board */
+.language-welcome{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  display:grid;
+  place-items:center;
+  padding:24px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .32s ease;
+}
+.language-welcome.is-open{opacity:1;pointer-events:auto}
+.language-welcome-backdrop{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 50% 26%,rgba(211,163,35,.13),transparent 34%),
+    rgba(4,23,10,.82);
+  backdrop-filter:blur(14px);
+}
+.welcome-board{
+  position:relative;
+  width:min(700px,100%);
+  color:#fff8e9;
+  transform:translateY(18px) scale(.98);
+  transition:transform .38s cubic-bezier(.2,.78,.2,1);
+  filter:drop-shadow(0 34px 70px rgba(0,0,0,.38));
+}
+.language-welcome.is-open .welcome-board{transform:none}
+.welcome-board:before,
+.welcome-board:after{
+  content:"";
+  position:absolute;
+  top:-92px;
+  width:13px;
+  height:118px;
+  z-index:0;
+  border-radius:999px;
+  background:repeating-linear-gradient(135deg,#c79b63 0 7px,#8d6038 7px 14px,#b88753 14px 21px);
+  box-shadow:inset 1px 0 rgba(255,255,255,.22),2px 7px 10px rgba(0,0,0,.22);
+}
+.welcome-board:before{left:19%}
+.welcome-board:after{right:19%}
+.welcome-rope{
+  position:absolute;
+  top:-102px;
+  width:34px;
+  height:34px;
+  z-index:1;
+  border:6px solid #9b7043;
+  border-radius:50%;
+  background:#e7c991;
+  box-shadow:0 5px 14px rgba(0,0,0,.22);
+}
+.welcome-rope-left{left:calc(19% - 10px)}
+.welcome-rope-right{right:calc(19% - 10px)}
+.welcome-board-inner{
+  position:relative;
+  z-index:2;
+  padding:34px 38px 30px;
+  overflow:hidden;
+  border-radius:28px;
+  border:1px solid rgba(245,218,158,.34);
+  background:
+    linear-gradient(180deg,rgba(8,45,19,.90),rgba(6,31,14,.94)),
+    repeating-linear-gradient(0deg,#8b5b32 0 50px,#754725 50px 53px,#8f5c31 53px 102px,#6e4121 102px 105px);
+  box-shadow:inset 0 0 0 5px rgba(85,47,21,.16);
+}
+.welcome-board-inner:before{
+  content:"";
+  position:absolute;
+  inset:13px;
+  border:1px solid rgba(237,202,114,.38);
+  border-radius:19px;
+  pointer-events:none;
+}
+.welcome-board-inner:after{
+  content:"";
+  position:absolute;
+  right:-85px;
+  top:-92px;
+  width:280px;
+  height:280px;
+  border-radius:50%;
+  border:1px solid rgba(237,202,114,.12);
+  box-shadow:0 0 0 34px rgba(237,202,114,.035),0 0 0 68px rgba(237,202,114,.025);
+  pointer-events:none;
+}
+.welcome-logo{
+  position:relative;
+  z-index:2;
+  width:88px;
+  height:88px;
+  margin:0 auto 14px;
+  border-radius:50%;
+  object-fit:cover;
+  background:var(--paper);
+  border:4px solid rgba(255,255,255,.76);
+  box-shadow:0 14px 30px rgba(0,0,0,.28);
+}
+.welcome-kicker{
+  position:relative;
+  z-index:2;
+  margin:0 0 8px;
+  text-align:center;
+  color:var(--gold2);
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  font-size:.68rem;
+  font-weight:900;
+}
+.welcome-board h2{
+  position:relative;
+  z-index:2;
+  margin:0;
+  text-align:center;
+  color:#fffdf7;
+  font-size:clamp(2.5rem,6vw,4.2rem);
+  line-height:.95;
+}
+.welcome-intro,
+.welcome-intro-ar{
+  position:relative;
+  z-index:2;
+  max-width:56ch;
+  margin:14px auto 0;
+  text-align:center;
+  color:rgba(255,250,239,.78);
+  line-height:1.66;
+  font-size:.86rem;
+}
+.welcome-intro-ar{
+  font-family:"Noto Kufi Arabic","DM Sans",sans-serif;
+  font-size:.82rem;
+}
+.welcome-divider{
+  position:relative;
+  z-index:2;
+  height:16px;
+  margin:20px auto 13px;
+  max-width:420px;
+  overflow:hidden;
+}
+.welcome-divider span{
+  display:block;
+  height:8px;
+  margin-top:4px;
+  border-radius:999px;
+  opacity:.78;
+  background:repeating-linear-gradient(135deg,#c79355 0 8px,#84572f 8px 16px,#b78048 16px 24px);
+}
+.welcome-question{
+  position:relative;
+  z-index:2;
+  margin:0 0 12px;
+  text-align:center;
+  font-weight:800;
+  color:#fff;
+}
+.welcome-language-options{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.welcome-language-button{
+  min-height:108px;
+  display:grid;
+  grid-template-columns:44px 1fr;
+  grid-template-rows:auto auto;
+  align-items:center;
+  column-gap:12px;
+  text-align:left;
+  padding:16px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  box-shadow:inset 0 1px rgba(255,255,255,.08);
+  transition:transform .22s ease,background .22s ease,border-color .22s ease;
+}
+.welcome-language-button:hover,
+.welcome-language-button:focus-visible{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.13);
+  border-color:rgba(237,202,114,.56);
+  outline:none;
+}
+.welcome-language-button>span{
+  grid-row:1/3;
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:var(--gold);
+  color:var(--deep);
+  font-weight:900;
+  font-size:.82rem;
+}
+.welcome-language-button strong{font-size:.9rem;align-self:end}
+.welcome-language-button small{color:rgba(255,255,255,.62);font-size:.7rem;align-self:start}
+.welcome-language-button.is-ar{
+  direction:rtl;
+  text-align:right;
+  font-family:"Noto Kufi Arabic","DM Sans",sans-serif;
+}
+.welcome-quality-note{
+  position:relative;
+  z-index:2;
+  display:block;
+  margin:14px auto 0;
+  max-width:56ch;
+  text-align:center;
+  color:rgba(255,255,255,.48);
+  font-size:.62rem;
+  line-height:1.45;
+}
+
+/* About section as a handwritten pantry letter */
+.heritage-letter{
+  position:relative;
+  margin:24px 0 28px;
+  padding:28px 30px 30px;
+  border:1px solid rgba(139,90,47,.16);
+  border-radius:7px 18px 10px 16px;
+  background:
+    linear-gradient(rgba(255,250,240,.93),rgba(255,250,240,.93)),
+    radial-gradient(circle at 48% 54%,rgba(15,74,32,.08),transparent 39%);
+  box-shadow:0 18px 42px rgba(74,49,25,.11);
+  transform:rotate(-.28deg);
+  overflow:hidden;
+}
+.heritage-letter:before{
+  content:"زيت ومونة";
+  position:absolute;
+  left:50%;
+  top:53%;
+  transform:translate(-50%,-50%) rotate(-8deg);
+  color:rgba(15,74,32,.045);
+  font-family:"Noto Kufi Arabic",sans-serif;
+  font-size:clamp(4rem,9vw,7.5rem);
+  white-space:nowrap;
+  pointer-events:none;
+}
+.heritage-letter:after{
+  content:"";
+  position:absolute;
+  left:30px;
+  bottom:18px;
+  width:118px;
+  height:5px;
+  border-radius:99px;
+  background:var(--gold);
+}
+.heritage-letter-kicker{
+  position:relative;
+  z-index:1;
+  display:block;
+  color:var(--gold);
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-size:.65rem;
+  font-weight:900;
+  margin-bottom:11px;
+}
+[dir="ltr"] .heritage-letter p{
+  position:relative;
+  z-index:1;
+  font-family:"Patrick Hand","DM Sans",sans-serif;
+  color:#2c2b27!important;
+  font-size:1.24rem;
+  line-height:1.42!important;
+  letter-spacing:.012em;
+  margin-bottom:17px;
+}
+[dir="rtl"] .heritage-letter{
+  transform:rotate(.2deg);
+}
+[dir="rtl"] .heritage-letter p{
+  position:relative;
+  z-index:1;
+  font-family:"Noto Kufi Arabic","DM Sans",sans-serif;
+  color:#343129!important;
+  font-size:.94rem;
+  line-height:2!important;
+  margin-bottom:16px;
+}
+[dir="rtl"] .heritage-letter-kicker{letter-spacing:.05em}
+[dir="rtl"] .heritage-letter:after{left:auto;right:30px}
+
+/* Honest, useful nutrition guidance */
+.product-health{
+  margin:10px 0 0;
+  padding:10px 11px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#eff7ec,#f8fbf3);
+  border:1px solid rgba(61,116,55,.18);
+}
+.product-health span{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  color:#2f6d35;
+  font-size:.68rem;
+  font-weight:900;
+}
+.product-health p{
+  margin:5px 0 0;
+  color:#5e695a;
+  font-size:.7rem;
+  line-height:1.45;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.product-card:has(.product-health){min-height:475px}
+.nutrition-panel{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:36px minmax(0,1fr);
+  gap:12px;
+  padding:14px 16px;
+  border-radius:18px;
+  border:1px solid rgba(61,116,55,.18);
+  background:linear-gradient(135deg,#eef7eb,#fbfcf6);
+}
+.nutrition-icon{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#dcefd6;
+  color:#2e6d34;
+  font-weight:900;
+}
+.nutrition-panel strong{
+  display:block;
+  color:#2f6d35;
+  font-size:.78rem;
+  margin-bottom:4px;
+}
+.nutrition-panel p{
+  margin:0;
+  color:#5e695a;
+  font-size:.8rem;
+  line-height:1.55;
+}
+
+@media(max-width:760px){
+  .language-welcome{padding:16px}
+  .welcome-board:before,.welcome-board:after{top:-72px;height:92px}
+  .welcome-rope{top:-82px}
+  .welcome-board-inner{padding:28px 20px 22px;border-radius:24px}
+  .welcome-logo{width:74px;height:74px}
+  .welcome-board h2{font-size:2.65rem}
+  .welcome-intro,.welcome-intro-ar{font-size:.75rem}
+  .welcome-language-options{grid-template-columns:1fr}
+  .welcome-language-button{min-height:82px}
+  .heritage-letter{padding:22px 22px 28px;margin-top:20px}
+  [dir="ltr"] .heritage-letter p{font-size:1.08rem}
+  [dir="rtl"] .heritage-letter p{font-size:.86rem}
+  .product-card:has(.product-health){min-height:455px}
+}
+@media(max-width:500px){
+  .welcome-board:before{left:22%}
+  .welcome-board:after{right:22%}
+  .welcome-rope-left{left:calc(22% - 10px)}
+  .welcome-rope-right{right:calc(22% - 10px)}
+  .welcome-board h2{font-size:2.25rem}
+  .welcome-intro{display:none}
+  .welcome-intro-ar{font-size:.72rem}
+  .welcome-quality-note{font-size:.58rem}
+  .heritage-letter{transform:none}
+  [dir="rtl"] .heritage-letter{transform:none}
+  .product-health p{-webkit-line-clamp:3}
+}
+@media(prefers-reduced-motion:reduce){
+  .language-welcome,.welcome-board{transition:none!important}
+}

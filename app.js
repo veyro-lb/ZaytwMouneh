@@ -408,7 +408,7 @@ function applyLanguage(next,{immediate=false}={}){
   lang=next==="ar"?"ar":"en";
   localStorage.setItem(LANG_KEY,lang);
   const t=UI[lang];
-  $("[data-lang]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.lang===lang));
+  $$("[data-lang]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.lang===lang));
 
   const commitLanguage=()=>{
     document.documentElement.classList.add("lang-switching");
@@ -860,8 +860,8 @@ function init(){
   $("#loadMore").addEventListener("click",()=>{visibleLimit+=PAGE_SIZE;renderProducts()});
   $("#clearSearch").addEventListener("click",()=>{query="";activeCategory="All";visibleLimit=PAGE_SIZE;$("#productSearch").value="";renderCategorySelect();renderProducts()});
 
-  $("[data-lang]").forEach(btn=>btn.addEventListener("click",()=>applyLanguage(btn.dataset.lang)));
-  $("[data-welcome-lang]").forEach(btn=>btn.addEventListener("click",()=>chooseWelcomeLanguage(btn.dataset.welcomeLang)));
+  $$("[data-lang]").forEach(btn=>btn.addEventListener("click",()=>applyLanguage(btn.dataset.lang)));
+  $$("[data-welcome-lang]").forEach(btn=>btn.addEventListener("click",e=>chooseWelcomeLanguage(btn.dataset.welcomeLang,e)));
 
   $("#cartButton").addEventListener("click",openCart);
   $("#cartClose").addEventListener("click",closeCart);

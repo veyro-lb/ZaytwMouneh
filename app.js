@@ -141,22 +141,20 @@ const UI={
     cartLabel:"My pantry",
     heroEyebrow:"Rooted in Lebanese heritage",
     heroTitle:'A pantry of<br><em>Lebanese memory.</em>',
-    heroLede:"Authentic pantry essentials, thoughtfully curated — with current pack sizes and prices ready to browse.",
-    heroExplore:"Explore the pantry <span>↘</span>",
-    heroWhatsApp:"WhatsApp us",
+    heroLede:"Authentic Lebanese pantry essentials, selected with care and delivered across Lebanon.",
+    heroExplore:"Shop the pantry <span>↘</span>",\n    heroWhatsApp:"Send a gift",
     heroVariantLabel:"pantry products",heroCategoryLabel:"categories",heroSinceLabel:"since",
     scene1Kicker:"Pantry film · 01",scene1Title:"Honey, slow and golden.",scene1Copy:"One texture in a pantry full of grains, herbs, mouneh, oils and more.",
     scene2Kicker:"Pantry film · 02",scene2Title:"Lentils & everyday staples.",scene2Copy:"Warm, useful ingredients for real home cooking.",
     scene3Kicker:"Pantry film · 03",scene3Title:"Wheat, harvest & season.",scene3Copy:"A calm reminder of the ingredients, seasons and tables behind mouneh.",
     heroScript:"Curated with care",
     categoriesEyebrow:"The pantry, chapter by chapter",
-    categoriesTitle:'Twenty-one ways<br>to bring home <em>mouneh.</em>',
-    categoriesCopy:"Every category is part of the same inheritance — harvested, preserved, offered and passed from one generation to the next.",
+    categoriesTitle:'Find your way<br>around the <em>pantry.</em>',\n    categoriesCopy:"Start with the pantry families people reach for most, then explore the full catalogue.",
     aboutEyebrow:"Our story & mission",
     aboutTitle:'More than a shelf.<br><em>Memory kept within reach.</em>',
     aboutLetterKicker:"A note from our pantry",
-    aboutP1:"Since 2006, Zayt w Mouneh has grown from one simple thought: that the Lebanese pantry is more than a shelf — it is memory kept within reach. It lives in the fragrance of herbs drying in summer light, in olives resting in brine, in olive oil pressed from the grove, and in jars prepared patiently for the colder months. It is found in dates, carob and molasses; in grains, flour and pulses; in honey, nuts and seeds; in condiments, syrups and vinegars; in pickles, spices and dried foods; in sweets and candy shared at the table, and even in the simple soap that carries the scent of home. Each category is a small chapter of the same inheritance — harvested, preserved, offered, and passed from one generation to the next.",
-    aboutP2:"Our mission is to keep that inheritance alive in a way that belongs to today: to choose authentic Lebanese pantry essentials with respect for origin, craft and flavour; to present them with clarity and care; and to make the generosity of mouneh easy to bring home. We want every jar, herb, grain and drop of oil to feel familiar — a quiet connection to the land, to the seasons, and to the tables that taught us that food is most meaningful when it is prepared with patience and shared with others.",
+    aboutP1:"Since 2006, Zayt w Mouneh has kept the Lebanese pantry close to everyday life: grains, herbs, mouneh, honey, oil, spices and the ingredients that make a table feel familiar.",
+    aboutP2:"Most of our pantry selection comes from the Bekaa. Our olive oil comes from Koura, our honey from Mount Lebanon, and our debes from the Chouf. We present that provenance plainly, without making claims we cannot verify.",
     value1Title:"Origin",value1Copy:"Respect where ingredients come from.",
     value2Title:"Craft",value2Copy:"Preserve the patience behind pantry traditions.",
     value3Title:"Care",value3Copy:"Make every choice clear, useful and welcoming.",
@@ -195,22 +193,20 @@ const UI={
     cartLabel:"السلة",
     heroEyebrow:"متجذّرون في التراث اللبناني",
     heroTitle:'مونة تحفظ<br><em>ذاكرة لبنان.</em>',
-    heroLede:"أساسيات مونة أصيلة مختارة بعناية، مع الأحجام والأسعار الحالية لتتسوّق بوضوح وسهولة.",
-    heroExplore:"استكشف المونة <span>↙</span>",
-    heroWhatsApp:"راسلنا على واتساب",
+    heroLede:"أساسيات مونة لبنانية أصيلة مختارة بعناية، مع توصيل إلى مختلف المناطق في لبنان.",
+    heroExplore:"تسوّق المونة <span>↙</span>",\n    heroWhatsApp:"أرسل هدية",
     heroVariantLabel:"خياراً مسعّراً",heroCategoryLabel:"قسماً",heroSinceLabel:"منذ",
     scene1Kicker:"من المونة · 01",scene1Title:"عسل ينساب ببطء.",scene1Copy:"تفصيل واحد من مونة أوسع تضم الحبوب والأعشاب والزيوت والمخللات والمزيد.",
     scene2Kicker:"من المونة · 02",scene2Title:"عدس وحبوب للبيت.",scene2Copy:"مكونات يومية دافئة ومفيدة للطبخ الحقيقي في البيت.",
     scene3Kicker:"من المونة · 03",scene3Title:"قمح وموسم وحصاد.",scene3Copy:"صورة هادئة عن الأرض والمواسم والموائد التي تعيش فيها المونة.",
     heroScript:"مختارة بعناية",
     categoriesEyebrow:"المونة، فصلاً بعد فصل",
-    categoriesTitle:'واحد وعشرون قسماً<br>من <em>المونة.</em>',
-    categoriesCopy:"كل قسم هو فصل من الإرث نفسه — يُحصد ويُحفظ ويُقدّم وينتقل من جيل إلى جيل.",
+    categoriesTitle:'اعثر على طريقك<br>في <em>المونة.</em>',\n    categoriesCopy:"ابدأ بأقسام المونة الأساسية ثم انتقل إلى كامل المنتجات.",
     aboutEyebrow:"قصتنا ورسالتنا",
     aboutTitle:'أكثر من رفّ.<br><em>ذاكرة تبقى في متناول اليد.</em>',
     aboutLetterKicker:"رسالة من مونة البيت",
-    aboutP1:"منذ عام 2006، انطلقت زيت ومونة من فكرة بسيطة: أن المونة اللبنانية أكثر من مجرد رفّ — بل ذاكرة تبقى في متناول اليد. تعيش في رائحة الأعشاب التي تجف تحت ضوء الصيف، وفي الزيتون الذي يستريح في الماء المملّح، وفي زيت الزيتون المعصور من البساتين، وفي المرطبانات التي تُحضّر بصبر للأشهر الباردة. نجدها في التمر والخروب والدبس؛ في الحبوب والطحين والبقوليات؛ في العسل والمكسرات والبذور؛ في مستلزمات المطبخ والشرابات والخل؛ في المخللات والبهارات والأطعمة المجففة؛ في الحلويات والسكاكر التي نتشاركها على المائدة، وحتى في قطعة الصابون البسيطة التي تحمل رائحة البيت. كل قسم فصل صغير من الإرث نفسه — يُحصد ويُحفظ ويُقدّم وينتقل من جيل إلى جيل.",
-    aboutP2:"رسالتنا أن نبقي هذا الإرث حيّاً بطريقة تنتمي إلى يومنا: أن نختار أساسيات المونة اللبنانية الأصيلة باحترام للمصدر والحرفة والنكهة، وأن نقدّمها بوضوح وعناية، وأن نجعل كرم المونة سهلاً ليصل إلى كل بيت. نريد لكل مرطبان وعشبة وحبة وقطرة زيت أن تبدو مألوفة — صلة هادئة بالأرض، وبالمواسم، وبالموائد التي علّمتنا أن الطعام يكتسب معناه الأكبر عندما يُحضّر بصبر ويُشارك مع الآخرين.",
+    aboutP1:"منذ 2006، تحافظ زيت ومونة على أساسيات المونة اللبنانية قريبة من الحياة اليومية: الحبوب والأعشاب والمونة والعسل والزيت والبهارات وكل ما يجعل المائدة مألوفة.",
+    aboutP2:"معظم منتجات المونة لدينا من البقاع. زيت الزيتون من الكورة، والعسل من جبل لبنان، والدبس من الشوف. نعرض هذه المعلومات بوضوح ومن دون ادعاءات لا نستطيع التحقق منها.",
     value1Title:"المصدر",value1Copy:"نحترم أصل المكونات ومن أين تأتي.",
     value2Title:"الحرفة",value2Copy:"نحافظ على الصبر والخبرة خلف تقاليد المونة.",
     value3Title:"العناية",value3Copy:"نجعل كل اختيار واضحاً ومفيداً ومرحّباً.",
@@ -723,7 +719,7 @@ function applyLanguage(next,{immediate=false}={}){
 
 function renderCategories(){
   const grid=$("#categoryGrid");if(!grid)return;
-  grid.innerHTML=CATEGORY_ORDER.map((cat,index)=>{
+  const cats=CURRENT_PAGE==="home"?["Mouneh","Honey","Olive Oil","Molasses","Olives","Pickles","Grains","Spices"]:CATEGORY_ORDER;\n  grid.innerHTML=cats.map((cat,index)=>{
     const count=CATEGORY_COUNTS[cat]||0;
     const info=CATEGORY_INFO[cat]?.[lang]||["",""];
     const href=CURRENT_PAGE==="shop"?"#shop":`shop.html?category=${encodeURIComponent(cat)}#shop`;
@@ -1043,7 +1039,7 @@ function renderGiftPresets(){
 function applyGiftPreset(id){
   const preset=GIFT_PRESETS.find(x=>x.id===id);if(!preset)return;
   giftItems={};
-  preset.items.map(productById).filter(Boolean).forEach(p=>{const v=defaultVariant(p);giftItems[giftKey(p.id,v.id)]={productId:p.id,variantId:v.id,qty:1}});
+  preset.items.map(productById).filter(Boolean).forEach(p=>{const v=defaultVariant(p);giftItems[cartKey(p.id,v.id)]={productId:p.id,variantId:v.id,qty:1}});
   saveGiftItems();renderGiftSummary();renderGiftPickerResults();
   const form=$("#giftForm");if(form)form.scrollIntoView({behavior:"smooth",block:"start"});
   toast(lang==="ar"?"تم تجهيز الهدية — يمكنك تعديلها الآن":"Gift loaded — you can customize it now");

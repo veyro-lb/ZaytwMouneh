@@ -1,45 +1,31 @@
 # Zayt w Mouneh
 
-Premium, responsive static storefront for Zayt w Mouneh.
+Premium responsive static storefront for Zayt w Mouneh.
 
-## What is included
+## Current experience
 
-- 337 products across all 21 catalogue categories
-- Responsive desktop, tablet and mobile layouts
-- Search + category filters + horizontal quick-browse rail
-- Product detail popup with short descriptions
-- Quantity controls on cards, popup and cart
-- Persistent cart using localStorage
+- 337 products across 21 catalogue categories
+- Real supplied Zayt w Mouneh logo asset (not a redrawn approximation)
+- Wood + rope material language based on the supplied visual reference
+- Rotating pantry hero: honey, lentils/pulses and wheat/harvest
+- Clear Original / English product-name switch
+- English translations are shown only where the meaning is clear; uncertain local/product names stay original
+- Short “What it is” and “Use it for” guidance
+- Search, filters and a native horizontal category scrollbar
+- Product detail modal with synced quantity controls
+- Fixed cart state, responsive proportions and localStorage persistence
 - WhatsApp order handoff to +961 81 581 230
-- Animated hero with a real honey-motion layer plus graceful CSS fallback
-- Rope, wood, cream, heritage green and gold visual language
-- Reduced-motion support for accessibility
-- No framework and no build step
+- Mobile, tablet and laptop layouts
+- Reduced-motion accessibility support
+- No framework, package manager, build step or Wrangler requirement
 
 ## Cloudflare Pages
 
-This project is intentionally static. **Wrangler is not required.**
-
-Recommended settings:
+This repository is a plain static site.
 
 - Framework preset: None
 - Build command: leave empty
 - Build output directory: /
 - Root directory: /
 
-If this repository is already connected to a Cloudflare Pages project, new commits to `main` should trigger a new deployment automatically.
-
-## Motion asset
-
-The hero includes a muted decorative honey clip from Pexels, with an animated CSS fallback so the hero still looks complete if the remote video is unavailable.
-
-Source: https://www.pexels.com/video/honey-close-up-7281326/
-
-## Files
-
-- `index.html`
-- `styles.css`
-- `app.js`
-- `assets/logo.svg`
-- `.nojekyll`
-- `_headers`
+If Cloudflare Pages is connected to this repository and watches `main`, this commit can deploy directly.

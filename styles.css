@@ -2406,3 +2406,14 @@ body[data-page="shop"] .load-more-wrap{
   .gift-browse-controls{grid-template-columns:1fr}
   #giftCategorySelect{min-height:44px}
 }
+
+
+/* ===== v17 page cleanup: no duplicate trust block on gift, simpler menu ===== */
+body[data-page="gift"] #trust{
+  display:none!important;
+}
+
+/* The Shop page already contains categories, so keep one clean Shop entry in the menu. */
+.nav-links>a[href="shop.html"]{
+  border-color:rgba(15,74,32,.13);
+}

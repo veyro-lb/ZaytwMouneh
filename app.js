@@ -1019,8 +1019,8 @@ function renderFeaturedProducts(){
       <button type="button" data-featured-add="${escapeHtml(p.id)}">${escapeHtml(UI[lang].add)}</button>
     </article>`;
   }).join("");
-  $("[data-featured-view]").forEach(card=>card.addEventListener("click",e=>{if(!e.target.closest("button"))openProduct(card.dataset.featuredView)}));
-  $("[data-featured-add]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();const p=productById(btn.dataset.featuredAdd);if(p)addToCart(p,defaultVariant(p),1)}));
+  $$("[data-featured-view]").forEach(card=>card.addEventListener("click",e=>{if(!e.target.closest("button"))openProduct(card.dataset.featuredView)}));
+  $$("[data-featured-add]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();const p=productById(btn.dataset.featuredAdd);if(p)addToCart(p,defaultVariant(p),1)}));
 }
 function renderGiftPresets(){
   const wrap=$("#giftPresetGrid");if(!wrap)return;
@@ -1035,7 +1035,7 @@ function renderGiftPresets(){
       <div><strong>${money(total)}</strong><button type="button" data-gift-preset="${escapeHtml(preset.id)}">${escapeHtml(lang==="ar"?"اختر هذه الهدية":"Choose this gift")}</button></div>
     </article>`;
   }).join("");
-  $("[data-gift-preset]").forEach(btn=>btn.addEventListener("click",()=>applyGiftPreset(btn.dataset.giftPreset)));
+  $$("[data-gift-preset]").forEach(btn=>btn.addEventListener("click",()=>applyGiftPreset(btn.dataset.giftPreset)));
 }
 function applyGiftPreset(id){
   const preset=GIFT_PRESETS.find(x=>x.id===id);if(!preset)return;

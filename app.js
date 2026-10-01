@@ -336,7 +336,7 @@ function normalize(s){
 }
 function arabiziNormalize(s){
   return normalize(s)
-    .replace(/7['’]?/g,"kh")
+    .replace(/7['’]/g,"kh")
     .replace(/3/g,"a")
     .replace(/5/g,"kh")
     .replace(/7/g,"h")

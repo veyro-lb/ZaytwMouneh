@@ -836,7 +836,8 @@ function renderProducts(){
     </article>`;
   }).join("");
 
-  const empty=$("#catalogEmpty");if(empty)empty.hidden=filtered.length>0;\n  const more=$("#loadMore");if(more&&more.parentElement)more.parentElement.hidden=filtered.length===0||visibleLimit>=filtered.length;
+  const empty=$("#catalogEmpty");if(empty)empty.hidden=filtered.length>0;
+  const more=$("#loadMore");if(more&&more.parentElement)more.parentElement.hidden=filtered.length===0||visibleLimit>=filtered.length;
 
   $$("[data-fav]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();toggleFavorite(btn.dataset.fav)}));
   $$("[data-card-variant]").forEach(sel=>sel.addEventListener("change",e=>{
@@ -963,7 +964,8 @@ function renderModal(productId,variantId){
   $("#modalBadges").innerHTML=badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("");
   const fav=$("#modalFavorite");
   if(fav){const saved=favorites.has(p.id);fav.classList.toggle("is-active",saved);fav.setAttribute("aria-pressed",String(saved));fav.innerHTML=`${saved?"♥":"♡"} <span id="modalFavoriteLabel">${escapeHtml(saved?EXTRA_UI[lang].favorited:EXTRA_UI[lang].favorite)}</span>`;}
-  if($("#relatedLabel"))$("#relatedLabel").textContent=EXTRA_UI[lang].related;\n  const origin=$("#productOrigin");if(origin)origin.textContent=originFor(p);
+  if($("#relatedLabel"))$("#relatedLabel").textContent=EXTRA_UI[lang].related;
+  const origin=$("#productOrigin");if(origin)origin.textContent=originFor(p);
   $("#relatedProducts").innerHTML=PRODUCTS_DATA.filter(x=>x.category===p.category&&x.id!==p.id).slice(0,4).map(x=>`<button type="button" data-related="${escapeHtml(x.id)}"><span>${escapeHtml(currentName(x))}</span><strong>${money(productPriceSummary(x).min)}</strong></button>`).join("");
   $$("[data-related]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.related)));
   $("#productModalDescription").textContent=info.what;

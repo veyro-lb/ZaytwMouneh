@@ -1053,3 +1053,46 @@ body.welcome-open .language-welcome.is-open{
 @media(prefers-reduced-motion:reduce){
   .welcome-rope-heart{animation:none!important}
 }
+
+
+/* ===== v8 swirly rope heart ===== */
+.welcome-rope-divider{
+  width:min(100%,470px)!important;
+  max-width:470px!important;
+  height:66px!important;
+  margin:9px auto 7px!important;
+}
+.welcome-rope-heart{
+  overflow:visible!important;
+  filter:
+    drop-shadow(0 3px 3px rgba(42,22,10,.28))
+    drop-shadow(0 8px 11px rgba(0,0,0,.08))!important;
+}
+.welcome-rope-heart .rope-shadow{
+  stroke:#51301b!important;
+  stroke-width:17!important;
+  opacity:.9!important;
+}
+.welcome-rope-heart .rope-body{
+  stroke:#ad7545!important;
+  stroke-width:12.5!important;
+}
+.welcome-rope-heart .rope-highlight{
+  stroke:#d9ae73!important;
+  stroke-width:3.1!important;
+  stroke-dasharray:7 6!important;
+  opacity:.96!important;
+}
+.welcome-rope-heart .rope-glint{
+  fill:none;
+  stroke:#f0d4a4;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  opacity:.72;
+}
+@media(max-width:720px){
+  .welcome-rope-divider{width:min(100%,390px)!important;height:56px!important}
+}
+@media(max-width:430px){
+  .welcome-rope-divider{width:min(100%,330px)!important;height:50px!important}
+}

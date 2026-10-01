@@ -1304,7 +1304,7 @@ function backdropMaybeOff(){
 }
 
 function showScene(i,manual=false){
-  const scenes=$$("[data-scene]"),dots=$$("[data-scene-dot]");
+  const scenes=$("[data-scene]"),dots=$("[data-scene-dot]");
   if(!scenes.length)return;
   sceneIndex=(i+scenes.length)%scenes.length;
   scenes.forEach((scene,n)=>{
@@ -1313,6 +1313,7 @@ function showScene(i,manual=false){
     const video=scene.querySelector("video");
     if(video){
       if(activeNow&&heroVisible&&!document.hidden){
+        if(video.readyState===0)video.load();
         const play=video.play();
         if(play&&play.catch)play.catch(()=>{});
       }else video.pause();

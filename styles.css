@@ -2745,3 +2745,7 @@ html[lang="ar"] .page-intro h1{max-width:13ch;line-height:1.15}
   .home-gift-actions{display:grid}
   .home-gift-actions .button{width:100%}
 }
+
+
+/* Remove optional shop filter controls; keep the compact original toolbar */
+.catalog-toolbar .catalog-select-wrap{display:none!important}

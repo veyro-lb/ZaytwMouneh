@@ -142,14 +142,16 @@ const UI={
     heroEyebrow:"Rooted in Lebanese heritage",
     heroTitle:'A pantry of<br><em>Lebanese memory.</em>',
     heroLede:"Authentic Lebanese pantry essentials, selected with care and delivered across Lebanon.",
-    heroExplore:"Shop the pantry <span>↘</span>",\n    heroWhatsApp:"Send a gift",
+    heroExplore:"Shop the pantry <span>↘</span>",
+    heroWhatsApp:"Send a gift",
     heroVariantLabel:"pantry products",heroCategoryLabel:"categories",heroSinceLabel:"since",
     scene1Kicker:"Pantry film · 01",scene1Title:"Honey, slow and golden.",scene1Copy:"One texture in a pantry full of grains, herbs, mouneh, oils and more.",
     scene2Kicker:"Pantry film · 02",scene2Title:"Lentils & everyday staples.",scene2Copy:"Warm, useful ingredients for real home cooking.",
     scene3Kicker:"Pantry film · 03",scene3Title:"Wheat, harvest & season.",scene3Copy:"A calm reminder of the ingredients, seasons and tables behind mouneh.",
     heroScript:"Curated with care",
     categoriesEyebrow:"The pantry, chapter by chapter",
-    categoriesTitle:'Find your way<br>around the <em>pantry.</em>',\n    categoriesCopy:"Start with the pantry families people reach for most, then explore the full catalogue.",
+    categoriesTitle:'Find your way<br>around the <em>pantry.</em>',
+    categoriesCopy:"Start with the pantry families people reach for most, then explore the full catalogue.",
     aboutEyebrow:"Our story & mission",
     aboutTitle:'More than a shelf.<br><em>Memory kept within reach.</em>',
     aboutLetterKicker:"A note from our pantry",
@@ -194,14 +196,16 @@ const UI={
     heroEyebrow:"متجذّرون في التراث اللبناني",
     heroTitle:'مونة تحفظ<br><em>ذاكرة لبنان.</em>',
     heroLede:"أساسيات مونة لبنانية أصيلة مختارة بعناية، مع توصيل إلى مختلف المناطق في لبنان.",
-    heroExplore:"تسوّق المونة <span>↙</span>",\n    heroWhatsApp:"أرسل هدية",
+    heroExplore:"تسوّق المونة <span>↙</span>",
+    heroWhatsApp:"أرسل هدية",
     heroVariantLabel:"خياراً مسعّراً",heroCategoryLabel:"قسماً",heroSinceLabel:"منذ",
     scene1Kicker:"من المونة · 01",scene1Title:"عسل ينساب ببطء.",scene1Copy:"تفصيل واحد من مونة أوسع تضم الحبوب والأعشاب والزيوت والمخللات والمزيد.",
     scene2Kicker:"من المونة · 02",scene2Title:"عدس وحبوب للبيت.",scene2Copy:"مكونات يومية دافئة ومفيدة للطبخ الحقيقي في البيت.",
     scene3Kicker:"من المونة · 03",scene3Title:"قمح وموسم وحصاد.",scene3Copy:"صورة هادئة عن الأرض والمواسم والموائد التي تعيش فيها المونة.",
     heroScript:"مختارة بعناية",
     categoriesEyebrow:"المونة، فصلاً بعد فصل",
-    categoriesTitle:'اعثر على طريقك<br>في <em>المونة.</em>',\n    categoriesCopy:"ابدأ بأقسام المونة الأساسية ثم انتقل إلى كامل المنتجات.",
+    categoriesTitle:'اعثر على طريقك<br>في <em>المونة.</em>',
+    categoriesCopy:"ابدأ بأقسام المونة الأساسية ثم انتقل إلى كامل المنتجات.",
     aboutEyebrow:"قصتنا ورسالتنا",
     aboutTitle:'أكثر من رفّ.<br><em>ذاكرة تبقى في متناول اليد.</em>',
     aboutLetterKicker:"رسالة من مونة البيت",
@@ -719,7 +723,8 @@ function applyLanguage(next,{immediate=false}={}){
 
 function renderCategories(){
   const grid=$("#categoryGrid");if(!grid)return;
-  const cats=CURRENT_PAGE==="home"?["Mouneh","Honey","Olive Oil","Molasses","Olives","Pickles","Grains","Spices"]:CATEGORY_ORDER;\n  grid.innerHTML=cats.map((cat,index)=>{
+  const cats=CURRENT_PAGE==="home"?["Mouneh","Honey","Olive Oil","Molasses","Olives","Pickles","Grains","Spices"]:CATEGORY_ORDER;
+  grid.innerHTML=cats.map((cat,index)=>{
     const count=CATEGORY_COUNTS[cat]||0;
     const info=CATEGORY_INFO[cat]?.[lang]||["",""];
     const href=CURRENT_PAGE==="shop"?"#shop":`shop.html?category=${encodeURIComponent(cat)}#shop`;

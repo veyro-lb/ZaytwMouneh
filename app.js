@@ -245,6 +245,7 @@ let currentModalVariant=null;
 let sceneIndex=0;
 let sceneTimer=null;
 let toastTimer=null;
+let languageFrame=null;
 
 const CATEGORY_COUNTS=Object.fromEntries(CATEGORY_ORDER.map(cat=>[cat,PRODUCTS_DATA.filter(p=>p.category===cat).length]));
 const TOTAL_VARIANTS=PRODUCTS_DATA.reduce((sum,p)=>sum+p.variants.length,0);
@@ -403,12 +404,16 @@ function healthNoteFor(p){
   return null;
 }
 
-function applyLanguage(next){
+function applyLanguage(next,{immediate=false}={}){
   lang=next==="ar"?"ar":"en";
   localStorage.setItem(LANG_KEY,lang);
-  document.documentElement.lang=lang;
-  document.documentElement.dir=lang==="ar"?"rtl":"ltr";
   const t=UI[lang];
+  $("[data-lang]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.lang===lang));
+
+  const commitLanguage=()=>{
+    document.documentElement.classList.add("lang-switching");
+    document.documentElement.lang=lang;
+    document.documentElement.dir=lang==="ar"?"rtl":"ltr";
 
   const textMap={
     skipLink:"skipLink",announcementText:"announcementText",announcementOrder:"announcementOrder",brandWordmark:"brand",
@@ -438,12 +443,23 @@ function applyLanguage(next){
   $("#loadMore").textContent=t.loadMore;
   $("#cartBrowse").textContent=t.browseProducts;
 
-  $$("[data-lang]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.lang===lang));
-  renderCategories();
+    renderCategories();
   renderCategorySelect();
   renderProducts();
   renderCart();
-  if(currentModalProduct) renderModal(currentModalProduct.id,currentModalVariant?.id);
+    if(currentModalProduct) renderModal(currentModalProduct.id,currentModalVariant?.id);
+    requestAnimationFrame(()=>document.documentElement.classList.remove("lang-switching"));
+  };
+
+  if(languageFrame)cancelAnimationFrame(languageFrame);
+  if(immediate){
+    commitLanguage();
+  }else{
+    languageFrame=requestAnimationFrame(()=>{
+      languageFrame=null;
+      commitLanguage();
+    });
+  }
 }
 
 function renderCategories(){
@@ -767,17 +783,22 @@ function openLanguageWelcome(){
   modal.classList.add("is-open");
   modal.setAttribute("aria-hidden","false");
   document.body.classList.add("welcome-open");
-  const first=modal.querySelector("[data-welcome-lang]");
-  setTimeout(()=>first?.focus({preventScroll:true}),80);
 }
 function chooseWelcomeLanguage(next){
-  applyLanguage(next);
+  applyLanguage(next,{immediate:true});
   const modal=$("#languageWelcome");
   if(!modal)return;
   modal.classList.remove("is-open");
   modal.setAttribute("aria-hidden","true");
   document.body.classList.remove("welcome-open");
   setTimeout(()=>{modal.hidden=true},220);
+}
+
+function prewarmLanguageFonts(){
+  if(!document.fonts)return;
+  document.fonts.load('400 16px "Noto Kufi Arabic"').catch(()=>{});
+  document.fonts.load('600 16px "Noto Kufi Arabic"').catch(()=>{});
+  document.fonts.load('400 16px "Patrick Hand"').catch(()=>{});
 }
 
 function setupNav(){
@@ -826,7 +847,8 @@ function init(){
   $("#heroCategoryCount").textContent=CATEGORY_ORDER.length;
   $("#year").textContent=new Date().getFullYear();
 
-  applyLanguage(lang);
+  applyLanguage(lang,{immediate:true});
+  prewarmLanguageFonts();
   showScene(0);
   startScenes();
   setupNav();
@@ -860,7 +882,7 @@ function init(){
 
   addEventListener("storage",e=>{
     if(e.key===CART_KEY){cart=loadCart();renderCart()}
-    if(e.key===LANG_KEY){applyLanguage(e.newValue==="ar"?"ar":"en")}
+    if(e.key===LANG_KEY){applyLanguage(e.newValue==="ar"?"ar":"en",{immediate:true})}
   });
 
   openLanguageWelcome();

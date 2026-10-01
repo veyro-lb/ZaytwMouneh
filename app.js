@@ -315,7 +315,7 @@ let languageFrame=null;
 let favorites=loadFavorites();
 let recentViews=loadRecent();
 let giftItems=loadGiftItems();
-let giftVisibleLimit=18;
+let giftVisibleLimit=Number.POSITIVE_INFINITY;
 let giftCategory="All";
 let favoritesOnly=false;
 const CURRENT_PAGE=document.body?.dataset.page||"home";
@@ -1432,9 +1432,9 @@ function init(){
   if($("#cartBrowse"))$("#cartBrowse").addEventListener("click",()=>{closeCart();location.href="shop.html#shop"});
   if($("#orderForm"))$("#orderForm").addEventListener("submit",e=>{e.preventDefault();order()});
   if($("#giftForm"))$("#giftForm").addEventListener("submit",e=>{e.preventDefault();sendGiftOrder()});
-  if($("#giftProductSearch"))$("#giftProductSearch").addEventListener("input",()=>{giftVisibleLimit=18;renderGiftPickerResults()});
-  if($("#giftCategorySelect"))$("#giftCategorySelect").addEventListener("change",e=>{giftCategory=e.target.value;giftVisibleLimit=18;renderGiftPickerResults()});
-  if($("#giftLoadMore"))$("#giftLoadMore").addEventListener("click",()=>{giftVisibleLimit+=18;renderGiftPickerResults()});
+  if($("#giftProductSearch"))$("#giftProductSearch").addEventListener("input",()=>{giftVisibleLimit=Number.POSITIVE_INFINITY;renderGiftPickerResults()});
+  if($("#giftCategorySelect"))$("#giftCategorySelect").addEventListener("change",e=>{giftCategory=e.target.value;giftVisibleLimit=Number.POSITIVE_INFINITY;renderGiftPickerResults()});
+  
   if($("#giftUseCart"))$("#giftUseCart").addEventListener("click",useCartForGift);
   if($("#giftClear"))$("#giftClear").addEventListener("click",()=>{giftItems={};saveGiftItems();renderGiftSummary();renderGiftPickerResults()});
   if($("#mobileOrderBar"))$("#mobileOrderBar").addEventListener("click",openCart);

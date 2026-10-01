@@ -784,7 +784,8 @@ function openLanguageWelcome(){
   modal.setAttribute("aria-hidden","false");
   document.body.classList.add("welcome-open");
 }
-function chooseWelcomeLanguage(next){
+function chooseWelcomeLanguage(next,event){
+  if(event){event.preventDefault?.();event.stopPropagation?.();}
   applyLanguage(next,{immediate:true});
   const modal=$("#languageWelcome");
   if(!modal)return;
@@ -888,4 +889,6 @@ function init(){
   openLanguageWelcome();
 }
 
+window.chooseWelcomeLanguage=chooseWelcomeLanguage;
+window.applyLanguage=applyLanguage;
 document.addEventListener("DOMContentLoaded",init);

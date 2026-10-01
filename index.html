@@ -12,12 +12,38 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261001-2015" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20261001-2015" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=20261001-2225" />
 </head>
 <body>
   <a class="skip-link" href="#shop" id="skipLink">Skip to catalogue</a>
   <div class="page-progress" aria-hidden="true"><span id="pageProgress"></span></div>
+
+  <div class="language-welcome" id="languageWelcome" hidden>
+    <div class="language-welcome-backdrop" aria-hidden="true"></div>
+    <section class="welcome-board" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+      <div class="welcome-rope welcome-rope-left" aria-hidden="true"></div>
+      <div class="welcome-rope welcome-rope-right" aria-hidden="true"></div>
+      <div class="welcome-board-inner">
+        <img class="welcome-logo" src="assets/logo.svg?v=20261001-2225" alt="Zayt w Mouneh" />
+        <p class="welcome-kicker">Zayt w Mouneh · زيت ومونة</p>
+        <h2 id="welcomeTitle">Welcome to the pantry.</h2>
+        <p class="welcome-intro">Lebanese mouneh, grains, pulses, herbs, oils, honey, spices and pantry staples — thoughtfully selected with origin, craft, natural character and quality in mind.</p>
+        <p class="welcome-intro-ar" lang="ar" dir="rtl">مونة لبنانية، حبوب وبقوليات وأعشاب وزيوت وعسل وبهارات — مختارة بعناية مع احترام المصدر والحرفة والطابع الطبيعي والجودة.</p>
+        <div class="welcome-divider" aria-hidden="true"><span></span></div>
+        <p class="welcome-question">How would you like to browse?</p>
+        <div class="welcome-language-options">
+          <button type="button" class="welcome-language-button" data-welcome-lang="en">
+            <span>EN</span><strong>Continue in English</strong><small>Full English experience</small>
+          </button>
+          <button type="button" class="welcome-language-button is-ar" data-welcome-lang="ar">
+            <span>ع</span><strong>المتابعة بالعربية</strong><small>الموقع كاملاً باللغة العربية</small>
+          </button>
+        </div>
+        <small class="welcome-quality-note">We only describe a product as organic when that status is explicitly verified or labelled.</small>
+      </div>
+    </section>
+  </div>
 
   <header class="site-header" id="top">
     <div class="announcement">
@@ -29,7 +55,7 @@
 
     <nav class="nav shell" aria-label="Primary navigation">
       <a class="brand" href="#top" aria-label="Zayt w Mouneh home">
-        <span class="brand-logo"><img src="assets/logo.svg?v=20261001-2015" alt="Zayt w Mouneh logo" /></span>
+        <span class="brand-logo"><img src="assets/logo.svg?v=20261001-2225" alt="Zayt w Mouneh logo" /></span>
         <span class="brand-wordmark" id="brandWordmark">Zayt w Mouneh</span>
       </a>
 
@@ -78,7 +104,7 @@
         </div>
 
         <div class="hero-showcase reveal" id="heroShowcase">
-          <div class="hero-logo-float"><img src="assets/logo.svg?v=20261001-2015" alt="Zayt w Mouneh" /></div>
+          <div class="hero-logo-float"><img src="assets/logo.svg?v=20261001-2225" alt="Zayt w Mouneh" /></div>
           <div class="pantry-scenes" aria-label="Pantry films">
             <article class="pantry-scene is-active" data-scene="0">
               <video class="scene-video" muted loop playsinline autoplay preload="metadata" aria-hidden="true">
@@ -129,8 +155,11 @@
         <div class="about-copy reveal">
           <p class="eyebrow" id="aboutEyebrow">Our story & mission</p>
           <h2 id="aboutTitle">More than a shelf.<br><em>Memory kept within reach.</em></h2>
-          <p id="aboutP1">Since 2006, Zayt w Mouneh has grown from one simple thought: that the Lebanese pantry is more than a shelf — it is memory kept within reach. It lives in herbs drying in summer light, olives resting in brine, olive oil pressed from the grove, and jars prepared patiently for colder months.</p>
-          <p id="aboutP2">Our mission is to keep that inheritance alive in a way that belongs to today: to choose authentic Lebanese pantry essentials with respect for origin, craft and flavour; to present them with clarity and care; and to make the generosity of mouneh easy to bring home.</p>
+          <div class="heritage-letter">
+            <span class="heritage-letter-kicker" id="aboutLetterKicker">A note from our pantry</span>
+            <p id="aboutP1">Since 2006, Zayt w Mouneh has grown from one simple thought: that the Lebanese pantry is more than a shelf — it is memory kept within reach. It lives in the fragrance of herbs drying in summer light, in olives resting in brine, in olive oil pressed from the grove, and in jars prepared patiently for the colder months. It is found in dates, carob and molasses; in grains, flour and pulses; in honey, nuts and seeds; in condiments, syrups and vinegars; in pickles, spices and dried foods; in sweets and candy shared at the table, and even in the simple soap that carries the scent of home. Each category is a small chapter of the same inheritance — harvested, preserved, offered, and passed from one generation to the next.</p>
+            <p id="aboutP2">Our mission is to keep that inheritance alive in a way that belongs to today: to choose authentic Lebanese pantry essentials with respect for origin, craft and flavour; to present them with clarity and care; and to make the generosity of mouneh easy to bring home. We want every jar, herb, grain and drop of oil to feel familiar — a quiet connection to the land, to the seasons, and to the tables that taught us that food is most meaningful when it is prepared with patience and shared with others.</p>
+          </div>
           <div class="mission-values">
             <div><span>01</span><strong id="value1Title">Origin</strong><p id="value1Copy">Respect where ingredients come from.</p></div>
             <div><span>02</span><strong id="value2Title">Craft</strong><p id="value2Copy">Preserve the patience behind pantry traditions.</p></div>
@@ -212,14 +241,14 @@
             <div><span id="contactLocationLabel">Location</span><strong id="contactLocationValue">Lebanon</strong></div>
           </div>
         </div>
-        <div class="contact-brand"><img src="assets/logo.svg?v=20261001-2015" alt="Zayt w Mouneh" /></div>
+        <div class="contact-brand"><img src="assets/logo.svg?v=20261001-2225" alt="Zayt w Mouneh" /></div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
     <div class="shell footer-inner">
-      <a class="brand footer-brand" href="#top"><span class="brand-logo"><img src="assets/logo.svg?v=20261001-2015" alt="" /></span><span class="brand-wordmark" id="footerBrand">Zayt w Mouneh</span></a>
+      <a class="brand footer-brand" href="#top"><span class="brand-logo"><img src="assets/logo.svg?v=20261001-2225" alt="" /></span><span class="brand-wordmark" id="footerBrand">Zayt w Mouneh</span></a>
       <p id="footerCopy">A pantry of Lebanese memory, curated with care.</p>
       <div class="footer-links"><a href="#shop" id="footerCatalogue">Catalogue</a><a href="#about" id="footerAbout">About</a><a href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">Instagram</a></div>
       <p class="copyright">© <span id="year"></span> <span id="copyrightBrand">Zayt w Mouneh</span>.</p>
@@ -266,7 +295,7 @@
       <div class="product-modal-visual">
         <div class="modal-wood"></div>
         <div class="product-modal-mark" id="productModalMark">ZW</div>
-        <img class="modal-logo" src="assets/logo.svg?v=20261001-2015" alt="" />
+        <img class="modal-logo" src="assets/logo.svg?v=20261001-2225" alt="" />
       </div>
       <div class="product-modal-copy">
         <p class="eyebrow" id="productModalCategory">Pantry</p>
@@ -276,6 +305,11 @@
         <div class="definition-grid">
           <div><span id="whatLabel">What it is</span><p id="productModalDescription"></p></div>
           <div><span id="useLabel">Use it for</span><p id="productModalUse"></p></div>
+        </div>
+
+        <div class="nutrition-panel" id="nutritionPanel" hidden>
+          <span class="nutrition-icon" aria-hidden="true">✦</span>
+          <div><strong id="nutritionLabel">Nutrition note</strong><p id="productNutrition"></p></div>
         </div>
 
         <div class="variant-panel">
@@ -297,7 +331,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastText">Added to cart</span></div>
 
-  <script src="products-data.js?v=20261001-2015"></script>
-  <script src="app.js?v=20261001-2015"></script>
+  <script src="products-data.js?v=20261001-2225"></script>
+  <script src="app.js?v=20261001-2225"></script>
 </body>
 </html>

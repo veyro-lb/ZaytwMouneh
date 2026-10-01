@@ -318,9 +318,6 @@ let giftItems=loadGiftItems();
 let giftVisibleLimit=18;
 let giftCategory="All";
 let favoritesOnly=false;
-let originFilter="All";
-let priceFilter="All";
-let sortMode="featured";
 const CURRENT_PAGE=document.body?.dataset.page||"home";
 let heroVisible=true;
 
@@ -757,34 +754,6 @@ function renderCategorySelect(){
   select.value=activeCategory;
 }
 
-function renderFilterSelects(){
-  const origin=$("#originSelect"),price=$("#priceSelect"),sort=$("#sortSelect");
-  if(origin){
-    const current=originFilter;
-    const opts=lang==="ar"
-      ? [["All","كل المصادر"],["Bekaa","البقاع"],["Koura","الكورة"],["Mount Lebanon","جبل لبنان"],["Chouf","الشوف"]]
-      : [["All","All sources"],["Bekaa","Bekaa"],["Koura","Koura"],["Mount Lebanon","Mount Lebanon"],["Chouf","Chouf"]];
-    origin.innerHTML=opts.map(([v,label])=>`<option value="${escapeHtml(v)}">${escapeHtml(label)}</option>`).join("");
-    origin.value=current;
-  }
-  if(price){
-    const current=priceFilter;
-    const opts=lang==="ar"
-      ? [["All","كل الأسعار"],["under5","أقل من $5"],["5to10","$5–$10"],["over10","أكثر من $10"]]
-      : [["All","All prices"],["under5","Under $5"],["5to10","$5–$10"],["over10","Over $10"]];
-    price.innerHTML=opts.map(([v,label])=>`<option value="${escapeHtml(v)}">${escapeHtml(label)}</option>`).join("");
-    price.value=current;
-  }
-  if(sort){
-    const current=sortMode;
-    const opts=lang==="ar"
-      ? [["featured","ترتيب الكتالوج"],["price-low","السعر: من الأقل"],["price-high","السعر: من الأعلى"],["name","الاسم"]]
-      : [["featured","Catalogue order"],["price-low","Price: low to high"],["price-high","Price: high to low"],["name","Name A–Z"]];
-    sort.innerHTML=opts.map(([v,label])=>`<option value="${escapeHtml(v)}">${escapeHtml(label)}</option>`).join("");
-    sort.value=current;
-  }
-}
-
 function filteredProducts(){
   const q=query.trim();
   const rows=PRODUCTS_DATA
@@ -792,18 +761,9 @@ function filteredProducts(){
     .filter(({p,score})=>{
       const catOk=activeCategory==="All"||p.category===activeCategory;
       const favOk=!favoritesOnly||favorites.has(p.id);
-      const originOk=originFilter==="All"||originKeyFor(p)===originFilter;
-      const min=productPriceSummary(p).min;
-      const priceOk=priceFilter==="All"||(priceFilter==="under5"&&min<5)||(priceFilter==="5to10"&&min>=5&&min<=10)||(priceFilter==="over10"&&min>10);
-      return catOk&&favOk&&originOk&&priceOk&&(!q||score>0);
+      return catOk&&favOk&&(!q||score>0);
     });
-  rows.sort((a,b)=>{
-    if(q)return b.score-a.score;
-    if(sortMode==="price-low")return productPriceSummary(a.p).min-productPriceSummary(b.p).min;
-    if(sortMode==="price-high")return productPriceSummary(b.p).min-productPriceSummary(a.p).min;
-    if(sortMode==="name")return currentName(a.p).localeCompare(currentName(b.p),lang==="ar"?"ar":"en");
-    return a.index-b.index;
-  });
+  rows.sort((a,b)=>q?b.score-a.score:a.index-b.index);
   return rows.map(x=>x.p);
 }
 
@@ -1219,7 +1179,6 @@ function applyExtraLanguage(){
   if($("#giftSender"))$("#giftSender").placeholder=t.giftSenderPlaceholder;
   renderGiftOptions();
   renderGiftCategorySelect();
-  renderFilterSelects();
   renderGiftPickerResults();
   renderRecent();
   renderGiftSummary();
@@ -1446,11 +1405,8 @@ function init(){
     $("#productSearch").addEventListener("blur",()=>setTimeout(()=>{const b=$("#searchSuggestions");if(b)b.hidden=true},140));
   }
   if($("#categorySelect"))$("#categorySelect").addEventListener("change",e=>{activeCategory=e.target.value;query="";visibleLimit=PAGE_SIZE;if($("#productSearch"))$("#productSearch").value="";renderProducts();renderSearchSuggestions()});
-  if($("#originSelect"))$("#originSelect").addEventListener("change",e=>{originFilter=e.target.value;visibleLimit=PAGE_SIZE;renderProducts()});
-  if($("#priceSelect"))$("#priceSelect").addEventListener("change",e=>{priceFilter=e.target.value;visibleLimit=PAGE_SIZE;renderProducts()});
-  if($("#sortSelect"))$("#sortSelect").addEventListener("change",e=>{sortMode=e.target.value;renderProducts()});
   if($("#loadMore"))$("#loadMore").addEventListener("click",()=>{visibleLimit+=PAGE_SIZE;renderProducts()});
-  if($("#clearSearch"))$("#clearSearch").addEventListener("click",()=>{query="";activeCategory="All";originFilter="All";priceFilter="All";favoritesOnly=false;visibleLimit=PAGE_SIZE;if($("#productSearch"))$("#productSearch").value="";if($("#originSelect"))$("#originSelect").value="All";if($("#priceSelect"))$("#priceSelect").value="All";renderCategorySelect();renderProducts();renderFavoritesCount();renderSearchSuggestions()});
+  if($("#clearSearch"))$("#clearSearch").addEventListener("click",()=>{query="";activeCategory="All";favoritesOnly=false;visibleLimit=PAGE_SIZE;if($("#productSearch"))$("#productSearch").value="";renderCategorySelect();renderProducts();renderFavoritesCount();renderSearchSuggestions()});
   if($("#favoritesOnly"))$("#favoritesOnly").addEventListener("click",()=>{favoritesOnly=!favoritesOnly;visibleLimit=PAGE_SIZE;renderFavoritesCount();renderProducts()});
   if($("#clearRecent"))$("#clearRecent").addEventListener("click",()=>{recentViews=[];saveRecent();renderRecent()});
 

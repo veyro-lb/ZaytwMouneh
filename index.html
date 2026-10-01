@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20261001-2315" />
+  <link rel="stylesheet" href="styles.css?v=20261001-2330" />
 </head>
 <body class="welcome-open">
   <a class="skip-link" href="#shop" id="skipLink">Skip to catalogue</a>
@@ -24,25 +24,25 @@
     <section class="welcome-board" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
       <div class="welcome-rope welcome-rope-left" aria-hidden="true"></div>
       <div class="welcome-rope welcome-rope-right" aria-hidden="true"></div>
-      <svg class="welcome-heart-knot" viewBox="0 0 120 138" aria-hidden="true" focusable="false">
-        <path class="rope-outline" d="M60 108 C56 96 22 82 17 55 C13 33 28 18 45 25 C55 29 60 40 60 40 C60 40 65 29 75 25 C92 18 107 33 103 55 C98 82 64 96 60 108 L60 132" />
-        <path class="rope-main" d="M60 108 C56 96 22 82 17 55 C13 33 28 18 45 25 C55 29 60 40 60 40 C60 40 65 29 75 25 C92 18 107 33 103 55 C98 82 64 96 60 108 L60 132" />
-        <path class="rope-fiber" d="M60 108 C56 96 22 82 17 55 C13 33 28 18 45 25 C55 29 60 40 60 40 C60 40 65 29 75 25 C92 18 107 33 103 55 C98 82 64 96 60 108 L60 132" />
-        <ellipse class="rope-knot" cx="60" cy="108" rx="10" ry="8" />
-      </svg>
-      <div class="welcome-board-inner">
-        <img class="welcome-logo" src="assets/logo.svg?v=20261001-2315" alt="Zayt w Mouneh" />
+<div class="welcome-board-inner">
+        <img class="welcome-logo" src="assets/logo.svg?v=20261001-2330" alt="Zayt w Mouneh" />
         <p class="welcome-kicker">Zayt w Mouneh · زيت ومونة</p>
         <h2 id="welcomeTitle">Welcome to the pantry.</h2>
         <p class="welcome-intro">Natural Lebanese pantry essentials — grains, pulses, herbs, oils, honey and spices — selected with care for quality, craft and flavour.</p>
         <p class="welcome-intro-ar" lang="ar" dir="rtl">مونة لبنانية طبيعية من الحبوب والبقوليات والأعشاب والزيوت والعسل والبهارات، مختارة بعناية من حيث الجودة والحرفة والنكهة.</p>
-        <div class="welcome-divider" aria-hidden="true"><span></span></div>
+        <div class="welcome-divider welcome-rope-divider" aria-hidden="true">
+          <svg viewBox="0 0 520 120" class="welcome-rope-heart" focusable="false">
+            <path class="rope-shadow" d="M0 58 H188 C203 58 207 48 219 33 C231 18 248 19 260 37 C272 19 289 18 301 33 C313 48 317 58 332 58 H520 M219 33 C207 50 211 73 236 91 C247 99 255 108 260 114 C265 108 273 99 284 91 C309 73 313 50 301 33" />
+            <path class="rope-body" d="M0 58 H188 C203 58 207 48 219 33 C231 18 248 19 260 37 C272 19 289 18 301 33 C313 48 317 58 332 58 H520 M219 33 C207 50 211 73 236 91 C247 99 255 108 260 114 C265 108 273 99 284 91 C309 73 313 50 301 33" />
+            <path class="rope-highlight" d="M0 58 H188 C203 58 207 48 219 33 C231 18 248 19 260 37 C272 19 289 18 301 33 C313 48 317 58 332 58 H520 M219 33 C207 50 211 73 236 91 C247 99 255 108 260 114 C265 108 273 99 284 91 C309 73 313 50 301 33" />
+          </svg>
+        </div>
         <p class="welcome-question">How would you like to browse?</p>
         <div class="welcome-language-options">
-          <button type="button" class="welcome-language-button" data-welcome-lang="en">
+          <button type="button" class="welcome-language-button" data-welcome-lang="en" onclick="window.chooseWelcomeLanguage && window.chooseWelcomeLanguage('en', event)">
             <span>EN</span><strong>Continue in English</strong><small>Full English experience</small>
           </button>
-          <button type="button" class="welcome-language-button is-ar" data-welcome-lang="ar">
+          <button type="button" class="welcome-language-button is-ar" data-welcome-lang="ar" onclick="window.chooseWelcomeLanguage && window.chooseWelcomeLanguage('ar', event)">
             <span>ع</span><strong>المتابعة بالعربية</strong><small>الموقع كاملاً باللغة العربية</small>
           </button>
         </div>
@@ -61,7 +61,7 @@
 
     <nav class="nav shell" aria-label="Primary navigation">
       <a class="brand" href="#top" aria-label="Zayt w Mouneh home">
-        <span class="brand-logo"><img src="assets/logo.svg?v=20261001-2315" alt="Zayt w Mouneh logo" /></span>
+        <span class="brand-logo"><img src="assets/logo.svg?v=20261001-2330" alt="Zayt w Mouneh logo" /></span>
         <span class="brand-wordmark" id="brandWordmark">Zayt w Mouneh</span>
       </a>
 
@@ -110,7 +110,7 @@
         </div>
 
         <div class="hero-showcase reveal" id="heroShowcase">
-          <div class="hero-logo-float"><img src="assets/logo.svg?v=20261001-2315" alt="Zayt w Mouneh" /></div>
+          <div class="hero-logo-float"><img src="assets/logo.svg?v=20261001-2330" alt="Zayt w Mouneh" /></div>
           <div class="pantry-scenes" aria-label="Pantry films">
             <article class="pantry-scene is-active" data-scene="0">
               <video class="scene-video" muted loop playsinline autoplay preload="metadata" aria-hidden="true">
@@ -247,14 +247,14 @@
             <div><span id="contactLocationLabel">Location</span><strong id="contactLocationValue">Lebanon</strong></div>
           </div>
         </div>
-        <div class="contact-brand"><img src="assets/logo.svg?v=20261001-2315" alt="Zayt w Mouneh" /></div>
+        <div class="contact-brand"><img src="assets/logo.svg?v=20261001-2330" alt="Zayt w Mouneh" /></div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
     <div class="shell footer-inner">
-      <a class="brand footer-brand" href="#top"><span class="brand-logo"><img src="assets/logo.svg?v=20261001-2315" alt="" /></span><span class="brand-wordmark" id="footerBrand">Zayt w Mouneh</span></a>
+      <a class="brand footer-brand" href="#top"><span class="brand-logo"><img src="assets/logo.svg?v=20261001-2330" alt="" /></span><span class="brand-wordmark" id="footerBrand">Zayt w Mouneh</span></a>
       <p id="footerCopy">A pantry of Lebanese memory, curated with care.</p>
       <div class="footer-links"><a href="#shop" id="footerCatalogue">Catalogue</a><a href="#about" id="footerAbout">About</a><a href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">Instagram</a></div>
       <p class="copyright">© <span id="year"></span> <span id="copyrightBrand">Zayt w Mouneh</span>.</p>
@@ -301,7 +301,7 @@
       <div class="product-modal-visual">
         <div class="modal-wood"></div>
         <div class="product-modal-mark" id="productModalMark">ZW</div>
-        <img class="modal-logo" src="assets/logo.svg?v=20261001-2315" alt="" />
+        <img class="modal-logo" src="assets/logo.svg?v=20261001-2330" alt="" />
       </div>
       <div class="product-modal-copy">
         <p class="eyebrow" id="productModalCategory">Pantry</p>
@@ -337,7 +337,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastText">Added to cart</span></div>
 
-  <script src="products-data.js?v=20261001-2315"></script>
-  <script src="app.js?v=20261001-2315"></script>
+  <script src="products-data.js?v=20261001-2330"></script>
+  <script src="app.js?v=20261001-2330"></script>
 </body>
 </html>

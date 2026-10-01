@@ -1394,3 +1394,71 @@ body.welcome-open .language-welcome.is-open{
 @media(prefers-reduced-motion:reduce){
   .rope-accent-svg{animation:none!important}
 }
+
+
+/* ===== v12 final cleanup: remove awkward rope drawings ===== */
+.rope-rule,
+.rope-vine,
+.rope-accent,
+.welcome-rope-divider,
+.welcome-rope-heart,
+.welcome-heart-knot{
+  display:none!important;
+}
+
+/* Keep only the real hanging cords on the popup/signs; use a calm botanical separator inside. */
+.welcome-divider-simple{
+  position:relative;
+  z-index:8;
+  width:min(280px,72%);
+  margin:16px auto 13px;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:10px;
+}
+.welcome-divider-simple span{
+  display:block;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(228,191,101,.72));
+}
+.welcome-divider-simple span:last-child{
+  background:linear-gradient(90deg,rgba(228,191,101,.72),transparent);
+}
+.welcome-divider-simple i{
+  position:relative;
+  width:30px;
+  height:18px;
+  display:block;
+}
+.welcome-divider-simple i:before,
+.welcome-divider-simple i:after{
+  content:"";
+  position:absolute;
+  top:5px;
+  width:15px;
+  height:8px;
+  border-radius:80% 20% 80% 20%;
+  background:#cda144;
+  opacity:.9;
+}
+.welcome-divider-simple i:before{
+  left:1px;
+  transform:rotate(-28deg);
+}
+.welcome-divider-simple i:after{
+  right:1px;
+  transform:scaleX(-1) rotate(-28deg);
+}
+
+/* Reclaim the hero spacing after removing the rope ornament. */
+.hero{
+  padding-bottom:72px!important;
+}
+@media(max-width:760px){
+  .welcome-divider-simple{
+    width:min(250px,78%);
+    margin:13px auto 11px;
+  }
+  .hero{padding-bottom:54px!important}
+}

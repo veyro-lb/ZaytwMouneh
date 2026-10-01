@@ -169,3 +169,50 @@ linear-gradient(155deg,#154b21,#082c13)}
   .hero-logo-badge,.rope-orbit,.fallback-honey,.fallback-grain,.modal-rope{animation:none!important}
   .hero-video{display:none}
 }
+
+
+/* category micro-animations */
+.product-card.cat-honey .product-visual{background:linear-gradient(145deg,#fff7d8,#eed18c)}
+.product-card.cat-honey .product-visual:before,
+.product-card.cat-honey .product-visual:after{width:18px;height:11px;border:0;border-radius:60% 45% 60% 45%;background:repeating-linear-gradient(90deg,#d5a11e 0 5px,#23231e 5px 8px);box-shadow:0 -5px 0 -3px #ffffffcc,0 5px 0 -3px #ffffffcc;opacity:0;transition:opacity .25s}
+.product-card.cat-honey:hover .product-visual:before{opacity:.8;animation:beeBuzz 2.1s ease-in-out infinite}
+.product-card.cat-honey:hover .product-visual:after{opacity:.6;animation:beeBuzz2 2.5s ease-in-out infinite .35s}
+@keyframes beeBuzz{0%,100%{transform:translate(-34px,16px) rotate(-8deg)}45%{transform:translate(32px,-18px) rotate(7deg)}70%{transform:translate(8px,24px) rotate(-4deg)}}
+@keyframes beeBuzz2{0%,100%{transform:translate(42px,-12px) scale(.8)}50%{transform:translate(-26px,18px) scale(.9)}}
+.product-card.cat-grains .product-visual,
+.product-card.cat-pulses .product-visual,
+.product-card.cat-nuts-plus-seeds .product-visual{background:linear-gradient(145deg,#fbf2dc,#ead8b4)}
+.product-card.cat-grains .product-visual:after,
+.product-card.cat-pulses .product-visual:after,
+.product-card.cat-nuts-plus-seeds .product-visual:after{width:100%;height:100%;left:0;bottom:auto;border:0;border-radius:inherit;opacity:0;background:
+radial-gradient(circle at 18% 8%,#b48635 0 3px,transparent 4px),
+radial-gradient(circle at 31% 16%,#c79a42 0 3px,transparent 4px),
+radial-gradient(circle at 45% 25%,#9f7432 0 3px,transparent 4px),
+radial-gradient(circle at 58% 34%,#d1aa58 0 3px,transparent 4px),
+radial-gradient(circle at 72% 44%,#a77c33 0 3px,transparent 4px);
+background-repeat:no-repeat}
+.product-card.cat-grains:hover .product-visual:after,
+.product-card.cat-pulses:hover .product-visual:after,
+.product-card.cat-nuts-plus-seeds:hover .product-visual:after{opacity:.7;animation:seedPour 1.9s linear infinite}
+@keyframes seedPour{from{transform:translateY(-48px) translateX(-8px)}to{transform:translateY(118px) translateX(28px)}}
+
+/* heritage scroll illustrations */
+.heritage-icons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:24px 0 28px}
+.heritage-icon-item{min-height:112px;padding:13px;border:1px solid #ffffff1a;border-radius:18px;background:#ffffff08;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.heritage-icon-item strong{font-family:"DM Serif Display",serif;font-weight:400;color:#fff;font-size:1rem}
+.heritage-icon-item small{color:#ffffff75;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em}
+.heritage-icon{position:absolute;right:12px;top:12px;width:44px;height:44px;opacity:.72}
+.olive-sprig:before{content:"";position:absolute;width:4px;height:38px;background:var(--gold2);left:21px;top:2px;border-radius:99px;transform:rotate(34deg)}
+.olive-sprig:after{content:"";position:absolute;width:15px;height:9px;border-radius:100% 0 100% 0;background:#84a560;left:6px;top:11px;transform:rotate(-8deg);box-shadow:17px 7px 0 #6b8e50,1px 17px 0 #759b54,17px 24px 0 #608343}
+.clay-jar:before{content:"";position:absolute;left:8px;top:10px;width:28px;height:30px;border:3px solid #d7a86a;border-radius:7px 7px 14px 14px;background:#b6713942}
+.clay-jar:after{content:"";position:absolute;left:13px;top:4px;width:18px;height:9px;border-radius:7px 7px 2px 2px;background:#d7a86a}
+.market-basket:before{content:"";position:absolute;left:5px;bottom:4px;width:34px;height:23px;border:3px solid #c48c50;border-radius:3px 3px 12px 12px;background:repeating-linear-gradient(90deg,#c48c5022 0 5px,#e3b77d25 5px 9px)}
+.market-basket:after{content:"";position:absolute;left:10px;top:5px;width:24px;height:20px;border:3px solid #c48c50;border-bottom:0;border-radius:18px 18px 0 0}
+.reveal.is-visible .heritage-icon-item:nth-child(1) .heritage-icon{animation:iconFloat 4.8s ease-in-out infinite}
+.reveal.is-visible .heritage-icon-item:nth-child(2) .heritage-icon{animation:iconFloat 5.2s ease-in-out infinite .35s}
+.reveal.is-visible .heritage-icon-item:nth-child(3) .heritage-icon{animation:iconFloat 4.5s ease-in-out infinite .7s}
+@keyframes iconFloat{50%{transform:translateY(-5px) rotate(2deg)}}
+
+@media(max-width:760px){.heritage-icons{grid-template-columns:1fr 1fr 1fr}.heritage-icon-item{min-height:105px;padding:11px}.heritage-icon-item strong{font-size:.88rem}}
+@media(max-width:480px){.heritage-icons{grid-template-columns:1fr}.heritage-icon-item{min-height:88px}}
+@media(prefers-reduced-motion:reduce){.product-card.cat-honey .product-visual:before,.product-card.cat-honey .product-visual:after,.product-card.cat-grains .product-visual:after,.product-card.cat-pulses .product-visual:after,.product-card.cat-nuts-plus-seeds .product-visual:after,.heritage-icon{animation:none!important}}

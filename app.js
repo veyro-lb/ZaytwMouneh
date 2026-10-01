@@ -1305,10 +1305,10 @@ function init(){
   setupProgress();
   setupPerformance();
 
-  $("#productSearch").addEventListener("input",e=>{query=e.target.value;visibleLimit=PAGE_SIZE;renderProducts();renderSearchSuggestions()});
+  $("#productSearch").addEventListener("input",e=>{query=e.target.value;if(query.trim())activeCategory="All";visibleLimit=PAGE_SIZE;renderCategorySelect();renderProducts();renderSearchSuggestions()});
   $("#productSearch").addEventListener("focus",renderSearchSuggestions);
   $("#productSearch").addEventListener("blur",()=>setTimeout(()=>{const b=$("#searchSuggestions");if(b)b.hidden=true},140));
-  $("#categorySelect").addEventListener("change",e=>{activeCategory=e.target.value;visibleLimit=PAGE_SIZE;renderProducts()});
+  $("#categorySelect").addEventListener("change",e=>{activeCategory=e.target.value;query="";visibleLimit=PAGE_SIZE;$("#productSearch").value="";renderProducts();renderSearchSuggestions()});
   $("#loadMore").addEventListener("click",()=>{visibleLimit+=PAGE_SIZE;renderProducts()});
   $("#clearSearch").addEventListener("click",()=>{query="";activeCategory="All";favoritesOnly=false;visibleLimit=PAGE_SIZE;$("#productSearch").value="";renderCategorySelect();renderProducts();renderFavoritesCount();renderSearchSuggestions()});
   $("#favoritesOnly").addEventListener("click",()=>{favoritesOnly=!favoritesOnly;visibleLimit=PAGE_SIZE;renderFavoritesCount();renderProducts()});

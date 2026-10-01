@@ -245,3 +245,10 @@
 @media(prefers-reduced-motion:reduce){
   .hanging-sign,.hero-logo-float{animation:none!important}
 }
+
+
+.card-variant-select,.single-size{width:100%;min-height:42px;margin-bottom:10px;border-radius:14px;border:1px solid var(--line);background:#f9f3e8;color:var(--green);font-size:.76rem;font-weight:800;padding:9px 12px}
+.card-variant-select{appearance:auto;outline:0;cursor:pointer}
+.card-variant-select:focus{border-color:#0f4a2066;box-shadow:0 0 0 3px #0f4a200d}
+.single-size{display:flex;align-items:center}
+[dir="rtl"] .card-variant-select,[dir="rtl"] .single-size{text-align:right;direction:rtl}

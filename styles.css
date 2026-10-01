@@ -697,3 +697,265 @@ body.welcome-open .language-welcome.is-open{
 .language-switch button:active{
   transform:scale(.96);
 }
+
+
+/* ===== final proportional welcome board + realistic rope treatment ===== */
+.language-welcome{
+  padding:104px 18px 24px!important;
+  place-items:center!important;
+  min-height:100dvh!important;
+  overflow-y:auto!important;
+  background:rgba(4,23,10,.42)!important;
+}
+.language-welcome-backdrop{
+  background:
+    radial-gradient(circle at 50% 12%,rgba(211,163,35,.10),transparent 28%),
+    linear-gradient(180deg,rgba(5,25,12,.58),rgba(4,20,10,.82))!important;
+  backdrop-filter:blur(9px)!important;
+  -webkit-backdrop-filter:blur(9px)!important;
+}
+.welcome-board{
+  width:min(610px,calc(100vw - 28px))!important;
+  margin:auto!important;
+  color:#fff8e9!important;
+  transform-origin:50% -86px!important;
+  animation:welcomeBoardSway 8s ease-in-out infinite!important;
+  filter:drop-shadow(0 24px 46px rgba(0,0,0,.33))!important;
+}
+@keyframes welcomeBoardSway{
+  0%,100%{transform:rotate(-.45deg)}
+  50%{transform:rotate(.45deg)}
+}
+.welcome-board-inner{
+  padding:24px 28px 20px!important;
+  border-radius:24px!important;
+  border:1px solid rgba(239,207,136,.30)!important;
+  background:
+    radial-gradient(circle at 84% 4%,rgba(216,168,43,.08),transparent 25%),
+    linear-gradient(180deg,rgba(10,48,21,.965),rgba(5,31,14,.975))!important;
+  box-shadow:
+    inset 0 0 0 4px rgba(107,67,32,.16),
+    inset 0 1px rgba(255,255,255,.06),
+    0 20px 44px rgba(0,0,0,.28)!important;
+}
+.welcome-board-inner:before{
+  inset:11px!important;
+  border-radius:16px!important;
+  border-color:rgba(237,202,114,.34)!important;
+}
+.welcome-board-inner:after{
+  width:210px!important;
+  height:210px!important;
+  right:-76px!important;
+  top:-84px!important;
+  opacity:.8!important;
+}
+.welcome-logo{
+  width:70px!important;
+  height:70px!important;
+  margin:0 auto 8px!important;
+  border-width:3px!important;
+  box-shadow:0 10px 22px rgba(0,0,0,.22)!important;
+}
+.welcome-kicker{
+  margin:0 0 7px!important;
+  font-size:.59rem!important;
+  letter-spacing:.17em!important;
+}
+.welcome-board h2{
+  max-width:10ch!important;
+  margin:0 auto 9px!important;
+  font-size:clamp(2.25rem,4.7vw,3.55rem)!important;
+  line-height:.91!important;
+  letter-spacing:-.035em!important;
+}
+.welcome-intro,
+.welcome-intro-ar{
+  max-width:46ch!important;
+  margin:0 auto!important;
+  line-height:1.52!important;
+}
+.welcome-intro{font-size:.84rem!important}
+.welcome-intro-ar{
+  margin-top:9px!important;
+  font-size:.75rem!important;
+  line-height:1.75!important;
+}
+.welcome-divider{
+  max-width:330px!important;
+  height:10px!important;
+  margin:15px auto 13px!important;
+}
+.welcome-divider span{
+  height:7px!important;
+  margin-top:1px!important;
+  background:
+    repeating-linear-gradient(135deg,#d0a068 0 7px,#7b502e 7px 13px,#b9804c 13px 20px)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.16)!important;
+}
+.welcome-question{
+  margin:0 0 11px!important;
+  font-size:.9rem!important;
+}
+.welcome-language-options{
+  grid-template-columns:1fr 1fr!important;
+  gap:10px!important;
+}
+.welcome-language-button{
+  min-height:78px!important;
+  padding:13px 14px!important;
+  grid-template-columns:42px 1fr!important;
+  column-gap:11px!important;
+  border-radius:17px!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.085),rgba(255,255,255,.045))!important;
+}
+.welcome-language-button>span{
+  width:38px!important;
+  height:38px!important;
+  font-size:.78rem!important;
+}
+.welcome-language-button strong{
+  font-size:.86rem!important;
+  line-height:1.16!important;
+}
+.welcome-language-button small{font-size:.64rem!important}
+.welcome-quality-note{
+  margin:10px auto 0!important;
+  max-width:48ch!important;
+  font-size:.57rem!important;
+  line-height:1.4!important;
+}
+
+/* braided side ropes */
+.welcome-board:before,
+.welcome-board:after{
+  top:-92px!important;
+  width:11px!important;
+  height:111px!important;
+  border-radius:999px!important;
+  background:
+    repeating-linear-gradient(135deg,
+      #e0bd8a 0 3px,
+      #ae7848 3px 7px,
+      #754726 7px 10px,
+      #c7955e 10px 14px)!important;
+  box-shadow:
+    inset 2px 0 rgba(255,255,255,.18),
+    inset -2px 0 rgba(70,39,19,.25),
+    2px 5px 9px rgba(0,0,0,.22)!important;
+}
+.welcome-board:before{left:21%!important}
+.welcome-board:after{right:21%!important}
+.welcome-rope{
+  top:-104px!important;
+  width:28px!important;
+  height:28px!important;
+  border:5px solid #9b6d40!important;
+  background:
+    radial-gradient(circle at 35% 30%,#f2d59f 0 17%,#c79b67 18% 45%,#8a5b34 46% 100%)!important;
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,.12),
+    0 5px 11px rgba(0,0,0,.25)!important;
+}
+.welcome-rope-left{left:calc(21% - 8px)!important}
+.welcome-rope-right{right:calc(21% - 8px)!important}
+
+/* center heart-knot: triple-stroked SVG gives rope depth + fibers */
+.welcome-heart-knot{
+  position:absolute;
+  z-index:3;
+  left:50%;
+  top:-101px;
+  width:78px;
+  height:90px;
+  transform:translateX(-50%);
+  overflow:visible;
+  filter:drop-shadow(0 5px 7px rgba(0,0,0,.24));
+  animation:welcomeKnotFloat 4.8s ease-in-out infinite;
+  pointer-events:none;
+}
+.welcome-heart-knot path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.welcome-heart-knot .rope-outline{
+  stroke:#5e391f;
+  stroke-width:14;
+}
+.welcome-heart-knot .rope-main{
+  stroke:#ae7849;
+  stroke-width:10;
+}
+.welcome-heart-knot .rope-fiber{
+  stroke:#dfb77f;
+  stroke-width:2.5;
+  stroke-dasharray:5 6;
+  opacity:.9;
+}
+.welcome-heart-knot .rope-knot{
+  fill:#9b693d;
+  stroke:#5e391f;
+  stroke-width:4;
+}
+@keyframes welcomeKnotFloat{
+  0%,100%{transform:translateX(-50%) translateY(0) rotate(-1deg)}
+  50%{transform:translateX(-50%) translateY(2px) rotate(1deg)}
+}
+
+@media(max-height:760px){
+  .language-welcome{padding-top:86px!important;padding-bottom:20px!important;place-items:start center!important}
+  .welcome-board{margin:0 auto!important}
+  .welcome-logo{width:58px!important;height:58px!important}
+  .welcome-board h2{font-size:2.45rem!important}
+  .welcome-intro{font-size:.76rem!important}
+  .welcome-intro-ar{font-size:.69rem!important}
+  .welcome-language-button{min-height:70px!important}
+  .welcome-quality-note{display:none!important}
+}
+@media(max-width:720px){
+  .language-welcome{padding:86px 12px 18px!important;place-items:start center!important}
+  .welcome-board{
+    width:min(500px,100%)!important;
+    margin:0 auto!important;
+    animation:none!important;
+  }
+  .welcome-board:before,
+  .welcome-board:after{
+    top:-72px!important;
+    height:84px!important;
+    width:9px!important;
+  }
+  .welcome-board:before{left:19%!important}
+  .welcome-board:after{right:19%!important}
+  .welcome-rope{
+    top:-82px!important;
+    width:23px!important;
+    height:23px!important;
+    border-width:4px!important;
+  }
+  .welcome-rope-left{left:calc(19% - 7px)!important}
+  .welcome-rope-right{right:calc(19% - 7px)!important}
+  .welcome-heart-knot{
+    top:-82px!important;
+    width:66px!important;
+    height:75px!important;
+    animation:none!important;
+  }
+  .welcome-board-inner{padding:21px 18px 17px!important;border-radius:21px!important}
+  .welcome-logo{width:62px!important;height:62px!important}
+  .welcome-board h2{font-size:clamp(2rem,9vw,2.8rem)!important}
+  .welcome-intro{font-size:.78rem!important}
+  .welcome-intro-ar{font-size:.7rem!important}
+  .welcome-language-options{grid-template-columns:1fr!important}
+  .welcome-language-button{min-height:68px!important;padding:11px 13px!important}
+  .welcome-quality-note{font-size:.54rem!important}
+}
+@media(max-width:430px){
+  .language-welcome{padding-top:78px!important}
+  .welcome-board h2{font-size:2.15rem!important}
+  .welcome-logo{width:56px!important;height:56px!important}
+  .welcome-intro{font-size:.72rem!important}
+  .welcome-intro-ar{font-size:.66rem!important}
+  .welcome-divider{margin:12px auto 10px!important}
+  .welcome-language-button small{font-size:.61rem!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .welcome-board,.welcome-heart-knot{animation:none!important}
+}

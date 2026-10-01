@@ -762,7 +762,7 @@ function startScenes(){
 
 function openLanguageWelcome(){
   const modal=$("#languageWelcome");
-  if(!modal||localStorage.getItem(WELCOME_KEY)==="1")return;
+  if(!modal||sessionStorage.getItem(WELCOME_KEY)==="1")return;
   modal.hidden=false;
   document.body.classList.add("welcome-open");
   requestAnimationFrame(()=>modal.classList.add("is-open"));
@@ -770,7 +770,7 @@ function openLanguageWelcome(){
   setTimeout(()=>first?.focus(),120);
 }
 function chooseWelcomeLanguage(next){
-  localStorage.setItem(WELCOME_KEY,"1");
+  sessionStorage.setItem(WELCOME_KEY,"1");
   applyLanguage(next);
   const modal=$("#languageWelcome");
   if(!modal)return;

@@ -4,18 +4,20 @@ Premium responsive static storefront for Zayt w Mouneh.
 
 ## Current experience
 
-- 337 products across 21 catalogue categories
-- Real supplied Zayt w Mouneh logo asset (not a redrawn approximation)
-- Wood + rope material language based on the supplied visual reference
-- Rotating pantry hero: honey, lentils/pulses and wheat/harvest
-- Clear Original / English product-name switch
-- English translations are shown only where the meaning is clear; uncertain local/product names stay original
-- Short “What it is” and “Use it for” guidance
-- Search, filters and a native horizontal category scrollbar
-- Product detail modal with synced quantity controls
-- Fixed cart state, responsive proportions and localStorage persistence
-- WhatsApp order handoff to +961 81 581 230
-- Mobile, tablet and laptop layouts
+- 332 grouped products with 423 priced size/pack variants from the supplied retail price list
+- 21 pantry categories
+- Full English and Arabic storefront modes, with RTL layout in Arabic
+- Language switch positioned beside the cart
+- Product names, Arabic names, pack sizes and prices sourced from the supplied price-list PDF
+- Product cards and product detail modal with exact size selection
+- Estimated cart total and WhatsApp order summary with quantity, size, unit price and subtotal
+- About / Mission section based on the supplied Zayt w Mouneh brand catalogue
+- Real supplied Zayt w Mouneh logo asset
+- Rope + wood design language interpreted as a suspended shop sign rather than a full background image
+- Rotating pantry hero with honey, lentils/pulses and wheat/harvest footage
+- Search and a compact category selector
+- Responsive mobile, tablet and laptop layouts
+- Cart persistence with localStorage
 - Reduced-motion accessibility support
 - No framework, package manager, build step or Wrangler requirement
 
@@ -28,4 +30,4 @@ This repository is a plain static site.
 - Build output directory: /
 - Root directory: /
 
-If Cloudflare Pages is connected to this repository and watches `main`, this commit can deploy directly.
+If Cloudflare Pages is connected to this repository and watches `main`, commits deploy directly.

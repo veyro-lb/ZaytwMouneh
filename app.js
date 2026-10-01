@@ -249,7 +249,7 @@ const EXTRA_UI={
     giftEyebrow:"Make a gift",giftTitle:"Build a pantry gift, your way.",
     giftCopy:"Choose anything from the shop, then turn your current pantry list into a packed gift for someone. Add the recipient, occasion and a message; we’ll confirm presentation, availability and delivery on WhatsApp.",
     giftPerk1:"Choose any products",giftPerk2:"Packed as a gift",giftPerk3:"Delivery across Lebanon",
-    giftBrowse:"Browse the shop ↗",giftBuilderLabel:"Your gift basket",giftEmpty:"Choose products above and they’ll appear here.",giftProductsLabel:"Choose what goes inside",giftProductsHint:"Search the full catalogue and add products directly to this gift.",giftProductPlaceholder:"Search products for the gift…",giftUseCart:"Add my cart items",giftSelectedTitle:"Inside the gift",giftClear:"Clear",giftAdd:"Add",giftRemove:"Remove",
+    giftBrowse:"Browse the shop ↗",giftBuilderLabel:"Your gift basket",giftEmpty:"Choose products above and they’ll appear here.",giftProductsLabel:"Choose what goes inside",giftProductsHint:"Search or browse the full catalogue and add any product directly to this gift.",giftProductPlaceholder:"Search any product for the gift…",giftUseCart:"Add my cart items",giftSelectedTitle:"Inside the gift",giftClear:"Clear",giftAdd:"Add",giftRemove:"Remove",giftAllCategories:"All categories",giftMore:"Show more products",
     giftRecipient:"Recipient name",giftRecipientPlaceholder:"Who is the gift for?",giftOccasion:"Occasion",giftPackaging:"Packing style",giftArea:"Delivery area",giftAreaPlaceholder:"Area in Lebanon",
     giftMessage:"Gift message",giftMessagePlaceholder:"Write a short note for the recipient…",giftSender:"Your name",giftSenderPlaceholder:"Your name",
     giftSend:"Send gift request on WhatsApp ↗",giftNote:"Gift packing, final availability and delivery details are confirmed on WhatsApp before the order is final.",
@@ -276,7 +276,7 @@ const EXTRA_UI={
     giftEyebrow:"حضّر هدية",giftTitle:"حضّر هدية مونة على ذوقك.",
     giftCopy:"اختر أي منتجات من المتجر، ثم حوّل لائحة المونة الحالية إلى هدية مغلّفة لشخص تحبه. أضف اسم المستلم والمناسبة والرسالة، ونؤكد التغليف والتوفر والتوصيل عبر واتساب.",
     giftPerk1:"اختر أي منتجات",giftPerk2:"تغليف كهدية",giftPerk3:"توصيل إلى كل لبنان",
-    giftBrowse:"تصفّح المتجر ↗",giftBuilderLabel:"سلة الهدية",giftEmpty:"اختر المنتجات أعلاه وستظهر هنا.",giftProductsLabel:"اختر ما تريد داخل الهدية",giftProductsHint:"ابحث في كامل المنتجات وأضف الأصناف مباشرة إلى الهدية.",giftProductPlaceholder:"ابحث عن منتجات للهدية…",giftUseCart:"أضف منتجات سلتي",giftSelectedTitle:"داخل الهدية",giftClear:"مسح",giftAdd:"أضف",giftRemove:"حذف",
+    giftBrowse:"تصفّح المتجر ↗",giftBuilderLabel:"سلة الهدية",giftEmpty:"اختر المنتجات أعلاه وستظهر هنا.",giftProductsLabel:"اختر ما تريد داخل الهدية",giftProductsHint:"ابحث أو تصفّح كامل المنتجات وأضف أي صنف مباشرة إلى الهدية.",giftProductPlaceholder:"ابحث عن أي منتج للهدية…",giftUseCart:"أضف منتجات سلتي",giftSelectedTitle:"داخل الهدية",giftClear:"مسح",giftAdd:"أضف",giftRemove:"حذف",giftAllCategories:"كل الأقسام",giftMore:"عرض المزيد",
     giftRecipient:"اسم المستلم",giftRecipientPlaceholder:"لمن الهدية؟",giftOccasion:"المناسبة",giftPackaging:"طريقة التغليف",giftArea:"منطقة التوصيل",giftAreaPlaceholder:"أي منطقة في لبنان",
     giftMessage:"رسالة الهدية",giftMessagePlaceholder:"اكتب رسالة قصيرة للمستلم…",giftSender:"اسمك",giftSenderPlaceholder:"اسمك",
     giftSend:"إرسال طلب الهدية عبر واتساب ↗",giftNote:"يتم تأكيد التغليف والتوفر وتفاصيل التوصيل عبر واتساب قبل تثبيت الطلب.",
@@ -309,6 +309,8 @@ let languageFrame=null;
 let favorites=loadFavorites();
 let recentViews=loadRecent();
 let giftItems=loadGiftItems();
+let giftVisibleLimit=18;
+let giftCategory="All";
 let favoritesOnly=false;
 const CURRENT_PAGE=document.body?.dataset.page||"home";
 let heroVisible=true;
@@ -984,21 +986,40 @@ function renderGiftOptions(){
   if([...occ.options].some(o=>o.value===occValue))occ.value=occValue;
   if([...pack.options].some(o=>o.value===packValue))pack.value=packValue;
 }
+function renderGiftCategorySelect(){
+  const select=$("#giftCategorySelect");if(!select)return;
+  select.innerHTML=[
+    `<option value="All">${escapeHtml(EXTRA_UI[lang].giftAllCategories)} · ${PRODUCTS_DATA.length}</option>`,
+    ...CATEGORY_ORDER.map(cat=>`<option value="${escapeHtml(cat)}">${escapeHtml(categoryName(cat))} · ${CATEGORY_COUNTS[cat]||0}</option>`)
+  ].join("");
+  select.value=giftCategory;
+}
 function renderGiftPickerResults(){
-  const box=$("#giftProductResults"),input=$("#giftProductSearch");if(!box||!input)return;
+  const box=$("#giftProductResults"),input=$("#giftProductSearch"),more=$("#giftLoadMore");if(!box||!input)return;
   const q=input.value.trim();
-  let items=PRODUCTS_DATA.map(p=>({p,score:q?searchScore(p,q):1})).filter(x=>!q||x.score>0);
+  let items=PRODUCTS_DATA
+    .map(p=>({p,score:q?searchScore(p,q):1}))
+    .filter(({p,score})=>(giftCategory==="All"||p.category===giftCategory)&&(!q||score>0));
   if(q)items.sort((a,b)=>b.score-a.score);
-  items=items.slice(0,8);
+  const total=items.length;
+  items=items.slice(0,giftVisibleLimit);
   box.innerHTML=items.map(({p})=>{
     const v=defaultVariant(p),already=giftRows().some(r=>r.p.id===p.id);
     return `<button type="button" class="gift-result ${already?"is-added":""}" data-gift-add="${escapeHtml(p.id)}">
       <span class="gift-result-mark">${escapeHtml(initials(currentName(p)))}</span>
-      <span><small>${escapeHtml(categoryName(p.category))}</small><strong>${escapeHtml(currentName(p))}</strong><em>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${money(v.price)}</em></span>
+      <span><small>${escapeHtml(categoryName(p.category))}</small><strong>${escapeHtml(currentName(p))}</strong><em>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${money(v.price)}${p.variants.length>1?` · ${p.variants.length} ${escapeHtml(UI[lang].sizeOptions)}`:""}</em></span>
       <b>${already?"✓":escapeHtml(EXTRA_UI[lang].giftAdd)}</b>
     </button>`;
   }).join("");
-  document.querySelectorAll("[data-gift-add]").forEach(btn=>btn.addEventListener("click",()=>addGiftItem(btn.dataset.giftAdd,defaultVariant(productById(btn.dataset.giftAdd)).id,1)));
+  if(!items.length)box.innerHTML=`<p class="gift-no-results">${escapeHtml(UI[lang].emptyCopy)}</p>`;
+  if(more){
+    more.hidden=giftVisibleLimit>=total;
+    more.textContent=EXTRA_UI[lang].giftMore;
+  }
+  document.querySelectorAll("[data-gift-add]").forEach(btn=>btn.addEventListener("click",()=>{
+    const p=productById(btn.dataset.giftAdd);if(!p)return;
+    addGiftItem(p.id,defaultVariant(p).id,1);
+  }));
 }
 function renderGiftSummary(){
   const rows=giftRows(),summary=$("#giftSummary");if(!summary)return;
@@ -1075,6 +1096,7 @@ function applyExtraLanguage(){
   $("#giftMessage").placeholder=t.giftMessagePlaceholder;
   $("#giftSender").placeholder=t.giftSenderPlaceholder;
   renderGiftOptions();
+  renderGiftCategorySelect();
   renderGiftPickerResults();
   renderRecent();
   renderGiftSummary();
@@ -1301,7 +1323,9 @@ function init(){
   $("#cartBrowse").addEventListener("click",()=>{closeCart();location.href="shop.html#shop"});
   $("#orderForm").addEventListener("submit",e=>{e.preventDefault();order()});
   $("#giftForm").addEventListener("submit",e=>{e.preventDefault();sendGiftOrder()});
-  $("#giftProductSearch").addEventListener("input",renderGiftPickerResults);
+  $("#giftProductSearch").addEventListener("input",()=>{giftVisibleLimit=18;renderGiftPickerResults()});
+  $("#giftCategorySelect").addEventListener("change",e=>{giftCategory=e.target.value;giftVisibleLimit=18;renderGiftPickerResults()});
+  $("#giftLoadMore").addEventListener("click",()=>{giftVisibleLimit+=18;renderGiftPickerResults()});
   $("#giftUseCart").addEventListener("click",useCartForGift);
   $("#giftClear").addEventListener("click",()=>{giftItems={};saveGiftItems();renderGiftSummary();renderGiftPickerResults()});
   $("#mobileOrderBar").addEventListener("click",openCart);

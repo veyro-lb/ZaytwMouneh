@@ -1,6 +1,29 @@
 
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const PRODUCT_IMAGE_ASSETS={};
+
+function productImageKey(p){
+  const s=(String(p?.nameEn||"")+" "+String(p?.original||"")+" "+String(p?.category||"")).toLowerCase();
+  if(/zaatar|zatar|thyme/.test(s))return "zaatar";
+  if(/lentil|pulse|chickpea|bean|hommos|hummus|lupin/.test(s))return "lentils";
+  if(/olive oil/.test(s)||p?.category==="Oils")return "olive-oil";
+  if(p?.category==="Olives"||/\bolive\b/.test(s))return "olives";
+  if(/honey/.test(s))return "honey";
+  if(/molasses|debs|dibs|syrup|jallab|jeleb/.test(s))return "molasses";
+  if(/rice|grain|bulgur|burghol|freek|wheat|oat/.test(s))return "rice";
+  if(/flour|semolina|baking|yeast/.test(s)||p?.category==="Flour")return "flour";
+  if(/nut|almond|walnut|hazelnut|peanut|seed|sesame|pistach/.test(s))return "nuts-seeds";
+  if(p?.category==="Spices"||p?.category==="Condiments"||/spice|pepper|cumin|sumac|cinnamon|paprika|ginger|herb/.test(s))return "spices";
+  if(p?.category==="Dried Foods"||p?.category==="Dates"||p?.category==="Sweets + Candy")return "nuts-seeds";
+  if(p?.category==="Pickles"||p?.category==="Mouneh")return "olives";
+  return "spices";
+}
+function productImageSrc(p){return PRODUCT_IMAGE_ASSETS[productImageKey(p)]||""}
+function productVisualMarkup(p,cls="product-image"){
+  const src=productImageSrc(p);
+  return src?("<img class=\""+cls+"\" src=\""+src+"\" alt=\"\" loading=\"lazy\" decoding=\"async\" />"):("<span class=\"product-monogram\">"+escapeHtml(initials(currentName(p)))+"</span>");
+}
 const WA="96181581230";
 const CART_KEY="zwm-cart-v5";
 const LANG_KEY="zwm-lang-v2";
@@ -796,7 +819,7 @@ function renderProducts(){
 
     return `<article class="product-card" data-product="${escapeHtml(p.id)}" tabindex="0" role="button" aria-label="${escapeHtml(t.view+" "+currentName(p))}">
       <div class="product-top">
-        <div class="product-visual"><span class="product-monogram">${escapeHtml(initials(currentName(p)))}</span></div>
+        <div class="product-visual">${productVisualMarkup(p)}</div>
         <div class="product-top-actions">
           <button class="product-favorite ${isFav?"is-active":""}" type="button" data-fav="${escapeHtml(p.id)}" aria-pressed="${isFav}" aria-label="${escapeHtml(EXTRA_UI[lang].favorite)}">${isFav?"♥":"♡"}</button>
           <button class="product-view" type="button" data-view="${escapeHtml(p.id)}">${escapeHtml(t.view)}</button>
@@ -953,7 +976,7 @@ function renderModal(productId,variantId){
   currentModalProduct=p;
   currentModalVariant=v;
   const t=UI[lang],info=infoFor(p),health=healthNoteFor(p),badges=badgesFor(p);
-  $("#productModalMark").textContent=initials(currentName(p));
+  $("#productModalMark").innerHTML=productVisualMarkup(p,"product-modal-image");
   $("#productModalCategory").textContent=categoryName(p.category);
   $("#productModalTitle").textContent=currentName(p);
   $("#productModalOriginal").textContent=lang==="en"&&normalize(p.nameEn)!==normalize(p.original)?`Catalogue name: ${p.original}`:"";
@@ -1052,7 +1075,7 @@ function renderRecent(){
   const items=recentViews.map(productById).filter(Boolean);
   section.hidden=!items.length;
   if(!items.length){rail.innerHTML="";return}
-  rail.innerHTML=items.map(p=>`<button type="button" class="recent-card" data-recent-view="${escapeHtml(p.id)}"><span class="recent-mark">${escapeHtml(initials(currentName(p)))}</span><span><small>${escapeHtml(categoryName(p.category))}</small><strong>${escapeHtml(currentName(p))}</strong></span><b>${money(productPriceSummary(p).min)}</b></button>`).join("");
+  rail.innerHTML=items.map(p=>`<button type="button" class="recent-card" data-recent-view="${escapeHtml(p.id)}"><span class="recent-mark">${productVisualMarkup(p,"recent-product-image")}</span><span><small>${escapeHtml(categoryName(p.category))}</small><strong>${escapeHtml(currentName(p))}</strong></span><b>${money(productPriceSummary(p).min)}</b></button>`).join("");
   $$("[data-recent-view]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.recentView)));
 }
 
@@ -1085,7 +1108,7 @@ function renderGiftPickerResults(){
   box.innerHTML=items.map(({p})=>{
     const v=defaultVariant(p),already=giftRows().some(r=>r.p.id===p.id);
     return `<button type="button" class="gift-result ${already?"is-added":""}" data-gift-add="${escapeHtml(p.id)}">
-      <span class="gift-result-mark">${escapeHtml(initials(currentName(p)))}</span>
+      <span class="gift-result-mark">${productVisualMarkup(p,"gift-product-image")}</span>
       <span><small>${escapeHtml(categoryName(p.category))}</small><strong>${escapeHtml(currentName(p))}</strong><em>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${money(v.price)}${p.variants.length>1?` · ${p.variants.length} ${escapeHtml(UI[lang].sizeOptions)}`:""}</em></span>
       <b>${already?"✓":escapeHtml(EXTRA_UI[lang].giftAdd)}</b>
     </button>`;

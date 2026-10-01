@@ -1096,3 +1096,145 @@ body.welcome-open .language-welcome.is-open{
 @media(max-width:430px){
   .welcome-rope-divider{width:min(100%,330px)!important;height:50px!important}
 }
+
+
+/* ===== v9 organic rope accents + smooth language transition ===== */
+.rope-rule.rope-vine{
+  width:min(1180px,calc(100% - 34px))!important;
+  height:94px!important;
+  margin:24px auto -18px!important;
+  overflow:visible!important;
+  opacity:.95;
+}
+.rope-vine-svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+  filter:drop-shadow(0 5px 7px rgba(0,0,0,.18));
+  animation:ropeDrift 8s ease-in-out infinite;
+}
+.rope-vine-svg path,
+.welcome-rope-heart path{
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.rope-vine-shadow,
+.rope-heart-shadow{
+  stroke:#55321b;
+  stroke-width:18;
+  opacity:.9;
+}
+.rope-vine-main,
+.rope-heart-main{
+  stroke:#b57e48;
+  stroke-width:13;
+}
+.rope-vine-fiber,
+.rope-heart-fiber{
+  stroke:#e0b87c;
+  stroke-width:3;
+  stroke-dasharray:7 7;
+  opacity:.95;
+}
+@keyframes ropeDrift{
+  0%,100%{transform:translateY(0) rotate(-.15deg)}
+  50%{transform:translateY(3px) rotate(.15deg)}
+}
+
+/* Popup rope: a loose side-flowing flourish rather than a rigid centered divider. */
+.welcome-rope-divider{
+  width:min(82%,455px)!important;
+  max-width:none!important;
+  height:64px!important;
+  margin:8px auto 5px 5%!important;
+  overflow:visible!important;
+  transform:rotate(-1.2deg);
+}
+.welcome-rope-heart{
+  width:100%!important;
+  height:100%!important;
+  overflow:visible!important;
+  filter:
+    drop-shadow(0 3px 3px rgba(50,27,12,.26))
+    drop-shadow(0 7px 10px rgba(0,0,0,.07))!important;
+  animation:popupRopeFlow 6.8s ease-in-out infinite!important;
+}
+.welcome-rope-heart .rope-shadow{
+  stroke:#55321b!important;
+  stroke-width:17!important;
+  opacity:.88!important;
+}
+.welcome-rope-heart .rope-body{
+  stroke:#b67f49!important;
+  stroke-width:12.5!important;
+}
+.welcome-rope-heart .rope-highlight{
+  stroke:#e2bb82!important;
+  stroke-width:3!important;
+  stroke-dasharray:7 7!important;
+  opacity:.95!important;
+}
+@keyframes popupRopeFlow{
+  0%,100%{transform:translate(0,0) rotate(0)}
+  50%{transform:translate(3px,2px) rotate(.45deg)}
+}
+
+/* Restore a visible, smooth language change instead of freezing every transition. */
+.lang-switching *{
+  animation-play-state:running!important;
+}
+.lang-switching body > .site-header,
+.lang-switching body > main,
+.lang-switching body > .footer{
+  animation:languageReveal .3s cubic-bezier(.2,.75,.2,1) both!important;
+}
+@keyframes languageReveal{
+  from{opacity:.72;transform:translateY(3px)}
+  to{opacity:1;transform:none}
+}
+.language-switch{
+  position:relative;
+  overflow:hidden;
+}
+.language-switch button{
+  transition:
+    color .22s ease,
+    background .22s ease,
+    transform .22s ease,
+    box-shadow .22s ease!important;
+}
+.language-switch button.is-active{
+  animation:languagePill .28s cubic-bezier(.2,.75,.2,1) both;
+}
+@keyframes languagePill{
+  from{transform:scale(.9);opacity:.72}
+  to{transform:scale(1);opacity:1}
+}
+
+@media(max-width:760px){
+  .rope-rule.rope-vine{
+    width:calc(100% - 18px)!important;
+    height:72px!important;
+    margin:18px auto -12px!important;
+  }
+  .welcome-rope-divider{
+    width:90%!important;
+    height:54px!important;
+    margin-left:1%!important;
+  }
+}
+@media(max-width:430px){
+  .rope-rule.rope-vine{height:62px!important}
+  .welcome-rope-divider{height:49px!important;width:94%!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .rope-vine-svg,
+  .welcome-rope-heart,
+  .language-switch button.is-active,
+  .lang-switching body > .site-header,
+  .lang-switching body > main,
+  .lang-switching body > .footer{
+    animation:none!important;
+  }
+}

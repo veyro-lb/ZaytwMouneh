@@ -1307,3 +1307,90 @@ body.welcome-open .language-welcome.is-open{
 @media(prefers-reduced-motion:reduce){
   .rope-vine-svg{animation:none!important}
 }
+
+
+/* ===== v11 compact rope accent: no full-width cartoon divider ===== */
+.hero{position:relative!important}
+.hero .rope-vine,
+.hero .rope-accent{
+  transform:none!important;
+}
+.rope-rule.rope-accent{
+  position:absolute!important;
+  right:4.5%!important;
+  bottom:20px!important;
+  width:min(360px,30vw)!important;
+  height:52px!important;
+  margin:0!important;
+  opacity:.62!important;
+  pointer-events:none!important;
+  overflow:visible!important;
+  z-index:2!important;
+}
+.rope-accent-svg{
+  display:block;
+  width:100%!important;
+  height:100%!important;
+  overflow:visible!important;
+  filter:drop-shadow(0 2px 2px rgba(41,21,9,.15))!important;
+  animation:ropeAccentDrift 9s ease-in-out infinite!important;
+}
+.rope-accent-svg path{
+  fill:none!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+.rope-accent-shadow{
+  stroke:#4f301d!important;
+  stroke-width:9!important;
+  opacity:.22!important;
+}
+.rope-accent-main{
+  stroke:url(#ropeAccentGradient)!important;
+  stroke-width:6.5!important;
+}
+.rope-accent-fiber{
+  stroke:#efd4aa!important;
+  stroke-width:1.2!important;
+  stroke-dasharray:3 7!important;
+  opacity:.58!important;
+}
+.rope-accent-heart{
+  stroke:url(#ropeAccentGradient)!important;
+  stroke-width:5.6!important;
+  opacity:.9!important;
+}
+@keyframes ropeAccentDrift{
+  0%,100%{transform:translate3d(0,0,0) rotate(-.3deg)}
+  50%{transform:translate3d(-2px,1px,0) rotate(.3deg)}
+}
+
+/* Kill any old full-width rope layout if stale classes survive in cached markup. */
+.rope-rule.rope-vine{
+  position:absolute!important;
+  right:4.5%!important;
+  left:auto!important;
+  bottom:20px!important;
+  width:min(360px,30vw)!important;
+  height:52px!important;
+  margin:0!important;
+  opacity:.35!important;
+}
+@media(max-width:900px){
+  .rope-rule.rope-accent,
+  .rope-rule.rope-vine{
+    width:250px!important;
+    right:24px!important;
+    bottom:14px!important;
+    opacity:.48!important;
+  }
+}
+@media(max-width:620px){
+  .rope-rule.rope-accent,
+  .rope-rule.rope-vine{
+    display:none!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .rope-accent-svg{animation:none!important}
+}

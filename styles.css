@@ -2138,3 +2138,154 @@ body[data-page="contact"] .nav-links a[href="contact.html"]{
   .gift-remove{position:absolute;right:8px;top:8px}
   .gift-selected-row{position:relative;padding-right:42px!important}
 }
+
+
+/* ===== v15 proportional compact navigation menu ===== */
+
+/* Neutralize the old generic .nav-toggle span rule that was flattening the label. */
+.nav-toggle .menu-label{
+  display:inline-block!important;
+  width:auto!important;
+  height:auto!important;
+  margin:0!important;
+  background:transparent!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+.nav-toggle .menu-icon{
+  width:18px!important;
+  height:16px!important;
+  display:grid!important;
+  align-content:center;
+  gap:5px!important;
+  margin:0!important;
+  background:transparent!important;
+}
+.nav-toggle .menu-icon i{
+  width:18px!important;
+  height:1.5px!important;
+  margin:0!important;
+  background:#fff!important;
+}
+.nav-toggle{
+  min-width:96px!important;
+  height:42px!important;
+  padding:0 15px!important;
+  gap:10px!important;
+}
+.nav-toggle[aria-expanded="true"]{
+  background:rgba(255,255,255,.13)!important;
+}
+
+/* Compact, balanced menu panel */
+.nav-links{
+  top:116px!important;
+  width:min(374px,calc(100vw - 32px))!important;
+  padding:12px!important;
+  gap:5px!important;
+  border-radius:21px!important;
+  max-height:calc(100dvh - 132px)!important;
+  scrollbar-width:thin;
+}
+.nav-links .menu-heading{
+  padding:8px 9px 10px!important;
+}
+.menu-heading span{
+  font-size:.57rem!important;
+  letter-spacing:.13em!important;
+}
+.menu-heading small{
+  font-size:.67rem!important;
+  line-height:1.4!important;
+}
+.nav-links>a:not(.menu-utility-link){
+  min-height:50px!important;
+  grid-template-columns:24px minmax(0,1fr) 22px!important;
+  gap:8px!important;
+  padding:7px 10px!important;
+  border-radius:13px!important;
+}
+.nav-links>a>span:first-child{
+  font-size:.57rem!important;
+  width:auto!important;
+  height:auto!important;
+  margin:0!important;
+  background:transparent!important;
+}
+.nav-links>a strong{
+  min-width:0!important;
+  font-size:.79rem!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.nav-links>a b{
+  justify-self:end;
+  font-size:.82rem!important;
+  line-height:1!important;
+}
+.menu-utility{
+  gap:5px!important;
+  padding-top:2px!important;
+}
+.menu-utility-link{
+  min-height:42px!important;
+  padding:7px 9px!important;
+  border-radius:12px!important;
+  font-size:.63rem!important;
+}
+.menu-utility-link svg{width:15px!important;height:15px!important}
+
+[dir="rtl"] .nav-links{
+  left:max(24px,calc((100vw - min(1240px,calc(100vw - 48px)))/2))!important;
+  right:auto!important;
+  transform-origin:top left!important;
+}
+[dir="rtl"] .nav-links>a:not(.menu-utility-link){
+  grid-template-columns:22px minmax(0,1fr) 24px!important;
+}
+[dir="rtl"] .nav-links>a>span:first-child{grid-column:3}
+[dir="rtl"] .nav-links>a strong{grid-column:2}
+[dir="rtl"] .nav-links>a b{grid-column:1;grid-row:1;justify-self:start}
+
+@media(max-width:1080px){
+  .nav-links{
+    top:110px!important;
+    width:min(360px,calc(100vw - 28px))!important;
+  }
+}
+@media(max-width:760px){
+  .nav-toggle{
+    min-width:42px!important;
+    width:42px!important;
+    height:38px!important;
+    padding:0!important;
+  }
+  .nav-toggle .menu-label{display:none!important}
+  .nav-links{
+    top:108px!important;
+    left:auto!important;
+    right:14px!important;
+    width:min(340px,calc(100vw - 28px))!important;
+    max-height:calc(100dvh - 122px)!important;
+    padding:10px!important;
+  }
+  [dir="rtl"] .nav-links{
+    left:14px!important;
+    right:auto!important;
+  }
+  .nav-links>a:not(.menu-utility-link){
+    min-height:48px!important;
+  }
+}
+@media(max-width:420px){
+  .nav-links{
+    left:10px!important;
+    right:10px!important;
+    width:auto!important;
+    top:104px!important;
+  }
+  [dir="rtl"] .nav-links{left:10px!important;right:10px!important}
+  .menu-utility{grid-template-columns:1fr!important}
+}

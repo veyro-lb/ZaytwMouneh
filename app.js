@@ -707,7 +707,7 @@ function renderCategories(){
       <div class="category-card-bottom"><span class="text-link">${lang==="ar"?"استكشف":"Explore"}</span><div class="category-arrow">${lang==="ar"?"↙":"↘"}</div></div>
     </a>`;
   }).join("");
-  if(CURRENT_PAGE==="shop")$("[data-cat]").forEach(a=>a.addEventListener("click",e=>{
+  if(CURRENT_PAGE==="shop")document.querySelectorAll("[data-cat]").forEach(a=>a.addEventListener("click",e=>{
     e.preventDefault();
     activeCategory=a.dataset.cat;
     query="";

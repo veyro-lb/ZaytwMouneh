@@ -959,3 +959,97 @@ body.welcome-open .language-welcome.is-open{
 @media(prefers-reduced-motion:reduce){
   .welcome-board,.welcome-heart-knot{animation:none!important}
 }
+
+
+/* ===== v7 rope-heart divider + reliable welcome actions ===== */
+.welcome-language-options{
+  position:relative!important;
+  z-index:20!important;
+  pointer-events:auto!important;
+}
+.welcome-language-button{
+  position:relative!important;
+  z-index:21!important;
+  pointer-events:auto!important;
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+.welcome-language-button *{pointer-events:none!important}
+
+.welcome-rope-divider{
+  position:relative!important;
+  z-index:8!important;
+  width:min(100%,440px)!important;
+  max-width:440px!important;
+  height:58px!important;
+  margin:10px auto 8px!important;
+  overflow:visible!important;
+}
+.welcome-rope-divider span{display:none!important}
+.welcome-rope-heart{
+  display:block;
+  width:100%;
+  height:100%;
+  overflow:visible;
+  filter:drop-shadow(0 4px 4px rgba(0,0,0,.18));
+  animation:ropeHeartBreathe 5.5s ease-in-out infinite;
+}
+.welcome-rope-heart path{
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.welcome-rope-heart .rope-shadow{
+  stroke:#56351f;
+  stroke-width:16;
+  opacity:.88;
+}
+.welcome-rope-heart .rope-body{
+  stroke:#b98551;
+  stroke-width:12;
+}
+.welcome-rope-heart .rope-highlight{
+  stroke:#e5c08a;
+  stroke-width:2.5;
+  stroke-dasharray:5 7;
+  opacity:.95;
+}
+@keyframes ropeHeartBreathe{
+  0%,100%{transform:translateY(0) scaleX(1)}
+  50%{transform:translateY(1px) scaleX(.995)}
+}
+
+/* Disable the obsolete floating heart knot from previous revisions if cached markup survives. */
+.welcome-board>.welcome-heart-knot{display:none!important}
+
+/* Keep the board compact around the new rope-heart divider. */
+.welcome-board-inner{
+  padding-bottom:18px!important;
+}
+.welcome-question{
+  margin-top:0!important;
+}
+@media(max-height:760px){
+  .welcome-rope-divider{
+    height:48px!important;
+    width:min(100%,380px)!important;
+    margin:7px auto 5px!important;
+  }
+}
+@media(max-width:720px){
+  .welcome-rope-divider{
+    height:46px!important;
+    width:min(100%,360px)!important;
+    margin:8px auto 6px!important;
+  }
+}
+@media(max-width:430px){
+  .welcome-rope-divider{
+    height:40px!important;
+    width:min(100%,320px)!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .welcome-rope-heart{animation:none!important}
+}

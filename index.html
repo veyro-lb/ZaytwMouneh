@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#123f1c" />
+  <meta name="description" content="Zayt w Mouneh — a pantry of Lebanese memory, curated with care. Browse 337 pantry essentials across 21 categories and order directly on WhatsApp." />
+  <meta property="og:title" content="Zayt w Mouneh — Rooted in Lebanese Heritage" />
+  <meta property="og:description" content="Authentic pantry essentials, thoughtfully curated. Browse the full catalogue and order on WhatsApp." />
+  <meta property="og:type" content="website" />
+  <title>Zayt w Mouneh | Rooted in Lebanese Heritage</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#shop">Skip to catalogue</a>
+  <div class="page-progress" aria-hidden="true"><span id="pageProgress"></span></div>
+
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader-mark"><img src="assets/logo.svg" alt="" /></div>
+    <div class="loader-line"><span></span></div>
+  </div>
+
+  <header class="site-header" id="top">
+    <div class="announcement">
+      <span>Lebanese pantry essentials since 2006</span>
+      <span class="announcement-dot" aria-hidden="true"></span>
+      <a href="https://wa.me/96181581230" target="_blank" rel="noopener">Order on WhatsApp</a>
+    </div>
+    <nav class="nav shell" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Zayt w Mouneh home">
+        <img src="assets/logo.svg" alt="Zayt w Mouneh" />
+        <span>Zayt w Mouneh</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
+      <div class="nav-links" id="navLinks">
+        <a href="#shop">Shop</a>
+        <a href="#categories">Categories</a>
+        <a href="#heritage">Our heritage</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <button class="cart-button" id="cartButton" aria-label="Open cart">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l1.6 10.2a2 2 0 0 0 2 1.7h7.9a2 2 0 0 0 1.9-1.4L21 7H6.1M9 20h.01M17 20h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Cart</span><span class="cart-count" id="cartCount">0</span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <svg class="hero-branch hero-branch-left" viewBox="0 0 500 700" aria-hidden="true">
+        <path d="M72 646C132 520 178 399 260 294C313 225 362 174 428 92" />
+        <path d="M195 415C130 401 99 366 80 318M245 333C181 321 152 285 133 239M293 270C250 230 238 190 239 146M335 218C310 165 316 124 334 88M259 294C331 314 378 300 426 266M302 245C360 258 411 239 449 206M348 191C395 195 432 176 464 147" />
+        <ellipse cx="316" cy="281" rx="21" ry="34" transform="rotate(-18 316 281)"/><ellipse cx="360" cy="269" rx="21" ry="34" transform="rotate(-10 360 269)"/><ellipse cx="402" cy="249" rx="21" ry="34" transform="rotate(2 402 249)"/>
+      </svg>
+      <svg class="hero-branch hero-branch-right" viewBox="0 0 500 700" aria-hidden="true">
+        <path d="M72 646C132 520 178 399 260 294C313 225 362 174 428 92" />
+        <path d="M195 415C130 401 99 366 80 318M245 333C181 321 152 285 133 239M293 270C250 230 238 190 239 146M335 218C310 165 316 124 334 88M259 294C331 314 378 300 426 266M302 245C360 258 411 239 449 206M348 191C395 195 432 176 464 147" />
+      </svg>
+
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow hero-reveal">Rooted in Lebanese heritage</p>
+          <h1 id="heroTitle" class="hero-title hero-reveal">A pantry of<br /><em>Lebanese memory.</em></h1>
+          <p class="hero-lede hero-reveal">Authentic pantry essentials, thoughtfully curated — from olive oil and mouneh to herbs, spices, honey, grains and more.</p>
+          <div class="hero-actions hero-reveal">
+            <a class="button button-gold magnetic" href="#shop">Explore the pantry <span>↘</span></a>
+            <a class="button button-ghost magnetic" href="https://wa.me/96181581230" target="_blank" rel="noopener">WhatsApp us</a>
+          </div>
+          <div class="hero-stats hero-reveal" aria-label="Catalogue overview">
+            <div><strong data-counter="337">337</strong><span>products</span></div>
+            <div><strong data-counter="21">21</strong><span>categories</span></div>
+            <div><strong>2006</strong><span>since</span></div>
+          </div>
+        </div>
+        <div class="hero-mark-wrap hero-reveal" id="heroMarkWrap">
+          <div class="orbit orbit-one" aria-hidden="true"></div><div class="orbit orbit-two" aria-hidden="true"></div>
+          <div class="hero-mark"><img src="assets/logo.svg" alt="Zayt w Mouneh logo" /></div>
+          <div class="hero-note">Curated with care</div>
+        </div>
+      </div>
+      <a class="scroll-cue" href="#categories" aria-label="Scroll to categories"><span></span>Discover</a>
+    </section>
+
+    <section class="category-marquee" aria-label="Product categories"><div class="marquee-track" id="marqueeTrack"></div></section>
+
+    <section class="categories section shell" id="categories">
+      <div class="section-heading reveal">
+        <div><p class="eyebrow">The pantry, chapter by chapter</p><h2>Twenty-one ways<br />to bring home <em>mouneh.</em></h2></div>
+        <p>Every category is part of the same inheritance — harvested, preserved, offered and passed from one generation to the next.</p>
+      </div>
+      <div class="category-grid" id="categoryGrid"></div>
+    </section>
+
+    <section class="story-band" id="heritage">
+      <div class="story-watermark" aria-hidden="true">زيت ومونة</div>
+      <div class="shell story-grid">
+        <div class="story-number reveal">Since<br /><strong>2006</strong></div>
+        <div class="story-copy reveal">
+          <p class="eyebrow">Our heritage</p><h2>Memory kept <em>within reach.</em></h2>
+          <p>It lives in herbs drying in summer light, olives resting in brine, olive oil pressed from the grove, and jars prepared patiently for the colder months.</p>
+          <p>Our mission is to keep that inheritance alive in a way that belongs to today — with respect for origin, craft and flavour, presented with clarity and care.</p>
+          <a class="text-link" href="#shop">Browse the complete catalogue <span>→</span></a>
+        </div>
+        <div class="story-card reveal" aria-hidden="true">
+          <div class="story-card-ring"></div>
+          <svg viewBox="0 0 240 320"><path d="M41 286C75 219 94 160 136 102C164 64 187 44 214 18"/><path d="M97 165C66 159 50 143 40 119M128 121C102 114 88 95 81 74M155 88C136 69 132 49 135 31M135 102C172 110 195 104 220 87M158 76C186 82 208 73 229 58"/></svg>
+          <span>Land · seasons · table</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="shop section" id="shop">
+      <div class="shell">
+        <div class="shop-head reveal">
+          <div><p class="eyebrow">Full product catalogue</p><h2>Find exactly what<br />you came for.</h2></div>
+          <p class="shop-note">No prices are shown in the catalogue. Add what you need to your cart and send the full order on WhatsApp for availability, sizes and confirmation.</p>
+        </div>
+        <div class="catalog-toolbar reveal">
+          <label class="search-box" for="productSearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg><input id="productSearch" type="search" placeholder="Search zaatar, honey, oils, spices…" autocomplete="off" /><kbd>⌘ K</kbd></label>
+          <div class="catalog-meta"><strong id="resultCount">337</strong> products</div>
+        </div>
+        <div class="filter-row" id="filterRow" aria-label="Filter by category"></div>
+        <div class="product-grid" id="productGrid" aria-live="polite"></div>
+        <div class="catalog-empty" id="catalogEmpty" hidden><span>Nothing found.</span><p>Try a different spelling or browse another category.</p><button class="button button-green" id="clearSearch">Clear filters</button></div>
+        <div class="load-more-wrap"><button class="button button-outline" id="loadMore">Load more products</button></div>
+      </div>
+    </section>
+
+    <section class="order-strip">
+      <div class="shell order-strip-inner reveal">
+        <div><p class="eyebrow">Simple ordering</p><h2>Your pantry list,<br /><em>one WhatsApp away.</em></h2></div>
+        <ol>
+          <li><span>01</span><p><strong>Add products</strong><br />Build your cart from the full catalogue.</p></li>
+          <li><span>02</span><p><strong>Add your details</strong><br />Name, area and any sizing notes.</p></li>
+          <li><span>03</span><p><strong>Send on WhatsApp</strong><br />We open a ready-to-send order message.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="contact section shell" id="contact">
+      <div class="contact-panel reveal">
+        <div class="contact-copy">
+          <p class="eyebrow">Contact & orders</p><h2>Bring the pantry <em>home.</em></h2>
+          <p>Questions, availability, quantities or custom pantry lists — reach us directly and we’ll help you complete your order.</p>
+          <div class="contact-links">
+            <a href="tel:+96181581230"><span>Phone</span><strong>+961 81 581 230</strong></a>
+            <a href="https://wa.me/96181581230" target="_blank" rel="noopener"><span>WhatsApp</span><strong>+961 81 581 230</strong></a>
+            <a href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener"><span>Instagram</span><strong>@zaytwmouneh</strong></a>
+            <div><span>Location</span><strong>Zayt w Mouneh — Lebanon</strong></div>
+          </div>
+        </div>
+        <div class="contact-mark"><img src="assets/logo.svg" alt="Zayt w Mouneh" /></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer-inner">
+      <a class="brand footer-brand" href="#top"><img src="assets/logo.svg" alt="" /><span>Zayt w Mouneh</span></a>
+      <p>A pantry of Lebanese memory, curated with care.</p>
+      <div class="footer-links"><a href="#shop">Catalogue</a><a href="#heritage">Heritage</a><a href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">Instagram</a></div>
+      <p class="copyright">© <span id="year"></span> Zayt w Mouneh. Rooted in Lebanese heritage.</p>
+    </div>
+  </footer>
+
+  <div class="cart-backdrop" id="cartBackdrop" hidden></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true" aria-label="Shopping cart">
+    <div class="cart-head"><div><p class="eyebrow">Your pantry list</p><h2>Cart <span id="drawerCount">0</span></h2></div><button class="icon-button" id="cartClose" aria-label="Close cart">×</button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-empty" id="cartEmpty"><div class="empty-jar" aria-hidden="true"></div><h3>Your cart is empty.</h3><p>Add products from the catalogue and they’ll appear here.</p><button class="button button-green" id="cartBrowse">Browse products</button></div>
+    <form class="order-form" id="orderForm" hidden>
+      <div class="form-grid"><label><span>Your name</span><input id="customerName" type="text" placeholder="Name" /></label><label><span>Area / location</span><input id="customerArea" type="text" placeholder="e.g. Baabda" /></label></div>
+      <label><span>Order notes</span><textarea id="orderNotes" rows="3" placeholder="Preferred sizes, quantities, delivery notes…"></textarea></label>
+      <button class="whatsapp-order" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.7A8.5 8.5 0 0 1 7.9 19.1L3 20.4l1.3-4.8a8.5 8.5 0 1 1 16.2-3.9Z"/><path d="M8.1 7.5c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.8 1.8c.1.3.1.5-.1.7l-.6.8c-.2.2-.2.4-.1.6.6 1.2 1.7 2.4 3.1 3 .2.1.4.1.6-.1l.8-1c.2-.2.4-.3.7-.2l1.9.9c.3.1.4.3.4.5 0 .3-.1 1.3-.8 1.9-.7.6-1.6.8-2.6.5-1.1-.3-2.6-.8-4.4-2.4-1.4-1.3-2.5-2.9-3-4.1-.5-1.2 0-2.3.5-2.9.3-.3.6-.5 1.1-.5Z"/></svg>Send order on WhatsApp</button>
+      <p class="form-note">This opens WhatsApp with your order already formatted. You can review it before sending.</p>
+    </form>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastText">Added to cart</span></div>
+  <script src="app.js"></script>
+</body>
+</html>

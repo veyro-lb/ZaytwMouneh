@@ -9,6 +9,12 @@ const FAV_KEY="zwm-favorites-v1";
 const RECENT_KEY="zwm-recent-v1";
 const GIFT_KEY="zwm-gift-items-v1";
 const PAGE_SIZE=24;
+const FEATURED_IDS=["zaatar-baladi-extra","extra-virgin-olive-oil","flower-honey","kishek-zayt-w-mouneh","debes-el-remen","zaytoun-akhdar-beqaa","burglur-asmar-kheshen","semaq"];
+const GIFT_PRESETS=[
+  {id:"breakfast",titleEn:"Lebanese Breakfast Box",titleAr:"صندوق الفطور اللبناني",copyEn:"Za’atar, honey, olive oil and a pantry touch for an easy Lebanese breakfast.",copyAr:"زعتر وعسل وزيت زيتون ولمسة من المونة لفطور لبناني جاهز.",items:["zaatar-baladi-extra","flower-honey","extra-virgin-olive-oil"]},
+  {id:"mouneh",titleEn:"The Mouneh Box",titleAr:"صندوق المونة",copyEn:"Kishk, olives, bulgur and pomegranate molasses — four pantry staples with character.",copyAr:"كشك وزيتون وبرغل ودبس رمان — أربع أساسيات من المونة بطابع لبناني.",items:["kishek-zayt-w-mouneh","zaytoun-akhdar-beqaa","burglur-asmar-kheshen","debes-el-remen"]},
+  {id:"taste",titleEn:"A Taste of Lebanon",titleAr:"نكهة من لبنان",copyEn:"A generous mix of olive oil, honey, za’atar and sumac for gifting or hosting.",copyAr:"تشكيلة سخية من زيت الزيتون والعسل والزعتر والسماق للهدية أو الضيافة.",items:["extra-virgin-olive-oil","wild-thistle-honey","zaatar-baladi-extra","semaq"]}
+];
 
 const CATEGORY_ORDER=[
   "Condiments","Dates","Debsy Carob","Distillates + Syrups","Dried Foods","Flour","Grains","Herbs","Honey","Molasses","Mouneh","Nuts + Seeds","Oils","Olive Oil","Olives","Pickles","Pulses","Soap","Spices","Sweets + Candy","Vinegars"
@@ -132,25 +138,25 @@ const UI={
     announcementOrder:"Order on WhatsApp",
     brand:"Zayt w Mouneh",
     navShop:"Shop",navCategories:"Categories",navAbout:"About & mission",navContact:"Contact & visit",
-    cartLabel:"Cart",
+    cartLabel:"My pantry",
     heroEyebrow:"Rooted in Lebanese heritage",
     heroTitle:'A pantry of<br><em>Lebanese memory.</em>',
-    heroLede:"Authentic pantry essentials, thoughtfully curated — with current pack sizes and prices ready to browse.",
-    heroExplore:"Explore the pantry <span>↘</span>",
-    heroWhatsApp:"WhatsApp us",
-    heroVariantLabel:"priced options",heroCategoryLabel:"categories",heroSinceLabel:"since",
+    heroLede:"Authentic Lebanese pantry essentials, selected with care and delivered across Lebanon.",
+    heroExplore:"Shop the pantry <span>↘</span>",
+    heroWhatsApp:"Send a gift",
+    heroVariantLabel:"pantry products",heroCategoryLabel:"categories",heroSinceLabel:"since",
     scene1Kicker:"Pantry film · 01",scene1Title:"Honey, slow and golden.",scene1Copy:"One texture in a pantry full of grains, herbs, mouneh, oils and more.",
     scene2Kicker:"Pantry film · 02",scene2Title:"Lentils & everyday staples.",scene2Copy:"Warm, useful ingredients for real home cooking.",
     scene3Kicker:"Pantry film · 03",scene3Title:"Wheat, harvest & season.",scene3Copy:"A calm reminder of the ingredients, seasons and tables behind mouneh.",
     heroScript:"Curated with care",
     categoriesEyebrow:"The pantry, chapter by chapter",
-    categoriesTitle:'Twenty-one ways<br>to bring home <em>mouneh.</em>',
-    categoriesCopy:"Every category is part of the same inheritance — harvested, preserved, offered and passed from one generation to the next.",
+    categoriesTitle:'Find your way<br>around the <em>pantry.</em>',
+    categoriesCopy:"Start with the pantry families people reach for most, then explore the full catalogue.",
     aboutEyebrow:"Our story & mission",
     aboutTitle:'More than a shelf.<br><em>Memory kept within reach.</em>',
     aboutLetterKicker:"A note from our pantry",
-    aboutP1:"Since 2006, Zayt w Mouneh has grown from one simple thought: that the Lebanese pantry is more than a shelf — it is memory kept within reach. It lives in the fragrance of herbs drying in summer light, in olives resting in brine, in olive oil pressed from the grove, and in jars prepared patiently for the colder months. It is found in dates, carob and molasses; in grains, flour and pulses; in honey, nuts and seeds; in condiments, syrups and vinegars; in pickles, spices and dried foods; in sweets and candy shared at the table, and even in the simple soap that carries the scent of home. Each category is a small chapter of the same inheritance — harvested, preserved, offered, and passed from one generation to the next.",
-    aboutP2:"Our mission is to keep that inheritance alive in a way that belongs to today: to choose authentic Lebanese pantry essentials with respect for origin, craft and flavour; to present them with clarity and care; and to make the generosity of mouneh easy to bring home. We want every jar, herb, grain and drop of oil to feel familiar — a quiet connection to the land, to the seasons, and to the tables that taught us that food is most meaningful when it is prepared with patience and shared with others.",
+    aboutP1:"Since 2006, Zayt w Mouneh has kept the Lebanese pantry close to everyday life: grains, herbs, mouneh, honey, oil, spices and the ingredients that make a table feel familiar.",
+    aboutP2:"Most of our pantry selection comes from the Bekaa. Our olive oil comes from Koura, our honey from Mount Lebanon, and our debes from the Chouf. We present that provenance plainly, without making claims we cannot verify.",
     value1Title:"Origin",value1Copy:"Respect where ingredients come from.",
     value2Title:"Craft",value2Copy:"Preserve the patience behind pantry traditions.",
     value3Title:"Care",value3Copy:"Make every choice clear, useful and welcoming.",
@@ -165,11 +171,11 @@ const UI={
     contactEyebrow:"Contact & orders",contactTitle:'Bring the pantry <em>home.</em>',contactCopy:"Questions, availability, delivery or a custom pantry list — reach us directly.",
     phone:"Phone",whatsapp:"WhatsApp",instagram:"Instagram",location:"Location",lebanon:"Lebanon",
     footerCopy:"A pantry of Lebanese memory, curated with care.",footerCatalogue:"Catalogue",footerAbout:"About",
-    cartEyebrow:"Your pantry list",cartTitle:"Cart",cartSaved:"Saved on this device",cartEmptyTitle:"Your cart is empty.",cartEmptyCopy:"Add products from the catalogue and they’ll appear here.",browseProducts:"Browse products",
+    cartEyebrow:"Your pantry list",cartTitle:"My pantry",cartSaved:"Saved on this device",cartEmptyTitle:"Your pantry is empty.",cartEmptyCopy:"Add products from the catalogue and they’ll appear here.",browseProducts:"Browse products",
     total:"Estimated total",orderDetailsTitle:"Order details",orderDetailsNote:"Sent only when you press WhatsApp",
     yourName:"Your name",namePlaceholder:"Name",area:"Area / location",areaPlaceholder:"e.g. Baabda",notes:"Order notes",notesPlaceholder:"Delivery notes, substitutions, anything we should know…",
     sendOrder:"Send order on WhatsApp <span>↗</span>",priceNote:"Prices are shown from the supplied retail list; final availability is confirmed on WhatsApp.",
-    what:"What it is",use:"Use it for",nutritionLabel:"Nutrition note",nutritionBadge:"Nutritious choice",chooseSize:"Choose size",add:"Add to cart",update:"Update cart",view:"View",from:"From",sizeOptions:"size options",
+    what:"What it is",use:"Use it for",nutritionLabel:"Nutrition note",nutritionBadge:"Nutritious choice",chooseSize:"Choose size",add:"Add to pantry",update:"Update pantry",view:"View",from:"From",sizeOptions:"size options",
     remove:"Remove",details:"View details",qty:"Qty",unitPrice:"Unit",subtotal:"Subtotal",
     standard:"Standard",added:"Added to cart",updated:"Cart updated",removed:"Removed",
     categoryAll:"All categories",
@@ -189,22 +195,22 @@ const UI={
     cartLabel:"السلة",
     heroEyebrow:"متجذّرون في التراث اللبناني",
     heroTitle:'مونة تحفظ<br><em>ذاكرة لبنان.</em>',
-    heroLede:"أساسيات مونة أصيلة مختارة بعناية، مع الأحجام والأسعار الحالية لتتسوّق بوضوح وسهولة.",
-    heroExplore:"استكشف المونة <span>↙</span>",
-    heroWhatsApp:"راسلنا على واتساب",
+    heroLede:"أساسيات مونة لبنانية أصيلة مختارة بعناية، مع توصيل إلى مختلف المناطق في لبنان.",
+    heroExplore:"تسوّق المونة <span>↙</span>",
+    heroWhatsApp:"أرسل هدية",
     heroVariantLabel:"خياراً مسعّراً",heroCategoryLabel:"قسماً",heroSinceLabel:"منذ",
     scene1Kicker:"من المونة · 01",scene1Title:"عسل ينساب ببطء.",scene1Copy:"تفصيل واحد من مونة أوسع تضم الحبوب والأعشاب والزيوت والمخللات والمزيد.",
     scene2Kicker:"من المونة · 02",scene2Title:"عدس وحبوب للبيت.",scene2Copy:"مكونات يومية دافئة ومفيدة للطبخ الحقيقي في البيت.",
     scene3Kicker:"من المونة · 03",scene3Title:"قمح وموسم وحصاد.",scene3Copy:"صورة هادئة عن الأرض والمواسم والموائد التي تعيش فيها المونة.",
     heroScript:"مختارة بعناية",
     categoriesEyebrow:"المونة، فصلاً بعد فصل",
-    categoriesTitle:'واحد وعشرون قسماً<br>من <em>المونة.</em>',
-    categoriesCopy:"كل قسم هو فصل من الإرث نفسه — يُحصد ويُحفظ ويُقدّم وينتقل من جيل إلى جيل.",
+    categoriesTitle:'اعثر على طريقك<br>في <em>المونة.</em>',
+    categoriesCopy:"ابدأ بأقسام المونة الأساسية ثم انتقل إلى كامل المنتجات.",
     aboutEyebrow:"قصتنا ورسالتنا",
     aboutTitle:'أكثر من رفّ.<br><em>ذاكرة تبقى في متناول اليد.</em>',
     aboutLetterKicker:"رسالة من مونة البيت",
-    aboutP1:"منذ عام 2006، انطلقت زيت ومونة من فكرة بسيطة: أن المونة اللبنانية أكثر من مجرد رفّ — بل ذاكرة تبقى في متناول اليد. تعيش في رائحة الأعشاب التي تجف تحت ضوء الصيف، وفي الزيتون الذي يستريح في الماء المملّح، وفي زيت الزيتون المعصور من البساتين، وفي المرطبانات التي تُحضّر بصبر للأشهر الباردة. نجدها في التمر والخروب والدبس؛ في الحبوب والطحين والبقوليات؛ في العسل والمكسرات والبذور؛ في مستلزمات المطبخ والشرابات والخل؛ في المخللات والبهارات والأطعمة المجففة؛ في الحلويات والسكاكر التي نتشاركها على المائدة، وحتى في قطعة الصابون البسيطة التي تحمل رائحة البيت. كل قسم فصل صغير من الإرث نفسه — يُحصد ويُحفظ ويُقدّم وينتقل من جيل إلى جيل.",
-    aboutP2:"رسالتنا أن نبقي هذا الإرث حيّاً بطريقة تنتمي إلى يومنا: أن نختار أساسيات المونة اللبنانية الأصيلة باحترام للمصدر والحرفة والنكهة، وأن نقدّمها بوضوح وعناية، وأن نجعل كرم المونة سهلاً ليصل إلى كل بيت. نريد لكل مرطبان وعشبة وحبة وقطرة زيت أن تبدو مألوفة — صلة هادئة بالأرض، وبالمواسم، وبالموائد التي علّمتنا أن الطعام يكتسب معناه الأكبر عندما يُحضّر بصبر ويُشارك مع الآخرين.",
+    aboutP1:"منذ 2006، تحافظ زيت ومونة على أساسيات المونة اللبنانية قريبة من الحياة اليومية: الحبوب والأعشاب والمونة والعسل والزيت والبهارات وكل ما يجعل المائدة مألوفة.",
+    aboutP2:"معظم منتجات المونة لدينا من البقاع. زيت الزيتون من الكورة، والعسل من جبل لبنان، والدبس من الشوف. نعرض هذه المعلومات بوضوح ومن دون ادعاءات لا نستطيع التحقق منها.",
     value1Title:"المصدر",value1Copy:"نحترم أصل المكونات ومن أين تأتي.",
     value2Title:"الحرفة",value2Copy:"نحافظ على الصبر والخبرة خلف تقاليد المونة.",
     value3Title:"العناية",value3Copy:"نجعل كل اختيار واضحاً ومفيداً ومرحّباً.",
@@ -312,6 +318,9 @@ let giftItems=loadGiftItems();
 let giftVisibleLimit=18;
 let giftCategory="All";
 let favoritesOnly=false;
+let originFilter="All";
+let priceFilter="All";
+let sortMode="featured";
 const CURRENT_PAGE=document.body?.dataset.page||"home";
 let heroVisible=true;
 
@@ -321,6 +330,25 @@ const TOTAL_VARIANTS=PRODUCTS_DATA.reduce((sum,p)=>sum+p.variants.length,0);
 function money(n){return `$${Number(n).toFixed(2)}`}
 function currentName(p){return lang==="ar"?plainArabic(p.nameAr):p.nameEn}
 function categoryName(cat){return lang==="ar"?(CATEGORY_AR[cat]||cat):cat}
+function originKeyFor(p){
+  const source=normalize([p.nameEn,p.original].join(" "));
+  if(source.includes("chouf"))return "Chouf";
+  if(source.includes("koura"))return "Koura";
+  if(source.includes("beqaa")||source.includes("bekaa"))return "Bekaa";
+  if(p.category==="Olive Oil")return "Koura";
+  if(p.category==="Honey")return "Mount Lebanon";
+  if(p.category==="Molasses"||source.includes("molasses"))return "Chouf";
+  return "Bekaa";
+}
+function originFor(p){
+  const key=originKeyFor(p);
+  const isDebes=p.category==="Molasses"||normalize([p.nameEn,p.original].join(" ")).includes("molasses");
+  if(lang==="ar"){
+    const labels={"Bekaa":"البقاع","Koura":"الكورة","Mount Lebanon":"جبل لبنان","Chouf":"الشوف"};
+    return `${isDebes?"مصدر الدبس":"المصدر"} · ${labels[key]||key}`;
+  }
+  return `${isDebes?"Debes source":"Source"} · ${key}, Lebanon`;
+}
 function plainArabic(s){
   return String(s||"")
     .replace(/[\u202A-\u202E\u2066-\u2069]/g,"")
@@ -664,13 +692,13 @@ function applyLanguage(next,{immediate=false}={}){
   const htmlMap={heroTitle:"heroTitle",heroExplore:"heroExplore",categoriesTitle:"categoriesTitle",aboutTitle:"aboutTitle",signTitle:"signTitle",signCta:"signCta",shopTitle:"shopTitle",orderTitle:"orderTitle",contactTitle:"contactTitle",sendOrderButton:"sendOrder"};
   Object.entries(htmlMap).forEach(([id,key])=>{const el=$("#"+id);if(el&&t[key]!==undefined)el.innerHTML=t[key]});
 
-  $("#productSearch").placeholder=t.searchPlaceholder;
-  $("#customerName").placeholder=t.namePlaceholder;
-  $("#customerArea").placeholder=t.areaPlaceholder;
-  $("#orderNotes").placeholder=t.notesPlaceholder;
-  $("#clearSearch").textContent=t.clearFilters;
-  $("#loadMore").textContent=t.loadMore;
-  $("#cartBrowse").textContent=t.browseProducts;
+  if($("#productSearch"))$("#productSearch").placeholder=t.searchPlaceholder;
+  if($("#customerName"))$("#customerName").placeholder=t.namePlaceholder;
+  if($("#customerArea"))$("#customerArea").placeholder=t.areaPlaceholder;
+  if($("#orderNotes"))$("#orderNotes").placeholder=t.notesPlaceholder;
+  if($("#clearSearch"))$("#clearSearch").textContent=t.clearFilters;
+  if($("#loadMore"))$("#loadMore").textContent=t.loadMore;
+  if($("#cartBrowse"))$("#cartBrowse").textContent=t.browseProducts;
 
     renderCategories();
   renderCategorySelect();
@@ -694,7 +722,9 @@ function applyLanguage(next,{immediate=false}={}){
 }
 
 function renderCategories(){
-  $("#categoryGrid").innerHTML=CATEGORY_ORDER.map((cat,index)=>{
+  const grid=$("#categoryGrid");if(!grid)return;
+  const cats=CURRENT_PAGE==="home"?["Mouneh","Honey","Olive Oil","Molasses","Olives","Pickles","Grains","Spices"]:CATEGORY_ORDER;
+  grid.innerHTML=cats.map((cat,index)=>{
     const count=CATEGORY_COUNTS[cat]||0;
     const info=CATEGORY_INFO[cat]?.[lang]||["",""];
     const href=CURRENT_PAGE==="shop"?"#shop":`shop.html?category=${encodeURIComponent(cat)}#shop`;
@@ -721,22 +751,60 @@ function renderCategories(){
 
 function renderCategorySelect(){
   const select=$("#categorySelect");
+  if(!select)return;
   const options=[{key:"All",label:UI[lang].categoryAll,count:PRODUCTS_DATA.length},...CATEGORY_ORDER.map(cat=>({key:cat,label:categoryName(cat),count:CATEGORY_COUNTS[cat]||0}))];
   select.innerHTML=options.map(o=>`<option value="${escapeHtml(o.key)}">${escapeHtml(o.label)} · ${o.count}</option>`).join("");
   select.value=activeCategory;
 }
 
+function renderFilterSelects(){
+  const origin=$("#originSelect"),price=$("#priceSelect"),sort=$("#sortSelect");
+  if(origin){
+    const current=originFilter;
+    const opts=lang==="ar"
+      ? [["All","كل المصادر"],["Bekaa","البقاع"],["Koura","الكورة"],["Mount Lebanon","جبل لبنان"],["Chouf","الشوف"]]
+      : [["All","All sources"],["Bekaa","Bekaa"],["Koura","Koura"],["Mount Lebanon","Mount Lebanon"],["Chouf","Chouf"]];
+    origin.innerHTML=opts.map(([v,label])=>`<option value="${escapeHtml(v)}">${escapeHtml(label)}</option>`).join("");
+    origin.value=current;
+  }
+  if(price){
+    const current=priceFilter;
+    const opts=lang==="ar"
+      ? [["All","كل الأسعار"],["under5","أقل من $5"],["5to10","$5–$10"],["over10","أكثر من $10"]]
+      : [["All","All prices"],["under5","Under $5"],["5to10","$5–$10"],["over10","Over $10"]];
+    price.innerHTML=opts.map(([v,label])=>`<option value="${escapeHtml(v)}">${escapeHtml(label)}</option>`).join("");
+    price.value=current;
+  }
+  if(sort){
+    const current=sortMode;
+    const opts=lang==="ar"
+      ? [["featured","ترتيب الكتالوج"],["price-low","السعر: من الأقل"],["price-high","السعر: من الأعلى"],["name","الاسم"]]
+      : [["featured","Catalogue order"],["price-low","Price: low to high"],["price-high","Price: high to low"],["name","Name A–Z"]];
+    sort.innerHTML=opts.map(([v,label])=>`<option value="${escapeHtml(v)}">${escapeHtml(label)}</option>`).join("");
+    sort.value=current;
+  }
+}
+
 function filteredProducts(){
   const q=query.trim();
-  return PRODUCTS_DATA
-    .map(p=>({p,score:q?searchScore(p,q):1}))
+  const rows=PRODUCTS_DATA
+    .map((p,index)=>({p,index,score:q?searchScore(p,q):1}))
     .filter(({p,score})=>{
       const catOk=activeCategory==="All"||p.category===activeCategory;
       const favOk=!favoritesOnly||favorites.has(p.id);
-      return catOk&&favOk&&(!q||score>0);
-    })
-    .sort((a,b)=>q?b.score-a.score:0)
-    .map(x=>x.p);
+      const originOk=originFilter==="All"||originKeyFor(p)===originFilter;
+      const min=productPriceSummary(p).min;
+      const priceOk=priceFilter==="All"||(priceFilter==="under5"&&min<5)||(priceFilter==="5to10"&&min>=5&&min<=10)||(priceFilter==="over10"&&min>10);
+      return catOk&&favOk&&originOk&&priceOk&&(!q||score>0);
+    });
+  rows.sort((a,b)=>{
+    if(q)return b.score-a.score;
+    if(sortMode==="price-low")return productPriceSummary(a.p).min-productPriceSummary(b.p).min;
+    if(sortMode==="price-high")return productPriceSummary(b.p).min-productPriceSummary(a.p).min;
+    if(sortMode==="name")return currentName(a.p).localeCompare(currentName(b.p),lang==="ar"?"ar":"en");
+    return a.index-b.index;
+  });
+  return rows.map(x=>x.p);
 }
 
 function productPriceSummary(p){
@@ -747,12 +815,14 @@ function productPriceSummary(p){
 }
 
 function renderProducts(){
+  const grid=$("#productGrid");
+  if(!grid)return;
   const t=UI[lang];
   const filtered=filteredProducts();
   const shown=filtered.slice(0,visibleLimit);
-  $("#resultCount").textContent=filtered.length;
+  const resultCount=$("#resultCount");if(resultCount)resultCount.textContent=filtered.length;
 
-  $("#productGrid").innerHTML=shown.map(p=>{
+  grid.innerHTML=shown.map(p=>{
     const info=infoFor(p);
     const health=healthNoteFor(p);
     const badges=badgesFor(p);
@@ -773,8 +843,7 @@ function renderProducts(){
         </div>
       </div>
       ${badges.length?`<div class="product-badges">${badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("")}</div>`:""}
-      <p class="product-category">${escapeHtml(categoryName(p.category))}</p>
-      <h3 class="product-name">${escapeHtml(currentName(p))}</h3>
+      <p class="product-category">${escapeHtml(categoryName(p.category))}</p>\n      <p class="product-origin">${escapeHtml(originFor(p))}</p>\n      <h3 class="product-name">${escapeHtml(currentName(p))}</h3>
       <p class="product-description">${escapeHtml(info.what)}</p>
       <p class="product-use"><strong>${escapeHtml(t.use)}:</strong> ${escapeHtml(info.use)}</p>
       ${health?`<div class="product-health"><span>✦ ${escapeHtml(health.badge)}</span><p>${escapeHtml(health.text)}</p></div>`:""}
@@ -796,8 +865,8 @@ function renderProducts(){
     </article>`;
   }).join("");
 
-  $("#catalogEmpty").hidden=filtered.length>0;
-  $("#loadMore").parentElement.hidden=filtered.length===0||visibleLimit>=filtered.length;
+  const empty=$("#catalogEmpty");if(empty)empty.hidden=filtered.length>0;
+  const more=$("#loadMore");if(more&&more.parentElement)more.parentElement.hidden=filtered.length===0||visibleLimit>=filtered.length;
 
   $$("[data-fav]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();toggleFavorite(btn.dataset.fav)}));
   $$("[data-card-variant]").forEach(sel=>sel.addEventListener("change",e=>{
@@ -895,9 +964,16 @@ function renderCart(){
   $$("[data-cart-view]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.cartView)));
 }
 
+function syncProductUrl(id){
+  if(CURRENT_PAGE!=="shop"||!history.replaceState)return;
+  const url=new URL(location.href);
+  if(id)url.searchParams.set("product",id);else url.searchParams.delete("product");
+  history.replaceState({product:id||null},"",url.pathname+url.search+url.hash);
+}
 function openProduct(id){
   const p=productById(id);
   if(!p)return;
+  syncProductUrl(id);
   addRecent(id);
   closeCart();
   currentModalProduct=p;
@@ -924,7 +1000,8 @@ function renderModal(productId,variantId){
   $("#modalBadges").innerHTML=badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("");
   const fav=$("#modalFavorite");
   if(fav){const saved=favorites.has(p.id);fav.classList.toggle("is-active",saved);fav.setAttribute("aria-pressed",String(saved));fav.innerHTML=`${saved?"♥":"♡"} <span id="modalFavoriteLabel">${escapeHtml(saved?EXTRA_UI[lang].favorited:EXTRA_UI[lang].favorite)}</span>`;}
-  $("#relatedLabel").textContent=EXTRA_UI[lang].related;
+  if($("#relatedLabel"))$("#relatedLabel").textContent=EXTRA_UI[lang].related;
+  const origin=$("#productOrigin");if(origin)origin.textContent=originFor(p);
   $("#relatedProducts").innerHTML=PRODUCTS_DATA.filter(x=>x.category===p.category&&x.id!==p.id).slice(0,4).map(x=>`<button type="button" data-related="${escapeHtml(x.id)}"><span>${escapeHtml(currentName(x))}</span><strong>${money(productPriceSummary(x).min)}</strong></button>`).join("");
   $$("[data-related]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.related)));
   $("#productModalDescription").textContent=info.what;
@@ -948,6 +1025,7 @@ function closeProduct(){
   document.body.classList.remove("modal-open");
   $("#productModal").classList.remove("is-open");
   $("#productModal").setAttribute("aria-hidden","true");
+  syncProductUrl(null);
   backdropMaybeOff();
 }
 
@@ -965,6 +1043,47 @@ function renderSearchSuggestions(){
   box.innerHTML=results.length?results.map(({p})=>`<button type="button" data-suggest="${escapeHtml(p.id)}"><span><strong>${escapeHtml(currentName(p))}</strong><small>${escapeHtml(categoryName(p.category))}</small></span><b>${money(productPriceSummary(p).min)}</b></button>`).join(""):`<p>${escapeHtml(EXTRA_UI[lang].searchNoSuggestions)}</p>`;
   box.hidden=false;
   $$("[data-suggest]").forEach(btn=>btn.addEventListener("mousedown",e=>{e.preventDefault();box.hidden=true;openProduct(btn.dataset.suggest)}));
+}
+
+function renderFeaturedProducts(){
+  const grid=$("#featuredGrid");if(!grid)return;
+  const items=FEATURED_IDS.map(productById).filter(Boolean);
+  grid.innerHTML=items.map(p=>{
+    const v=defaultVariant(p);
+    return `<article class="featured-product" data-featured-view="${escapeHtml(p.id)}">
+      <div class="featured-product-mark">${escapeHtml(initials(currentName(p)))}</div>
+      <p>${escapeHtml(categoryName(p.category))}</p>
+      <h3>${escapeHtml(currentName(p))}</h3>
+      <span class="featured-origin">${escapeHtml(originFor(p))}</span>
+      <div><strong>${money(v.price)}</strong><small>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)}</small></div>
+      <button type="button" data-featured-add="${escapeHtml(p.id)}">${escapeHtml(UI[lang].add)}</button>
+    </article>`;
+  }).join("");
+  $("[data-featured-view]").forEach(card=>card.addEventListener("click",e=>{if(!e.target.closest("button"))openProduct(card.dataset.featuredView)}));
+  $("[data-featured-add]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();const p=productById(btn.dataset.featuredAdd);if(p)addToCart(p,defaultVariant(p),1)}));
+}
+function renderGiftPresets(){
+  const wrap=$("#giftPresetGrid");if(!wrap)return;
+  wrap.innerHTML=GIFT_PRESETS.map(preset=>{
+    const rows=preset.items.map(productById).filter(Boolean).map(p=>({p,v:defaultVariant(p)}));
+    const total=rows.reduce((s,r)=>s+Number(r.v.price),0);
+    return `<article class="gift-preset-card">
+      <span>${escapeHtml(lang==="ar"?"هدية جاهزة":"Ready-made gift")}</span>
+      <h3>${escapeHtml(lang==="ar"?preset.titleAr:preset.titleEn)}</h3>
+      <p>${escapeHtml(lang==="ar"?preset.copyAr:preset.copyEn)}</p>
+      <small>${rows.map(r=>escapeHtml(currentName(r.p))).join(" · ")}</small>
+      <div><strong>${money(total)}</strong><button type="button" data-gift-preset="${escapeHtml(preset.id)}">${escapeHtml(lang==="ar"?"اختر هذه الهدية":"Choose this gift")}</button></div>
+    </article>`;
+  }).join("");
+  $("[data-gift-preset]").forEach(btn=>btn.addEventListener("click",()=>applyGiftPreset(btn.dataset.giftPreset)));
+}
+function applyGiftPreset(id){
+  const preset=GIFT_PRESETS.find(x=>x.id===id);if(!preset)return;
+  giftItems={};
+  preset.items.map(productById).filter(Boolean).forEach(p=>{const v=defaultVariant(p);giftItems[cartKey(p.id,v.id)]={productId:p.id,variantId:v.id,qty:1}});
+  saveGiftItems();renderGiftSummary();renderGiftPickerResults();
+  const form=$("#giftForm");if(form)form.scrollIntoView({behavior:"smooth",block:"start"});
+  toast(lang==="ar"?"تم تجهيز الهدية — يمكنك تعديلها الآن":"Gift loaded — you can customize it now");
 }
 
 function renderRecent(){
@@ -1053,8 +1172,10 @@ function sendGiftOrder(){
   const message=$("#giftMessage").value.trim()||"—";
   const sender=$("#giftSender").value.trim()||"—";
   const total=rows.reduce((s,r)=>s+r.qty*Number(r.v.price),0);
+  const ref=orderReference("ZW-GIFT");
   const lines=[
     lang==="ar"?"مرحباً زيت ومونة 👋":"Hello Zayt w Mouneh 👋","",
+    `${lang==="ar"?"رقم الطلب":"Order"}: ${ref}`,"",
     lang==="ar"?"أرغب بتحضير هذه الهدية:":"I would like to prepare this gift:","",
     ...rows.map((r,i)=>`${i+1}. ${currentName(r.p)} — ${lang==="ar"?r.v.sizeAr:r.v.sizeEn} — ${base.qty}: ${r.qty} — ${money(r.v.price*r.qty)}`),
     "",`${base.orderTotal}: ${money(total)}`,
@@ -1066,7 +1187,8 @@ function sendGiftOrder(){
     `${lang==="ar"?"المرسل":"Sender"}: ${sender}`,"",
     lang==="ar"?"يرجى تأكيد التغليف والتوفر والتوصيل والمجموع النهائي. شكراً!":"Please confirm gift packing, availability, delivery and the final total. Thank you!"
   ];
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(lines.join("\n"))}`,"_blank","noopener,noreferrer");
+  const opened=window.open(`https://wa.me/${WA}?text=${encodeURIComponent(lines.join("\n"))}`,"_blank","noopener,noreferrer");
+  if(opened)toast(lang==="ar"?"تم فتح واتساب مع طلب الهدية":"WhatsApp opened with your gift request");
 }
 function renderMobileOrderBar(){
   const bar=$("#mobileOrderBar");if(!bar)return;
@@ -1090,16 +1212,19 @@ function applyExtraLanguage(){
   Object.entries(text).forEach(([id,key])=>{const el=$("#"+id);if(el&&t[key]!==undefined)el.textContent=t[key]});
   const html={trustTitle:"trustTitle",giftTitle:"giftTitle",giftBrowse:"giftBrowse",giftSend:"giftSend",socialTitle:"socialTitle"};
   Object.entries(html).forEach(([id,key])=>{const el=$("#"+id);if(el&&t[key]!==undefined)el.textContent=t[key]});
-  $("#giftProductSearch").placeholder=t.giftProductPlaceholder;
-  $("#giftRecipient").placeholder=t.giftRecipientPlaceholder;
-  $("#giftArea").placeholder=t.giftAreaPlaceholder;
-  $("#giftMessage").placeholder=t.giftMessagePlaceholder;
-  $("#giftSender").placeholder=t.giftSenderPlaceholder;
+  if($("#giftProductSearch"))$("#giftProductSearch").placeholder=t.giftProductPlaceholder;
+  if($("#giftRecipient"))$("#giftRecipient").placeholder=t.giftRecipientPlaceholder;
+  if($("#giftArea"))$("#giftArea").placeholder=t.giftAreaPlaceholder;
+  if($("#giftMessage"))$("#giftMessage").placeholder=t.giftMessagePlaceholder;
+  if($("#giftSender"))$("#giftSender").placeholder=t.giftSenderPlaceholder;
   renderGiftOptions();
   renderGiftCategorySelect();
+  renderFilterSelects();
   renderGiftPickerResults();
   renderRecent();
   renderGiftSummary();
+  renderGiftPresets();
+  renderFeaturedProducts();
   renderFavoritesCount();
   renderMobileOrderBar();
 }
@@ -1119,6 +1244,11 @@ function setupPerformance(){
   });
 }
 
+function orderReference(prefix="ZW"){
+  const d=new Date();
+  const stamp=[String(d.getFullYear()).slice(-2),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0"),String(d.getHours()).padStart(2,"0"),String(d.getMinutes()).padStart(2,"0")].join("");
+  return `${prefix}-${stamp}`;
+}
 function order(){
   const rows=cartRows();
   if(!rows.length)return;
@@ -1127,8 +1257,9 @@ function order(){
   const name=$("#customerName").value.trim()||"—";
   const area=$("#customerArea").value.trim()||"—";
   const notes=$("#orderNotes").value.trim()||"—";
+  const ref=orderReference("ZW");
   const lines=[
-    t.orderHello,"",t.orderIntro,"",
+    t.orderHello,"",`${lang==="ar"?"رقم الطلب":"Order"}: ${ref}`,"",t.orderIntro,"",
     ...rows.map((r,i)=>{
       const itemName=currentName(r.p);
       const size=lang==="ar"?r.v.sizeAr:r.v.sizeEn;
@@ -1143,7 +1274,8 @@ function order(){
     "",
     t.orderConfirm
   ];
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(lines.join("\n"))}`,"_blank","noopener,noreferrer");
+  const opened=window.open(`https://wa.me/${WA}?text=${encodeURIComponent(lines.join("\n"))}`,"_blank","noopener,noreferrer");
+  if(opened)toast(lang==="ar"?"تم فتح واتساب مع طلبك":"WhatsApp opened with your order");
 }
 
 function openCart(){
@@ -1198,7 +1330,7 @@ function startScenes(){
 function openLanguageWelcome(){
   const modal=$("#languageWelcome");
   if(!modal)return;
-  if(sessionStorage.getItem(WELCOME_KEY)==="1"){
+  if(localStorage.getItem(WELCOME_KEY)==="1"){
     modal.hidden=true;
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden","true");
@@ -1212,7 +1344,7 @@ function openLanguageWelcome(){
 }
 function chooseWelcomeLanguage(next,event){
   if(event){event.preventDefault?.();event.stopImmediatePropagation?.();}
-  sessionStorage.setItem(WELCOME_KEY,"1");
+  localStorage.setItem(WELCOME_KEY,"1");
   const modal=$("#languageWelcome");
 
   if(modal){
@@ -1289,58 +1421,65 @@ function cssEscape(value){
 }
 
 function init(){
-  $("#heroVariantCount").textContent=TOTAL_VARIANTS;
-  $("#heroCategoryCount").textContent=CATEGORY_ORDER.length;
-  $("#year").textContent=new Date().getFullYear();
+  if($("#heroVariantCount"))$("#heroVariantCount").textContent=PRODUCTS_DATA.length;
+  if($("#heroCategoryCount"))$("#heroCategoryCount").textContent=CATEGORY_ORDER.length;
+  if($("#year"))$("#year").textContent=new Date().getFullYear();
 
   const params=new URLSearchParams(location.search);
   const requestedCategory=params.get("category");
   if(requestedCategory&&CATEGORY_ORDER.includes(requestedCategory))activeCategory=requestedCategory;
   const requestedQuery=params.get("q");
-  if(requestedQuery){query=requestedQuery;$("#productSearch").value=requestedQuery;}
+  if(requestedQuery){query=requestedQuery;if($("#productSearch"))$("#productSearch").value=requestedQuery;}
+  const requestedProduct=params.get("product");
   applyLanguage(lang,{immediate:true});
   prewarmLanguageFonts();
   if(CURRENT_PAGE==="home"){showScene(0);startScenes();}
   setupNav();
   setupProgress();
   setupPerformance();
+  if(requestedProduct&&productById(requestedProduct))openProduct(requestedProduct);
 
-  $("#productSearch").addEventListener("input",e=>{query=e.target.value;if(query.trim())activeCategory="All";visibleLimit=PAGE_SIZE;renderCategorySelect();renderProducts();renderSearchSuggestions()});
-  $("#productSearch").addEventListener("focus",renderSearchSuggestions);
-  $("#productSearch").addEventListener("blur",()=>setTimeout(()=>{const b=$("#searchSuggestions");if(b)b.hidden=true},140));
-  $("#categorySelect").addEventListener("change",e=>{activeCategory=e.target.value;query="";visibleLimit=PAGE_SIZE;$("#productSearch").value="";renderProducts();renderSearchSuggestions()});
-  $("#loadMore").addEventListener("click",()=>{visibleLimit+=PAGE_SIZE;renderProducts()});
-  $("#clearSearch").addEventListener("click",()=>{query="";activeCategory="All";favoritesOnly=false;visibleLimit=PAGE_SIZE;$("#productSearch").value="";renderCategorySelect();renderProducts();renderFavoritesCount();renderSearchSuggestions()});
-  $("#favoritesOnly").addEventListener("click",()=>{favoritesOnly=!favoritesOnly;visibleLimit=PAGE_SIZE;renderFavoritesCount();renderProducts()});
-  $("#clearRecent").addEventListener("click",()=>{recentViews=[];saveRecent();renderRecent()});
+  if($("#productSearch")){
+    $("#productSearch").addEventListener("input",e=>{query=e.target.value;if(query.trim())activeCategory="All";visibleLimit=PAGE_SIZE;renderCategorySelect();renderProducts();renderSearchSuggestions()});
+    $("#productSearch").addEventListener("focus",renderSearchSuggestions);
+    $("#productSearch").addEventListener("blur",()=>setTimeout(()=>{const b=$("#searchSuggestions");if(b)b.hidden=true},140));
+  }
+  if($("#categorySelect"))$("#categorySelect").addEventListener("change",e=>{activeCategory=e.target.value;query="";visibleLimit=PAGE_SIZE;if($("#productSearch"))$("#productSearch").value="";renderProducts();renderSearchSuggestions()});
+  if($("#originSelect"))$("#originSelect").addEventListener("change",e=>{originFilter=e.target.value;visibleLimit=PAGE_SIZE;renderProducts()});
+  if($("#priceSelect"))$("#priceSelect").addEventListener("change",e=>{priceFilter=e.target.value;visibleLimit=PAGE_SIZE;renderProducts()});
+  if($("#sortSelect"))$("#sortSelect").addEventListener("change",e=>{sortMode=e.target.value;renderProducts()});
+  if($("#loadMore"))$("#loadMore").addEventListener("click",()=>{visibleLimit+=PAGE_SIZE;renderProducts()});
+  if($("#clearSearch"))$("#clearSearch").addEventListener("click",()=>{query="";activeCategory="All";originFilter="All";priceFilter="All";favoritesOnly=false;visibleLimit=PAGE_SIZE;if($("#productSearch"))$("#productSearch").value="";if($("#originSelect"))$("#originSelect").value="All";if($("#priceSelect"))$("#priceSelect").value="All";renderCategorySelect();renderProducts();renderFavoritesCount();renderSearchSuggestions()});
+  if($("#favoritesOnly"))$("#favoritesOnly").addEventListener("click",()=>{favoritesOnly=!favoritesOnly;visibleLimit=PAGE_SIZE;renderFavoritesCount();renderProducts()});
+  if($("#clearRecent"))$("#clearRecent").addEventListener("click",()=>{recentViews=[];saveRecent();renderRecent()});
 
   $$("[data-lang]").forEach(btn=>btn.addEventListener("click",()=>applyLanguage(btn.dataset.lang)));
   $$("[data-welcome-lang]").forEach(btn=>btn.addEventListener("click",e=>chooseWelcomeLanguage(btn.dataset.welcomeLang,e)));
 
-  $("#cartButton").addEventListener("click",openCart);
-  $("#cartClose").addEventListener("click",closeCart);
-  $("#cartBackdrop").addEventListener("click",()=>{closeCart();closeProduct()});
-  $("#cartBrowse").addEventListener("click",()=>{closeCart();location.href="shop.html#shop"});
-  $("#orderForm").addEventListener("submit",e=>{e.preventDefault();order()});
-  $("#giftForm").addEventListener("submit",e=>{e.preventDefault();sendGiftOrder()});
-  $("#giftProductSearch").addEventListener("input",()=>{giftVisibleLimit=18;renderGiftPickerResults()});
-  $("#giftCategorySelect").addEventListener("change",e=>{giftCategory=e.target.value;giftVisibleLimit=18;renderGiftPickerResults()});
-  $("#giftLoadMore").addEventListener("click",()=>{giftVisibleLimit+=18;renderGiftPickerResults()});
-  $("#giftUseCart").addEventListener("click",useCartForGift);
-  $("#giftClear").addEventListener("click",()=>{giftItems={};saveGiftItems();renderGiftSummary();renderGiftPickerResults()});
-  $("#mobileOrderBar").addEventListener("click",openCart);
+  if($("#cartButton"))$("#cartButton").addEventListener("click",openCart);
+  if($("#cartClose"))$("#cartClose").addEventListener("click",closeCart);
+  if($("#cartBackdrop"))$("#cartBackdrop").addEventListener("click",()=>{closeCart();closeProduct()});
+  if($("#cartBrowse"))$("#cartBrowse").addEventListener("click",()=>{closeCart();location.href="shop.html#shop"});
+  if($("#orderForm"))$("#orderForm").addEventListener("submit",e=>{e.preventDefault();order()});
+  if($("#giftForm"))$("#giftForm").addEventListener("submit",e=>{e.preventDefault();sendGiftOrder()});
+  if($("#giftProductSearch"))$("#giftProductSearch").addEventListener("input",()=>{giftVisibleLimit=18;renderGiftPickerResults()});
+  if($("#giftCategorySelect"))$("#giftCategorySelect").addEventListener("change",e=>{giftCategory=e.target.value;giftVisibleLimit=18;renderGiftPickerResults()});
+  if($("#giftLoadMore"))$("#giftLoadMore").addEventListener("click",()=>{giftVisibleLimit+=18;renderGiftPickerResults()});
+  if($("#giftUseCart"))$("#giftUseCart").addEventListener("click",useCartForGift);
+  if($("#giftClear"))$("#giftClear").addEventListener("click",()=>{giftItems={};saveGiftItems();renderGiftSummary();renderGiftPickerResults()});
+  if($("#mobileOrderBar"))$("#mobileOrderBar").addEventListener("click",openCart);
 
-  $("#productModalClose").addEventListener("click",closeProduct);
-  $("#modalQtyMinus").addEventListener("click",()=>{draftQty.modal=Math.max(1,qtyFor("modal")-1);$("#productModalQty").textContent=draftQty.modal});
-  $("#modalQtyPlus").addEventListener("click",()=>{draftQty.modal=qtyFor("modal")+1;$("#productModalQty").textContent=draftQty.modal});
-  $("#productModalAdd").addEventListener("click",()=>{if(currentModalProduct&&currentModalVariant)addToCart(currentModalProduct,currentModalVariant,qtyFor("modal"))});
-  $("#modalFavorite").addEventListener("click",()=>{if(currentModalProduct)toggleFavorite(currentModalProduct.id)});
+  if($("#productModalClose"))$("#productModalClose").addEventListener("click",closeProduct);
+  if($("#modalQtyMinus"))$("#modalQtyMinus").addEventListener("click",()=>{draftQty.modal=Math.max(1,qtyFor("modal")-1);$("#productModalQty").textContent=draftQty.modal});
+  if($("#modalQtyPlus"))$("#modalQtyPlus").addEventListener("click",()=>{draftQty.modal=qtyFor("modal")+1;$("#productModalQty").textContent=draftQty.modal});
+  if($("#productModalAdd"))$("#productModalAdd").addEventListener("click",()=>{if(currentModalProduct&&currentModalVariant)addToCart(currentModalProduct,currentModalVariant,qtyFor("modal"))});
+  if($("#modalFavorite"))$("#modalFavorite").addEventListener("click",()=>{if(currentModalProduct)toggleFavorite(currentModalProduct.id)});
 
   $$("[data-scene-dot]").forEach(btn=>btn.addEventListener("click",()=>showScene(Number(btn.dataset.sceneDot),true)));
 
   document.addEventListener("keydown",e=>{
     if(e.key==="Escape"){closeCart();closeProduct()}
-    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();if(CURRENT_PAGE==="shop"){$("#productSearch").focus();location.hash="shop"}else location.href="shop.html#shop"}
+    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();if(CURRENT_PAGE==="shop"&&$("#productSearch")){$("#productSearch").focus();location.hash="shop"}else location.href="shop.html#shop"}
   });
 
   addEventListener("storage",e=>{

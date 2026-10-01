@@ -4,6 +4,7 @@ const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const WA="96181581230";
 const CART_KEY="zwm-cart-v5";
 const LANG_KEY="zwm-lang-v2";
+const WELCOME_KEY="zwm-welcome-seen-v1";
 const PAGE_SIZE=24;
 
 const CATEGORY_ORDER=[
@@ -144,8 +145,9 @@ const UI={
     categoriesCopy:"Every category is part of the same inheritance — harvested, preserved, offered and passed from one generation to the next.",
     aboutEyebrow:"Our story & mission",
     aboutTitle:'More than a shelf.<br><em>Memory kept within reach.</em>',
-    aboutP1:"Since 2006, Zayt w Mouneh has grown from one simple thought: that the Lebanese pantry is more than a shelf — it is memory kept within reach. It lives in herbs drying in summer light, olives resting in brine, olive oil pressed from the grove, and jars prepared patiently for colder months.",
-    aboutP2:"Our mission is to keep that inheritance alive in a way that belongs to today: to choose authentic Lebanese pantry essentials with respect for origin, craft and flavour; to present them with clarity and care; and to make the generosity of mouneh easy to bring home.",
+    aboutLetterKicker:"A note from our pantry",
+    aboutP1:"Since 2006, Zayt w Mouneh has grown from one simple thought: that the Lebanese pantry is more than a shelf — it is memory kept within reach. It lives in the fragrance of herbs drying in summer light, in olives resting in brine, in olive oil pressed from the grove, and in jars prepared patiently for the colder months. It is found in dates, carob and molasses; in grains, flour and pulses; in honey, nuts and seeds; in condiments, syrups and vinegars; in pickles, spices and dried foods; in sweets and candy shared at the table, and even in the simple soap that carries the scent of home. Each category is a small chapter of the same inheritance — harvested, preserved, offered, and passed from one generation to the next.",
+    aboutP2:"Our mission is to keep that inheritance alive in a way that belongs to today: to choose authentic Lebanese pantry essentials with respect for origin, craft and flavour; to present them with clarity and care; and to make the generosity of mouneh easy to bring home. We want every jar, herb, grain and drop of oil to feel familiar — a quiet connection to the land, to the seasons, and to the tables that taught us that food is most meaningful when it is prepared with patience and shared with others.",
     value1Title:"Origin",value1Copy:"Respect where ingredients come from.",
     value2Title:"Craft",value2Copy:"Preserve the patience behind pantry traditions.",
     value3Title:"Care",value3Copy:"Make every choice clear, useful and welcoming.",
@@ -164,7 +166,7 @@ const UI={
     total:"Estimated total",orderDetailsTitle:"Order details",orderDetailsNote:"Sent only when you press WhatsApp",
     yourName:"Your name",namePlaceholder:"Name",area:"Area / location",areaPlaceholder:"e.g. Baabda",notes:"Order notes",notesPlaceholder:"Delivery notes, substitutions, anything we should know…",
     sendOrder:"Send order on WhatsApp <span>↗</span>",priceNote:"Prices are shown from the supplied retail list; final availability is confirmed on WhatsApp.",
-    what:"What it is",use:"Use it for",chooseSize:"Choose size",add:"Add to cart",update:"Update cart",view:"View",from:"From",sizeOptions:"size options",
+    what:"What it is",use:"Use it for",nutritionLabel:"Nutrition note",nutritionBadge:"Nutritious choice",chooseSize:"Choose size",add:"Add to cart",update:"Update cart",view:"View",from:"From",sizeOptions:"size options",
     remove:"Remove",details:"View details",qty:"Qty",unitPrice:"Unit",subtotal:"Subtotal",
     standard:"Standard",added:"Added to cart",updated:"Cart updated",removed:"Removed",
     categoryAll:"All categories",
@@ -197,8 +199,9 @@ const UI={
     categoriesCopy:"كل قسم هو فصل من الإرث نفسه — يُحصد ويُحفظ ويُقدّم وينتقل من جيل إلى جيل.",
     aboutEyebrow:"قصتنا ورسالتنا",
     aboutTitle:'أكثر من رفّ.<br><em>ذاكرة تبقى في متناول اليد.</em>',
-    aboutP1:"منذ عام 2006، انطلقت زيت ومونة من فكرة بسيطة: أن المونة اللبنانية أكثر من مجرد رفّ، بل ذاكرة تبقى في متناول اليد. تعيش في رائحة الأعشاب التي تجف تحت شمس الصيف، وفي الزيتون الذي يرتاح في الملوحة، وفي زيت الزيتون الآتي من المعصرة، وفي المرطبانات التي تُحضّر بصبر للأشهر الباردة.",
-    aboutP2:"رسالتنا هي أن نبقي هذا الإرث حيّاً بطريقة تنتمي إلى يومنا: أن نختار أساسيات المونة اللبنانية الأصيلة باحترام للمصدر والحرفة والنكهة، وأن نقدّمها بوضوح وعناية، وأن نجعل كرم المونة سهلاً ليصل إلى كل بيت.",
+    aboutLetterKicker:"رسالة من مونة البيت",
+    aboutP1:"منذ عام 2006، انطلقت زيت ومونة من فكرة بسيطة: أن المونة اللبنانية أكثر من مجرد رفّ — بل ذاكرة تبقى في متناول اليد. تعيش في رائحة الأعشاب التي تجف تحت ضوء الصيف، وفي الزيتون الذي يستريح في الماء المملّح، وفي زيت الزيتون المعصور من البساتين، وفي المرطبانات التي تُحضّر بصبر للأشهر الباردة. نجدها في التمر والخروب والدبس؛ في الحبوب والطحين والبقوليات؛ في العسل والمكسرات والبذور؛ في مستلزمات المطبخ والشرابات والخل؛ في المخللات والبهارات والأطعمة المجففة؛ في الحلويات والسكاكر التي نتشاركها على المائدة، وحتى في قطعة الصابون البسيطة التي تحمل رائحة البيت. كل قسم فصل صغير من الإرث نفسه — يُحصد ويُحفظ ويُقدّم وينتقل من جيل إلى جيل.",
+    aboutP2:"رسالتنا أن نبقي هذا الإرث حيّاً بطريقة تنتمي إلى يومنا: أن نختار أساسيات المونة اللبنانية الأصيلة باحترام للمصدر والحرفة والنكهة، وأن نقدّمها بوضوح وعناية، وأن نجعل كرم المونة سهلاً ليصل إلى كل بيت. نريد لكل مرطبان وعشبة وحبة وقطرة زيت أن تبدو مألوفة — صلة هادئة بالأرض، وبالمواسم، وبالموائد التي علّمتنا أن الطعام يكتسب معناه الأكبر عندما يُحضّر بصبر ويُشارك مع الآخرين.",
     value1Title:"المصدر",value1Copy:"نحترم أصل المكونات ومن أين تأتي.",
     value2Title:"الحرفة",value2Copy:"نحافظ على الصبر والخبرة خلف تقاليد المونة.",
     value3Title:"العناية",value3Copy:"نجعل كل اختيار واضحاً ومفيداً ومرحّباً.",
@@ -217,7 +220,7 @@ const UI={
     total:"المجموع التقديري",orderDetailsTitle:"تفاصيل الطلب",orderDetailsNote:"لا تُرسل إلا عند الضغط على واتساب",
     yourName:"الاسم",namePlaceholder:"اسمك",area:"المنطقة / الموقع",areaPlaceholder:"مثلاً بعبدا",notes:"ملاحظات الطلب",notesPlaceholder:"ملاحظات التوصيل أو الاستبدال أو أي تفاصيل إضافية…",
     sendOrder:"إرسال الطلب عبر واتساب <span>↗</span>",priceNote:"الأسعار مأخوذة من لائحة البيع المرفقة؛ يتم تأكيد التوفر والمجموع النهائي عبر واتساب.",
-    what:"ما هو",use:"كيف يُستخدم",chooseSize:"اختر الحجم",add:"أضف إلى السلة",update:"حدّث السلة",view:"عرض",from:"ابتداءً من",sizeOptions:"خيارات أحجام",
+    what:"ما هو",use:"كيف يُستخدم",nutritionLabel:"ملاحظة غذائية",nutritionBadge:"خيار مُغذٍ",chooseSize:"اختر الحجم",add:"أضف إلى السلة",update:"حدّث السلة",view:"عرض",from:"ابتداءً من",sizeOptions:"خيارات أحجام",
     remove:"حذف",details:"عرض التفاصيل",qty:"الكمية",unitPrice:"السعر",subtotal:"المجموع",
     standard:"قياس واحد",added:"تمت الإضافة إلى السلة",updated:"تم تحديث السلة",removed:"تم الحذف",
     categoryAll:"كل الأقسام",
@@ -360,6 +363,46 @@ function infoFor(p){
   return lang==="ar"?{what:arWhat,use:arUse}:{what:enWhat,use:enUse};
 }
 
+function healthNoteFor(p){
+  const n=p.nameEn.toLowerCase();
+  const pulseMatch=/(lentil|aadas|chickpea|humus|hummus|fasol|bean|foul|pea|bazela|termos|lupin)/.test(n);
+  const wholeGrainMatch=/(bulgur|freek|barley|brown rice|quinoa|kinwa|oat|shoufen|whole wheat|kameh)/.test(n);
+  const nutSeedMatch=/(almond|loz|walnut|joz |pecan|cashew|kajo|pistach|fustuq|chia|shea seed|sesame|somsom|flax|ketan|pumpkin seed|yaqtin|sunflower seed|dwar el shames|pine nut|snoubar|blackseed|habet el barakeh)/.test(n);
+  const flourMatch=/(whole wheat flour|almond flour|barley flour|oat flour|shoufen flour)/.test(n);
+
+  if((p.category==="Pulses"&&pulseMatch)||pulseMatch){
+    return lang==="ar"
+      ? {badge:"خيار مُغذٍ",text:"البقوليات مثل العدس والحمص والفاصوليا مصدر نباتي للبروتين والألياف، ويمكن أن تكون جزءاً ممتازاً من وجبة متوازنة."}
+      : {badge:"Nutritious choice",text:"Pulses such as lentils, chickpeas and beans naturally provide plant protein and fiber, making them a strong choice in a balanced meal."};
+  }
+  if(wholeGrainMatch){
+    return lang==="ar"
+      ? {badge:"خيار مُغذٍ",text:"الحبوب الكاملة مثل البرغل والفريكة والشعير والشوفان والكينوا والأرز الأسمر يمكن أن تضيف الألياف ومغذيات مفيدة إلى نظام غذائي متوازن."}
+      : {badge:"Nutritious choice",text:"Whole-grain staples such as bulgur, freekeh, barley, oats, quinoa and brown rice can contribute fiber and useful nutrients as part of a balanced diet."};
+  }
+  if(p.category==="Nuts + Seeds"&&nutSeedMatch){
+    return lang==="ar"
+      ? {badge:"خيار مُغذٍ",text:"المكسرات والبذور أطعمة كثيفة بالعناصر الغذائية وتوفّر عادةً دهوناً غير مشبعة وبروتيناً نباتياً وأليافاً."}
+      : {badge:"Nutritious choice",text:"Nuts and seeds are nutrient-dense foods that commonly provide unsaturated fats, plant protein and fiber."};
+  }
+  if(n.includes("extra virgin olive oil")){
+    return lang==="ar"
+      ? {badge:"خيار مُغذٍ",text:"زيت الزيتون البكر الممتاز غني بالدهون الأحادية غير المشبعة ويُستخدم تقليدياً ضمن نمط الأكل المتوسطي."}
+      : {badge:"Nutritious choice",text:"Extra virgin olive oil is rich in monounsaturated fat and is a classic ingredient in Mediterranean-style eating."};
+  }
+  if(n.includes("tahini")){
+    return lang==="ar"
+      ? {badge:"خيار مُغذٍ",text:"الطحينة مصنوعة من السمسم وتوفّر طبيعياً دهوناً غير مشبعة وبروتيناً ومعادن."}
+      : {badge:"Nutritious choice",text:"Tahini is sesame-based and naturally provides unsaturated fats, plant protein and minerals."};
+  }
+  if(flourMatch){
+    return lang==="ar"
+      ? {badge:"خيار مُغذٍ",text:"هذا النوع من الطحين الكامل أو طحين المكسرات يمكن أن يوفّر أليافاً أو بروتيناً أكثر من الطحين الأبيض المكرر، بحسب الصنف."}
+      : {badge:"Nutritious choice",text:"This whole-grain or nut-based flour can provide more fiber or protein than standard refined white flour, depending on the type."};
+  }
+  return null;
+}
+
 function applyLanguage(next){
   lang=next==="ar"?"ar":"en";
   localStorage.setItem(LANG_KEY,lang);
@@ -372,7 +415,7 @@ function applyLanguage(next){
     navShop:"navShop",navCategories:"navCategories",navAbout:"navAbout",navContact:"navContact",cartLabel:"cartLabel",
     heroEyebrow:"heroEyebrow",heroLede:"heroLede",heroWhatsApp:"heroWhatsApp",heroVariantLabel:"heroVariantLabel",heroCategoryLabel:"heroCategoryLabel",heroSinceLabel:"heroSinceLabel",
     scene1Kicker:"scene1Kicker",scene1Title:"scene1Title",scene1Copy:"scene1Copy",scene2Kicker:"scene2Kicker",scene2Title:"scene2Title",scene2Copy:"scene2Copy",scene3Kicker:"scene3Kicker",scene3Title:"scene3Title",scene3Copy:"scene3Copy",heroScript:"heroScript",
-    categoriesEyebrow:"categoriesEyebrow",categoriesCopy:"categoriesCopy",aboutEyebrow:"aboutEyebrow",aboutP1:"aboutP1",aboutP2:"aboutP2",
+    categoriesEyebrow:"categoriesEyebrow",categoriesCopy:"categoriesCopy",aboutEyebrow:"aboutEyebrow",aboutLetterKicker:"aboutLetterKicker",aboutP1:"aboutP1",aboutP2:"aboutP2",
     value1Title:"value1Title",value1Copy:"value1Copy",value2Title:"value2Title",value2Copy:"value2Copy",value3Title:"value3Title",value3Copy:"value3Copy",signKicker:"signKicker",signCopy:"signCopy",
     shopEyebrow:"shopEyebrow",shopNote:"shopNote",categorySelectLabel:"categorySelectLabel",resultLabel:"resultLabel",emptyTitle:"emptyTitle",emptyCopy:"emptyCopy",
     orderEyebrow:"orderEyebrow",orderIntroCopy:"orderIntroCopy",step1Title:"step1Title",step1Copy:"step1Copy",step2Title:"step2Title",step2Copy:"step2Copy",step3Title:"step3Title",step3Copy:"step3Copy",
@@ -380,7 +423,7 @@ function applyLanguage(next){
     footerBrand:"brand",footerCopy:"footerCopy",footerCatalogue:"footerCatalogue",footerAbout:"footerAbout",copyrightBrand:"brand",
     cartEyebrow:"cartEyebrow",cartTitle:"cartTitle",cartEmptyTitle:"cartEmptyTitle",cartEmptyCopy:"cartEmptyCopy",cartTotalLabel:"total",
     orderDetailsTitle:"orderDetailsTitle",orderDetailsNote:"orderDetailsNote",customerNameLabel:"yourName",customerAreaLabel:"area",orderNotesLabel:"notes",priceNote:"priceNote",
-    whatLabel:"what",useLabel:"use",chooseSizeLabel:"chooseSize"
+    whatLabel:"what",useLabel:"use",nutritionLabel:"nutritionLabel",chooseSizeLabel:"chooseSize"
   };
   Object.entries(textMap).forEach(([id,key])=>{const el=$("#"+id);if(el&&t[key]!==undefined)el.textContent=t[key]});
 
@@ -460,6 +503,7 @@ function renderProducts(){
 
   $("#productGrid").innerHTML=shown.map(p=>{
     const info=infoFor(p);
+    const health=healthNoteFor(p);
     const selected=cardVariantFor(p);
     const q=qtyFor("card:"+p.id);
     const ps=productPriceSummary(p);
@@ -476,6 +520,7 @@ function renderProducts(){
       <h3 class="product-name">${escapeHtml(currentName(p))}</h3>
       <p class="product-description">${escapeHtml(info.what)}</p>
       <p class="product-use"><strong>${escapeHtml(t.use)}:</strong> ${escapeHtml(info.use)}</p>
+      ${health?`<div class="product-health"><span>✦ ${escapeHtml(health.badge)}</span><p>${escapeHtml(health.text)}</p></div>`:""}
       <div class="product-price-row">
         <div class="product-price"><small>${p.variants.length>1?escapeHtml(t.from):""}</small><strong class="money">${money(ps.min)}</strong></div>
         <div class="product-size-summary">${p.variants.length>1?`${p.variants.length} ${escapeHtml(t.sizeOptions)}`:escapeHtml(lang==="ar"?selected.sizeAr:selected.sizeEn)}</div>
@@ -610,13 +655,15 @@ function renderModal(productId,variantId){
   const v=variantById(p,variantId)||defaultVariant(p);
   currentModalProduct=p;
   currentModalVariant=v;
-  const t=UI[lang],info=infoFor(p);
+  const t=UI[lang],info=infoFor(p),health=healthNoteFor(p);
   $("#productModalMark").textContent=initials(currentName(p));
   $("#productModalCategory").textContent=categoryName(p.category);
   $("#productModalTitle").textContent=currentName(p);
   $("#productModalOriginal").textContent=lang==="en"&&normalize(p.nameEn)!==normalize(p.original)?`Catalogue name: ${p.original}`:"";
   $("#productModalDescription").textContent=info.what;
   $("#productModalUse").textContent=info.use;
+  $("#nutritionPanel").hidden=!health;
+  $("#productNutrition").textContent=health?health.text:"";
   $("#modalPrice").textContent=money(v.price);
   $("#productModalQty").textContent=qtyFor("modal");
   $("#productModalAdd").textContent=t.add;
@@ -713,6 +760,25 @@ function startScenes(){
   sceneTimer=setInterval(()=>showScene(sceneIndex+1),6500);
 }
 
+function openLanguageWelcome(){
+  const modal=$("#languageWelcome");
+  if(!modal||localStorage.getItem(WELCOME_KEY)==="1")return;
+  modal.hidden=false;
+  document.body.classList.add("welcome-open");
+  requestAnimationFrame(()=>modal.classList.add("is-open"));
+  const first=modal.querySelector("[data-welcome-lang]");
+  setTimeout(()=>first?.focus(),120);
+}
+function chooseWelcomeLanguage(next){
+  localStorage.setItem(WELCOME_KEY,"1");
+  applyLanguage(next);
+  const modal=$("#languageWelcome");
+  if(!modal)return;
+  modal.classList.remove("is-open");
+  document.body.classList.remove("welcome-open");
+  setTimeout(()=>{modal.hidden=true},320);
+}
+
 function setupNav(){
   const t=$("#navToggle"),n=$("#navLinks");
   t.addEventListener("click",()=>{
@@ -770,7 +836,8 @@ function init(){
   $("#loadMore").addEventListener("click",()=>{visibleLimit+=PAGE_SIZE;renderProducts()});
   $("#clearSearch").addEventListener("click",()=>{query="";activeCategory="All";visibleLimit=PAGE_SIZE;$("#productSearch").value="";renderCategorySelect();renderProducts()});
 
-  $$("[data-lang]").forEach(btn=>btn.addEventListener("click",()=>applyLanguage(btn.dataset.lang)));
+  $("[data-lang]").forEach(btn=>btn.addEventListener("click",()=>applyLanguage(btn.dataset.lang)));
+  $("[data-welcome-lang]").forEach(btn=>btn.addEventListener("click",()=>chooseWelcomeLanguage(btn.dataset.welcomeLang)));
 
   $("#cartButton").addEventListener("click",openCart);
   $("#cartClose").addEventListener("click",closeCart);
@@ -794,6 +861,8 @@ function init(){
     if(e.key===CART_KEY){cart=loadCart();renderCart()}
     if(e.key===LANG_KEY){applyLanguage(e.newValue==="ar"?"ar":"en")}
   });
+
+  openLanguageWelcome();
 }
 
 document.addEventListener("DOMContentLoaded",init);

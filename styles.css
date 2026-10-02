@@ -4356,3 +4356,21 @@ main{background:transparent}
   vertical-align:-5px;
   margin-inline-end:6px;
 }
+
+
+/* ===== v35 mobile browser chrome clearance ===== */
+@media(max-width:760px){
+  :root{--mobile-browser-clearance:64px}
+  .mobile-order-bar{
+    bottom:calc(max(12px,env(safe-area-inset-bottom)) + var(--mobile-browser-clearance))!important;
+  }
+  .toast{
+    bottom:calc(max(22px,env(safe-area-inset-bottom)) + var(--mobile-browser-clearance))!important;
+  }
+  body:not(.cart-open):not(.modal-open){
+    padding-bottom:calc(86px + env(safe-area-inset-bottom))!important;
+  }
+}
+@media(max-width:760px) and (display-mode:standalone){
+  :root{--mobile-browser-clearance:0px}
+}

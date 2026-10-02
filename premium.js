@@ -722,7 +722,7 @@
 })();
 
 
-/* ===== v32 animated shop hero loader ===== */
+/* ===== v35 HD animated shop hero loader ===== */
 (function(){
   function loadShopHeroVideo(){
     var video=document.getElementById("shopHeroVideo");
@@ -732,11 +732,15 @@
     if(reduceMotion)return;
 
     var parts=[
-      "assets/shop-hero-video/part01.b64?v=20261002-hero32",
-      "assets/shop-hero-video/part02.b64?v=20261002-hero32",
-      "assets/shop-hero-video/part03.b64?v=20261002-hero32",
-      "assets/shop-hero-video/part04.b64?v=20261002-hero32",
-      "assets/shop-hero-video/part05.b64?v=20261002-hero32"
+      "assets/shop-hero-video-hd/part01.b64?v=20261002-hero-hd1",
+      "assets/shop-hero-video-hd/part02.b64?v=20261002-hero-hd1",
+      "assets/shop-hero-video-hd/part03.b64?v=20261002-hero-hd1",
+      "assets/shop-hero-video-hd/part04.b64?v=20261002-hero-hd1",
+      "assets/shop-hero-video-hd/part05.b64?v=20261002-hero-hd1",
+      "assets/shop-hero-video-hd/part06.b64?v=20261002-hero-hd1",
+      "assets/shop-hero-video-hd/part07.b64?v=20261002-hero-hd1",
+      "assets/shop-hero-video-hd/part08.b64?v=20261002-hero-hd1",
+      "assets/shop-hero-video-hd/part09.b64?v=20261002-hero-hd1"
     ];
 
     Promise.all(parts.map(function(url){
@@ -746,7 +750,7 @@
       });
     })).then(function(chunks){
       var base64=chunks.join("").replace(/\s+/g,"");
-      if(base64.length!==47724)throw new Error("Hero video data is incomplete");
+      if(base64.length!==1061516)throw new Error("Hero video data is incomplete");
 
       var binary=window.atob(base64);
       var bytes=new Uint8Array(binary.length);

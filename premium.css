@@ -1165,3 +1165,99 @@ body[data-page="shop"] .shop-intro-board{
     display:none!important;
   }
 }
+
+
+/* ===== v35 home color and contrast pass ===== */
+/* Provenance is intentionally a dark editorial section. Keep every foreground
+   color and card surface explicit so later light-theme rules cannot wash it out. */
+.premium-provenance{
+  background:
+    radial-gradient(circle at 14% 8%,rgba(232,201,120,.11),transparent 24rem),
+    linear-gradient(135deg,#082f18 0%,#0b3b20 52%,#0a321b 100%)!important;
+  color:#fff!important;
+}
+.premium-provenance .premium-kicker{
+  color:#e8c978!important;
+}
+.premium-provenance .premium-head h2{
+  color:#fff!important;
+}
+.premium-provenance .premium-head h2 em{
+  color:#e4b347!important;
+}
+.premium-provenance .premium-head>p{
+  color:rgba(255,255,255,.82)!important;
+}
+.premium-provenance .lebanon-map-card,
+.premium-provenance .provenance-detail{
+  background:rgba(255,255,255,.07)!important;
+  border-color:rgba(255,255,255,.16)!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.18)!important;
+}
+.premium-provenance .provenance-detail .region-label{
+  color:#edc869!important;
+}
+.premium-provenance .provenance-detail h3{
+  color:#fff!important;
+}
+.premium-provenance .provenance-detail p{
+  color:rgba(255,255,255,.82)!important;
+}
+.premium-provenance .provenance-product{
+  background:rgba(255,255,255,.08)!important;
+  border-color:rgba(255,255,255,.15)!important;
+  color:#fff!important;
+}
+.premium-provenance .provenance-product:hover{
+  background:rgba(255,255,255,.13)!important;
+  border-color:rgba(232,201,120,.38)!important;
+}
+.premium-provenance .provenance-product small{
+  color:#e9c76f!important;
+}
+.premium-provenance .region-pin{
+  box-shadow:0 8px 22px rgba(0,0,0,.15);
+}
+
+/* Pantry moments is also dark; keep its editorial copy readable. */
+.pantry-moments .premium-kicker{
+  color:#e8c978!important;
+}
+.pantry-moments .premium-head h2{
+  color:#fff!important;
+}
+.pantry-moments .premium-head h2 em{
+  color:#e4b347!important;
+}
+.pantry-moments .premium-head>p{
+  color:rgba(255,255,255,.78)!important;
+}
+.pantry-moments .moment-card span{
+  color:#fff!important;
+  text-shadow:0 2px 12px rgba(0,0,0,.45);
+}
+
+/* Keep light homepage premium sections consistently legible. */
+body[data-page="home"] .premium-collections .premium-head>p,
+body[data-page="home"] .premium-recipes .premium-head>p{
+  color:#6f685c!important;
+}
+body[data-page="home"] .premium-collections .premium-head h2,
+body[data-page="home"] .premium-recipes .premium-head h2{
+  color:#0b4b25!important;
+}
+body[data-page="home"] .premium-collections .premium-head h2 em,
+body[data-page="home"] .premium-recipes .premium-head h2 em{
+  color:#c88f16!important;
+}
+
+@media(max-width:760px){
+  .premium-provenance .premium-head>p,
+  .pantry-moments .premium-head>p{
+    font-size:.92rem;
+    line-height:1.65;
+  }
+  .premium-provenance .provenance-detail{
+    padding:26px!important;
+  }
+}

@@ -33,10 +33,26 @@ function productImageKey(p){
   return "spices";
 }
 function productImageSrc(p){return PRODUCT_IMAGE_ASSETS[productImageKey(p)]||""}
+function productPhotoMarkup(p,cls="product-image"){
+  const photos=window.ZWM_PRODUCT_PHOTOS;
+  const tile=photos?.tile?.(p.id);
+  if(!tile||!photos.atlasUrl)return "";
+  const x=tile[0]*photos.tileW,y=tile[1]*photos.tileH;
+  return `<svg class="${escapeHtml(cls)} product-photo-sprite" viewBox="${x} ${y} ${photos.tileW} ${photos.tileH}" role="img" aria-label="${escapeHtml(currentName(p))}" preserveAspectRatio="xMidYMid meet"><image href="${escapeHtml(photos.atlasUrl)}" x="0" y="0" width="${photos.atlasW}" height="${photos.atlasH}" preserveAspectRatio="none"></image></svg>`;
+}
 function productVisualMarkup(p,cls="product-image"){
+  const photo=productPhotoMarkup(p,cls);
+  if(photo)return photo;
   const src=productImageSrc(p);
   return src?("<img class=\""+cls+"\" src=\""+src+"\" alt=\""+escapeHtml(currentName(p))+"\" loading=\"lazy\" decoding=\"async\" />"):("<span class=\"product-monogram\">"+escapeHtml(initials(currentName(p)))+"</span>");
 }
+
+window.addEventListener("zwm-product-photos-ready",()=>{
+  renderProducts();
+  renderRecent();
+  renderGiftPickerResults();
+  if(currentModalProduct)renderModal(currentModalProduct.id,currentModalVariant?.id);
+});
 const WA="96181581230";
 const CART_KEY="zwm-cart-v5";
 const LANG_KEY="zwm-lang-v2";

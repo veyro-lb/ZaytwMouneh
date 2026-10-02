@@ -4322,3 +4322,35 @@ body[data-page="shop"] .seasonal-product .decorative-product-image{
     max-width:100%!important;
   }
 }
+
+
+/* ===== v38 supplied product artwork: full portrait, no crop ===== */
+.product-visual,
+.featured-product-media{
+  aspect-ratio:2/3!important;
+  height:auto!important;
+  overflow:hidden!important;
+  background:#f8f3e9!important;
+}
+.product-visual .product-photo-sprite,
+.product-visual .product-image,
+.featured-product-media .featured-product-image,
+.featured-product-media .product-photo-sprite{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
+  filter:none!important;
+}
+.product-card,
+.featured-product{
+  height:auto!important;
+  min-height:0!important;
+}
+@media(max-width:980px){
+  .product-visual,.featured-product-media{aspect-ratio:2/3!important}
+}
+@media(max-width:640px){
+  .product-visual,.featured-product-media{aspect-ratio:2/3!important}
+}

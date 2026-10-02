@@ -4354,3 +4354,49 @@ body[data-page="shop"] .seasonal-product .decorative-product-image{
 @media(max-width:640px){
   .product-visual,.featured-product-media{aspect-ratio:2/3!important}
 }
+
+
+/* ===== v50 clean product-card photography ===== */
+body[data-page="shop"] .product-card .product-visual{
+  aspect-ratio:4/5!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:8px!important;
+  overflow:hidden!important;
+  background:#f8f3e9!important;
+}
+
+body[data-page="shop"] .product-card .product-photo-sprite{
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  margin:auto!important;
+  transform:none!important;
+  filter:none!important;
+}
+
+body[data-page="shop"] .product-card .product-photo-sprite[data-photo-quality="card-supplied"]{
+  width:min(100%,300px)!important;
+}
+
+body[data-page="shop"] .product-card .product-photo-sprite[data-photo-quality="card-hd-fallback"]{
+  width:min(100%,360px)!important;
+}
+
+body[data-page="shop"] .product-card .product-photo-placeholder{
+  width:100%!important;
+  height:100%!important;
+}
+
+body[data-page="shop"] .product-card:hover .product-photo-sprite,
+body[data-page="shop"] .product-card:focus-within .product-photo-sprite{
+  transform:none!important;
+  filter:none!important;
+}
+
+@media(max-width:760px){
+  body[data-page="shop"] .product-card .product-visual{
+    padding:6px!important;
+  }
+}

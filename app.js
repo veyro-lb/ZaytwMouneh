@@ -919,9 +919,9 @@ function renderProducts(){
         ${sizeOptions}
         <div class="product-buy-row">
           <div class="card-qty">
-            <button type="button" data-card-q="-1" data-id="${escapeHtml(p.id)}" aria-label="Decrease quantity">−</button>
+            <button type="button" data-card-q="-1" data-id="${escapeHtml(p.id)}" aria-label="${escapeHtml(lang==="ar"?"تقليل الكمية":"Decrease quantity")}">−</button>
             <span data-card-qty="${escapeHtml(p.id)}">${q}</span>
-            <button type="button" data-card-q="1" data-id="${escapeHtml(p.id)}" aria-label="Increase quantity">+</button>
+            <button type="button" data-card-q="1" data-id="${escapeHtml(p.id)}" aria-label="${escapeHtml(lang==="ar"?"زيادة الكمية":"Increase quantity")}">+</button>
           </div>
           <button class="add-button" type="button" data-add="${escapeHtml(p.id)}">${escapeHtml(t.add)}</button>
         </div>
@@ -1012,9 +1012,9 @@ function renderCart(){
         <p class="cart-item-price">${money(v.price)} × ${qty}</p>
       </div>
       <div class="qty-control">
-        <button type="button" data-cart-q="-1" data-key="${escapeHtml(key)}">−</button>
+        <button type="button" data-cart-q="-1" data-key="${escapeHtml(key)}" aria-label="${escapeHtml(lang==="ar"?"تقليل الكمية":"Decrease quantity")}">−</button>
         <span>${qty}</span>
-        <button type="button" data-cart-q="1" data-key="${escapeHtml(key)}">+</button>
+        <button type="button" data-cart-q="1" data-key="${escapeHtml(key)}" aria-label="${escapeHtml(lang==="ar"?"زيادة الكمية":"Increase quantity")}">+</button>
       </div>
       <div class="cart-item-footer">
         <button class="product-view" type="button" data-cart-view="${escapeHtml(p.id)}">${escapeHtml(t.details)}</button>
@@ -1218,9 +1218,9 @@ function renderGiftSummary(){
     <select data-gift-variant="${escapeHtml(r.key)}" data-gift-product="${escapeHtml(r.p.id)}" aria-label="${escapeHtml(UI[lang].chooseSize)}">
       ${r.p.variants.map(v=>`<option value="${escapeHtml(v.id)}"${v.id===r.v.id?" selected":""}>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${money(v.price)}</option>`).join("")}
     </select>
-    <div class="gift-selected-controls"><button type="button" data-gift-q="-1" data-key="${escapeHtml(r.key)}">−</button><span>${r.qty}</span><button type="button" data-gift-q="1" data-key="${escapeHtml(r.key)}">+</button></div>
+    <div class="gift-selected-controls"><button type="button" data-gift-q="-1" data-key="${escapeHtml(r.key)}" aria-label="${escapeHtml(lang==="ar"?"تقليل الكمية":"Decrease quantity")}">−</button><span>${r.qty}</span><button type="button" data-gift-q="1" data-key="${escapeHtml(r.key)}" aria-label="${escapeHtml(lang==="ar"?"زيادة الكمية":"Increase quantity")}">+</button></div>
     <strong class="gift-line-total">${money(r.v.price*r.qty)}</strong>
-    <button type="button" class="gift-remove" data-gift-remove="${escapeHtml(r.key)}">×</button>
+    <button type="button" class="gift-remove" data-gift-remove="${escapeHtml(r.key)}" aria-label="${escapeHtml(lang==="ar"?"إزالة من الهدية":"Remove from gift")}">×</button>
   </article>`).join(""):`<p id="giftEmpty">${escapeHtml(EXTRA_UI[lang].giftEmpty)}</p>`;
   document.querySelectorAll("[data-gift-q]").forEach(btn=>btn.addEventListener("click",()=>changeGiftQty(btn.dataset.key,Number(btn.dataset.giftQ))));
   document.querySelectorAll("[data-gift-remove]").forEach(btn=>btn.addEventListener("click",()=>removeGiftItem(btn.dataset.giftRemove)));

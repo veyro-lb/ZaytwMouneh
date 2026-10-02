@@ -410,8 +410,9 @@ body[data-page="gift"] [data-gift-preset]{
 .gift-v4-builder-section{
   position:relative;
   padding:86px 0 100px;
+  scroll-margin-top:126px;
   background:
-    linear-gradient(180deg,var(--gift-green-dark) 0 180px,#f2e8d9 180px 100%);
+    linear-gradient(180deg,var(--gift-green-dark) 0 315px,#f2e8d9 315px 100%);
 }
 .gift-v4-builder-intro{color:#fff}
 .gift-v4-builder-intro .gift-v4-kicker{color:#e2bb61}
@@ -975,7 +976,8 @@ html[dir="rtl"] .gift-v4-stamp{right:auto;left:25px}
 
   .gift-v4-builder-section{
     padding:58px 0 72px;
-    background:linear-gradient(180deg,var(--gift-green-dark) 0 205px,#f2e8d9 205px 100%);
+    scroll-margin-top:18px;
+    background:linear-gradient(180deg,var(--gift-green-dark) 0 325px,#f2e8d9 325px 100%);
   }
   .gift-v4-basket-bar{
     grid-template-columns:1fr auto;

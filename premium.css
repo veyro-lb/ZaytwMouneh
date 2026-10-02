@@ -2782,3 +2782,846 @@ body[data-page="shop"] .product-grid{
     padding:8px!important;
   }
 }
+
+
+/* ===== v44 premium interaction + storytelling system ===== */
+
+/* Motion reveal: restrained, one-time, accessibility-aware. */
+.motion-reveal{
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity .5s ease,transform .55s cubic-bezier(.2,.72,.2,1);
+}
+.motion-reveal.is-visible{
+  opacity:1;
+  transform:none;
+}
+
+/* A subtle cursor-follow light for a few large editorial surfaces. */
+.interactive-glow{
+  --glow-x:50%;
+  --glow-y:50%;
+}
+.interactive-glow::before{
+  background-image:
+    radial-gradient(circle at var(--glow-x) var(--glow-y),rgba(255,228,151,.11),transparent 24rem)!important;
+}
+
+/* Buttons: quiet sheen and directional movement rather than loud animation. */
+.button,
+.intro-primary,
+.intro-secondary,
+.whatsapp-order,
+.shop-help-actions a,
+.seasonal-actions a{
+  position:relative;
+  overflow:hidden;
+}
+.button::after,
+.intro-primary::after,
+.whatsapp-order::after{
+  content:"";
+  position:absolute;
+  inset:-2px auto -2px -38%;
+  width:28%;
+  transform:skewX(-22deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.26),transparent);
+  opacity:0;
+  transition:transform .55s ease,opacity .2s ease;
+  pointer-events:none;
+}
+.button:hover::after,
+.intro-primary:hover::after,
+.whatsapp-order:hover::after{
+  transform:translateX(520%) skewX(-22deg);
+  opacity:1;
+}
+
+/* Shop trust ribbon */
+body[data-page="shop"] .shop-trust-ribbon{
+  position:relative;
+  z-index:4;
+  padding:14px 0;
+  background:#f5ecdc;
+  border-bottom:1px solid rgba(11,75,37,.10);
+}
+body[data-page="shop"] .shop-trust-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+}
+body[data-page="shop"] .shop-trust-grid>div{
+  min-width:0;
+  display:grid;
+  grid-template-columns:34px minmax(0,1fr);
+  grid-template-rows:auto auto;
+  column-gap:10px;
+  align-items:center;
+  padding:10px 12px;
+  border-radius:16px;
+  border:1px solid rgba(11,75,37,.08);
+  background:rgba(255,250,241,.66);
+}
+body[data-page="shop"] .shop-trust-grid>div>span{
+  grid-row:1/3;
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:rgba(11,75,37,.07);
+  color:#c9931f;
+  font-weight:900;
+}
+body[data-page="shop"] .shop-trust-grid strong{
+  color:var(--green);
+  font-size:.75rem;
+  line-height:1.2;
+}
+body[data-page="shop"] .shop-trust-grid small{
+  color:var(--muted);
+  font-size:.64rem;
+  line-height:1.25;
+  margin-top:2px;
+}
+
+/* Botanical divider */
+body[data-page="shop"] .botanical-divider{
+  display:grid;
+  grid-template-columns:minmax(40px,1fr) minmax(240px,420px) minmax(40px,1fr);
+  align-items:center;
+  gap:18px;
+  padding:8px 0 4px;
+  color:rgba(11,75,37,.42);
+}
+body[data-page="shop"] .botanical-divider>span{
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(11,75,37,.13),transparent);
+}
+body[data-page="shop"] .botanical-divider svg{
+  width:100%;
+  height:auto;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.4;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+body[data-page="shop"] .botanical-divider path{
+  stroke-dasharray:520;
+  stroke-dashoffset:520;
+  transition:stroke-dashoffset 1.15s cubic-bezier(.2,.7,.2,1) .12s;
+}
+body[data-page="shop"] .botanical-divider.is-visible path{
+  stroke-dashoffset:0;
+}
+
+/* Category cards: small, visual and easy to scan. */
+body[data-page="shop"] .category-quick-grid-all{
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+body[data-page="shop"] .category-quick-grid-all .category-quick-card{
+  display:grid!important;
+  grid-template-columns:44px minmax(0,1fr)!important;
+  grid-template-rows:auto auto!important;
+  column-gap:11px!important;
+  align-items:center!important;
+  min-height:94px!important;
+  padding:12px 13px!important;
+}
+body[data-page="shop"] .category-quick-visual{
+  grid-row:1/3;
+  width:44px;
+  height:44px;
+  border-radius:13px;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  background:rgba(11,75,37,.055);
+  border:1px solid rgba(11,75,37,.07);
+}
+body[data-page="shop"] .category-quick-image{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  display:block!important;
+}
+body[data-page="shop"] .category-quick-visual .product-photo-placeholder{
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  border:0!important;
+  border-radius:0!important;
+}
+body[data-page="shop"] .category-quick-visual .product-photo-placeholder svg{
+  width:26px!important;
+  height:26px!important;
+}
+body[data-page="shop"] .category-quick-visual .product-photo-placeholder small{
+  display:none!important;
+}
+body[data-page="shop"] .category-quick-fallback{
+  color:#c9931f;
+}
+body[data-page="shop"] .category-quick-grid-all .category-quick-name{
+  grid-column:2!important;
+  padding-right:22px!important;
+  align-self:end!important;
+  font-size:1rem!important;
+}
+body[data-page="shop"] .category-quick-grid-all .category-quick-meta{
+  grid-column:2!important;
+  align-self:start!important;
+  margin-top:6px!important;
+}
+body[data-page="shop"] .category-quick-index{
+  top:10px!important;
+  right:10px!important;
+}
+
+/* Featured product editorial shelf */
+body[data-page="shop"] .shop-featured{
+  padding:72px 0 74px!important;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(201,149,47,.08),transparent 25rem),
+    linear-gradient(180deg,#fbf7ee,#f3e8d6)!important;
+}
+body[data-page="shop"] .shop-featured-head{
+  margin-bottom:28px!important;
+}
+body[data-page="shop"] .shop-featured-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:14px!important;
+}
+.featured-product{
+  position:relative;
+  min-width:0;
+  min-height:340px;
+  display:flex;
+  flex-direction:column;
+  border:1px solid rgba(11,75,37,.11);
+  border-radius:24px;
+  overflow:hidden;
+  background:rgba(255,250,241,.94);
+  box-shadow:0 12px 30px rgba(11,75,37,.07);
+  cursor:pointer;
+  transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;
+}
+.featured-product:hover,
+.featured-product:focus-within{
+  transform:translateY(-4px);
+  border-color:rgba(201,149,47,.34);
+  box-shadow:0 20px 42px rgba(11,75,37,.11);
+}
+.featured-product-media{
+  position:relative;
+  height:176px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 24% 18%,rgba(255,255,255,.82),transparent 34%),
+    linear-gradient(145deg,#efe1c8,#dcc19a);
+}
+.featured-product-image{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  transition:transform .55s cubic-bezier(.2,.7,.2,1),filter .35s;
+}
+.featured-product:hover .featured-product-image{
+  transform:scale(1.045);
+  filter:saturate(1.05);
+}
+.featured-product-badge{
+  position:absolute;
+  top:12px;
+  left:12px;
+  min-height:27px;
+  display:inline-flex;
+  align-items:center;
+  padding:0 10px;
+  border-radius:999px;
+  background:rgba(8,49,22,.88);
+  color:#f3ca68;
+  font-size:.61rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  backdrop-filter:blur(8px);
+}
+.featured-product-copy{
+  display:flex;
+  flex:1;
+  flex-direction:column;
+  padding:17px;
+}
+.featured-product-copy>p{
+  margin:0 0 6px;
+  color:#c48c14;
+  font-size:.61rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.13em;
+}
+.featured-product-copy h3{
+  margin:0;
+  color:var(--green);
+  font-family:"DM Serif Display",Georgia,serif;
+  font-size:1.48rem;
+  line-height:1.04;
+  font-weight:400;
+}
+.featured-origin{
+  margin-top:7px;
+  color:var(--muted);
+  font-size:.69rem;
+  line-height:1.3;
+}
+.featured-product-foot{
+  margin-top:auto;
+  padding-top:16px;
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:12px;
+}
+.featured-product-foot>span{
+  display:grid;
+  gap:2px;
+}
+.featured-product-foot strong{
+  color:var(--green);
+  font-family:"DM Serif Display",Georgia,serif;
+  font-size:1.35rem;
+  font-weight:400;
+}
+.featured-product-foot small{
+  color:var(--muted);
+  font-size:.61rem;
+}
+.featured-product-foot button{
+  min-height:38px;
+  border:0;
+  border-radius:999px;
+  padding:0 13px;
+  background:var(--green);
+  color:#fff;
+  font-size:.69rem;
+  font-weight:900;
+  cursor:pointer;
+}
+.featured-product-foot button b{
+  color:#f0c664;
+  margin-left:4px;
+}
+
+/* Seasonal editorial moment */
+body[data-page="shop"] .seasonal-story{
+  padding:0 0 74px;
+  background:#f3e8d6;
+}
+body[data-page="shop"] .seasonal-story-card{
+  position:relative;
+  min-height:360px;
+  display:grid;
+  grid-template-columns:minmax(0,.85fr) minmax(360px,1.15fr);
+  gap:34px;
+  align-items:center;
+  padding:38px 42px;
+  border-radius:32px;
+  overflow:hidden;
+  isolation:isolate;
+  color:#fff;
+  background:
+    radial-gradient(circle at var(--glow-x) var(--glow-y),rgba(239,198,95,.14),transparent 23rem),
+    linear-gradient(125deg,#0b3518,#0d4620 58%,#123c1d);
+  box-shadow:0 28px 60px rgba(7,42,18,.16);
+}
+body[data-page="shop"] .seasonal-story-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.08) .6px,transparent .7px);
+  background-size:9px 9px;
+  opacity:.13;
+  z-index:-1;
+}
+body[data-page="shop"] .seasonal-story-copy{
+  position:relative;
+  z-index:2;
+}
+body[data-page="shop"] .seasonal-story h2{
+  margin:0;
+  max-width:10ch;
+  font-family:"DM Serif Display",Georgia,serif;
+  font-size:clamp(2.8rem,4.6vw,4.8rem);
+  line-height:.94;
+  font-weight:400;
+}
+body[data-page="shop"] .seasonal-story h2 em{
+  color:#e8c978;
+  font-weight:400;
+}
+body[data-page="shop"] .seasonal-story-copy>p:not(.premium-kicker){
+  max-width:48ch;
+  color:rgba(255,255,255,.72);
+  line-height:1.65;
+  font-size:.88rem;
+}
+body[data-page="shop"] .seasonal-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:20px;
+}
+body[data-page="shop"] .seasonal-actions a{
+  min-height:38px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:0 13px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+  color:#fff;
+  font-size:.7rem;
+  font-weight:800;
+  text-decoration:none;
+  transition:background .2s ease,border-color .2s ease,transform .2s ease;
+}
+body[data-page="shop"] .seasonal-actions a:hover{
+  transform:translateY(-1px);
+  border-color:rgba(232,201,120,.45);
+  background:rgba(255,255,255,.11);
+}
+body[data-page="shop"] .seasonal-products{
+  position:relative;
+  min-height:280px;
+}
+body[data-page="shop"] .seasonal-product{
+  position:absolute;
+  display:grid;
+  place-items:center;
+  border-radius:28px;
+  background:rgba(255,250,241,.92);
+  border:1px solid rgba(255,255,255,.48);
+  box-shadow:0 20px 42px rgba(0,0,0,.18);
+  transform:rotate(var(--rot));
+  transition:transform .35s cubic-bezier(.2,.7,.2,1);
+}
+body[data-page="shop"] .seasonal-product img{
+  width:84%;
+  height:84%;
+  object-fit:contain;
+  filter:drop-shadow(0 12px 16px rgba(0,0,0,.16));
+}
+body[data-page="shop"] .seasonal-product-oil{
+  --rot:-5deg;
+  width:210px;
+  height:238px;
+  left:8%;
+  top:16px;
+}
+body[data-page="shop"] .seasonal-product-olives{
+  --rot:5deg;
+  width:174px;
+  height:174px;
+  right:22%;
+  bottom:3px;
+}
+body[data-page="shop"] .seasonal-product-spices{
+  --rot:8deg;
+  width:138px;
+  height:138px;
+  right:2%;
+  top:18px;
+}
+body[data-page="shop"] .seasonal-story-card:hover .seasonal-product{
+  transform:translateY(-5px) rotate(var(--rot));
+}
+
+/* Catalogue toolbar: sticky when useful, compact once pinned. */
+body[data-page="shop"] .catalog-toolbar[data-sticky-catalogue]{
+  position:sticky!important;
+  top:108px!important;
+  z-index:85!important;
+  transition:padding .2s ease,border-radius .2s ease,box-shadow .2s ease,background .2s ease;
+  backdrop-filter:saturate(118%) blur(14px);
+  -webkit-backdrop-filter:saturate(118%) blur(14px);
+}
+body[data-page="shop"] .catalog-toolbar.is-stuck{
+  padding:7px!important;
+  border-radius:19px!important;
+  background:rgba(255,250,241,.94)!important;
+  box-shadow:0 16px 36px rgba(8,43,19,.13)!important;
+}
+body[data-page="shop"] .catalog-toolbar.is-stuck .search-box,
+body[data-page="shop"] .catalog-toolbar.is-stuck .category-select-wrap,
+body[data-page="shop"] .catalog-toolbar.is-stuck .favorites-filter,
+body[data-page="shop"] .catalog-toolbar.is-stuck .catalog-meta{
+  min-height:50px!important;
+}
+
+/* Product cards: quick preview hint, badges and staggered entrance. */
+body[data-page="shop"] .product-card-animated{
+  animation:productCardIn .42s cubic-bezier(.2,.72,.2,1) both;
+  animation-delay:calc(min(var(--card-i),7) * 38ms);
+}
+@keyframes productCardIn{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:none}
+}
+body[data-page="shop"] .quick-view-hint{
+  position:absolute;
+  left:50%;
+  bottom:10px;
+  transform:translate(-50%,8px);
+  min-height:30px;
+  display:inline-flex;
+  align-items:center;
+  padding:0 11px;
+  border-radius:999px;
+  background:rgba(7,48,21,.88);
+  color:#fff;
+  font-size:.62rem;
+  font-weight:850;
+  opacity:0;
+  transition:opacity .22s ease,transform .22s ease;
+  pointer-events:none;
+  backdrop-filter:blur(8px);
+}
+body[data-page="shop"] .product-card:hover .quick-view-hint,
+body[data-page="shop"] .product-card:focus-visible .quick-view-hint{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+body[data-page="shop"] .product-badges span:first-child{
+  background:#0b4b25;
+  color:#f3cb6e;
+  border-color:#0b4b25;
+}
+
+/* Add-to-pantry feedback */
+.cart-fly{
+  position:fixed;
+  z-index:9999;
+  width:28px;
+  height:28px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#d3a323;
+  color:#063319;
+  box-shadow:0 8px 20px rgba(0,0,0,.18);
+  pointer-events:none;
+  opacity:1;
+  transform:translate3d(0,0,0) scale(1);
+  transition:transform .7s cubic-bezier(.2,.75,.2,1),opacity .68s ease;
+}
+.cart-fly.is-flying{
+  transform:translate3d(var(--fly-x),var(--fly-y),0) scale(.45);
+  opacity:.12;
+}
+.cart-button.cart-bump{
+  animation:cartBump .58s cubic-bezier(.2,.7,.2,1);
+}
+@keyframes cartBump{
+  0%,100%{transform:scale(1)}
+  35%{transform:scale(1.065)}
+  65%{transform:scale(.985)}
+}
+.add-button.is-added,
+.featured-product-foot button.is-added,
+#productModalAdd.is-added{
+  background:#1f6d35!important;
+}
+
+/* Helpful finish before WhatsApp ordering */
+body[data-page="shop"] .shop-help{
+  padding-top:34px!important;
+  padding-bottom:58px!important;
+}
+body[data-page="shop"] .shop-help-card{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:36px;
+  align-items:center;
+  padding:30px 32px;
+  border:1px solid rgba(11,75,37,.12);
+  border-radius:28px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at var(--glow-x) var(--glow-y),rgba(220,167,38,.12),transparent 18rem),
+    rgba(255,250,241,.88);
+  box-shadow:0 14px 34px rgba(11,75,37,.07);
+}
+body[data-page="shop"] .shop-help-copy h2{
+  margin:0;
+  color:var(--green);
+  font-family:"DM Serif Display",Georgia,serif;
+  font-size:clamp(2.35rem,3.5vw,3.65rem);
+  line-height:.95;
+  font-weight:400;
+}
+body[data-page="shop"] .shop-help-copy h2 em{
+  color:#c9931f;
+  font-weight:400;
+}
+body[data-page="shop"] .shop-help-copy>p:not(.eyebrow){
+  max-width:55ch;
+  color:var(--muted);
+  line-height:1.6;
+  font-size:.84rem;
+}
+body[data-page="shop"] .shop-help-actions{
+  display:grid;
+  min-width:235px;
+  gap:8px;
+}
+body[data-page="shop"] .shop-help-actions a{
+  min-height:46px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:0 15px;
+  border:1px solid rgba(11,75,37,.12);
+  border-radius:14px;
+  background:#fffaf1;
+  color:var(--green);
+  font-size:.75rem;
+  font-weight:850;
+  text-decoration:none;
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+}
+body[data-page="shop"] .shop-help-actions a:hover{
+  transform:translateX(3px);
+  border-color:rgba(201,149,47,.36);
+  box-shadow:0 8px 18px rgba(11,75,37,.07);
+}
+body[data-page="shop"] .shop-help-actions .is-whatsapp{
+  background:#0b4b25;
+  color:#fff;
+}
+body[data-page="shop"] .shop-help-actions .is-whatsapp span{
+  color:#f0c664;
+}
+
+/* Pantry drawer: make the WhatsApp handoff unmistakable. */
+.cart-whatsapp-ready{
+  display:grid;
+  grid-template-columns:34px minmax(0,1fr);
+  gap:10px;
+  align-items:center;
+  margin:12px 0 10px;
+  padding:11px 12px;
+  border-radius:14px;
+  border:1px solid rgba(11,75,37,.10);
+  background:rgba(11,75,37,.055);
+}
+.cart-whatsapp-ready>span{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#0b4b25;
+  color:#efc65f;
+  font-weight:900;
+}
+.cart-whatsapp-ready div{
+  display:grid;
+  gap:2px;
+}
+.cart-whatsapp-ready strong{
+  color:var(--green);
+  font-size:.74rem;
+}
+.cart-whatsapp-ready small{
+  color:var(--muted);
+  font-size:.62rem;
+  line-height:1.35;
+}
+
+/* Homepage: tiny floating pantry accents + extremely light parallax. */
+body[data-page="home"] .home-pantry-hero{
+  --hero-x:0px;
+  --hero-y:0px;
+  --float-x:0px;
+  --float-y:0px;
+}
+body[data-page="home"] .home-pantry-hero .shop-hero-video{
+  transform:translate3d(var(--hero-x),var(--hero-y),0) scale(1.035)!important;
+  transition:transform .22s ease-out,opacity .55s ease!important;
+}
+body[data-page="home"] .hero-floating-accents{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  overflow:hidden;
+}
+body[data-page="home"] .hero-floating-accent{
+  position:absolute;
+  width:66px;
+  height:66px;
+  display:grid;
+  place-items:center;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,250,241,.86);
+  box-shadow:0 14px 28px rgba(0,0,0,.15);
+  opacity:.72;
+  transform:translate3d(var(--float-x),var(--float-y),0) rotate(var(--r));
+  animation:heroAccentFloat 7s ease-in-out infinite;
+}
+body[data-page="home"] .hero-floating-accent img{
+  width:84%;
+  height:84%;
+  object-fit:contain;
+}
+body[data-page="home"] .hero-floating-honey{
+  --r:-7deg;
+  left:37%;
+  bottom:8%;
+}
+body[data-page="home"] .hero-floating-oil{
+  --r:8deg;
+  right:5%;
+  top:18%;
+  animation-delay:-2.4s;
+}
+body[data-page="home"] .hero-floating-spice{
+  --r:5deg;
+  left:55%;
+  top:10%;
+  width:54px;
+  height:54px;
+  animation-delay:-4.1s;
+  opacity:.58;
+}
+@keyframes heroAccentFloat{
+  0%,100%{margin-top:0}
+  50%{margin-top:-8px}
+}
+
+/* A softer entry for the home hero panel and cards. */
+body[data-page="home"] .home-pantry-hero .shop-intro-board{
+  animation:homeBoardIn .65s cubic-bezier(.2,.75,.2,1) .12s both!important;
+}
+@keyframes homeBoardIn{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:none}
+}
+
+/* Responsive refinement */
+@media(max-width:1260px){
+  body[data-page="shop"] .category-quick-grid-all{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+  body[data-page="shop"] .shop-featured-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:980px){
+  body[data-page="shop"] .shop-trust-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  body[data-page="shop"] .seasonal-story-card{
+    grid-template-columns:1fr;
+    min-height:0;
+  }
+  body[data-page="shop"] .seasonal-products{
+    min-height:240px;
+  }
+  body[data-page="shop"] .catalog-toolbar[data-sticky-catalogue]{
+    position:relative!important;
+    top:auto!important;
+  }
+  body[data-page="shop"] .shop-help-card{
+    grid-template-columns:1fr;
+  }
+  body[data-page="shop"] .shop-help-actions{
+    min-width:0;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  body[data-page="home"] .hero-floating-oil{
+    right:2%;
+  }
+}
+@media(max-width:760px){
+  body[data-page="shop"] .category-quick-grid-all{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+  body[data-page="shop"] .shop-featured-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  body[data-page="shop"] .seasonal-story-card{
+    padding:28px;
+  }
+  body[data-page="shop"] .shop-help-actions{
+    grid-template-columns:1fr;
+  }
+  body[data-page="home"] .hero-floating-accents{
+    display:none;
+  }
+}
+@media(max-width:560px){
+  body[data-page="shop"] .shop-trust-grid{
+    grid-template-columns:1fr;
+  }
+  body[data-page="shop"] .botanical-divider{
+    grid-template-columns:1fr;
+  }
+  body[data-page="shop"] .botanical-divider>span{
+    display:none;
+  }
+  body[data-page="shop"] .category-quick-grid-all{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  body[data-page="shop"] .shop-featured-grid{
+    grid-template-columns:1fr!important;
+  }
+  body[data-page="shop"] .featured-product{
+    min-height:310px;
+  }
+  body[data-page="shop"] .seasonal-products{
+    min-height:205px;
+  }
+  body[data-page="shop"] .seasonal-product-oil{
+    width:150px;height:170px;left:2%;
+  }
+  body[data-page="shop"] .seasonal-product-olives{
+    width:130px;height:130px;right:18%;
+  }
+  body[data-page="shop"] .seasonal-product-spices{
+    width:106px;height:106px;right:0;
+  }
+}
+@media(max-width:390px){
+  body[data-page="shop"] .category-quick-grid-all{
+    grid-template-columns:1fr!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .motion-reveal{
+    opacity:1!important;
+    transform:none!important;
+  }
+  body[data-page="shop"] .botanical-divider path{
+    stroke-dashoffset:0!important;
+  }
+  body[data-page="shop"] .product-card-animated,
+  .cart-button.cart-bump,
+  body[data-page="home"] .hero-floating-accent,
+  body[data-page="home"] .home-pantry-hero .shop-intro-board{
+    animation:none!important;
+  }
+  body[data-page="home"] .home-pantry-hero .shop-hero-video{
+    transform:none!important;
+  }
+}

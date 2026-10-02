@@ -3712,12 +3712,20 @@ body{
 }
 main{background:transparent}
 .section:not(.home-gift):not(.order-strip):not(.social-band),
-.premium-section:not(.pantry-moments){
+.premium-section:not(.pantry-moments):not(.premium-provenance){
   background-color:transparent;
 }
 .eyebrow,.premium-kicker{color:#b98205!important}
-.section-heading h2,.shop-head h2,.premium-head h2{color:var(--zw-green)}
-.section-heading>p,.shop-head>p,.premium-head>p{color:var(--zw-muted)}
+.section-heading h2,
+.shop-head h2,
+.premium-section:not(.premium-provenance):not(.pantry-moments) .premium-head h2{
+  color:var(--zw-green);
+}
+.section-heading>p,
+.shop-head>p,
+.premium-section:not(.premium-provenance):not(.pantry-moments) .premium-head>p{
+  color:var(--zw-muted);
+}
 
 /* Header: reference-inspired, deliberately calmer */
 .site-header{

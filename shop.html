@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=20261002-contrast36" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"shop | Zayt w Mouneh","isPartOf":{"@type":"WebSite","name":"Zayt w Mouneh","url":"https://zaytwmouneh.veyro-202.workers.dev/"}}</script>
-  <link rel="stylesheet" href="premium.css?v=20261002-category-hub41" />
+  <link rel="stylesheet" href="premium.css?v=20261002-shop-hub40" />
 </head>
 <body data-page="shop">
   <a class="skip-link" href="shop.html#shop" id="skipLink">Skip to catalogue</a>
@@ -165,30 +165,44 @@
     <section class="categories section shell shop-category-hub" id="categories">
       <div class="category-hub-head reveal">
         <div class="category-hub-intro">
-          <p class="eyebrow" id="categoriesEyebrow">Shop by category</p>
-          <h2 id="categoriesTitle">What are you looking for?</h2>
-          <p id="categoriesCopy">Choose a pantry family below, or search the full catalogue if you already know what you need.</p>
+          <p class="eyebrow" id="categoriesEyebrow">Shop the pantry</p>
+          <h2 id="categoriesTitle">Find what you need.</h2>
+          <p id="categoriesCopy">Start with a popular pantry family, browse everything, or jump straight to search.</p>
           <div class="category-hub-actions">
-            <button class="button button-gold" id="browseAllProducts" type="button">Browse all products <span>↘</span></button>
-            <button class="button button-outline" id="focusProductSearch" type="button">Search products</button>
+            <a class="button button-gold" id="browseAllProducts" href="#shop">Browse all products <span>↘</span></a>
+            <a class="button button-outline" id="focusProductSearch" href="#shop">Search products</a>
           </div>
         </div>
-        <div class="category-hub-guide">
-          <span class="category-hub-guide-icon" aria-hidden="true">⌕</span>
-          <div>
-            <strong id="categoryQuickLabel">Popular choices</strong>
-            <p id="categoryQuickCopy">Start with a familiar pantry family. You can change the filter at any time.</p>
+        <div class="category-hub-guide" aria-label="How to shop">
+          <span class="category-hub-guide-icon" aria-hidden="true">✓</span>
+          <div class="category-hub-steps">
+            <strong>Easy to shop</strong>
+            <span><b>1</b> Pick a category</span>
+            <span><b>2</b> Search or browse</span>
+            <span><b>3</b> Choose size & add</span>
           </div>
         </div>
       </div>
 
+      <div class="category-quick-head">
+        <div>
+          <strong id="categoryQuickLabel">Popular choices</strong>
+          <p id="categoryQuickCopy">Quick shortcuts to the pantry families people browse most.</p>
+        </div>
+        <a href="#shop" class="category-search-shortcut" id="categorySearchShortcut">Search the full catalogue →</a>
+      </div>
       <div class="category-quick-grid" id="categoryQuickGrid" aria-label="Popular categories"></div>
 
-      <div class="category-all-head">
-        <strong id="categoryAllLabel">All categories</strong>
-        <span id="categoryAllCount">21 categories</span>
-      </div>
-      <div class="category-grid" id="categoryGrid"></div>
+      <details class="category-all-panel" id="categoryAllPanel">
+        <summary>
+          <span>
+            <strong id="categoryAllLabel">All categories</strong>
+            <small>See every pantry family</small>
+          </span>
+          <span class="category-all-count" id="categoryAllCount">21 categories</span>
+        </summary>
+        <div class="category-grid" id="categoryGrid"></div>
+      </details>
     </section>
 
     <section class="shop section" id="shop">
@@ -374,7 +388,7 @@
 
   <script src="products-data.js?v=20261002-1005"></script>
   <script src="product-photos.js?v=20261002-photos2"></script>
-  <script src="app.js?v=20261002-category-hub41"></script>
+  <script src="app.js?v=20261002-shop-hub40"></script>
   <script src="premium.js?v=20261002-hero-swap37"></script>
 </body>
 </html>

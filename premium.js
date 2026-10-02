@@ -276,6 +276,7 @@
   }
 
   function renderRequestedCollection(){
+    qa(".curated-rail").forEach(function(x){x.remove()});
     var id=new URLSearchParams(location.search).get("collection");if(!id)return;
     var c=collectionById(id);if(!c)return;
     var host=q("#premiumShopTools");if(!host||q(".curated-rail",host))return;
@@ -498,6 +499,7 @@
         closeProduct=function(){var out=baseClose();restoreMeta();return out};
         closeProduct._premiumWrapped=true;
       }
+      if(typeof currentModalProduct!=="undefined"&&currentModalProduct&&currentModalProduct.id)enhanceModal(currentModalProduct.id);
       if(typeof addToCart==="function"&&!addToCart._premiumWrapped){
         var baseAdd=addToCart;
         addToCart=function(p,v,qty){var out=baseAdd(p,v,qty);track("cart_added",{product:p.id,variant:v.id,qty:Number(qty)||1});return out};
@@ -515,7 +517,7 @@
       ["assets/products/zaatar.webp?v=20261002-0955",txt("Zaatar mornings","صباحات الزعتر")],
       ["assets/products/honey.webp?v=20261002-0955",txt("Something sweet","لمسة حلوة")]
     ];
-    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Pantry moments","لحظات من المونة"))+'</p><h2>'+esc(txt("Food that feels","مونة تشبه"))+' <em>'+esc(txt("familiar.","البيت."))+'</em></h2></div><p>'+esc(txt("A visual layer for the pantry today, ready to be replaced by your own product and shop photography as it is added.","مساحة بصرية للمونة اليوم، ويمكن استبدالها مباشرة بصور المنتجات والمحل الأصلية عند إضافتها."))+'</p></div><div class="moments-grid">'+pics.map(function(x){return '<a class="moment-card" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener"><img src="'+esc(x[0])+'" alt="" loading="lazy"><span>'+esc(x[1])+' ↗</span></a>'}).join("")+'</div><a class="moments-cta" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">@zaytwmouneh · Instagram ↗</a></div>';
+    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Pantry moments","لحظات من المونة"))+'</p><h2>'+esc(txt("Food that feels","مونة تشبه"))+' <em>'+esc(txt("familiar.","البيت."))+'</em></h2></div><p>'+esc(txt("Follow the pantry for seasonal ideas, shop updates and everyday ways to bring Lebanese staples to the table.","تابع المونة لأفكار الموسم وأخبار المحل وطرق يومية لتقديم الأساسيات اللبنانية على السفرة."))+'</p></div><div class="moments-grid">'+pics.map(function(x){return '<a class="moment-card" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener"><img src="'+esc(x[0])+'" alt="" loading="lazy"><span>'+esc(x[1])+' ↗</span></a>'}).join("")+'</div><a class="moments-cta" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">@zaytwmouneh · Instagram ↗</a></div>';
     anchor.before(sec);
   }
 
@@ -550,6 +552,8 @@
   }
 
   function refreshLanguage(){
+    var seasonal=q(".premium-seasonal");if(seasonal)seasonal.remove();
+    injectSeasonal();
     qa(".premium-recipes-nav").forEach(function(x){x.textContent=txt("Recipes","وصفات")});
     qa(".premium-recipes-footer").forEach(function(x){x.textContent=txt("Recipes & table ideas","وصفات وأفكار للمائدة")});
     var sections=["#premiumCollections","#premiumProvenance","#premiumRecipes","#premiumShopTools","#pantryMoments"];

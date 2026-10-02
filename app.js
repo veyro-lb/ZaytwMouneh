@@ -827,11 +827,35 @@ function renderCategories(){
     if(allCount)allCount.textContent=lang==="ar"?`${CATEGORY_ORDER.length} قسماً`:`${CATEGORY_ORDER.length} categories`;
     if(browse)browse.innerHTML=lang==="ar"?"عرض كل المنتجات <span>↙</span>":"Browse all products <span>↘</span>";
     if(search)search.textContent=lang==="ar"?"ابحث عن منتج":"Search products";
+    syncCategoryQuickState();
   }
 }
 
-function activateShopCategory(cat){
-  if(CURRENT_PAGE!=="shop"||!CATEGORY_ORDER.includes(cat))return;
+function syncCategoryQuickState(){
+  if(CURRENT_PAGE!=="shop")return;
+  document.querySelectorAll("#categoryQuickGrid [data-cat]").forEach(card=>{
+    const selected=activeCategory!=="All"&&card.dataset.cat===activeCategory;
+    card.classList.toggle("is-active",selected);
+    if(selected)card.setAttribute("aria-current","true");
+    else card.removeAttribute("aria-current");
+  });
+}
+
+function syncShopFilterUrl(){
+  if(CURRENT_PAGE!=="shop"||!history.replaceState)return;
+  const url=new URL(location.href);
+  if(activeCategory==="All")url.searchParams.delete("category");
+  else url.searchParams.set("category",activeCategory);
+  const q=query.trim();
+  if(q)url.searchParams.set("q",q);
+  else url.searchParams.delete("q");
+  url.hash="shop";
+  history.replaceState(null,"",url.pathname+url.search+url.hash);
+}
+
+function activateShopCategory(cat,{scroll=true}={}){
+  const valid=cat==="All"||CATEGORY_ORDER.includes(cat);
+  if(CURRENT_PAGE!=="shop"||!valid)return;
   activeCategory=cat;
   query="";
   favoritesOnly=false;
@@ -842,12 +866,12 @@ function activateShopCategory(cat){
   renderProducts();
   renderFavoritesCount();
   renderSearchSuggestions();
-  const url=new URL(location.href);
-  url.searchParams.set("category",cat);
-  url.hash="shop";
-  history.replaceState(null,"",url.pathname+url.search+url.hash);
-  const shopSection=$("#shop");
-  if(shopSection)shopSection.scrollIntoView({behavior:"smooth",block:"start"});
+  syncCategoryQuickState();
+  syncShopFilterUrl();
+  if(scroll){
+    const shopSection=$("#shop");
+    if(shopSection)shopSection.scrollIntoView({behavior:"smooth",block:"start"});
+  }
 }
 
 function renderCategorySelect(){
@@ -1676,21 +1700,7 @@ function init(){
       const browse=e.target.closest("#browseAllProducts");
       if(browse){
         e.preventDefault();
-        activeCategory="All";
-        query="";
-        favoritesOnly=false;
-        visibleLimit=PAGE_SIZE;
-        const search=$("#productSearch");
-        if(search)search.value="";
-        renderCategorySelect();
-        renderProducts();
-        renderFavoritesCount();
-        const url=new URL(location.href);
-        url.searchParams.delete("category");
-        url.hash="shop";
-        history.replaceState(null,"",url.pathname+url.search+url.hash);
-        const shopSection=$("#shop");
-        if(shopSection)shopSection.scrollIntoView({behavior:"smooth",block:"start"});
+        activateShopCategory("All");
         return;
       }
       const searchButton=e.target.closest("#focusProductSearch, #categorySearchShortcut");
@@ -1704,13 +1714,13 @@ function init(){
   }
 
   if($("#productSearch")){
-    $("#productSearch").addEventListener("input",e=>{query=e.target.value;if(query.trim())activeCategory="All";visibleLimit=PAGE_SIZE;renderCategorySelect();renderProducts();renderSearchSuggestions()});
+    $("#productSearch").addEventListener("input",e=>{query=e.target.value;if(query.trim())activeCategory="All";visibleLimit=PAGE_SIZE;renderCategorySelect();renderProducts();renderSearchSuggestions();syncCategoryQuickState();syncShopFilterUrl()});
     $("#productSearch").addEventListener("focus",renderSearchSuggestions);
     $("#productSearch").addEventListener("blur",()=>setTimeout(()=>{const b=$("#searchSuggestions");if(b)b.hidden=true},140));
   }
-  if($("#categorySelect"))$("#categorySelect").addEventListener("change",e=>{activeCategory=e.target.value;query="";visibleLimit=PAGE_SIZE;if($("#productSearch"))$("#productSearch").value="";renderProducts();renderSearchSuggestions()});
+  if($("#categorySelect"))$("#categorySelect").addEventListener("change",e=>activateShopCategory(e.target.value,{scroll:false}));
   if($("#loadMore"))$("#loadMore").addEventListener("click",()=>{visibleLimit+=PAGE_SIZE;renderProducts()});
-  if($("#clearSearch"))$("#clearSearch").addEventListener("click",()=>{query="";activeCategory="All";favoritesOnly=false;visibleLimit=PAGE_SIZE;if($("#productSearch"))$("#productSearch").value="";renderCategorySelect();renderProducts();renderFavoritesCount();renderSearchSuggestions()});
+  if($("#clearSearch"))$("#clearSearch").addEventListener("click",()=>activateShopCategory("All",{scroll:false}));
   if($("#favoritesOnly"))$("#favoritesOnly").addEventListener("click",()=>{favoritesOnly=!favoritesOnly;visibleLimit=PAGE_SIZE;renderFavoritesCount();renderProducts()});
   if($("#clearRecent"))$("#clearRecent").addEventListener("click",()=>{recentViews=[];saveRecent();renderRecent()});
 

@@ -3943,7 +3943,7 @@ main{background:transparent}
 
 /* Cards and controls: quieter, more proportional */
 .product-card,.featured-product,.gift-preset-card,.recipe-card,
-.faq-grid article,.provenance-grid article,.trust-grid article{
+.faq-grid article,.provenance-grid article,.trust-grid article:not(.trust-delivery){
   background:var(--zw-card)!important;
   border-color:var(--zw-border)!important;
   box-shadow:var(--zw-soft-shadow)!important;
@@ -4381,4 +4381,22 @@ main{background:transparent}
 }
 @media(max-width:760px) and (display-mode:standalone){
   :root{--mobile-browser-clearance:0px}
+}
+
+
+/* ===== v36 trust card contrast fix ===== */
+body[data-page="home"] .trust-grid .trust-delivery{
+  background:linear-gradient(145deg,#0b4b25 0%,#07381b 100%)!important;
+  border-color:rgba(224,176,52,.30)!important;
+  box-shadow:0 14px 36px rgba(17,51,29,.13)!important;
+  color:#fff!important;
+}
+body[data-page="home"] .trust-grid .trust-delivery>span{
+  color:#edc45f!important;
+}
+body[data-page="home"] .trust-grid .trust-delivery strong{
+  color:#fff!important;
+}
+body[data-page="home"] .trust-grid .trust-delivery p{
+  color:rgba(255,255,255,.80)!important;
 }

@@ -778,31 +778,34 @@ function applyLanguage(next,{immediate=false}={}){
 }
 
 function renderCategories(){
-  const grid=$("#categoryGrid");if(!grid)return;
-  const homeCats=["Mouneh","Honey","Olive Oil","Molasses","Olives","Pickles","Grains","Spices"];
-  const cats=CURRENT_PAGE==="home"?homeCats:CATEGORY_ORDER;
+  const grid=$("#categoryGrid");
+  if(grid){
+    const homeCats=["Mouneh","Honey","Olive Oil","Molasses","Olives","Pickles","Grains","Spices"];
+    const cats=CURRENT_PAGE==="home"?homeCats:CATEGORY_ORDER;
 
-  grid.innerHTML=cats.map((cat,index)=>{
-    const count=CATEGORY_COUNTS[cat]||0;
-    const info=CATEGORY_INFO[cat]?.[lang]||["",""];
-    const href=CURRENT_PAGE==="shop"?`?category=${encodeURIComponent(cat)}#shop`:`shop.html?category=${encodeURIComponent(cat)}#shop`;
-    return `<a class="category-card reveal" href="${href}" data-cat="${escapeHtml(cat)}">
-      <div class="category-card-top"><span class="category-index">${String(index+1).padStart(2,"0")}</span><span class="category-count">${count} ${lang==="ar"?"منتج":"products"}</span></div>
-      <div class="category-card-main">
-        <div class="category-name">${escapeHtml(categoryName(cat))}</div>
-        <p class="category-blurb">${escapeHtml(info[0])}</p>
-      </div>
-      <div class="category-card-bottom"><span class="text-link">${lang==="ar"?"عرض المنتجات":"View products"}</span><div class="category-arrow">${lang==="ar"?"↙":"↘"}</div></div>
-    </a>`;
-  }).join("");
+    grid.innerHTML=cats.map((cat,index)=>{
+      const count=CATEGORY_COUNTS[cat]||0;
+      const info=CATEGORY_INFO[cat]?.[lang]||["",""];
+      const href=CURRENT_PAGE==="shop"?`?category=${encodeURIComponent(cat)}#shop`:`shop.html?category=${encodeURIComponent(cat)}#shop`;
+      return `<a class="category-card reveal" href="${href}" data-cat="${escapeHtml(cat)}">
+        <div class="category-card-top"><span class="category-index">${String(index+1).padStart(2,"0")}</span><span class="category-count">${count} ${lang==="ar"?"منتج":"products"}</span></div>
+        <div class="category-card-main">
+          <div class="category-name">${escapeHtml(categoryName(cat))}</div>
+          <p class="category-blurb">${escapeHtml(info[0])}</p>
+        </div>
+        <div class="category-card-bottom"><span class="text-link">${lang==="ar"?"عرض المنتجات":"View products"}</span><div class="category-arrow">${lang==="ar"?"↙":"↘"}</div></div>
+      </a>`;
+    }).join("");
+  }
 
   const quick=$("#categoryQuickGrid");
   if(quick&&CURRENT_PAGE==="shop"){
-    const featured=["Mouneh","Honey","Olive Oil","Spices","Grains","Pulses","Pickles","Nuts + Seeds"].filter(cat=>CATEGORY_ORDER.includes(cat));
-    quick.innerHTML=featured.map(cat=>{
+    const cats=CATEGORY_ORDER.slice();
+    quick.innerHTML=cats.map((cat,index)=>{
       const count=CATEGORY_COUNTS[cat]||0;
       const href=`?category=${encodeURIComponent(cat)}#shop`;
       return `<a class="category-quick-card" href="${href}" data-cat="${escapeHtml(cat)}">
+        <span class="category-quick-index">${String(index+1).padStart(2,"0")}</span>
         <span class="category-quick-name">${escapeHtml(categoryName(cat))}</span>
         <span class="category-quick-meta">${count} ${lang==="ar"?"منتج":"products"} <b>${lang==="ar"?"←":"→"}</b></span>
       </a>`;
@@ -810,13 +813,11 @@ function renderCategories(){
 
     const quickLabel=$("#categoryQuickLabel");
     const quickCopy=$("#categoryQuickCopy");
-    const allLabel=$("#categoryAllLabel");
     const allCount=$("#categoryAllCount");
     const browse=$("#browseAllProducts");
     const search=$("#focusProductSearch");
-    if(quickLabel)quickLabel.textContent=lang==="ar"?"خيارات شائعة":"Popular choices";
-    if(quickCopy)quickCopy.textContent=lang==="ar"?"اختصارات سريعة للأقسام الأكثر تصفحاً.":"Quick shortcuts to the pantry families people browse most.";
-    if(allLabel)allLabel.textContent=lang==="ar"?"كل الأقسام":"All categories";
+    if(quickLabel)quickLabel.textContent=lang==="ar"?"كل الأقسام":"All categories";
+    if(quickCopy)quickCopy.textContent=lang==="ar"?"اختر قسماً وانتقل مباشرة إلى منتجاته.":"Choose a pantry family and jump straight to its products.";
     if(allCount)allCount.textContent=lang==="ar"?`${CATEGORY_ORDER.length} قسماً`:`${CATEGORY_ORDER.length} categories`;
     if(browse)browse.innerHTML=lang==="ar"?"عرض كل المنتجات <span>↙</span>":"Browse all products <span>↘</span>";
     if(search)search.textContent=lang==="ar"?"ابحث عن منتج":"Search products";

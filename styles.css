@@ -4400,3 +4400,57 @@ body[data-page="home"] .trust-grid .trust-delivery strong{
 body[data-page="home"] .trust-grid .trust-delivery p{
   color:rgba(255,255,255,.80)!important;
 }
+
+
+/* ===== Floating Zayt w Mouneh header brand ===== */
+.nav > .brand{
+  animation:zwBrandFloat 4.8s ease-in-out infinite;
+  transform-origin:center;
+  will-change:transform;
+}
+.nav > .brand .brand-logo{
+  animation:zwBrandLogoTilt 4.8s ease-in-out infinite;
+  transform-origin:center;
+  will-change:transform;
+}
+.nav > .brand .brand-wordmark{
+  animation:zwBrandWordmarkFloat 4.8s ease-in-out .14s infinite;
+  will-change:transform;
+}
+
+@keyframes zwBrandFloat{
+  0%,100%{transform:translate3d(0,0,0)}
+  50%{transform:translate3d(0,-5px,0)}
+}
+@keyframes zwBrandLogoTilt{
+  0%,100%{transform:rotate(-1.2deg)}
+  50%{transform:rotate(1.2deg)}
+}
+@keyframes zwBrandWordmarkFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-1.5px)}
+}
+
+/* Keep the full floating identity visible on smaller screens too. */
+@media(max-width:760px){
+  .nav > .brand{gap:7px!important}
+  .nav .brand-wordmark{
+    display:block!important;
+    font-size:clamp(.84rem,3.6vw,1.02rem)!important;
+    letter-spacing:-.015em!important;
+  }
+}
+
+@media(max-width:380px){
+  .nav > .brand{gap:5px!important}
+  .nav .brand-wordmark{font-size:.78rem!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .nav > .brand,
+  .nav > .brand .brand-logo,
+  .nav > .brand .brand-wordmark{
+    animation:none!important;
+    transform:none!important;
+  }
+}

@@ -636,11 +636,11 @@
     var anchor=q(".social-band");if(!anchor)return;
     var sec=document.createElement("section");sec.id="pantryMoments";sec.className="premium-section pantry-moments";
     var pics=[
-      ["assets/products/olive-oil.webp?v=20261002-0955",txt("Olive oil & the table","زيت الزيتون والسفرة")],
-      ["assets/products/zaatar.webp?v=20261002-0955",txt("Zaatar mornings","صباحات الزعتر")],
-      ["assets/products/honey.webp?v=20261002-0955",txt("Something sweet","لمسة حلوة")]
+      ["extra-virgin-olive-oil",txt("Olive oil & the table","زيت الزيتون والسفرة")],
+      ["zaatar-baladi-extra",txt("Zaatar mornings","صباحات الزعتر")],
+      ["flower-honey",txt("Something sweet","لمسة حلوة")]
     ];
-    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Pantry moments","لحظات من المونة"))+'</p><h2>'+esc(txt("Food that feels","مونة تشبه"))+' <em>'+esc(txt("familiar.","البيت."))+'</em></h2></div><p>'+esc(txt("Follow the pantry for seasonal ideas, shop updates and everyday ways to bring Lebanese staples to the table.","تابع المونة لأفكار الموسم وأخبار المحل وطرق يومية لتقديم الأساسيات اللبنانية على السفرة."))+'</p></div><div class="moments-grid">'+pics.map(function(x){return '<a class="moment-card" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener"><img src="'+esc(x[0])+'" alt="" loading="lazy"><span>'+esc(x[1])+' ↗</span></a>'}).join("")+'</div><a class="moments-cta" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">@zaytwmouneh · Instagram ↗</a></div>';
+    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Pantry moments","لحظات من المونة"))+'</p><h2>'+esc(txt("Food that feels","مونة تشبه"))+' <em>'+esc(txt("familiar.","البيت."))+'</em></h2></div><p>'+esc(txt("Follow the pantry for seasonal ideas, shop updates and everyday ways to bring Lebanese staples to the table.","تابع المونة لأفكار الموسم وأخبار المحل وطرق يومية لتقديم الأساسيات اللبنانية على السفرة."))+'</p></div><div class="moments-grid">'+pics.map(function(x){var p=safeProducts().find(function(item){return item.id===x[0]}),media=pvisual(p,"moment-product-image");return '<a class="moment-card" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">'+media+'<span>'+esc(x[1])+' ↗</span></a>'}).join("")+'</div><a class="moments-cta" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">@zaytwmouneh · Instagram ↗</a></div>';
     anchor.before(sec);
   }
 

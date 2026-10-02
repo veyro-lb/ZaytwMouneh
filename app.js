@@ -196,7 +196,7 @@ const UI={
     announcementText:"Authentic Lebanese pantry essentials · Since 2006",
     announcementOrder:"Order on WhatsApp",
     brand:"Zayt w Mouneh",
-    navShop:"Shop",navCategories:"Categories",navAbout:"About & mission",navContact:"Contact & visit",
+    navHome:"Home",navShop:"Shop",navCategories:"Categories",navAbout:"Our Story",navContact:"Contact",
     cartLabel:"My pantry",
     heroEyebrow:"Rooted in Lebanese heritage",
     heroTitle:'A pantry of<br><em>Lebanese memory.</em>',
@@ -250,7 +250,7 @@ const UI={
     announcementText:"مونة لبنانية أصيلة · منذ 2006",
     announcementOrder:"اطلب عبر واتساب",
     brand:"زيت ومونة",
-    navShop:"المتجر",navCategories:"الأقسام",navAbout:"من نحن ورسالتنا",navContact:"تواصل وزيارة",
+    navHome:"الرئيسية",navShop:"المتجر",navCategories:"الأقسام",navAbout:"قصتنا",navContact:"تواصل",
     cartLabel:"السلة",
     heroEyebrow:"متجذّرون في التراث اللبناني",
     heroTitle:'مونة تحفظ<br><em>ذاكرة لبنان.</em>',
@@ -730,7 +730,7 @@ function applyLanguage(next,{immediate=false}={}){
 
   const textMap={
     skipLink:"skipLink",announcementText:"announcementText",announcementOrder:"announcementOrder",brandWordmark:"brand",
-    navShop:"navShop",navCategories:"navCategories",navAbout:"navAbout",navContact:"navContact",cartLabel:"cartLabel",
+    navHome:"navHome",navShop:"navShop",navCategories:"navCategories",navAbout:"navAbout",navContact:"navContact",cartLabel:"cartLabel",
     heroEyebrow:"heroEyebrow",heroLede:"heroLede",heroWhatsApp:"heroWhatsApp",heroVariantLabel:"heroVariantLabel",heroCategoryLabel:"heroCategoryLabel",heroSinceLabel:"heroSinceLabel",
     scene1Kicker:"scene1Kicker",scene1Title:"scene1Title",scene1Copy:"scene1Copy",scene2Kicker:"scene2Kicker",scene2Title:"scene2Title",scene2Copy:"scene2Copy",scene3Kicker:"scene3Kicker",scene3Title:"scene3Title",scene3Copy:"scene3Copy",heroScript:"heroScript",
     categoriesEyebrow:"categoriesEyebrow",categoriesCopy:"categoriesCopy",aboutEyebrow:"aboutEyebrow",aboutLetterKicker:"aboutLetterKicker",aboutP1:"aboutP1",aboutP2:"aboutP2",

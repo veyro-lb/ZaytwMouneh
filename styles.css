@@ -3451,3 +3451,86 @@ body[data-page="gift"] #gift .gift-product-results{
     width:min(320px,88%)!important;
   }
 }
+
+
+/* ===== v18 real product visual system ===== */
+.product-visual{
+  width:96px!important;
+  height:96px!important;
+  padding:7px!important;
+  border-radius:22px!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 42% 34%,rgba(255,255,255,.96),rgba(247,238,219,.92) 62%,rgba(231,215,184,.9))!important;
+  border:1px solid rgba(139,90,47,.12)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.75)!important;
+}
+.product-image{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  filter:drop-shadow(0 8px 8px rgba(74,49,24,.15))!important;
+  transform:scale(.96);
+  transition:transform .28s cubic-bezier(.2,.75,.2,1)!important;
+}
+.product-card:hover .product-image{transform:scale(1.04)!important}
+
+.product-modal-mark{
+  width:min(250px,68%)!important;
+  height:min(250px,68%)!important;
+  padding:16px!important;
+  overflow:hidden!important;
+  border-radius:38px!important;
+  background:rgba(255,250,240,.95)!important;
+}
+.product-modal-image{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  filter:drop-shadow(0 18px 18px rgba(0,0,0,.18))!important;
+}
+
+.recent-mark{
+  overflow:hidden!important;
+  padding:3px!important;
+  background:#f5ead4!important;
+}
+.recent-product-image{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  filter:drop-shadow(0 3px 4px rgba(74,49,24,.12))!important;
+}
+
+.gift-result-mark,
+#gift .gift-result-mark{
+  overflow:hidden!important;
+  padding:3px!important;
+  background:#f5ead4!important;
+}
+.gift-product-image{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  filter:drop-shadow(0 3px 4px rgba(74,49,24,.12))!important;
+}
+
+/* Product art stays elegant instead of overpowering the information. */
+@media(max-width:760px){
+  .product-visual{
+    width:84px!important;
+    height:84px!important;
+  }
+  .product-modal-mark{
+    width:150px!important;
+    height:150px!important;
+    padding:10px!important;
+  }
+}
+@media(max-width:500px){
+  .product-visual{
+    width:90px!important;
+    height:90px!important;
+  }
+}

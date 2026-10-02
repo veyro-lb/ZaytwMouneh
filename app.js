@@ -8,7 +8,9 @@ function uiIcon(name,active=false){
 }
 function productPhotoMarkup(p,cls="product-image"){
   const photos=window.ZWM_PRODUCT_PHOTOS;
-  const source=photos?.sourceFor?.(p.id)||photos?.tile?.(p.id);
+  const source=typeof photos?.cardSourceFor==="function"
+    ? photos.cardSourceFor(p.id)
+    : (photos?.sourceFor?.(p.id)||photos?.tile?.(p.id));
   if(!source)return "";
   const coords=source.coords||source;
   const tileW=source.tileW||photos.tileW;
@@ -17,12 +19,17 @@ function productPhotoMarkup(p,cls="product-image"){
   const atlasH=source.atlasH||photos.atlasH;
   const atlasUrl=source.atlasUrl||photos.atlasUrl;
   if(!coords||!atlasUrl||!tileW||!tileH||!atlasW||!atlasH)return "";
-  const x=coords[0]*tileW,y=coords[1]*tileH;
+
+  // Pull the viewBox a pixel or two inside each atlas tile. This prevents
+  // browser interpolation from leaking pixels from a neighboring product.
+  const gutter=tileW>=700?2:1;
+  const tileX=coords[0]*tileW;
+  const tileY=coords[1]*tileH;
   const focal=source.focus||null;
-  const vx=focal?x+focal[0]*tileW:x;
-  const vy=focal?y+focal[1]*tileH:y;
-  const vw=focal?focal[2]*tileW:tileW;
-  const vh=focal?focal[3]*tileH:tileH;
+  const vx=focal?tileX+focal[0]*tileW:tileX+gutter;
+  const vy=focal?tileY+focal[1]*tileH:tileY+gutter;
+  const vw=focal?focal[2]*tileW:Math.max(1,tileW-(gutter*2));
+  const vh=focal?focal[3]*tileH:Math.max(1,tileH-(gutter*2));
   const quality=source.quality||"catalogue";
   return `<svg class="${escapeHtml(cls)} product-photo-sprite" data-photo-width="${tileW}" data-photo-height="${tileH}" data-photo-quality="${escapeHtml(quality)}" viewBox="${vx} ${vy} ${vw} ${vh}" width="100%" height="100%" overflow="hidden" style="overflow:hidden" role="img" aria-label="${escapeHtml(currentName(p))}" preserveAspectRatio="xMidYMid meet"><image href="${escapeHtml(atlasUrl)}" x="0" y="0" width="${atlasW}" height="${atlasH}" preserveAspectRatio="none"></image></svg>`;
 }

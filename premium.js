@@ -96,19 +96,19 @@
   }
 
   var collections=[
-    {id:"breakfast",titleEn:"Breakfast in Lebanon",titleAr:"فطور لبناني",copyEn:"Zaatar, olive oil, honey and pantry staples for an easy morning table.",copyAr:"زعتر وزيت زيتون وعسل وأساسيات المونة لفطور لبناني بسيط.",image:"assets/products/olives.webp?v=20261002-collections4"},
-    {id:"bekaa",titleEn:"From the Bekaa",titleAr:"من البقاع",copyEn:"A provenance-led edit of grains, pulses, herbs and traditional pantry staples.",copyAr:"تشكيلة بحسب المصدر من الحبوب والبقوليات والأعشاب وأساسيات المونة.",image:"assets/products/rice.webp?v=20261002-collections4"},
-    {id:"sweet",titleEn:"Sweet Lebanon",titleAr:"حلاوة لبنان",copyEn:"Honey, molasses, dried fruit and pantry sweets for gifting or sharing.",copyAr:"عسل ودبس وفاكهة مجففة وحلويات للمشاركة أو الهدية.",image:"assets/products/honey.webp?v=20261002-collections4"},
-    {id:"sunday",titleEn:"Sunday Table",titleAr:"سفرة الأحد",copyEn:"The grains, spices, oil and mouneh that make a long family lunch feel familiar.",copyAr:"حبوب وبهارات وزيت ومونة لسفرة عائلية طويلة ومألوفة.",image:"assets/products/olive-oil.webp?v=20261002-collections4"}
+    {id:"breakfast",titleEn:"Breakfast in Lebanon",titleAr:"فطور لبناني",copyEn:"Zaatar, olive oil, honey and pantry staples for an easy, natural morning table.",copyAr:"زعتر وزيت زيتون وعسل وأساسيات المونة لفطور لبناني طبيعي وبسيط.",image:"assets/products/zaatar.webp?v=20261002-collections5"},
+    {id:"natural",titleEn:"Natural Pantry",titleAr:"مونة طبيعية",copyEn:"Wholesome grains, pulses and pantry staples chosen for a simple, natural kitchen.",copyAr:"حبوب وبقوليات وأساسيات مونة مختارة لمطبخ طبيعي وبسيط.",image:"assets/products/rice.webp?v=20261002-collections5"},
+    {id:"sweet",titleEn:"Sweet Lebanon",titleAr:"حلاوة لبنان",copyEn:"Honey, molasses and pantry sweets for gifting, sharing and everyday moments.",copyAr:"عسل ودبس وحلويات مونة للمشاركة والهدية واللحظات اليومية.",image:"assets/products/honey.webp?v=20261002-collections5"},
+    {id:"table",titleEn:"Sunday Table",titleAr:"سفرة الأحد",copyEn:"Olive oil, grains, spices and pantry essentials for a generous family table.",copyAr:"زيت زيتون وحبوب وبهارات وأساسيات مونة لسفرة عائلية عامرة.",image:"assets/products/olive-oil.webp?v=20261002-collections5"}
   ]
 
   function matchesCollection(p,id){
-    var n=((p.nameEn||"")+" "+(p.original||"")+" "+(p.category||"")).toLowerCase();
+    var n=((p.nameEn||"")+" "+(p.original||"")+" "+(p.category||"")+" "+(p.origin||"")).toLowerCase();
     if(id==="under20")return minPrice(p)<=20;
-    if(id==="bekaa")return typeof originKeyFor==="function"?originKeyFor(p)==="Bekaa":true;
-    if(id==="breakfast")return /zaatar|za.?atar|honey|olive oil|labneh|molasses|jam|debes/.test(n);
-    if(id==="sweet")return /honey|molasses|debes|jam|date|fig|apricot|raisin|sweet|candy|carob/.test(n);
-    if(id==="sunday")return /lentil|rice|bulgur|burghol|olive oil|sumac|semaq|cumin|pepper|mouneh|pickle|olives/.test(n);
+    if(id==="breakfast")return /zaatar|za.?atar|honey|olive oil|labneh|molasses|jam|debes|thyme/.test(n);
+    if(id==="natural")return /rice|lentil|bean|pea|grain|bulgur|burghol|freekeh|flour|seed|spice|herb|olive|oil|zaatar|nuts/.test(n);
+    if(id==="sweet")return /honey|molasses|debes|jam|date|fig|apricot|raisin|sweet|candy|carob|syrup/.test(n);
+    if(id==="table")return /lentil|rice|bulgur|burghol|olive oil|sumac|semaq|cumin|pepper|mouneh|pickle|olives|grain|spice|nuts/.test(n);
     if(id==="essentials")return /zaatar|za.?atar|olive oil|sumac|semaq|lentil|rice|bulgur|honey|molasses|cumin|olives/.test(n);
     return true;
   }

@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=20261002-contrast36" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"shop | Zayt w Mouneh","isPartOf":{"@type":"WebSite","name":"Zayt w Mouneh","url":"https://zaytwmouneh.veyro-202.workers.dev/"}}</script>
-  <link rel="stylesheet" href="premium.css?v=20261002-shop-3films39" />
+  <link rel="stylesheet" href="premium.css?v=20261002-category-hub40" />
 </head>
 <body data-page="shop">
   <a class="skip-link" href="shop.html#shop" id="skipLink">Skip to catalogue</a>
@@ -162,13 +162,31 @@
         </div>
       </div>
     </section>
-    <section class="categories section shell" id="categories">
-      <div class="section-heading reveal">
-        <div>
-          <p class="eyebrow" id="categoriesEyebrow">The pantry, chapter by chapter</p>
-          <h2 id="categoriesTitle">Find your way<br>around the <em>pantry.</em></h2>
+    <section class="categories section shell shop-category-hub" id="categories">
+      <div class="category-hub-head reveal">
+        <div class="category-hub-intro">
+          <p class="eyebrow" id="categoriesEyebrow">Shop by category</p>
+          <h2 id="categoriesTitle">What are you looking for?</h2>
+          <p id="categoriesCopy">Choose a pantry family below, or search the full catalogue if you already know what you need.</p>
+          <div class="category-hub-actions">
+            <button class="button button-gold" id="browseAllProducts" type="button">Browse all products <span>↘</span></button>
+            <button class="button button-outline" id="focusProductSearch" type="button">Search products</button>
+          </div>
         </div>
-        <p id="categoriesCopy">Start with the pantry families people reach for most, then explore the full catalogue.</p>
+        <div class="category-hub-guide">
+          <span class="category-hub-guide-icon" aria-hidden="true">⌕</span>
+          <div>
+            <strong id="categoryQuickLabel">Popular choices</strong>
+            <p id="categoryQuickCopy">Start with a familiar pantry family. You can change the filter at any time.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-quick-grid" id="categoryQuickGrid" aria-label="Popular categories"></div>
+
+      <div class="category-all-head">
+        <strong id="categoryAllLabel">All categories</strong>
+        <span id="categoryAllCount">21 categories</span>
       </div>
       <div class="category-grid" id="categoryGrid"></div>
     </section>
@@ -356,7 +374,7 @@
 
   <script src="products-data.js?v=20261002-1005"></script>
   <script src="product-photos.js?v=20261002-photos2"></script>
-  <script src="app.js?v=20261002-header33"></script>
+  <script src="app.js?v=20261002-category-hub40"></script>
   <script src="premium.js?v=20261002-hero-swap37"></script>
 </body>
 </html>

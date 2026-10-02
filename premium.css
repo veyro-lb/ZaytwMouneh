@@ -577,3 +577,581 @@ html[dir="rtl"] .premium-dialog-close{right:auto;left:18px}
     transform:scale(.82)!important;
   }
 }
+
+
+/* ===== v27 shop hero art direction + menu placement ===== */
+
+/* The hamburger lives on the left, so its panel should open directly beneath it.
+   This also fixes the older fixed-position rule that could push the menu off-screen. */
+.nav{position:relative!important}
+.nav-links{
+  position:absolute!important;
+  top:calc(100% + 10px)!important;
+  left:0!important;
+  right:auto!important;
+  transform-origin:top left!important;
+  z-index:1450!important;
+}
+[dir="rtl"] .nav-links{
+  left:auto!important;
+  right:0!important;
+  transform-origin:top right!important;
+}
+.announcement-inner>a::after{
+  content:"→";
+  display:inline-block;
+  margin-left:10px;
+  font-size:.9rem;
+  line-height:1;
+  transition:transform .22s ease;
+}
+.announcement-inner>a:hover::after{transform:translateX(4px)}
+[dir="rtl"] .announcement-inner>a::after{
+  content:"←";
+  margin-left:0;
+  margin-right:10px;
+}
+@media(max-width:760px){
+  .nav-links{
+    left:0!important;
+    right:auto!important;
+    width:min(340px,calc(100vw - 20px))!important;
+    top:calc(100% + 8px)!important;
+  }
+  [dir="rtl"] .nav-links{left:auto!important;right:0!important}
+}
+
+/* Shop hero: closer to the approved art direction, but built from real site assets. */
+body[data-page="shop"] .page-intro-shop{
+  isolation:isolate;
+  min-height:650px!important;
+  padding:64px 0 66px!important;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 76% 9%,rgba(229,174,37,.18),transparent 18rem),
+    radial-gradient(circle at 3% 92%,rgba(255,255,255,.075),transparent 25rem),
+    linear-gradient(116deg,#063819 0%,#0a4a23 52%,#25572a 100%)!important;
+}
+body[data-page="shop"] .page-intro-shop::before{
+  opacity:.2!important;
+  background-image:
+    radial-gradient(rgba(255,255,255,.22) .7px,transparent .75px),
+    linear-gradient(115deg,transparent 0 71%,rgba(232,177,42,.05) 71% 72%,transparent 72%);
+  background-size:10px 10px,100% 100%;
+  mask-image:linear-gradient(90deg,#000 0 56%,transparent 82%);
+}
+body[data-page="shop"] .page-intro-shop::after{
+  content:"";
+  position:absolute;
+  z-index:0;
+  width:720px;
+  height:420px;
+  left:-160px;
+  bottom:-255px;
+  border:1px solid rgba(237,184,52,.34);
+  border-radius:50%;
+  transform:rotate(-8deg);
+  pointer-events:none;
+  background:none!important;
+}
+
+body[data-page="shop"] .page-intro-grid{
+  grid-template-columns:minmax(0,1.08fr) minmax(470px,.88fr)!important;
+  gap:clamp(54px,6vw,94px)!important;
+  align-items:center!important;
+}
+body[data-page="shop"] .page-intro-copy-wrap{
+  position:relative;
+  z-index:3;
+  padding:18px 0 14px;
+}
+body[data-page="shop"] .page-intro-copy-wrap::before{
+  content:"";
+  position:absolute;
+  width:270px;
+  height:320px;
+  right:-78px;
+  top:76px;
+  opacity:.16;
+  background:url("assets/olive-sprig-line.svg?v=20261002-shophero27") center/contain no-repeat;
+  transform:rotate(7deg);
+  filter:sepia(.35) saturate(1.2);
+  pointer-events:none;
+}
+body[data-page="shop"] .page-intro-copy-wrap::after{
+  content:"";
+  display:block;
+  width:min(430px,70%);
+  height:35px;
+  margin:6px 0 -4px 34%;
+  border-top:2px solid rgba(232,176,36,.9);
+  border-radius:50%;
+  transform:rotate(-3deg);
+  opacity:.78;
+  pointer-events:none;
+}
+body[data-page="shop"] .page-intro .eyebrow{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  width:max-content;
+  max-width:100%;
+  margin-bottom:20px!important;
+  color:#efbc3f!important;
+  letter-spacing:.22em!important;
+  font-size:.66rem!important;
+}
+body[data-page="shop"] .page-intro .eyebrow::before{
+  content:"";
+  width:38px;
+  height:1px;
+  flex:0 0 38px;
+  background:linear-gradient(90deg,transparent,#efbc3f);
+}
+body[data-page="shop"] .page-intro h1{
+  max-width:8.3ch!important;
+  margin:0!important;
+  font-size:clamp(5rem,6.75vw,7.55rem)!important;
+  line-height:.84!important;
+  letter-spacing:-.048em!important;
+  text-wrap:balance;
+  text-shadow:0 8px 34px rgba(0,0,0,.12);
+}
+body[data-page="shop"] .page-intro h1 em{
+  display:inline-block;
+  margin-top:.12em;
+  color:#e0a713!important;
+  font-style:italic;
+  line-height:.9;
+}
+body[data-page="shop"] .page-intro-copy{
+  max-width:610px!important;
+  margin:25px 0 0!important;
+  color:rgba(255,255,255,.82)!important;
+  font-size:1rem!important;
+  line-height:1.72!important;
+}
+body[data-page="shop"] .page-intro-actions{margin-top:27px!important}
+body[data-page="shop"] .intro-primary,
+body[data-page="shop"] .intro-secondary{
+  min-height:52px!important;
+  padding-inline:22px!important;
+  transition:transform .22s cubic-bezier(.2,.75,.2,1),box-shadow .22s ease,background .22s ease!important;
+}
+body[data-page="shop"] .intro-primary{
+  background:linear-gradient(135deg,#efb51c,#d99d0a)!important;
+  border-color:#efb51c!important;
+  box-shadow:0 14px 34px rgba(1,21,8,.22),inset 0 1px rgba(255,255,255,.35)!important;
+}
+body[data-page="shop"] .intro-primary:hover{
+  transform:translateY(-3px)!important;
+  box-shadow:0 18px 42px rgba(1,21,8,.3),inset 0 1px rgba(255,255,255,.35)!important;
+}
+body[data-page="shop"] .intro-secondary{
+  background:rgba(255,255,255,.035)!important;
+  border-color:rgba(255,255,255,.3)!important;
+  backdrop-filter:blur(8px);
+}
+body[data-page="shop"] .intro-secondary:hover{background:rgba(255,255,255,.095)!important}
+
+/* Decorative floating photography.  Small local images are deliberately kept small
+   so they remain crisp instead of being stretched into fake full-bleed photography. */
+.shop-hero-art{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+}
+.shop-hero-orbit{
+  position:absolute;
+  display:block;
+  border:1px solid rgba(232,176,36,.4);
+  border-radius:50%;
+  opacity:.72;
+}
+.shop-hero-orbit-a{
+  width:390px;height:390px;
+  left:38%;top:44%;
+  animation:shopOrbitDrift 11s ease-in-out infinite;
+}
+.shop-hero-orbit-b{
+  width:160px;height:160px;
+  right:7%;bottom:-65px;
+  border-style:dashed;
+  opacity:.3;
+  animation:shopOrbitDrift 14s ease-in-out -3s infinite reverse;
+}
+.shop-hero-sprig{
+  position:absolute;
+  width:245px;
+  left:-42px;
+  top:88px;
+  opacity:.34;
+  filter:brightness(1.8) sepia(.8) saturate(.9);
+  transform:rotate(-20deg);
+  transform-origin:40% 60%;
+  animation:shopSprigSway 8s ease-in-out infinite;
+}
+.shop-hero-photo{
+  position:absolute;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:1px solid rgba(235,191,79,.42);
+  background:rgba(255,250,239,.95);
+  box-shadow:0 18px 45px rgba(0,0,0,.23);
+  backdrop-filter:blur(8px);
+}
+.shop-hero-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:saturate(.96) contrast(1.02);
+}
+.shop-hero-photo-oil{
+  width:86px;height:86px;
+  left:2.6%;
+  bottom:54px;
+  border-radius:24px;
+  transform:rotate(-8deg);
+  animation:shopFloatOil 6.6s ease-in-out infinite;
+}
+.shop-hero-photo-honey{
+  width:72px;height:72px;
+  left:44%;
+  top:57px;
+  border-radius:50%;
+  transform:rotate(8deg);
+  animation:shopFloatHoney 7.8s ease-in-out -1.5s infinite;
+}
+
+/* Right pantry board */
+body[data-page="shop"] .shop-intro-board{
+  min-height:475px!important;
+  padding:28px!important;
+  border-radius:34px!important;
+  border:1px solid rgba(236,184,47,.43)!important;
+  background:
+    radial-gradient(circle at 95% 2%,rgba(219,169,36,.15),transparent 14rem),
+    linear-gradient(145deg,rgba(4,37,18,.94),rgba(3,30,14,.89))!important;
+  box-shadow:
+    0 36px 80px rgba(0,0,0,.29),
+    inset 0 1px rgba(255,255,255,.07),
+    0 0 55px rgba(217,163,26,.07)!important;
+  animation:shopBoardIn .8s cubic-bezier(.2,.78,.2,1) both;
+}
+body[data-page="shop"] .shop-intro-board::before{
+  inset:13px!important;
+  border-color:rgba(255,255,255,.075)!important;
+  border-radius:26px!important;
+}
+body[data-page="shop"] .shop-intro-board::after{
+  width:260px!important;
+  height:110px!important;
+  right:-55px!important;
+  top:-35px!important;
+  border-radius:50%!important;
+  background:radial-gradient(ellipse,rgba(239,185,47,.23),transparent 68%)!important;
+  filter:blur(3px);
+  animation:shopBoardGlow 5.5s ease-in-out infinite;
+}
+body[data-page="shop"] .intro-stat-pair{
+  gap:12px!important;
+  margin-bottom:31px!important;
+}
+body[data-page="shop"] .intro-stat-pair>div{
+  position:relative;
+  min-height:118px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:18px 19px 18px 74px!important;
+  border-radius:22px!important;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.045))!important;
+  border-color:rgba(255,255,255,.1)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.04);
+}
+body[data-page="shop"] .intro-stat-pair>div::before{
+  content:"";
+  position:absolute;
+  left:18px;
+  top:50%;
+  width:42px;height:42px;
+  border-radius:50%;
+  transform:translateY(-50%);
+  border:1px solid rgba(238,184,47,.25);
+  background:
+    radial-gradient(circle at 50% 50%,rgba(232,176,36,.24) 0 18%,transparent 19%),
+    rgba(255,255,255,.035);
+}
+body[data-page="shop"] .intro-stat-pair>div:first-child::after{
+  content:"◇";
+  position:absolute;
+  left:30px;top:50%;
+  transform:translateY(-55%);
+  color:#e8b024;
+  font-size:1.2rem;
+}
+body[data-page="shop"] .intro-stat-pair>div:last-child::after{
+  content:"⌁";
+  position:absolute;
+  left:29px;top:50%;
+  transform:translateY(-57%) rotate(-18deg);
+  color:#e8b024;
+  font-size:1.35rem;
+  font-weight:900;
+}
+body[data-page="shop"] .intro-stat-pair strong{
+  font-size:3rem!important;
+  letter-spacing:-.03em;
+}
+body[data-page="shop"] .intro-stat-pair span{
+  margin-top:7px!important;
+  color:rgba(255,255,255,.67)!important;
+  font-size:.72rem!important;
+}
+body[data-page="shop"] .intro-board-kicker{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:18px!important;
+  color:#efb51c!important;
+  letter-spacing:.18em!important;
+}
+body[data-page="shop"] .intro-board-kicker::before{
+  content:"";
+  width:34px;height:2px;
+  border-radius:99px;
+  background:#e8ad18;
+}
+body[data-page="shop"] .intro-category-chips{gap:12px!important}
+body[data-page="shop"] .intro-category-chips a{
+  position:relative;
+  min-height:82px!important;
+  padding:13px 42px 13px 14px!important;
+  gap:12px!important;
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:21px!important;
+  background:linear-gradient(145deg,#fff8e9,#eee4d0)!important;
+  box-shadow:0 9px 24px rgba(0,0,0,.08);
+  overflow:hidden;
+  transition:transform .24s cubic-bezier(.2,.75,.2,1),box-shadow .24s ease,background .24s ease!important;
+}
+body[data-page="shop"] .intro-category-chips a::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.5) 47%,transparent 62%);
+  transform:translateX(-120%);
+  transition:transform .55s ease;
+}
+body[data-page="shop"] .intro-category-chips a:hover{
+  transform:translateY(-4px)!important;
+  background:#fffaf0!important;
+  box-shadow:0 14px 30px rgba(0,0,0,.14);
+}
+body[data-page="shop"] .intro-category-chips a:hover::before{transform:translateX(120%)}
+body[data-page="shop"] .intro-category-chips .intro-chip-media{
+  width:46px!important;
+  height:46px!important;
+  flex:0 0 46px!important;
+  padding:0!important;
+  overflow:hidden;
+  border-radius:15px!important;
+  background:#e8e5d6!important;
+  box-shadow:inset 0 0 0 1px rgba(11,75,37,.05);
+}
+body[data-page="shop"] .intro-category-chips .intro-chip-media img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  transform:scale(1.03);
+}
+body[data-page="shop"] .intro-category-chips b{
+  position:relative;
+  z-index:2;
+  font-size:.78rem!important;
+  color:#083c1a;
+}
+body[data-page="shop"] .intro-category-chips i{
+  position:absolute;
+  z-index:2;
+  right:16px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#81785f;
+  font-style:normal;
+  font-size:1.55rem;
+  line-height:1;
+  transition:transform .2s ease,color .2s ease;
+}
+body[data-page="shop"] .intro-category-chips a:hover i{
+  transform:translate(3px,-50%);
+  color:#0b4b25;
+}
+body[data-page="shop"] .intro-board-note{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-top:21px!important;
+  padding-top:18px!important;
+  color:rgba(255,255,255,.64)!important;
+  font-size:.7rem!important;
+}
+body[data-page="shop"] .intro-board-note::before{
+  content:"◎";
+  color:#dfe8df;
+  font-size:1.08rem;
+}
+
+/* Entry + ambient motion */
+body[data-page="shop"] .page-intro-copy-wrap{
+  animation:shopCopyIn .72s .04s cubic-bezier(.2,.78,.2,1) both;
+}
+@keyframes shopCopyIn{
+  from{opacity:0;transform:translate3d(-18px,18px,0)}
+  to{opacity:1;transform:none}
+}
+@keyframes shopBoardIn{
+  from{opacity:0;transform:translate3d(20px,20px,0) scale(.985)}
+  to{opacity:1;transform:none}
+}
+@keyframes shopFloatOil{
+  0%,100%{transform:translate3d(0,0,0) rotate(-8deg)}
+  50%{transform:translate3d(8px,-13px,0) rotate(-3deg)}
+}
+@keyframes shopFloatHoney{
+  0%,100%{transform:translate3d(0,0,0) rotate(8deg)}
+  50%{transform:translate3d(-9px,12px,0) rotate(3deg)}
+}
+@keyframes shopOrbitDrift{
+  0%,100%{transform:translate3d(0,0,0) rotate(0deg)}
+  50%{transform:translate3d(12px,-9px,0) rotate(4deg)}
+}
+@keyframes shopSprigSway{
+  0%,100%{transform:rotate(-20deg) translate3d(0,0,0)}
+  50%{transform:rotate(-16deg) translate3d(5px,-6px,0)}
+}
+@keyframes shopBoardGlow{
+  0%,100%{opacity:.55;transform:translate3d(0,0,0)}
+  50%{opacity:1;transform:translate3d(-18px,8px,0)}
+}
+
+html[lang="ar"] body[data-page="shop"] .page-intro h1{
+  max-width:10.5ch!important;
+  line-height:1.08!important;
+}
+html[dir="rtl"] body[data-page="shop"] .page-intro .eyebrow::before{
+  background:linear-gradient(90deg,#efbc3f,transparent);
+}
+html[dir="rtl"] body[data-page="shop"] .page-intro-copy-wrap::after{
+  margin-left:0;
+  margin-right:34%;
+}
+html[dir="rtl"] body[data-page="shop"] .intro-stat-pair>div{
+  padding:18px 74px 18px 19px!important;
+}
+html[dir="rtl"] body[data-page="shop"] .intro-stat-pair>div::before{
+  left:auto;right:18px;
+}
+html[dir="rtl"] body[data-page="shop"] .intro-stat-pair>div:first-child::after,
+html[dir="rtl"] body[data-page="shop"] .intro-stat-pair>div:last-child::after{
+  left:auto;right:30px;
+}
+html[dir="rtl"] body[data-page="shop"] .intro-category-chips a{
+  padding:13px 14px 13px 42px!important;
+}
+html[dir="rtl"] body[data-page="shop"] .intro-category-chips i{right:auto;left:16px}
+html[dir="rtl"] body[data-page="shop"] .intro-category-chips a:hover i{
+  transform:translate(-3px,-50%);
+}
+
+@media(max-width:1180px){
+  body[data-page="shop"] .page-intro-grid{
+    grid-template-columns:minmax(0,1fr) minmax(420px,.9fr)!important;
+    gap:42px!important;
+  }
+  body[data-page="shop"] .page-intro h1{font-size:clamp(4.65rem,7vw,6.5rem)!important}
+  .shop-hero-photo-honey{left:42%}
+}
+@media(max-width:980px){
+  body[data-page="shop"] .page-intro-shop{
+    min-height:auto!important;
+    padding:60px 0!important;
+  }
+  body[data-page="shop"] .page-intro-grid{
+    grid-template-columns:1fr!important;
+    gap:42px!important;
+  }
+  body[data-page="shop"] .page-intro-copy-wrap{max-width:760px}
+  body[data-page="shop"] .page-intro h1{
+    max-width:8.8ch!important;
+    font-size:clamp(4.8rem,10vw,6.7rem)!important;
+  }
+  body[data-page="shop"] .shop-intro-board{min-height:auto!important}
+  .shop-hero-photo-honey{left:auto;right:9%;top:36px}
+  .shop-hero-photo-oil{left:auto;right:4%;bottom:auto;top:130px}
+  .shop-hero-orbit-a{left:48%;top:17%}
+  body[data-page="shop"] .page-intro-copy-wrap::before{right:4%;opacity:.11}
+}
+@media(max-width:680px){
+  body[data-page="shop"] .page-intro-shop{padding:46px 0 52px!important}
+  body[data-page="shop"] .page-intro .eyebrow{font-size:.58rem!important;letter-spacing:.16em!important}
+  body[data-page="shop"] .page-intro .eyebrow::before{width:24px;flex-basis:24px}
+  body[data-page="shop"] .page-intro h1{
+    max-width:8.7ch!important;
+    font-size:clamp(3.65rem,16vw,5.35rem)!important;
+    line-height:.88!important;
+  }
+  body[data-page="shop"] .page-intro-copy{font-size:.91rem!important}
+  body[data-page="shop"] .page-intro-copy-wrap::before,
+  .shop-hero-photo,
+  .shop-hero-sprig{display:none!important}
+  .shop-hero-orbit-a{width:260px;height:260px;left:45%;top:20%;opacity:.32}
+  body[data-page="shop"] .page-intro-actions{grid-template-columns:1fr!important}
+  body[data-page="shop"] .intro-primary,
+  body[data-page="shop"] .intro-secondary{width:100%}
+  body[data-page="shop"] .shop-intro-board{
+    padding:21px!important;
+    border-radius:27px!important;
+  }
+  body[data-page="shop"] .intro-stat-pair>div{
+    min-height:102px;
+    padding:16px 14px 16px 58px!important;
+  }
+  body[data-page="shop"] .intro-stat-pair>div::before{
+    width:34px;height:34px;left:13px;
+  }
+  body[data-page="shop"] .intro-stat-pair>div:first-child::after,
+  body[data-page="shop"] .intro-stat-pair>div:last-child::after{left:22px;font-size:1rem}
+  body[data-page="shop"] .intro-stat-pair strong{font-size:2.45rem!important}
+  body[data-page="shop"] .intro-category-chips a{min-height:72px!important}
+  html[dir="rtl"] body[data-page="shop"] .intro-stat-pair>div{padding:16px 58px 16px 14px!important}
+  html[dir="rtl"] body[data-page="shop"] .intro-stat-pair>div::before{left:auto;right:13px}
+  html[dir="rtl"] body[data-page="shop"] .intro-stat-pair>div:first-child::after,
+  html[dir="rtl"] body[data-page="shop"] .intro-stat-pair>div:last-child::after{left:auto;right:22px}
+}
+@media(max-width:440px){
+  body[data-page="shop"] .page-intro h1{font-size:clamp(3.25rem,15.3vw,4.7rem)!important}
+  body[data-page="shop"] .intro-stat-pair{grid-template-columns:1fr 1fr!important}
+  body[data-page="shop"] .intro-category-chips{grid-template-columns:1fr!important}
+  body[data-page="shop"] .intro-category-chips a{min-height:68px!important}
+}
+
+/* Motion remains optional, never required for comprehension. */
+@media(prefers-reduced-motion:reduce){
+  body[data-page="shop"] .page-intro-copy-wrap,
+  body[data-page="shop"] .shop-intro-board,
+  .shop-hero-orbit,
+  .shop-hero-sprig,
+  .shop-hero-photo{
+    animation:none!important;
+  }
+  .announcement-inner>a::after,
+  body[data-page="shop"] .intro-category-chips a,
+  body[data-page="shop"] .intro-category-chips i{
+    transition:none!important;
+  }
+}

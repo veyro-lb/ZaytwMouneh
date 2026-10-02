@@ -720,3 +720,64 @@
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
   else init();
 })();
+
+
+/* ===== v32 animated shop hero loader ===== */
+(function(){
+  function loadShopHeroVideo(){
+    var video=document.getElementById("shopHeroVideo");
+    if(!video)return;
+
+    var reduceMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(reduceMotion)return;
+
+    var parts=[
+      "assets/shop-hero-video/part01.b64?v=20261002-hero32",
+      "assets/shop-hero-video/part02.b64?v=20261002-hero32",
+      "assets/shop-hero-video/part03.b64?v=20261002-hero32",
+      "assets/shop-hero-video/part04.b64?v=20261002-hero32",
+      "assets/shop-hero-video/part05.b64?v=20261002-hero32"
+    ];
+
+    Promise.all(parts.map(function(url){
+      return fetch(url,{cache:"force-cache"}).then(function(response){
+        if(!response.ok)throw new Error("Hero video chunk failed: "+response.status);
+        return response.text();
+      });
+    })).then(function(chunks){
+      var base64=chunks.join("").replace(/\s+/g,"");
+      if(base64.length!==47724)throw new Error("Hero video data is incomplete");
+
+      var binary=window.atob(base64);
+      var bytes=new Uint8Array(binary.length);
+      for(var i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+
+      var objectUrl=URL.createObjectURL(new Blob([bytes],{type:"video/mp4"}));
+      video.muted=true;
+      video.defaultMuted=true;
+      video.loop=true;
+      video.playsInline=true;
+      video.setAttribute("muted","");
+      video.setAttribute("playsinline","");
+      video.src=objectUrl;
+
+      var reveal=function(){
+        video.classList.add("is-ready");
+      };
+      video.addEventListener("loadeddata",reveal,{once:true});
+      video.addEventListener("canplay",reveal,{once:true});
+      video.play().catch(function(){
+        /* First frame still fades in even if a browser blocks autoplay. */
+        reveal();
+      });
+    }).catch(function(error){
+      console.warn("Animated shop hero fallback active",error);
+    });
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",loadShopHeroVideo,{once:true});
+  }else{
+    loadShopHeroVideo();
+  }
+})();

@@ -208,9 +208,9 @@ const UI={
     scene2Kicker:"Pantry film · 02",scene2Title:"Lentils & everyday staples.",scene2Copy:"Warm, useful ingredients for real home cooking.",
     scene3Kicker:"Pantry film · 03",scene3Title:"Wheat, harvest & season.",scene3Copy:"A calm reminder of the ingredients, seasons and tables behind mouneh.",
     heroScript:"Curated with care",
-    categoriesEyebrow:"The pantry, chapter by chapter",
-    categoriesTitle:'Find your way<br>around the <em>pantry.</em>',
-    categoriesCopy:"Start with the pantry families people reach for most, then explore the full catalogue.",
+    categoriesEyebrow:"Shop by category",
+    categoriesTitle:"What are you looking for?",
+    categoriesCopy:"Choose a pantry family below, or search the full catalogue if you already know what you need.",
     aboutEyebrow:"Our story & mission",
     aboutTitle:'More than a shelf.<br><em>Memory kept within reach.</em>',
     aboutLetterKicker:"A note from our pantry",
@@ -262,9 +262,9 @@ const UI={
     scene2Kicker:"من المونة · 02",scene2Title:"عدس وحبوب للبيت.",scene2Copy:"مكونات يومية دافئة ومفيدة للطبخ الحقيقي في البيت.",
     scene3Kicker:"من المونة · 03",scene3Title:"قمح وموسم وحصاد.",scene3Copy:"صورة هادئة عن الأرض والمواسم والموائد التي تعيش فيها المونة.",
     heroScript:"مختارة بعناية",
-    categoriesEyebrow:"المونة، فصلاً بعد فصل",
-    categoriesTitle:'اعثر على طريقك<br>في <em>المونة.</em>',
-    categoriesCopy:"ابدأ بأقسام المونة الأساسية ثم انتقل إلى كامل المنتجات.",
+    categoriesEyebrow:"تسوّق حسب القسم",
+    categoriesTitle:"ماذا تبحث عنه؟",
+    categoriesCopy:"اختر قسماً من المونة أدناه، أو ابحث في كامل المنتجات إذا كنت تعرف ما تحتاجه.",
     aboutEyebrow:"قصتنا ورسالتنا",
     aboutTitle:'أكثر من رفّ.<br><em>ذاكرة تبقى في متناول اليد.</em>',
     aboutLetterKicker:"رسالة من مونة البيت",
@@ -779,30 +779,67 @@ function applyLanguage(next,{immediate=false}={}){
 
 function renderCategories(){
   const grid=$("#categoryGrid");if(!grid)return;
-  const cats=CURRENT_PAGE==="home"?["Mouneh","Honey","Olive Oil","Molasses","Olives","Pickles","Grains","Spices"]:CATEGORY_ORDER;
+  const homeCats=["Mouneh","Honey","Olive Oil","Molasses","Olives","Pickles","Grains","Spices"];
+  const cats=CURRENT_PAGE==="home"?homeCats:CATEGORY_ORDER;
+
   grid.innerHTML=cats.map((cat,index)=>{
     const count=CATEGORY_COUNTS[cat]||0;
     const info=CATEGORY_INFO[cat]?.[lang]||["",""];
     const href=CURRENT_PAGE==="shop"?"#shop":`shop.html?category=${encodeURIComponent(cat)}#shop`;
     return `<a class="category-card reveal" href="${href}" data-cat="${escapeHtml(cat)}">
       <div class="category-card-top"><span class="category-index">${String(index+1).padStart(2,"0")}</span><span class="category-count">${count} ${lang==="ar"?"منتج":"products"}</span></div>
-      <div>
+      <div class="category-card-main">
         <div class="category-name">${escapeHtml(categoryName(cat))}</div>
         <p class="category-blurb">${escapeHtml(info[0])}</p>
       </div>
-      <div class="category-card-bottom"><span class="text-link">${lang==="ar"?"استكشف":"Explore"}</span><div class="category-arrow">${lang==="ar"?"↙":"↘"}</div></div>
+      <div class="category-card-bottom"><span class="text-link">${lang==="ar"?"عرض المنتجات":"View products"}</span><div class="category-arrow">${lang==="ar"?"↙":"↘"}</div></div>
     </a>`;
   }).join("");
-  if(CURRENT_PAGE==="shop")document.querySelectorAll("[data-cat]").forEach(a=>a.addEventListener("click",e=>{
-    e.preventDefault();
-    activeCategory=a.dataset.cat;
-    query="";
-    visibleLimit=PAGE_SIZE;
-    $("#productSearch").value="";
-    renderCategorySelect();
-    renderProducts();
-    location.hash="shop";
-  }));
+
+  const quick=$("#categoryQuickGrid");
+  if(quick&&CURRENT_PAGE==="shop"){
+    const featured=["Mouneh","Honey","Olive Oil","Spices","Grains","Pulses","Pickles","Nuts + Seeds"].filter(cat=>CATEGORY_ORDER.includes(cat));
+    quick.innerHTML=featured.map(cat=>{
+      const count=CATEGORY_COUNTS[cat]||0;
+      return `<button class="category-quick-card" type="button" data-cat="${escapeHtml(cat)}">
+        <span class="category-quick-name">${escapeHtml(categoryName(cat))}</span>
+        <span class="category-quick-meta">${count} ${lang==="ar"?"منتج":"products"} <b>${lang==="ar"?"←":"→"}</b></span>
+      </button>`;
+    }).join("");
+
+    const quickLabel=$("#categoryQuickLabel");
+    const quickCopy=$("#categoryQuickCopy");
+    const allLabel=$("#categoryAllLabel");
+    const allCount=$("#categoryAllCount");
+    const browse=$("#browseAllProducts");
+    const search=$("#focusProductSearch");
+    if(quickLabel)quickLabel.textContent=lang==="ar"?"خيارات شائعة":"Popular choices";
+    if(quickCopy)quickCopy.textContent=lang==="ar"?"ابدأ بقسم مألوف ويمكنك تغيير الفلتر في أي وقت.":"Start with a familiar pantry family. You can change the filter at any time.";
+    if(allLabel)allLabel.textContent=lang==="ar"?"كل الأقسام":"All categories";
+    if(allCount)allCount.textContent=lang==="ar"?`${CATEGORY_ORDER.length} قسماً`:`${CATEGORY_ORDER.length} categories`;
+    if(browse)browse.innerHTML=lang==="ar"?"عرض كل المنتجات <span>↙</span>":"Browse all products <span>↘</span>";
+    if(search)search.textContent=lang==="ar"?"ابحث عن منتج":"Search products";
+  }
+}
+
+function activateShopCategory(cat){
+  if(CURRENT_PAGE!=="shop"||!CATEGORY_ORDER.includes(cat))return;
+  activeCategory=cat;
+  query="";
+  favoritesOnly=false;
+  visibleLimit=PAGE_SIZE;
+  const search=$("#productSearch");
+  if(search)search.value="";
+  renderCategorySelect();
+  renderProducts();
+  renderFavoritesCount();
+  renderSearchSuggestions();
+  const url=new URL(location.href);
+  url.searchParams.set("category",cat);
+  url.hash="shop";
+  history.replaceState(null,"",url.pathname+url.search+url.hash);
+  const shopSection=$("#shop");
+  if(shopSection)shopSection.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
 function renderCategorySelect(){
@@ -1491,6 +1528,45 @@ function init(){
   setupProgress();
   setupPerformance();
   if(requestedProduct&&productById(requestedProduct))openProduct(requestedProduct);
+
+  if(CURRENT_PAGE==="shop"){
+    const categories=$("#categories");
+    if(categories)categories.addEventListener("click",e=>{
+      const categoryTarget=e.target.closest("[data-cat]");
+      if(categoryTarget){
+        e.preventDefault();
+        activateShopCategory(categoryTarget.dataset.cat);
+        return;
+      }
+      const browse=e.target.closest("#browseAllProducts");
+      if(browse){
+        e.preventDefault();
+        activeCategory="All";
+        query="";
+        favoritesOnly=false;
+        visibleLimit=PAGE_SIZE;
+        const search=$("#productSearch");
+        if(search)search.value="";
+        renderCategorySelect();
+        renderProducts();
+        renderFavoritesCount();
+        const url=new URL(location.href);
+        url.searchParams.delete("category");
+        url.hash="shop";
+        history.replaceState(null,"",url.pathname+url.search+url.hash);
+        const shopSection=$("#shop");
+        if(shopSection)shopSection.scrollIntoView({behavior:"smooth",block:"start"});
+        return;
+      }
+      const searchButton=e.target.closest("#focusProductSearch");
+      if(searchButton){
+        e.preventDefault();
+        const shopSection=$("#shop");
+        if(shopSection)shopSection.scrollIntoView({behavior:"smooth",block:"start"});
+        setTimeout(()=>{const input=$("#productSearch");if(input){input.focus();input.select();}},420);
+      }
+    });
+  }
 
   if($("#productSearch")){
     $("#productSearch").addEventListener("input",e=>{query=e.target.value;if(query.trim())activeCategory="All";visibleLimit=PAGE_SIZE;renderCategorySelect();renderProducts();renderSearchSuggestions()});

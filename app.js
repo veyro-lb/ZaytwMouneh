@@ -801,10 +801,11 @@ function renderCategories(){
     const featured=["Mouneh","Honey","Olive Oil","Spices","Grains","Pulses","Pickles","Nuts + Seeds"].filter(cat=>CATEGORY_ORDER.includes(cat));
     quick.innerHTML=featured.map(cat=>{
       const count=CATEGORY_COUNTS[cat]||0;
-      return `<button class="category-quick-card" type="button" data-cat="${escapeHtml(cat)}">
+      const href=`?category=${encodeURIComponent(cat)}#shop`;
+      return `<a class="category-quick-card" href="${href}" data-cat="${escapeHtml(cat)}">
         <span class="category-quick-name">${escapeHtml(categoryName(cat))}</span>
         <span class="category-quick-meta">${count} ${lang==="ar"?"منتج":"products"} <b>${lang==="ar"?"←":"→"}</b></span>
-      </button>`;
+      </a>`;
     }).join("");
 
     const quickLabel=$("#categoryQuickLabel");
@@ -814,7 +815,7 @@ function renderCategories(){
     const browse=$("#browseAllProducts");
     const search=$("#focusProductSearch");
     if(quickLabel)quickLabel.textContent=lang==="ar"?"خيارات شائعة":"Popular choices";
-    if(quickCopy)quickCopy.textContent=lang==="ar"?"ابدأ بقسم مألوف ويمكنك تغيير الفلتر في أي وقت.":"Start with a familiar pantry family. You can change the filter at any time.";
+    if(quickCopy)quickCopy.textContent=lang==="ar"?"اختصارات سريعة للأقسام الأكثر تصفحاً.":"Quick shortcuts to the pantry families people browse most.";
     if(allLabel)allLabel.textContent=lang==="ar"?"كل الأقسام":"All categories";
     if(allCount)allCount.textContent=lang==="ar"?`${CATEGORY_ORDER.length} قسماً`:`${CATEGORY_ORDER.length} categories`;
     if(browse)browse.innerHTML=lang==="ar"?"عرض كل المنتجات <span>↙</span>":"Browse all products <span>↘</span>";
@@ -1523,7 +1524,7 @@ function init(){
   const requestedProduct=params.get("product");
   applyLanguage(lang,{immediate:true});
   prewarmLanguageFonts();
-  if(CURRENT_PAGE==="home"){showScene(0);startScenes();}
+  if($("#heroShowcase")){showScene(0);startScenes();}
   setupNav();
   setupProgress();
   setupPerformance();
@@ -1558,7 +1559,7 @@ function init(){
         if(shopSection)shopSection.scrollIntoView({behavior:"smooth",block:"start"});
         return;
       }
-      const searchButton=e.target.closest("#focusProductSearch");
+      const searchButton=e.target.closest("#focusProductSearch, #categorySearchShortcut");
       if(searchButton){
         e.preventDefault();
         const shopSection=$("#shop");

@@ -125,7 +125,7 @@
     var anchor=q(".categories");if(!anchor)return;
     var sec=document.createElement("section");sec.id="premiumCollections";sec.className="premium-section premium-collections";
     var cards=collections.map(function(c){
-      return '<a class="collection-card" href="shop.html?collection='+encodeURIComponent(c.id)+'" style="background-image:url(\''+esc(c.image)+'\')"><span class="collection-arrow">↗</span><small>'+esc(txt("Curated collection","تشكيلة مختارة"))+'</small><h3>'+esc(isAr()?c.titleAr:c.titleEn)+'</h3><p>'+esc(isAr()?c.copyAr:c.copyEn)+'</p></a>';
+      return '<a class="collection-card" href="shop.html?collection='+encodeURIComponent(c.id)+'"><span class="collection-media" aria-hidden="true"><img src="'+esc(c.image)+'" alt="" loading="lazy" decoding="async"></span><span class="collection-arrow">↗</span><span class="collection-copy"><small>'+esc(txt("Curated collection","تشكيلة مختارة"))+'</small><h3>'+esc(isAr()?c.titleAr:c.titleEn)+'</h3><p>'+esc(isAr()?c.copyAr:c.copyEn)+'</p></span></a>';
     }).join("");
     sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Shop by mood","تسوّق حسب المناسبة"))+'</p><h2>'+esc(txt("Collections with a","تشكيلات لها"))+' <em>'+esc(txt("reason.","فكرة."))+'</em></h2></div><p>'+esc(txt("Categories are useful. Collections make the pantry easier to imagine on a real table, for a real meal or as a gift.","التصنيفات مفيدة، لكن التشكيلات تجعل المونة أسهل للتخيّل على سفرة حقيقية أو كهدية."))+'</p></div><div class="collection-grid">'+cards+'</div></div>';
     anchor.after(sec);

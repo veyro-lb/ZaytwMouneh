@@ -1809,3 +1809,22 @@ body[data-page="shop"] .shop-story-hero{
     display:none!important;
   }
 }
+
+
+/* ===== v39 show former homepage 3-film hero on Shop ===== */
+body[data-page="shop"] .hero.shop-story-hero{
+  display:block!important;
+  position:relative!important;
+  overflow:hidden!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+/* The legacy page-separation rule hides every .hero on Shop.
+   This specific override intentionally restores the swapped homepage hero. */
+body[data-page="shop"] .shop-story-hero .hero-grid,
+body[data-page="shop"] .shop-story-hero .hero-copy,
+body[data-page="shop"] .shop-story-hero .hero-showcase{
+  visibility:visible!important;
+  opacity:1!important;
+}

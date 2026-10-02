@@ -180,39 +180,120 @@
 
   var recipes=[
     {
-      id:"mujadara",titleEn:"Mujadara pantry",titleAr:"مونة المجدّرة",
-      copyEn:"Lentils, rice or bulgur, cumin and olive oil — the shelf-stable heart of a comforting Lebanese meal.",
-      copyAr:"عدس وأرز أو برغل وكمون وزيت زيتون — أساسات محفوظة لطبق لبناني دافئ.",
-      tagsEn:["lentils","grain","cumin","olive oil"],tagsAr:["عدس","حبوب","كمون","زيت زيتون"],
-      terms:[["lentil"],["rice","bulgur","burghol"],["cumin"],["olive oil"]]
+      id:"mujadara",
+      titleEn:"Mujadara",titleAr:"مجدّرة",
+      copyEn:"A Lebanese comfort classic of lentils and rice, finished with deeply caramelized onions.",
+      copyAr:"طبق لبناني بيتي من العدس والأرز، يكتمل بالبصل المحمّر على مهل.",
+      methodEn:"Simmer the lentils until partly tender. Add rinsed rice, cumin, salt and enough water to finish cooking gently. Slice onions and brown them slowly in olive oil until dark and sweet; fold some through the lentils and rice and pile the rest on top.",
+      methodAr:"اسلق العدس حتى يقترب من النضج، ثم أضف الأرز المغسول والكمون والملح والماء واتركه ينضج على نار هادئة. حمّر شرائح البصل ببطء في زيت الزيتون حتى تصبح داكنة وحلوة، اخلط جزءاً منها مع المجدّرة وضع الباقي فوقها.",
+      freshEn:"Fresh: onions · optional yogurt or salad",
+      freshAr:"طازج: بصل · لبن أو سلطة حسب الرغبة",
+      tagsEn:["lentils","rice","cumin","olive oil"],tagsAr:["عدس","أرز","كمون","زيت زيتون"],
+      productIds:["aadas-aarid","american-rice","kamoun-neeme","extra-virgin-olive-oil"],
+      image:"https://commons.wikimedia.org/wiki/Special:FilePath/Mujaddara.jpg?width=900",
+      imageAltEn:"Mujadara with lentils and rice",imageAltAr:"طبق مجدّرة بالعدس والأرز",
+      source:"https://commons.wikimedia.org/wiki/File:Mujaddara.jpg",
+      credit:"Bazel · Wikimedia Commons · CC BY-SA 3.0"
     },
     {
-      id:"manoushe",titleEn:"Manoushe morning",titleAr:"صباح المنقوشة",
-      copyEn:"Zaatar, olive oil and flour for the pantry side of a classic manoushe. Add fresh dough ingredients as you prefer.",
-      copyAr:"زعتر وزيت زيتون وطحين لأساس المنقوشة، وأضف مكونات العجين الطازجة كما تفضّل.",
-      tagsEn:["zaatar","olive oil","flour"],tagsAr:["زعتر","زيت زيتون","طحين"],
-      terms:[["zaatar","za'atar","za’atar"],["olive oil"],["all-purpose flour","all use flour","flour"]]
+      id:"manoushe",
+      titleEn:"Za’atar manoushe",titleAr:"منقوشة زعتر",
+      copyEn:"The everyday Lebanese bakery favourite: soft dough topped with za’atar and olive oil.",
+      copyAr:"من أشهر مخبوزات الصباح اللبنانية: عجينة طرية مع خلطة الزعتر وزيت الزيتون.",
+      methodEn:"Mix flour, yeast, salt and water into a soft dough and let it rise until relaxed. Stir the manakish za’atar with olive oil into a loose paste. Stretch the dough, spread the topping almost to the edge and bake in a very hot oven until the base and rim are golden.",
+      methodAr:"اعجن الطحين والخميرة والملح والماء حتى تحصل على عجينة طرية واتركها ترتاح وتتخمّر. اخلط زعتر المناقيش بزيت الزيتون حتى يصبح قابلاً للدهن، افرد العجينة ووزّع الخلطة ثم اخبزها في فرن حار جداً حتى تتحمّر الأطراف والقاع.",
+      freshEn:"At home: water · optional tomato, cucumber, mint or labneh",
+      freshAr:"في البيت: ماء · ويمكن تقديمها مع بندورة وخيار ونعنع أو لبنة",
+      tagsEn:["manakish za’atar","olive oil","flour","yeast"],tagsAr:["زعتر مناقيش","زيت زيتون","طحين","خميرة"],
+      productIds:["zaatar-manakish","extra-virgin-olive-oil","all-use-flour","yeast"],
+      image:"https://commons.wikimedia.org/wiki/Special:FilePath/Manakish%20Za%27atar.jpg?width=900",
+      imageAltEn:"Za’atar manakish flatbread",imageAltAr:"منقوشة زعتر",
+      source:"https://commons.wikimedia.org/wiki/File:Manakish_Za%27atar.jpg",
+      credit:"myahya · Wikimedia Commons · CC BY-SA 2.0"
     },
     {
-      id:"fattoush",titleEn:"Fattoush table",titleAr:"سفرة الفتوش",
-      copyEn:"Sumac, pomegranate molasses and olive oil for the pantry backbone. Add fresh vegetables and toasted bread at home.",
-      copyAr:"سماق ودبس رمان وزيت زيتون كأساس من المونة، وأضف الخضار الطازجة والخبز المحمّص في البيت.",
+      id:"fattoush",
+      titleEn:"Fattoush",titleAr:"فتّوش",
+      copyEn:"A crisp Lebanese bread salad with a bright sumac, lemon and pomegranate-molasses dressing.",
+      copyAr:"سلطة خبز لبنانية منعشة بتتبيلة السماق والحامض ودبس الرمان.",
+      methodEn:"Chop lettuce, tomatoes, cucumber, radish, parsley and mint. Whisk olive oil with lemon juice, sumac, a small spoon of pomegranate molasses and salt. Toss just before serving and add toasted or fried pita at the end so it stays crisp.",
+      methodAr:"قطّع الخس والبندورة والخيار والفجل والبقدونس والنعنع. اخلط زيت الزيتون مع عصير الحامض والسماق وملعقة صغيرة من دبس الرمان والملح. قلّب السلطة قبل التقديم مباشرة وأضف الخبز المحمّص أو المقلي في النهاية ليبقى مقرمشاً.",
+      freshEn:"Fresh: lettuce · tomato · cucumber · radish · parsley · mint · lemon · pita",
+      freshAr:"طازج: خس · بندورة · خيار · فجل · بقدونس · نعنع · حامض · خبز عربي",
       tagsEn:["sumac","pomegranate molasses","olive oil"],tagsAr:["سماق","دبس رمان","زيت زيتون"],
-      terms:[["sumac","semaq"],["pomegranate","remen","romman"],["olive oil"]]
+      productIds:["semaq","debes-el-remen","extra-virgin-olive-oil"],
+      image:"https://commons.wikimedia.org/wiki/Special:FilePath/Fattoush.JPG?width=900",
+      imageAltEn:"A bowl of fattoush salad",imageAltAr:"طبق فتّوش",
+      source:"https://commons.wikimedia.org/wiki/File:Fattoush.JPG",
+      credit:"Wikimedia Commons · Public domain"
+    },
+    {
+      id:"hummus",
+      titleEn:"Hummus",titleAr:"حمّص بطحينة",
+      copyEn:"Creamy chickpeas blended with tahini, lemon and garlic — one of the essential Lebanese mezze plates.",
+      copyAr:"حمّص كريمي مع الطحينة والحامض والثوم — من أساسيات المازة اللبنانية.",
+      methodEn:"Soak and cook the chickpeas until very soft. Blend while warm with tahini, fresh lemon juice, garlic, cumin, salt and a splash of cold water until smooth. Spoon into a plate, make a shallow well and finish with olive oil.",
+      methodAr:"انقع الحمص واسلقه حتى يصبح طرياً جداً. اطحنه وهو دافئ مع الطحينة وعصير الحامض الطازج والثوم والكمون والملح وقليل من الماء البارد حتى يصبح ناعماً. قدّمه في طبق وأنهِ الوجه بزيت الزيتون.",
+      freshEn:"Fresh: lemon · garlic · optional parsley",
+      freshAr:"طازج: حامض · ثوم · بقدونس حسب الرغبة",
+      tagsEn:["chickpeas","tahini","olive oil","cumin"],tagsAr:["حمص","طحينة","زيت زيتون","كمون"],
+      productIds:["humus-baladi","tahini","extra-virgin-olive-oil","kamoun-neeme"],
+      image:"https://commons.wikimedia.org/wiki/Special:FilePath/Hummus.jpg?width=900",
+      imageAltEn:"A bowl of hummus",imageAltAr:"طبق حمص بطحينة",
+      source:"https://commons.wikimedia.org/wiki/File:Hummus.jpg",
+      credit:"Donovan Govan · Wikimedia Commons · CC BY-SA 3.0"
+    },
+    {
+      id:"tabbouleh",
+      titleEn:"Tabbouleh",titleAr:"تبّولة",
+      copyEn:"Parsley first, bulgur second: the bright Lebanese salad with tomato, mint, lemon and olive oil.",
+      copyAr:"البقدونس هو الأساس والبرغل لمسة: سلطة لبنانية طازجة مع البندورة والنعنع والحامض وزيت الزيتون.",
+      methodEn:"Rinse the fine bulgur and let it soften with a little lemon juice. Finely chop plenty of parsley, tomatoes, mint and spring onion. Toss with the bulgur, olive oil, more lemon juice and salt shortly before serving.",
+      methodAr:"اغسل البرغل الناعم واتركه يلين مع قليل من عصير الحامض. افرم كمية وافرة من البقدونس مع البندورة والنعنع والبصل الأخضر فرماً ناعماً. أضف البرغل وزيت الزيتون والمزيد من الحامض والملح وقلّب قبل التقديم.",
+      freshEn:"Fresh: lots of parsley · tomato · mint · spring onion · lemon",
+      freshAr:"طازج: بقدونس بكمية وافرة · بندورة · نعنع · بصل أخضر · حامض",
+      tagsEn:["fine bulgur","olive oil","sea salt"],tagsAr:["برغل ناعم","زيت زيتون","ملح بحري"],
+      productIds:["burglur-asmar-neeme","extra-virgin-olive-oil","sea-salt"],
+      image:"https://commons.wikimedia.org/wiki/Special:FilePath/Tabouleh.JPG?width=900",
+      imageAltEn:"Lebanese tabbouleh salad",imageAltAr:"طبق تبّولة لبنانية",
+      source:"https://commons.wikimedia.org/wiki/File:Tabouleh.JPG",
+      credit:"Julo · Wikimedia Commons · Public domain"
+    },
+    {
+      id:"kibbeh",
+      titleEn:"Kibbeh",titleAr:"كبّة",
+      copyEn:"Fine bulgur and Lebanese kibbeh spice form the pantry base for one of Lebanon’s best-known dishes.",
+      copyAr:"البرغل الناعم ودقّة الكبة هما أساس المونة لأحد أشهر الأطباق اللبنانية.",
+      methodEn:"Soak the fine bulgur briefly and squeeze it dry. Work it with lean minced beef or lamb, onion, kibbeh spice and salt until cohesive. Shape and fill for fried kibbeh, or press into a tray with a cooked meat-and-onion filling for kibbeh bil sanieh.",
+      methodAr:"انقع البرغل الناعم قليلاً ثم اعصره جيداً. ادعكه مع اللحم الهبرة المفروم والبصل ودقّة الكبة والملح حتى يتماسك. شكّله واحشه للكبة المقلية، أو افرده في صينية مع حشوة اللحم والبصل للكبة بالصينية.",
+      freshEn:"Fresh: lean beef or lamb · onion · optional pine nuts",
+      freshAr:"طازج: لحم هبرة بقري أو غنم · بصل · صنوبر حسب الرغبة",
+      tagsEn:["fine bulgur","kibbeh spice","seven spice","olive oil"],tagsAr:["برغل ناعم","دقّة كبة","سبع بهارات","زيت زيتون"],
+      productIds:["burglur-asmar-neeme","daqet-el-kebbe-nehme","sabaa-bharat","extra-virgin-olive-oil"],
+      image:"https://commons.wikimedia.org/wiki/Special:FilePath/Kibbeh.jpg?width=900",
+      imageAltEn:"Kibbeh",imageAltAr:"طبق كبّة",
+      source:"https://commons.wikimedia.org/wiki/File:Kibbeh.jpg",
+      credit:"Carioca · Wikimedia Commons · CC BY-SA 3.0"
     }
   ];
 
-  function findRecipeProduct(terms){
-    var lower=terms.map(function(x){return x.toLowerCase()});
-    return safeProducts().find(function(p){
-      var n=((p.nameEn||"")+" "+(p.original||"")+" "+(p.category||"")).toLowerCase();
-      return lower.some(function(t){return n.indexOf(t)>=0});
-    });
+  function recipeProductById(id){
+    return safeProducts().find(function(p){return p.id===id})||null;
   }
 
   function productsForRecipe(recipe){
     var seen={};
-    return recipe.terms.map(findRecipeProduct).filter(function(p){if(!p||seen[p.id])return false;seen[p.id]=1;return true});
+    return (recipe.productIds||[]).map(recipeProductById).filter(function(p){
+      if(!p||seen[p.id])return false;
+      seen[p.id]=1;
+      return true;
+    });
+  }
+
+  function recipePhotoMarkup(recipe){
+    if(!recipe||!recipe.image)return "";
+    var alt=isAr()?recipe.imageAltAr:recipe.imageAltEn;
+    return '<div class="recipe-photo"><img src="'+esc(recipe.image)+'" alt="'+esc(alt||"")+'" loading="lazy" decoding="async"><a class="recipe-photo-credit" href="'+esc(recipe.source)+'" target="_blank" rel="noopener">'+esc(recipe.credit||"Wikimedia Commons")+' ↗</a></div>';
   }
 
   function addRecipe(recipeId){
@@ -227,7 +308,7 @@
     return recipes.map(function(r,i){
       var items=productsForRecipe(r),total=items.reduce(function(s,p){return s+Number(cheapestVariant(p).price)},0);
       var tags=isAr()?r.tagsAr:r.tagsEn;
-      return '<article class="recipe-card" data-recipe="'+esc(r.id)+'"><span class="recipe-no">0'+(i+1)+'</span><h3>'+esc(isAr()?r.titleAr:r.titleEn)+'</h3><p>'+esc(isAr()?r.copyAr:r.copyEn)+'</p><div class="recipe-tags">'+tags.map(function(t){return "<span>"+esc(t)+"</span>"}).join("")+'</div><div class="recipe-card-footer"><small>'+esc(txt("Pantry items from ","منتجات المونة من "))+pmoney(total)+'</small><button class="recipe-add" type="button" data-recipe-add="'+esc(r.id)+'">'+esc(txt("Add pantry ingredients","أضف مكونات المونة"))+'</button></div></article>';
+      return '<article class="recipe-card" data-recipe="'+esc(r.id)+'">'+recipePhotoMarkup(r)+'<span class="recipe-no">0'+(i+1)+'</span><h3>'+esc(isAr()?r.titleAr:r.titleEn)+'</h3><p>'+esc(isAr()?r.copyAr:r.copyEn)+'</p><div class="recipe-tags">'+tags.map(function(t){return "<span>"+esc(t)+"</span>"}).join("")+'</div><p class="recipe-fresh">'+esc(isAr()?r.freshAr:r.freshEn)+'</p><div class="recipe-card-footer"><small>'+esc(txt("Pantry items from ","منتجات المونة من "))+pmoney(total)+'</small><button class="recipe-add" type="button" data-recipe-add="'+esc(r.id)+'">'+esc(txt("Add pantry ingredients","أضف مكونات المونة"))+'</button></div></article>';
     }).join("");
   }
 
@@ -244,7 +325,7 @@
     if(page!=="home"||q("#premiumRecipes"))return;
     var anchor=q(".home-gift")||q(".order-strip");if(!anchor)return;
     var sec=document.createElement("section");sec.id="premiumRecipes";sec.className="premium-section premium-recipes";
-    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Shop by recipe","تسوّق حسب الوصفة"))+'</p><h2>'+esc(txt("Start with the","ابدأ من"))+' <em>'+esc(txt("table.","السفرة."))+'</em></h2></div><p>'+esc(txt("Add the pantry ingredients for a familiar Lebanese dish in one click, then pick up the fresh ingredients yourself.","أضف مكونات المونة لطبق لبناني مألوف بضغطة واحدة، ثم أضف المكونات الطازجة بنفسك."))+'</p></div><div class="recipe-grid">'+recipeCards()+'</div><a class="premium-pill" style="margin-top:18px" href="recipes.html">'+esc(txt("See recipe notes","شاهد تفاصيل الوصفات"))+' ↗</a></div>';
+    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Shop by recipe","تسوّق حسب الوصفة"))+'</p><h2>'+esc(txt("Start with the","ابدأ من"))+' <em>'+esc(txt("table.","السفرة."))+'</em></h2></div><p>'+esc(txt("Choose from six familiar Lebanese dishes. Add the exact pantry ingredients in one click, then pick up the fresh ingredients yourself.","اختر من ستة أطباق لبنانية مألوفة. أضف مكونات المونة الصحيحة بضغطة واحدة، ثم جهّز المكونات الطازجة في البيت."))+'</p></div><div class="recipe-grid">'+recipeCards()+'</div><a class="premium-pill" style="margin-top:18px" href="recipes.html">'+esc(txt("See recipe notes","شاهد تفاصيل الوصفات"))+' ↗</a></div>';
     anchor.before(sec);bindRecipeButtons(sec);
   }
 
@@ -255,6 +336,8 @@
       if(price)price.textContent=pmoney(items.reduce(function(s,p){return s+Number(cheapestVariant(p).price)},0));
       var names=q("[data-recipe-products]",card);
       if(names)names.textContent=items.map(pname).join(" · ");
+      var media=q("[data-recipe-media]",card);
+      if(media)media.innerHTML=recipePhotoMarkup(r);
     });
   }
 

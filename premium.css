@@ -1165,3 +1165,72 @@ body[data-page="gift"] #gift .gift-builder .price-note{
   body[data-page="gift"] .brand-wordmark{font-size:1.15rem!important}
   body[data-page="gift"] .nav-actions{gap:5px!important}
 }
+
+
+/* ===== Recipe rebuild: real dishes, exact bundles, food photography ===== */
+.recipe-card{overflow:hidden}
+.recipe-photo{
+  position:relative;
+  height:190px;
+  margin:-24px -24px 18px;
+  overflow:hidden;
+  background:#e6d5b7;
+  border-radius:30px 30px 20px 20px;
+}
+.recipe-photo img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center;
+  transition:transform .35s ease;
+}
+.recipe-card:hover .recipe-photo img{transform:scale(1.025)}
+.recipe-photo:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(180deg,transparent 56%,rgba(3,31,13,.48));
+}
+.recipe-photo-credit{
+  position:absolute;
+  z-index:2;
+  right:10px;
+  bottom:9px;
+  max-width:calc(100% - 20px);
+  padding:5px 8px;
+  border-radius:999px;
+  background:rgba(5,31,14,.72);
+  color:#fff;
+  font-size:.51rem;
+  line-height:1.2;
+  text-align:right;
+  backdrop-filter:blur(5px);
+}
+.recipe-fresh{
+  margin:0 0 18px!important;
+  padding:10px 12px;
+  border-left:3px solid var(--premium-gold);
+  border-radius:0 10px 10px 0;
+  background:rgba(214,163,37,.09);
+  color:var(--premium-olive)!important;
+  font-size:.72rem!important;
+  line-height:1.45!important;
+  font-weight:700;
+}
+[dir="rtl"] .recipe-fresh{
+  border-left:0;
+  border-right:3px solid var(--premium-gold);
+  border-radius:10px 0 0 10px;
+}
+.recipes-page .recipe-card{min-height:0}
+.recipes-page .recipe-method{margin-bottom:20px}
+.recipes-page .recipe-grid{align-items:stretch}
+@media(max-width:760px){
+  .recipe-photo{height:180px;margin:-20px -20px 16px}
+  .recipe-card{padding:20px}
+  .recipe-card h3{font-size:1.9rem}
+  .recipe-card-footer{align-items:stretch;flex-direction:column}
+  .recipe-add{width:100%}
+}

@@ -2,7 +2,7 @@
 (function(){
   "use strict";
 
-  var PREMIUM_VERSION="2026.10.02-premium1";
+  var PREMIUM_VERSION="2026.10.03-premium2";
   var LAST_ORDER_KEY="zwm-last-order-v1";
   var ANALYTICS_KEY="zwm-local-events-v1";
   var initialTitle=document.title;
@@ -312,32 +312,29 @@
     });
   }
 
-  function curatedProductMarkup(p){
-    var media=pvisual(p,"curated-product-image");
-    return '<button class="curated-product" type="button" data-curated-product="'+esc(p.id)+'">'+media+'<span class="curated-product-copy"><small>'+esc(porigin(p))+'</small><strong>'+esc(pname(p))+'</strong><b>'+esc(txt("From ","من "))+pmoney(minPrice(p))+'</b></span></button>';
+  function selectedCollectionProductMarkup(p,index){
+    var media=pvisual(p,"selected-collection-image");
+    var tag=index===0?txt("Collection favourite","مفضّل من التشكيلة"):txt("Collection pick","مختار من التشكيلة");
+    return '<button class="selected-collection-card'+(index===0?" is-lead":"")+'" type="button" data-selected-collection-product="'+esc(p.id)+'"><span class="selected-collection-media">'+media+'<span class="selected-collection-tag">'+esc(tag)+'</span></span><span class="selected-collection-copy"><small>'+esc(porigin(p))+'</small><strong>'+esc(pname(p))+'</strong><span class="selected-collection-price">'+esc(txt("From ","من "))+pmoney(minPrice(p))+'</span><em>'+esc(txt("View product","عرض المنتج"))+' ↗</em></span></button>';
   }
 
   function injectShopTools(){
-    if((document.body.dataset.page||"")!=="shop"||q("#premiumShopTools"))return;
-    var toolbar=q(".catalog-toolbar");if(!toolbar)return;
-    var tools=document.createElement("div");tools.id="premiumShopTools";tools.className="premium-shop-tools";
-    tools.innerHTML='<div class="premium-shop-tools-top"><div><strong>'+esc(txt("Curated shortcuts","اختصارات مختارة"))+'</strong></div><div class="premium-tool-actions"><button class="premium-tool-button primary" type="button" id="surpriseMe">'+esc(txt("Surprise me by budget","اختر لي حسب الميزانية"))+'</button><button class="premium-tool-button" type="button" id="shareBasket">'+esc(txt("Share basket","شارك السلة"))+'</button><button class="premium-tool-button" type="button" id="reorderLast" hidden>'+esc(txt("Reorder last basket","أعد طلب آخر سلة"))+'</button></div></div><div class="premium-collection-chips">'+collections.slice(0,5).map(function(c){return '<a href="shop.html?collection='+esc(c.id)+'">'+esc(isAr()?c.titleAr:c.titleEn)+'</a>'}).join("")+'</div>';
-    toolbar.after(tools);
-    q("#surpriseMe",tools).addEventListener("click",openBudgetDialog);
-    q("#shareBasket",tools).addEventListener("click",shareBasket);
-    var last=loadLastOrder(),re=q("#reorderLast",tools);if(last&&last.items&&last.items.length){re.hidden=false;re.addEventListener("click",reorderLast)}
+    if((document.body.dataset.page||"")!=="shop")return;
     renderRequestedCollection();
   }
 
   function renderRequestedCollection(){
-    qa(".curated-rail").forEach(function(x){x.remove()});
+    qa("[data-selected-collection]").forEach(function(x){x.remove()});
     var id=new URLSearchParams(location.search).get("collection");if(!id)return;
     var c=collectionById(id);if(!c)return;
-    var host=q("#premiumShopTools");if(!host||q(".curated-rail",host))return;
-    var items=collectionItems(id,10),rail=document.createElement("div");rail.className="curated-rail";
-    rail.innerHTML='<div class="curated-rail-head"><div><h3>'+esc(isAr()?c.titleAr:c.titleEn)+'</h3><p>'+esc(isAr()?c.copyAr:c.copyEn)+'</p></div><a class="premium-pill" href="shop.html#shop">'+esc(txt("Full catalogue","كل المنتجات"))+'</a></div><div class="curated-product-row">'+items.map(curatedProductMarkup).join("")+'</div>';
-    host.after(rail);
-    qa("[data-curated-product]",rail).forEach(function(btn){btn.addEventListener("click",function(){if(typeof openProduct==="function")openProduct(btn.dataset.curatedProduct)})});
+    var anchor=q("#shopFeatured")||q("#shop");if(!anchor)return;
+    var items=collectionItems(id,8);if(!items.length)return;
+    var sec=document.createElement("section");
+    sec.className="selected-collection motion-reveal";
+    sec.setAttribute("data-selected-collection",id);
+    sec.innerHTML='<div class="shell"><div class="selected-collection-head"><div><p class="premium-kicker">'+esc(txt("Selected collection","تشكيلة مختارة"))+'</p><h2>'+esc(isAr()?c.titleAr:c.titleEn)+'</h2><p>'+esc(isAr()?c.copyAr:c.copyEn)+'</p></div><a class="selected-collection-catalogue" href="shop.html#shop">'+esc(txt("Browse full catalogue","تصفّح كل المنتجات"))+' ↗</a></div><div class="selected-collection-grid">'+items.map(selectedCollectionProductMarkup).join("")+'</div></div>';
+    anchor.before(sec);
+    qa("[data-selected-collection-product]",sec).forEach(function(btn){btn.addEventListener("click",function(){if(typeof openProduct==="function")openProduct(btn.dataset.selectedCollectionProduct)})});
   }
 
   function openBudgetDialog(){

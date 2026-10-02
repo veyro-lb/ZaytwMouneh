@@ -968,7 +968,7 @@ function renderProducts(){
     const display=$(`[data-card-qty="${cssEscape(btn.dataset.id)}"]`);
     if(display)display.textContent=draftQty[key];
   }));
-  $("[data-add]").forEach(btn=>btn.addEventListener("click",e=>{
+  $$("[data-add]").forEach(btn=>btn.addEventListener("click",e=>{
     e.stopPropagation();
     const p=productById(btn.dataset.add);
     if(!p)return;

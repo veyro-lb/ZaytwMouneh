@@ -188,10 +188,6 @@
       freshAr:"طازج: بصل · لبن أو سلطة حسب الرغبة",
       tagsEn:["lentils","rice","cumin","olive oil"],tagsAr:["عدس","أرز","كمون","زيت زيتون"],
       productIds:["aadas-aarid","american-rice","kamoun-neeme","extra-virgin-olive-oil"],
-      image:"https://commons.wikimedia.org/wiki/Special:FilePath/Mujaddara.jpg?width=900",
-      imageAltEn:"Mujadara with lentils and rice",imageAltAr:"طبق مجدّرة بالعدس والأرز",
-      source:"https://commons.wikimedia.org/wiki/File:Mujaddara.jpg",
-      credit:"Bazel · Wikimedia Commons · CC BY-SA 3.0"
     },
     {
       id:"manoushe",
@@ -204,10 +200,6 @@
       freshAr:"في البيت: ماء · ويمكن تقديمها مع بندورة وخيار ونعنع أو لبنة",
       tagsEn:["manakish za’atar","olive oil","flour","yeast"],tagsAr:["زعتر مناقيش","زيت زيتون","طحين","خميرة"],
       productIds:["zaatar-manakish","extra-virgin-olive-oil","all-use-flour","yeast"],
-      image:"https://commons.wikimedia.org/wiki/Special:FilePath/Manakish%20Za%27atar.jpg?width=900",
-      imageAltEn:"Za’atar manakish flatbread",imageAltAr:"منقوشة زعتر",
-      source:"https://commons.wikimedia.org/wiki/File:Manakish_Za%27atar.jpg",
-      credit:"myahya · Wikimedia Commons · CC BY-SA 2.0"
     },
     {
       id:"fattoush",
@@ -220,10 +212,6 @@
       freshAr:"طازج: خس · بندورة · خيار · فجل · بقدونس · نعنع · حامض · خبز عربي",
       tagsEn:["sumac","pomegranate molasses","olive oil"],tagsAr:["سماق","دبس رمان","زيت زيتون"],
       productIds:["semaq","debes-el-remen","extra-virgin-olive-oil"],
-      image:"https://commons.wikimedia.org/wiki/Special:FilePath/Fattoush.JPG?width=900",
-      imageAltEn:"A bowl of fattoush salad",imageAltAr:"طبق فتّوش",
-      source:"https://commons.wikimedia.org/wiki/File:Fattoush.JPG",
-      credit:"Wikimedia Commons · Public domain"
     },
     {
       id:"hummus",
@@ -236,10 +224,6 @@
       freshAr:"طازج: حامض · ثوم · بقدونس حسب الرغبة",
       tagsEn:["chickpeas","tahini","olive oil","cumin"],tagsAr:["حمص","طحينة","زيت زيتون","كمون"],
       productIds:["humus-baladi","tahini","extra-virgin-olive-oil","kamoun-neeme"],
-      image:"https://commons.wikimedia.org/wiki/Special:FilePath/Hummus.jpg?width=900",
-      imageAltEn:"A bowl of hummus",imageAltAr:"طبق حمص بطحينة",
-      source:"https://commons.wikimedia.org/wiki/File:Hummus.jpg",
-      credit:"Donovan Govan · Wikimedia Commons · CC BY-SA 3.0"
     },
     {
       id:"tabbouleh",
@@ -252,10 +236,6 @@
       freshAr:"طازج: بقدونس بكمية وافرة · بندورة · نعنع · بصل أخضر · حامض",
       tagsEn:["fine bulgur","olive oil","sea salt"],tagsAr:["برغل ناعم","زيت زيتون","ملح بحري"],
       productIds:["burglur-asmar-neeme","extra-virgin-olive-oil","sea-salt"],
-      image:"https://commons.wikimedia.org/wiki/Special:FilePath/Tabouleh.JPG?width=900",
-      imageAltEn:"Lebanese tabbouleh salad",imageAltAr:"طبق تبّولة لبنانية",
-      source:"https://commons.wikimedia.org/wiki/File:Tabouleh.JPG",
-      credit:"Julo · Wikimedia Commons · Public domain"
     },
     {
       id:"kibbeh",
@@ -268,10 +248,6 @@
       freshAr:"طازج: لحم هبرة بقري أو غنم · بصل · صنوبر حسب الرغبة",
       tagsEn:["fine bulgur","kibbeh spice","seven spice","olive oil"],tagsAr:["برغل ناعم","دقّة كبة","سبع بهارات","زيت زيتون"],
       productIds:["burglur-asmar-neeme","daqet-el-kebbe-nehme","sabaa-bharat","extra-virgin-olive-oil"],
-      image:"https://commons.wikimedia.org/wiki/Special:FilePath/Kibbeh.jpg?width=900",
-      imageAltEn:"Kibbeh",imageAltAr:"طبق كبّة",
-      source:"https://commons.wikimedia.org/wiki/File:Kibbeh.jpg",
-      credit:"Carioca · Wikimedia Commons · CC BY-SA 3.0"
     }
   ];
 
@@ -288,12 +264,6 @@
     });
   }
 
-  function recipePhotoMarkup(recipe){
-    if(!recipe||!recipe.image)return "";
-    var alt=isAr()?recipe.imageAltAr:recipe.imageAltEn;
-    return '<div class="recipe-photo"><img src="'+esc(recipe.image)+'" alt="'+esc(alt||"")+'" loading="lazy" decoding="async"><a class="recipe-photo-credit" href="'+esc(recipe.source)+'" target="_blank" rel="noopener">'+esc(recipe.credit||"Wikimedia Commons")+' ↗</a></div>';
-  }
-
   function addRecipe(recipeId){
     var recipe=recipes.find(function(r){return r.id===recipeId});if(!recipe)return;
     var items=productsForRecipe(recipe);
@@ -306,7 +276,7 @@
     return recipes.map(function(r,i){
       var items=productsForRecipe(r),total=items.reduce(function(s,p){return s+Number(cheapestVariant(p).price)},0);
       var tags=isAr()?r.tagsAr:r.tagsEn;
-      return '<article class="recipe-card" data-recipe="'+esc(r.id)+'">'+recipePhotoMarkup(r)+'<span class="recipe-no">0'+(i+1)+'</span><h3>'+esc(isAr()?r.titleAr:r.titleEn)+'</h3><p>'+esc(isAr()?r.copyAr:r.copyEn)+'</p><div class="recipe-tags">'+tags.map(function(t){return "<span>"+esc(t)+"</span>"}).join("")+'</div><p class="recipe-fresh">'+esc(isAr()?r.freshAr:r.freshEn)+'</p><div class="recipe-card-footer"><small>'+esc(txt("Pantry items from ","منتجات المونة من "))+pmoney(total)+'</small><button class="recipe-add" type="button" data-recipe-add="'+esc(r.id)+'">'+esc(txt("Add pantry ingredients","أضف مكونات المونة"))+'</button></div></article>';
+      return '<article class="recipe-card" data-recipe="'+esc(r.id)+'"><span class="recipe-no">0'+(i+1)+'</span><h3>'+esc(isAr()?r.titleAr:r.titleEn)+'</h3><p>'+esc(isAr()?r.copyAr:r.copyEn)+'</p><div class="recipe-tags">'+tags.map(function(t){return "<span>"+esc(t)+"</span>"}).join("")+'</div><p class="recipe-fresh">'+esc(isAr()?r.freshAr:r.freshEn)+'</p><div class="recipe-card-footer"><small>'+esc(txt("Pantry items from ","منتجات المونة من "))+pmoney(total)+'</small><button class="recipe-add" type="button" data-recipe-add="'+esc(r.id)+'">'+esc(txt("Add pantry ingredients","أضف مكونات المونة"))+'</button></div></article>';
     }).join("");
   }
 
@@ -334,8 +304,6 @@
       if(price)price.textContent=pmoney(items.reduce(function(s,p){return s+Number(cheapestVariant(p).price)},0));
       var names=q("[data-recipe-products]",card);
       if(names)names.textContent=items.map(pname).join(" · ");
-      var media=q("[data-recipe-media]",card);
-      if(media)media.innerHTML=recipePhotoMarkup(r);
     });
   }
 

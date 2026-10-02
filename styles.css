@@ -4454,3 +4454,117 @@ body[data-page="home"] .trust-grid .trust-delivery p{
     transform:none!important;
   }
 }
+
+
+/* ===== v37 mobile usability hardening ===== */
+/*
+  Final phone-first overrides. Keep visual proportions compact while making
+  the primary controls easier to tap and preventing iOS form-focus zoom.
+*/
+@media(max-width:760px){
+  .nav{
+    grid-template-columns:44px minmax(0,1fr) auto!important;
+    gap:6px!important;
+  }
+  .nav>.nav-toggle{
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    min-height:44px!important;
+  }
+  .nav>.brand{
+    min-width:0!important;
+    justify-self:center!important;
+  }
+  .nav>.nav-actions{
+    min-width:0!important;
+    gap:5px!important;
+  }
+  .cart-button{
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    min-height:44px!important;
+  }
+  .cart-button .cart-count{
+    width:18px!important;
+    height:18px!important;
+    font-size:.55rem!important;
+    transform:translate(15px,-15px)!important;
+  }
+  .language-switch{
+    height:42px!important;
+    min-height:42px!important;
+    padding:3px!important;
+  }
+  .language-switch button{
+    min-width:34px!important;
+    height:34px!important;
+    min-height:34px!important;
+    padding:0 6px!important;
+    font-size:.66rem!important;
+  }
+  .announcement-inner>a{
+    font-size:.64rem!important;
+    letter-spacing:.10em!important;
+  }
+
+  /* Safari on iPhone zooms the viewport when a focused form control is under 16px. */
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea,
+  .search-box input,
+  .category-select-wrap select,
+  .catalog-select-wrap select,
+  .card-variant-select,
+  .gift-product-search input,
+  .order-form input,
+  .order-form textarea{
+    font-size:16px!important;
+  }
+
+  /* Product and cart actions need comfortable thumb targets. */
+  .card-qty{
+    grid-template-columns:42px 34px 42px!important;
+  }
+  .card-qty button{
+    min-height:44px!important;
+  }
+  .cart-head .icon-button{
+    width:44px!important;
+    height:44px!important;
+  }
+  .cart-item .qty-control{
+    grid-template-columns:44px 34px 44px!important;
+  }
+  .cart-item .qty-control button{
+    min-height:44px!important;
+  }
+  .cart-item-footer .product-view,
+  .cart-item-footer .cart-remove{
+    min-height:44px!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    padding:0 6px!important;
+  }
+  .product-modal{
+    padding:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom))!important;
+  }
+}
+
+@media(max-width:390px){
+  .nav{
+    grid-template-columns:42px minmax(0,1fr) auto!important;
+  }
+  .nav>.nav-toggle,
+  .cart-button{
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    min-height:42px!important;
+  }
+  .language-switch button{
+    min-width:31px!important;
+    padding:0 5px!important;
+  }
+}

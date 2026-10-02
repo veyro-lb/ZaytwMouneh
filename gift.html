@@ -155,6 +155,7 @@
         </div>
 
         <form class="gift-builder reveal" id="giftForm">
+          <div class="gift-box-ribbon" aria-hidden="true"><span class="gift-box-bow"></span></div>
           <div class="gift-builder-head">
             <div><span id="giftBuilderLabel">Your gift basket</span><strong id="giftBasketCount">0 items</strong></div>
             <strong id="giftBasketTotal">$0.00</strong>
@@ -174,20 +175,24 @@
             <div class="gift-product-results" id="giftProductResults"></div>
           </div>
 
-          <div class="gift-selected-head">
-            <strong id="giftSelectedTitle">Inside the gift</strong>
-            <button type="button" id="giftClear">Clear</button>
+          <div class="gift-selected-panel">
+            <div class="gift-selected-head">
+              <strong id="giftSelectedTitle">Inside the gift</strong>
+              <button type="button" id="giftClear">Clear</button>
+            </div>
+            <div class="gift-summary gift-selected-items" id="giftSummary"><p id="giftEmpty">Choose products above and they’ll appear here.</p></div>
           </div>
-          <div class="gift-summary gift-selected-items" id="giftSummary"><p id="giftEmpty">Choose products above and they’ll appear here.</p></div>
 
-          <div class="gift-form-grid">
+          <div class="gift-details-panel">
+            <div class="gift-form-grid">
             <label><span id="giftRecipientLabel">Recipient name</span><input id="giftRecipient" type="text" placeholder="Who is the gift for?" /></label>
             <label><span id="giftOccasionLabel">Occasion</span><select id="giftOccasion"></select></label>
             <label><span id="giftPackagingLabel">Packing style</span><select id="giftPackaging"></select></label>
             <label><span id="giftAreaLabel">Delivery area</span><input id="giftArea" type="text" placeholder="Area in Lebanon" /></label>
           </div>
           <label><span id="giftMessageLabel">Gift message</span><textarea id="giftMessage" rows="3" placeholder="Write a short note for the recipient…"></textarea></label>
-          <label><span id="giftSenderLabel">Your name</span><input id="giftSender" type="text" placeholder="Your name" /></label>
+            <label><span id="giftSenderLabel">Your name</span><input id="giftSender" type="text" placeholder="Your name" /></label>
+          </div>
           <button class="whatsapp-order gift-send" id="giftSend" type="submit">Send gift request on WhatsApp <span>↗</span></button>
           <p class="price-note" id="giftNote">Gift packing, final availability and delivery details are confirmed on WhatsApp before the order is final.</p>
         </form>

@@ -43,13 +43,7 @@ function productPhotoMarkup(p,cls="product-image"){
   const tile=photos?.tile?.(p.id);
   if(!tile||!photos.atlasUrl)return "";
   const x=tile[0]*photos.tileW,y=tile[1]*photos.tileH;
-  const focal=photos.focus?.[p.id];
-  const vx=focal?x+focal[0]*photos.tileW:x;
-  const vy=focal?y+focal[1]*photos.tileH:y;
-  const vw=focal?focal[2]*photos.tileW:photos.tileW;
-  const vh=focal?focal[3]*photos.tileH:photos.tileH;
-  const fit=(cls==="product-image"||cls==="recent-product-image"||cls==="gift-product-image")?"xMidYMid slice":"xMidYMid meet";
-  return `<svg class="${escapeHtml(cls)} product-photo-sprite" viewBox="${vx} ${vy} ${vw} ${vh}" width="100%" height="100%" overflow="hidden" style="overflow:hidden" role="img" aria-label="${escapeHtml(currentName(p))}" preserveAspectRatio="${fit}"><image href="${escapeHtml(photos.atlasUrl)}" x="0" y="0" width="${photos.atlasW}" height="${photos.atlasH}" preserveAspectRatio="none"></image></svg>`;
+  return `<svg class="${escapeHtml(cls)} product-photo-sprite" viewBox="${x} ${y} ${photos.tileW} ${photos.tileH}" width="100%" height="100%" overflow="hidden" style="overflow:hidden" role="img" aria-label="${escapeHtml(currentName(p))}" preserveAspectRatio="xMidYMid meet"><image href="${escapeHtml(photos.atlasUrl)}" x="0" y="0" width="${photos.atlasW}" height="${photos.atlasH}" preserveAspectRatio="none"></image></svg>`;
 }
 function productPlaceholderMarkup(p,cls="product-image"){
   return `<span class="${escapeHtml(cls)} product-photo-placeholder" role="img" aria-label="${escapeHtml(currentName(p))}"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M19 18h26l-2.5 34h-21L19 18Z"/><path d="M23 18V12h18v6"/><path d="M27 33c5-6 12-8 18-7-2 7-7 12-15 13"/><path d="M31 39v8"/></svg><small>${escapeHtml(categoryName(p.category))}</small></span>`;

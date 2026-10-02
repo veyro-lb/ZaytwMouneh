@@ -372,31 +372,98 @@
   }
 
   function injectGiftPremium(){
-    var form=q("#giftForm");if(!form||q("#giftPremiumControls"))return;
+    var form=q("#giftForm");if(!form)return;
+
+    if((document.body.dataset.page||"")==="gift"){
+      var actions=q(".nav-actions");
+      if(actions&&!q(".gift-nav-search",actions)){
+        var search=document.createElement("a");
+        search.className="gift-nav-search";
+        search.href="shop.html#shop";
+        search.setAttribute("aria-label",txt("Search the pantry","ابحث في المونة"));
+        search.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>';
+        actions.prepend(search);
+      }
+      var menuUtility=q(".menu-utility");
+      if(menuUtility&&!q(".gift-menu-language",menuUtility)){
+        var menuLang=document.createElement("div");
+        menuLang.className="gift-menu-language";
+        menuLang.setAttribute("aria-label",txt("Language","اللغة"));
+        menuLang.innerHTML='<button type="button" data-gift-lang="en">EN</button><button type="button" data-gift-lang="ar">عربي</button>';
+        menuUtility.prepend(menuLang);
+        qa("[data-gift-lang]",menuLang).forEach(function(btn){
+          btn.classList.toggle("is-active",(isAr()?"ar":"en")===btn.dataset.giftLang);
+          btn.addEventListener("click",function(){
+            if(typeof applyLanguage==="function")applyLanguage(btn.dataset.giftLang);
+            qa("[data-gift-lang]",menuLang).forEach(function(x){x.classList.toggle("is-active",x.dataset.giftLang===btn.dataset.giftLang)});
+          });
+        });
+      }
+    }
+
+    if(q("#giftPremiumControls")){updateGiftPreview();return}
     var head=q(".gift-builder-head",form);
     var box=document.createElement("div");box.id="giftPremiumControls";box.className="gift-premium-controls";
-    box.innerHTML='<h3>'+esc(txt("Shape the gift","خصّص الهدية"))+'</h3><p>'+esc(txt("Start from a budget, then choose the card and ribbon details. Every choice stays editable.","ابدأ من ميزانية، ثم اختر تفاصيل البطاقة والشريط. كل الخيارات قابلة للتعديل."))+'</p><div class="gift-budget-row"><button type="button" data-gift-budget="25">$25</button><button type="button" data-gift-budget="40">$40</button><button type="button" data-gift-budget="60">$60</button><button type="button" data-gift-budget="100">$100</button></div><div class="gift-personalize-grid"><label>'+esc(txt("Ribbon","الشريط"))+'<select id="premiumRibbon"><option value="Olive green">'+esc(txt("Olive green","أخضر زيتوني"))+'</option><option value="Natural linen">'+esc(txt("Natural linen","كتان طبيعي"))+'</option><option value="Warm gold">'+esc(txt("Warm gold","ذهبي دافئ"))+'</option></select></label><label>'+esc(txt("Card language","لغة البطاقة"))+'<select id="premiumCardLanguage"><option value="English">English</option><option value="Arabic">العربية</option><option value="Bilingual">'+esc(txt("Bilingual","ثنائية اللغة"))+'</option></select></label><label class="gift-hide-row"><input id="premiumHidePrices" type="checkbox" checked><span>'+esc(txt("Hide prices from the recipient","إخفاء الأسعار عن المستلم"))+'</span></label></div><div class="gift-card-preview" id="giftCardPreview"><small>'+esc(txt("Gift card preview","معاينة بطاقة الهدية"))+'</small><strong></strong><p></p></div>';
+    box.innerHTML=
+      '<h3>'+esc(txt("Shape the gift","خصّص الهدية"))+'</h3>'+
+      '<p>'+esc(txt("Choose a budget, presentation theme and card language. Every detail stays editable before you send the request.","اختر الميزانية وطابع التغليف ولغة البطاقة. كل التفاصيل قابلة للتعديل قبل إرسال الطلب."))+'</p>'+
+      '<div class="gift-budget-row" aria-label="'+esc(txt("Quick gift budgets","ميزانيات سريعة"))+'">'+
+        '<button type="button" data-gift-budget="25">$25</button>'+
+        '<button type="button" data-gift-budget="40">$40</button>'+
+        '<button type="button" data-gift-budget="60">$60</button>'+
+        '<button type="button" data-gift-budget="100">$100</button>'+
+      '</div>'+
+      '<div class="gift-personalize-grid">'+
+        '<label>'+esc(txt("Theme","الطابع"))+
+          '<select id="premiumRibbon">'+
+            '<option value="Olive green">'+esc(txt("Olive green","أخضر زيتوني"))+'</option>'+
+            '<option value="Natural linen">'+esc(txt("Natural linen","كتان طبيعي"))+'</option>'+
+            '<option value="Warm gold">'+esc(txt("Warm gold","ذهبي دافئ"))+'</option>'+
+          '</select>'+
+        '</label>'+
+        '<label>'+esc(txt("Card language","لغة البطاقة"))+
+          '<select id="premiumCardLanguage">'+
+            '<option value="English">English</option>'+
+            '<option value="Arabic">العربية</option>'+
+            '<option value="Bilingual">'+esc(txt("Bilingual","ثنائية اللغة"))+'</option>'+
+          '</select>'+
+        '</label>'+
+        '<label class="gift-hide-row"><input id="premiumHidePrices" type="checkbox" checked><span>'+esc(txt("Hide prices from the recipient","إخفاء الأسعار عن المستلم"))+'</span></label>'+
+      '</div>'+
+      '<div class="gift-card-preview" id="giftCardPreview" data-theme="Olive green">'+
+        '<small>'+esc(txt("Gift card preview","معاينة بطاقة الهدية"))+'</small><strong></strong><p></p>'+
+      '</div>';
     if(head)head.after(box);else form.prepend(box);
-    qa("[data-gift-budget]",box).forEach(function(btn){btn.addEventListener("click",function(){buildGiftBudget(Number(btn.dataset.giftBudget))})});
+
+    qa("[data-gift-budget]",box).forEach(function(btn){
+      btn.addEventListener("click",function(){buildGiftBudget(Number(btn.dataset.giftBudget))});
+    });
     ["giftRecipient","giftMessage","giftSender","premiumCardLanguage","premiumRibbon"].forEach(function(id){
-      var node=q("#"+id);if(node)node.addEventListener("input",updateGiftPreview);if(node)node.addEventListener("change",updateGiftPreview)
+      var node=q("#"+id);if(node&&!node.dataset.premiumPreviewBound){
+        node.dataset.premiumPreviewBound="1";
+        node.addEventListener("input",updateGiftPreview);
+        node.addEventListener("change",updateGiftPreview);
+      }
     });
     updateGiftPreview();
 
-    form.addEventListener("submit",function(){
-      var msg=q("#giftMessage"),original=msg?msg.value:"";
-      var ribbon=q("#premiumRibbon"),card=q("#premiumCardLanguage"),hide=q("#premiumHidePrices");
-      var extras=[
-        "",
-        txt("Gift presentation preferences:","تفضيلات تجهيز الهدية:"),
-        txt("Ribbon: ","الشريط: ")+(ribbon?ribbon.value:"—"),
-        txt("Card language: ","لغة البطاقة: ")+(card?card.value:"—"),
-        txt("Hide prices from recipient: ","إخفاء الأسعار عن المستلم: ")+(hide&&hide.checked?txt("Yes","نعم"):txt("No","لا"))
-      ].join("\n");
-      if(msg)msg.value=(original?original+"\n":"")+extras;
-      setTimeout(function(){if(msg)msg.value=original},0);
-      track("gift_request_started",{hidePrices:!!(hide&&hide.checked),ribbon:ribbon?ribbon.value:"",cardLanguage:card?card.value:""});
-    },true);
+    if(!form.dataset.premiumSubmitBound){
+      form.dataset.premiumSubmitBound="1";
+      form.addEventListener("submit",function(){
+        var msg=q("#giftMessage"),original=msg?msg.value:"";
+        var theme=q("#premiumRibbon"),card=q("#premiumCardLanguage"),hide=q("#premiumHidePrices");
+        var extras=[
+          "",
+          txt("Gift presentation preferences:","تفضيلات تجهيز الهدية:"),
+          txt("Theme: ","الطابع: ")+(theme?theme.value:"—"),
+          txt("Card language: ","لغة البطاقة: ")+(card?card.value:"—"),
+          txt("Hide prices from recipient: ","إخفاء الأسعار عن المستلم: ")+(hide&&hide.checked?txt("Yes","نعم"):txt("No","لا"))
+        ].join("\n");
+        if(msg)msg.value=(original?original+"\n":"")+extras;
+        setTimeout(function(){if(msg)msg.value=original},0);
+        track("gift_request_started",{hidePrices:!!(hide&&hide.checked),theme:theme?theme.value:"",cardLanguage:card?card.value:""});
+      },true);
+    }
   }
 
   function buildGiftBudget(budget){
@@ -425,6 +492,8 @@
     var recipient=(q("#giftRecipient")||{}).value||txt("Someone special","شخص عزيز");
     var message=(q("#giftMessage")||{}).value||txt("A little taste of Lebanon, chosen for you.","نكهة صغيرة من لبنان، مختارة لك.");
     var sender=(q("#giftSender")||{}).value||txt("With care","بمحبة");
+    var theme=(q("#premiumRibbon")||{}).value||"Olive green";
+    preview.dataset.theme=theme;
     q("strong",preview).textContent=txt("To ","إلى ")+recipient;
     q("p",preview).textContent=message+"\n— "+sender;
   }
@@ -557,11 +626,25 @@
     qa(".premium-recipes-nav").forEach(function(x){x.textContent=txt("Recipes","وصفات")});
     qa(".premium-recipes-footer").forEach(function(x){x.textContent=txt("Recipes & table ideas","وصفات وأفكار للمائدة")});
     var sections=["#premiumCollections","#premiumProvenance","#premiumRecipes","#premiumShopTools","#pantryMoments"];
-    var any=sections.some(function(s){return !!q(s)});
+    var any=sections.some(function(sel){return !!q(sel)});
     if(any){
-      sections.forEach(function(s){var n=q(s);if(n)n.remove()});
+      sections.forEach(function(sel){var n=q(sel);if(n)n.remove()});
       injectCollections();injectProvenance();injectRecipes();injectShopTools();injectMoments();
     }
+    var old=q("#giftPremiumControls");
+    if(old){
+      var oldTheme=(q("#premiumRibbon")||{}).value||"Olive green";
+      var oldCard=(q("#premiumCardLanguage")||{}).value||"English";
+      var oldHide=q("#premiumHidePrices")?q("#premiumHidePrices").checked:true;
+      old.remove();
+      injectGiftPremium();
+      if(q("#premiumRibbon"))q("#premiumRibbon").value=oldTheme;
+      if(q("#premiumCardLanguage"))q("#premiumCardLanguage").value=oldCard;
+      if(q("#premiumHidePrices"))q("#premiumHidePrices").checked=oldHide;
+    }else{
+      injectGiftPremium();
+    }
+    qa("[data-gift-lang]").forEach(function(x){x.classList.toggle("is-active",x.dataset.giftLang===(isAr()?"ar":"en"))});
     updateGiftPreview();
   }
 

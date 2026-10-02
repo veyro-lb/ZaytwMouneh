@@ -1071,3 +1071,97 @@ body[data-page="shop"] .intro-board-note{
     column-gap:16px!important;
   }
 }
+
+
+/* ===== v32 animated shop hero background ===== */
+body[data-page="shop"] .page-intro-shop{
+  position:relative!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+  background:#073b1b!important;
+}
+
+/* Keep the existing still image underneath as an instant fallback.
+   The video fades in only after it is actually decoded and ready. */
+body[data-page="shop"] .page-intro-shop::before{
+  z-index:0!important;
+}
+
+body[data-page="shop"] .page-intro-shop::after{
+  display:none!important;
+}
+
+body[data-page="shop"] .shop-hero-video{
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  pointer-events:none!important;
+  opacity:0;
+  background:transparent;
+  transform:translateZ(0);
+  transition:opacity .55s ease;
+}
+
+body[data-page="shop"] .shop-hero-video.is-ready{
+  opacity:1;
+}
+
+body[data-page="shop"] .shop-hero-video-shade{
+  position:absolute!important;
+  inset:0!important;
+  z-index:2!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(90deg,
+      rgba(2,34,15,.84) 0%,
+      rgba(2,34,15,.68) 28%,
+      rgba(2,34,15,.35) 43%,
+      rgba(2,34,15,.08) 57%,
+      rgba(2,34,15,.20) 72%,
+      rgba(2,34,15,.38) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.03),rgba(0,0,0,.10));
+}
+
+body[data-page="shop"] .page-intro-grid{
+  position:relative!important;
+  z-index:3!important;
+}
+
+/* The MP4 itself is already motion-compressed; avoid extra GPU-heavy effects. */
+body[data-page="shop"] .shop-intro-board{
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+
+@media(max-width:980px){
+  body[data-page="shop"] .shop-hero-video{
+    object-position:72% center!important;
+  }
+  body[data-page="shop"] .shop-hero-video-shade{
+    background:
+      linear-gradient(180deg,
+        rgba(3,43,19,.88) 0%,
+        rgba(3,43,19,.60) 46%,
+        rgba(3,43,19,.30) 67%,
+        rgba(3,43,19,.72) 100%);
+  }
+}
+
+@media(max-width:680px){
+  body[data-page="shop"] .shop-hero-video{
+    object-position:76% center!important;
+  }
+}
+
+/* Respect OS accessibility settings and keep the still hero as the fallback. */
+@media(prefers-reduced-motion:reduce){
+  body[data-page="shop"] .shop-hero-video{
+    display:none!important;
+  }
+}

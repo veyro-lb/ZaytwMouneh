@@ -33,18 +33,31 @@ function productImageKey(p){
   return "spices";
 }
 function productImageSrc(p){return PRODUCT_IMAGE_ASSETS[productImageKey(p)]||""}
+function uiIcon(name,active=false){
+  if(name==="heart")return `<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5S4 16 2.6 10.8C1.7 7.5 3.8 4.5 7 4.5c2 0 3.6 1 5 2.7 1.4-1.7 3-2.7 5-2.7 3.2 0 5.3 3 4.4 6.3C20 16 12 20.5 12 20.5Z" ${active?'fill="currentColor"':'fill="none"'} stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
+  if(name==="eye")return `<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-5.6 9.5-5.6S21.5 12 21.5 12 18.1 17.6 12 17.6 2.5 12 2.5 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>`;
+  return "";
+}
 function productPhotoMarkup(p,cls="product-image"){
   const photos=window.ZWM_PRODUCT_PHOTOS;
   const tile=photos?.tile?.(p.id);
   if(!tile||!photos.atlasUrl)return "";
   const x=tile[0]*photos.tileW,y=tile[1]*photos.tileH;
-  return `<svg class="${escapeHtml(cls)} product-photo-sprite" viewBox="${x} ${y} ${photos.tileW} ${photos.tileH}" role="img" aria-label="${escapeHtml(currentName(p))}" preserveAspectRatio="xMidYMid meet"><image href="${escapeHtml(photos.atlasUrl)}" x="0" y="0" width="${photos.atlasW}" height="${photos.atlasH}" preserveAspectRatio="none"></image></svg>`;
+  const focal=photos.focus?.[p.id];
+  const vx=focal?x+focal[0]*photos.tileW:x;
+  const vy=focal?y+focal[1]*photos.tileH:y;
+  const vw=focal?focal[2]*photos.tileW:photos.tileW;
+  const vh=focal?focal[3]*photos.tileH:photos.tileH;
+  const fit=(cls==="product-image"||cls==="recent-product-image"||cls==="gift-product-image")?"xMidYMid slice":"xMidYMid meet";
+  return `<svg class="${escapeHtml(cls)} product-photo-sprite" viewBox="${vx} ${vy} ${vw} ${vh}" width="100%" height="100%" overflow="hidden" style="overflow:hidden" role="img" aria-label="${escapeHtml(currentName(p))}" preserveAspectRatio="${fit}"><image href="${escapeHtml(photos.atlasUrl)}" x="0" y="0" width="${photos.atlasW}" height="${photos.atlasH}" preserveAspectRatio="none"></image></svg>`;
+}
+function productPlaceholderMarkup(p,cls="product-image"){
+  return `<span class="${escapeHtml(cls)} product-photo-placeholder" role="img" aria-label="${escapeHtml(currentName(p))}"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M19 18h26l-2.5 34h-21L19 18Z"/><path d="M23 18V12h18v6"/><path d="M27 33c5-6 12-8 18-7-2 7-7 12-15 13"/><path d="M31 39v8"/></svg><small>${escapeHtml(categoryName(p.category))}</small></span>`;
 }
 function productVisualMarkup(p,cls="product-image"){
   const photo=productPhotoMarkup(p,cls);
   if(photo)return photo;
-  const src=productImageSrc(p);
-  return src?("<img class=\""+cls+"\" src=\""+src+"\" alt=\""+escapeHtml(currentName(p))+"\" loading=\"lazy\" decoding=\"async\" />"):("<span class=\"product-monogram\">"+escapeHtml(initials(currentName(p)))+"</span>");
+  return productPlaceholderMarkup(p,cls);
 }
 
 window.addEventListener("zwm-product-photos-ready",()=>{
@@ -850,8 +863,8 @@ function renderProducts(){
       <div class="product-top">
         <div class="product-visual">${productVisualMarkup(p)}</div>
         <div class="product-top-actions">
-          <button class="product-favorite ${isFav?"is-active":""}" type="button" data-fav="${escapeHtml(p.id)}" aria-pressed="${isFav}" aria-label="${escapeHtml(EXTRA_UI[lang].favorite)}">${isFav?"♥":"♡"}</button>
-          <button class="product-view" type="button" data-view="${escapeHtml(p.id)}">${escapeHtml(t.view)}</button>
+          <button class="product-favorite ${isFav?"is-active":""}" type="button" data-fav="${escapeHtml(p.id)}" aria-pressed="${isFav}" aria-label="${escapeHtml(EXTRA_UI[lang].favorite)}">${uiIcon("heart",isFav)}</button>
+          <button class="product-view" type="button" data-view="${escapeHtml(p.id)}" aria-label="${escapeHtml(t.view+" "+currentName(p))}">${uiIcon("eye")}</button>
         </div>
       </div>
       ${badges.length?`<div class="product-badges">${badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("")}</div>`:""}
@@ -1011,7 +1024,7 @@ function renderModal(productId,variantId){
   $("#productModalOriginal").textContent=lang==="en"&&normalize(p.nameEn)!==normalize(p.original)?`Catalogue name: ${p.original}`:"";
   $("#modalBadges").innerHTML=badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("");
   const fav=$("#modalFavorite");
-  if(fav){const saved=favorites.has(p.id);fav.classList.toggle("is-active",saved);fav.setAttribute("aria-pressed",String(saved));fav.innerHTML=`${saved?"♥":"♡"} <span id="modalFavoriteLabel">${escapeHtml(saved?EXTRA_UI[lang].favorited:EXTRA_UI[lang].favorite)}</span>`;}
+  if(fav){const saved=favorites.has(p.id);fav.classList.toggle("is-active",saved);fav.setAttribute("aria-pressed",String(saved));fav.innerHTML=`${uiIcon("heart",saved)} <span id="modalFavoriteLabel">${escapeHtml(saved?EXTRA_UI[lang].favorited:EXTRA_UI[lang].favorite)}</span>`;}
   if($("#relatedLabel"))$("#relatedLabel").textContent=EXTRA_UI[lang].related;
   const origin=$("#productOrigin");if(origin)origin.textContent=originFor(p);
   $("#relatedProducts").innerHTML=PRODUCTS_DATA.filter(x=>x.category===p.category&&x.id!==p.id).slice(0,4).map(x=>`<button type="button" data-related="${escapeHtml(x.id)}"><span>${escapeHtml(currentName(x))}</span><strong>${money(productPriceSummary(x).min)}</strong></button>`).join("");

@@ -4454,3 +4454,87 @@ body[data-page="home"] .trust-grid .trust-delivery p{
     transform:none!important;
   }
 }
+
+
+/* ===== Supplied product artwork: full-poster card treatment =====
+   Keep uploaded artwork uncropped and give the portrait creatives enough room to read. */
+.product-card{
+  min-height:0!important;
+  padding:14px!important;
+}
+.product-top{
+  position:relative!important;
+  display:block!important;
+}
+.product-visual{
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:2/3!important;
+  border-radius:18px!important;
+  overflow:hidden!important;
+  background:#faf6ed!important;
+  border:1px solid rgba(15,74,32,.10)!important;
+  box-shadow:0 10px 26px rgba(19,58,30,.08)!important;
+}
+.product-top-actions{
+  position:absolute!important;
+  z-index:3!important;
+  top:10px!important;
+  right:10px!important;
+  display:flex!important;
+  gap:7px!important;
+}
+[dir="rtl"] .product-top-actions{
+  right:auto!important;
+  left:10px!important;
+}
+.product-view{
+  width:38px!important;
+  height:38px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  border:1px solid rgba(15,74,32,.14)!important;
+  border-radius:50%!important;
+  background:rgba(255,255,255,.94)!important;
+  box-shadow:0 6px 18px rgba(8,45,19,.12)!important;
+}
+.product-favorite{
+  background:rgba(255,255,255,.94)!important;
+  box-shadow:0 6px 18px rgba(8,45,19,.12)!important;
+}
+.product-category{margin-top:13px!important}
+.product-card:has(.product-health){min-height:0!important}
+.product-photo-sprite{
+  width:100%!important;
+  height:100%!important;
+  border-radius:inherit!important;
+  background:#faf6ed!important;
+}
+.product-photo-placeholder{
+  border-radius:inherit!important;
+}
+
+/* Let the original portrait creative stay readable in the product modal too. */
+.product-modal-visual{
+  min-height:560px!important;
+  padding:34px 22px!important;
+}
+.product-modal-mark{
+  width:min(280px,78%)!important;
+  height:auto!important;
+  aspect-ratio:2/3!important;
+  border-radius:24px!important;
+  overflow:hidden!important;
+  font-size:0!important;
+  background:#faf6ed!important;
+}
+@media(max-width:760px){
+  .product-modal-visual{min-height:390px!important;padding:24px 16px!important}
+  .product-modal-mark{width:min(230px,70%)!important}
+}
+@media(max-width:500px){
+  .product-card{min-height:0!important}
+  .product-modal-visual{min-height:340px!important}
+  .product-modal-mark{width:min(200px,68%)!important}
+}

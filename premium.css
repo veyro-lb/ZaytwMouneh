@@ -1155,3 +1155,168 @@ html[dir="rtl"] body[data-page="shop"] .intro-category-chips a:hover i{
     transition:none!important;
   }
 }
+
+
+/* ===== v28 photo-led shop hero: approved mockup direction ===== */
+body[data-page="shop"] .page-intro-shop{
+  min-height:660px!important;
+  padding:70px 0 72px!important;
+  background:
+    linear-gradient(90deg,rgba(3,42,19,.97) 0%,rgba(3,48,21,.88) 34%,rgba(3,40,18,.54) 58%,rgba(3,32,15,.54) 100%),
+    linear-gradient(180deg,rgba(2,31,14,.08),rgba(2,31,14,.22)),
+    url("https://images.unsplash.com/photo-1755404215191-abc0083c4d07?auto=format&fit=crop&fm=jpg&q=88&w=2200")
+      center 58%/cover no-repeat!important;
+}
+body[data-page="shop"] .page-intro-shop::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  opacity:1!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(circle at 80% 16%,rgba(238,184,51,.15),transparent 24rem),
+    linear-gradient(90deg,rgba(5,52,24,.30),transparent 46%,rgba(5,38,18,.10))!important;
+  mask-image:none!important;
+}
+body[data-page="shop"] .page-intro-shop::after{
+  content:""!important;
+  position:absolute!important;
+  inset:auto 0 0 0!important;
+  width:auto!important;
+  height:120px!important;
+  border:0!important;
+  border-radius:0!important;
+  transform:none!important;
+  opacity:1!important;
+  z-index:0!important;
+  background:linear-gradient(180deg,transparent,rgba(4,42,20,.48))!important;
+  pointer-events:none!important;
+}
+body[data-page="shop"] .shop-hero-art{display:none!important}
+
+body[data-page="shop"] .page-intro-grid{
+  position:relative!important;
+  z-index:2!important;
+  grid-template-columns:minmax(0,1.03fr) minmax(480px,.9fr)!important;
+  gap:clamp(46px,5.2vw,78px)!important;
+  align-items:center!important;
+}
+body[data-page="shop"] .page-intro-copy-wrap{
+  max-width:760px!important;
+  padding:26px 0 18px!important;
+}
+body[data-page="shop"] .page-intro-copy-wrap::before,
+body[data-page="shop"] .page-intro-copy-wrap::after{
+  display:none!important;
+}
+body[data-page="shop"] .page-intro .eyebrow{
+  margin-bottom:21px!important;
+  color:#efbc3f!important;
+  text-shadow:0 2px 14px rgba(0,0,0,.26);
+}
+body[data-page="shop"] .page-intro h1{
+  max-width:8.25ch!important;
+  padding-top:.06em!important;
+  overflow:visible!important;
+  font-size:clamp(4.7rem,6.15vw,7rem)!important;
+  line-height:.89!important;
+  letter-spacing:-.045em!important;
+  text-shadow:0 10px 34px rgba(0,0,0,.24)!important;
+}
+body[data-page="shop"] .page-intro h1 em{
+  color:#e8ad16!important;
+  text-shadow:0 8px 28px rgba(0,0,0,.18);
+}
+body[data-page="shop"] .page-intro-copy{
+  max-width:600px!important;
+  color:rgba(255,255,255,.88)!important;
+  text-shadow:0 2px 14px rgba(0,0,0,.24);
+}
+body[data-page="shop"] .intro-primary{
+  box-shadow:0 14px 34px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.32)!important;
+}
+body[data-page="shop"] .intro-secondary{
+  background:rgba(3,39,18,.36)!important;
+  border-color:rgba(255,255,255,.36)!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.12);
+}
+
+/* Glassy pantry board on top of the photo, matching the approved composition. */
+body[data-page="shop"] .shop-intro-board{
+  min-height:478px!important;
+  padding:28px!important;
+  background:
+    linear-gradient(145deg,rgba(2,35,16,.91),rgba(2,30,14,.86))!important;
+  border:1px solid rgba(225,174,42,.52)!important;
+  box-shadow:
+    0 34px 80px rgba(0,0,0,.36),
+    inset 0 1px rgba(255,255,255,.07)!important;
+  backdrop-filter:blur(9px) saturate(112%)!important;
+}
+body[data-page="shop"] .shop-intro-board::after{
+  background:radial-gradient(ellipse,rgba(236,181,38,.18),transparent 68%)!important;
+}
+body[data-page="shop"] .intro-stat-pair>div{
+  background:linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.045))!important;
+  border-color:rgba(255,255,255,.11)!important;
+}
+body[data-page="shop"] .intro-category-chips a{
+  background:linear-gradient(145deg,#fff9ec,#eee3cf)!important;
+  border-color:rgba(255,255,255,.72)!important;
+}
+body[data-page="shop"] .intro-category-chips .intro-chip-media{
+  box-shadow:0 4px 10px rgba(37,45,28,.10),inset 0 0 0 1px rgba(11,75,37,.05)!important;
+}
+
+/* Keep the photo feeling alive without moving the layout itself. */
+body[data-page="shop"] .page-intro-shop{
+  animation:shopPhotoBreath 16s ease-in-out infinite alternate;
+}
+@keyframes shopPhotoBreath{
+  from{background-position:center 58%}
+  to{background-position:center 54%}
+}
+
+@media(max-width:1180px){
+  body[data-page="shop"] .page-intro-shop{
+    min-height:620px!important;
+    background-position:58% 56%!important;
+  }
+  body[data-page="shop"] .page-intro-grid{
+    grid-template-columns:minmax(0,1fr) minmax(420px,.92fr)!important;
+    gap:36px!important;
+  }
+}
+@media(max-width:980px){
+  body[data-page="shop"] .page-intro-shop{
+    min-height:auto!important;
+    padding:58px 0 64px!important;
+    background:
+      linear-gradient(180deg,rgba(3,43,19,.95) 0%,rgba(3,43,19,.82) 48%,rgba(3,37,17,.70) 100%),
+      url("https://images.unsplash.com/photo-1755404215191-abc0083c4d07?auto=format&fit=crop&fm=jpg&q=86&w=1800")
+        center 52%/cover no-repeat!important;
+  }
+  body[data-page="shop"] .page-intro-grid{grid-template-columns:1fr!important}
+  body[data-page="shop"] .page-intro-copy-wrap{max-width:720px!important}
+  body[data-page="shop"] .shop-intro-board{max-width:760px}
+}
+@media(max-width:680px){
+  body[data-page="shop"] .page-intro-shop{
+    padding:44px 0 52px!important;
+    background:
+      linear-gradient(180deg,rgba(3,44,20,.96),rgba(3,41,19,.82)),
+      url("https://images.unsplash.com/photo-1755404215191-abc0083c4d07?auto=format&fit=crop&fm=jpg&q=82&w=1200")
+        58% center/cover no-repeat!important;
+  }
+  body[data-page="shop"] .page-intro h1{
+    max-width:8.6ch!important;
+    padding-top:.08em!important;
+    font-size:clamp(3.55rem,15vw,5.1rem)!important;
+    line-height:.92!important;
+  }
+  body[data-page="shop"] .page-intro-copy{max-width:34rem!important}
+}
+@media(prefers-reduced-motion:reduce){
+  body[data-page="shop"] .page-intro-shop{animation:none!important}
+}

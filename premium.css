@@ -3680,3 +3680,70 @@ body[data-page="home"] .home-pantry-hero .shop-intro-board{
 @media(max-width:640px){
   .product-visual,.featured-product-media{aspect-ratio:3/4!important}
 }
+
+
+/* ===== shop category interaction stability ===== */
+body[data-page="shop"] .category-quick-grid-all .category-quick-card{
+  height:100%!important;
+  min-width:0!important;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:rgba(201,149,47,.14);
+}
+
+body[data-page="shop"] .category-quick-grid-all .category-quick-card.is-active,
+body[data-page="shop"] .category-quick-grid-all .category-quick-card[aria-current="true"]{
+  border-color:rgba(201,149,47,.64)!important;
+  background:
+    radial-gradient(circle at 94% 8%,rgba(214,157,13,.18),transparent 32%),
+    linear-gradient(145deg,#fffdf8,#f6ead4)!important;
+  box-shadow:
+    inset 0 0 0 1px rgba(201,149,47,.18),
+    0 10px 24px rgba(11,75,37,.075)!important;
+}
+
+body[data-page="shop"] .category-quick-grid-all .category-quick-card.is-active .category-quick-name,
+body[data-page="shop"] .category-quick-grid-all .category-quick-card[aria-current="true"] .category-quick-name{
+  color:#073a1c!important;
+}
+
+body[data-page="shop"] .category-quick-grid-all .category-quick-card.is-active .category-quick-meta b,
+body[data-page="shop"] .category-quick-grid-all .category-quick-card[aria-current="true"] .category-quick-meta b{
+  color:#b87d10!important;
+}
+
+@media(hover:none){
+  body[data-page="shop"] .category-quick-grid-all .category-quick-card:hover{
+    transform:none!important;
+  }
+  body[data-page="shop"] .category-quick-grid-all .category-quick-card:active{
+    transform:scale(.985)!important;
+  }
+}
+
+@media(max-width:560px){
+  body[data-page="shop"] .category-quick-grid-all{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+  }
+  body[data-page="shop"] .category-quick-grid-all .category-quick-card{
+    min-height:104px!important;
+    padding:12px!important;
+  }
+  body[data-page="shop"] .category-quick-grid-all .category-quick-name{
+    font-size:.94rem!important;
+    line-height:1.08!important;
+  }
+  body[data-page="shop"] .category-quick-grid-all .category-quick-meta{
+    font-size:.62rem!important;
+    line-height:1.15!important;
+  }
+}
+
+@media(max-width:350px){
+  body[data-page="shop"] .category-quick-grid-all{
+    grid-template-columns:1fr!important;
+  }
+  body[data-page="shop"] .category-quick-grid-all .category-quick-card{
+    min-height:92px!important;
+  }
+}

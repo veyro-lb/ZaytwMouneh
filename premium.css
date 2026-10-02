@@ -4127,3 +4127,84 @@ body[data-page="shop"] .category-quick-grid-all .category-quick-card[aria-curren
     border-left:0!important;
   }
 }
+
+
+/* ===== v48 HD imagery pipeline ===== */
+.product-photo-sprite,
+.product-photo-sprite image,
+.decorative-product-image,
+.decorative-product-image image{
+  image-rendering:auto!important;
+  shape-rendering:auto;
+}
+
+.product-photo-sprite,
+.decorative-product-image{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  overflow:hidden!important;
+  transform:none!important;
+  filter:none!important;
+}
+
+.product-card:hover .product-photo-sprite,
+.featured-product:hover .product-photo-sprite,
+.featured-product:hover .featured-product-image{
+  transform:none!important;
+  filter:none!important;
+}
+
+[data-product-photo]{
+  overflow:hidden;
+}
+
+[data-product-photo]>.decorative-product-image{
+  width:100%!important;
+  height:100%!important;
+}
+
+body[data-page="home"] .hero-floating-accent .decorative-product-photo{
+  width:100%;
+  height:100%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:inherit;
+}
+
+body[data-page="home"] .hero-floating-accent .decorative-product-image{
+  width:84%!important;
+  height:84%!important;
+  filter:drop-shadow(0 8px 12px rgba(0,0,0,.13))!important;
+}
+
+body[data-page="home"] .intro-chip-media .decorative-product-image{
+  width:100%!important;
+  height:100%!important;
+  border-radius:inherit;
+}
+
+body[data-page="shop"] .seasonal-product .decorative-product-image{
+  width:84%!important;
+  height:84%!important;
+  filter:drop-shadow(0 12px 16px rgba(0,0,0,.16))!important;
+}
+
+.product-modal-mark .product-photo-sprite,
+.product-visual .product-photo-sprite,
+.featured-product-media .product-photo-sprite,
+.recent-mark .product-photo-sprite,
+.gift-result-mark .product-photo-sprite,
+.category-quick-visual .product-photo-sprite{
+  background:#f8f3e9!important;
+}
+
+@media(max-width:760px){
+  .product-photo-sprite,
+  .decorative-product-image{
+    transform:none!important;
+  }
+}

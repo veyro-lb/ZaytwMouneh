@@ -52,3 +52,18 @@ If Cloudflare Pages is connected to this repository and watches `main`, commits 
 Intentionally left for a later phase:
 1. Real product photography
 2. Curated / seasonal collections
+
+## Premium storefront layer
+
+- Editorial olive / ivory / gold visual system with larger product imagery and tighter spacing
+- Curated seasonal collections and collection deep-links
+- Interactive Lebanon provenance experience for Bekaa, Koura, Mount Lebanon and Chouf
+- Recipe hub with one-click pantry bundles for mujadara, manoushe and fattoush
+- Budget-based “Surprise me” pantry builder
+- Shareable baskets and local “reorder last basket” memory
+- Enhanced product modal with storage guidance, pairings, share links, feedback links and Product schema
+- Gift builder budgets, ribbon choice, card language, hide-price preference and live card preview
+- Privacy-conscious local analytics hooks plus dataLayer events for future analytics integration
+- Static Store schema and expanded SEO discoverability
+
+Per-SKU real product photography is intentionally not fabricated: the UI now supports the existing category imagery cleanly and is ready for genuine product photos to replace it as those assets are supplied.

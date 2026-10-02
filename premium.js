@@ -96,13 +96,11 @@
   }
 
   var collections=[
-    {id:"breakfast",titleEn:"Breakfast in Lebanon",titleAr:"فطور لبناني",copyEn:"Zaatar, olive oil, honey and pantry staples for an easy morning table.",copyAr:"زعتر وزيت زيتون وعسل وأساسيات المونة لفطور لبناني بسيط.",image:"assets/products/zaatar.webp?v=20261002-0955"},
-    {id:"bekaa",titleEn:"From the Bekaa",titleAr:"من البقاع",copyEn:"A provenance-led edit of grains, pulses, herbs and traditional pantry staples.",copyAr:"تشكيلة بحسب المصدر من الحبوب والبقوليات والأعشاب وأساسيات المونة.",image:"assets/products/lentils.webp?v=20261002-0955"},
-    {id:"sweet",titleEn:"Sweet Lebanon",titleAr:"حلاوة لبنان",copyEn:"Honey, molasses, dried fruit and pantry sweets for gifting or sharing.",copyAr:"عسل ودبس وفاكهة مجففة وحلويات للمشاركة أو الهدية.",image:"assets/products/honey.webp?v=20261002-0955"},
-    {id:"sunday",titleEn:"Sunday Table",titleAr:"سفرة الأحد",copyEn:"The grains, spices, oil and mouneh that make a long family lunch feel familiar.",copyAr:"حبوب وبهارات وزيت ومونة لسفرة عائلية طويلة ومألوفة.",image:"assets/products/olive-oil.webp?v=20261002-0955"},
-    {id:"essentials",titleEn:"Lebanese Essentials",titleAr:"أساسيات المونة",copyEn:"A simple starting point if you are building a Lebanese pantry from scratch.",copyAr:"بداية بسيطة لمن يريد تجهيز مونة لبنانية من الصفر.",image:"assets/products/mixed-spices.webp?v=20261002-0955"},
-    {id:"under20",titleEn:"Under $20",titleAr:"أقل من 20$",copyEn:"Useful pantry additions and gifts with an easy budget.",copyAr:"إضافات وهدايا للمونة ضمن ميزانية سهلة.",image:"assets/products/nuts-seeds.webp?v=20261002-0955"}
-  ];
+    {id:"breakfast",titleEn:"Breakfast in Lebanon",titleAr:"فطور لبناني",copyEn:"Zaatar, olive oil, honey and pantry staples for an easy morning table.",copyAr:"زعتر وزيت زيتون وعسل وأساسيات المونة لفطور لبناني بسيط.",image:"assets/products/olives.webp?v=20261002-collections4"},
+    {id:"bekaa",titleEn:"From the Bekaa",titleAr:"من البقاع",copyEn:"A provenance-led edit of grains, pulses, herbs and traditional pantry staples.",copyAr:"تشكيلة بحسب المصدر من الحبوب والبقوليات والأعشاب وأساسيات المونة.",image:"assets/products/rice.webp?v=20261002-collections4"},
+    {id:"sweet",titleEn:"Sweet Lebanon",titleAr:"حلاوة لبنان",copyEn:"Honey, molasses, dried fruit and pantry sweets for gifting or sharing.",copyAr:"عسل ودبس وفاكهة مجففة وحلويات للمشاركة أو الهدية.",image:"assets/products/honey.webp?v=20261002-collections4"},
+    {id:"sunday",titleEn:"Sunday Table",titleAr:"سفرة الأحد",copyEn:"The grains, spices, oil and mouneh that make a long family lunch feel familiar.",copyAr:"حبوب وبهارات وزيت ومونة لسفرة عائلية طويلة ومألوفة.",image:"assets/products/olive-oil.webp?v=20261002-collections4"}
+  ]
 
   function matchesCollection(p,id){
     var n=((p.nameEn||"")+" "+(p.original||"")+" "+(p.category||"")).toLowerCase();
@@ -125,7 +123,7 @@
     var anchor=q(".categories");if(!anchor)return;
     var sec=document.createElement("section");sec.id="premiumCollections";sec.className="premium-section premium-collections";
     var cards=collections.map(function(c){
-      return '<a class="collection-card" href="shop.html?collection='+encodeURIComponent(c.id)+'"><span class="collection-media" aria-hidden="true"><img src="'+esc(c.image)+'" alt="" loading="lazy" decoding="async"></span><span class="collection-arrow">↗</span><span class="collection-copy"><small>'+esc(txt("Curated collection","تشكيلة مختارة"))+'</small><h3>'+esc(isAr()?c.titleAr:c.titleEn)+'</h3><p>'+esc(isAr()?c.copyAr:c.copyEn)+'</p></span></a>';
+      return '<a class="collection-card collection-card--'+esc(c.id)+'" href="shop.html?collection='+encodeURIComponent(c.id)+'"><span class="collection-media" aria-hidden="true"><img src="'+esc(c.image)+'" alt="" loading="lazy" decoding="async"></span><span class="collection-arrow">↗</span><span class="collection-copy"><small>'+esc(txt("Curated collection","تشكيلة مختارة"))+'</small><h3>'+esc(isAr()?c.titleAr:c.titleEn)+'</h3><p>'+esc(isAr()?c.copyAr:c.copyEn)+'</p></span></a>';
     }).join("");
     sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Shop by mood","تسوّق حسب المناسبة"))+'</p><h2>'+esc(txt("Collections with a","تشكيلات لها"))+' <em>'+esc(txt("reason.","فكرة."))+'</em></h2></div><p>'+esc(txt("Categories are useful. Collections make the pantry easier to imagine on a real table, for a real meal or as a gift.","التصنيفات مفيدة، لكن التشكيلات تجعل المونة أسهل للتخيّل على سفرة حقيقية أو كهدية."))+'</p></div><div class="collection-grid">'+cards+'</div></div>';
     anchor.after(sec);

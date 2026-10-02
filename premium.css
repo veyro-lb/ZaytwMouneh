@@ -1320,3 +1320,168 @@ body[data-page="shop"] .page-intro-shop{
 @media(prefers-reduced-motion:reduce){
   body[data-page="shop"] .page-intro-shop{animation:none!important}
 }
+
+
+/* ===== v29 approved hero composition + performance pass ===== */
+/* Static local artwork from the approved mockup direction. No remote photo, no continuous motion. */
+body[data-page="shop"] .page-intro-shop{
+  position:relative!important;
+  isolation:isolate;
+  contain:paint;
+  min-height:650px!important;
+  padding:64px 0 66px!important;
+  animation:none!important;
+  background:
+    radial-gradient(circle at 62% 20%,rgba(235,180,40,.14),transparent 25rem),
+    linear-gradient(110deg,#043417 0%,#073f1c 43%,#123e1c 73%,#1f4d24 100%)!important;
+}
+body[data-page="shop"] .page-intro-shop::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  opacity:1!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(90deg,
+      rgba(4,52,23,1) 0%,
+      rgba(4,52,23,.96) 25%,
+      rgba(4,52,23,.34) 39%,
+      rgba(4,52,23,.03) 48%,
+      rgba(4,52,23,.03) 58%,
+      rgba(11,55,25,.58) 70%,
+      rgba(17,62,29,.94) 83%,
+      rgba(20,64,30,1) 100%),
+    linear-gradient(180deg,rgba(4,45,20,.03),rgba(4,45,20,.10)),
+    url("assets/shop-hero-stilllife.webp?v=20261002-hero29") 52% bottom/auto 100% no-repeat!important;
+}
+body[data-page="shop"] .page-intro-shop::after{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  width:auto!important;
+  height:auto!important;
+  z-index:1!important;
+  border:0!important;
+  border-radius:0!important;
+  opacity:1!important;
+  transform:none!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(circle at 49% 22%,rgba(242,195,76,.13),transparent 18rem),
+    linear-gradient(180deg,transparent 72%,rgba(3,35,16,.18) 100%)!important;
+}
+body[data-page="shop"] .shop-hero-art{display:none!important}
+
+body[data-page="shop"] .page-intro-grid{
+  position:relative!important;
+  z-index:2!important;
+  grid-template-columns:minmax(0,1.05fr) minmax(470px,.9fr)!important;
+  gap:clamp(42px,5vw,74px)!important;
+  align-items:center!important;
+}
+body[data-page="shop"] .page-intro-copy-wrap{
+  max-width:760px!important;
+  padding:18px 0!important;
+  animation:none!important;
+}
+body[data-page="shop"] .page-intro-copy-wrap::before,
+body[data-page="shop"] .page-intro-copy-wrap::after{display:none!important}
+body[data-page="shop"] .page-intro .eyebrow{
+  margin-bottom:20px!important;
+  color:#efbd43!important;
+  text-shadow:0 2px 12px rgba(0,0,0,.22);
+}
+body[data-page="shop"] .page-intro h1{
+  max-width:8.25ch!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:visible!important;
+  font-size:clamp(4.9rem,6.25vw,7.15rem)!important;
+  line-height:.89!important;
+  letter-spacing:-.045em!important;
+  text-shadow:0 9px 30px rgba(0,0,0,.20)!important;
+}
+body[data-page="shop"] .page-intro h1 em{
+  color:#e6aa14!important;
+  text-shadow:0 7px 24px rgba(0,0,0,.16);
+}
+body[data-page="shop"] .page-intro-copy{
+  max-width:590px!important;
+  color:rgba(255,255,255,.86)!important;
+  text-shadow:0 2px 12px rgba(0,0,0,.20);
+}
+
+/* Right board remains rich but avoids GPU-heavy live blur. */
+body[data-page="shop"] .shop-intro-board{
+  min-height:474px!important;
+  padding:28px!important;
+  animation:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  background:
+    radial-gradient(circle at 100% 0,rgba(221,169,34,.10),transparent 15rem),
+    linear-gradient(145deg,rgba(2,36,16,.97),rgba(2,29,13,.96))!important;
+  border:1px solid rgba(224,173,41,.48)!important;
+  box-shadow:0 24px 52px rgba(0,0,0,.27),inset 0 1px rgba(255,255,255,.055)!important;
+}
+body[data-page="shop"] .shop-intro-board::after{animation:none!important;filter:none!important}
+body[data-page="shop"] .intro-category-chips a,
+body[data-page="shop"] .intro-category-chips a::before,
+body[data-page="shop"] .intro-category-chips i{
+  animation:none!important;
+}
+body[data-page="shop"] .intro-category-chips a::before{display:none!important}
+
+/* Make lower catalogue sections cheaper to paint while off-screen. */
+body[data-page="shop"] .categories,
+body[data-page="shop"] .shop,
+body[data-page="shop"] .recent-section,
+body[data-page="shop"] .order-strip{
+  content-visibility:auto;
+  contain-intrinsic-size:800px;
+}
+
+@media(max-width:1180px){
+  body[data-page="shop"] .page-intro-grid{
+    grid-template-columns:minmax(0,1fr) minmax(420px,.92fr)!important;
+    gap:34px!important;
+  }
+  body[data-page="shop"] .page-intro-shop::before{
+    background:
+      linear-gradient(90deg,rgba(4,52,23,.98) 0 28%,rgba(4,52,23,.28) 43%,rgba(4,52,23,.05) 55%,rgba(15,60,27,.78) 74%,rgba(18,62,29,.98) 100%),
+      url("assets/shop-hero-stilllife.webp?v=20261002-hero29") 51% bottom/auto 96% no-repeat!important;
+  }
+}
+@media(max-width:980px){
+  body[data-page="shop"] .page-intro-shop{min-height:auto!important;padding:56px 0 62px!important}
+  body[data-page="shop"] .page-intro-grid{grid-template-columns:1fr!important;gap:38px!important}
+  body[data-page="shop"] .page-intro-shop::before{
+    background:
+      linear-gradient(180deg,rgba(4,52,23,.96) 0 40%,rgba(4,52,23,.72) 67%,rgba(4,52,23,.92) 100%),
+      linear-gradient(90deg,rgba(4,52,23,.75),rgba(4,52,23,.28),rgba(4,52,23,.72)),
+      url("assets/shop-hero-stilllife.webp?v=20261002-hero29") 78% 18%/auto 72% no-repeat!important;
+  }
+  body[data-page="shop"] .page-intro-copy-wrap{max-width:700px!important}
+  body[data-page="shop"] .shop-intro-board{max-width:760px}
+}
+@media(max-width:680px){
+  body[data-page="shop"] .page-intro-shop{padding:44px 0 50px!important}
+  body[data-page="shop"] .page-intro-shop::before{
+    opacity:.58!important;
+    background:
+      linear-gradient(180deg,rgba(4,52,23,.99) 0 40%,rgba(4,52,23,.80) 66%,rgba(4,52,23,.97) 100%),
+      url("assets/shop-hero-stilllife.webp?v=20261002-hero29") 86% 16%/auto 66% no-repeat!important;
+  }
+  body[data-page="shop"] .page-intro h1{
+    max-width:8.5ch!important;
+    font-size:clamp(3.5rem,15vw,5rem)!important;
+    line-height:.92!important;
+  }
+  body[data-page="shop"] .shop-intro-board{padding:20px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  body[data-page="shop"] .page-intro-shop,
+  body[data-page="shop"] .page-intro-copy-wrap,
+  body[data-page="shop"] .shop-intro-board{animation:none!important}
+}

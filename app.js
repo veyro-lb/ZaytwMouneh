@@ -23,7 +23,8 @@ function productPhotoMarkup(p,cls="product-image"){
   const vy=focal?y+focal[1]*tileH:y;
   const vw=focal?focal[2]*tileW:tileW;
   const vh=focal?focal[3]*tileH:tileH;
-  return `<svg class="${escapeHtml(cls)} product-photo-sprite" viewBox="${vx} ${vy} ${vw} ${vh}" width="100%" height="100%" overflow="hidden" style="overflow:hidden" role="img" aria-label="${escapeHtml(currentName(p))}" preserveAspectRatio="xMidYMid meet"><image href="${escapeHtml(atlasUrl)}" x="0" y="0" width="${atlasW}" height="${atlasH}" preserveAspectRatio="none"></image></svg>`;
+  const quality=source.quality||"catalogue";
+  return `<svg class="${escapeHtml(cls)} product-photo-sprite" data-photo-width="${tileW}" data-photo-height="${tileH}" data-photo-quality="${escapeHtml(quality)}" viewBox="${vx} ${vy} ${vw} ${vh}" width="100%" height="100%" overflow="hidden" style="overflow:hidden" role="img" aria-label="${escapeHtml(currentName(p))}" preserveAspectRatio="xMidYMid meet"><image href="${escapeHtml(atlasUrl)}" x="0" y="0" width="${atlasW}" height="${atlasH}" preserveAspectRatio="none"></image></svg>`;
 }
 function renderStaticProductPhotos(root=document){
   root.querySelectorAll("[data-product-photo]").forEach(slot=>{

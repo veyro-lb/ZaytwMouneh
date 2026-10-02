@@ -25,6 +25,10 @@
     if(typeof productImageSrc==="function")return productImageSrc(p);
     return "";
   }
+  function pvisual(p,cls){
+    if(!p||typeof productVisualMarkup!=="function")return "";
+    return productVisualMarkup(p,cls||"premium-product-image");
+  }
 
   function track(name,detail){
     var clean={name:name,detail:detail||{},at:new Date().toISOString(),version:PREMIUM_VERSION};
@@ -96,10 +100,10 @@
   }
 
   var collections=[
-    {id:"breakfast",titleEn:"Breakfast in Lebanon",titleAr:"فطور لبناني",copyEn:"Zaatar, olive oil, honey and pantry staples for an easy, natural morning table.",copyAr:"زعتر وزيت زيتون وعسل وأساسيات المونة لفطور لبناني طبيعي وبسيط.",image:"assets/products/zaatar.webp?v=20261002-collections5"},
-    {id:"natural",titleEn:"Natural Pantry",titleAr:"مونة طبيعية",copyEn:"Wholesome grains, pulses and pantry staples chosen for a simple, natural kitchen.",copyAr:"حبوب وبقوليات وأساسيات مونة مختارة لمطبخ طبيعي وبسيط.",image:"assets/products/rice.webp?v=20261002-collections5"},
-    {id:"sweet",titleEn:"Sweet Lebanon",titleAr:"حلاوة لبنان",copyEn:"Honey, molasses and pantry sweets for gifting, sharing and everyday moments.",copyAr:"عسل ودبس وحلويات مونة للمشاركة والهدية واللحظات اليومية.",image:"assets/products/honey.webp?v=20261002-collections5"},
-    {id:"table",titleEn:"Sunday Table",titleAr:"سفرة الأحد",copyEn:"Olive oil, grains, spices and pantry essentials for a generous family table.",copyAr:"زيت زيتون وحبوب وبهارات وأساسيات مونة لسفرة عائلية عامرة.",image:"assets/products/olive-oil.webp?v=20261002-collections5"}
+    {id:"breakfast",titleEn:"Breakfast in Lebanon",titleAr:"فطور لبناني",copyEn:"Zaatar, olive oil, honey and pantry staples for an easy, natural morning table.",copyAr:"زعتر وزيت زيتون وعسل وأساسيات المونة لفطور لبناني طبيعي وبسيط.",productId:"zaatar-baladi-extra"},
+    {id:"natural",titleEn:"Natural Pantry",titleAr:"مونة طبيعية",copyEn:"Wholesome grains, pulses and pantry staples chosen for a simple, natural kitchen.",copyAr:"حبوب وبقوليات وأساسيات مونة مختارة لمطبخ طبيعي وبسيط.",productId:"golden-sila-basmati-rice"},
+    {id:"sweet",titleEn:"Sweet Lebanon",titleAr:"حلاوة لبنان",copyEn:"Honey, molasses and pantry sweets for gifting, sharing and everyday moments.",copyAr:"عسل ودبس وحلويات مونة للمشاركة والهدية واللحظات اليومية.",productId:"flower-honey"},
+    {id:"table",titleEn:"Sunday Table",titleAr:"سفرة الأحد",copyEn:"Olive oil, grains, spices and pantry essentials for a generous family table.",copyAr:"زيت زيتون وحبوب وبهارات وأساسيات مونة لسفرة عائلية عامرة.",productId:"extra-virgin-olive-oil"}
   ]
 
   function matchesCollection(p,id){
@@ -123,7 +127,8 @@
     var anchor=q(".categories");if(!anchor)return;
     var sec=document.createElement("section");sec.id="premiumCollections";sec.className="premium-section premium-collections";
     var cards=collections.map(function(c){
-      return '<a class="collection-card collection-card--'+esc(c.id)+'" href="shop.html?collection='+encodeURIComponent(c.id)+'"><span class="collection-media" aria-hidden="true"><img src="'+esc(c.image)+'" alt="" loading="lazy" decoding="async"></span><span class="collection-arrow">↗</span><span class="collection-copy"><small>'+esc(txt("Curated collection","تشكيلة مختارة"))+'</small><h3>'+esc(isAr()?c.titleAr:c.titleEn)+'</h3><p>'+esc(isAr()?c.copyAr:c.copyEn)+'</p></span></a>';
+      var product=safeProducts().find(function(p){return p.id===c.productId}),media=pvisual(product,"collection-product-image");
+      return '<a class="collection-card collection-card--'+esc(c.id)+'" href="shop.html?collection='+encodeURIComponent(c.id)+'"><span class="collection-media" aria-hidden="true">'+media+'</span><span class="collection-arrow">↗</span><span class="collection-copy"><small>'+esc(txt("Curated collection","تشكيلة مختارة"))+'</small><h3>'+esc(isAr()?c.titleAr:c.titleEn)+'</h3><p>'+esc(isAr()?c.copyAr:c.copyEn)+'</p></span></a>';
     }).join("");
     sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Shop by mood","تسوّق حسب المناسبة"))+'</p><h2>'+esc(txt("Collections with a","تشكيلات لها"))+' <em>'+esc(txt("reason.","فكرة."))+'</em></h2></div><p>'+esc(txt("Categories are useful. Collections make the pantry easier to imagine on a real table, for a real meal or as a gift.","التصنيفات مفيدة، لكن التشكيلات تجعل المونة أسهل للتخيّل على سفرة حقيقية أو كهدية."))+'</p></div><div class="collection-grid">'+cards+'</div></div>';
     anchor.after(sec);
@@ -308,7 +313,7 @@
   }
 
   function curatedProductMarkup(p){
-    var img=pimage(p),media=img?'<img src="'+esc(img)+'" alt="" loading="lazy" decoding="async">':'';
+    var media=pvisual(p,"curated-product-image");
     return '<button class="curated-product" type="button" data-curated-product="'+esc(p.id)+'">'+media+'<span class="curated-product-copy"><small>'+esc(porigin(p))+'</small><strong>'+esc(pname(p))+'</strong><b>'+esc(txt("From ","من "))+pmoney(minPrice(p))+'</b></span></button>';
   }
 
@@ -631,11 +636,11 @@
     var anchor=q(".social-band");if(!anchor)return;
     var sec=document.createElement("section");sec.id="pantryMoments";sec.className="premium-section pantry-moments";
     var pics=[
-      ["assets/products/olive-oil.webp?v=20261002-0955",txt("Olive oil & the table","زيت الزيتون والسفرة")],
-      ["assets/products/zaatar.webp?v=20261002-0955",txt("Zaatar mornings","صباحات الزعتر")],
-      ["assets/products/honey.webp?v=20261002-0955",txt("Something sweet","لمسة حلوة")]
+      ["extra-virgin-olive-oil",txt("Olive oil & the table","زيت الزيتون والسفرة")],
+      ["zaatar-baladi-extra",txt("Zaatar mornings","صباحات الزعتر")],
+      ["flower-honey",txt("Something sweet","لمسة حلوة")]
     ];
-    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Pantry moments","لحظات من المونة"))+'</p><h2>'+esc(txt("Food that feels","مونة تشبه"))+' <em>'+esc(txt("familiar.","البيت."))+'</em></h2></div><p>'+esc(txt("Follow the pantry for seasonal ideas, shop updates and everyday ways to bring Lebanese staples to the table.","تابع المونة لأفكار الموسم وأخبار المحل وطرق يومية لتقديم الأساسيات اللبنانية على السفرة."))+'</p></div><div class="moments-grid">'+pics.map(function(x){return '<a class="moment-card" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener"><img src="'+esc(x[0])+'" alt="" loading="lazy"><span>'+esc(x[1])+' ↗</span></a>'}).join("")+'</div><a class="moments-cta" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">@zaytwmouneh · Instagram ↗</a></div>';
+    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Pantry moments","لحظات من المونة"))+'</p><h2>'+esc(txt("Food that feels","مونة تشبه"))+' <em>'+esc(txt("familiar.","البيت."))+'</em></h2></div><p>'+esc(txt("Follow the pantry for seasonal ideas, shop updates and everyday ways to bring Lebanese staples to the table.","تابع المونة لأفكار الموسم وأخبار المحل وطرق يومية لتقديم الأساسيات اللبنانية على السفرة."))+'</p></div><div class="moments-grid">'+pics.map(function(x){var p=safeProducts().find(function(item){return item.id===x[0]}),media=pvisual(p,"moment-product-image");return '<a class="moment-card" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">'+media+'<span>'+esc(x[1])+' ↗</span></a>'}).join("")+'</div><a class="moments-cta" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">@zaytwmouneh · Instagram ↗</a></div>';
     anchor.before(sec);
   }
 

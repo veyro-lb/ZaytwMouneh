@@ -570,3 +570,598 @@ html[dir="rtl"] .premium-dialog-close{right:auto;left:18px}
     transform:scale(.75)!important;
   }
 }
+
+/* ===== Gift builder redesign v2 — mockup-inspired premium mobile UI ===== */
+body[data-page="gift"]{
+  background:
+    radial-gradient(circle at 82% 8%,rgba(198,155,67,.10),transparent 30rem),
+    linear-gradient(180deg,#f8f3ea 0%,#f3eadc 100%)!important;
+}
+
+/* Clean cream header instead of the stacked/overlapping green treatment */
+body[data-page="gift"] .site-header{
+  position:relative!important;
+  top:auto!important;
+  z-index:410!important;
+  background:#fffaf2!important;
+  color:var(--premium-olive)!important;
+  box-shadow:0 8px 26px rgba(31,52,33,.07)!important;
+}
+body[data-page="gift"] .announcement{
+  min-height:46px!important;
+  background:linear-gradient(90deg,#0a3c20,#0e4b28)!important;
+  border:0!important;
+}
+body[data-page="gift"] .announcement-inner{
+  min-height:46px!important;
+  justify-content:center!important;
+}
+body[data-page="gift"] .announcement-inner>span{display:none!important}
+body[data-page="gift"] .announcement a{
+  margin:auto!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  color:#e6c46d!important;
+  font-size:.72rem!important;
+  letter-spacing:.16em!important;
+  font-weight:900!important;
+}
+body[data-page="gift"] .announcement a:before{
+  content:"";
+  width:22px;height:22px;
+  background:url("assets/olive-leaf-mark.svg") center/contain no-repeat;
+}
+body[data-page="gift"] .nav{
+  position:relative!important;
+  height:88px!important;
+  grid-template-columns:auto minmax(0,1fr) auto!important;
+  gap:14px!important;
+  border-bottom:1px solid rgba(18,63,34,.10)!important;
+  background:#fffaf2!important;
+}
+body[data-page="gift"] .nav-toggle{
+  grid-column:1!important;
+  grid-row:1!important;
+  justify-self:start!important;
+  width:46px!important;height:46px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:transparent!important;
+  color:var(--premium-olive)!important;
+}
+body[data-page="gift"] .nav-toggle .menu-label{display:none!important}
+body[data-page="gift"] .nav-toggle .menu-icon{gap:6px!important;width:25px!important}
+body[data-page="gift"] .nav-toggle .menu-icon i{
+  width:25px!important;height:2px!important;background:var(--premium-olive)!important;
+}
+body[data-page="gift"] .brand{
+  position:relative;
+  grid-column:2!important;
+  grid-row:1!important;
+  justify-self:center!important;
+  justify-content:center!important;
+  color:var(--premium-olive)!important;
+  gap:9px!important;
+}
+body[data-page="gift"] .brand-logo{
+  width:42px!important;height:42px!important;
+  border:0!important;box-shadow:none!important;background:transparent!important;
+}
+body[data-page="gift"] .brand-wordmark{
+  display:block!important;
+  color:var(--premium-olive)!important;
+  font-size:1.55rem!important;
+  letter-spacing:-.02em!important;
+  white-space:nowrap;
+}
+body[data-page="gift"] .nav-actions{
+  grid-column:3!important;
+  grid-row:1!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+}
+body[data-page="gift"] .nav-instagram{display:none!important}
+body[data-page="gift"] .gift-nav-search{
+  width:42px;height:42px;border-radius:50%;
+  display:grid;place-items:center;
+  color:var(--premium-olive);
+  border:1px solid rgba(18,63,34,.12);
+  background:#fff;
+}
+body[data-page="gift"] .gift-nav-search svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}
+body[data-page="gift"] .language-switch{
+  border:1px solid rgba(18,63,34,.11)!important;
+  background:#f3eadb!important;
+}
+body[data-page="gift"] .language-switch button{color:#536557!important}
+body[data-page="gift"] .language-switch button.is-active{background:#fff!important;color:var(--premium-olive)!important}
+body[data-page="gift"] .cart-button{
+  min-width:44px!important;
+  height:44px!important;
+  padding:0 11px!important;
+  border-color:rgba(18,63,34,.12)!important;
+  background:#fff!important;
+  color:var(--premium-olive)!important;
+  box-shadow:none!important;
+}
+body[data-page="gift"] .cart-count{background:var(--premium-gold)!important}
+body[data-page="gift"] .nav-links{
+  position:absolute!important;
+  top:calc(100% + 10px)!important;
+  right:max(14px,calc((100vw - min(1240px,calc(100vw - 48px)))/2))!important;
+  left:auto!important;
+  color:var(--premium-ink)!important;
+}
+body[data-page="gift"] .gift-menu-language{
+  display:none;
+  gap:8px;
+  padding:11px 8px 4px;
+}
+body[data-page="gift"] .gift-menu-language button{
+  flex:1;min-height:42px;border:1px solid rgba(18,63,34,.12);
+  border-radius:999px;background:#fff;color:var(--premium-olive);font-weight:900;
+}
+body[data-page="gift"] .gift-menu-language button.is-active{background:var(--premium-olive);color:#fff}
+
+/* Gift page intro becomes editorial and light */
+body[data-page="gift"] .page-intro-gift{
+  position:relative!important;
+  padding:76px 0 68px!important;
+  color:var(--premium-ink)!important;
+  background:
+    url("assets/olive-sprig-line.svg") calc(100% + 90px) 38%/330px auto no-repeat,
+    radial-gradient(circle at 82% 35%,rgba(198,155,67,.10),transparent 22rem),
+    linear-gradient(180deg,#fffaf2,#f5ebdc)!important;
+}
+body[data-page="gift"] .page-intro-gift:before{
+  content:"";position:absolute;left:-90px;bottom:-150px;width:310px;height:310px;border-radius:50%;
+  border:1px solid rgba(198,155,67,.11);box-shadow:0 0 0 44px rgba(198,155,67,.025),0 0 0 88px rgba(198,155,67,.018);
+}
+body[data-page="gift"] .page-intro-gift .eyebrow{color:#a77d2d!important}
+body[data-page="gift"] .page-intro-gift h1{color:var(--premium-olive)!important}
+body[data-page="gift"] .page-intro-gift h1 em{color:#b4862e!important}
+body[data-page="gift"] .page-intro-gift .page-intro-copy{color:#6f685b!important}
+body[data-page="gift"] .page-intro-gift .intro-primary{
+  background:var(--premium-olive)!important;color:#fff!important;border-color:var(--premium-olive)!important;
+}
+body[data-page="gift"] .page-intro-gift .intro-secondary{color:var(--premium-olive)!important}
+body[data-page="gift"] .gift-intro-board{
+  background:rgba(255,252,246,.82)!important;
+  border:1px solid rgba(18,63,34,.10)!important;
+  box-shadow:0 22px 55px rgba(38,54,34,.08)!important;
+  backdrop-filter:blur(8px);
+}
+
+/* Presets are calmer and more premium */
+body[data-page="gift"] .gift-presets{
+  padding-top:84px!important;
+  padding-bottom:74px!important;
+}
+body[data-page="gift"] .gift-preset-card{
+  border-color:rgba(18,63,34,.11)!important;
+  background:#fffaf2!important;
+  box-shadow:0 14px 38px rgba(31,52,33,.07)!important;
+}
+
+/* The actual builder now follows the approved mockup */
+body[data-page="gift"] #gift.gift-section{
+  padding:78px 0 110px!important;
+  overflow:visible!important;
+  color:var(--premium-ink)!important;
+  background:
+    linear-gradient(180deg,#0b4726 0 190px,#f5ecdf 190px 100%)!important;
+}
+body[data-page="gift"] #gift.gift-section:before{
+  inset:24px auto auto 5%!important;
+  width:280px!important;height:280px!important;
+  border-color:rgba(230,196,109,.11)!important;
+  box-shadow:0 0 0 40px rgba(230,196,109,.025),0 0 0 80px rgba(230,196,109,.015)!important;
+}
+body[data-page="gift"] #gift .gift-grid{
+  display:block!important;
+  width:min(960px,calc(100% - 48px))!important;
+  margin:auto!important;
+}
+body[data-page="gift"] #gift .gift-copy{display:none!important}
+body[data-page="gift"] #gift .gift-builder{
+  position:relative!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:var(--premium-ink)!important;
+  box-shadow:none!important;
+}
+
+/* Gift-basket summary card */
+body[data-page="gift"] #gift .gift-builder-head{
+  position:relative!important;
+  z-index:2!important;
+  min-height:186px!important;
+  padding:40px 44px 76px!important;
+  align-items:flex-start!important;
+  overflow:hidden!important;
+  border:1px solid rgba(85,70,43,.10)!important;
+  border-radius:36px!important;
+  background:
+    radial-gradient(circle at 18% 12%,rgba(255,255,255,.9),transparent 16rem),
+    linear-gradient(145deg,#fffdf9,#faf5eb)!important;
+  box-shadow:0 24px 60px rgba(14,48,25,.13)!important;
+}
+body[data-page="gift"] #gift .gift-builder-head:after{
+  content:"";position:absolute;right:-58px;top:-64px;width:220px;height:220px;
+  background:url("assets/olive-sprig-line.svg") center/contain no-repeat;opacity:.13;transform:rotate(-12deg);
+}
+body[data-page="gift"] #gift .gift-builder-head>div{gap:8px!important}
+body[data-page="gift"] #gift .gift-builder-head span{
+  color:#9b7332!important;
+  font-size:.72rem!important;
+  letter-spacing:.19em!important;
+}
+body[data-page="gift"] #gift .gift-builder-head strong{
+  color:var(--premium-olive)!important;
+  font-family:"DM Serif Display",Georgia,serif!important;
+  font-size:2.25rem!important;
+  line-height:1!important;
+  font-weight:400!important;
+}
+body[data-page="gift"] #gift .gift-builder-head>strong{
+  position:relative;z-index:2;
+  font-size:2rem!important;
+}
+
+/* Ribbon and bow are real vector artwork now */
+body[data-page="gift"] #gift .gift-box-ribbon{
+  position:absolute!important;
+  z-index:8!important;
+  top:126px!important;
+  left:0!important;right:0!important;
+  width:auto!important;height:16px!important;
+  pointer-events:none!important;
+  border:0!important;
+  border-radius:0!important;
+  background:linear-gradient(90deg,#ae7418,#e6c56d 18%,#f1d782 50%,#d9aa42 78%,#a96f14)!important;
+  box-shadow:0 2px 4px rgba(111,72,18,.18)!important;
+}
+body[data-page="gift"] #gift .gift-box-ribbon:before{display:none!important}
+body[data-page="gift"] #gift .gift-box-bow{
+  position:absolute!important;
+  left:50%!important;
+  top:-50px!important;
+  width:146px!important;height:96px!important;
+  margin:0!important;
+  transform:translateX(-50%)!important;
+  border:0!important;border-radius:0!important;
+  background:url("assets/gift-bow-premium.svg") center/contain no-repeat!important;
+  box-shadow:none!important;
+}
+body[data-page="gift"] #gift .gift-box-bow:before,
+body[data-page="gift"] #gift .gift-box-bow:after{display:none!important}
+
+/* Shape-the-gift card */
+body[data-page="gift"] #gift .gift-premium-controls{
+  position:relative!important;
+  overflow:hidden!important;
+  margin:28px 0 18px!important;
+  padding:42px 44px!important;
+  border:1px solid rgba(122,96,52,.13)!important;
+  border-radius:34px!important;
+  background:
+    linear-gradient(145deg,rgba(255,252,246,.98),rgba(244,232,211,.98))!important;
+  box-shadow:0 18px 52px rgba(31,52,33,.08)!important;
+}
+body[data-page="gift"] #gift .gift-premium-controls:after{
+  content:"";position:absolute;right:-38px;top:-34px;width:260px;height:260px;
+  background:url("assets/olive-sprig-line.svg") center/contain no-repeat;
+  opacity:.72;pointer-events:none;
+}
+body[data-page="gift"] #gift .gift-premium-controls>*{position:relative;z-index:1}
+body[data-page="gift"] #gift .gift-premium-controls h3{
+  margin:0 0 8px!important;
+  color:var(--premium-olive)!important;
+  font-size:clamp(2.35rem,5vw,3.6rem)!important;
+  line-height:.96!important;
+  letter-spacing:-.035em!important;
+}
+body[data-page="gift"] #gift .gift-premium-controls>p{
+  max-width:590px!important;margin:0!important;
+  color:#796c59!important;font-size:.94rem!important;line-height:1.72!important;
+}
+body[data-page="gift"] #gift .gift-budget-row{
+  display:flex!important;gap:9px!important;flex-wrap:wrap!important;margin:24px 0 26px!important;
+}
+body[data-page="gift"] #gift .gift-budget-row button{
+  min-width:74px!important;min-height:43px!important;
+  padding:0 16px!important;border:1px solid rgba(18,63,34,.12)!important;
+  border-radius:999px!important;background:#fffdf8!important;color:var(--premium-olive)!important;
+  font-weight:900!important;box-shadow:none!important;
+}
+body[data-page="gift"] #gift .gift-budget-row button:hover,
+body[data-page="gift"] #gift .gift-budget-row button:focus-visible{
+  background:var(--premium-olive)!important;color:#fff!important;
+}
+body[data-page="gift"] #gift .gift-personalize-grid{
+  max-width:760px!important;
+  display:grid!important;grid-template-columns:1fr 1fr!important;gap:18px!important;
+}
+body[data-page="gift"] #gift .gift-personalize-grid label{
+  margin:0!important;gap:9px!important;
+  color:#755d37!important;
+  font-size:.67rem!important;letter-spacing:.14em!important;text-transform:uppercase!important;
+}
+body[data-page="gift"] #gift .gift-personalize-grid select{
+  min-height:58px!important;
+  padding:0 18px!important;
+  border:1px solid rgba(122,96,52,.17)!important;
+  border-radius:18px!important;
+  background:#fffdf9!important;
+  color:var(--premium-olive)!important;
+  font-size:.94rem!important;font-weight:800!important;
+  box-shadow:0 8px 20px rgba(55,60,41,.035)!important;
+}
+body[data-page="gift"] #gift .gift-hide-row{
+  grid-column:1/-1!important;
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  gap:12px!important;
+  margin-top:5px!important;
+}
+body[data-page="gift"] #gift .gift-hide-row input{
+  flex:0 0 auto!important;width:23px!important;height:23px!important;margin:0!important;
+  accent-color:var(--premium-olive)!important;
+}
+body[data-page="gift"] #gift .gift-hide-row span{
+  color:#755d37!important;font-size:.69rem!important;letter-spacing:.14em!important;font-weight:850!important;
+}
+
+/* Gift card preview with line drawing */
+body[data-page="gift"] #gift .gift-card-preview{
+  position:relative!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  margin-top:26px!important;
+  min-height:255px!important;
+  padding:34px 38px!important;
+  border:1px solid rgba(231,199,114,.18)!important;
+  border-radius:28px!important;
+  background:
+    radial-gradient(circle at 15% 0%,rgba(255,255,255,.055),transparent 17rem),
+    linear-gradient(135deg,#0b4324,#0b3820)!important;
+  color:#fff!important;
+  box-shadow:0 18px 38px rgba(9,55,29,.14)!important;
+}
+body[data-page="gift"] #gift .gift-card-preview:before{
+  content:"";position:absolute;z-index:-1;right:-40px;bottom:-42px;width:310px;height:310px;
+  background:url("assets/olive-sprig-line.svg") center/contain no-repeat;
+  opacity:.58;transform:rotate(5deg);
+}
+body[data-page="gift"] #gift .gift-card-preview:after{
+  content:"";position:absolute;z-index:-2;right:-70px;top:-60px;width:235px;height:235px;border-radius:50%;
+  border:1px solid rgba(225,190,98,.34);box-shadow:0 0 0 75px rgba(225,190,98,.03);
+}
+body[data-page="gift"] #gift .gift-card-preview small{
+  display:block!important;color:#e5c36a!important;font-size:.72rem!important;letter-spacing:.19em!important;
+}
+body[data-page="gift"] #gift .gift-card-preview strong{
+  display:block!important;max-width:72%!important;
+  margin:22px 0 12px!important;
+  color:#fffdf7!important;font-family:"DM Serif Display",Georgia,serif!important;
+  font-size:clamp(2rem,5vw,3.5rem)!important;line-height:1!important;font-weight:400!important;
+}
+body[data-page="gift"] #gift .gift-card-preview p{
+  max-width:65%!important;margin:0!important;
+  color:rgba(255,255,255,.72)!important;font-size:.95rem!important;line-height:1.6!important;
+}
+body[data-page="gift"] #gift .gift-card-preview[data-theme="Natural linen"]{
+  background:linear-gradient(135deg,#f4e7d0,#e8d5b6)!important;color:var(--premium-olive)!important;border-color:rgba(117,84,35,.16)!important;
+}
+body[data-page="gift"] #gift .gift-card-preview[data-theme="Natural linen"] small{color:#9b7332!important}
+body[data-page="gift"] #gift .gift-card-preview[data-theme="Natural linen"] strong{color:var(--premium-olive)!important}
+body[data-page="gift"] #gift .gift-card-preview[data-theme="Natural linen"] p{color:#6c6355!important}
+body[data-page="gift"] #gift .gift-card-preview[data-theme="Warm gold"]{
+  background:linear-gradient(135deg,#7a5218,#b7832b 54%,#725019)!important;
+}
+body[data-page="gift"] #gift .gift-card-preview[data-theme="Warm gold"]:before{opacity:.34}
+
+/* Product picker / selected products / recipient details */
+body[data-page="gift"] #gift .gift-picker,
+body[data-page="gift"] #gift .gift-selected-panel,
+body[data-page="gift"] #gift .gift-details-panel{
+  margin-top:18px!important;
+  padding:28px!important;
+  border:1px solid rgba(18,63,34,.10)!important;
+  border-radius:28px!important;
+  background:#fffaf3!important;
+  box-shadow:0 12px 34px rgba(31,52,33,.055)!important;
+}
+body[data-page="gift"] #gift .gift-picker-head>div>span,
+body[data-page="gift"] #gift .gift-selected-head>strong{
+  color:var(--premium-olive)!important;
+  font-family:"DM Serif Display",Georgia,serif!important;
+  font-size:1.55rem!important;
+  letter-spacing:-.015em!important;
+}
+body[data-page="gift"] #gift .gift-picker-head small{color:#796f61!important}
+body[data-page="gift"] #gift .gift-picker-head button,
+body[data-page="gift"] #gift .gift-selected-head button{
+  border:1px solid rgba(18,63,34,.11)!important;
+  border-radius:999px!important;background:#f2eadc!important;color:var(--premium-olive)!important;
+}
+body[data-page="gift"] #gift .gift-product-search,
+body[data-page="gift"] #gift .gift-browse-controls select{
+  min-height:54px!important;border-radius:17px!important;background:#fff!important;border-color:rgba(18,63,34,.10)!important;
+}
+body[data-page="gift"] #gift .gift-result{
+  border-color:rgba(18,63,34,.09)!important;
+  background:#fffdf9!important;border-radius:18px!important;
+}
+body[data-page="gift"] #gift .gift-result.is-added{background:#edf3e9!important;border-color:rgba(18,63,34,.18)!important}
+body[data-page="gift"] #gift .gift-selected-items>div{background:#f1e7d4!important;border-radius:16px!important}
+body[data-page="gift"] #gift .gift-details-panel{
+  background:
+    url("assets/olive-sprig-line.svg") calc(100% + 72px) calc(100% + 80px)/270px auto no-repeat,
+    #fffaf3!important;
+}
+body[data-page="gift"] #gift .gift-builder label>span{
+  color:#795f35!important;font-size:.63rem!important;letter-spacing:.13em!important;
+}
+body[data-page="gift"] #gift .gift-builder input,
+body[data-page="gift"] #gift .gift-builder textarea,
+body[data-page="gift"] #gift .gift-builder select{
+  min-height:52px!important;
+  border:1px solid rgba(122,96,52,.15)!important;
+  border-radius:17px!important;
+  background:#fff!important;
+  color:var(--premium-ink)!important;
+  box-shadow:none!important;
+}
+body[data-page="gift"] #gift .gift-builder textarea{min-height:110px!important}
+body[data-page="gift"] #gift .gift-send{
+  min-height:58px!important;
+  margin-top:20px!important;
+  border-radius:999px!important;
+  background:var(--premium-olive)!important;
+  color:#fff!important;
+  box-shadow:0 16px 32px rgba(12,63,32,.16)!important;
+}
+body[data-page="gift"] #gift .gift-builder .price-note{
+  max-width:680px!important;margin:12px auto 0!important;text-align:center!important;color:#766f62!important;
+}
+
+/* Desktop details */
+@media(min-width:761px){
+  body[data-page="gift"] #gift .gift-card-preview{min-height:285px!important}
+}
+
+/* Tablet */
+@media(max-width:860px){
+  body[data-page="gift"] #gift .gift-grid{width:min(720px,calc(100% - 34px))!important}
+  body[data-page="gift"] #gift .gift-builder{margin:0!important}
+}
+
+/* Mobile matches the approved mockup composition */
+@media(max-width:760px){
+  body[data-page="gift"] .announcement{min-height:42px!important}
+  body[data-page="gift"] .announcement-inner{min-height:42px!important}
+  body[data-page="gift"] .announcement a{font-size:.64rem!important}
+  body[data-page="gift"] .nav{
+    height:76px!important;
+    padding-inline:2px!important;
+    gap:7px!important;
+  }
+  body[data-page="gift"] .brand{gap:5px!important}
+  body[data-page="gift"] .brand-logo{width:34px!important;height:34px!important}
+  body[data-page="gift"] .brand-wordmark{font-size:1.25rem!important}
+  body[data-page="gift"] .nav-toggle{width:42px!important;height:42px!important}
+  body[data-page="gift"] .gift-nav-search{width:38px;height:38px}
+  body[data-page="gift"] .cart-button{width:40px!important;height:40px!important;padding:0 8px!important}
+  body[data-page="gift"] .nav-links{
+    top:calc(100% + 8px)!important;
+    right:14px!important;
+    width:calc(100vw - 28px)!important;
+  }
+
+  body[data-page="gift"] .page-intro-gift{
+    padding:54px 0 48px!important;
+    background:
+      url("assets/olive-sprig-line.svg") calc(100% + 115px) 20%/270px auto no-repeat,
+      linear-gradient(180deg,#fffaf2,#f5ebdc)!important;
+  }
+  body[data-page="gift"] .page-intro-gift .page-intro-grid{gap:28px!important}
+  body[data-page="gift"] .page-intro-gift .page-intro-side{display:none!important}
+  body[data-page="gift"] .page-intro-gift h1{font-size:clamp(3rem,14vw,4.7rem)!important}
+
+  body[data-page="gift"] .gift-presets{padding:62px 0 54px!important}
+
+  body[data-page="gift"] #gift.gift-section{
+    padding:44px 0 76px!important;
+    background:linear-gradient(180deg,#0b4726 0 126px,#f5ecdf 126px 100%)!important;
+  }
+  body[data-page="gift"] #gift .gift-grid{width:calc(100% - 28px)!important}
+
+  body[data-page="gift"] #gift .gift-builder-head{
+    min-height:160px!important;
+    padding:28px 24px 68px!important;
+    border-radius:28px!important;
+  }
+  body[data-page="gift"] #gift .gift-builder-head span{font-size:.64rem!important}
+  body[data-page="gift"] #gift .gift-builder-head strong{font-size:1.8rem!important}
+  body[data-page="gift"] #gift .gift-builder-head>strong{font-size:1.6rem!important}
+
+  body[data-page="gift"] #gift .gift-box-ribbon{
+    top:109px!important;height:14px!important;
+  }
+  body[data-page="gift"] #gift .gift-box-bow{
+    top:-40px!important;width:116px!important;height:82px!important;
+  }
+
+  body[data-page="gift"] #gift .gift-premium-controls{
+    margin-top:22px!important;
+    padding:30px 20px 22px!important;
+    border-radius:28px!important;
+  }
+  body[data-page="gift"] #gift .gift-premium-controls:after{
+    right:-86px!important;top:-50px!important;width:230px!important;height:230px!important;opacity:.45!important;
+  }
+  body[data-page="gift"] #gift .gift-premium-controls h3{
+    max-width:75%!important;font-size:2.65rem!important;
+  }
+  body[data-page="gift"] #gift .gift-premium-controls>p{font-size:.86rem!important}
+  body[data-page="gift"] #gift .gift-budget-row{
+    margin:20px 0 24px!important;
+    flex-wrap:nowrap!important;
+    overflow-x:auto!important;
+    padding-bottom:3px!important;
+    scrollbar-width:none;
+  }
+  body[data-page="gift"] #gift .gift-budget-row::-webkit-scrollbar{display:none}
+  body[data-page="gift"] #gift .gift-budget-row button{min-width:70px!important}
+  body[data-page="gift"] #gift .gift-personalize-grid{
+    grid-template-columns:1fr!important;gap:16px!important;
+  }
+  body[data-page="gift"] #gift .gift-hide-row{grid-column:auto!important}
+  body[data-page="gift"] #gift .gift-personalize-grid select{min-height:58px!important}
+  body[data-page="gift"] #gift .gift-card-preview{
+    min-height:235px!important;padding:28px 24px!important;border-radius:24px!important;
+  }
+  body[data-page="gift"] #gift .gift-card-preview:before{
+    right:-72px!important;bottom:-60px!important;width:260px!important;height:260px!important;
+  }
+  body[data-page="gift"] #gift .gift-card-preview strong{
+    max-width:88%!important;margin-top:18px!important;font-size:2.35rem!important;
+  }
+  body[data-page="gift"] #gift .gift-card-preview p{max-width:84%!important;font-size:.87rem!important}
+
+  body[data-page="gift"] #gift .gift-picker,
+  body[data-page="gift"] #gift .gift-selected-panel,
+  body[data-page="gift"] #gift .gift-details-panel{
+    margin-top:14px!important;
+    padding:20px 16px!important;
+    border-radius:24px!important;
+  }
+  body[data-page="gift"] #gift .gift-picker-head{
+    align-items:flex-start!important;
+    flex-direction:column!important;
+  }
+  body[data-page="gift"] #gift .gift-picker-head button{width:100%!important}
+  body[data-page="gift"] #gift .gift-browse-controls{grid-template-columns:1fr!important}
+  body[data-page="gift"] #gift .gift-product-results{max-height:340px!important}
+  body[data-page="gift"] #gift .gift-form-grid{grid-template-columns:1fr!important}
+}
+
+@media(max-width:520px){
+  body[data-page="gift"] .language-switch{display:none!important}
+  body[data-page="gift"] .gift-menu-language{display:flex!important}
+  body[data-page="gift"] .cart-label{display:none!important}
+}
+@media(max-width:410px){
+  body[data-page="gift"] .brand-logo{display:none!important}
+  body[data-page="gift"] .brand-wordmark{font-size:1.15rem!important}
+  body[data-page="gift"] .nav-actions{gap:5px!important}
+}

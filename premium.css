@@ -2582,3 +2582,203 @@ body[data-page="shop"] .category-all-head{
     grid-template-columns:1fr!important;
   }
 }
+
+
+/* ===== v43 richer catalogue intro ===== */
+body[data-page="shop"] .shop{
+  position:relative!important;
+  padding-top:44px!important;
+  background:
+    radial-gradient(circle at 8% 12%,rgba(214,157,13,.07),transparent 22rem),
+    radial-gradient(circle at 92% 2%,rgba(11,75,37,.055),transparent 24rem),
+    linear-gradient(180deg,#f8f1e4 0%,#fbf7ee 100%)!important;
+  overflow:hidden!important;
+}
+
+body[data-page="shop"] .catalogue-intro-card{
+  position:relative!important;
+  grid-template-columns:minmax(0,1.05fr) minmax(280px,.72fr)!important;
+  gap:42px!important;
+  align-items:center!important;
+  margin:0!important;
+  padding:34px 36px!important;
+  border:1px solid rgba(226,177,54,.34)!important;
+  border-radius:30px!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 84% 18%,rgba(234,188,71,.13),transparent 15rem),
+    linear-gradient(135deg,#0a3919 0%,#0d4720 55%,#123f1e 100%)!important;
+  box-shadow:0 22px 55px rgba(8,45,19,.14)!important;
+  color:#fff!important;
+}
+
+body[data-page="shop"] .catalogue-intro-card::before{
+  content:""!important;
+  position:absolute!important;
+  width:260px!important;
+  height:260px!important;
+  right:-86px!important;
+  bottom:-155px!important;
+  border:1px solid rgba(237,202,114,.14)!important;
+  border-radius:50%!important;
+  pointer-events:none!important;
+}
+
+body[data-page="shop"] .catalogue-intro-card::after{
+  content:""!important;
+  position:absolute!important;
+  width:150px!important;
+  height:150px!important;
+  right:84px!important;
+  top:-90px!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  border-radius:50%!important;
+  pointer-events:none!important;
+}
+
+body[data-page="shop"] .catalogue-intro-copy,
+body[data-page="shop"] .catalogue-intro-note{
+  position:relative!important;
+  z-index:1!important;
+}
+
+body[data-page="shop"] .catalogue-intro-card .eyebrow{
+  margin-bottom:12px!important;
+  color:#edca72!important;
+}
+
+body[data-page="shop"] .catalogue-intro-card h2{
+  max-width:10ch!important;
+  margin:0!important;
+  color:#fff!important;
+  font-size:clamp(3.05rem,4.8vw,4.85rem)!important;
+  line-height:.92!important;
+}
+
+body[data-page="shop"] .catalogue-intro-card h2 em{
+  color:#edca72!important;
+}
+
+body[data-page="shop"] .catalogue-head-meta{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+  margin-top:22px!important;
+}
+
+body[data-page="shop"] .catalogue-head-meta span{
+  min-height:34px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:5px!important;
+  padding:0 12px!important;
+  border:1px solid rgba(255,255,255,.13)!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.065)!important;
+  color:rgba(255,255,255,.76)!important;
+  font-size:.69rem!important;
+  font-weight:700!important;
+  letter-spacing:.01em!important;
+}
+
+body[data-page="shop"] .catalogue-head-meta b{
+  color:#edca72!important;
+  font-family:"DM Serif Display",Georgia,serif!important;
+  font-size:.98rem!important;
+  font-weight:400!important;
+}
+
+body[data-page="shop"] .catalogue-intro-note{
+  display:grid!important;
+  grid-template-columns:44px minmax(0,1fr)!important;
+  gap:15px!important;
+  align-items:start!important;
+  padding:18px 0 18px 22px!important;
+  border-left:1px solid rgba(255,255,255,.13)!important;
+}
+
+body[data-page="shop"] .catalogue-note-mark{
+  width:42px!important;
+  height:42px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  background:#d3a323!important;
+  color:#082d13!important;
+  font-size:1.05rem!important;
+  font-weight:900!important;
+  box-shadow:0 8px 20px rgba(0,0,0,.12)!important;
+}
+
+body[data-page="shop"] .catalogue-intro-card .shop-note{
+  max-width:40ch!important;
+  margin:0!important;
+  justify-self:start!important;
+  color:rgba(255,255,255,.73)!important;
+  font-size:.91rem!important;
+  line-height:1.65!important;
+}
+
+body[data-page="shop"] .catalog-toolbar{
+  position:relative!important;
+  z-index:2!important;
+  margin-top:18px!important;
+  padding:10px!important;
+  border:1px solid rgba(11,75,37,.10)!important;
+  border-radius:24px!important;
+  background:rgba(255,252,246,.88)!important;
+  box-shadow:0 14px 32px rgba(11,75,37,.07)!important;
+}
+
+body[data-page="shop"] .catalog-toolbar .search-box,
+body[data-page="shop"] .category-select-wrap,
+body[data-page="shop"] .favorites-filter,
+body[data-page="shop"] .catalog-meta{
+  min-height:58px!important;
+}
+
+body[data-page="shop"] .product-grid{
+  margin-top:24px!important;
+}
+
+@media(max-width:900px){
+  body[data-page="shop"] .catalogue-intro-card{
+    grid-template-columns:1fr!important;
+    gap:24px!important;
+    padding:30px!important;
+  }
+  body[data-page="shop"] .catalogue-intro-note{
+    max-width:620px!important;
+    padding:18px 0 0!important;
+    border-left:0!important;
+    border-top:1px solid rgba(255,255,255,.13)!important;
+  }
+}
+
+@media(max-width:620px){
+  body[data-page="shop"] .shop{
+    padding-top:28px!important;
+  }
+  body[data-page="shop"] .catalogue-intro-card{
+    padding:24px 20px!important;
+    border-radius:24px!important;
+  }
+  body[data-page="shop"] .catalogue-intro-card h2{
+    font-size:clamp(2.7rem,13vw,3.9rem)!important;
+  }
+  body[data-page="shop"] .catalogue-intro-note{
+    grid-template-columns:38px minmax(0,1fr)!important;
+    gap:12px!important;
+  }
+  body[data-page="shop"] .catalogue-note-mark{
+    width:38px!important;
+    height:38px!important;
+  }
+  body[data-page="shop"] .catalogue-head-meta{
+    margin-top:18px!important;
+  }
+  body[data-page="shop"] .catalog-toolbar{
+    margin-top:14px!important;
+    padding:8px!important;
+  }
+}

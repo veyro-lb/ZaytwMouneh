@@ -1042,3 +1042,128 @@ html[dir="rtl"] .gift-v4-stamp{right:auto;left:25px}
   .gift-v4-primary,.gift-v4-secondary,
   body[data-page="gift"] .gift-result{transition:none!important}
 }
+
+
+/* ===== v5 phone usability hardening ===== */
+/* Keep the gift header to one search control; the page had both generic and gift-specific search icons. */
+body[data-page="gift"] .nav-search{display:none!important}
+
+@media(max-width:760px){
+  body[data-page="gift"] .nav{
+    grid-template-columns:44px minmax(0,1fr) auto!important;
+    gap:6px!important;
+  }
+  body[data-page="gift"] .nav-toggle{
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    min-height:44px!important;
+  }
+  body[data-page="gift"] .gift-v4-search{
+    width:44px!important;
+    height:44px!important;
+    flex:0 0 44px!important;
+  }
+  body[data-page="gift"] .cart-button{
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    min-height:44px!important;
+    padding:0!important;
+    justify-content:center!important;
+  }
+
+  .gift-v4-clear,
+  .gift-v4-quiet-button{
+    min-height:44px!important;
+  }
+
+  body[data-page="gift"] .gift-selected-controls{
+    grid-template-columns:40px 32px 40px!important;
+    min-height:40px!important;
+  }
+  body[data-page="gift"] .gift-selected-controls button{
+    width:40px!important;
+    height:40px!important;
+    min-height:40px!important;
+  }
+  body[data-page="gift"] .gift-remove{
+    width:40px!important;
+    height:40px!important;
+    min-width:40px!important;
+    min-height:40px!important;
+    right:7px!important;
+    top:7px!important;
+  }
+  body[data-page="gift"] .gift-selected-row{
+    padding-right:52px!important;
+  }
+  html[dir="rtl"] body[data-page="gift"] .gift-remove{
+    right:auto!important;
+    left:7px!important;
+  }
+  html[dir="rtl"] body[data-page="gift"] .gift-selected-row{
+    padding-right:10px!important;
+    padding-left:52px!important;
+  }
+
+  body[data-page="gift"] .gift-product-search input,
+  body[data-page="gift"] #giftCategorySelect,
+  body[data-page="gift"] .gift-selected-row select,
+  .gift-v4-details-card input,
+  .gift-v4-details-card select,
+  .gift-v4-details-card textarea{
+    font-size:16px!important;
+  }
+
+  .gift-v4-note{
+    font-size:.68rem!important;
+    line-height:1.55!important;
+  }
+
+  /* This page hides the generic floating mobile order bar, so it should not keep its blank footer clearance. */
+  body[data-page="gift"]:not(.cart-open):not(.modal-open){
+    padding-bottom:env(safe-area-inset-bottom)!important;
+  }
+}
+
+@media(max-width:520px){
+  /* Keep language switching available after the one-time welcome screen. */
+  body[data-page="gift"] .language-switch{
+    display:flex!important;
+    height:42px!important;
+    min-height:42px!important;
+    padding:3px!important;
+  }
+  body[data-page="gift"] .language-switch button{
+    min-width:32px!important;
+    height:34px!important;
+    min-height:34px!important;
+    padding:0 5px!important;
+    font-size:.64rem!important;
+  }
+  /* Search remains available in the menu/shop; removing this icon gives the language and cart room on narrow phones. */
+  body[data-page="gift"] .gift-v4-search{
+    display:none!important;
+  }
+  body[data-page="gift"] .nav-actions{
+    gap:4px!important;
+  }
+}
+
+@media(max-width:380px){
+  body[data-page="gift"] .nav{
+    grid-template-columns:42px minmax(0,1fr) auto!important;
+  }
+  body[data-page="gift"] .nav-toggle,
+  body[data-page="gift"] .cart-button{
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    min-height:42px!important;
+  }
+  body[data-page="gift"] .language-switch button{
+    min-width:30px!important;
+    padding:0 4px!important;
+  }
+}

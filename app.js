@@ -8,7 +8,8 @@ function uiIcon(name,active=false){
 }
 function productPhotoMarkup(p,cls="product-image"){
   const photos=window.ZWM_PRODUCT_PHOTOS;
-  const source=typeof photos?.cardSourceFor==="function"
+  const isCatalogueCard=cls==="product-image";
+  const source=isCatalogueCard&&typeof photos?.cardSourceFor==="function"
     ? photos.cardSourceFor(p.id)
     : (photos?.sourceFor?.(p.id)||photos?.tile?.(p.id));
   if(!source)return "";

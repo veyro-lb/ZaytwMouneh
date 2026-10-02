@@ -1261,3 +1261,236 @@ body[data-page="home"] .premium-recipes .premium-head h2 em{
     padding:26px!important;
   }
 }
+
+
+/* ===== v36 open-background hero composition ===== */
+/* Desktop: text left, a deliberately open scenic middle, compact pantry panel right. */
+@media(min-width:1181px){
+  body[data-page="shop"] .page-intro-shop{
+    min-height:720px!important;
+    padding:68px 0 74px!important;
+  }
+
+  body[data-page="shop"] .page-intro-grid{
+    width:min(100% - 88px,1640px)!important;
+    grid-template-columns:minmax(470px,520px) minmax(150px,1fr) minmax(450px,520px)!important;
+    gap:clamp(24px,2.1vw,38px)!important;
+    align-items:center!important;
+  }
+
+  body[data-page="shop"] .page-intro-copy-wrap{
+    grid-column:1!important;
+    max-width:520px!important;
+    align-self:center!important;
+    padding:8px 0!important;
+  }
+
+  body[data-page="shop"] .shop-intro-board{
+    grid-column:3!important;
+    justify-self:end!important;
+    width:100%!important;
+    max-width:520px!important;
+    min-height:auto!important;
+    margin:24px 0 0!important;
+    padding:24px!important;
+    border-radius:28px!important;
+    background:
+      linear-gradient(145deg,rgba(2,43,19,.90),rgba(2,31,14,.88))!important;
+    border:1px solid rgba(225,174,42,.42)!important;
+    box-shadow:0 22px 54px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.05)!important;
+  }
+
+  body[data-page="shop"] .intro-stat-pair{
+    gap:12px!important;
+    margin-bottom:22px!important;
+  }
+
+  body[data-page="shop"] .intro-stat-pair>div{
+    min-height:118px!important;
+    padding:20px 22px!important;
+    border-radius:18px!important;
+    background:rgba(255,255,255,.055)!important;
+    border:1px solid rgba(255,255,255,.09)!important;
+  }
+
+  body[data-page="shop"] .intro-stat-pair strong{
+    font-size:2.65rem!important;
+  }
+
+  body[data-page="shop"] .intro-board-kicker{
+    margin:0 0 14px!important;
+    color:#efb72a!important;
+  }
+
+  body[data-page="shop"] .intro-category-chips{
+    gap:10px!important;
+  }
+
+  body[data-page="shop"] .intro-category-chips a{
+    min-height:74px!important;
+    padding:10px 13px!important;
+    border-radius:18px!important;
+    background:#f5eddf!important;
+    border:1px solid rgba(255,255,255,.46)!important;
+    box-shadow:0 6px 16px rgba(0,0,0,.07)!important;
+  }
+
+  body[data-page="shop"] .intro-category-chips a>span{
+    width:46px!important;
+    height:46px!important;
+    flex:0 0 46px!important;
+    border-radius:14px!important;
+  }
+
+  body[data-page="shop"] .intro-category-chips b{
+    color:#0b4b25!important;
+    font-size:.9rem!important;
+  }
+
+  body[data-page="shop"] .intro-board-note{
+    margin-top:18px!important;
+    padding-top:15px!important;
+    color:rgba(255,255,255,.66)!important;
+    font-size:.78rem!important;
+  }
+
+  body[data-page="shop"] .page-intro h1{
+    max-width:7.7ch!important;
+    font-size:clamp(4.55rem,5.35vw,6.45rem)!important;
+    line-height:.91!important;
+  }
+
+  body[data-page="shop"] .page-intro-copy{
+    max-width:500px!important;
+    margin-top:24px!important;
+    font-size:.98rem!important;
+    line-height:1.65!important;
+  }
+
+  body[data-page="shop"] .page-intro-actions{
+    margin-top:26px!important;
+    gap:12px!important;
+  }
+
+  /* Only protect the left copy area; keep the centre and right scenery visible. */
+  body[data-page="shop"] .shop-hero-video-shade{
+    background:
+      linear-gradient(90deg,
+        rgba(2,35,15,.84) 0%,
+        rgba(2,35,15,.69) 23%,
+        rgba(2,35,15,.38) 35%,
+        rgba(2,35,15,.10) 45%,
+        rgba(2,35,15,.015) 56%,
+        rgba(2,35,15,0) 68%,
+        rgba(2,35,15,.02) 100%)!important;
+  }
+
+  body[data-page="shop"] .shop-hero-video{
+    opacity:0;
+    object-position:center 52%!important;
+  }
+
+  body[data-page="shop"] .shop-hero-video.is-ready{
+    opacity:1!important;
+  }
+}
+
+/* Mid-size desktop/laptop: preserve the open centre without crowding. */
+@media(min-width:981px) and (max-width:1180px){
+  body[data-page="shop"] .page-intro-shop{
+    min-height:690px!important;
+    padding:58px 0 64px!important;
+  }
+
+  body[data-page="shop"] .page-intro-grid{
+    width:min(100% - 54px,1120px)!important;
+    grid-template-columns:minmax(0,.95fr) minmax(400px,.78fr)!important;
+    gap:34px!important;
+    align-items:center!important;
+  }
+
+  body[data-page="shop"] .page-intro-copy-wrap{
+    max-width:500px!important;
+  }
+
+  body[data-page="shop"] .shop-intro-board{
+    max-width:460px!important;
+    justify-self:end!important;
+    padding:22px!important;
+    min-height:auto!important;
+    margin-top:22px!important;
+  }
+
+  body[data-page="shop"] .intro-stat-pair>div{
+    min-height:110px!important;
+  }
+
+  body[data-page="shop"] .intro-category-chips a{
+    min-height:72px!important;
+  }
+
+  body[data-page="shop"] .shop-hero-video-shade{
+    background:
+      linear-gradient(90deg,
+        rgba(2,35,15,.86) 0%,
+        rgba(2,35,15,.68) 31%,
+        rgba(2,35,15,.24) 48%,
+        rgba(2,35,15,.04) 61%,
+        rgba(2,35,15,.08) 100%)!important;
+  }
+}
+
+/* Tablet/mobile: panel follows the content instead of covering the scene. */
+@media(max-width:980px){
+  body[data-page="shop"] .page-intro-grid{
+    align-items:start!important;
+  }
+
+  body[data-page="shop"] .shop-intro-board{
+    width:min(100%,680px)!important;
+    max-width:680px!important;
+    justify-self:start!important;
+    margin:6px 0 0!important;
+    min-height:auto!important;
+    padding:22px!important;
+    border-radius:26px!important;
+    background:rgba(2,38,17,.91)!important;
+  }
+
+  body[data-page="shop"] .shop-hero-video-shade{
+    background:
+      linear-gradient(180deg,
+        rgba(3,43,19,.86) 0%,
+        rgba(3,43,19,.60) 35%,
+        rgba(3,43,19,.18) 58%,
+        rgba(3,43,19,.45) 100%)!important;
+  }
+}
+
+@media(max-width:680px){
+  body[data-page="shop"] .shop-intro-board{
+    padding:18px!important;
+    border-radius:22px!important;
+  }
+
+  body[data-page="shop"] .intro-stat-pair{
+    gap:9px!important;
+  }
+
+  body[data-page="shop"] .intro-stat-pair>div{
+    min-height:96px!important;
+    padding:16px!important;
+  }
+
+  body[data-page="shop"] .intro-stat-pair strong{
+    font-size:2.25rem!important;
+  }
+
+  body[data-page="shop"] .intro-category-chips{
+    grid-template-columns:1fr!important;
+  }
+
+  body[data-page="shop"] .intro-category-chips a{
+    min-height:66px!important;
+  }
+}

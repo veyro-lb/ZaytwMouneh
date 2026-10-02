@@ -1,49 +1,32 @@
 
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
-const PRODUCT_IMAGE_ASSETS={
-  "zaatar":"assets/products/zaatar.webp?v=20261002-0955",
-  "lentils":"assets/products/lentils.webp?v=20261002-0955",
-  "olive-oil":"assets/products/olive-oil.webp?v=20261002-0955",
-  "olives":"assets/products/olives.webp?v=20261002-0955",
-  "honey":"assets/products/honey.webp?v=20261002-0955",
-  "molasses":"assets/products/molasses.webp?v=20261002-0955",
-  "rice":"assets/products/rice.webp?v=20261002-0955",
-  "flour":"assets/products/flour.webp?v=20261002-0955",
-  "spices":"assets/products/mixed-spices.webp?v=20261002-0955",
-  "nuts-seeds":"assets/products/nuts-seeds.webp?v=20261002-0955"
-};
-
-function productImageKey(p){
-  const s=(String(p?.nameEn||"")+" "+String(p?.original||"")+" "+String(p?.category||"")).toLowerCase();
-
-  if(/olive oil|extra virgin/.test(s)||p?.category==="Olive Oil"||p?.category==="Oils")return "olive-oil";
-  if(p?.category==="Olives"||/\bolives?\b|zaytoun/.test(s))return "olives";
-  if(p?.category==="Honey"||/honey/.test(s))return "honey";
-  if(p?.category==="Molasses"||p?.category==="Distillates + Syrups"||p?.category==="Vinegars"||/molasses|debs|dibs|syrup|jallab|jeleb|vinegar/.test(s))return "molasses";
-  if(/zaatar|zatar|thyme/.test(s))return "zaatar";
-  if(p?.category==="Pulses"||/lentil|pulse|chickpea|bean|hommos|hummus|lupin|peas/.test(s))return "lentils";
-  if(p?.category==="Grains"||/rice|grain|bulgur|burghol|freek|wheat|oat|barley/.test(s))return "rice";
-  if(p?.category==="Flour"||/flour|semolina|baking powder|yeast/.test(s))return "flour";
-  if(p?.category==="Nuts + Seeds"||p?.category==="Dates"||p?.category==="Dried Foods"||p?.category==="Sweets + Candy"||/nut|almond|walnut|hazelnut|peanut|seed|sesame|pistach|date|raisin|fig|apricot|cranberr|coconut/.test(s))return "nuts-seeds";
-  if(p?.category==="Pickles"||p?.category==="Mouneh")return "olives";
-  if(p?.category==="Herbs"||p?.category==="Spices"||p?.category==="Condiments"||/spice|pepper|cumin|sumac|cinnamon|paprika|ginger|herb|salt|sugar/.test(s))return "spices";
-  if(p?.category==="Debsy Carob"||/carob/.test(s))return "molasses";
-  if(p?.category==="Soap")return "olive-oil";
-  return "spices";
-}
-function productImageSrc(p){return PRODUCT_IMAGE_ASSETS[productImageKey(p)]||""}
-function uiIcon(name,active=false){
-  if(name==="heart")return `<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5S4 16 2.6 10.8C1.7 7.5 3.8 4.5 7 4.5c2 0 3.6 1 5 2.7 1.4-1.7 3-2.7 5-2.7 3.2 0 5.3 3 4.4 6.3C20 16 12 20.5 12 20.5Z" ${active?'fill="currentColor"':'fill="none"'} stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
-  if(name==="eye")return `<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-5.6 9.5-5.6S21.5 12 21.5 12 18.1 17.6 12 17.6 2.5 12 2.5 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>`;
-  return "";
-}
 function productPhotoMarkup(p,cls="product-image"){
   const photos=window.ZWM_PRODUCT_PHOTOS;
-  const tile=photos?.tile?.(p.id);
-  if(!tile||!photos.atlasUrl)return "";
-  const x=tile[0]*photos.tileW,y=tile[1]*photos.tileH;
-  return `<svg class="${escapeHtml(cls)} product-photo-sprite" viewBox="${x} ${y} ${photos.tileW} ${photos.tileH}" width="100%" height="100%" overflow="hidden" style="overflow:hidden" role="img" aria-label="${escapeHtml(currentName(p))}" preserveAspectRatio="xMidYMid meet"><image href="${escapeHtml(photos.atlasUrl)}" x="0" y="0" width="${photos.atlasW}" height="${photos.atlasH}" preserveAspectRatio="none"></image></svg>`;
+  const source=photos?.sourceFor?.(p.id)||photos?.tile?.(p.id);
+  if(!source)return "";
+  const coords=source.coords||source;
+  const tileW=source.tileW||photos.tileW;
+  const tileH=source.tileH||photos.tileH;
+  const atlasW=source.atlasW||photos.atlasW;
+  const atlasH=source.atlasH||photos.atlasH;
+  const atlasUrl=source.atlasUrl||photos.atlasUrl;
+  if(!coords||!atlasUrl||!tileW||!tileH||!atlasW||!atlasH)return "";
+  const x=coords[0]*tileW,y=coords[1]*tileH;
+  const focal=source.focus||null;
+  const vx=focal?x+focal[0]*tileW:x;
+  const vy=focal?y+focal[1]*tileH:y;
+  const vw=focal?focal[2]*tileW:tileW;
+  const vh=focal?focal[3]*tileH:tileH;
+  return `<svg class="${escapeHtml(cls)} product-photo-sprite" viewBox="${vx} ${vy} ${vw} ${vh}" width="100%" height="100%" overflow="hidden" style="overflow:hidden" role="img" aria-label="${escapeHtml(currentName(p))}" preserveAspectRatio="xMidYMid meet"><image href="${escapeHtml(atlasUrl)}" x="0" y="0" width="${atlasW}" height="${atlasH}" preserveAspectRatio="none"></image></svg>`;
+}
+function renderStaticProductPhotos(root=document){
+  root.querySelectorAll("[data-product-photo]").forEach(slot=>{
+    const p=productById(slot.dataset.productPhoto);
+    if(!p)return;
+    slot.innerHTML=productVisualMarkup(p,"decorative-product-image");
+    slot.classList.add("has-product-photo");
+  });
 }
 function productPlaceholderMarkup(p,cls="product-image"){
   return `<span class="${escapeHtml(cls)} product-photo-placeholder" role="img" aria-label="${escapeHtml(currentName(p))}"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M19 18h26l-2.5 34h-21L19 18Z"/><path d="M23 18V12h18v6"/><path d="M27 33c5-6 12-8 18-7-2 7-7 12-15 13"/><path d="M31 39v8"/></svg><small>${escapeHtml(categoryName(p.category))}</small></span>`;
@@ -55,6 +38,7 @@ function productVisualMarkup(p,cls="product-image"){
 }
 
 window.addEventListener("zwm-product-photos-ready",()=>{
+  renderStaticProductPhotos();
   renderProducts();
   renderCategories();
   renderFeaturedProducts();
@@ -1676,6 +1660,7 @@ function init(){
   if(requestedQuery){query=requestedQuery;if($("#productSearch"))$("#productSearch").value=requestedQuery;}
   const requestedProduct=params.get("product");
   applyLanguage(lang,{immediate:true});
+  renderStaticProductPhotos();
   prewarmLanguageFonts();
   if($("#heroShowcase")){showScene(0);startScenes();}
   setupNav();

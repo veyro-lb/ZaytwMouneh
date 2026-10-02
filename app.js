@@ -785,7 +785,7 @@ function renderCategories(){
   grid.innerHTML=cats.map((cat,index)=>{
     const count=CATEGORY_COUNTS[cat]||0;
     const info=CATEGORY_INFO[cat]?.[lang]||["",""];
-    const href=CURRENT_PAGE==="shop"?"#shop":`shop.html?category=${encodeURIComponent(cat)}#shop`;
+    const href=CURRENT_PAGE==="shop"?`?category=${encodeURIComponent(cat)}#shop`:`shop.html?category=${encodeURIComponent(cat)}#shop`;
     return `<a class="category-card reveal" href="${href}" data-cat="${escapeHtml(cat)}">
       <div class="category-card-top"><span class="category-index">${String(index+1).padStart(2,"0")}</span><span class="category-count">${count} ${lang==="ar"?"منتج":"products"}</span></div>
       <div class="category-card-main">

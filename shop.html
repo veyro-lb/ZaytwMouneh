@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=20261002-contrast36" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"shop | Zayt w Mouneh","isPartOf":{"@type":"WebSite","name":"Zayt w Mouneh","url":"https://zaytwmouneh.veyro-202.workers.dev/"}}</script>
-  <link rel="stylesheet" href="premium.css?v=20261002-hero-layout36" />
+  <link rel="stylesheet" href="premium.css?v=20261002-hero-swap37" />
 </head>
 <body data-page="shop">
   <a class="skip-link" href="shop.html#shop" id="skipLink">Skip to catalogue</a>
@@ -110,33 +110,55 @@
   </header>
 
   <main>
-    <section class="page-intro page-intro-shop">
-      <video class="shop-hero-video" id="shopHeroVideo" autoplay muted loop playsinline preload="none" aria-hidden="true"></video>
-      <div class="shop-hero-video-shade" aria-hidden="true"></div>
-      <div class="shell page-intro-grid">
-        <div class="page-intro-copy-wrap">
-          <p class="eyebrow only-en">Natural &nbsp;·&nbsp; Authentic &nbsp;·&nbsp; Lebanese</p><p class="eyebrow only-ar" lang="ar">أصيل &nbsp;·&nbsp; محلي &nbsp;·&nbsp; طبيعي</p>
-          <h1 class="only-en">Pantry<br>essentials,<br><em>ready to<br>browse.</em></h1><h1 class="only-ar" lang="ar">أساسيات المونة،<br><em>جاهزة للتصفّح.</em></h1>
-          <p class="page-intro-copy only-en">Search the full catalogue, choose the exact pack size and add it directly to your pantry.</p>
-          <p class="page-intro-copy only-ar" lang="ar">ابحث في كامل المنتجات، واختر الحجم المناسب وأضفه مباشرة إلى لائحة المونة.</p>
-          <div class="page-intro-actions">
-            <a class="intro-primary only-en" href="#shop">Browse all products <span>↘</span></a>
-            <a class="intro-primary only-ar" lang="ar" href="#shop">تصفّح كل المنتجات <span>↙</span></a>
-            <a class="intro-secondary only-en" href="#categories">Shop by category</a>
-            <a class="intro-secondary only-ar" lang="ar" href="#categories">تسوّق حسب القسم</a>
+    <section class="hero shop-story-hero" aria-labelledby="heroTitle">
+      <div class="hero-grain" aria-hidden="true"></div>
+      <div class="shell hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow" id="heroEyebrow">Rooted in Lebanese heritage</p>
+          <h1 id="heroTitle" class="hero-title">A pantry of<br><em>Lebanese memory.</em></h1>
+          <p class="hero-lede" id="heroLede">Authentic Lebanese pantry essentials, selected with care and delivered across Lebanon.</p>
+          <div class="hero-actions">
+            <a class="button button-gold" id="heroExplore" href="#shop">Shop the pantry <span>↘</span></a>
+            <a class="button button-ghost" id="heroWhatsApp" href="gift.html">Send a gift</a>
+          </div>
+          <div class="hero-stats hero-trust-points" aria-label="Why Zayt w Mouneh">
+            <div><strong>2006</strong><span>since</span></div>
+            <div><strong>300+</strong><span>pantry products</span></div>
+            <div><strong>Lebanon</strong><span>delivery across the country</span></div>
           </div>
         </div>
-        <div class="page-intro-side shop-intro-board">
-          <div class="intro-stat-pair"><div><strong>332</strong><span class="only-en">products</span><span class="only-ar" lang="ar">منتج</span></div><div><strong>21</strong><span class="only-en">categories</span><span class="only-ar" lang="ar">قسم</span></div></div>
-          <p class="intro-board-kicker only-en">Jump into the pantry</p><p class="intro-board-kicker only-ar" lang="ar">ابدأ من هنا</p>
-          <div class="intro-category-chips">
-            <a href="?category=Honey#shop"><span class="intro-chip-media"><img src="assets/products/honey.webp?v=20261002-shophero27" alt="" /></span><b class="only-en">Honey</b><b class="only-ar" lang="ar">عسل</b><i aria-hidden="true">›</i></a>
-            <a href="?category=Olive%20Oil#shop"><span class="intro-chip-media"><img src="assets/products/olive-oil.webp?v=20261002-shophero27" alt="" /></span><b class="only-en">Olive oil</b><b class="only-ar" lang="ar">زيت زيتون</b><i aria-hidden="true">›</i></a>
-            <a href="?category=Mouneh#shop"><span class="intro-chip-media"><img src="assets/products/olives.webp?v=20261002-shophero27" alt="" /></span><b class="only-en">Mouneh</b><b class="only-ar" lang="ar">مونة</b><i aria-hidden="true">›</i></a>
-            <a href="?category=Spices#shop"><span class="intro-chip-media"><img src="assets/products/mixed-spices.webp?v=20261002-shophero27" alt="" /></span><b class="only-en">Spices</b><b class="only-ar" lang="ar">بهارات</b><i aria-hidden="true">›</i></a>
+
+        <div class="hero-showcase reveal" id="heroShowcase">
+          <div class="hero-logo-float"><img src="assets/logo.svg?v=20261002-1005" alt="Zayt w Mouneh" /></div>
+          <div class="pantry-scenes" aria-label="Pantry films">
+            <article class="pantry-scene is-active" data-scene="0">
+              <video class="scene-video" autoplay muted playsinline preload="auto" aria-hidden="true">
+                <source src="https://videos.pexels.com/video-files/7281326/7281326-hd_1080_1920_25fps.mp4" type="video/mp4" />
+              </video>
+              <div class="scene-shade" aria-hidden="true"></div>
+              <div class="scene-copy"><span id="scene1Kicker">Pantry film · 01</span><strong id="scene1Title">Honey, slow and golden.</strong><small id="scene1Copy">One texture in a pantry full of grains, herbs, mouneh, oils and more.</small></div>
+            </article>
+            <article class="pantry-scene" data-scene="1">
+              <video class="scene-video" muted playsinline preload="metadata" aria-hidden="true">
+                <source src="https://videos.pexels.com/video-files/20598196/20598196-uhd_3840_2160_25fps.mp4" type="video/mp4" />
+              </video>
+              <div class="scene-shade" aria-hidden="true"></div>
+              <div class="scene-copy"><span id="scene2Kicker">Pantry film · 02</span><strong id="scene2Title">Lentils & everyday staples.</strong><small id="scene2Copy">Warm, useful ingredients for real home cooking.</small></div>
+            </article>
+            <article class="pantry-scene" data-scene="2">
+              <video class="scene-video" muted playsinline preload="metadata" aria-hidden="true">
+                <source src="https://videos.pexels.com/video-files/13473653/13473653-hd_1920_1080_25fps.mp4" type="video/mp4" />
+              </video>
+              <div class="scene-shade" aria-hidden="true"></div>
+              <div class="scene-copy"><span id="scene3Kicker">Pantry film · 03</span><strong id="scene3Title">Wheat, harvest & season.</strong><small id="scene3Copy">A calm reminder of the ingredients, seasons and tables behind mouneh.</small></div>
+            </article>
           </div>
-          <p class="intro-board-note only-en">Search also understands English, Arabic and Arabizi.</p>
-          <p class="intro-board-note only-ar" lang="ar">البحث يفهم العربية والإنجليزية والعربيزي أيضاً.</p>
+          <div class="scene-controls" aria-label="Choose hero film">
+            <button type="button" class="scene-dot is-active" data-scene-dot="0" aria-label="Show honey film"></button>
+            <button type="button" class="scene-dot" data-scene-dot="1" aria-label="Show lentil film"></button>
+            <button type="button" class="scene-dot" data-scene-dot="2" aria-label="Show wheat film"></button>
+          </div>
+          <span class="hero-script" id="heroScript">Curated with care</span>
         </div>
       </div>
     </section>
@@ -335,6 +357,6 @@
   <script src="products-data.js?v=20261002-1005"></script>
   <script src="product-photos.js?v=20261002-photos2"></script>
   <script src="app.js?v=20261002-header33"></script>
-  <script src="premium.js?v=20261002-hero-video32"></script>
+  <script src="premium.js?v=20261002-hero-swap37"></script>
 </body>
 </html>

@@ -1043,3 +1043,31 @@ body[data-page="shop"] .intro-board-note{
     font-size:1.72rem!important;
   }
 }
+
+
+/* ===== v34 remove redundant desktop hamburger ===== */
+@media(min-width:1181px){
+  .site-header .nav{
+    grid-template-columns:auto minmax(280px,1fr) auto!important;
+    column-gap:24px!important;
+  }
+  .site-header .nav>.nav-toggle{
+    display:none!important;
+  }
+  .site-header .nav>.nav-links{
+    grid-column:1!important;
+  }
+  .site-header .nav>.brand{
+    grid-column:2!important;
+  }
+  .site-header .nav>.nav-actions{
+    grid-column:3!important;
+  }
+}
+
+@media(min-width:1181px) and (max-width:1450px){
+  .site-header .nav{
+    grid-template-columns:auto minmax(220px,1fr) auto!important;
+    column-gap:16px!important;
+  }
+}

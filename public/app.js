@@ -402,6 +402,37 @@ let favoritesOnly=false;
 const CURRENT_PAGE=document.body?.dataset.page||"home";
 let heroVisible=true;
 
+/* Owner dashboard product overrides: apply the last verified public cache before catalogue stats/rendering. */
+(function applyCachedOwnerCatalog(){
+  try{
+    const rows=JSON.parse(localStorage.getItem("zwm:cms:product-overrides:v1")||"[]");
+    if(!Array.isArray(rows)||!rows.length)return;
+    const index=new Map(PRODUCTS_DATA.map((p,i)=>[p.id,i]));
+    const hidden=new Set();
+    rows.forEach(row=>{
+      const id=String(row?.product_id||"");
+      if(!id)return;
+      const payload=row?.payload&&typeof row.payload==="object"?row.payload:{};
+      const status=payload.status||(row.action==="hide"?"hidden":"live");
+      if(status==="hidden"||status==="draft"){hidden.add(id);return;}
+      const at=index.get(id);
+      const merged={...(Number.isInteger(at)?PRODUCTS_DATA[at]:{}),...payload,id};
+      if(Array.isArray(payload.variants))merged.variants=payload.variants;
+      if(Number.isInteger(at))PRODUCTS_DATA[at]=merged;
+      else{index.set(id,PRODUCTS_DATA.length);PRODUCTS_DATA.push(merged);}
+      if(payload.image?.url&&window.ZWM_PRODUCT_PHOTOS?.map){
+        window.ZWM_PRODUCT_PHOTOS.map[id]={
+          url:payload.image.url,
+          width:Number(payload.image.width)||1200,
+          height:Number(payload.image.height)||1200,
+          quality:"owner-dashboard"
+        };
+      }
+    });
+    for(let i=PRODUCTS_DATA.length-1;i>=0;i--)if(hidden.has(PRODUCTS_DATA[i]?.id))PRODUCTS_DATA.splice(i,1);
+  }catch(error){console.warn("Owner catalogue cache ignored:",error);}
+})();
+
 const CATEGORY_COUNTS=Object.fromEntries(CATEGORY_ORDER.map(cat=>[cat,PRODUCTS_DATA.filter(p=>p.category===cat).length]));
 const DISPLAY_NAME_COUNTS=PRODUCTS_DATA.reduce((acc,p)=>{
   const key=String(p.nameEn||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
@@ -1976,3 +2007,6 @@ window.chooseWelcomeLanguage=chooseWelcomeLanguage;
 window.applyLanguage=applyLanguage;
 window.applyPageMetadata=applyPageMetadata;
 document.addEventListener("DOMContentLoaded",init);
+
+/* Load the optional owner CMS/analytics bridge without delaying the storefront. */
+(()=>{if(document.querySelector('script[data-zwm-site-runtime]'))return;const s=document.createElement("script");s.src="site-runtime.js?v=20261004-1";s.async=true;s.dataset.zwmSiteRuntime="1";document.head.appendChild(s);})();

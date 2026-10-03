@@ -20,10 +20,16 @@
 
   const AR_TRANSLATIONS = Object.freeze({
     "Owner Console":"لوحة المالك",
+    "Zayt w Mouneh — Owner Console":"Zayt w Mouneh — لوحة المالك",
+    "Loading":"جارٍ التحميل",
     "Secure backend required":"يلزم ربط آمن",
     "The dashboard UI is installed.":"واجهة لوحة الإدارة مثبّتة.",
     "Connect the owner backend to activate it.":"اربط نظام المالك الخلفي لتفعيلها.",
     "For security, this page will not accept a hard-coded browser password. Product changes, uploads and analytics require the dedicated protected database configured in admin-config.js.":"لأسباب أمنية، لا تقبل هذه الصفحة كلمة مرور مخزنة داخل المتصفح. تعديلات المنتجات ورفع الصور والتحليلات تحتاج إلى قاعدة البيانات المحمية المخصصة في admin-config.js.",
+    "For security, this page will not accept a hard-coded browser password. Product changes, uploads and analytics require the dedicated protected database configured in":"لأسباب أمنية، لا تقبل هذه الصفحة كلمة مرور مخزنة داخل المتصفح. تعديلات المنتجات ورفع الصور والتحليلات تحتاج إلى قاعدة البيانات المحمية المخصصة في",
+    "Use the included":"استخدم ملف",
+    "schema.":"المرفق.",
+    "Add only the owner's Auth user UUID to":"أضف فقط معرّف UUID الخاص بحساب المالك إلى",
     "Create the dedicated backend":"إنشاء النظام الخلفي المخصص",
     "Use the included supabase/admin_dashboard.sql schema.":"استخدم مخطط supabase/admin_dashboard.sql المرفق.",
     "Create the owner account":"إنشاء حساب المالك",

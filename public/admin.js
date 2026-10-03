@@ -1443,6 +1443,14 @@
     $("metricSessionsHint").textContent = sessions.size ? `${(views.length/sessions.size).toFixed(1)} views / session` : "No session data yet";
     $("metricProductsHint").textContent = `${state.products.length-visibleProducts().length} hidden or draft`;
 
+    const todayOrders=state.orders.filter(o=>isToday(o.submitted_at));
+    const deliveredToday=state.orders.filter(o=>o.status==="delivered"&&isToday(o.delivered_at||o.updated_at));
+    $("todayNewOrders").textContent=todayOrders.filter(o=>o.status==="new").length;
+    $("todayPreparingOrders").textContent=todayOrders.filter(o=>["confirmed","preparing"].includes(o.status)).length;
+    $("todayOutOrders").textContent=todayOrders.filter(o=>o.status==="out_for_delivery").length;
+    $("todaySales").textContent=money(deliveredToday.reduce((sum,o)=>sum+(Number(o.total)||0),0));
+    $("todayDeliveredOrders").textContent=`${deliveredToday.length} delivered`;
+
     const missing = state.products.filter(p=>!photoFor(p) && !["hidden","draft"].includes(p.__status)).length;
     const hidden = state.products.filter(p=>p.__status==="hidden").length;
     const drafts = state.products.filter(p=>p.__status==="draft").length;
@@ -1510,6 +1518,13 @@
     $("promoTitleAr").value = promo.titleAr || "";
     $("promoBodyEn").value = promo.bodyEn || "";
     $("promoBodyAr").value = promo.bodyAr || "";
+    $("promoStartsAt").value = promo.startsAt ? new Date(promo.startsAt).toISOString().slice(0,16) : "";
+    $("promoEndsAt").value = promo.endsAt ? new Date(promo.endsAt).toISOString().slice(0,16) : "";
+    const delivery=state.settings.get("delivery")||{};
+    $("deliveryFee").value=Number.isFinite(Number(delivery.fee))?delivery.fee:"";
+    $("deliveryFreeAbove").value=Number.isFinite(Number(delivery.freeAbove))?delivery.freeAbove:"";
+    $("deliveryMinimum").value=Number.isFinite(Number(delivery.minimum))?delivery.minimum:"";
+    $("deliveryEta").value=delivery.eta||"";
   }
 
   function renderAnalytics() {
@@ -1530,6 +1545,26 @@
     const productViews=events.filter(e=>e.event_name==="product_view"&&e.meta?.product_id);
     const ranked=rankBy(productViews,e=>e.meta?.product_id).slice(0,8).map(r=>({...r,label:state.products.find(p=>p.id===r.label)?.nameEn||r.label}));
     renderRankList($("analyticsProducts"),ranked,"product views");
+
+    const minOrderTime=Date.now()-days*86400000;
+    const periodOrders=state.orders.filter(o=>new Date(o.submitted_at).getTime()>=minOrderTime);
+    const orderValue=periodOrders.reduce((sum,o)=>sum+(Number(o.total)||0),0);
+    $("analyticsOrders").textContent=periodOrders.length.toLocaleString();
+    $("analyticsOrderValue").textContent=money(orderValue);
+    $("analyticsAvgOrder").textContent=periodOrders.length?money(orderValue/periodOrders.length):money(0);
+    const gifts=periodOrders.filter(o=>o.kind==="gift").length;
+    $("analyticsGiftShare").textContent=periodOrders.length?`${Math.round((gifts/periodOrders.length)*100)}%`:"0%";
+
+    const productCounts=new Map();
+    for(const order of periodOrders){
+      for(const item of Array.isArray(order.items)?order.items:[]){
+        const id=item.product_id||item.name||"Item";
+        const qty=Number(item.qty)||1;
+        const entry=productCounts.get(id)||{label:item.name||state.products.find(p=>p.id===id)?.nameEn||id,value:0};
+        entry.value+=qty;productCounts.set(id,entry);
+      }
+    }
+    renderRankList($("analyticsOrderedProducts"),[...productCounts.values()].sort((a,b)=>b.value-a.value).slice(0,8),"items ordered");
     $("intentBreakdown").innerHTML=[
       ["Product views",productViews.length],
       ["Add to pantry",adds.length],
@@ -1556,7 +1591,7 @@
     state.activeView=view;
     $$(".dashboard-view").forEach(p=>p.classList.toggle("is-active",p.dataset.viewPanel===view));
     $$(".admin-nav button").forEach(b=>b.classList.toggle("is-active",b.dataset.view===view));
-    const titles={overview:"Overview",products:"Products",orders:"Orders & history",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
+    const titles={overview:"Overview",products:"Products",orders:"Orders & history",customers:"Customers",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
     $("viewTitle").textContent=titles[view]||"Owner Console";
     localizeDom($("viewTitle"));
     closeSidebar();
@@ -1651,7 +1686,19 @@
     const rows=[
       {key:"announcement",value:{enabled:$("announcementEnabled").checked,en:$("announcementEn").value.trim(),ar:$("announcementAr").value.trim()}},
       {key:"contact",value:{whatsapp:$("contentWhatsApp").value.replace(/\D/g,"")}},
-      {key:"promo",value:{enabled:$("promoEnabled").checked,titleEn:$("promoTitleEn").value.trim(),titleAr:$("promoTitleAr").value.trim(),bodyEn:$("promoBodyEn").value.trim(),bodyAr:$("promoBodyAr").value.trim()}}
+      {key:"promo",value:{
+        enabled:$("promoEnabled").checked,
+        titleEn:$("promoTitleEn").value.trim(),titleAr:$("promoTitleAr").value.trim(),
+        bodyEn:$("promoBodyEn").value.trim(),bodyAr:$("promoBodyAr").value.trim(),
+        startsAt:$("promoStartsAt").value?new Date($("promoStartsAt").value).toISOString():null,
+        endsAt:$("promoEndsAt").value?new Date($("promoEndsAt").value).toISOString():null
+      }},
+      {key:"delivery",value:{
+        fee:Math.max(0,Number($("deliveryFee").value)||0),
+        freeAbove:Math.max(0,Number($("deliveryFreeAbove").value)||0),
+        minimum:Math.max(0,Number($("deliveryMinimum").value)||0),
+        eta:$("deliveryEta").value.trim()
+      }}
     ].map(r=>({...r,updated_by:state.user.id,updated_at:new Date().toISOString()}));
     setStatus($("contentStatus"),"Saving…");
     const {error}=await state.client.from(cfg.tables.settings).upsert(rows,{onConflict:"key"});

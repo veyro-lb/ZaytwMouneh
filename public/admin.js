@@ -810,6 +810,7 @@
       const row = state.overrides.get(base.id);
       if (!row) return {...clone(base), __status:"live", __source:"base", __updated:null};
       const payload = row.payload || {};
+      if (payload.deleted === true) return null;
       return {
         ...clone(base), ...clone(payload),
         id: base.id,
@@ -817,9 +818,9 @@
         __status: payload.status || (row.action==="hide" ? "hidden" : "live"),
         __source:"edited", __updated:row.updated_at
       };
-    });
+    }).filter(Boolean);
     for (const [id,row] of state.overrides) {
-      if (baseById.has(id) || row.action==="hide") continue;
+      if (baseById.has(id) || row.action==="hide" || row.payload?.deleted === true) continue;
       const p = clone(row.payload || {});
       p.id = id;
       p.variants = Array.isArray(p.variants) ? p.variants : [];
@@ -862,16 +863,79 @@
     updateLanguageButtons();
   }
 
+  function storedCategoryRecords() {
+    const raw=state.settings.get("product_categories");
+    const items=Array.isArray(raw?.items)?raw.items:[];
+    return items
+      .map(item=>({en:safeText(item?.en).trim(),ar:safeText(item?.ar).trim()}))
+      .filter(item=>item.en);
+  }
+
+  function categoryRecords() {
+    const map=new Map();
+    for(const p of state.products){
+      const en=safeText(p.category).trim();
+      if(en&&!map.has(en))map.set(en,{en,ar:AR_TRANSLATIONS[en]||""});
+    }
+    for(const item of storedCategoryRecords()){
+      const existing=map.get(item.en);
+      map.set(item.en,{en:item.en,ar:item.ar||existing?.ar||AR_TRANSLATIONS[item.en]||""});
+    }
+    return [...map.values()].sort((a,b)=>a.en.localeCompare(b.en));
+  }
+
+  function categoryDisplayName(en) {
+    const record=categoryRecords().find(item=>item.en===en);
+    if(state.lang==="ar")return record?.ar||AR_TRANSLATIONS[en]||en;
+    return en;
+  }
+
   function populateCategoryControls() {
-    const categories = [...new Set(state.products.map(p => p.category).filter(Boolean))].sort();
-    const filter = $("productCategoryFilter");
-    const current = filter.value;
-    filter.innerHTML = '<option value="">All categories</option>' + categories.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
-    filter.value = categories.includes(current) ? current : "";
-    const editor = $("productCategory");
-    const editorCurrent = editor.value;
-    editor.innerHTML = categories.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("") + '<option value="__new">+ New category…</option>';
-    if (categories.includes(editorCurrent)) editor.value = editorCurrent;
+    const categories=categoryRecords();
+    const values=categories.map(c=>c.en);
+    const filter=$("productCategoryFilter");
+    const current=filter.value;
+    const allLabel=state.lang==="ar"?translatePhrase("All categories"):"All categories";
+    filter.innerHTML=`<option value="">${esc(allLabel)}</option>` + categories.map(c=>`<option value="${esc(c.en)}">${esc(state.lang==="ar"?(c.ar||AR_TRANSLATIONS[c.en]||c.en):c.en)}</option>`).join("");
+    filter.value=values.includes(current)?current:"";
+
+    const editor=$("productCategory");
+    const editorCurrent=editor.value;
+    editor.innerHTML=categories.map(c=>`<option value="${esc(c.en)}">${esc(state.lang==="ar"?(c.ar||AR_TRANSLATIONS[c.en]||c.en):c.en)}</option>`).join("");
+    if(values.includes(editorCurrent))editor.value=editorCurrent;
+  }
+
+  async function addCategory() {
+    if(!state.user)return;
+    const enPrompt=state.lang==="ar"?translatePhrase("Category name (English):"):"Category name (English):";
+    const arPrompt=state.lang==="ar"?translatePhrase("Category name (Arabic):"):"Category name (Arabic):";
+    const en=prompt(enPrompt)?.trim();
+    if(!en)return;
+    const existing=categoryRecords().find(item=>item.en.toLowerCase()===en.toLowerCase());
+    if(existing){
+      toast(state.lang==="ar"?translatePhrase("That category already exists."):"That category already exists.","error");
+      return existing.en;
+    }
+    const ar=prompt(arPrompt)?.trim()||"";
+    const items=storedCategoryRecords();
+    items.push({en,ar});
+    const row={
+      key:"product_categories",
+      value:{items},
+      updated_by:state.user.id,
+      updated_at:new Date().toISOString()
+    };
+    const {error}=await state.client.from(cfg.tables.settings).upsert(row,{onConflict:"key"});
+    if(error){
+      toast(state.lang==="ar"?translatePhrase("Could not add category."):"Could not add category.","error");
+      return;
+    }
+    await logActivity("create_category","category",en,{ar});
+    state.settings.set("product_categories",{items});
+    populateCategoryControls();
+    localizeDom($("adminApp"));
+    toast(state.lang==="ar"?translatePhrase("Category added."):"Category added.");
+    return en;
   }
 
   function renderProducts() {
@@ -901,7 +965,7 @@
     const status = statusFor(p);
     return `<tr>
       <td><div class="product-row-main">${photo ? `<img class="product-thumb" src="${esc(photo.url)}" alt="">` : '<span class="product-thumb-placeholder">No photo</span>'}<div><b>${esc(p.nameEn||p.id)}</b><small>${esc(p.nameAr||p.id)} · ${esc(p.id)}</small></div></div></td>
-      <td>${esc(p.category||"—")}</td>
+      <td>${esc(p.category?categoryDisplayName(p.category):"—")}</td>
       <td>${money(firstPrice)}</td>
       <td><span class="status-badge status-${status}">${status.replace("-"," ")}</span></td>
       <td>${esc(when(p.__updated))}</td>
@@ -913,7 +977,7 @@
     const photo = photoFor(p), st=statusFor(p);
     return `<article class="product-mobile-card">
       ${photo ? `<img class="product-thumb" src="${esc(photo.url)}" alt="">` : '<span class="product-thumb-placeholder">No photo</span>'}
-      <div><b>${esc(p.nameEn||p.id)}</b><p>${esc(p.category||"—")} · <span class="status-badge status-${st}">${st}</span></p></div>
+      <div><b>${esc(p.nameEn||p.id)}</b><p>${esc(p.category?categoryDisplayName(p.category):"—")} · <span class="status-badge status-${st}">${st}</span></p></div>
       <button type="button" data-edit-product="${esc(p.id)}">Edit</button>
     </article>`;
   }
@@ -1399,6 +1463,7 @@
     renderImagePreview(photo?.url||"");
     setImageFraming(photo?.positionX??50,photo?.positionY??50,photo?.zoom??100);
     setImageRemoved(!!p?.photoRemoved || !photo);
+    $("deleteProductButton").hidden=!p;
     $("hideProductButton").hidden=!p||status==="hidden";
     $("restoreProductButton").hidden=!p||!state.overrides.has(p.id);
     $("productModal").hidden=false;
@@ -1531,7 +1596,7 @@
     try{
       let category=$("productCategory").value;
       if(category==="__new"){
-        category=prompt(state.lang==="ar"?translatePhrase("New category name:"):"New category name:")?.trim();
+        category=await addCategory();
         if(!category)throw new Error("Category is required.");
       }
       const variants=collectVariants(id);
@@ -1582,6 +1647,47 @@
     closeProductEditor();toast("Base catalogue version restored.");await refreshAll();
   }
 
+  async function deleteCurrentProduct() {
+    const id=state.editingId;
+    if(!id)return;
+    const product=state.products.find(p=>p.id===id);
+    if(!product)return;
+    const question=state.lang==="ar"?translatePhrase("Delete this product permanently? This cannot be undone."):"Delete this product permanently? This cannot be undone.";
+    if(!window.confirm(question))return;
+
+    const button=$("deleteProductButton");
+    button.disabled=true;
+    try{
+      let error=null;
+      if(baseById.has(id)){
+        const result=await state.client.from(cfg.tables.products).upsert({
+          product_id:id,
+          action:"hide",
+          payload:{id,status:"hidden",deleted:true},
+          updated_at:new Date().toISOString(),
+          updated_by:state.user.id
+        },{onConflict:"product_id"});
+        error=result.error;
+      }else{
+        const result=await state.client.from(cfg.tables.products).delete().eq("product_id",id);
+        error=result.error;
+      }
+      if(error)throw error;
+
+      if(product.image?.path){
+        await state.client.storage.from(cfg.storageBucket).remove([product.image.path]).catch(()=>{});
+      }
+      await logActivity("delete_product","product",id,{name:product.nameEn||product.nameAr||id});
+      closeProductEditor();
+      toast(state.lang==="ar"?translatePhrase("Product deleted."):"Product deleted.");
+      await refreshAll();
+    }catch(err){
+      toast(state.lang==="ar"?translatePhrase("Could not delete product."):"Could not delete product.","error");
+    }finally{
+      button.disabled=false;
+    }
+  }
+
   async function logActivity(action,targetType,targetId,details={}) {
     if(!state.user)return;
     const row={actor:state.user.id,action,target_type:targetType,target_id:targetId,details};
@@ -1624,7 +1730,7 @@
   }
 
   function bindStaticUi() {
-    $("[data-admin-language-toggle]").forEach(btn=>btn.addEventListener("click",toggleAdminLanguage));
+    $("[data-admin-lang]").forEach(btn=>btn.addEventListener("click",()=>chooseAdminLanguage(btn.dataset.adminLang)));
     $("loginForm")?.addEventListener("submit",handleLogin);
     $("bootstrapForm")?.addEventListener("submit",handleBootstrap);
     $("signOutButton")?.addEventListener("click",signOut);
@@ -1637,6 +1743,8 @@
     $$("[data-jump-view]").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.jumpView)));
     $("quickAddProduct")?.addEventListener("click",()=>openProductEditor());
     $("addProductButton")?.addEventListener("click",()=>openProductEditor());
+    $("addCategoryButton")?.addEventListener("click",addCategory);
+    $("addCategoryEditorButton")?.addEventListener("click",async()=>{const category=await addCategory();if(category)$("productCategory").value=category;});
     $("closeProductModal")?.addEventListener("click",closeProductEditor);
     $("cancelProductButton")?.addEventListener("click",closeProductEditor);
     $("productModal")?.addEventListener("click",e=>{if(e.target===$("productModal"))closeProductEditor();});
@@ -1650,6 +1758,7 @@
     $("imagePositionY")?.addEventListener("input",updateFramingFromControls);
     $("imageZoom")?.addEventListener("input",updateFramingFromControls);
     bindImageDrag();
+    $("deleteProductButton")?.addEventListener("click",deleteCurrentProduct);
     $("hideProductButton")?.addEventListener("click",hideCurrentProduct);
     $("restoreProductButton")?.addEventListener("click",restoreCurrentProduct);
     $("contentForm")?.addEventListener("submit",saveContent);

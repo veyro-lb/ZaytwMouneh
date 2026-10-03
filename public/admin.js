@@ -3312,6 +3312,7 @@
     });
     $("globalSearchButton")?.addEventListener("click",openGlobalSearch);
     $("mobileGlobalSearchButton")?.addEventListener("click",()=>{document.querySelector("#mobileMoreSheet").hidden=true;document.querySelector("#mobileMoreBackdrop").hidden=true;openGlobalSearch();});
+    $("mobileDataCenterButton")?.addEventListener("click",()=>{document.querySelector("#mobileMoreSheet").hidden=true;document.querySelector("#mobileMoreBackdrop").hidden=true;openDataCenter();});
     $("closeGlobalSearch")?.addEventListener("click",closeGlobalSearch);
     $("globalSearchModal")?.addEventListener("click",e=>{if(e.target===$("globalSearchModal"))closeGlobalSearch();});
     $("globalSearchInput")?.addEventListener("input",e=>renderGlobalSearchResults(e.target.value));

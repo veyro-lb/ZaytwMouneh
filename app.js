@@ -7,32 +7,9 @@ function uiIcon(name,active=false){
   return "";
 }
 function productPhotoMarkup(p,cls="product-image"){
-  const photos=window.ZWM_PRODUCT_PHOTOS;
-  const isCatalogueCard=cls==="product-image";
-  const source=isCatalogueCard&&typeof photos?.cardSourceFor==="function"
-    ? photos.cardSourceFor(p.id)
-    : (photos?.sourceFor?.(p.id)||photos?.tile?.(p.id));
+  const source=window.ZWM_PRODUCT_PHOTOS?.sourceFor(p.id);
   if(!source)return "";
-  const coords=source.coords||source;
-  const tileW=source.tileW||photos.tileW;
-  const tileH=source.tileH||photos.tileH;
-  const atlasW=source.atlasW||photos.atlasW;
-  const atlasH=source.atlasH||photos.atlasH;
-  const atlasUrl=source.atlasUrl||photos.atlasUrl;
-  if(!coords||!atlasUrl||!tileW||!tileH||!atlasW||!atlasH)return "";
-
-  // Pull the viewBox a pixel or two inside each atlas tile. This prevents
-  // browser interpolation from leaking pixels from a neighboring product.
-  const gutter=tileW>=700?2:1;
-  const tileX=coords[0]*tileW;
-  const tileY=coords[1]*tileH;
-  const focal=source.focus||null;
-  const vx=focal?tileX+focal[0]*tileW:tileX+gutter;
-  const vy=focal?tileY+focal[1]*tileH:tileY+gutter;
-  const vw=focal?focal[2]*tileW:Math.max(1,tileW-(gutter*2));
-  const vh=focal?focal[3]*tileH:Math.max(1,tileH-(gutter*2));
-  const quality=source.quality||"catalogue";
-  return `<svg class="${escapeHtml(cls)} product-photo-sprite" data-photo-width="${tileW}" data-photo-height="${tileH}" data-photo-quality="${escapeHtml(quality)}" viewBox="${vx} ${vy} ${vw} ${vh}" width="100%" height="100%" overflow="hidden" style="overflow:hidden" role="img" aria-label="${escapeHtml(currentName(p))}" preserveAspectRatio="xMidYMid meet"><image href="${escapeHtml(atlasUrl)}" x="0" y="0" width="${atlasW}" height="${atlasH}" preserveAspectRatio="none"></image></svg>`;
+  return `<img class="${escapeHtml(cls)} product-photo-original" src="${escapeHtml(source.url)}" width="${source.width}" height="${source.height}" data-photo-width="${source.width}" data-photo-height="${source.height}" data-photo-quality="original-supplied" alt="${escapeHtml(currentName(p))}" loading="lazy" decoding="async">`;
 }
 function renderStaticProductPhotos(root=document){
   root.querySelectorAll("[data-product-photo]").forEach(slot=>{

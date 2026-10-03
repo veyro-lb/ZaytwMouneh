@@ -4645,3 +4645,22 @@ body[data-page="home"] .home-pantry-hero .intro-category-chips i{
     height:25px!important;
   }
 }
+
+/* Original supplied artwork: one file per card, complete artwork at every viewport. */
+.product-photo-original{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
+  filter:none!important;
+}
+body[data-page="shop"] .product-card .product-visual{
+  aspect-ratio:2/3!important;
+  padding:0!important;
+}

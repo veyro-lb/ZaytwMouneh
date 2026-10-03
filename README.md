@@ -50,7 +50,7 @@ If Cloudflare Pages is connected to this repository and watches `main`, commits 
 ## Future visual upgrades
 
 Intentionally left for a later phase:
-1. Real product photography
+1. Additional photography for catalogue entries without an exact supplied image
 2. Curated / seasonal collections
 
 ## Premium storefront layer
@@ -66,4 +66,4 @@ Intentionally left for a later phase:
 - Privacy-conscious local analytics hooks plus dataLayer events for future analytics integration
 - Static Store schema and expanded SEO discoverability
 
-Per-SKU real product photography is intentionally not fabricated: the UI now supports the existing category imagery cleanly and is ready for genuine product photos to replace it as those assets are supplied.
+261 product IDs now use 247 original, name-matched photographs supplied in the seven WhatsApp ZIPs. Files retain their original bytes and dimensions. Cards display one complete image with `object-fit: contain`; products without exact artwork use a neutral placeholder. See `docs/product-photo-migration.md` and `docs/product-photo-audit.json` for coverage and provenance.

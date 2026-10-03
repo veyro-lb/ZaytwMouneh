@@ -1291,8 +1291,8 @@
     $("orderActiveTabCount").textContent=active;
     $("orderPastTabCount").textContent=past;
     $("orderAllTabCount").textContent=state.orders.length;
-    $$("[data-order-scope]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderScope===state.orderScope));
-    $$("[data-order-command]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderCommand===state.orderCommand));
+    $$$("[data-order-scope]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderScope===state.orderScope));
+    $$$("[data-order-command]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderCommand===state.orderCommand));
 
     $("ordersNewCount").textContent=state.orders.filter(o=>o.status==="new").length;
     $("ordersPreparingCount").textContent=state.orders.filter(o=>["confirmed","preparing"].includes(o.status)).length;
@@ -1592,8 +1592,8 @@
   }
   function applyOverviewPreferences(){
     const prefs=readOverviewPreferences();
-    $("[data-overview-widget]").forEach(el=>{el.hidden=prefs[el.dataset.overviewWidget]===false;});
-    $("[data-overview-pref]").forEach(input=>{input.checked=prefs[input.dataset.overviewPref]!==false;});
+    $$("[data-overview-widget]").forEach(el=>{el.hidden=prefs[el.dataset.overviewWidget]===false;});
+    $$("[data-overview-pref]").forEach(input=>{input.checked=prefs[input.dataset.overviewPref]!==false;});
   }
   function saveOverviewPreference(key,value){
     const prefs=readOverviewPreferences();prefs[key]=value;
@@ -1729,8 +1729,8 @@
   function setView(view) {
     state.activeView=view;
     $$(".dashboard-view").forEach(p=>p.classList.toggle("is-active",p.dataset.viewPanel===view));
-    $(".admin-nav button").forEach(b=>b.classList.toggle("is-active",b.dataset.view===view));
-    $("#mobileAdminNav [data-mobile-view]").forEach(b=>b.classList.toggle("is-active",b.dataset.mobileView===view));
+    $$(".admin-nav button").forEach(b=>b.classList.toggle("is-active",b.dataset.view===view));
+    $$("#mobileAdminNav [data-mobile-view]").forEach(b=>b.classList.toggle("is-active",b.dataset.mobileView===view));
     const titles={overview:"Overview",products:"Products",orders:"Orders & history",customers:"Customers",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
     $("viewTitle").textContent=titles[view]||"Owner Console";
     localizeDom($("viewTitle"));
@@ -1885,8 +1885,8 @@
     img.style.transform=`rotate(${rotation||0}deg) scale(${zoom/100})`;
     img.style.transformOrigin=`${x}% ${y}%`;
     $("imagePreview").classList.toggle("is-modal-preview",preview==="modal");
-    $$("[data-image-fit]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imageFit===fit));
-    $$("[data-image-preview]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imagePreview===preview));
+    $$$("[data-image-fit]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imageFit===fit));
+    $$$("[data-image-preview]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imagePreview===preview));
   }
 
   function setImageRemoved(removed) {
@@ -2420,8 +2420,8 @@
     $("imageZoom")?.addEventListener("input",updateFramingFromControls);
     $("rotateImageLeft")?.addEventListener("click",()=>rotateImage(-90));
     $("rotateImageRight")?.addEventListener("click",()=>rotateImage(90));
-    $("[data-image-fit]").forEach(btn=>btn.addEventListener("click",()=>setImageFit(btn.dataset.imageFit)));
-    $("[data-image-preview]").forEach(btn=>btn.addEventListener("click",()=>setImagePreviewMode(btn.dataset.imagePreview)));
+    $$("[data-image-fit]").forEach(btn=>btn.addEventListener("click",()=>setImageFit(btn.dataset.imageFit)));
+    $$("[data-image-preview]").forEach(btn=>btn.addEventListener("click",()=>setImagePreviewMode(btn.dataset.imagePreview)));
     $("productRevisionList")?.addEventListener("click",e=>{const b=e.target.closest("[data-restore-revision]");if(b)restoreProductRevision(Number(b.dataset.restoreRevision));});
     bindImageDrag();
     $("deleteProductButton")?.addEventListener("click",deleteCurrentProduct);
@@ -2441,9 +2441,9 @@
     $("productCardsMobile")?.addEventListener("change",selectionHandler);
     $("productTableBody")?.addEventListener("click",e=>{const b=e.target.closest("[data-edit-product]");if(b)openProductEditor(b.dataset.editProduct);});
     $("productCardsMobile")?.addEventListener("click",e=>{const b=e.target.closest("[data-edit-product]");if(b)openProductEditor(b.dataset.editProduct);});
-    $("[data-order-scope]").forEach(btn=>btn.addEventListener("click",()=>{state.orderScope=btn.dataset.orderScope;state.orderCommand="";renderOrders();}));
-    $("[data-order-command]").forEach(btn=>btn.addEventListener("click",()=>{state.orderCommand=state.orderCommand===btn.dataset.orderCommand?"":btn.dataset.orderCommand;state.orderScope="all";renderOrders();}));
-    $("[data-overview-order-filter]").forEach(btn=>btn.addEventListener("click",()=>{setView("orders");const v=btn.dataset.overviewOrderFilter;if(v==="delivered_today"){state.orderCommand="delivered_today";state.orderScope="all";state.orderFilter.status="";}else{state.orderCommand="today";state.orderScope="all";state.orderFilter.status=v;}$("orderStatusFilter").value=state.orderFilter.status;renderOrders();}));
+    $$("[data-order-scope]").forEach(btn=>btn.addEventListener("click",()=>{state.orderScope=btn.dataset.orderScope;state.orderCommand="";renderOrders();}));
+    $$("[data-order-command]").forEach(btn=>btn.addEventListener("click",()=>{state.orderCommand=state.orderCommand===btn.dataset.orderCommand?"":btn.dataset.orderCommand;state.orderScope="all";renderOrders();}));
+    $$("[data-overview-order-filter]").forEach(btn=>btn.addEventListener("click",()=>{setView("orders");const v=btn.dataset.overviewOrderFilter;if(v==="delivered_today"){state.orderCommand="delivered_today";state.orderScope="all";state.orderFilter.status="";}else{state.orderCommand="today";state.orderScope="all";state.orderFilter.status=v;}$("orderStatusFilter").value=state.orderFilter.status;renderOrders();}));
     $("manualOrderButton")?.addEventListener("click",openManualOrder);
     $("orderSearch")?.addEventListener("input",e=>{state.orderFilter.q=e.target.value;renderOrders();});
     $("orderStatusFilter")?.addEventListener("change",e=>{state.orderFilter.status=e.target.value;renderOrders();});
@@ -2475,7 +2475,7 @@
     $("exportBackupButton")?.addEventListener("click",exportBackup);
     $("restoreBackupInput")?.addEventListener("change",e=>restoreBackup(e.target.files?.[0]));
     $("installAdminApp")?.addEventListener("click",installAdminApp);
-    $("[data-overview-pref]").forEach(input=>input.addEventListener("change",()=>saveOverviewPreference(input.dataset.overviewPref,input.checked)));
+    $$("[data-overview-pref]").forEach(input=>input.addEventListener("change",()=>saveOverviewPreference(input.dataset.overviewPref,input.checked)));
     $("runHealthCheck")?.addEventListener("click",runHealthCheck);
     $("globalSearchButton")?.addEventListener("click",openGlobalSearch);
     $("mobileGlobalSearchButton")?.addEventListener("click",()=>{document.querySelector("#mobileMoreSheet").hidden=true;document.querySelector("#mobileMoreBackdrop").hidden=true;openGlobalSearch();});

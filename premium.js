@@ -783,11 +783,17 @@
     video.muted=true;
     video.defaultMuted=true;
     video.playsInline=true;
+    video.autoplay=true;
+    video.preload="auto";
     function play(){
       if(!visible||document.hidden||(!manual&&shouldLimitHeroMedia()))return;
-      video.play().catch(function(){if(button)button.hidden=false;});
+      if(video.readyState===0){try{video.load()}catch(e){}}
+      var attempt=video.play();
+      if(attempt&&attempt.catch)attempt.catch(function(){if(button)button.hidden=false;});
     }
     video.addEventListener("loadeddata",function(){video.classList.add("is-ready");});
+    video.addEventListener("canplay",play);
+    video.addEventListener("stalled",function(){if(visible&&!document.hidden)setTimeout(play,250);});
     video.addEventListener("playing",function(){video.classList.add("is-ready");if(button)button.hidden=true;});
     video.addEventListener("pause",function(){if(button)button.hidden=false;});
     video.addEventListener("error",function(){if(button)button.hidden=false;});

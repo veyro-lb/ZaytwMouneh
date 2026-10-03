@@ -5,12 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex" />
   <meta name="theme-color" content="#0f3d22" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ZWM Owner" />
+  <link rel="manifest" href="admin-manifest.webmanifest?v=20261004-1" />
   <title>Zayt w Mouneh — Owner Console</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261003-round1" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="admin.css?v=20261004-topbar2" />
+  <link rel="stylesheet" href="admin.css?v=20261004-toolkit1" />
 </head>
 <body class="admin-body">
   <div class="admin-bg" aria-hidden="true"></div>
@@ -89,6 +93,7 @@
         <button type="button" class="is-active" data-view="overview"><span>⌂</span><b>Overview</b></button>
         <button type="button" data-view="products"><span>▦</span><b>Products</b><em id="navProductCount">0</em></button>
         <button type="button" data-view="orders"><span>◎</span><b>Orders & history</b><em id="navOrderCount">0</em></button>
+        <button type="button" data-view="customers"><span>♙</span><b>Customers</b><em id="navCustomerCount">0</em></button>
         <button type="button" data-view="content"><span>✎</span><b>Website content</b></button>
         <button type="button" data-view="analytics"><span>↗</span><b>Analytics</b></button>
         <button type="button" data-view="activity"><span>◷</span><b>Activity</b></button>
@@ -112,8 +117,9 @@
             <button type="button" data-admin-lang="en">EN</button>
             <button type="button" data-admin-lang="ar">عربي</button>
           </div>
+          <button class="icon-button topbar-search-button" id="globalSearchButton" type="button" title="Search everything" aria-label="Search everything">⌕</button>
           <button class="icon-button" id="refreshButton" type="button" title="Refresh data">↻</button>
-          <button class="button-primary button-small" id="quickAddProduct" type="button">+ Add product</button>
+          <button class="button-primary button-small" id="quickAddProduct" type="button" aria-label="Quick actions">+ Add</button>
           <div class="owner-pill"><span id="ownerInitial">O</span><div><strong id="ownerName">Owner</strong><small id="ownerEmail">—</small></div></div>
         </div>
       </header>
@@ -131,6 +137,19 @@
             <article class="metric-card"><span class="metric-icon">↗</span><div><small>WhatsApp clicks · 7 days</small><strong id="metricWhatsApp">—</strong><em>High-intent customer action</em></div></article>
             <article class="metric-card"><span class="metric-icon">▦</span><div><small>Live catalogue</small><strong id="metricProducts">328</strong><em id="metricProductsHint">Products visible</em></div></article>
           </div>
+
+          <section class="today-command panel">
+            <div class="panel-head">
+              <div><p>Order command center</p><h3>Today</h3></div>
+              <button class="text-button" type="button" data-jump-view="orders">Open orders →</button>
+            </div>
+            <div class="today-command-grid">
+              <button type="button" data-overview-order-filter="new"><small>New orders</small><strong id="todayNewOrders">0</strong><span>Needs attention</span></button>
+              <button type="button" data-overview-order-filter="preparing"><small>Preparing</small><strong id="todayPreparingOrders">0</strong><span>Being handled</span></button>
+              <button type="button" data-overview-order-filter="out_for_delivery"><small>Out for delivery</small><strong id="todayOutOrders">0</strong><span>On the way</span></button>
+              <button type="button" data-overview-order-filter="delivered_today"><small>Sales today</small><strong id="todaySales">$0.00</strong><span id="todayDeliveredOrders">0 delivered</span></button>
+            </div>
+          </section>
 
           <div class="overview-grid">
             <article class="panel panel-wide">
@@ -164,14 +183,27 @@
             <div class="search-field"><span>⌕</span><input id="productSearch" type="search" placeholder="Search product, category or ID…" /></div>
             <select id="productCategoryFilter" aria-label="Filter category"><option value="">All categories</option></select>
             <select id="productStatusFilter" aria-label="Filter status"><option value="">All statuses</option><option value="live">Live</option><option value="edited">Edited</option><option value="new">New</option><option value="hidden">Hidden</option><option value="draft">Draft</option><option value="missing-photo">Missing photo</option></select>
+            <select id="productAvailabilityFilter" aria-label="Filter availability"><option value="">All availability</option><option value="in_stock">In stock</option><option value="out_of_stock">Out of stock</option><option value="coming_soon">Coming soon</option></select>
             <button class="button-secondary button-small" id="addCategoryButton" type="button">+ Add category</button>
             <button class="button-primary button-small" id="addProductButton" type="button">+ Add product</button>
           </div>
+          <div class="bulk-product-bar" id="bulkProductBar" hidden>
+            <div><strong id="bulkSelectedCount">0 selected</strong><button class="text-button" id="clearProductSelection" type="button">Clear</button></div>
+            <select id="bulkProductAction" aria-label="Bulk action">
+              <option value="">Choose bulk action…</option>
+              <option value="availability">Change availability</option>
+              <option value="visibility">Change visibility</option>
+              <option value="category">Change category</option>
+              <option value="delete">Delete selected</option>
+            </select>
+            <select id="bulkProductValue" aria-label="Bulk value" hidden></select>
+            <button class="button-primary button-small" id="applyBulkProductAction" type="button">Apply</button>
+          </div>
           <div class="table-card">
-            <div class="table-summary"><span id="productResultCount">0 products</span><button id="exportProductsButton" class="text-button" type="button">Export changes ↓</button></div>
+            <div class="table-summary"><span id="productResultCount">0 products</span><div><button id="selectVisibleProducts" class="text-button" type="button">Select visible</button><button id="exportProductsButton" class="text-button" type="button">Export changes ↓</button></div></div>
             <div class="product-table-wrap">
               <table class="product-table">
-                <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Status</th><th>Updated</th><th></th></tr></thead>
+                <thead><tr><th class="select-col"><span class="sr-only">Select</span></th><th>Product</th><th>Category</th><th>Price</th><th>Availability</th><th>Status</th><th>Updated</th><th></th></tr></thead>
                 <tbody id="productTableBody"></tbody>
               </table>
             </div>
@@ -190,6 +222,13 @@
             <article class="metric-card"><div><small>Preparing</small><strong id="ordersPreparingCount">0</strong><em>Confirmed / preparing</em></div></article>
             <article class="metric-card"><div><small>Out for delivery</small><strong id="ordersOutCount">0</strong><em>On the way</em></div></article>
             <article class="metric-card"><div><small>Delivered</small><strong id="ordersDeliveredCount">0</strong><em>Completed history</em></div></article>
+          </div>
+
+          <div class="order-command-strip">
+            <button type="button" data-order-command="today">Today</button>
+            <button type="button" data-order-command="waiting">Waiting 30m+</button>
+            <button type="button" data-order-command="delivered_today">Delivered today</button>
+            <button class="button-primary button-small" id="manualOrderButton" type="button">+ Manual order</button>
           </div>
 
           <div class="order-scope-tabs" role="tablist" aria-label="Order history view">
@@ -225,6 +264,15 @@
           </div>
         </section>
 
+        <section class="dashboard-view" data-view-panel="customers">
+          <div class="section-intro"><div><p>Customer history</p><h2>See repeat customers, order history and spending at a glance.</h2></div><span>Customers are grouped by phone when available, otherwise by name and area.</span></div>
+          <div class="toolbar">
+            <div class="search-field"><span>⌕</span><input id="customerSearch" type="search" placeholder="Search customer, phone or area…" /></div>
+            <select id="customerSort"><option value="recent">Most recent</option><option value="orders">Most orders</option><option value="spend">Highest spend</option></select>
+          </div>
+          <div class="customer-grid" id="customerGrid"><p class="empty-state">No customer history yet.</p></div>
+        </section>
+
         <section class="dashboard-view" data-view-panel="content">
           <div class="section-intro"><div><p>Website content</p><h2>Change common customer-facing details without editing HTML.</h2></div><span>Changes publish after save.</span></div>
           <form id="contentForm" class="content-grid">
@@ -245,7 +293,20 @@
                 <label>Arabic title<input id="promoTitleAr" type="text" maxlength="90" dir="rtl" /></label>
                 <label>English message<textarea id="promoBodyEn" rows="4" maxlength="320"></textarea></label>
                 <label>Arabic message<textarea id="promoBodyAr" rows="4" maxlength="320" dir="rtl"></textarea></label>
+                <label>Start date & time<input id="promoStartsAt" type="datetime-local" /></label>
+                <label>End date & time<input id="promoEndsAt" type="datetime-local" /></label>
               </div>
+              <p class="field-help">Leave dates empty to show the promo whenever it is enabled.</p>
+            </article>
+            <article class="panel content-panel content-panel-wide">
+              <div class="panel-head"><div><p>Delivery defaults</p><h3>Keep delivery rules in one place</h3></div></div>
+              <div class="four-col-fields">
+                <label>Default fee (USD)<input id="deliveryFee" type="number" min="0" step="0.01" /></label>
+                <label>Free delivery above (USD)<input id="deliveryFreeAbove" type="number" min="0" step="0.01" /></label>
+                <label>Minimum order (USD)<input id="deliveryMinimum" type="number" min="0" step="0.01" /></label>
+                <label>Estimated delivery<input id="deliveryEta" type="text" maxlength="80" placeholder="e.g. Same day / 1–2 days" /></label>
+              </div>
+              <p class="field-help">These are owner defaults for planning and manual orders. Final delivery can still be confirmed on WhatsApp.</p>
             </article>
             <div class="form-actions content-save-row"><button class="button-primary" type="submit">Save website content</button><span id="contentStatus" class="form-status" role="status"></span></div>
           </form>
@@ -266,8 +327,15 @@
             <article class="panel panel-wide"><div class="panel-head"><div><p>Daily traffic</p><h3>Page views and customer actions</h3></div></div><div id="analyticsChart" class="analytics-chart"></div></article>
             <article class="panel"><div class="panel-head"><div><p>Top pages</p><h3>Most viewed</h3></div></div><div id="analyticsPages" class="rank-list"></div></article>
           </div>
+          <div class="metric-grid analytics-metrics order-business-metrics">
+            <article class="metric-card"><div><small>Orders</small><strong id="analyticsOrders">—</strong><em>Selected period</em></div></article>
+            <article class="metric-card"><div><small>Order value</small><strong id="analyticsOrderValue">—</strong><em>Delivered + active</em></div></article>
+            <article class="metric-card"><div><small>Average order</small><strong id="analyticsAvgOrder">—</strong><em>Average basket</em></div></article>
+            <article class="metric-card"><div><small>Gift share</small><strong id="analyticsGiftShare">—</strong><em>Gift vs pantry</em></div></article>
+          </div>
           <div class="overview-grid">
-            <article class="panel"><div class="panel-head"><div><p>Top products</p><h3>Most viewed products</h3></div></div><div id="analyticsProducts" class="rank-list"></div></article>
+            <article class="panel"><div class="panel-head"><div><p>Top ordered products</p><h3>What customers actually order</h3></div></div><div id="analyticsOrderedProducts" class="rank-list"></div></article>
+            <article class="panel"><div class="panel-head"><div><p>Top viewed products</p><h3>What customers browse</h3></div></div><div id="analyticsProducts" class="rank-list"></div></article>
             <article class="panel"><div class="panel-head"><div><p>Customer intent</p><h3>Useful conversion signals</h3></div></div><div id="intentBreakdown" class="intent-grid"></div></article>
           </div>
         </section>
@@ -292,7 +360,17 @@
             <article class="panel">
               <div class="panel-head"><div><p>Data</p><h3>Owner backups</h3></div></div>
               <p class="panel-copy">Export all dashboard-managed product overrides and public settings as JSON. The original static catalogue stays untouched as a fallback.</p>
-              <button class="button-secondary" id="exportBackupButton" type="button">Export dashboard backup ↓</button>
+              <div class="settings-action-stack">
+                <button class="button-secondary" id="exportBackupButton" type="button">Export dashboard backup ↓</button>
+                <label class="button-secondary upload-backup-button">Restore backup<input id="restoreBackupInput" type="file" accept="application/json,.json" /></label>
+              </div>
+              <p class="field-help">Restore applies products, categories and public settings. Order history is never overwritten.</p>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><p>Phone app</p><h3>Install Owner Console</h3></div><span class="status-badge">PWA</span></div>
+              <p class="panel-copy">Add the admin to your phone home screen so it opens like an app. Admin data and passwords are not cached by the service worker.</p>
+              <button class="button-primary" id="installAdminApp" type="button">Install on this device</button>
+              <p class="field-help" id="installAdminHint">On iPhone, use Share → Add to Home Screen if the install prompt is not available.</p>
             </article>
           </div>
         </section>
@@ -311,12 +389,60 @@
   <section class="mobile-more-sheet" id="mobileMoreSheet" hidden aria-label="More owner tools">
     <header><div><small>Owner tools</small><strong>More</strong></div><button type="button" id="closeMobileMore" aria-label="Close">×</button></header>
     <div class="mobile-more-grid">
+      <button type="button" id="mobileGlobalSearchButton"><span>⌕</span><b>Search everything</b><small>Products, orders and customers</small></button>
+      <button type="button" data-mobile-view="customers"><span>♙</span><b>Customers</b><small>Repeat orders and spending</small></button>
       <button type="button" data-mobile-view="content"><span>✎</span><b>Website content</b><small>Edit customer-facing text</small></button>
       <button type="button" data-mobile-view="analytics"><span>↗</span><b>Analytics</b><small>Traffic and customer actions</small></button>
       <button type="button" data-mobile-view="activity"><span>◷</span><b>Activity</b><small>Recent owner changes</small></button>
       <button type="button" data-mobile-view="settings"><span>⚙</span><b>Settings</b><small>Security, backend and backup</small></button>
     </div>
   </section>
+
+  <div class="quick-action-backdrop" id="quickActionBackdrop" hidden></div>
+  <section class="quick-action-sheet" id="quickActionSheet" hidden aria-label="Quick actions">
+    <header><div><small>Quick actions</small><strong>What do you want to do?</strong></div><button id="closeQuickActions" type="button" aria-label="Close">×</button></header>
+    <div class="quick-action-grid">
+      <button type="button" data-quick-action="product"><span>＋</span><b>Add product</b><small>Create a new catalogue item</small></button>
+      <button type="button" data-quick-action="category"><span>▦</span><b>Add category</b><small>Create English + Arabic category</small></button>
+      <button type="button" data-quick-action="order"><span>◎</span><b>Manual order</b><small>Phone, Instagram or walk-in order</small></button>
+      <button type="button" data-quick-action="promo"><span>✦</span><b>Create promo</b><small>Open website promo controls</small></button>
+    </div>
+  </section>
+
+  <div class="modal-backdrop" id="globalSearchModal" hidden>
+    <section class="search-command-modal" role="dialog" aria-modal="true" aria-labelledby="globalSearchTitle">
+      <header class="editor-head"><div><p>Search everything</p><h2 id="globalSearchTitle">Find anything fast</h2></div><button id="closeGlobalSearch" type="button" aria-label="Close">×</button></header>
+      <div class="search-command-body">
+        <div class="search-field search-command-input"><span>⌕</span><input id="globalSearchInput" type="search" placeholder="Product, order code, customer, area…" autocomplete="off" /></div>
+        <div id="globalSearchResults" class="global-search-results"><p class="empty-state">Start typing to search products, orders and customers.</p></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="manualOrderModal" hidden>
+    <section class="manual-order-modal" role="dialog" aria-modal="true" aria-labelledby="manualOrderTitle">
+      <header class="editor-head"><div><p>Manual order</p><h2 id="manualOrderTitle">Add an order from anywhere</h2></div><button id="closeManualOrder" type="button" aria-label="Close">×</button></header>
+      <form id="manualOrderForm" class="manual-order-form">
+        <div class="manual-order-fields">
+          <label>Customer name<input id="manualCustomerName" required maxlength="120" /></label>
+          <label>Phone / WhatsApp<input id="manualCustomerPhone" type="tel" maxlength="40" placeholder="961…" /></label>
+          <label>Delivery area<input id="manualOrderArea" maxlength="180" /></label>
+          <label>Order type<select id="manualOrderKind"><option value="order">Pantry order</option><option value="gift">Gift order</option></select></label>
+        </div>
+        <article class="editor-section">
+          <div class="editor-section-head"><div><h3>Products</h3><p>Add products and quantities.</p></div><button class="text-button" id="addManualOrderItem" type="button">+ Add item</button></div>
+          <div id="manualOrderItems" class="manual-order-items"></div>
+        </article>
+        <div class="manual-order-fields">
+          <label>Delivery fee (USD)<input id="manualDeliveryFee" type="number" min="0" step="0.01" value="0" /></label>
+          <label>Private owner note<textarea id="manualPrivateNote" rows="2" maxlength="1200"></textarea></label>
+          <label class="manual-notes-span">Customer/order notes<textarea id="manualOrderNotes" rows="3" maxlength="800"></textarea></label>
+        </div>
+        <div class="manual-order-total"><span>Total</span><strong id="manualOrderTotal">$0.00</strong></div>
+        <footer class="manual-order-actions"><button class="button-secondary" id="cancelManualOrder" type="button">Cancel</button><button class="button-primary" type="submit">Create order</button></footer>
+      </form>
+    </section>
+  </div>
 
   <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
 
@@ -351,6 +477,20 @@
                 <label><input type="radio" name="productVisibility" value="hidden" /><span><b>Hidden</b><small>Temporarily removed</small></span></label>
               </div>
             </article>
+
+            <article class="editor-section">
+              <div class="editor-section-head"><div><h3>Availability</h3><p>Keep stock simple for customers.</p></div></div>
+              <div class="status-options availability-options">
+                <label><input type="radio" name="productAvailability" value="in_stock" checked /><span><b>In stock</b><small>Can be ordered</small></span></label>
+                <label><input type="radio" name="productAvailability" value="out_of_stock" /><span><b>Out of stock</b><small>Visible, ordering disabled</small></span></label>
+                <label><input type="radio" name="productAvailability" value="coming_soon" /><span><b>Coming soon</b><small>Visible, ordering disabled</small></span></label>
+              </div>
+            </article>
+
+            <article class="editor-section">
+              <h3>Private owner note</h3>
+              <textarea id="productPrivateNote" rows="3" maxlength="2000" placeholder="Supplier note, replacement, reminder… customers never see this."></textarea>
+            </article>
           </div>
 
           <aside class="editor-side">
@@ -367,6 +507,18 @@
                 <label>Horizontal position <span id="imagePositionXValue">50%</span><input id="imagePositionX" type="range" min="0" max="100" step="1" value="50" /></label>
                 <label>Vertical position <span id="imagePositionYValue">50%</span><input id="imagePositionY" type="range" min="0" max="100" step="1" value="50" /></label>
                 <label>Zoom <span id="imageZoomValue">100%</span><input id="imageZoom" type="range" min="100" max="180" step="1" value="100" /></label>
+                <div class="image-tool-row">
+                  <button class="button-secondary" id="rotateImageLeft" type="button">↶ Rotate</button>
+                  <button class="button-secondary" id="rotateImageRight" type="button">Rotate ↷</button>
+                </div>
+                <div class="image-tool-row">
+                  <button class="button-secondary is-active" id="imageFitFill" type="button" data-image-fit="cover">Fill frame</button>
+                  <button class="button-secondary" id="imageFitContain" type="button" data-image-fit="contain">Fit whole photo</button>
+                </div>
+                <div class="image-preview-toggle" role="group" aria-label="Photo preview">
+                  <button type="button" class="is-active" data-image-preview="card">Card preview</button>
+                  <button type="button" data-image-preview="modal">Popup preview</button>
+                </div>
                 <button class="text-button image-reset-button" id="resetImagePosition" type="button">Reset framing</button>
               </div>
 
@@ -377,7 +529,11 @@
             </article>
             <article class="editor-section">
               <h3>Quick checks</h3>
-              <ul class="check-list" id="editorChecklist"><li>English + Arabic names</li><li>Correct category</li><li>At least one size and price</li><li>Clear product photo when available</li></ul>
+              <ul class="check-list" id="editorChecklist"><li>English + Arabic names</li><li>Correct category</li><li>At least one size and price</li><li>Availability selected</li><li>Clear product photo when available</li></ul>
+            </article>
+            <article class="editor-section" id="productHistoryPanel" hidden>
+              <div class="editor-section-head"><div><h3>Version history</h3><p>Restore a recent product version.</p></div></div>
+              <div id="productRevisionList" class="revision-list"></div>
             </article>
           </aside>
         </div>
@@ -407,7 +563,7 @@
         </div>
 
         <div class="order-detail-grid">
-          <article class="order-detail-card"><span>Customer / recipient</span><strong id="orderDetailCustomer">—</strong><small id="orderDetailArea">—</small></article>
+          <article class="order-detail-card"><span>Customer / recipient</span><strong id="orderDetailCustomer">—</strong><small id="orderDetailArea">—</small><small id="orderDetailPhone">—</small></article>
           <article class="order-detail-card"><span>Order type</span><strong id="orderDetailKind">—</strong><small id="orderDetailLanguage">—</small></article>
           <article class="order-detail-card"><span>Total</span><strong id="orderDetailTotal">—</strong><small>USD</small></article>
           <article class="order-detail-card"><span>Current status</span><div id="orderDetailStatus"></div></article>
@@ -424,6 +580,27 @@
         </div>
 
         <article class="order-detail-section">
+          <div class="order-detail-section-head"><div><span>WhatsApp tools</span><h3>Customer updates</h3></div></div>
+          <div class="whatsapp-template-grid" id="orderWhatsAppTools">
+            <button type="button" data-order-message="confirmed">Order confirmed</button>
+            <button type="button" data-order-message="preparing">Preparing</button>
+            <button type="button" data-order-message="out_for_delivery">On the way</button>
+            <button type="button" data-order-message="delivered">Delivered</button>
+          </div>
+          <p class="field-help">If the customer phone is saved, this opens WhatsApp. Otherwise the message is copied.</p>
+        </article>
+
+        <article class="order-detail-section">
+          <div class="order-detail-section-head"><div><span>Private owner note</span><h3>Internal notes</h3></div><button class="text-button" id="saveOrderPrivateNote" type="button">Save note</button></div>
+          <textarea id="orderPrivateNote" rows="3" maxlength="1200" placeholder="Driver note, follow-up, customer preference…"></textarea>
+        </article>
+
+        <article class="order-detail-section">
+          <div class="order-detail-section-head"><div><span>Customer history</span><h3>Previous orders</h3></div></div>
+          <div id="orderCustomerHistory" class="customer-history-mini"></div>
+        </article>
+
+        <article class="order-detail-section">
           <div class="order-detail-section-head"><div><span>Status history</span><h3>Order timeline</h3></div></div>
           <div id="orderDetailTimeline" class="order-status-timeline"></div>
         </article>
@@ -437,7 +614,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
   <script src="products-data.js?v=20261002-1005"></script>
   <script src="product-photos.js?v=20261003-zip-originals3"></script>
-  <script src="admin.js?v=20261004-mobilebottom1"></script>
+  <script src="admin.js?v=20261004-toolkit1"></script>
   <!-- mobilebottom-fallback -->
   <script>
   (function(){

@@ -817,6 +817,24 @@ function renderGiftPresentationOptions(){
   }
 }
 
+function syncLanguageVisibility(){
+  const showArabic=lang==="ar";
+  $(".only-en, .only-ar").forEach(el=>{
+    const shouldHide=showArabic?el.classList.contains("only-en"):el.classList.contains("only-ar");
+    if(shouldHide){
+      el.style.setProperty("display","none","important");
+      el.setAttribute("aria-hidden","true");
+      el.dataset.langVisibilityGuard="1";
+    }else{
+      if(el.dataset.langVisibilityGuard==="1"){
+        el.style.removeProperty("display");
+        delete el.dataset.langVisibilityGuard;
+      }
+      el.removeAttribute("aria-hidden");
+    }
+  });
+}
+
 function applyLanguage(next,{immediate=false}={}){
   lang=next==="ar"?"ar":"en";
   safeStorageSet(LANG_KEY,lang);
@@ -827,6 +845,7 @@ function applyLanguage(next,{immediate=false}={}){
     document.documentElement.classList.add("lang-switching");
     document.documentElement.lang=lang;
     document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+    syncLanguageVisibility();
     applyPageMetadata();
     applyAccessibleLanguage();
 
@@ -1750,23 +1769,45 @@ function prewarmLanguageFonts(){
 function setupNav(){
   const t=$("#navToggle"),n=$("#navLinks");
   if(!t||!n)return;
+  const compactQuery=window.matchMedia?window.matchMedia("(max-width:1080px)"):null;
+  const isCompact=()=>compactQuery?compactQuery.matches:window.innerWidth<=1080;
+  const syncA11y=()=>{
+    const open=n.classList.contains("is-open");
+    if(isCompact())n.setAttribute("aria-hidden",open?"false":"true");
+    else n.removeAttribute("aria-hidden");
+  };
   const close=()=>{
     n.classList.remove("is-open");
     document.body.classList.remove("menu-open");
     t.setAttribute("aria-expanded","false");
     t.setAttribute("aria-label",lang==="ar"?"فتح القائمة":"Open menu");
+    syncA11y();
+  };
+  const openMenu=()=>{
+    n.classList.add("is-open");
+    document.body.classList.add("menu-open");
+    t.setAttribute("aria-expanded","true");
+    t.setAttribute("aria-label",lang==="ar"?"إغلاق القائمة":"Close menu");
+    syncA11y();
   };
   t.addEventListener("click",e=>{
+    e.preventDefault();
     e.stopPropagation();
-    const open=n.classList.toggle("is-open");
-    document.body.classList.toggle("menu-open",open);
-    t.setAttribute("aria-expanded",String(open));
-    t.setAttribute("aria-label",open?(lang==="ar"?"إغلاق القائمة":"Close menu"):(lang==="ar"?"فتح القائمة":"Open menu"));
+    n.classList.contains("is-open")?close():openMenu();
   });
   n.addEventListener("click",e=>e.stopPropagation());
   document.querySelectorAll("#navLinks a").forEach(a=>a.addEventListener("click",close));
   document.addEventListener("click",()=>{if(n.classList.contains("is-open"))close()});
-  document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&n.classList.contains("is-open")){close();t.focus({preventScroll:true})}});
+  const onViewportChange=()=>{
+    if(!isCompact()&&n.classList.contains("is-open"))close();
+    else syncA11y();
+  };
+  if(compactQuery){
+    if(typeof compactQuery.addEventListener==="function")compactQuery.addEventListener("change",onViewportChange);
+    else if(typeof compactQuery.addListener==="function")compactQuery.addListener(onViewportChange);
+  }
+  syncA11y();
 }
 
 function setupProgress(){

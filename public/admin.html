@@ -44,11 +44,26 @@
       <p class="auth-copy">This area is not part of the customer website. Only approved owner accounts can continue.</p>
       <form id="loginForm" class="auth-form" autocomplete="on">
         <label>Email<input id="loginEmail" type="email" autocomplete="username" required /></label>
-        <label>Password<input id="loginPassword" type="password" autocomplete="current-password" minlength="8" required /></label>
+        <label>Password<input id="loginPassword" type="password" autocomplete="current-password" minlength="12" required /></label>
         <button class="button-primary" id="loginButton" type="submit">Sign in securely</button>
         <p class="form-status" id="loginStatus" role="status" aria-live="polite"></p>
       </form>
-      <small class="auth-security">Protected by authenticated sessions and database row-level security.</small>
+
+      <details class="owner-bootstrap" id="ownerBootstrap">
+        <summary>First time here? Create the owner account</summary>
+        <div class="owner-bootstrap-inner">
+          <p>This is a one-time activation. Choose the email and password you want to use for the owner dashboard, then enter the setup code.</p>
+          <form id="bootstrapForm" class="auth-form" autocomplete="off">
+            <label>Owner name<input id="bootstrapName" type="text" maxlength="80" value="Owner" required /></label>
+            <label>Owner email<input id="bootstrapEmail" type="email" autocomplete="email" required /></label>
+            <label>Create password<input id="bootstrapPassword" type="password" autocomplete="new-password" minlength="12" required /></label>
+            <label>One-time setup code<input id="bootstrapCode" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" required /></label>
+            <button class="button-secondary" id="bootstrapButton" type="submit">Create owner account</button>
+            <p class="form-status" id="bootstrapStatus" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </details>
+      <small class="auth-security">Protected by authenticated sessions, an owner allowlist and database row-level security.</small>
     </section>
   </main>
 

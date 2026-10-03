@@ -1392,3 +1392,12 @@ html[dir="rtl"] .auth-language-toggle{right:auto;left:24px}
   .quick-action-grid{grid-template-columns:1fr}
   .whatsapp-template-grid{grid-template-columns:1fr}
 }
+
+.overview-preference-list{display:grid;gap:7px;margin-top:14px}
+.overview-preference-list label{min-height:44px;padding:9px 10px;border:1px solid #e0e4dd;border-radius:11px;background:#fafaf6;display:flex;align-items:center;gap:10px;cursor:pointer;font-size:10px;font-weight:700}
+.overview-preference-list input{width:18px;height:18px;min-height:18px;accent-color:var(--green)}
+html[dir="rtl"] .today-command-grid button,
+html[dir="rtl"] .customer-card,
+html[dir="rtl"] .quick-action-grid button,
+html[dir="rtl"] .global-search-results button,
+html[dir="rtl"] .revision-list button{text-align:right}

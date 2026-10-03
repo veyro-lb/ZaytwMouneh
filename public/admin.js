@@ -1780,17 +1780,14 @@
   }
 
   function renderOverview() {
-    const ev7 = eventsWithin(7);
-    const views = ev7.filter(e=>e.event_name==="page_view");
-    const sessions = new Set(ev7.map(e=>e.session_id).filter(Boolean));
-    const whats = ev7.filter(e=>e.event_name==="whatsapp_click");
-    $("metricViews").textContent = views.length.toLocaleString();
-    $("metricSessions").textContent = sessions.size.toLocaleString();
-    $("metricWhatsApp").textContent = whats.length.toLocaleString();
-    $("metricProducts").textContent = visibleProducts().length.toLocaleString();
-    $("metricViewsHint").textContent = `${Math.round(views.length/7)} avg / day`;
-    $("metricSessionsHint").textContent = sessions.size ? `${(views.length/sessions.size).toFixed(1)} views / session` : "No session data yet";
-    $("metricProductsHint").textContent = `${state.products.length-visibleProducts().length} hidden or draft`;
+    const stats=analyticsSnapshot(7);
+    $("metricViews").textContent=stats.views.length.toLocaleString();
+    $("metricSessions").textContent=stats.sessions.size.toLocaleString();
+    $("metricWhatsApp").textContent=stats.whats.length.toLocaleString();
+    $("metricProducts").textContent=visibleProducts().length.toLocaleString();
+    $("metricViewsHint").textContent=`${(stats.views.length/7).toFixed(1)} avg / day`;
+    $("metricSessionsHint").textContent=stats.sessions.size?`${(stats.views.length/stats.sessions.size).toFixed(1)} views / session`:"No session data yet";
+    $("metricProductsHint").textContent=`${state.products.length-visibleProducts().length} hidden or draft`;
 
     const todayOrders=state.orders.filter(o=>isToday(o.submitted_at));
     const deliveredToday=state.orders.filter(o=>o.status==="delivered"&&isToday(o.delivered_at||o.updated_at));
@@ -1800,18 +1797,18 @@
     $("todaySales").textContent=money(deliveredToday.reduce((sum,o)=>sum+(Number(o.total)||0),0));
     $("todayDeliveredOrders").textContent=`${deliveredToday.length} delivered`;
 
-    const incomplete = state.products.filter(p=>productQualityScore(p)<100 && !["hidden","draft"].includes(p.__status)).length;
-    const missing = state.products.filter(p=>!photoFor(p) && !["hidden","draft"].includes(p.__status)).length;
-    const hidden = state.products.filter(p=>p.__status==="hidden").length;
-    const drafts = state.products.filter(p=>p.__status==="draft").length;
-    $("incompleteProductsCount").textContent = incomplete;
-    $("missingPhotosCount").textContent = missing;
-    $("hiddenProductsCount").textContent = hidden;
-    $("draftProductsCount").textContent = drafts;
+    const incomplete=state.products.filter(p=>productQualityScore(p)<100&&!["hidden","draft"].includes(p.__status)).length;
+    const missing=state.products.filter(p=>!photoFor(p)&&!["hidden","draft"].includes(p.__status)).length;
+    const hidden=state.products.filter(p=>p.__status==="hidden").length;
+    const drafts=state.products.filter(p=>p.__status==="draft").length;
+    $("incompleteProductsCount").textContent=incomplete;
+    $("missingPhotosCount").textContent=missing;
+    $("hiddenProductsCount").textContent=hidden;
+    $("draftProductsCount").textContent=drafts;
     renderOwnerInbox();
 
-    renderBarChart($("overviewChart"), dailyCounts(ev7,7,"page_view"));
-    renderRankList($("topPagesList"), rankBy(views, e=>cleanPath(e.page_path)).slice(0,5), "views");
+    renderTrafficChart($("overviewChart"),stats.daily);
+    renderRankList($("topPagesList"),rankBy(stats.views,e=>cleanPath(e.page_path)).slice(0,5),"views");
     renderRecentActivity();
   }
 
@@ -1831,34 +1828,113 @@
     applyOverviewPreferences();
   }
 
+  function analyticsStart(days){
+    const d=new Date();
+    d.setHours(0,0,0,0);
+    d.setDate(d.getDate()-Math.max(1,Number(days)||1)+1);
+    return d;
+  }
+
   function eventsWithin(days) {
-    const min = Date.now() - days*86400000;
-    return state.events.filter(e => new Date(e.created_at).getTime() >= min);
+    const min=analyticsStart(days).getTime();
+    const max=Date.now();
+    return state.events.filter(e=>{
+      const t=new Date(e.created_at).getTime();
+      return Number.isFinite(t)&&t>=min&&t<=max;
+    });
   }
+
   function cleanPath(path) {
-    const p=safeText(path)||"/";
-    return p.replace(/\/index\.html$/,"/").replace(/^\//,"") || "Home";
+    const raw=safeText(path)||"/";
+    const pathname=raw.split(/[?#]/,1)[0]||"/";
+    const clean=pathname
+      .replace(/\/index\.html$/,"/")
+      .replace(/\.html$/,"")
+      .replace(/^\//,"")
+      .replace(/\/$/,"");
+    return clean?clean.replace(/[-_]+/g," ").replace(/^./,c=>c.toUpperCase()):"Home";
   }
-  function dailyCounts(events, days, eventName) {
+
+  function dailyTraffic(events,days) {
     const out=[];
-    for(let i=days-1;i>=0;i--){
-      const d=new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()-i);
-      const next=new Date(d); next.setDate(next.getDate()+1);
-      const value=events.filter(e=>(!eventName||e.event_name===eventName)&&new Date(e.created_at)>=d&&new Date(e.created_at)<next).length;
-      out.push({label:d.toLocaleDateString(undefined,{weekday:"short"}),value,date:d});
+    const start=analyticsStart(days);
+    for(let i=0;i<days;i++){
+      const d=new Date(start);d.setDate(start.getDate()+i);
+      const next=new Date(d);next.setDate(d.getDate()+1);
+      const dayEvents=events.filter(e=>{
+        const t=new Date(e.created_at);
+        return t>=d&&t<next;
+      });
+      const views=dayEvents.filter(e=>e.event_name==="page_view");
+      const sessions=new Set(views.map(e=>e.session_id).filter(Boolean));
+      out.push({
+        label:d.toLocaleDateString(undefined,days>10?{month:"short",day:"numeric"}:{weekday:"short"}),
+        fullLabel:d.toLocaleDateString(undefined,{month:"short",day:"numeric"}),
+        views:views.length,
+        sessions:sessions.size,
+        date:d
+      });
     }
     return out;
   }
+
+  function analyticsSnapshot(days){
+    const events=eventsWithin(days);
+    const views=events.filter(e=>e.event_name==="page_view");
+    const sessions=new Set(views.map(e=>e.session_id).filter(Boolean));
+    const adds=events.filter(e=>e.event_name==="add_to_cart");
+    const whats=events.filter(e=>e.event_name==="whatsapp_click");
+    const productViews=events.filter(e=>e.event_name==="product_view");
+    const searches=events.filter(e=>e.event_name==="search");
+    return {days,events,views,sessions,adds,whats,productViews,searches,daily:dailyTraffic(events,days)};
+  }
+
   function rankBy(list,keyFn) {
     const map=new Map();
-    for(const item of list){const k=keyFn(item); if(k) map.set(k,(map.get(k)||0)+1);}
+    for(const item of list){const k=keyFn(item);if(k)map.set(k,(map.get(k)||0)+1);}
     return [...map].map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value);
   }
-  function renderBarChart(root,data) {
+
+  function renderTrafficChart(root,data) {
     if(!root)return;
-    const max=Math.max(1,...data.map(d=>d.value));
-    root.innerHTML=data.map(d=>`<div class="chart-col"><div class="chart-bar" style="height:${Math.max(4,Math.round((d.value/max)*92))}%"><span>${d.value}</span></div><small>${esc(d.label)}</small></div>`).join("");
+    const rows=Array.isArray(data)?data:[];
+    const totalViews=rows.reduce((sum,d)=>sum+d.views,0);
+    const totalSessions=rows.reduce((sum,d)=>sum+d.sessions,0);
+    const width=700,height=180,left=24,right=14,top=18,bottom=22;
+    const innerW=width-left-right,innerH=height-top-bottom;
+    const max=Math.max(1,...rows.flatMap(d=>[d.views,d.sessions]));
+    const x=i=>rows.length<=1?left+innerW/2:left+(i/(rows.length-1))*innerW;
+    const y=v=>top+innerH-(v/max)*innerH;
+    const viewPoints=rows.map((d,i)=>`${x(i).toFixed(1)},${y(d.views).toFixed(1)}`).join(" ");
+    const sessionPoints=rows.map((d,i)=>`${x(i).toFixed(1)},${y(d.sessions).toFixed(1)}`).join(" ");
+    const grid=[0,.25,.5,.75,1].map(p=>{
+      const yy=top+innerH-(p*innerH);
+      const val=Math.round(max*p);
+      return `<line x1="${left}" y1="${yy}" x2="${width-right}" y2="${yy}" class="traffic-grid-line"/><text x="0" y="${yy+3}" class="traffic-y-label">${val}</text>`;
+    }).join("");
+    const step=rows.length<=8?1:Math.ceil(rows.length/7);
+    const labels=rows.map((d,i)=>(i%step===0||i===rows.length-1)
+      ?`<text x="${x(i)}" y="${height-4}" text-anchor="middle" class="traffic-x-label">${esc(d.label)}</text>`
+      :"").join("");
+    const dots=rows.map((d,i)=>`
+      <circle cx="${x(i)}" cy="${y(d.views)}" r="3.8" class="traffic-dot traffic-dot-views"><title>${esc(d.fullLabel)} · ${d.views} page views</title></circle>
+      <circle cx="${x(i)}" cy="${y(d.sessions)}" r="3.4" class="traffic-dot traffic-dot-sessions"><title>${esc(d.fullLabel)} · ${d.sessions} sessions</title></circle>`).join("");
+    root.classList.add("traffic-chart");
+    root.innerHTML=`
+      <div class="traffic-chart-legend">
+        <span><i class="traffic-key traffic-key-views"></i>Page views <b>${totalViews.toLocaleString()}</b></span>
+        <span><i class="traffic-key traffic-key-sessions"></i>Sessions <b>${totalSessions.toLocaleString()}</b></span>
+      </div>
+      <div class="traffic-chart-canvas">
+        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Website traffic over time">
+          ${grid}
+          ${rows.length?`<polyline points="${viewPoints}" class="traffic-line traffic-line-views"/><polyline points="${sessionPoints}" class="traffic-line traffic-line-sessions"/>`:""}
+          ${dots}
+          ${labels}
+        </svg>
+      </div>`;
   }
+
   function renderRankList(root,items,unit="") {
     if(!root)return;
     if(!items.length){root.innerHTML='<p class="empty-state">No data yet.</p>';return;}
@@ -1985,25 +2061,21 @@
 
   function renderAnalytics() {
     const days=Number($("analyticsRange").value||7);
-    const events=eventsWithin(days);
-    const views=events.filter(e=>e.event_name==="page_view");
-    const sessions=new Set(events.map(e=>e.session_id).filter(Boolean));
-    const adds=events.filter(e=>e.event_name==="add_to_cart");
-    const whats=events.filter(e=>e.event_name==="whatsapp_click");
-    $("analyticsViews").textContent=views.length.toLocaleString();
-    $("analyticsSessions").textContent=sessions.size.toLocaleString();
-    $("analyticsAdds").textContent=adds.length.toLocaleString();
-    $("analyticsWhatsApp").textContent=whats.length.toLocaleString();
+    const stats=analyticsSnapshot(days);
+    $("analyticsViews").textContent=stats.views.length.toLocaleString();
+    $("analyticsSessions").textContent=stats.sessions.size.toLocaleString();
+    $("analyticsAdds").textContent=stats.adds.length.toLocaleString();
+    $("analyticsWhatsApp").textContent=stats.whats.length.toLocaleString();
     $("analyticsViewsSub").textContent=`${days} day period`;
-    $("analyticsSessionsSub").textContent=sessions.size? `${(views.length/sessions.size).toFixed(1)} views / session`:"No sessions yet";
-    renderBarChart($("analyticsChart"),dailyCounts(events,Math.min(days,30),"page_view"));
-    renderRankList($("analyticsPages"),rankBy(views,e=>cleanPath(e.page_path)).slice(0,8),"views");
-    const productViews=events.filter(e=>e.event_name==="product_view"&&e.meta?.product_id);
+    $("analyticsSessionsSub").textContent=stats.sessions.size?`${(stats.views.length/stats.sessions.size).toFixed(1)} views / session`:"No sessions yet";
+    renderTrafficChart($("analyticsChart"),stats.daily);
+    renderRankList($("analyticsPages"),rankBy(stats.views,e=>cleanPath(e.page_path)).slice(0,8),"views");
+    const productViews=stats.productViews.filter(e=>e.meta?.product_id);
     const ranked=rankBy(productViews,e=>e.meta?.product_id).slice(0,8).map(r=>({...r,label:state.products.find(p=>p.id===r.label)?.nameEn||r.label}));
     renderRankList($("analyticsProducts"),ranked,"product views");
 
-    const minOrderTime=Date.now()-days*86400000;
-    const periodOrders=state.orders.filter(o=>new Date(o.submitted_at).getTime()>=minOrderTime);
+    const start=analyticsStart(days).getTime();
+    const periodOrders=state.orders.filter(o=>new Date(o.submitted_at).getTime()>=start);
     const valueOrders=periodOrders.filter(o=>o.status!=="cancelled");
     const orderValue=valueOrders.reduce((sum,o)=>sum+(Number(o.total)||0),0);
     $("analyticsOrders").textContent=periodOrders.length.toLocaleString();
@@ -2024,9 +2096,9 @@
     renderRankList($("analyticsOrderedProducts"),[...productCounts.values()].sort((a,b)=>b.value-a.value).slice(0,8),"items ordered");
     $("intentBreakdown").innerHTML=[
       ["Product views",productViews.length],
-      ["Add to pantry",adds.length],
-      ["WhatsApp clicks",whats.length],
-      ["Searches",events.filter(e=>e.event_name==="search").length]
+      ["Add to pantry",stats.adds.length],
+      ["WhatsApp clicks",stats.whats.length],
+      ["Searches",stats.searches.length]
     ].map(([label,value])=>`<div class="intent-card"><strong>${value.toLocaleString()}</strong><span>${esc(label)}</span></div>`).join("");
   }
 

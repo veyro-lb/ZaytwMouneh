@@ -129,7 +129,6 @@
       rows.push(...(data||[]));
       if(!data||data.length<pageSize)break;
       from+=pageSize;
-      if(from>=50000)break;
     }
     return {data:rows,error:null};
   }

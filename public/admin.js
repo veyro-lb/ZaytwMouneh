@@ -331,6 +331,7 @@
     "Use a password with at least 12 characters.":"استخدم كلمة مرور من 12 حرفاً على الأقل.",
     "Dashboard initialization failed. Check the backend connection.":"فشل تشغيل لوحة الإدارة. تحقق من اتصال النظام الخلفي.",
     "New category name:":"اسم الفئة الجديدة:",
+    "+ New category…":"+ فئة جديدة…",
     "Condiments":"مستلزمات المطبخ",
     "Dates":"تمر",
     "Debsy Carob":"دبسي خروب",
@@ -704,6 +705,8 @@
   }
 
   async function init() {
+    applyAdminLanguage(state.lang,false);
+    startLanguageObserver();
     bindStaticUi();
     if (!enabled()) {
       showOnly("setupScreen");
@@ -834,6 +837,8 @@
     renderAnalytics();
     renderActivity();
     renderSettings();
+    localizeDom($("adminApp"));
+    updateLanguageButtons();
   }
 
   function populateCategoryControls() {
@@ -1213,6 +1218,7 @@
     $$(".admin-nav button").forEach(b=>b.classList.toggle("is-active",b.dataset.view===view));
     const titles={overview:"Overview",products:"Products",orders:"Orders & history",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
     $("viewTitle").textContent=titles[view]||"Owner Console";
+    localizeDom($("viewTitle"));
     closeSidebar();
     window.scrollTo({top:0,behavior:"smooth"});
   }
@@ -1504,7 +1510,7 @@
     try{
       let category=$("productCategory").value;
       if(category==="__new"){
-        category=prompt("New category name:")?.trim();
+        category=prompt(state.lang==="ar"?translatePhrase("New category name:"):"New category name:")?.trim();
         if(!category)throw new Error("Category is required.");
       }
       const variants=collectVariants(id);
@@ -1597,6 +1603,7 @@
   }
 
   function bindStaticUi() {
+    $("[data-admin-language-toggle]").forEach(btn=>btn.addEventListener("click",toggleAdminLanguage));
     $("loginForm")?.addEventListener("submit",handleLogin);
     $("bootstrapForm")?.addEventListener("submit",handleBootstrap);
     $("signOutButton")?.addEventListener("click",signOut);

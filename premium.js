@@ -175,7 +175,7 @@
     var detail=q(".provenance-detail",root),items=regionProducts(region);
     var labels={"Bekaa":["Bekaa","البقاع"],"Koura":["Koura","الكورة"],"Mount Lebanon":["Mount Lebanon","جبل لبنان"],"Chouf":["Chouf","الشوف"]};
     detail.innerHTML='<span class="region-label">'+esc(txt("Origin focus","مصدر مختار"))+'</span><h3>'+esc(isAr()?labels[region][1]:labels[region][0])+'</h3><p>'+esc(isAr()?regionCopy[region].ar:regionCopy[region].en)+'</p><div class="provenance-products">'+items.map(function(p){
-      return '<button class="provenance-product" type="button" data-origin-product="'+esc(p.id)+'"><small>'+esc(p.category)+'</small><strong>'+esc(pname(p))+'</strong></button>';
+      return '<button class="provenance-product" type="button" data-origin-product="'+esc(p.id)+'"><small>'+esc(pcategory(p))+'</small><strong>'+esc(pname(p))+'</strong></button>';
     }).join("")+'</div>';
     qa("[data-origin-product]",detail).forEach(function(btn){btn.addEventListener("click",function(){if(typeof openProduct==="function")openProduct(btn.dataset.originProduct)})});
   }

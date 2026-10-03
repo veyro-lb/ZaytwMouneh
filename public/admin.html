@@ -8,13 +8,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="ZWM Owner" />
-  <link rel="manifest" href="admin-manifest.webmanifest?v=20261004-toolkit8" />
+  <link rel="manifest" href="admin-manifest.webmanifest?v=20261004-toolkit9" />
   <title>Zayt w Mouneh — Owner Console</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261003-round1" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="admin.css?v=20261004-toolkit8" />
+  <link rel="stylesheet" href="admin.css?v=20261004-toolkit9" />
 </head>
 <body class="admin-body">
   <div class="admin-bg" aria-hidden="true"></div>
@@ -61,7 +61,7 @@
         <p class="form-status" id="loginStatus" role="status" aria-live="polite"></p>
       </form>
 
-      <details class="owner-bootstrap" id="ownerBootstrap">
+      <details class="owner-bootstrap" id="ownerBootstrap" hidden>
         <summary>First time here? Create the owner account</summary>
         <div class="owner-bootstrap-inner">
           <p>This is a one-time activation. Choose the email and password you want to use for the owner dashboard, then enter the setup code.</p>
@@ -211,7 +211,7 @@
             <button class="button-primary button-small" id="applyBulkProductAction" type="button">Apply</button>
           </div>
           <div class="table-card">
-            <div class="table-summary"><span id="productResultCount">0 products</span><div><button id="selectVisibleProducts" class="text-button" type="button">Select visible</button><button id="exportProductsButton" class="text-button" type="button">Excel / CSV ↗</button></div></div>
+            <div class="table-summary"><span id="productResultCount">0 products</span><div><button id="selectVisibleProducts" class="text-button" type="button">Select visible</button><button id="deselectAllProducts" class="text-button" type="button">Deselect all</button><button id="exportProductsButton" class="text-button" type="button">Excel / CSV ↗</button></div></div>
             <div class="product-table-wrap">
               <table class="product-table">
                 <thead><tr><th class="select-col"><span class="sr-only">Select</span></th><th>Product</th><th>Category</th><th>Price</th><th>Availability</th><th>Status</th><th>Updated</th><th></th></tr></thead>
@@ -285,7 +285,7 @@
         </section>
 
         <section class="dashboard-view" data-view-panel="content">
-          <div class="section-intro"><div><p>Website content</p><h2>Change common customer-facing details without editing HTML.</h2></div><span>Changes publish after save.</span></div>
+          <div class="section-intro"><div><p>Website content</p><h2>Edit the customer-facing settings the live website actually uses.</h2></div><span>Save publishes to the storefront; open tabs sync automatically.</span></div>
           <form id="contentForm" class="content-grid">
             <article class="panel content-panel">
               <div class="panel-head"><div><p>Announcement bar</p><h3>Top-of-site message</h3></div><label class="switch"><input id="announcementEnabled" type="checkbox" /><span></span></label></div>
@@ -317,14 +317,14 @@
                 <label>Minimum order (USD)<input id="deliveryMinimum" type="number" min="0" step="0.01" /></label>
                 <label>Estimated delivery<input id="deliveryEta" type="text" maxlength="80" placeholder="e.g. Same day / 1–2 days" /></label>
               </div>
-              <p class="field-help">These are owner defaults for planning and manual orders. Final delivery can still be confirmed on WhatsApp.</p>
+              <p class="field-help">These values publish to the website delivery notice and are also used for owner planning and manual orders. Final delivery can still be confirmed on WhatsApp.</p>
               <div class="delivery-zones-head"><div><strong>Delivery areas</strong><small>Optional area-specific fee and ETA overrides.</small></div><button class="text-button" id="addDeliveryZone" type="button">+ Add area</button></div>
               <div id="deliveryZoneRows" class="delivery-zone-rows"></div>
             </article>
             <div class="form-actions content-save-row">
               <div class="content-preview-actions">
+                <button class="button-secondary" id="previewContentDesktop" type="button">Preview real site · desktop</button>
                 <button class="button-secondary" id="previewContentMobile" type="button">Preview mobile</button>
-                <button class="button-secondary" id="previewContentDesktop" type="button">Preview desktop</button>
               </div>
               <button class="button-primary" type="submit">Save website content</button>
               <span id="contentStatus" class="form-status" role="status"></span>
@@ -369,7 +369,7 @@
           <div class="settings-grid">
             <article class="panel">
               <div class="panel-head"><div><p>Security</p><h3>Owner access</h3></div><span class="status-badge status-live">Protected</span></div>
-              <dl class="settings-list"><div><dt>Signed in as</dt><dd id="settingsEmail">—</dd></div><div><dt>Authorization</dt><dd>Owner allowlist + RLS</dd></div><div><dt>Session</dt><dd>Supabase Auth</dd></div></dl>
+              <dl class="settings-list"><div><dt>Signed in as</dt><dd id="settingsEmail">—</dd></div><div><dt>Authorization</dt><dd>Owner allowlist + RLS</dd></div><div><dt>Session</dt><dd>Supabase Auth · this browser session only</dd></div></dl>
               <button class="button-secondary" id="settingsSignOut" type="button">Sign out on this device</button>
             </article>
             <article class="panel">
@@ -444,18 +444,21 @@
 
   <div class="modal-backdrop" id="contentPreviewModal" hidden>
     <section class="content-preview-modal" role="dialog" aria-modal="true" aria-labelledby="contentPreviewTitle">
-      <header class="editor-head"><div><p>Website preview</p><h2 id="contentPreviewTitle">Preview before publishing</h2></div><button id="closeContentPreview" type="button" aria-label="Close">×</button></header>
+      <header class="editor-head"><div><p>Real website preview</p><h2 id="contentPreviewTitle">Preview before publishing</h2></div><button id="closeContentPreview" type="button" aria-label="Close">×</button></header>
+      <div class="content-preview-toolbar">
+        <div class="preview-device-switch" data-no-i18n role="group" aria-label="Preview device">
+          <button type="button" class="is-active" data-content-preview-mode="desktop">Desktop</button>
+          <button type="button" data-content-preview-mode="mobile">Mobile</button>
+        </div>
+        <a class="text-button" href="index.html" target="_blank" rel="noopener">Open live website ↗</a>
+      </div>
       <div class="content-preview-stage">
-        <div class="content-preview-device is-mobile" id="contentPreviewDevice">
-          <div class="preview-browser-bar"><span></span><b>Zayt w Mouneh</b><span></span></div>
-          <div class="preview-announcement" id="previewAnnouncement">Announcement</div>
-          <div class="preview-site-head"><span class="preview-logo">ZW</span><b>Zayt w Mouneh</b><span>☰</span></div>
-          <div class="preview-site-hero"><small>AUTHENTIC LEBANESE PANTRY</small><h3>Zayt w Mouneh</h3><p>Traditional pantry essentials, clearly presented.</p></div>
-          <div class="preview-promo" id="previewPromo" hidden><strong id="previewPromoTitle"></strong><span id="previewPromoBody"></span></div>
-          <div class="preview-product-strip"><span></span><span></span><span></span></div>
+        <div class="content-preview-device is-desktop" id="contentPreviewDevice">
+          <div class="preview-browser-bar"><span class="preview-browser-dots" aria-hidden="true"><i></i><i></i><i></i></span><b>zaytwmouneh.com</b><span>↗</span></div>
+          <iframe id="contentPreviewFrame" title="Zayt w Mouneh website preview" src="about:blank"></iframe>
         </div>
       </div>
-      <footer class="content-preview-footer"><span>Unsaved preview only — nothing is published until you press Save.</span><button class="button-primary" id="closeContentPreviewFooter" type="button">Done</button></footer>
+      <footer class="content-preview-footer"><span>This is the real storefront layout with your current unsaved form values layered into it. Nothing publishes until Save.</span><button class="button-primary" id="closeContentPreviewFooter" type="button">Done</button></footer>
     </section>
   </div>
 
@@ -699,12 +702,12 @@
 
   <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
 
-  <script src="admin-config.js?v=20261004-toolkit8"></script>
+  <script src="admin-config.js?v=20261004-toolkit9"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
   <script src="products-data.js?v=20261002-1005"></script>
   <script src="product-photos.js?v=20261003-zip-originals3"></script>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-  <script src="admin.js?v=20261004-toolkit8"></script>
+  <script src="admin.js?v=20261004-toolkit9"></script>
   <!-- mobilebottom-fallback -->
   <script>
   (function(){

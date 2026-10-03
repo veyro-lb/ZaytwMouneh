@@ -617,7 +617,7 @@
 
   const state = {
     client: null, user: null, membership: null,
-    overrides: new Map(), settings: new Map(), events: [], activity: [], orders: [], notes: new Map(),
+    overrides: new Map(), settings: new Map(), events: [], activity: [], orders: [], notes: new Map(), backups: [],
     products: [], editingId: null, imageFile: null, imageDims: null,
     activeView: "overview", productFilter: { q:"", category:"", status:"", availability:"" },
     selectedProducts:new Set(),
@@ -898,19 +898,21 @@
 
   async function refreshAll() {
     const since = new Date(Date.now() - 90*86400000).toISOString();
-    const [overridesRes, settingsRes, eventsRes, activityRes, ordersRes, notesRes] = await Promise.all([
+    const [overridesRes, settingsRes, eventsRes, activityRes, ordersRes, notesRes, backupsRes] = await Promise.all([
       state.client.from(cfg.tables.products).select("*").order("updated_at",{ascending:false}),
       state.client.from(cfg.tables.settings).select("*"),
       state.client.from(cfg.tables.events).select("*").gte("created_at",since).order("created_at",{ascending:false}).limit(10000),
       state.client.from(cfg.tables.activity).select("*").order("created_at",{ascending:false}).limit(300),
       loadAllOrders(),
-      state.client.from(cfg.tables.notes || "admin_notes").select("*").order("updated_at",{ascending:false}).limit(5000)
+      state.client.from(cfg.tables.notes || "admin_notes").select("*").order("updated_at",{ascending:false}).limit(5000),
+      state.client.from(cfg.tables.backups || "admin_backups").select("*").order("created_at",{ascending:false}).limit(12)
     ]);
 
     if (overridesRes.error) toast("Could not load product changes.", "error");
     if (settingsRes.error) toast("Could not load website settings.", "error");
     if (ordersRes.error) toast("Could not load order history.", "error");
     if (notesRes.error) toast("Could not load private notes.", "error");
+    if (backupsRes.error) toast("Could not load cloud backups.", "error");
 
     state.overrides = new Map((overridesRes.data || []).map(r => [r.product_id,r]));
     state.settings = new Map((settingsRes.data || []).map(r => [r.key,r.value]));
@@ -918,6 +920,7 @@
     state.activity = activityRes.data || [];
     state.orders = ordersRes.data || [];
     state.notes = new Map((notesRes.data || []).map(n => [`${n.subject_type}:${n.subject_id}`,n]));
+    state.backups = backupsRes.data || [];
     rebuildProducts();
     renderEverything();
     $("lastUpdated").textContent = `Updated ${new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}`;

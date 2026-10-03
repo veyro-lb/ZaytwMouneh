@@ -6571,3 +6571,11 @@ html[dir="rtl"] body[data-page="home"] .home-pantry-hero .intro-board-note.only-
     min-height:54px!important;
   }
 }
+
+/* Owner-controlled product photo framing.
+   CSS variables are written by app.js from the admin-saved product image metadata. */
+.product-photo-original{
+  object-position:var(--zwm-photo-position,50% 50%)!important;
+  transform:scale(var(--zwm-photo-scale,1))!important;
+  transform-origin:var(--zwm-photo-position,50% 50%)!important;
+}

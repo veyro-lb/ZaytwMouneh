@@ -28,7 +28,9 @@ function productPhotoMarkup(p,cls="product-image"){
   const posX=Math.max(0,Math.min(100,Number(source.positionX??50)));
   const posY=Math.max(0,Math.min(100,Number(source.positionY??50)));
   const zoom=Math.max(100,Math.min(180,Number(source.zoom??100)));
-  const framingStyle=`--zwm-photo-position:${posX}% ${posY}%;--zwm-photo-scale:${zoom/100};`;
+  const rotation=Number(source.rotation)||0;
+  const fit=source.fit==="contain"?"contain":"cover";
+  const framingStyle=`--zwm-photo-position:${posX}% ${posY}%;--zwm-photo-scale:${zoom/100};--zwm-photo-rotation:${rotation}deg;--zwm-photo-fit:${fit};`;
   return `<img class="${escapeHtml(cls)} product-photo-original" src="${escapeHtml(source.url)}" width="${source.width}" height="${source.height}" data-photo-width="${source.width}" data-photo-height="${source.height}" data-photo-quality="${escapeHtml(source.quality||"original-supplied")}" style="${framingStyle}" alt="${escapeHtml(currentName(p))}" loading="lazy" decoding="async">`;
 }
 function renderStaticProductPhotos(root=document){
@@ -46,6 +48,17 @@ function productVisualMarkup(p,cls="product-image"){
   const photo=productPhotoMarkup(p,cls);
   if(photo)return photo;
   return productPlaceholderMarkup(p,cls);
+}
+
+function productAvailability(p){
+  return ["in_stock","out_of_stock","coming_soon"].includes(p?.availability)?p.availability:"in_stock";
+}
+function availabilityLabel(p){
+  const value=productAvailability(p);
+  const labels=lang==="ar"
+    ?{in_stock:"متوفر",out_of_stock:"غير متوفر",coming_soon:"قريباً"}
+    :{in_stock:"In stock",out_of_stock:"Out of stock",coming_soon:"Coming soon"};
+  return labels[value];
 }
 
 window.addEventListener("zwm-product-photos-ready",()=>{
@@ -435,6 +448,8 @@ let heroVisible=true;
             positionX:Math.max(0,Math.min(100,Number(payload.image.positionX??50))),
             positionY:Math.max(0,Math.min(100,Number(payload.image.positionY??50))),
             zoom:Math.max(100,Math.min(180,Number(payload.image.zoom??100))),
+            rotation:Number(payload.image.rotation)||0,
+            fit:payload.image.fit==="contain"?"contain":"cover",
             quality:"owner-dashboard"
           };
         }
@@ -624,7 +639,7 @@ function saveGiftItems(){safeStorageSet(GIFT_KEY,JSON.stringify(giftItems))}
 function giftRows(){
   return Object.entries(giftItems).map(([key,item])=>{
     const p=productById(item.productId),v=variantById(p,item.variantId);
-    return p&&v?{key,p,v,qty:item.qty}:null;
+    return p&&v&&productAvailability(p)==="in_stock"?{key,p,v,qty:item.qty}:null;
   }).filter(Boolean);
 }
 function addGiftItem(productId,variantId,qty=1){
@@ -1096,6 +1111,8 @@ function renderProducts(){
     const q=qtyFor("card:"+p.id);
     const ps=productPriceSummary(p);
     const listingNote=lang==="en"?repeatedListingNote(p):"";
+    const availability=productAvailability(p);
+    const canOrder=availability==="in_stock";
     const sizeOptions=p.variants.length>1
       ? `<select class="card-variant-select" data-card-variant="${p.id}" aria-label="${escapeHtml(t.chooseSize)}">${p.variants.map(v=>`<option value="${escapeHtml(v.id)}"${v.id===selected.id?" selected":""}>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${money(v.price)}</option>`).join("")}</select>`
       : `<div class="single-size">${escapeHtml(lang==="ar"?selected.sizeAr:selected.sizeEn)}</div>`;
@@ -1108,7 +1125,7 @@ function renderProducts(){
           <button class="product-view" type="button" data-view="${escapeHtml(p.id)}" aria-label="${escapeHtml(t.view+" "+currentName(p))}">${uiIcon("eye")}</button>
         </div>
       </div>
-      ${badges.length?`<div class="product-badges">${badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("")}</div>`:""}
+      <div class="product-badges">${badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("")}<span class="availability-chip availability-${availability}">${escapeHtml(availabilityLabel(p))}</span></div>
       <p class="product-category">${escapeHtml(categoryName(p.category))}</p>\n      <p class="product-origin">${escapeHtml(originFor(p))}</p>\n      ${listingNote?`<p class="product-listing-note">${escapeHtml(listingNote)}</p>`:""}\n      <h3 class="product-name">${escapeHtml(currentName(p))}</h3>
       <p class="product-description">${escapeHtml(info.what)}</p>
       <p class="product-use"><strong>${escapeHtml(t.use)}:</strong> ${escapeHtml(info.use)}</p>
@@ -1121,11 +1138,11 @@ function renderProducts(){
         ${sizeOptions}
         <div class="product-buy-row">
           <div class="card-qty">
-            <button type="button" data-card-q="-1" data-id="${escapeHtml(p.id)}" aria-label="${escapeHtml(lang==="ar"?"تقليل الكمية":"Decrease quantity")}">−</button>
+            <button type="button" data-card-q="-1" data-id="${escapeHtml(p.id)}" ${canOrder?"":"disabled"} aria-label="${escapeHtml(lang==="ar"?"تقليل الكمية":"Decrease quantity")}">−</button>
             <span data-card-qty="${escapeHtml(p.id)}">${q}</span>
-            <button type="button" data-card-q="1" data-id="${escapeHtml(p.id)}" aria-label="${escapeHtml(lang==="ar"?"زيادة الكمية":"Increase quantity")}">+</button>
+            <button type="button" data-card-q="1" data-id="${escapeHtml(p.id)}" ${canOrder?"":"disabled"} aria-label="${escapeHtml(lang==="ar"?"زيادة الكمية":"Increase quantity")}">+</button>
           </div>
-          <button class="add-button" type="button" data-add="${escapeHtml(p.id)}">${escapeHtml(t.add)}</button>
+          <button class="add-button" type="button" data-add="${escapeHtml(p.id)}" ${canOrder?"":"disabled"}>${escapeHtml(canOrder?t.add:availabilityLabel(p))}</button>
         </div>
       </div>
     </article>`;
@@ -1172,6 +1189,7 @@ function renderProducts(){
 }
 
 function addToCart(p,v,qty){
+  if(productAvailability(p)!=="in_stock"){toast(availabilityLabel(p));return;}
   const key=cartKey(p.id,v.id);
   cart[key]={productId:p.id,variantId:v.id,qty:Math.max(1,Number(qty)||1)};
   saveCart();
@@ -1288,7 +1306,9 @@ function renderModal(productId,variantId){
   $("#productNutrition").textContent=health?health.text:"";
   $("#modalPrice").textContent=money(v.price);
   $("#productModalQty").textContent=qtyFor("modal");
-  $("#productModalAdd").textContent=t.add;
+  const modalCanOrder=productAvailability(p)==="in_stock";
+  $("#productModalAdd").textContent=modalCanOrder?t.add:availabilityLabel(p);
+  $("#productModalAdd").disabled=!modalCanOrder;
   $("#variantOptions").innerHTML=p.variants.map(option=>`<button type="button" class="variant-option ${option.id===v.id?"is-active":""}" data-modal-variant="${escapeHtml(option.id)}">${escapeHtml(lang==="ar"?option.sizeAr:option.sizeEn)} · ${money(option.price)}</button>`).join("");
   $$("[data-modal-variant]").forEach(btn=>btn.addEventListener("click",()=>{
     currentModalVariant=variantById(p,btn.dataset.modalVariant);

@@ -2343,6 +2343,12 @@
 
   async function applyBackupSnapshot(data){
     const overrides=Array.isArray(data?.productOverrides)?data.productOverrides:[];
+    const backupProductIds=new Set(overrides.map(r=>safeText(r?.product_id)).filter(Boolean));
+    const productDeletes=[...state.overrides.keys()].filter(id=>!backupProductIds.has(id));
+    if(productDeletes.length){
+      const {error}=await state.client.from(cfg.tables.products).delete().in("product_id",productDeletes);
+      if(error)throw error;
+    }
     for(const row of overrides){
       if(!row?.product_id)continue;
       const {error}=await state.client.from(cfg.tables.products).upsert({
@@ -2356,13 +2362,30 @@
     }
 
     const settings=data?.siteSettings&&typeof data.siteSettings==="object"?data.siteSettings:{};
-    const settingRows=Object.entries(settings).map(([key,value])=>({key,value,updated_at:new Date().toISOString(),updated_by:state.user.id}));
+    const backupSettingKeys=new Set(Object.keys(settings));
+    const knownSettingKeys=["announcement","contact","promo","delivery","product_categories"];
+    const settingDeletes=knownSettingKeys.filter(key=>state.settings.has(key)&&!backupSettingKeys.has(key));
+    if(settingDeletes.length){
+      const {error}=await state.client.from(cfg.tables.settings).delete().in("key",settingDeletes);
+      if(error)throw error;
+    }
+    const settingRows=Object.entries(settings).map(([key,value])=>({
+      key,value,updated_at:new Date().toISOString(),updated_by:state.user.id
+    }));
     if(settingRows.length){
       const {error}=await state.client.from(cfg.tables.settings).upsert(settingRows,{onConflict:"key"});
       if(error)throw error;
     }
 
     const notes=Array.isArray(data?.privateNotes)?data.privateNotes:[];
+    const noteKey=n=>`${n?.subject_type||""}:${n?.subject_id||""}`;
+    const backupNoteKeys=new Set(notes.map(noteKey).filter(k=>k!==":"));
+    for(const [key,note] of state.notes){
+      if(backupNoteKeys.has(key))continue;
+      const {error}=await state.client.from(cfg.tables.notes||"admin_notes").delete()
+        .eq("subject_type",note.subject_type).eq("subject_id",note.subject_id);
+      if(error)throw error;
+    }
     for(const note of notes){
       if(!note?.subject_type||!note?.subject_id)continue;
       const {error}=await state.client.from(cfg.tables.notes||"admin_notes").upsert({

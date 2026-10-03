@@ -5378,3 +5378,135 @@ html[dir="rtl"] body .only-en{
     min-height:54px!important;
   }
 }
+
+
+/* ===== v61 strict language split + reliable phone menu ===== */
+/* These guards intentionally use both document language and direction so inactive copy
+   stays hidden even when a component has its own !important display rule. */
+html[lang="en"][dir="ltr"] body .only-ar.only-ar,
+html:not([lang="ar"])[dir="ltr"] body .only-ar.only-ar{
+  display:none!important;
+  visibility:hidden!important;
+}
+html[lang="ar"][dir="rtl"] body .only-en.only-en{
+  display:none!important;
+  visibility:hidden!important;
+}
+
+@media(max-width:760px){
+  body.menu-open{overflow:hidden!important;touch-action:none}
+  body.menu-open::after{
+    content:""!important;
+    position:fixed!important;
+    inset:0!important;
+    z-index:7600!important;
+    background:rgba(4,23,10,.48)!important;
+    pointer-events:auto!important;
+  }
+  .site-header{overflow:visible!important;z-index:7700!important}
+  .site-header .nav-toggle{
+    display:flex!important;
+    position:relative!important;
+    z-index:7901!important;
+    pointer-events:auto!important;
+  }
+  .nav-links.is-mobile-portal{
+    position:fixed!important;
+    z-index:7900!important;
+    top:calc(115px + env(safe-area-inset-top))!important;
+    left:10px!important;
+    right:10px!important;
+    bottom:10px!important;
+    width:auto!important;
+    max-width:none!important;
+    height:auto!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:12px!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    align-content:start!important;
+    gap:8px!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior:contain!important;
+    border:1px solid rgba(15,74,32,.16)!important;
+    border-radius:20px!important;
+    background:#fffaf0!important;
+    color:#0f4a20!important;
+    box-shadow:0 24px 70px rgba(3,34,14,.30)!important;
+    opacity:0!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+    transform:translateY(-8px) scale(.99)!important;
+    transition:opacity .18s ease,transform .18s ease,visibility .18s ease!important;
+  }
+  .nav-links.is-mobile-portal.is-open{
+    opacity:1!important;
+    visibility:visible!important;
+    pointer-events:auto!important;
+    transform:none!important;
+  }
+  .nav-links.is-mobile-portal .menu-heading{
+    display:grid!important;
+    gap:4px!important;
+    padding:11px 13px!important;
+    margin:0 0 2px!important;
+    border-radius:15px!important;
+    background:#f1eadc!important;
+    color:#0f4a20!important;
+  }
+  .nav-links.is-mobile-portal>a:not(.menu-utility-link){
+    display:grid!important;
+    grid-template-columns:28px minmax(0,1fr) 24px!important;
+    align-items:center!important;
+    gap:10px!important;
+    min-height:56px!important;
+    padding:10px 13px!important;
+    margin:0!important;
+    border:1px solid rgba(15,74,32,.12)!important;
+    border-radius:15px!important;
+    background:#fff!important;
+    color:#0f4a20!important;
+    opacity:1!important;
+    visibility:visible!important;
+    pointer-events:auto!important;
+    text-decoration:none!important;
+    touch-action:manipulation!important;
+  }
+  .nav-links.is-mobile-portal>a:not(.menu-utility-link)>span,
+  .nav-links.is-mobile-portal>a:not(.menu-utility-link)>b{
+    display:block!important;
+    color:#b0841e!important;
+  }
+  .nav-links.is-mobile-portal>a:not(.menu-utility-link)>strong{
+    display:block!important;
+    color:#0f4a20!important;
+    font-size:1rem!important;
+    line-height:1.2!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+  }
+  .nav-links.is-mobile-portal .menu-utility{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+    margin-top:2px!important;
+  }
+  .nav-links.is-mobile-portal .menu-utility-link{
+    display:flex!important;
+    align-items:center!important;
+    gap:10px!important;
+    min-height:50px!important;
+    padding:10px 13px!important;
+    border-radius:14px!important;
+    background:#f5efe3!important;
+    color:#0f4a20!important;
+    touch-action:manipulation!important;
+  }
+  html[dir="rtl"] .nav-links.is-mobile-portal>a:not(.menu-utility-link){
+    grid-template-columns:24px minmax(0,1fr) 28px!important;
+  }
+}

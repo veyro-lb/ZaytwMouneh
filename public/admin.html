@@ -163,7 +163,7 @@
 
           <div class="overview-grid">
             <article class="panel panel-wide" data-overview-widget="traffic">
-              <div class="panel-head"><div><p>Traffic</p><h3>Last 7 days</h3></div><button class="text-button" type="button" data-jump-view="analytics">Full analytics →</button></div>
+              <div class="panel-head"><div><p>Traffic</p><h3>Page views & sessions · 7 days</h3></div><button class="text-button" type="button" data-jump-view="analytics">Full analytics →</button></div>
               <div class="mini-chart" id="overviewChart" aria-label="Seven day page views chart"></div>
             </article>
             <article class="panel" data-overview-widget="health">
@@ -334,7 +334,7 @@
 
         <section class="dashboard-view" data-view-panel="analytics">
           <div class="analytics-head">
-            <div><p>Website analytics</p><h2>Simple signals that help you improve the store.</h2></div>
+            <div><p>Website analytics</p><h2>Live traffic and customer activity from one synchronized event stream.</h2><span class="analytics-freshness" id="analyticsFreshness">Loading analytics…</span></div>
             <select id="analyticsRange"><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select>
           </div>
           <div class="metric-grid analytics-metrics">
@@ -344,7 +344,7 @@
             <article class="metric-card"><div><small>WhatsApp clicks</small><strong id="analyticsWhatsApp">—</strong><em>Order/contact intent</em></div></article>
           </div>
           <div class="overview-grid">
-            <article class="panel panel-wide"><div class="panel-head"><div><p>Daily traffic</p><h3>Page views and customer actions</h3></div></div><div id="analyticsChart" class="analytics-chart"></div></article>
+            <article class="panel panel-wide"><div class="panel-head"><div><p>Daily traffic</p><h3>Page views & sessions</h3></div></div><div id="analyticsChart" class="analytics-chart"></div></article>
             <article class="panel"><div class="panel-head"><div><p>Top pages</p><h3>Most viewed</h3></div></div><div id="analyticsPages" class="rank-list"></div></article>
           </div>
           <div class="metric-grid analytics-metrics order-business-metrics">
@@ -379,7 +379,7 @@
             </article>
             <article class="panel">
               <div class="panel-head"><div><p>Data</p><h3>Owner backups</h3></div></div>
-              <p class="panel-copy">Export all dashboard-managed product overrides and public settings as JSON. The original static catalogue stays untouched as a fallback.</p>
+              <p class="panel-copy">Download a complete owner backup or readable Excel report. JSON is used for restore; Excel/CSV are for viewing, editing and reporting.</p>
               <div class="settings-action-stack">
                 <button class="button-primary" id="openDataCenterButton" type="button">Import / Export Center</button><button class="button-secondary" id="createCloudBackup" type="button">Create cloud backup</button>
                 <button class="button-secondary" id="exportBackupButton" type="button">Export dashboard backup ↓</button>
@@ -475,8 +475,9 @@
             <article><div><b>Products</b><small>Products, variants, availability and categories.</small></div><div><button type="button" data-export-dataset="products" data-export-format="xlsx">Excel</button><button type="button" data-export-dataset="products" data-export-format="csv">CSV</button></div></article>
             <article><div><b>Orders</b><small>Full order history with codes, customer and items.</small></div><div><button type="button" data-export-dataset="orders" data-export-format="xlsx">Excel</button><button type="button" data-export-dataset="orders" data-export-format="csv">CSV</button></div></article>
             <article><div><b>Customers</b><small>Repeat customers, phone, area, orders and spend.</small></div><div><button type="button" data-export-dataset="customers" data-export-format="xlsx">Excel</button><button type="button" data-export-dataset="customers" data-export-format="csv">CSV</button></div></article>
+            <article><div><b>Analytics</b><small>30-day daily traffic, sessions, WhatsApp activity, searches and top pages.</small></div><div><button type="button" data-export-dataset="analytics" data-export-format="xlsx">Excel</button><button type="button" data-export-dataset="analytics" data-export-format="csv">CSV</button></div></article>
             <article><div><b>Owner report</b><small>One Excel workbook with products, orders, customers and categories.</small></div><div><button type="button" data-export-dataset="report" data-export-format="xlsx">Excel report</button></div></article>
-            <article><div><b>Restorable backup</b><small>JSON backup for restoring products, settings and private notes.</small></div><div><button type="button" data-export-dataset="backup" data-export-format="json">Backup JSON</button><button type="button" data-export-dataset="backup" data-export-format="xlsx">Readable Excel</button></div></article>
+            <article><div><b>Backup</b><small><b>JSON</b> is the restorable backup. <b>Excel</b> is a readable reference copy of the same owner data.</small></div><div><button type="button" data-export-dataset="backup" data-export-format="json">Restorable JSON</button><button type="button" data-export-dataset="backup" data-export-format="xlsx">Readable Excel</button></div></article>
           </div>
         </section>
 

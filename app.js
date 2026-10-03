@@ -1,6 +1,6 @@
 
 const $=(s,r=document)=>r.querySelector(s);
-const $=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 function safeStorageGet(key,fallback=null){
   try{
     const value=window.safeStorageGet(key);

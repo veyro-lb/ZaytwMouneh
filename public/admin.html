@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="admin.css?v=20261004-1" />
+  <link rel="stylesheet" href="admin.css?v=20261004-2" />
 </head>
 <body class="admin-body">
   <div class="admin-bg" aria-hidden="true"></div>
@@ -80,7 +80,7 @@
       <nav class="admin-nav" id="adminNav" aria-label="Owner dashboard">
         <button type="button" class="is-active" data-view="overview"><span>⌂</span><b>Overview</b></button>
         <button type="button" data-view="products"><span>▦</span><b>Products</b><em id="navProductCount">0</em></button>
-        <button type="button" data-view="orders"><span>◎</span><b>Orders & deliveries</b><em id="navOrderCount">0</em></button>
+        <button type="button" data-view="orders"><span>◎</span><b>Orders & history</b><em id="navOrderCount">0</em></button>
         <button type="button" data-view="content"><span>✎</span><b>Website content</b></button>
         <button type="button" data-view="analytics"><span>↗</span><b>Analytics</b></button>
         <button type="button" data-view="activity"><span>◷</span><b>Activity</b></button>
@@ -179,6 +179,12 @@
             <article class="metric-card"><div><small>Delivered</small><strong id="ordersDeliveredCount">0</strong><em>Completed history</em></div></article>
           </div>
 
+          <div class="order-scope-tabs" role="tablist" aria-label="Order history view">
+            <button type="button" class="is-active" data-order-scope="active">Active <em id="orderActiveTabCount">0</em></button>
+            <button type="button" data-order-scope="past">Past orders <em id="orderPastTabCount">0</em></button>
+            <button type="button" data-order-scope="all">All history <em id="orderAllTabCount">0</em></button>
+          </div>
+
           <div class="toolbar order-toolbar">
             <div class="search-field"><span>⌕</span><input id="orderSearch" type="search" placeholder="Search code, customer, area or product…" /></div>
             <select id="orderStatusFilter" aria-label="Filter delivery status">
@@ -198,7 +204,7 @@
             <div class="table-summary"><span id="orderResultCount">0 orders</span><span>Use the status menu to update delivery progress.</span></div>
             <div class="product-table-wrap order-table-wrap">
               <table class="product-table order-table">
-                <thead><tr><th>Order code</th><th>Customer / area</th><th>Items</th><th>Total</th><th>Status</th><th>Sent</th></tr></thead>
+                <thead><tr><th>WhatsApp code</th><th>Customer / area</th><th>Items</th><th>Total</th><th>Status</th><th>Sent</th><th></th></tr></thead>
                 <tbody id="orderTableBody"></tbody>
               </table>
             </div>
@@ -319,12 +325,24 @@
           <aside class="editor-side">
             <article class="editor-section image-editor">
               <h3>Product photo</h3>
-              <div class="image-preview" id="imagePreview"><span>No photo</span></div>
-              <label class="upload-button">Choose image<input id="productImage" type="file" accept="image/jpeg,image/png,image/webp,image/avif" /></label>
-              <small>Use the clearest original image available. Max 10 MB.</small>
+              <div class="image-preview image-position-preview" id="imagePreview"><span>No photo</span></div>
+              <div class="image-button-row">
+                <label class="upload-button">Choose / replace<input id="productImage" type="file" accept="image/jpeg,image/png,image/webp,image/avif" /></label>
+                <button class="danger-button image-remove-button" id="removeProductImage" type="button">Remove photo</button>
+              </div>
+              <small>Use the clearest original image available. Max 10 MB. Drag the preview or use the controls below to position it.</small>
+
+              <div class="image-position-controls" id="imagePositionControls">
+                <label>Horizontal position <span id="imagePositionXValue">50%</span><input id="imagePositionX" type="range" min="0" max="100" step="1" value="50" /></label>
+                <label>Vertical position <span id="imagePositionYValue">50%</span><input id="imagePositionY" type="range" min="0" max="100" step="1" value="50" /></label>
+                <label>Zoom <span id="imageZoomValue">100%</span><input id="imageZoom" type="range" min="100" max="180" step="1" value="100" /></label>
+                <button class="text-button image-reset-button" id="resetImagePosition" type="button">Reset framing</button>
+              </div>
+
               <input id="existingImageUrl" type="hidden" />
               <input id="existingImageWidth" type="hidden" />
               <input id="existingImageHeight" type="hidden" />
+              <input id="imageRemoved" type="hidden" value="0" />
             </article>
             <article class="editor-section">
               <h3>Quick checks</h3>
@@ -341,12 +359,53 @@
     </section>
   </div>
 
+  <div class="modal-backdrop" id="orderModal" hidden>
+    <section class="order-detail-modal" role="dialog" aria-modal="true" aria-labelledby="orderDetailTitle">
+      <header class="editor-head">
+        <div><p>Order history</p><h2 id="orderDetailTitle">Order details</h2></div>
+        <button id="closeOrderModal" type="button" aria-label="Close order details">×</button>
+      </header>
+      <div class="order-detail-content">
+        <div class="order-detail-hero">
+          <div>
+            <span class="order-detail-label">WhatsApp order code</span>
+            <strong id="orderDetailCode">—</strong>
+            <small id="orderDetailSent">—</small>
+          </div>
+          <button class="button-secondary button-small" id="copyOrderCode" type="button">Copy code</button>
+        </div>
+
+        <div class="order-detail-grid">
+          <article class="order-detail-card"><span>Customer / recipient</span><strong id="orderDetailCustomer">—</strong><small id="orderDetailArea">—</small></article>
+          <article class="order-detail-card"><span>Order type</span><strong id="orderDetailKind">—</strong><small id="orderDetailLanguage">—</small></article>
+          <article class="order-detail-card"><span>Total</span><strong id="orderDetailTotal">—</strong><small>USD</small></article>
+          <article class="order-detail-card"><span>Current status</span><div id="orderDetailStatus"></div></article>
+        </div>
+
+        <article class="order-detail-section">
+          <div class="order-detail-section-head"><div><span>Products</span><h3>Full order</h3></div><strong id="orderDetailItemCount">0 items</strong></div>
+          <div id="orderDetailItems" class="order-detail-items"></div>
+        </article>
+
+        <div class="order-detail-two-col">
+          <article class="order-detail-section"><span>Customer notes</span><p id="orderDetailNotes">No notes.</p></article>
+          <article class="order-detail-section" id="orderGiftDetails"><span>Gift details</span><div id="orderDetailGift" class="order-gift-details"></div></article>
+        </div>
+
+        <article class="order-detail-section">
+          <div class="order-detail-section-head"><div><span>Status history</span><h3>Order timeline</h3></div></div>
+          <div id="orderDetailTimeline" class="order-status-timeline"></div>
+        </article>
+      </div>
+    </section>
+  </div>
+
   <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
 
   <script src="admin-config.js?v=20261004-1"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
   <script src="products-data.js?v=20261002-1005"></script>
   <script src="product-photos.js?v=20261003-zip-originals3"></script>
-  <script src="admin.js?v=20261004-1"></script>
+  <script src="admin.js?v=20261004-2"></script>
 </body>
 </html>

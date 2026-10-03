@@ -8,6 +8,479 @@
   const baseProducts = typeof PRODUCTS_DATA !== "undefined" ? clone(PRODUCTS_DATA) : [];
   const baseById = new Map(baseProducts.map(p => [p.id, p]));
   const basePhotoMap = window.ZWM_PRODUCT_PHOTOS?.map || {};
+  const ADMIN_LANG_KEY = "zwm:admin-lang:v1";
+  const originalTextNodes = new WeakMap();
+  const originalAttributes = new WeakMap();
+  let languageObserver = null;
+
+  function readAdminLanguage() {
+    try { return localStorage.getItem(ADMIN_LANG_KEY)==="ar" ? "ar" : "en"; }
+    catch { return "en"; }
+  }
+
+  const AR_TRANSLATIONS = Object.freeze({
+    "Owner Console":"لوحة المالك",
+    "Secure backend required":"يلزم ربط آمن",
+    "The dashboard UI is installed.":"واجهة لوحة الإدارة مثبّتة.",
+    "Connect the owner backend to activate it.":"اربط نظام المالك الخلفي لتفعيلها.",
+    "For security, this page will not accept a hard-coded browser password. Product changes, uploads and analytics require the dedicated protected database configured in admin-config.js.":"لأسباب أمنية، لا تقبل هذه الصفحة كلمة مرور مخزنة داخل المتصفح. تعديلات المنتجات ورفع الصور والتحليلات تحتاج إلى قاعدة البيانات المحمية المخصصة في admin-config.js.",
+    "Create the dedicated backend":"إنشاء النظام الخلفي المخصص",
+    "Use the included supabase/admin_dashboard.sql schema.":"استخدم مخطط supabase/admin_dashboard.sql المرفق.",
+    "Create the owner account":"إنشاء حساب المالك",
+    "Add only the owner's Auth user UUID to admin_users.":"أضف فقط معرّف UUID الخاص بحساب المالك إلى admin_users.",
+    "Add public connection values":"إضافة بيانات الاتصال العامة",
+    "Set the project URL and publishable key, then enable the config.":"أدخل رابط المشروع والمفتاح العام ثم فعّل الإعداد.",
+    "Back to website":"العودة إلى الموقع",
+    "Private owner access":"دخول خاص بالمالك",
+    "Owner sign in":"تسجيل دخول المالك",
+    "Run the pantry":"أدِر المونة",
+    "from one place.":"من مكان واحد.",
+    "This area is not part of the customer website. Only approved owner accounts can continue.":"هذه المنطقة ليست جزءاً من موقع العملاء. يمكن فقط لحسابات المالك المعتمدة المتابعة.",
+    "Email":"البريد الإلكتروني",
+    "Password":"كلمة المرور",
+    "Sign in securely":"تسجيل الدخول بأمان",
+    "First time here? Create the owner account":"أول مرة هنا؟ أنشئ حساب المالك",
+    "This is a one-time activation. Choose the email and password you want to use for the owner dashboard, then enter the setup code.":"هذا تفعيل لمرة واحدة. اختر البريد الإلكتروني وكلمة المرور للوحة المالك، ثم أدخل رمز الإعداد.",
+    "Owner name":"اسم المالك",
+    "Owner email":"بريد المالك",
+    "Create password":"إنشاء كلمة مرور",
+    "One-time setup code":"رمز الإعداد لمرة واحدة",
+    "Create owner account":"إنشاء حساب المالك",
+    "Protected by authenticated sessions, an owner allowlist and database row-level security.":"محمي بجلسات مصادقة وقائمة سماح للمالك وحماية RLS على مستوى قاعدة البيانات.",
+    "Back to Zayt w Mouneh website":"العودة إلى موقع Zayt w Mouneh",
+    "Close menu":"إغلاق القائمة",
+    "Owner dashboard":"لوحة المالك",
+    "Overview":"نظرة عامة",
+    "Products":"المنتجات",
+    "Orders & history":"الطلبات والسجل",
+    "Orders & deliveries":"الطلبات والتوصيل",
+    "Website content":"محتوى الموقع",
+    "Analytics":"التحليلات",
+    "Activity":"النشاط",
+    "Settings":"الإعدادات",
+    "View live site":"عرض الموقع",
+    "Sign out":"تسجيل الخروج",
+    "Open dashboard menu":"فتح قائمة لوحة الإدارة",
+    "Owner workspace":"مساحة عمل المالك",
+    "Refresh data":"تحديث البيانات",
+    "+ Add product":"+ إضافة منتج",
+    "Add product":"إضافة منتج",
+    "Owner":"المالك",
+    "Today at a glance":"ملخص اليوم",
+    "Keep the pantry accurate, clear and easy to order.":"حافظ على المونة دقيقة وواضحة وسهلة الطلب.",
+    "Loading dashboard…":"جارٍ تحميل لوحة الإدارة…",
+    "Manage products":"إدارة المنتجات",
+    "Page views · 7 days":"مشاهدات الصفحات · 7 أيام",
+    "Unique sessions · 7 days":"الجلسات الفريدة · 7 أيام",
+    "WhatsApp clicks · 7 days":"نقرات واتساب · 7 أيام",
+    "High-intent customer action":"تفاعل يدل على نية طلب عالية",
+    "Live catalogue":"الكتالوج المنشور",
+    "Products visible":"منتجات ظاهرة",
+    "Traffic":"الزيارات",
+    "Last 7 days":"آخر 7 أيام",
+    "Full analytics →":"التحليلات الكاملة ←",
+    "Catalogue health":"حالة الكتالوج",
+    "Needs attention":"يحتاج مراجعة",
+    "Missing photos":"صور ناقصة",
+    "Hidden products":"منتجات مخفية",
+    "Draft products":"منتجات مسودة",
+    "Review →":"مراجعة ←",
+    "Top pages":"الصفحات الأكثر زيارة",
+    "Where customers browse":"أين يتصفح العملاء",
+    "No analytics yet.":"لا توجد بيانات تحليلية بعد.",
+    "Recent owner activity":"نشاط المالك الأخير",
+    "Latest changes":"آخر التغييرات",
+    "See all →":"عرض الكل ←",
+    "No changes yet.":"لا تغييرات بعد.",
+    "Search product, category or ID…":"ابحث عن منتج أو فئة أو معرّف…",
+    "Filter category":"تصفية حسب الفئة",
+    "All categories":"كل الفئات",
+    "Filter status":"تصفية حسب الحالة",
+    "All statuses":"كل الحالات",
+    "Live":"منشور",
+    "Edited":"معدّل",
+    "New":"جديد",
+    "Hidden":"مخفي",
+    "Draft":"مسودة",
+    "Missing photo":"صورة ناقصة",
+    "Export changes ↓":"تصدير التغييرات ↓",
+    "Product":"المنتج",
+    "Category":"الفئة",
+    "Price":"السعر",
+    "Status":"الحالة",
+    "Updated":"آخر تحديث",
+    "Edit":"تعديل",
+    "No photo":"بلا صورة",
+    "Track every order sent from the website by its WhatsApp code.":"تتبّع كل طلب أُرسل من الموقع باستخدام رمز واتساب الخاص به.",
+    "“Sent” means the customer opened WhatsApp with the prepared order. Mark delivery progress here.":"«تم الإرسال» يعني أن العميل فتح واتساب مع الطلب الجاهز. حدّث مراحل التوصيل من هنا.",
+    "Needs review":"يحتاج مراجعة",
+    "Preparing":"قيد التحضير",
+    "Confirmed / preparing":"مؤكد / قيد التحضير",
+    "Out for delivery":"خرج للتوصيل",
+    "On the way":"في الطريق",
+    "Delivered":"تم التوصيل",
+    "Completed history":"طلبات مكتملة",
+    "Active":"نشطة",
+    "Past orders":"الطلبات السابقة",
+    "All history":"السجل الكامل",
+    "Order history view":"عرض سجل الطلبات",
+    "Search code, customer, area or product…":"ابحث بالرمز أو العميل أو المنطقة أو المنتج…",
+    "Filter delivery status":"تصفية حسب حالة التوصيل",
+    "Confirmed":"مؤكد",
+    "Cancelled":"ملغى",
+    "Filter order type":"تصفية حسب نوع الطلب",
+    "All types":"كل الأنواع",
+    "Pantry orders":"طلبات المونة",
+    "Gifts":"الهدايا",
+    "Export history ↓":"تصدير السجل ↓",
+    "Use the status menu to update delivery progress.":"استخدم قائمة الحالة لتحديث مراحل التوصيل.",
+    "WhatsApp code":"رمز واتساب",
+    "Customer / area":"العميل / المنطقة",
+    "Items":"العناصر",
+    "Total":"الإجمالي",
+    "Sent":"الإرسال",
+    "Details":"التفاصيل",
+    "Pantry":"مونة",
+    "Gift":"هدية",
+    "Pantry order":"طلب مونة",
+    "Gift order":"طلب هدية",
+    "WhatsApp code":"رمز واتساب",
+    "Area not supplied":"لم تُذكر المنطقة",
+    "View full order & history":"عرض الطلب والسجل كاملين",
+    "Order history":"سجل الطلبات",
+    "Order details":"تفاصيل الطلب",
+    "Close order details":"إغلاق تفاصيل الطلب",
+    "WhatsApp order code":"رمز طلب واتساب",
+    "Copy code":"نسخ الرمز",
+    "Customer / recipient":"العميل / المستلم",
+    "Order type":"نوع الطلب",
+    "English order":"طلب بالإنجليزية",
+    "Arabic order":"طلب بالعربية",
+    "Current status":"الحالة الحالية",
+    "Full order":"الطلب الكامل",
+    "Customer notes":"ملاحظات العميل",
+    "No notes.":"لا توجد ملاحظات.",
+    "Gift details":"تفاصيل الهدية",
+    "Status history":"سجل الحالات",
+    "Order timeline":"تسلسل الطلب",
+    "Recipient":"المستلم",
+    "Occasion":"المناسبة",
+    "Packing":"التغليف",
+    "Theme":"التصميم",
+    "Card language":"لغة البطاقة",
+    "Hide prices":"إخفاء الأسعار",
+    "Yes":"نعم",
+    "No":"لا",
+    "Website content":"محتوى الموقع",
+    "Change common customer-facing details without editing HTML.":"غيّر تفاصيل الموقع الظاهرة للعملاء من دون تعديل HTML.",
+    "Changes publish after save.":"تُنشر التغييرات بعد الحفظ.",
+    "Announcement bar":"شريط الإعلان",
+    "Top-of-site message":"رسالة أعلى الموقع",
+    "English message":"الرسالة بالإنجليزية",
+    "Arabic message":"الرسالة بالعربية",
+    "Orders":"الطلبات",
+    "WhatsApp destination":"رقم واتساب للطلبات",
+    "WhatsApp number":"رقم واتساب",
+    "Digits only, including country code. Existing WhatsApp order buttons will use this number.":"أرقام فقط مع رمز الدولة. ستستخدم أزرار طلب واتساب الحالية هذا الرقم.",
+    "Promo message":"رسالة ترويجية",
+    "Optional customer notice":"تنبيه اختياري للعملاء",
+    "English title":"العنوان بالإنجليزية",
+    "Arabic title":"العنوان بالعربية",
+    "Save website content":"حفظ محتوى الموقع",
+    "Website analytics":"تحليلات الموقع",
+    "Simple signals that help you improve the store.":"مؤشرات بسيطة تساعدك على تحسين المتجر.",
+    "Last 30 days":"آخر 30 يوماً",
+    "Last 90 days":"آخر 90 يوماً",
+    "Page views":"مشاهدات الصفحات",
+    "Unique sessions":"الجلسات الفريدة",
+    "Selected period":"الفترة المحددة",
+    "Add to pantry":"إضافة إلى المونة",
+    "Product intent":"اهتمام بالمنتج",
+    "WhatsApp clicks":"نقرات واتساب",
+    "Order/contact intent":"نية طلب / تواصل",
+    "Daily traffic":"الزيارات اليومية",
+    "Page views and customer actions":"مشاهدات الصفحات وتفاعلات العملاء",
+    "Most viewed":"الأكثر مشاهدة",
+    "Top products":"المنتجات الأكثر مشاهدة",
+    "Most viewed products":"المنتجات الأكثر مشاهدة",
+    "Customer intent":"اهتمام العملاء",
+    "Useful conversion signals":"مؤشرات مفيدة للتحويل",
+    "Product views":"مشاهدات المنتجات",
+    "Searches":"عمليات البحث",
+    "Owner activity":"نشاط المالك",
+    "A simple audit trail of dashboard changes.":"سجل واضح وبسيط لتغييرات لوحة الإدارة.",
+    "Security":"الأمان",
+    "Owner access":"دخول المالك",
+    "Protected":"محمي",
+    "Signed in as":"مسجل الدخول باسم",
+    "Authorization":"الصلاحيات",
+    "Owner allowlist + RLS":"قائمة سماح المالك + RLS",
+    "Session":"الجلسة",
+    "Supabase Auth":"مصادقة Supabase",
+    "Sign out on this device":"تسجيل الخروج من هذا الجهاز",
+    "Backend":"النظام الخلفي",
+    "Connection health":"حالة الاتصال",
+    "Checking":"جارٍ الفحص",
+    "Database":"قاعدة البيانات",
+    "Product images":"صور المنتجات",
+    "Checking…":"جارٍ الفحص…",
+    "Run health check":"فحص حالة الاتصال",
+    "Data":"البيانات",
+    "Owner backups":"نسخ المالك الاحتياطية",
+    "Export all dashboard-managed product overrides and public settings as JSON. The original static catalogue stays untouched as a fallback.":"صدّر جميع تعديلات المنتجات وإعدادات الموقع التي تديرها اللوحة بصيغة JSON. يبقى الكتالوج الأصلي كما هو كنسخة احتياطية.",
+    "Export dashboard backup ↓":"تصدير نسخة احتياطية للوحة ↓",
+    "Product editor":"محرر المنتج",
+    "Close":"إغلاق",
+    "Product details":"تفاصيل المنتج",
+    "English name":"الاسم بالإنجليزية",
+    "Arabic name":"الاسم بالعربية",
+    "Product ID":"معرّف المنتج",
+    "Original / supplier name":"الاسم الأصلي / اسم المورّد",
+    "Sizes & prices":"الأحجام والأسعار",
+    "Add every size a customer can choose.":"أضف كل حجم يمكن للعميل اختياره.",
+    "+ Add size":"+ إضافة حجم",
+    "Visibility":"الظهور",
+    "Draft products stay out of the live shop.":"تبقى المنتجات المسودة خارج المتجر المنشور.",
+    "Visible to customers":"ظاهر للعملاء",
+    "Saved but not shown":"محفوظ وغير ظاهر",
+    "Temporarily removed":"مخفي مؤقتاً",
+    "Product photo":"صورة المنتج",
+    "Choose / replace":"اختيار / استبدال",
+    "Remove photo":"حذف الصورة",
+    "Use the clearest original image available. Max 10 MB. Drag the preview or use the controls below to position it.":"استخدم أوضح صورة أصلية متاحة، بحد أقصى 10 ميغابايت. اسحب المعاينة أو استخدم الأدوات أدناه لضبط موضع الصورة.",
+    "Horizontal position":"الموضع الأفقي",
+    "Vertical position":"الموضع العمودي",
+    "Zoom":"التكبير",
+    "Reset framing":"إعادة ضبط الإطار",
+    "Quick checks":"مراجعة سريعة",
+    "English + Arabic names":"الاسمان الإنجليزي والعربي",
+    "Correct category":"الفئة الصحيحة",
+    "At least one size and price":"حجم وسعر واحد على الأقل",
+    "Clear product photo when available":"صورة واضحة للمنتج عند توفرها",
+    "Hide product":"إخفاء المنتج",
+    "Restore base version":"استعادة النسخة الأصلية",
+    "Cancel":"إلغاء",
+    "Save product":"حفظ المنتج",
+    "Size (EN)":"الحجم (EN)",
+    "Size (AR)":"الحجم (AR)",
+    "Price (USD)":"السعر (USD)",
+    "Remove size":"حذف الحجم",
+    "Base catalogue product":"منتج من الكتالوج الأصلي",
+    "Dashboard-managed product":"منتج مُدار من لوحة الإدارة",
+    "New catalogue product":"منتج جديد في الكتالوج",
+    "Edit product":"تعديل المنتج",
+    "Base catalogue":"الكتالوج الأصلي",
+    "No items":"لا توجد عناصر",
+    "No item details stored.":"لا توجد تفاصيل محفوظة للعناصر.",
+    "No extra gift details stored.":"لا توجد تفاصيل إضافية محفوظة للهدية.",
+    "No status history yet.":"لا يوجد سجل حالات بعد.",
+    "Website order":"طلب من الموقع",
+    "Owner update":"تحديث من المالك",
+    "product views":"مشاهدات المنتج",
+    "views":"مشاهدة",
+    "Connected":"متصل",
+    "Configured":"مُعدّ",
+    "Healthy":"سليم",
+    "Error":"خطأ",
+    "No session data yet":"لا توجد بيانات جلسات بعد",
+    "No sessions yet":"لا توجد جلسات بعد",
+    "just now":"الآن",
+    "Save":"حفظ",
+    "A product ID is required.":"معرّف المنتج مطلوب.",
+    "Category is required.":"الفئة مطلوبة.",
+    "Every size needs a name and valid price.":"كل حجم يحتاج إلى اسم وسعر صحيح.",
+    "That product ID already exists.":"معرّف المنتج هذا موجود مسبقاً.",
+    "Could not save product.":"تعذّر حفظ المنتج.",
+    "Product updated.":"تم تحديث المنتج.",
+    "Product added.":"تمت إضافة المنتج.",
+    "Product hidden from customers.":"تم إخفاء المنتج عن العملاء.",
+    "Base catalogue version restored.":"تمت استعادة نسخة الكتالوج الأصلية.",
+    "New dashboard products cannot be restored to a base version.":"لا يمكن استعادة المنتجات الجديدة المضافة من اللوحة إلى نسخة أصلية.",
+    "Image is larger than 10 MB.":"حجم الصورة أكبر من 10 ميغابايت.",
+    "Could not read image.":"تعذّرت قراءة الصورة.",
+    "Photo removed. Save the product to publish this change.":"تم حذف الصورة. احفظ المنتج لنشر هذا التغيير.",
+    "Uploading image…":"جارٍ رفع الصورة…",
+    "Saving…":"جارٍ الحفظ…",
+    "Saved and published.":"تم الحفظ والنشر.",
+    "Website content saved.":"تم حفظ محتوى الموقع.",
+    "Could not load product changes.":"تعذّر تحميل تعديلات المنتجات.",
+    "Could not load website settings.":"تعذّر تحميل إعدادات الموقع.",
+    "Could not load order history.":"تعذّر تحميل سجل الطلبات.",
+    "Could not update order.":"تعذّر تحديث الطلب.",
+    "WhatsApp order code copied.":"تم نسخ رمز طلب واتساب.",
+    "Could not copy the order code.":"تعذّر نسخ رمز الطلب.",
+    "Dashboard refreshed.":"تم تحديث لوحة الإدارة.",
+    "Backend health check passed.":"نجح فحص حالة النظام الخلفي.",
+    "One backend service needs attention.":"إحدى خدمات النظام الخلفي تحتاج إلى مراجعة.",
+    "Sign-in failed.":"فشل تسجيل الدخول.",
+    "Signing in securely…":"جارٍ تسجيل الدخول بأمان…",
+    "Opening owner dashboard…":"جارٍ فتح لوحة المالك…",
+    "Email or password is incorrect.":"البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+    "The secure login server did not respond in time. Please try again.":"لم يستجب خادم تسجيل الدخول الآمن في الوقت المحدد. حاول مرة أخرى.",
+    "Could not reach the secure login server. Check your connection and try again.":"تعذّر الوصول إلى خادم تسجيل الدخول الآمن. تحقق من الاتصال وحاول مرة أخرى.",
+    "Login succeeded but the secure session was incomplete.":"نجح تسجيل الدخول لكن الجلسة الآمنة لم تكتمل.",
+    "Owner session is no longer valid.":"جلسة المالك لم تعد صالحة.",
+    "Your owner session expired. Please sign in again.":"انتهت جلسة المالك. سجّل الدخول من جديد.",
+    "This account is not approved for owner access.":"هذا الحساب غير معتمد لدخول المالك.",
+    "Signed out.":"تم تسجيل الخروج.",
+    "Creating the protected owner account…":"جارٍ إنشاء حساب المالك المحمي…",
+    "Owner created. Signing you in…":"تم إنشاء حساب المالك. جارٍ تسجيل الدخول…",
+    "Owner account activated.":"تم تفعيل حساب المالك.",
+    "Could not create owner account.":"تعذّر إنشاء حساب المالك.",
+    "Owner setup failed.":"فشل إعداد حساب المالك.",
+    "Use a password with at least 12 characters.":"استخدم كلمة مرور من 12 حرفاً على الأقل.",
+    "Dashboard initialization failed. Check the backend connection.":"فشل تشغيل لوحة الإدارة. تحقق من اتصال النظام الخلفي.",
+    "New category name:":"اسم الفئة الجديدة:",
+    "Condiments":"مستلزمات المطبخ",
+    "Dates":"تمر",
+    "Debsy Carob":"دبسي خروب",
+    "Distillates + Syrups":"مقطرات وشرابات",
+    "Dried Foods":"أطعمة مجففة",
+    "Flour":"طحين",
+    "Grains":"حبوب",
+    "Herbs":"أعشاب",
+    "Honey":"عسل",
+    "Molasses":"دبس",
+    "Mouneh":"مونة",
+    "Nuts + Seeds":"مكسرات وبذور",
+    "Oils":"زيوت",
+    "Olive Oil":"زيت زيتون",
+    "Olives":"زيتون",
+    "Pickles":"مخللات",
+    "Pulses":"بقوليات",
+    "Soap":"صابون",
+    "Spices":"بهارات",
+    "Sweets + Candy":"حلويات وسكاكر",
+    "Vinegars":"خل",
+    "Sun":"أحد",
+    "Mon":"اثن",
+    "Tue":"ثلا",
+    "Wed":"أرب",
+    "Thu":"خمي",
+    "Fri":"جمع",
+    "Sat":"سبت"
+  });
+
+  function translatePhrase(value) {
+    const text=String(value??"").trim();
+    if(!text)return text;
+    if(AR_TRANSLATIONS[text])return AR_TRANSLATIONS[text];
+
+    let m=text.match(/^(\d+) products?$/);
+    if(m)return `${m[1]} منتج`;
+    m=text.match(/^(\d+) orders? · (active|past|all history)$/);
+    if(m){
+      const scope={active:"نشطة",past:"سابقة","all history":"كل السجل"}[m[2]]||m[2];
+      return `${m[1]} طلب · ${scope}`;
+    }
+    m=text.match(/^(\d+) total items$/);
+    if(m)return `${m[1]} عنصر إجمالاً`;
+    m=text.match(/^(\d+) items?$/);
+    if(m)return `${m[1]} عنصر`;
+    m=text.match(/^(\d+) avg \/ day$/);
+    if(m)return `متوسط ${m[1]} يومياً`;
+    m=text.match(/^([\d.]+) views \/ session$/);
+    if(m)return `${m[1]} مشاهدة / جلسة`;
+    m=text.match(/^(\d+) hidden or draft$/);
+    if(m)return `${m[1]} مخفي أو مسودة`;
+    m=text.match(/^(\d+) day period$/);
+    if(m)return `فترة ${m[1]} يوم`;
+    m=text.match(/^Updated (.+)$/);
+    if(m)return `آخر تحديث ${m[1]}`;
+    m=text.match(/^Created (.+)$/);
+    if(m)return `أُنشئ ${m[1]}`;
+    m=text.match(/^(\d+)m ago$/);
+    if(m)return `منذ ${m[1]} د`;
+    m=text.match(/^(\d+)h ago$/);
+    if(m)return `منذ ${m[1]} س`;
+    m=text.match(/^(\d+)d ago$/);
+    if(m)return `منذ ${m[1]} ي`;
+    m=text.match(/^Qty (\d+)$/);
+    if(m)return `الكمية ${m[1]}`;
+    m=text.match(/^(.+) · Website order$/);
+    if(m)return `${m[1]} · طلب من الموقع`;
+    m=text.match(/^(.+) · Owner update$/);
+    if(m)return `${m[1]} · تحديث من المالك`;
+    m=text.match(/^(Pantry|Gift) · WhatsApp code$/);
+    if(m)return `${translatePhrase(m[1])} · رمز واتساب`;
+    m=text.match(/^(Pantry order|Gift order|Pantry|Gift) · (.+)$/);
+    if(m)return `${translatePhrase(m[1])} · ${translatePhrase(m[2])}`;
+    m=text.match(/^(.+): (New|Confirmed|Preparing|Out for delivery|Delivered|Cancelled)$/);
+    if(m)return `${m[1]}: ${translatePhrase(m[2])}`;
+    return text;
+  }
+
+  function localizeDom(root=document.body) {
+    if(!root)return;
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    const nodes=[];
+    while(walker.nextNode())nodes.push(walker.currentNode);
+    for(const node of nodes){
+      const parent=node.parentElement;
+      if(!parent||parent.closest("script,style,code,[data-no-i18n]"))continue;
+      if(!originalTextNodes.has(node))originalTextNodes.set(node,node.nodeValue);
+      const original=originalTextNodes.get(node);
+      const core=original.trim();
+      if(!core)continue;
+      const leading=(original.match(/^\s*/)||[""])[0];
+      const trailing=(original.match(/\s*$/)||[""])[0];
+      node.nodeValue=leading+(state.lang==="ar"?translatePhrase(core):core)+trailing;
+    }
+
+    const elements=root.nodeType===1?[root,...root.querySelectorAll("*")]:[...document.querySelectorAll("*")];
+    for(const el of elements){
+      if(el.closest?.("[data-no-i18n]"))continue;
+      for(const attr of ["placeholder","aria-label","title"]){
+        if(!el.hasAttribute?.(attr))continue;
+        let store=originalAttributes.get(el);
+        if(!store){store={};originalAttributes.set(el,store);}
+        if(!(attr in store))store[attr]=el.getAttribute(attr);
+        const base=store[attr]||"";
+        el.setAttribute(attr,state.lang==="ar"?translatePhrase(base):base);
+      }
+    }
+  }
+
+  function updateLanguageButtons() {
+    $("[data-admin-language-toggle]").forEach(btn=>{
+      btn.textContent=state.lang==="ar"?"EN":"العربية";
+      btn.setAttribute("aria-label",state.lang==="ar"?"Switch admin language to English":"التبديل إلى واجهة الإدارة العربية");
+      btn.setAttribute("title",state.lang==="ar"?"Switch to English":"التبديل إلى العربية");
+    });
+  }
+
+  function applyAdminLanguage(lang,persist=true) {
+    state.lang=lang==="ar"?"ar":"en";
+    if(persist){
+      try{localStorage.setItem(ADMIN_LANG_KEY,state.lang);}catch{}
+    }
+    document.documentElement.lang=state.lang;
+    document.documentElement.dir=state.lang==="ar"?"rtl":"ltr";
+    document.body.classList.toggle("admin-rtl",state.lang==="ar");
+    document.title=state.lang==="ar"?"Zayt w Mouneh — لوحة المالك":"Zayt w Mouneh — Owner Console";
+    localizeDom(document.body);
+    updateLanguageButtons();
+  }
+
+  function toggleAdminLanguage() {
+    applyAdminLanguage(state.lang==="ar"?"en":"ar",true);
+  }
+
+  function startLanguageObserver() {
+    if(languageObserver)return;
+    languageObserver=new MutationObserver(mutations=>{
+      if(state.lang!=="ar")return;
+      for(const mutation of mutations){
+        for(const node of mutation.addedNodes){
+          if(node.nodeType===1)localizeDom(node);
+          else if(node.nodeType===3&&node.parentElement)localizeDom(node.parentElement);
+        }
+      }
+      updateLanguageButtons();
+    });
+    languageObserver.observe(document.body,{childList:true,subtree:true});
+  }
+
   const state = {
     client: null, user: null, membership: null,
     overrides: new Map(), settings: new Map(), events: [], activity: [], orders: [],
@@ -15,7 +488,8 @@
     activeView: "overview", productFilter: { q:"", category:"", status:"" },
     orderFilter: { q:"", status:"", kind:"" }, orderScope:"active", selectedOrderReference:null,
     imagePosition:{x:50,y:50,zoom:100}, previewObjectUrl:null,
-    session:null, sessionRefreshTimer:null
+    session:null, sessionRefreshTimer:null,
+    lang:readAdminLanguage()
   };
 
   function enabled() {

@@ -531,6 +531,8 @@
     "Back up now":"إنشاء نسخة الآن",
     "Data tools":"أدوات البيانات",
     "Import / Export Center":"مركز الاستيراد والتصدير",
+    "Import / Export":"استيراد / تصدير",
+    "Excel, CSV and backups":"Excel وCSV والنسخ الاحتياطية",
     "Download":"تنزيل",
     "Excel, CSV & backup files":"ملفات Excel وCSV والنسخ الاحتياطية",
     "Phone-friendly downloads":"تنزيلات مناسبة للهاتف",

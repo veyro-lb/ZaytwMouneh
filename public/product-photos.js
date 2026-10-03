@@ -1,4 +1,5 @@
-/* Original supplied artwork, matched by printed product names. No resizing or recompression. */
+/* Original supplied artwork, matched by printed product names. No resizing or recompression.
+   Distinct products never share a photo unless the artwork itself is verified for that exact item. */
 (function(){
   const map = {
   "american-rice": {
@@ -97,12 +98,6 @@
     "height": 1464,
     "quality": "original-supplied"
   },
-  "burglur-abyad-neeme": {
-    "url": "assets/products/originals/burglur-abyad-kheshen.jpg",
-    "width": 1024,
-    "height": 1464,
-    "quality": "original-supplied"
-  },
   "fasolya-snoubareye": {
     "url": "assets/products/originals/fasolya-snoubareye.jpg",
     "width": 818,
@@ -146,12 +141,6 @@
     "quality": "original-supplied"
   },
   "maa-ward": {
-    "url": "assets/products/originals/maa-ward.jpg",
-    "width": 1024,
-    "height": 1536,
-    "quality": "original-supplied"
-  },
-  "maa-zaher": {
     "url": "assets/products/originals/maa-ward.jpg",
     "width": 1024,
     "height": 1536,
@@ -343,12 +332,6 @@
     "height": 1536,
     "quality": "original-supplied"
   },
-  "khal-el-tefeh": {
-    "url": "assets/products/originals/khal-el-enab.jpg",
-    "width": 1024,
-    "height": 1536,
-    "quality": "original-supplied"
-  },
   "mraba-sfarjel": {
     "url": "assets/products/originals/mraba-sfarjel.jpg",
     "width": 853,
@@ -356,12 +339,6 @@
     "quality": "original-supplied"
   },
   "bandoura-mujafafeh": {
-    "url": "assets/products/originals/bandoura-mujafafeh.jpg",
-    "width": 853,
-    "height": 1280,
-    "quality": "original-supplied"
-  },
-  "sun-dried-tomatoes": {
     "url": "assets/products/originals/bandoura-mujafafeh.jpg",
     "width": 853,
     "height": 1280,
@@ -961,12 +938,6 @@
     "height": 1444,
     "quality": "original-supplied"
   },
-  "roasted-salted-corn": {
-    "url": "assets/products/originals/roasted-cheese-corn.jpg",
-    "width": 917,
-    "height": 1444,
-    "quality": "original-supplied"
-  },
   "krikri": {
     "url": "assets/products/originals/krikri.jpg",
     "width": 1086,
@@ -974,12 +945,6 @@
     "quality": "original-supplied"
   },
   "secar-nabat": {
-    "url": "assets/products/originals/secar-nabat.jpg",
-    "width": 1024,
-    "height": 1505,
-    "quality": "original-supplied"
-  },
-  "sekar-nabet": {
     "url": "assets/products/originals/secar-nabat.jpg",
     "width": 1024,
     "height": 1505,
@@ -1058,12 +1023,6 @@
     "quality": "original-supplied"
   },
   "proplis-with-ethanol": {
-    "url": "assets/products/originals/proplis-with-ethanol.jpg",
-    "width": 987,
-    "height": 1480,
-    "quality": "original-supplied"
-  },
-  "propolis-with-olive-oil": {
     "url": "assets/products/originals/proplis-with-ethanol.jpg",
     "width": 987,
     "height": 1480,
@@ -1183,12 +1142,6 @@
     "height": 1448,
     "quality": "original-supplied"
   },
-  "debes-el-fleyfleh-har": {
-    "url": "assets/products/originals/debes-el-fleyfleh.jpg",
-    "width": 1086,
-    "height": 1448,
-    "quality": "original-supplied"
-  },
   "date-paste": {
     "url": "assets/products/originals/date-paste.jpg",
     "width": 1024,
@@ -1220,12 +1173,6 @@
     "quality": "original-supplied"
   },
   "carob-molasses-glass-jar": {
-    "url": "assets/products/originals/carob-molasses-glass-jar.jpg",
-    "width": 1086,
-    "height": 1448,
-    "quality": "original-supplied"
-  },
-  "carob-molasses-plastic-jar": {
     "url": "assets/products/originals/carob-molasses-glass-jar.jpg",
     "width": 1086,
     "height": 1448,
@@ -1429,12 +1376,6 @@
     "height": 1536,
     "quality": "original-supplied"
   },
-  "labneh-mkaazleh-zaatar": {
-    "url": "assets/products/originals/labneh-mkaazleh-habet-barakeh.jpg",
-    "width": 1024,
-    "height": 1536,
-    "quality": "original-supplied"
-  },
   "sugar-free-rose-jam": {
     "url": "assets/products/originals/sugar-free-rose-jam.jpg",
     "width": 1024,
@@ -1550,12 +1491,6 @@
     "quality": "original-supplied"
   },
   "kishek-bakari-beqaa": {
-    "url": "assets/products/originals/kishek-bakari-beqaa.jpg",
-    "width": 1086,
-    "height": 1448,
-    "quality": "original-supplied"
-  },
-  "kishek-meeza-beqaa": {
     "url": "assets/products/originals/kishek-bakari-beqaa.jpg",
     "width": 1086,
     "height": 1448,

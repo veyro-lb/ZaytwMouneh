@@ -13,14 +13,14 @@
   <meta property="og:locale" content="en_LB" />
   <link rel="canonical" href="https://zaytwmouneh.veyro-202.workers.dev/shop.html" />
   <title>Shop Lebanese Pantry Essentials | Zayt w Mouneh</title>
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261002-1005" />
-  <link rel="shortcut icon" href="assets/favicon.svg?v=20261002-1005" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261003-round1" />
+  <link rel="shortcut icon" href="assets/favicon.svg?v=20261003-round1" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=20261003-welcomeclassic2" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"shop | Zayt w Mouneh","isPartOf":{"@type":"WebSite","name":"Zayt w Mouneh","url":"https://zaytwmouneh.veyro-202.workers.dev/"}}</script>
-  <link rel="stylesheet" href="premium.css?v=20261003-mobilecatalog1" />
+  <link rel="stylesheet" href="premium.css?v=20261003-flow1" />
 </head>
 <body data-page="shop">
   <a class="skip-link" href="shop.html#shop" id="skipLink">Skip to catalogue</a>
@@ -76,12 +76,18 @@
         <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
       </button>
 
+      <div class="desktop-primary-links" aria-label="Quick navigation">
+        <a href="shop.html"><span class="only-en">Shop</span><span class="only-ar" lang="ar">المتجر</span></a>
+        <a href="gift.html"><span class="only-en">Gift</span><span class="only-ar" lang="ar">هدية</span></a>
+      </div>
+
       <div class="nav-links" id="navLinks">
         <div class="menu-heading"><span id="menuHeading">Explore Zayt w Mouneh</span><small id="menuSubheading">Everything has its own place.</small></div>
         <a href="index.html"><span>01</span><strong id="navHome">Home</strong><b>↗</b></a>
         <a href="shop.html"><span>02</span><strong id="navShop">Shop</strong><b>↗</b></a>
-        <a href="about.html"><span>03</span><strong id="navAbout">Our Story</strong><b>↗</b></a>
-        <a href="contact.html"><span>04</span><strong id="navContact">Contact</strong><b>↗</b></a>
+        <a href="gift.html"><span>03</span><strong id="navGift">Make a gift</strong><b>↗</b></a>
+        <a href="about.html"><span>04</span><strong id="navAbout">Our Story</strong><b>↗</b></a>
+        <a href="contact.html"><span>05</span><strong id="navContact">Contact</strong><b>↗</b></a>
         <div class="menu-utility">
           <a href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener" class="menu-utility-link">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.8" r="1"/></svg>
@@ -165,6 +171,49 @@
           </div>
           <span class="hero-script" id="heroScript">Curated with care</span>
         </div>
+      </div>
+    </section>
+
+<section class="shop section" id="shop">
+      <div class="shell">
+        <div class="shop-head catalogue-intro-card reveal interactive-glow">
+          <div class="catalogue-intro-copy">
+            <p class="eyebrow" id="shopEyebrow">Current product catalogue</p>
+            <h2 id="shopTitle">Names, sizes and<br><em>prices — clearly.</em></h2>
+            <div class="catalogue-head-meta" aria-label="Catalogue overview">
+              <span><b data-count-up="328">328</b> products</span>
+              <span><b data-count-up="21">21</b> categories</span>
+              <span>Clear sizes & prices</span>
+            </div>
+          </div>
+          <div class="catalogue-intro-note">
+            <span class="catalogue-note-mark" aria-hidden="true">↘</span>
+            <p class="shop-note" id="shopNote">Choose a category, search a product, select the exact pack size, then add it to your pantry list. Prices below come from the supplied retail price list.</p>
+          </div>
+        </div>
+
+        <div class="catalog-toolbar reveal" data-sticky-catalogue>
+          <label class="search-box" for="productSearch">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg>
+            <input id="productSearch" type="search" placeholder="Search zaatar, lentils, honey, grains, spices…" autocomplete="off" />
+            <kbd>⌘ K</kbd>
+            <div class="search-suggestions" id="searchSuggestions" hidden></div>
+          </label>
+          <label class="category-select-wrap" for="categorySelect">
+            <span id="categorySelectLabel">Category</span>
+            <select id="categorySelect" aria-label="Filter catalogue by category"></select>
+          </label>
+          <button class="favorites-filter" id="favoritesOnly" type="button" aria-pressed="false"><span aria-hidden="true">♡</span><strong id="favoritesFilterLabel">Saved</strong><em id="favoritesCount">0</em></button>
+          <div class="catalog-meta"><strong id="resultCount">328</strong><span id="resultLabel">products</span></div>
+        </div>
+
+        <div class="product-grid" id="productGrid" aria-live="polite"></div>
+        <div class="catalog-empty" id="catalogEmpty" hidden>
+          <h3 id="emptyTitle">Nothing found.</h3>
+          <p id="emptyCopy">Try a different spelling or another category.</p>
+          <button class="button button-green" id="clearSearch">Clear filters</button>
+        </div>
+        <div class="load-more-wrap"><button class="button button-outline" id="loadMore">Load more products</button></div>
       </div>
     </section>
 
@@ -260,48 +309,7 @@
       </div>
     </section>
 
-    <section class="shop section" id="shop">
-      <div class="shell">
-        <div class="shop-head catalogue-intro-card reveal interactive-glow">
-          <div class="catalogue-intro-copy">
-            <p class="eyebrow" id="shopEyebrow">Current product catalogue</p>
-            <h2 id="shopTitle">Names, sizes and<br><em>prices — clearly.</em></h2>
-            <div class="catalogue-head-meta" aria-label="Catalogue overview">
-              <span><b data-count-up="328">328</b> products</span>
-              <span><b data-count-up="21">21</b> categories</span>
-              <span>Clear sizes & prices</span>
-            </div>
-          </div>
-          <div class="catalogue-intro-note">
-            <span class="catalogue-note-mark" aria-hidden="true">↘</span>
-            <p class="shop-note" id="shopNote">Choose a category, search a product, select the exact pack size, then add it to your pantry list. Prices below come from the supplied retail price list.</p>
-          </div>
-        </div>
-
-        <div class="catalog-toolbar reveal" data-sticky-catalogue>
-          <label class="search-box" for="productSearch">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg>
-            <input id="productSearch" type="search" placeholder="Search zaatar, lentils, honey, grains, spices…" autocomplete="off" />
-            <kbd>⌘ K</kbd>
-            <div class="search-suggestions" id="searchSuggestions" hidden></div>
-          </label>
-          <label class="category-select-wrap" for="categorySelect">
-            <span id="categorySelectLabel">Category</span>
-            <select id="categorySelect" aria-label="Filter catalogue by category"></select>
-          </label>
-          <button class="favorites-filter" id="favoritesOnly" type="button" aria-pressed="false"><span aria-hidden="true">♡</span><strong id="favoritesFilterLabel">Saved</strong><em id="favoritesCount">0</em></button>
-          <div class="catalog-meta"><strong id="resultCount">328</strong><span id="resultLabel">products</span></div>
-        </div>
-
-        <div class="product-grid" id="productGrid" aria-live="polite"></div>
-        <div class="catalog-empty" id="catalogEmpty" hidden>
-          <h3 id="emptyTitle">Nothing found.</h3>
-          <p id="emptyCopy">Try a different spelling or another category.</p>
-          <button class="button button-green" id="clearSearch">Clear filters</button>
-        </div>
-        <div class="load-more-wrap"><button class="button button-outline" id="loadMore">Load more products</button></div>
-      </div>
-    </section>
+    
 
     <section class="recent-section section shell" id="recentSection" hidden>
       <div class="recent-head">
@@ -473,7 +481,7 @@
 
   <script src="products-data.js?v=20261002-1005"></script>
   <script src="product-photos.js?v=20261003-mobilecatalog1"></script>
-  <script src="app.js?v=20261003-mobilecatalog1"></script>
-  <script src="premium.js?v=20261003-mobilecatalog1"></script>
+  <script src="app.js?v=20261003-flow1"></script>
+  <script src="premium.js?v=20261003-flow1"></script>
 </body>
 </html>

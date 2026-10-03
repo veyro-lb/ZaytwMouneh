@@ -1460,6 +1460,32 @@ function sendGiftOrder(){
     (lang==="ar"?"المرسل":"Sender")+": "+sender,"",
     lang==="ar"?"يرجى تأكيد التغليف والتوفر والتوصيل والمجموع النهائي. شكراً!":"Please confirm gift packing, availability, delivery and the final total. Thank you!"
   ];
+  window.ZWM_CMS?.recordOrder?.({
+    reference:ref,
+    kind:"gift",
+    customer_name:sender==="—"?"":sender,
+    area:area==="—"?"":area,
+    notes:message==="—"?"":message,
+    items:rows.map(row=>({
+      product_id:row.p.id,
+      name:row.p.nameEn||currentName(row.p),
+      size:row.v.sizeEn||row.v.sizeAr||"",
+      qty:row.qty,
+      unit_price:Number(row.v.price),
+      subtotal:Number(row.v.price)*row.qty
+    })),
+    total,
+    language:lang,
+    extra:{
+      source:"gift_builder",
+      recipient:recipient==="—"?"":recipient,
+      occasion,
+      packing,
+      theme,
+      card_language:cardLanguage,
+      hide_prices:hidePrices
+    }
+  });
   const url="https://wa.me/"+WA+"?text="+encodeURIComponent(lines.join("\n"));
   const opened=window.open(url,"_blank","noopener,noreferrer");
   if(opened)toast(lang==="ar"?"تم فتح واتساب مع طلب الهدية":"WhatsApp opened with your gift request");
@@ -1641,7 +1667,12 @@ function setupPerformance(){
 function orderReference(prefix="ZW"){
   const d=new Date();
   const stamp=[String(d.getFullYear()).slice(-2),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0"),String(d.getHours()).padStart(2,"0"),String(d.getMinutes()).padStart(2,"0")].join("");
-  return `${prefix}-${stamp}`;
+  const alphabet="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const bytes=new Uint8Array(4);
+  if(window.crypto?.getRandomValues)window.crypto.getRandomValues(bytes);
+  else for(let i=0;i<bytes.length;i++)bytes[i]=Math.floor(Math.random()*256);
+  const suffix=[...bytes].map(n=>alphabet[n%alphabet.length]).join("");
+  return `${prefix}-${stamp}-${suffix}`;
 }
 function order(){
   const rows=cartRows();
@@ -1668,6 +1699,24 @@ function order(){
     "",
     t.orderConfirm
   ];
+  window.ZWM_CMS?.recordOrder?.({
+    reference:ref,
+    kind:"order",
+    customer_name:name==="—"?"":name,
+    area:area==="—"?"":area,
+    notes:notes==="—"?"":notes,
+    items:rows.map(r=>({
+      product_id:r.p.id,
+      name:r.p.nameEn||currentName(r.p),
+      size:r.v.sizeEn||r.v.sizeAr||"",
+      qty:r.qty,
+      unit_price:Number(r.v.price),
+      subtotal:Number(r.v.price)*r.qty
+    })),
+    total,
+    language:lang,
+    extra:{source:"cart"}
+  });
   const opened=window.open(`https://wa.me/${WA}?text=${encodeURIComponent(lines.join("\n"))}`,"_blank","noopener,noreferrer");
   if(opened)toast(lang==="ar"?"تم فتح واتساب مع طلبك":"WhatsApp opened with your order");
 }

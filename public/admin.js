@@ -2102,8 +2102,139 @@
       exportedAt:new Date().toISOString(),
       productOverrides:[...state.overrides.values()],
       siteSettings:Object.fromEntries(state.settings),
+      privateNotes:[...state.notes.values()],
       orders:state.orders
     });
+  }
+
+  function openQuickActions(){
+    $("quickActionSheet").hidden=false;$("quickActionBackdrop").hidden=false;
+    document.body.classList.add("mobile-more-open");
+  }
+  function closeQuickActions(){
+    $("quickActionSheet").hidden=true;$("quickActionBackdrop").hidden=true;
+    document.body.classList.remove("mobile-more-open");
+  }
+
+  function openGlobalSearch(){
+    $("globalSearchModal").hidden=false;document.body.style.overflow="hidden";
+    $("globalSearchInput").value="";renderGlobalSearchResults("");
+    setTimeout(()=>$("globalSearchInput").focus(),30);
+  }
+  function closeGlobalSearch(){
+    $("globalSearchModal").hidden=true;
+    if($("productModal").hidden&&$("orderModal").hidden&&$("manualOrderModal").hidden)document.body.style.overflow="";
+  }
+  function renderGlobalSearchResults(query){
+    const q=safeText(query).trim().toLowerCase();
+    const root=$("globalSearchResults");
+    if(q.length<2){root.innerHTML='<p class="empty-state">Start typing to search products, orders and customers.</p>';return;}
+    const products=state.products.filter(p=>[p.id,p.nameEn,p.nameAr,p.category].join(" ").toLowerCase().includes(q)).slice(0,6);
+    const orders=state.orders.filter(o=>orderSearchText(o).includes(q)).slice(0,6);
+    const customers=customerGroups().filter(c=>[c.name,c.phone,c.area].join(" ").toLowerCase().includes(q)).slice(0,6);
+    const sections=[];
+    if(products.length)sections.push(`<section><h3>Products</h3>${products.map(p=>`<button type="button" data-search-product="${esc(p.id)}"><span><b>${esc(p.nameEn||p.id)}</b><small>${esc(categoryDisplayName(p.category||""))}</small></span><em>${esc(AVAILABILITY_LABELS[availabilityFor(p)])}</em></button>`).join("")}</section>`);
+    if(orders.length)sections.push(`<section><h3>Orders</h3>${orders.map(o=>`<button type="button" data-search-order="${esc(o.reference)}"><span><b>${esc(o.reference)}</b><small>${esc(o.customer_name||o.area||"Order")}</small></span><em>${money(o.total)}</em></button>`).join("")}</section>`);
+    if(customers.length)sections.push(`<section><h3>Customers</h3>${customers.map(c=>`<button type="button" data-search-customer="${esc(c.key)}"><span><b>${esc(c.name)}</b><small>${esc(c.phone||c.area)}</small></span><em>${c.orders.length} orders</em></button>`).join("")}</section>`);
+    root.innerHTML=sections.join("")||'<p class="empty-state">No matching products, orders or customers.</p>';
+  }
+
+  function manualReference(){
+    const d=new Date();
+    const stamp=[String(d.getFullYear()).slice(-2),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0"),String(d.getHours()).padStart(2,"0"),String(d.getMinutes()).padStart(2,"0")].join("");
+    const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    const bytes=new Uint8Array(4);crypto.getRandomValues(bytes);
+    const suffix=[...bytes].map(n=>chars[n%chars.length]).join("");
+    return `ZW-MANUAL-${stamp}-${suffix}`;
+  }
+  function manualProductOptions(){
+    const out=[];
+    for(const p of state.products.filter(p=>availabilityFor(p)==="in_stock"&&!["hidden","draft"].includes(p.__status))){
+      for(const v of p.variants||[])out.push(`<option value="${esc(p.id)}|${esc(v.id)}">${esc(p.nameEn||p.id)} · ${esc(v.sizeEn||v.sizeAr||"")} · ${money(v.price)}</option>`);
+    }
+    return out.join("");
+  }
+  function addManualItemRow(){
+    const row=document.createElement("div");row.className="manual-order-item";
+    row.innerHTML=`<select data-manual-product required><option value="">Choose product…</option>${manualProductOptions()}</select><input data-manual-qty type="number" min="1" step="1" value="1" inputmode="numeric"><button type="button" data-remove-manual-item aria-label="Remove">×</button>`;
+    $("manualOrderItems").appendChild(row);renderManualOrderTotal();
+  }
+  function manualOrderRows(){
+    return $$(".manual-order-item").map(row=>{
+      const raw=row.querySelector("[data-manual-product]").value;
+      if(!raw)return null;
+      const [productId,variantId]=raw.split("|");
+      const p=state.products.find(x=>x.id===productId),v=p?.variants?.find(x=>x.id===variantId);
+      const qty=Math.max(1,Number(row.querySelector("[data-manual-qty]").value)||1);
+      return p&&v?{p,v,qty}:null;
+    }).filter(Boolean);
+  }
+  function renderManualOrderTotal(){
+    const rows=manualOrderRows();
+    const products=rows.reduce((sum,r)=>sum+Number(r.v.price)*r.qty,0);
+    const fee=Math.max(0,Number($("manualDeliveryFee").value)||0);
+    $("manualOrderTotal").textContent=money(products+fee);
+  }
+  function openManualOrder(){
+    $("manualOrderForm").reset();$("manualOrderItems").innerHTML="";
+    const delivery=state.settings.get("delivery")||{};
+    $("manualDeliveryFee").value=Number(delivery.fee)||0;
+    addManualItemRow();renderManualOrderTotal();
+    $("manualOrderModal").hidden=false;document.body.style.overflow="hidden";
+  }
+  function closeManualOrder(){
+    $("manualOrderModal").hidden=true;
+    if($("productModal").hidden&&$("orderModal").hidden&&$("globalSearchModal").hidden)document.body.style.overflow="";
+  }
+  async function createManualOrder(e){
+    e.preventDefault();
+    const rows=manualOrderRows();if(!rows.length)return toast("Add at least one product.","error");
+    const fee=Math.max(0,Number($("manualDeliveryFee").value)||0);
+    const productTotal=rows.reduce((sum,r)=>sum+Number(r.v.price)*r.qty,0);
+    const reference=manualReference();
+    const order={
+      reference,kind:$("manualOrderKind").value==="gift"?"gift":"order",status:"new",
+      customer_name:$("manualCustomerName").value.trim(),customer_phone:$("manualCustomerPhone").value.trim(),area:$("manualOrderArea").value.trim(),
+      notes:$("manualOrderNotes").value.trim(),private_notes:$("manualPrivateNote").value.trim(),
+      items:rows.map(r=>({product_id:r.p.id,name:r.p.nameEn||r.p.id,size:r.v.sizeEn||r.v.sizeAr||"",qty:r.qty,unit_price:Number(r.v.price),subtotal:Number(r.v.price)*r.qty})),
+      total:productTotal+fee,currency:"USD",language:state.lang==="ar"?"ar":"en",
+      extra:{source:"manual",delivery_fee:fee},status_history:[{status:"new",at:new Date().toISOString(),source:"owner"}],submitted_at:new Date().toISOString(),updated_at:new Date().toISOString()
+    };
+    const {error}=await state.client.from(cfg.tables.orders||"orders").insert(order);
+    if(error)return toast(error.message||"Could not create manual order.","error");
+    await logActivity("create_manual_order","order",reference,{total:order.total});
+    closeManualOrder();toast(`Manual order ${reference} created.`);await refreshAll();setView("orders");openOrderDetails(reference);
+  }
+
+  async function restoreBackup(file){
+    if(!file)return;
+    try{
+      const data=JSON.parse(await file.text());
+      if(!data||typeof data!=="object")throw new Error("Invalid backup file.");
+      if(!confirm("Restore products and public settings from this backup? Current order history will not be changed."))return;
+      const overrides=Array.isArray(data.productOverrides)?data.productOverrides:[];
+      for(const row of overrides){
+        if(!row?.product_id)continue;
+        await state.client.from(cfg.tables.products).upsert({product_id:row.product_id,action:row.action||"upsert",payload:row.payload||{},updated_at:new Date().toISOString(),updated_by:state.user.id},{onConflict:"product_id"});
+      }
+      const settings=data.siteSettings&&typeof data.siteSettings==="object"?data.siteSettings:{};
+      const settingRows=Object.entries(settings).map(([key,value])=>({key,value,updated_at:new Date().toISOString(),updated_by:state.user.id}));
+      if(settingRows.length)await state.client.from(cfg.tables.settings).upsert(settingRows,{onConflict:"key"});
+      await logActivity("restore_backup","backup","dashboard",{products:overrides.length,settings:settingRows.length});
+      toast("Backup restored.");await refreshAll();
+    }catch(err){toast(err.message||"Could not restore backup.","error");}
+    finally{$("restoreBackupInput").value="";}
+  }
+
+  function setupInstallPrompt(){
+    window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.installPrompt=e;$("installAdminHint").textContent="Ready to install on this device.";});
+    if("serviceWorker" in navigator)navigator.serviceWorker.register("admin-sw.js?v=20261004-1").catch(()=>{});
+  }
+  async function installAdminApp(){
+    if(state.installPrompt){
+      state.installPrompt.prompt();await state.installPrompt.userChoice;state.installPrompt=null;return;
+    }
+    toast("On iPhone: Share → Add to Home Screen. On Android: browser menu → Install app.");
   }
 
   function bindStaticUi() {

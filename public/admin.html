@@ -308,8 +308,17 @@
                 <label>Estimated delivery<input id="deliveryEta" type="text" maxlength="80" placeholder="e.g. Same day / 1–2 days" /></label>
               </div>
               <p class="field-help">These are owner defaults for planning and manual orders. Final delivery can still be confirmed on WhatsApp.</p>
+              <div class="delivery-zones-head"><div><strong>Delivery areas</strong><small>Optional area-specific fee and ETA overrides.</small></div><button class="text-button" id="addDeliveryZone" type="button">+ Add area</button></div>
+              <div id="deliveryZoneRows" class="delivery-zone-rows"></div>
             </article>
-            <div class="form-actions content-save-row"><button class="button-primary" type="submit">Save website content</button><span id="contentStatus" class="form-status" role="status"></span></div>
+            <div class="form-actions content-save-row">
+              <div class="content-preview-actions">
+                <button class="button-secondary" id="previewContentMobile" type="button">Preview mobile</button>
+                <button class="button-secondary" id="previewContentDesktop" type="button">Preview desktop</button>
+              </div>
+              <button class="button-primary" type="submit">Save website content</button>
+              <span id="contentStatus" class="form-status" role="status"></span>
+            </div>
           </form>
         </section>
 
@@ -362,10 +371,12 @@
               <div class="panel-head"><div><p>Data</p><h3>Owner backups</h3></div></div>
               <p class="panel-copy">Export all dashboard-managed product overrides and public settings as JSON. The original static catalogue stays untouched as a fallback.</p>
               <div class="settings-action-stack">
+                <button class="button-primary" id="createCloudBackup" type="button">Create cloud backup</button>
                 <button class="button-secondary" id="exportBackupButton" type="button">Export dashboard backup ↓</button>
                 <label class="button-secondary upload-backup-button">Restore backup<input id="restoreBackupInput" type="file" accept="application/json,.json" /></label>
               </div>
               <p class="field-help">Restore applies products, categories and public settings. Order history is never overwritten.</p>
+              <div class="cloud-backup-list" id="cloudBackupList"><p class="empty-state">No cloud backups yet.</p></div>
             </article>
             <article class="panel">
               <div class="panel-head"><div><p>Phone app</p><h3>Install Owner Console</h3></div><span class="status-badge">PWA</span></div>
@@ -420,6 +431,23 @@
       <button type="button" data-quick-action="promo"><span>✦</span><b>Create promo</b><small>Open website promo controls</small></button>
     </div>
   </section>
+
+  <div class="modal-backdrop" id="contentPreviewModal" hidden>
+    <section class="content-preview-modal" role="dialog" aria-modal="true" aria-labelledby="contentPreviewTitle">
+      <header class="editor-head"><div><p>Website preview</p><h2 id="contentPreviewTitle">Preview before publishing</h2></div><button id="closeContentPreview" type="button" aria-label="Close">×</button></header>
+      <div class="content-preview-stage">
+        <div class="content-preview-device is-mobile" id="contentPreviewDevice">
+          <div class="preview-browser-bar"><span></span><b>Zayt w Mouneh</b><span></span></div>
+          <div class="preview-announcement" id="previewAnnouncement">Announcement</div>
+          <div class="preview-site-head"><span class="preview-logo">ZW</span><b>Zayt w Mouneh</b><span>☰</span></div>
+          <div class="preview-site-hero"><small>AUTHENTIC LEBANESE PANTRY</small><h3>Zayt w Mouneh</h3><p>Traditional pantry essentials, clearly presented.</p></div>
+          <div class="preview-promo" id="previewPromo" hidden><strong id="previewPromoTitle"></strong><span id="previewPromoBody"></span></div>
+          <div class="preview-product-strip"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <footer class="content-preview-footer"><span>Unsaved preview only — nothing is published until you press Save.</span><button class="button-primary" id="closeContentPreviewFooter" type="button">Done</button></footer>
+    </section>
+  </div>
 
   <div class="modal-backdrop" id="globalSearchModal" hidden>
     <section class="search-command-modal" role="dialog" aria-modal="true" aria-labelledby="globalSearchTitle">

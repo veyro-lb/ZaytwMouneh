@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin.html
+Disallow: /admin-config.js
 
 Sitemap: https://zaytwmouneh.veyro-202.workers.dev/sitemap.xml

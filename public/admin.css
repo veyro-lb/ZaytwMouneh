@@ -824,8 +824,12 @@ html[dir="rtl"] .auth-language-toggle{right:auto;left:24px}
 
 /* Very small phones */
 @media(max-width:340px){
-  .topbar-language-toggle{display:none}
-  .topbar-left h1{font-size:15px}
+  .topbar-left h1{font-size:14px}
+  .topbar-language-toggle button{min-width:31px;padding:0 3px;font-size:8px}
+  .topbar-right .button-primary{min-width:44px;padding:0 6px}
   .metric-grid,.order-metrics{grid-template-columns:1fr}
   .order-scope-tabs button{font-size:9px}
+}
+@media(max-width:760px){
+  html[dir="rtl"] .topbar-right .button-primary:after{content:"+ إضافة"}
 }

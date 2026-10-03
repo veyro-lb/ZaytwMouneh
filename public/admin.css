@@ -132,3 +132,132 @@ input:focus,select:focus,textarea:focus{border-color:var(--green-2);box-shadow:0
   .order-detail-content{padding:12px}.order-detail-hero{align-items:flex-start;flex-direction:column}.order-detail-grid{grid-template-columns:1fr}
   .image-button-row{grid-template-columns:1fr}.image-remove-button{width:100%}
 }
+
+/* Admin language switch + Arabic RTL layout */
+.auth-card{position:relative}
+.admin-language-toggle{
+  min-height:38px;
+  min-width:72px;
+  padding:0 12px;
+  border:1px solid #d6ddd4;
+  border-radius:999px;
+  background:var(--paper);
+  color:var(--green);
+  font-size:11px;
+  font-weight:800;
+  line-height:1;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  white-space:nowrap;
+  transition:background .2s,border-color .2s,transform .2s;
+}
+.admin-language-toggle:hover{background:#edf3eb;border-color:#c3d0c1;transform:translateY(-1px)}
+.auth-language-toggle{position:absolute;top:24px;right:24px;z-index:2}
+.topbar-language-toggle{height:40px;background:var(--paper)}
+html[dir="rtl"] body.admin-body{
+  font-family:"Noto Kufi Arabic","DM Sans",sans-serif;
+  text-align:right;
+}
+html[dir="rtl"] .auth-card h1,
+html[dir="rtl"] .welcome-panel h2,
+html[dir="rtl"] .section-intro h2,
+html[dir="rtl"] .analytics-head h2{
+  font-family:"Noto Kufi Arabic","DM Sans",sans-serif;
+  line-height:1.45;
+  letter-spacing:0;
+}
+html[dir="rtl"] .auth-kicker,
+html[dir="rtl"] .panel-head p,
+html[dir="rtl"] .section-intro p,
+html[dir="rtl"] .analytics-head p,
+html[dir="rtl"] .welcome-panel p,
+html[dir="rtl"] .topbar-left p,
+html[dir="rtl"] .order-detail-label,
+html[dir="rtl"] .order-detail-card>span,
+html[dir="rtl"] .order-detail-section>span,
+html[dir="rtl"] .order-detail-section-head span{
+  letter-spacing:.035em;
+  text-transform:none;
+}
+html[dir="rtl"] .auth-language-toggle{right:auto;left:24px}
+html[dir="rtl"] .admin-sidebar{
+  left:auto;
+  right:0;
+  border-right:0;
+  border-left:1px solid rgba(255,255,255,.06);
+}
+html[dir="rtl"] .admin-main{
+  margin-left:0;
+  margin-right:var(--sidebar);
+}
+html[dir="rtl"] .admin-nav button,
+html[dir="rtl"] .sidebar-foot a,
+html[dir="rtl"] .sidebar-foot button{
+  text-align:right;
+}
+html[dir="rtl"] .search-field span{left:auto;right:12px}
+html[dir="rtl"] .search-field input{padding-left:13px;padding-right:34px}
+html[dir="rtl"] .product-table th{text-align:right}
+html[dir="rtl"] .editor-side{
+  border-left:0;
+  border-right:1px solid #e5e6df;
+}
+html[dir="rtl"] .settings-list dd{text-align:left}
+html[dir="rtl"] .order-gift-details b{text-align:left}
+html[dir="rtl"] .order-status-select{padding:7px 10px 7px 28px}
+html[dir="rtl"] .owner-bootstrap summary:after{float:left}
+html[dir="rtl"] .order-timeline-row:not(:last-child):before{left:auto;right:5px}
+html[dir="rtl"] .image-reset-button{justify-self:end;padding-left:5px;padding-right:0}
+html[dir="rtl"] .timeline-marker:before{left:auto;right:7px}
+html[dir="rtl"] .timeline-marker:after{left:auto;right:4px}
+html[dir="rtl"] .editor-actions>div:first-child{justify-content:flex-start}
+html[dir="rtl"] #loginEmail,
+html[dir="rtl"] #loginPassword,
+html[dir="rtl"] #bootstrapEmail,
+html[dir="rtl"] #bootstrapPassword,
+html[dir="rtl"] #bootstrapCode,
+html[dir="rtl"] #contentWhatsApp,
+html[dir="rtl"] #productNameEn,
+html[dir="rtl"] #productId,
+html[dir="rtl"] #productOriginal,
+html[dir="rtl"] #announcementEn,
+html[dir="rtl"] #promoTitleEn,
+html[dir="rtl"] #promoBodyEn,
+html[dir="rtl"] .order-code-cell b,
+html[dir="rtl"] #orderDetailCode{
+  direction:ltr;
+  text-align:left;
+}
+html[dir="rtl"] #productNameAr,
+html[dir="rtl"] #announcementAr,
+html[dir="rtl"] #promoTitleAr,
+html[dir="rtl"] #promoBodyAr{
+  direction:rtl;
+  text-align:right;
+}
+html[dir="rtl"] .product-table td,
+html[dir="rtl"] .table-summary,
+html[dir="rtl"] .product-mobile-card,
+html[dir="rtl"] .order-mobile-card,
+html[dir="rtl"] .order-detail-card,
+html[dir="rtl"] .order-detail-section{
+  text-align:right;
+}
+
+@media(max-width:900px){
+  html[dir="rtl"] .admin-sidebar{transform:translateX(100%)}
+  html[dir="rtl"] .admin-sidebar.is-open{transform:none}
+  html[dir="rtl"] .admin-main{margin-right:0}
+  html[dir="rtl"] .editor-side{border-right:0}
+}
+@media(max-width:680px){
+  .auth-language-toggle{top:16px;right:16px}
+  html[dir="rtl"] .auth-language-toggle{right:auto;left:16px}
+  .topbar-language-toggle{min-width:62px;padding:0 9px;font-size:10px}
+  html[dir="rtl"] .welcome-panel h2{font-size:23px}
+}
+@media(max-width:420px){
+  .topbar-language-toggle{min-width:54px;max-width:62px;padding:0 7px}
+}

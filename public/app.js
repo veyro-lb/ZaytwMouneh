@@ -819,7 +819,7 @@ function renderGiftPresentationOptions(){
 
 function syncLanguageVisibility(){
   const showArabic=lang==="ar";
-  $(".only-en, .only-ar").forEach(el=>{
+  $$(".only-en, .only-ar").forEach(el=>{
     const shouldHide=showArabic?el.classList.contains("only-en"):el.classList.contains("only-ar");
     if(shouldHide){
       el.style.setProperty("display","none","important");

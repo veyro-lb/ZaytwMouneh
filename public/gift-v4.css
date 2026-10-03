@@ -1625,6 +1625,7 @@ body[data-page="gift"] .nav-search{display:none!important}
 /* Owner-controlled photo framing in the gift catalogue. */
 .product-photo-original{
   object-position:var(--zwm-photo-position,50% 50%)!important;
-  transform:scale(var(--zwm-photo-scale,1))!important;
+  object-fit:var(--zwm-photo-fit,cover)!important;
+  transform:rotate(var(--zwm-photo-rotation,0deg)) scale(var(--zwm-photo-scale,1))!important;
   transform-origin:var(--zwm-photo-position,50% 50%)!important;
 }

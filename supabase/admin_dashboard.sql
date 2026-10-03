@@ -46,6 +46,7 @@ create table if not exists public.orders (
   currency text not null default 'USD' check (currency = 'USD'),
   language text not null default 'en' check (language in ('en','ar')),
   extra jsonb not null default '{}'::jsonb,
+  status_history jsonb not null default '[]'::jsonb,
   submitted_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   confirmed_at timestamptz,

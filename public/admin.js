@@ -2701,7 +2701,8 @@
 
   function closeDataCenter() {
     $("dataCenterModal").hidden=true;
-    clearProductImport(false);
+    document.body.classList.remove("mobile-more-open");
+    clearProductImport();
     if($("productModal").hidden&&$("orderModal").hidden&&$("manualOrderModal").hidden&&$("globalSearchModal").hidden&&$("contentPreviewModal").hidden){
       document.body.style.overflow="";
     }
@@ -3313,8 +3314,8 @@
       if(file){const input=$("productImportFile");const dt=new DataTransfer();dt.items.add(file);input.files=dt.files;readProductImportFile(file);}
     });
     $("globalSearchButton")?.addEventListener("click",openGlobalSearch);
-    $("mobileGlobalSearchButton")?.addEventListener("click",()=>{document.querySelector("#mobileMoreSheet").hidden=true;document.querySelector("#mobileMoreBackdrop").hidden=true;openGlobalSearch();});
-    $("mobileDataCenterButton")?.addEventListener("click",()=>{document.querySelector("#mobileMoreSheet").hidden=true;document.querySelector("#mobileMoreBackdrop").hidden=true;openDataCenter();});
+    $("mobileGlobalSearchButton")?.addEventListener("click",()=>{document.querySelector("#mobileMoreSheet").hidden=true;document.querySelector("#mobileMoreBackdrop").hidden=true;document.body.classList.remove("mobile-more-open");openGlobalSearch();});
+    $("mobileDataCenterButton")?.addEventListener("click",()=>{document.querySelector("#mobileMoreSheet").hidden=true;document.querySelector("#mobileMoreBackdrop").hidden=true;document.body.classList.remove("mobile-more-open");openDataCenter();});
     $("closeGlobalSearch")?.addEventListener("click",closeGlobalSearch);
     $("globalSearchModal")?.addEventListener("click",e=>{if(e.target===$("globalSearchModal"))closeGlobalSearch();});
     $("globalSearchInput")?.addEventListener("input",e=>renderGlobalSearchResults(e.target.value));

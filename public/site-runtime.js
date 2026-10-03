@@ -188,10 +188,30 @@
     try{return await refreshInFlight}finally{refreshInFlight=null}
   }
 
+  const SESSION_TIMEOUT_MS=30*60*1000;
+  function newSessionId(){
+    return crypto.randomUUID?.()||("s-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2));
+  }
   function sessionId(){
-    let id=localStorage.getItem(SESSION_KEY);
-    if(!id){id=crypto.randomUUID?.()||("s-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2));localStorage.setItem(SESSION_KEY,id)}
-    return id.slice(0,80);
+    const now=Date.now();
+    let record=null;
+    const raw=localStorage.getItem(SESSION_KEY);
+    if(raw){
+      try{
+        const parsed=JSON.parse(raw);
+        if(parsed&&typeof parsed==="object"&&parsed.id)record=parsed;
+        else if(typeof parsed==="string")record={id:parsed,last:now};
+      }catch{
+        if(raw.length<=80)record={id:raw,last:0};
+      }
+    }
+    if(!record?.id||!Number.isFinite(Number(record.last))||now-Number(record.last)>SESSION_TIMEOUT_MS){
+      record={id:newSessionId(),last:now};
+    }else{
+      record.last=now;
+    }
+    try{localStorage.setItem(SESSION_KEY,JSON.stringify(record))}catch{}
+    return String(record.id).slice(0,80);
   }
   function referrerHost(){
     if(!document.referrer)return "";

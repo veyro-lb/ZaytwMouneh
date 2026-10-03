@@ -698,7 +698,8 @@
     downloadJson(`zwm-dashboard-backup-${new Date().toISOString().slice(0,10)}.json`,{
       exportedAt:new Date().toISOString(),
       productOverrides:[...state.overrides.values()],
-      siteSettings:Object.fromEntries(state.settings)
+      siteSettings:Object.fromEntries(state.settings),
+      orders:state.orders
     });
   }
 

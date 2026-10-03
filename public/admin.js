@@ -14,7 +14,8 @@
     products: [], editingId: null, imageFile: null, imageDims: null,
     activeView: "overview", productFilter: { q:"", category:"", status:"" },
     orderFilter: { q:"", status:"", kind:"" }, orderScope:"active", selectedOrderReference:null,
-    imagePosition:{x:50,y:50,zoom:100}, previewObjectUrl:null
+    imagePosition:{x:50,y:50,zoom:100}, previewObjectUrl:null,
+    session:null, sessionRefreshTimer:null
   };
 
   function enabled() {
@@ -73,22 +74,170 @@
     }
   }
 
+  const OWNER_SESSION_KEY = "zwm:owner-session:v2";
+
+  function anonymousClient() {
+    return window.supabase.createClient(cfg.supabaseUrl, cfg.supabasePublishableKey, {
+      auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}
+    });
+  }
+
+  function authenticatedClient(accessToken) {
+    return window.supabase.createClient(cfg.supabaseUrl, cfg.supabasePublishableKey, {
+      accessToken: async () => accessToken,
+      auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}
+    });
+  }
+
+  function readOwnerSession() {
+    try{
+      const raw=localStorage.getItem(OWNER_SESSION_KEY);
+      const value=raw?JSON.parse(raw):null;
+      return value&&value.access_token&&value.refresh_token?value:null;
+    }catch{return null;}
+  }
+
+  function saveOwnerSession(session) {
+    try{localStorage.setItem(OWNER_SESSION_KEY,JSON.stringify(session));}catch{}
+  }
+
+  function clearOwnerSession() {
+    try{localStorage.removeItem(OWNER_SESSION_KEY);}catch{}
+    if(state.sessionRefreshTimer){
+      clearTimeout(state.sessionRefreshTimer);
+      state.sessionRefreshTimer=null;
+    }
+    state.session=null;
+  }
+
+  async function fetchWithTimeout(url,options={},timeoutMs=12000) {
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),timeoutMs);
+    try{
+      return await fetch(url,{...options,signal:controller.signal});
+    }catch(err){
+      if(err?.name==="AbortError")throw new Error("The secure login server did not respond in time. Please try again.");
+      throw new Error("Could not reach the secure login server. Check your connection and try again.");
+    }finally{
+      clearTimeout(timeout);
+    }
+  }
+
+  function authRequestHeaders(accessToken="") {
+    return {
+      "apikey":cfg.supabasePublishableKey,
+      "Authorization":`Bearer ${accessToken||cfg.supabasePublishableKey}`,
+      "Content-Type":"application/json"
+    };
+  }
+
+  function normalizeSession(payload) {
+    const now=Math.floor(Date.now()/1000);
+    return {
+      access_token:payload.access_token,
+      refresh_token:payload.refresh_token,
+      token_type:payload.token_type||"bearer",
+      expires_in:Number(payload.expires_in)||3600,
+      expires_at:Number(payload.expires_at)||now+(Number(payload.expires_in)||3600),
+      user:payload.user||null
+    };
+  }
+
+  async function passwordGrant(email,password) {
+    const response=await fetchWithTimeout(
+      cfg.supabaseUrl.replace(/\/$/,"")+"/auth/v1/token?grant_type=password",
+      {
+        method:"POST",
+        headers:authRequestHeaders(),
+        body:JSON.stringify({email,password})
+      }
+    );
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok){
+      const message=result?.msg||result?.message||result?.error_description||"Email or password is incorrect.";
+      throw new Error(message);
+    }
+    if(!result?.access_token||!result?.refresh_token||!result?.user)throw new Error("Login succeeded but the secure session was incomplete.");
+    return normalizeSession(result);
+  }
+
+  async function refreshGrant(refreshToken) {
+    const response=await fetchWithTimeout(
+      cfg.supabaseUrl.replace(/\/$/,"")+"/auth/v1/token?grant_type=refresh_token",
+      {
+        method:"POST",
+        headers:authRequestHeaders(),
+        body:JSON.stringify({refresh_token:refreshToken})
+      }
+    );
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok||!result?.access_token||!result?.refresh_token)throw new Error("Your owner session expired. Please sign in again.");
+    return normalizeSession(result);
+  }
+
+  async function authUser(accessToken) {
+    const response=await fetchWithTimeout(
+      cfg.supabaseUrl.replace(/\/$/,"")+"/auth/v1/user",
+      {method:"GET",headers:authRequestHeaders(accessToken)}
+    );
+    if(!response.ok)throw new Error("Owner session is no longer valid.");
+    return response.json();
+  }
+
+  function scheduleOwnerRefresh() {
+    if(state.sessionRefreshTimer)clearTimeout(state.sessionRefreshTimer);
+    if(!state.session?.refresh_token)return;
+    const now=Math.floor(Date.now()/1000);
+    const refreshIn=Math.max(30000,((state.session.expires_at||now+3600)-now-120)*1000);
+    state.sessionRefreshTimer=setTimeout(async()=>{
+      try{
+        const next=await refreshGrant(state.session.refresh_token);
+        await activateOwnerSession(next,false);
+      }catch{
+        clearOwnerSession();
+        state.client=anonymousClient();
+        showOnly("loginScreen");
+        setStatus($("loginStatus"),"Your owner session expired. Please sign in again.","error");
+      }
+    },refreshIn);
+  }
+
+  async function activateOwnerSession(session,persist=true) {
+    state.session=session;
+    if(persist)saveOwnerSession(session);
+    state.client=authenticatedClient(session.access_token);
+    scheduleOwnerRefresh();
+    const user=session.user||await authUser(session.access_token);
+    state.session.user=user;
+    if(persist)saveOwnerSession(state.session);
+    await enterAs(user);
+  }
+
+  async function restoreOwnerSession() {
+    const stored=readOwnerSession();
+    if(!stored)return false;
+    try{
+      let session=stored;
+      const now=Math.floor(Date.now()/1000);
+      if(!session.expires_at||session.expires_at<=now+60)session=await refreshGrant(session.refresh_token);
+      else session.user=await authUser(session.access_token);
+      await activateOwnerSession(session,true);
+      return true;
+    }catch{
+      clearOwnerSession();
+      return false;
+    }
+  }
+
   async function init() {
     bindStaticUi();
     if (!enabled()) {
       showOnly("setupScreen");
       return;
     }
-    state.client = window.supabase.createClient(cfg.supabaseUrl, cfg.supabasePublishableKey, {
-      auth: { persistSession:true, autoRefreshToken:true, detectSessionInUrl:true }
-    });
-
-    const { data, error } = await state.client.auth.getUser();
-    if (error || !data?.user) {
-      showOnly("loginScreen");
-      return;
-    }
-    await enterAs(data.user);
+    state.client=anonymousClient();
+    const restored=await restoreOwnerSession();
+    if(!restored)showOnly("loginScreen");
   }
 
   async function enterAs(user) {
@@ -100,7 +249,8 @@
       .maybeSingle();
 
     if (error || !data) {
-      await state.client.auth.signOut();
+      clearOwnerSession();
+      state.client=anonymousClient();
       showOnly("loginScreen");
       setStatus($("loginStatus"), "This account is not approved for owner access.", "error");
       return;
@@ -598,13 +748,21 @@
 
   async function handleLogin(e) {
     e.preventDefault();
-    const email=$("loginEmail").value.trim(), password=$("loginPassword").value;
-    setStatus($("loginStatus"),"Signing in…");
-    $("loginButton").disabled=true;
-    const {data,error}=await state.client.auth.signInWithPassword({email,password});
-    $("loginButton").disabled=false;
-    if(error||!data?.user){setStatus($("loginStatus"),error?.message||"Sign-in failed.","error");return;}
-    await enterAs(data.user);
+    const email=$("loginEmail").value.trim().toLowerCase();
+    const password=$("loginPassword").value;
+    const button=$("loginButton");
+    setStatus($("loginStatus"),"Signing in securely…");
+    button.disabled=true;
+    try{
+      const session=await passwordGrant(email,password);
+      setStatus($("loginStatus"),"Opening owner dashboard…","success");
+      await activateOwnerSession(session,true);
+      $("loginPassword").value="";
+    }catch(err){
+      setStatus($("loginStatus"),err.message||"Sign-in failed.","error");
+    }finally{
+      button.disabled=false;
+    }
   }
 
   async function handleBootstrap(e) {
@@ -631,13 +789,12 @@
       if(!response.ok)throw new Error(result.error||"Could not create owner account.");
 
       setStatus($("bootstrapStatus"),"Owner created. Signing you in…","success");
-      const {data,error}=await state.client.auth.signInWithPassword({email,password});
-      if(error||!data?.user)throw new Error(error?.message||"Owner was created, but automatic sign-in failed.");
+      const session=await passwordGrant(email,password);
       $("loginEmail").value=email;
       $("loginPassword").value="";
       $("bootstrapPassword").value="";
       $("bootstrapCode").value="";
-      await enterAs(data.user);
+      await activateOwnerSession(session,true);
       toast("Owner account activated.");
     }catch(err){
       setStatus($("bootstrapStatus"),err.message||"Owner setup failed.","error");
@@ -647,9 +804,12 @@
   }
 
   async function signOut() {
-    if(state.client) await state.client.auth.signOut();
-    state.user=null; state.membership=null;
+    clearOwnerSession();
+    state.user=null;
+    state.membership=null;
+    state.client=anonymousClient();
     showOnly("loginScreen");
+    setStatus($("loginStatus"),"Signed out.","success");
   }
 
   async function saveContent(e) {

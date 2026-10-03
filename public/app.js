@@ -2106,4 +2106,4 @@ window.applyPageMetadata=applyPageMetadata;
 document.addEventListener("DOMContentLoaded",init);
 
 /* Load the optional owner CMS/analytics bridge without delaying the storefront. */
-(()=>{if(document.querySelector('script[data-zwm-site-runtime]'))return;const s=document.createElement("script");s.src="site-runtime.js?v=20261004-1";s.async=true;s.dataset.zwmSiteRuntime="1";document.head.appendChild(s);})();
+(()=>{if(document.querySelector('script[data-zwm-site-runtime]'))return;const s=document.createElement("script");s.src="site-runtime.js?v=20261004-toolkit2";s.async=true;s.dataset.zwmSiteRuntime="1";document.head.appendChild(s);})();

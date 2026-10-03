@@ -644,6 +644,7 @@ function giftRows(){
 }
 function addGiftItem(productId,variantId,qty=1){
   const p=productById(productId);if(!p)return;
+  if(productAvailability(p)!=="in_stock"){toast(availabilityLabel(p));return;}
   const v=variantById(p,variantId)||defaultVariant(p),key=cartKey(p.id,v.id);
   if(giftItems[key])giftItems[key].qty+=Math.max(1,Number(qty)||1);
   else giftItems[key]={productId:p.id,variantId:v.id,qty:Math.max(1,Number(qty)||1)};
@@ -1424,11 +1425,11 @@ function renderGiftPickerResults(){
   const total=items.length;
   items=items.slice(0,giftVisibleLimit);
   box.innerHTML=items.map(({p})=>{
-    const v=defaultVariant(p),already=giftRows().some(r=>r.p.id===p.id);
-    return `<button type="button" class="gift-result ${already?"is-added":""}" data-gift-add="${escapeHtml(p.id)}">
+    const v=defaultVariant(p),already=giftRows().some(r=>r.p.id===p.id),canOrder=productAvailability(p)==="in_stock";
+    return `<button type="button" class="gift-result ${already?"is-added":""} ${canOrder?"":"is-unavailable"}" data-gift-add="${escapeHtml(p.id)}" ${canOrder?"":"disabled"}>
       <span class="gift-result-mark">${productVisualMarkup(p,"gift-product-image")}</span>
       <span><small>${escapeHtml(categoryName(p.category))}</small><strong>${escapeHtml(currentName(p))}</strong><em>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${money(v.price)}${p.variants.length>1?` · ${p.variants.length} ${escapeHtml(UI[lang].sizeOptions)}`:""}</em></span>
-      <b>${already?"✓":escapeHtml(EXTRA_UI[lang].giftAdd)}</b>
+      <b>${already?"✓":canOrder?escapeHtml(EXTRA_UI[lang].giftAdd):escapeHtml(availabilityLabel(p))}</b>
     </button>`;
   }).join("");
   if(!items.length)box.innerHTML=`<p class="gift-no-results">${escapeHtml(UI[lang].emptyCopy)}</p>`;

@@ -45,6 +45,8 @@ const FAV_KEY="zwm-favorites-v1";
 const RECENT_KEY="zwm-recent-v1";
 const GIFT_KEY="zwm-gift-items-v1";
 const PAGE_SIZE=24;
+const MOBILE_PAGE_SIZE=12;
+function catalogPageSize(){return window.matchMedia&&window.matchMedia("(max-width:760px)").matches?MOBILE_PAGE_SIZE:PAGE_SIZE;}
 const FEATURED_IDS=["zaatar-baladi-extra","extra-virgin-olive-oil","flower-honey","kishek-zayt-w-mouneh","debes-el-remen","zaytoun-akhdar-beqaa","burglur-asmar-kheshen","semaq"];
 const GIFT_PRESETS=[
   {id:"breakfast",titleEn:"Lebanese Breakfast Box",titleAr:"صندوق الفطور اللبناني",copyEn:"Za’atar, honey, olive oil and a pantry touch for an easy Lebanese breakfast.",copyAr:"زعتر وعسل وزيت زيتون ولمسة من المونة لفطور لبناني جاهز.",items:["zaatar-baladi-extra","flower-honey","extra-virgin-olive-oil"]},
@@ -338,7 +340,7 @@ const EXTRA_UI={
 let lang=localStorage.getItem(LANG_KEY)==="ar"?"ar":"en";
 let activeCategory="All";
 let query="";
-let visibleLimit=PAGE_SIZE;
+let visibleLimit=catalogPageSize();
 let cart=loadCart();
 let draftQty={};
 let cardVariant={};
@@ -358,6 +360,15 @@ const CURRENT_PAGE=document.body?.dataset.page||"home";
 let heroVisible=true;
 
 const CATEGORY_COUNTS=Object.fromEntries(CATEGORY_ORDER.map(cat=>[cat,PRODUCTS_DATA.filter(p=>p.category===cat).length]));
+const DISPLAY_NAME_COUNTS=PRODUCTS_DATA.reduce((acc,p)=>{
+  const key=String(p.nameEn||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+  acc[key]=(acc[key]||0)+1;
+  return acc;
+},{});
+function repeatedListingNote(p){
+  const key=String(p.nameEn||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+  return DISPLAY_NAME_COUNTS[key]>1?(p.original||""):"";
+}
 const TOTAL_VARIANTS=PRODUCTS_DATA.reduce((sum,p)=>sum+p.variants.length,0);
 
 function money(n){return `$${Number(n).toFixed(2)}`}
@@ -477,7 +488,7 @@ function searchScore(p,rawQuery){
   if(originalMatched<originalTokens.length)return 0;
   return 70+matched*4-total;
 }
-function productById(id){return PRODUCTS_DATA.find(p=>p.id===id)}
+function productById(id){const canonical=window.ZWM_PRODUCT_ALIASES?.[id]||id;return PRODUCTS_DATA.find(p=>p.id===canonical)}
 function variantById(p,id){return p?.variants.find(v=>v.id===id)||p?.variants[0]}
 function defaultVariant(p){return p.variants[0]}
 function cardVariantFor(p){return variantById(p,cardVariant[p.id])||defaultVariant(p)}
@@ -834,7 +845,7 @@ function activateShopCategory(cat,{scroll=true}={}){
   activeCategory=cat;
   query="";
   favoritesOnly=false;
-  visibleLimit=PAGE_SIZE;
+  visibleLimit=catalogPageSize();
   const search=$("#productSearch");
   if(search)search.value="";
   renderCategorySelect();
@@ -893,6 +904,7 @@ function renderProducts(){
     const selected=cardVariantFor(p);
     const q=qtyFor("card:"+p.id);
     const ps=productPriceSummary(p);
+    const listingNote=repeatedListingNote(p);
     const sizeOptions=p.variants.length>1
       ? `<select class="card-variant-select" data-card-variant="${p.id}" aria-label="${escapeHtml(t.chooseSize)}">${p.variants.map(v=>`<option value="${escapeHtml(v.id)}"${v.id===selected.id?" selected":""}>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${money(v.price)}</option>`).join("")}</select>`
       : `<div class="single-size">${escapeHtml(lang==="ar"?selected.sizeAr:selected.sizeEn)}</div>`;
@@ -906,7 +918,7 @@ function renderProducts(){
         </div>
       </div>
       ${badges.length?`<div class="product-badges">${badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("")}</div>`:""}
-      <p class="product-category">${escapeHtml(categoryName(p.category))}</p>\n      <p class="product-origin">${escapeHtml(originFor(p))}</p>\n      <h3 class="product-name">${escapeHtml(currentName(p))}</h3>
+      <p class="product-category">${escapeHtml(categoryName(p.category))}</p>\n      <p class="product-origin">${escapeHtml(originFor(p))}</p>\n      ${listingNote?`<p class="product-listing-note">${escapeHtml(listingNote)}</p>`:""}\n      <h3 class="product-name">${escapeHtml(currentName(p))}</h3>
       <p class="product-description">${escapeHtml(info.what)}</p>
       <p class="product-use"><strong>${escapeHtml(t.use)}:</strong> ${escapeHtml(info.use)}</p>
       ${health?`<div class="product-health"><span>✦ ${escapeHtml(health.badge)}</span><p>${escapeHtml(health.text)}</p></div>`:""}
@@ -929,7 +941,18 @@ function renderProducts(){
   }).join("");
 
   const empty=$("#catalogEmpty");if(empty)empty.hidden=filtered.length>0;
-  const more=$("#loadMore");if(more&&more.parentElement)more.parentElement.hidden=filtered.length===0||visibleLimit>=filtered.length;
+  const more=$("#loadMore");
+  if(more&&more.parentElement){
+    const remaining=Math.max(0,filtered.length-visibleLimit);
+    more.parentElement.hidden=filtered.length===0||remaining===0;
+    if(remaining>0){
+      const next=Math.min(catalogPageSize(),remaining);
+      more.textContent=lang==="ar"
+        ? `عرض ${next} إضافية · بقي ${remaining}`
+        : `Load ${next} more · ${remaining} left`;
+      more.setAttribute("aria-label",more.textContent);
+    }
+  }
 
   $$("[data-fav]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();toggleFavorite(btn.dataset.fav)}));
   $$("[data-card-variant]").forEach(sel=>sel.addEventListener("change",e=>{
@@ -1695,14 +1718,14 @@ function init(){
   }
 
   if($("#productSearch")){
-    $("#productSearch").addEventListener("input",e=>{query=e.target.value;if(query.trim())activeCategory="All";visibleLimit=PAGE_SIZE;renderCategorySelect();renderProducts();renderSearchSuggestions();syncCategoryQuickState();syncShopFilterUrl()});
+    $("#productSearch").addEventListener("input",e=>{query=e.target.value;if(query.trim())activeCategory="All";visibleLimit=catalogPageSize();renderCategorySelect();renderProducts();renderSearchSuggestions();syncCategoryQuickState();syncShopFilterUrl()});
     $("#productSearch").addEventListener("focus",renderSearchSuggestions);
     $("#productSearch").addEventListener("blur",()=>setTimeout(()=>{const b=$("#searchSuggestions");if(b)b.hidden=true},140));
   }
   if($("#categorySelect"))$("#categorySelect").addEventListener("change",e=>activateShopCategory(e.target.value,{scroll:false}));
-  if($("#loadMore"))$("#loadMore").addEventListener("click",()=>{visibleLimit+=PAGE_SIZE;renderProducts()});
+  if($("#loadMore"))$("#loadMore").addEventListener("click",()=>{visibleLimit+=catalogPageSize();renderProducts()});
   if($("#clearSearch"))$("#clearSearch").addEventListener("click",()=>activateShopCategory("All",{scroll:false}));
-  if($("#favoritesOnly"))$("#favoritesOnly").addEventListener("click",()=>{favoritesOnly=!favoritesOnly;visibleLimit=PAGE_SIZE;renderFavoritesCount();renderProducts()});
+  if($("#favoritesOnly"))$("#favoritesOnly").addEventListener("click",()=>{favoritesOnly=!favoritesOnly;visibleLimit=catalogPageSize();renderFavoritesCount();renderProducts()});
   if($("#clearRecent"))$("#clearRecent").addEventListener("click",()=>{recentViews=[];saveRecent();renderRecent()});
 
   $$("[data-lang]").forEach(btn=>btn.addEventListener("click",()=>applyLanguage(btn.dataset.lang)));

@@ -956,35 +956,58 @@
     return en;
   }
 
-  function renderProducts() {
-    const {q,category,status} = state.productFilter;
-    const term = q.trim().toLowerCase();
-    const list = state.products.filter(p => {
-      if (category && p.category !== category) return false;
-      const st = statusFor(p);
-      if (status==="missing-photo" && photoFor(p)) return false;
-      if (status && status!=="missing-photo" && st!==status) return false;
-      if (term) {
-        const hay = [p.id,p.nameEn,p.nameAr,p.category,p.original].join(" ").toLowerCase();
-        if (!hay.includes(term)) return false;
+  const AVAILABILITY_LABELS={
+    in_stock:"In stock",
+    out_of_stock:"Out of stock",
+    coming_soon:"Coming soon"
+  };
+
+  function availabilityFor(product){
+    return ["in_stock","out_of_stock","coming_soon"].includes(product?.availability)?product.availability:"in_stock";
+  }
+
+  function filteredProducts(){
+    const {q,category,status,availability}=state.productFilter;
+    const term=q.trim().toLowerCase();
+    return state.products.filter(p=>{
+      if(category&&p.category!==category)return false;
+      if(availability&&availabilityFor(p)!==availability)return false;
+      const st=statusFor(p);
+      if(status==="missing-photo"&&photoFor(p))return false;
+      if(status&&status!=="missing-photo"&&st!==status)return false;
+      if(term){
+        const hay=[p.id,p.nameEn,p.nameAr,p.category,p.original,availabilityFor(p)].join(" ").toLowerCase();
+        if(!hay.includes(term))return false;
       }
       return true;
     });
-    $("productResultCount").textContent = `${list.length} product${list.length===1?"":"s"}`;
-    $("navProductCount").textContent = state.products.length;
-    const tbody = $("productTableBody");
-    tbody.innerHTML = list.map(productRowHtml).join("") || '<tr><td colspan="6"><p class="empty-state">No products match these filters.</p></td></tr>';
-    $("productCardsMobile").innerHTML = list.map(productCardHtml).join("") || '<p class="empty-state">No products match these filters.</p>';
+  }
+
+  function renderProducts() {
+    const list=filteredProducts();
+    $("productResultCount").textContent=`${list.length} product${list.length===1?"":"s"}`;
+    $("navProductCount").textContent=state.products.length;
+
+    // Drop selection for products that no longer exist.
+    for(const id of [...state.selectedProducts])if(!state.products.some(p=>p.id===id))state.selectedProducts.delete(id);
+
+    $("productTableBody").innerHTML=list.map(productRowHtml).join("")||'<tr><td colspan="8"><p class="empty-state">No products match these filters.</p></td></tr>';
+    $("productCardsMobile").innerHTML=list.map(productCardHtml).join("")||'<p class="empty-state">No products match these filters.</p>';
+    renderBulkProductBar();
   }
 
   function productRowHtml(p) {
-    const photo = photoFor(p);
-    const firstPrice = p.variants?.length ? Math.min(...p.variants.map(v=>Number(v.price)).filter(Number.isFinite)) : NaN;
-    const status = statusFor(p);
-    return `<tr>
-      <td><div class="product-row-main">${photo ? `<img class="product-thumb" src="${esc(photo.url)}" alt="">` : '<span class="product-thumb-placeholder">No photo</span>'}<div><b>${esc(p.nameEn||p.id)}</b><small>${esc(p.nameAr||p.id)} · ${esc(p.id)}</small></div></div></td>
+    const photo=photoFor(p);
+    const firstPrice=p.variants?.length?Math.min(...p.variants.map(v=>Number(v.price)).filter(Number.isFinite)):NaN;
+    const status=statusFor(p);
+    const availability=availabilityFor(p);
+    const checked=state.selectedProducts.has(p.id);
+    return `<tr class="${checked?"is-selected":""}">
+      <td class="select-col"><label class="selection-check"><input type="checkbox" data-select-product="${esc(p.id)}" ${checked?"checked":""}><span></span></label></td>
+      <td><div class="product-row-main">${photo?`<img class="product-thumb" src="${esc(photo.url)}" alt="">`:'<span class="product-thumb-placeholder">No photo</span>'}<div><b>${esc(p.nameEn||p.id)}</b><small>${esc(p.nameAr||p.id)} · ${esc(p.id)}</small></div></div></td>
       <td>${esc(p.category?categoryDisplayName(p.category):"—")}</td>
       <td>${money(firstPrice)}</td>
+      <td><span class="availability-badge availability-${availability}">${esc(AVAILABILITY_LABELS[availability])}</span></td>
       <td><span class="status-badge status-${status}">${status.replace("-"," ")}</span></td>
       <td>${esc(when(p.__updated))}</td>
       <td><div class="row-actions"><button class="row-action" data-edit-product="${esc(p.id)}">Edit</button></div></td>
@@ -992,12 +1015,99 @@
   }
 
   function productCardHtml(p) {
-    const photo = photoFor(p), st=statusFor(p);
-    return `<article class="product-mobile-card">
-      ${photo ? `<img class="product-thumb" src="${esc(photo.url)}" alt="">` : '<span class="product-thumb-placeholder">No photo</span>'}
-      <div><b>${esc(p.nameEn||p.id)}</b><p>${esc(p.category?categoryDisplayName(p.category):"—")} · <span class="status-badge status-${st}">${st}</span></p></div>
+    const photo=photoFor(p),st=statusFor(p),availability=availabilityFor(p),checked=state.selectedProducts.has(p.id);
+    return `<article class="product-mobile-card ${checked?"is-selected":""}">
+      <label class="selection-check product-card-select"><input type="checkbox" data-select-product="${esc(p.id)}" ${checked?"checked":""}><span></span></label>
+      ${photo?`<img class="product-thumb" src="${esc(photo.url)}" alt="">`:'<span class="product-thumb-placeholder">No photo</span>'}
+      <div><b>${esc(p.nameEn||p.id)}</b><p>${esc(p.category?categoryDisplayName(p.category):"—")}</p><p><span class="availability-badge availability-${availability}">${esc(AVAILABILITY_LABELS[availability])}</span> <span class="status-badge status-${st}">${st}</span></p></div>
       <button type="button" data-edit-product="${esc(p.id)}">Edit</button>
     </article>`;
+  }
+
+  function renderBulkProductBar(){
+    const count=state.selectedProducts.size;
+    $("bulkProductBar").hidden=count===0;
+    $("bulkSelectedCount").textContent=`${count} selected`;
+  }
+
+  function toggleProductSelection(id,checked){
+    if(checked)state.selectedProducts.add(id);
+    else state.selectedProducts.delete(id);
+    renderProducts();
+  }
+
+  function clearProductSelection(){
+    state.selectedProducts.clear();
+    renderProducts();
+  }
+
+  function configureBulkValue(){
+    const action=$("bulkProductAction").value;
+    const select=$("bulkProductValue");
+    if(!action||action==="delete"){select.hidden=true;select.innerHTML="";return;}
+    select.hidden=false;
+    if(action==="availability"){
+      select.innerHTML=Object.entries(AVAILABILITY_LABELS).map(([v,l])=>`<option value="${v}">${l}</option>`).join("");
+    }else if(action==="visibility"){
+      select.innerHTML='<option value="live">Live</option><option value="draft">Draft</option><option value="hidden">Hidden</option>';
+    }else if(action==="category"){
+      select.innerHTML=categoryRecords().map(c=>`<option value="${esc(c.en)}">${esc(state.lang==="ar"?(c.ar||AR_TRANSLATIONS[c.en]||c.en):c.en)}</option>`).join("");
+    }
+  }
+
+  async function saveProductRevision(product,reason="edit"){
+    if(!product||!state.user)return;
+    const snapshot=clone(product);
+    delete snapshot.__source;delete snapshot.__status;delete snapshot.__updated;
+    await state.client.from(cfg.tables.revisions||"product_revisions").insert({
+      product_id:product.id,
+      snapshot,
+      reason,
+      created_by:state.user.id
+    }).catch(()=>{});
+  }
+
+  async function applyBulkProductAction(){
+    const ids=[...state.selectedProducts];
+    const action=$("bulkProductAction").value;
+    const value=$("bulkProductValue").value;
+    if(!ids.length||!action)return;
+    if(action==="delete"&&!confirm(`Delete ${ids.length} selected products? This cannot be undone.`))return;
+    $("applyBulkProductAction").disabled=true;
+    try{
+      for(const id of ids){
+        const product=state.products.find(p=>p.id===id);if(!product)continue;
+        await saveProductRevision(product,`bulk_${action}`);
+        if(action==="delete"){
+          if(baseById.has(id)){
+            const {error}=await state.client.from(cfg.tables.products).upsert({
+              product_id:id,action:"hide",payload:{id,status:"hidden",deleted:true},
+              updated_at:new Date().toISOString(),updated_by:state.user.id
+            },{onConflict:"product_id"}); if(error)throw error;
+          }else{
+            const {error}=await state.client.from(cfg.tables.products).delete().eq("product_id",id);if(error)throw error;
+          }
+          continue;
+        }
+        const payload=clone(product);
+        delete payload.__source;delete payload.__status;delete payload.__updated;
+        if(action==="availability")payload.availability=value;
+        if(action==="visibility")payload.status=value;
+        if(action==="category")payload.category=value;
+        const {error}=await state.client.from(cfg.tables.products).upsert({
+          product_id:id,action:"upsert",payload,
+          updated_at:new Date().toISOString(),updated_by:state.user.id
+        },{onConflict:"product_id"});
+        if(error)throw error;
+      }
+      await logActivity("bulk_product_update","product",ids.join(","),{action,value,count:ids.length});
+      toast(`${ids.length} products updated.`);
+      state.selectedProducts.clear();
+      $("bulkProductAction").value="";
+      configureBulkValue();
+      await refreshAll();
+    }catch(err){toast(err.message||"Bulk update failed.","error");}
+    finally{$("applyBulkProductAction").disabled=false;}
   }
 
   const ORDER_STATUS_LABELS = {

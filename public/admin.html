@@ -65,6 +65,7 @@
       <nav class="admin-nav" id="adminNav" aria-label="Owner dashboard">
         <button type="button" class="is-active" data-view="overview"><span>⌂</span><b>Overview</b></button>
         <button type="button" data-view="products"><span>▦</span><b>Products</b><em id="navProductCount">0</em></button>
+        <button type="button" data-view="orders"><span>◎</span><b>Orders & deliveries</b><em id="navOrderCount">0</em></button>
         <button type="button" data-view="content"><span>✎</span><b>Website content</b></button>
         <button type="button" data-view="analytics"><span>↗</span><b>Analytics</b></button>
         <button type="button" data-view="activity"><span>◷</span><b>Activity</b></button>
@@ -147,6 +148,46 @@
               </table>
             </div>
             <div id="productCardsMobile" class="product-cards-mobile"></div>
+          </div>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="orders">
+          <div class="section-intro">
+            <div><p>Orders & deliveries</p><h2>Track every order sent from the website by its WhatsApp code.</h2></div>
+            <span>“Sent” means the customer opened WhatsApp with the prepared order. Mark delivery progress here.</span>
+          </div>
+
+          <div class="metric-grid order-metrics">
+            <article class="metric-card"><div><small>New</small><strong id="ordersNewCount">0</strong><em>Needs review</em></div></article>
+            <article class="metric-card"><div><small>Preparing</small><strong id="ordersPreparingCount">0</strong><em>Confirmed / preparing</em></div></article>
+            <article class="metric-card"><div><small>Out for delivery</small><strong id="ordersOutCount">0</strong><em>On the way</em></div></article>
+            <article class="metric-card"><div><small>Delivered</small><strong id="ordersDeliveredCount">0</strong><em>Completed history</em></div></article>
+          </div>
+
+          <div class="toolbar order-toolbar">
+            <div class="search-field"><span>⌕</span><input id="orderSearch" type="search" placeholder="Search code, customer, area or product…" /></div>
+            <select id="orderStatusFilter" aria-label="Filter delivery status">
+              <option value="">All statuses</option>
+              <option value="new">New</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="preparing">Preparing</option>
+              <option value="out_for_delivery">Out for delivery</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <select id="orderKindFilter" aria-label="Filter order type"><option value="">All types</option><option value="order">Pantry orders</option><option value="gift">Gifts</option></select>
+            <button class="button-secondary button-small" id="exportOrdersButton" type="button">Export history ↓</button>
+          </div>
+
+          <div class="table-card">
+            <div class="table-summary"><span id="orderResultCount">0 orders</span><span>Use the status menu to update delivery progress.</span></div>
+            <div class="product-table-wrap order-table-wrap">
+              <table class="product-table order-table">
+                <thead><tr><th>Order code</th><th>Customer / area</th><th>Items</th><th>Total</th><th>Status</th><th>Sent</th></tr></thead>
+                <tbody id="orderTableBody"></tbody>
+              </table>
+            </div>
+            <div id="orderCardsMobile" class="product-cards-mobile order-cards-mobile"></div>
           </div>
         </section>
 

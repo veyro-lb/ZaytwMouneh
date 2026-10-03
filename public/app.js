@@ -244,7 +244,7 @@ const UI={
     footerCopy:"A pantry of Lebanese memory, curated with care.",footerCatalogue:"Catalogue",footerAbout:"About",
     cartEyebrow:"Your pantry list",cartTitle:"My pantry",cartSaved:"Saved on this device",cartEmptyTitle:"Your pantry is empty.",cartEmptyCopy:"Add products from the catalogue and they’ll appear here.",browseProducts:"Browse products",
     total:"Estimated total",orderDetailsTitle:"Order details",orderDetailsNote:"Sent only when you press WhatsApp",
-    yourName:"Your name",namePlaceholder:"Name",area:"Area / location",areaPlaceholder:"e.g. Baabda",notes:"Order notes",notesPlaceholder:"Delivery notes, substitutions, anything we should know…",
+    yourName:"Your name",namePlaceholder:"Name",phone:"WhatsApp number (optional)",phonePlaceholder:"e.g. 961 70 123 456",area:"Area / location",areaPlaceholder:"e.g. Baabda",notes:"Order notes",notesPlaceholder:"Delivery notes, substitutions, anything we should know…",
     sendOrder:"Send order on WhatsApp <span>↗</span>",priceNote:"Prices are shown from the supplied retail list; final availability is confirmed on WhatsApp.",
     what:"What it is",use:"Use it for",nutritionLabel:"Nutrition note",nutritionBadge:"Nutritious choice",chooseSize:"Choose size",add:"Add to pantry",update:"Update pantry",view:"View",from:"From",sizeOptions:"size options",
     remove:"Remove",details:"View details",qty:"Qty",unitPrice:"Unit",subtotal:"Subtotal",
@@ -254,7 +254,7 @@ const UI={
     cartItems:(n)=>`${n} ${n===1?"item":"items"}`,
     orderHello:"Hello Zayt w Mouneh 👋",
     orderIntro:"I would like to place an order:",
-    customer:"Name",orderArea:"Area / location",orderNotes:"Notes",orderTotal:"Estimated total",
+    customer:"Name",orderPhone:"WhatsApp",orderArea:"Area / location",orderNotes:"Notes",orderTotal:"Estimated total",
     orderConfirm:"Please confirm availability and the final order total. Thank you!"
   },
   ar:{
@@ -298,7 +298,7 @@ const UI={
     footerCopy:"مونة من ذاكرة لبنان، مختارة بعناية.",footerCatalogue:"المنتجات",footerAbout:"من نحن",
     cartEyebrow:"لائحة المونة",cartTitle:"السلة",cartSaved:"محفوظة على هذا الجهاز",cartEmptyTitle:"السلة فارغة.",cartEmptyCopy:"أضف منتجات من المتجر وستظهر هنا.",browseProducts:"تصفّح المنتجات",
     total:"المجموع التقديري",orderDetailsTitle:"تفاصيل الطلب",orderDetailsNote:"لا تُرسل إلا عند الضغط على واتساب",
-    yourName:"الاسم",namePlaceholder:"اسمك",area:"المنطقة / الموقع",areaPlaceholder:"مثلاً بعبدا",notes:"ملاحظات الطلب",notesPlaceholder:"ملاحظات التوصيل أو الاستبدال أو أي تفاصيل إضافية…",
+    yourName:"الاسم",namePlaceholder:"اسمك",phone:"رقم واتساب (اختياري)",phonePlaceholder:"مثلاً 961 70 123 456",area:"المنطقة / الموقع",areaPlaceholder:"مثلاً بعبدا",notes:"ملاحظات الطلب",notesPlaceholder:"ملاحظات التوصيل أو الاستبدال أو أي تفاصيل إضافية…",
     sendOrder:"إرسال الطلب عبر واتساب <span>↗</span>",priceNote:"الأسعار مأخوذة من لائحة البيع المرفقة؛ يتم تأكيد التوفر والمجموع النهائي عبر واتساب.",
     what:"ما هو",use:"كيف يُستخدم",nutritionLabel:"ملاحظة غذائية",nutritionBadge:"خيار مُغذٍ",chooseSize:"اختر الحجم",add:"أضف إلى السلة",update:"حدّث السلة",view:"عرض",from:"ابتداءً من",sizeOptions:"خيارات أحجام",
     remove:"حذف",details:"عرض التفاصيل",qty:"الكمية",unitPrice:"السعر",subtotal:"المجموع",
@@ -308,7 +308,7 @@ const UI={
     cartItems:(n)=>`${n} ${n===1?"قطعة":"قطع"}`,
     orderHello:"مرحباً زيت ومونة 👋",
     orderIntro:"أرغب في طلب:",
-    customer:"الاسم",orderArea:"المنطقة / الموقع",orderNotes:"الملاحظات",orderTotal:"المجموع التقديري",
+    customer:"الاسم",orderPhone:"واتساب",orderArea:"المنطقة / الموقع",orderNotes:"الملاحظات",orderTotal:"المجموع التقديري",
     orderConfirm:"يرجى تأكيد التوفر والمجموع النهائي للطلب. شكراً!"
   }
 };
@@ -936,7 +936,7 @@ function applyLanguage(next,{immediate=false}={}){
     contactEyebrow:"contactEyebrow",contactCopy:"contactCopy",contactPhoneLabel:"phone",contactWaLabel:"whatsapp",contactIgLabel:"instagram",contactLocationLabel:"location",contactLocationValue:"lebanon",
     footerBrand:"brand",footerCopy:"footerCopy",footerCatalogue:"footerCatalogue",footerAbout:"footerAbout",copyrightBrand:"brand",
     cartEyebrow:"cartEyebrow",cartTitle:"cartTitle",cartEmptyTitle:"cartEmptyTitle",cartEmptyCopy:"cartEmptyCopy",cartTotalLabel:"total",
-    orderDetailsTitle:"orderDetailsTitle",orderDetailsNote:"orderDetailsNote",customerNameLabel:"yourName",customerAreaLabel:"area",orderNotesLabel:"notes",priceNote:"priceNote",
+    orderDetailsTitle:"orderDetailsTitle",orderDetailsNote:"orderDetailsNote",customerNameLabel:"yourName",customerPhoneLabel:"phone",customerAreaLabel:"area",orderNotesLabel:"notes",priceNote:"priceNote",
     whatLabel:"what",useLabel:"use",nutritionLabel:"nutritionLabel",chooseSizeLabel:"chooseSize"
   };
   Object.entries(textMap).forEach(([id,key])=>{const el=$("#"+id);if(el&&t[key]!==undefined)el.textContent=t[key]});
@@ -946,6 +946,7 @@ function applyLanguage(next,{immediate=false}={}){
 
   if($("#productSearch"))$("#productSearch").placeholder=t.searchPlaceholder;
   if($("#customerName"))$("#customerName").placeholder=t.namePlaceholder;
+  if($("#customerPhone"))$("#customerPhone").placeholder=t.phonePlaceholder;
   if($("#customerArea"))$("#customerArea").placeholder=t.areaPlaceholder;
   if($("#orderNotes"))$("#orderNotes").placeholder=t.notesPlaceholder;
   if($("#clearSearch"))$("#clearSearch").textContent=t.clearFilters;
@@ -1729,6 +1730,7 @@ function order(){
   const t=UI[lang];
   const total=rows.reduce((s,r)=>s+r.qty*Number(r.v.price),0);
   const name=$("#customerName").value.trim()||"—";
+  const phone=$("#customerPhone")?.value.trim()||"—";
   const area=$("#customerArea").value.trim()||"—";
   const notes=$("#orderNotes").value.trim()||"—";
   const ref=orderReference("ZW");
@@ -1743,6 +1745,7 @@ function order(){
     "",
     `${t.orderTotal}: ${money(total)}`,
     `${t.customer}: ${name}`,
+    ...(phone!=="—"?[`${t.orderPhone}: ${phone}`]:[]),
     `${t.orderArea}: ${area}`,
     `${t.orderNotes}: ${notes}`,
     "",
@@ -1752,6 +1755,7 @@ function order(){
     reference:ref,
     kind:"order",
     customer_name:name==="—"?"":name,
+    customer_phone:phone==="—"?"":phone,
     area:area==="—"?"":area,
     notes:notes==="—"?"":notes,
     items:rows.map(r=>({

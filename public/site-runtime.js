@@ -77,7 +77,11 @@
 
   function applyPromo(promo){
     let box=document.getElementById("zwmCmsPromo");
-    if(!promo.enabled){if(box)box.remove();return}
+    const now=Date.now();
+    const starts=promo.startsAt?new Date(promo.startsAt).getTime():null;
+    const ends=promo.endsAt?new Date(promo.endsAt).getTime():null;
+    const inWindow=(!starts||now>=starts)&&(!ends||now<=ends);
+    if(!promo.enabled||!inWindow){if(box)box.remove();return}
     const title=currentLang()==="ar"?(promo.titleAr||promo.titleEn):(promo.titleEn||promo.titleAr);
     const body=currentLang()==="ar"?(promo.bodyAr||promo.bodyEn):(promo.bodyEn||promo.bodyAr);
     if(!title&&!body)return;

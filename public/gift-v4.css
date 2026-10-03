@@ -1167,3 +1167,252 @@ body[data-page="gift"] .nav-search{display:none!important}
     padding:0 4px!important;
   }
 }
+
+/* ===== v6 shared desktop navigation ===== */
+/* Gift uses the same desktop header/navigation system as every other page.
+   Gift-specific styling begins below the header and no longer changes its structure. */
+@media(min-width:1181px){
+  body[data-page="gift"] .site-header{
+    position:sticky!important;
+    top:0!important;
+    z-index:500!important;
+    background:#fbf8f1!important;
+    color:#0b4b25!important;
+    box-shadow:none!important;
+    border-bottom:1px solid #e2dacd!important;
+  }
+  body[data-page="gift"] .announcement{
+    height:36px!important;
+    min-height:36px!important;
+    background:#0b4b25!important;
+    border:0!important;
+  }
+  body[data-page="gift"] .announcement-inner{
+    height:36px!important;
+    min-height:36px!important;
+    justify-content:center!important;
+  }
+  body[data-page="gift"] .announcement a{
+    margin:auto!important;
+    color:#efbe4c!important;
+    font-size:.63rem!important;
+    line-height:1!important;
+    letter-spacing:.17em!important;
+  }
+  body[data-page="gift"] .announcement a:before{display:none!important}
+
+  body[data-page="gift"] .nav{
+    width:min(100% - 44px,1480px)!important;
+    height:108px!important;
+    min-height:108px!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;
+    column-gap:12px!important;
+    align-items:center!important;
+    padding:0!important;
+    background:#fbf8f1!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+
+  body[data-page="gift"] .nav-toggle{
+    display:none!important;
+  }
+
+  body[data-page="gift"] .nav-links{
+    grid-column:1!important;
+    grid-row:1!important;
+    position:static!important;
+    inset:auto!important;
+    width:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-self:start!important;
+    gap:2px!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+    opacity:1!important;
+    visibility:visible!important;
+    pointer-events:auto!important;
+    transform:none!important;
+  }
+  body[data-page="gift"] .nav-links .menu-heading,
+  body[data-page="gift"] .nav-links .menu-utility{
+    display:none!important;
+  }
+  body[data-page="gift"] .nav-links>a:not(.menu-utility-link){
+    min-height:44px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:0!important;
+    padding:0 9px!important;
+    border:0!important;
+    border-radius:999px!important;
+    background:transparent!important;
+    color:#0b4b25!important;
+    box-shadow:none!important;
+    transform:none!important;
+    white-space:nowrap!important;
+  }
+  body[data-page="gift"] .nav-links>a>span:first-child,
+  body[data-page="gift"] .nav-links>a>b{
+    display:none!important;
+  }
+  body[data-page="gift"] .nav-links>a strong{
+    display:block!important;
+    white-space:nowrap!important;
+    font-family:"DM Sans",system-ui,sans-serif!important;
+    font-size:clamp(.78rem,.82vw,.9rem)!important;
+    line-height:1!important;
+    font-weight:700!important;
+    letter-spacing:-.01em!important;
+  }
+  body[data-page="gift"] .nav-links>a:hover{
+    background:#f0eee4!important;
+    color:#073d1d!important;
+  }
+  body[data-page="gift"] .nav-links>a[href="gift.html"]{
+    background:#e9eee2!important;
+    color:#073d1d!important;
+  }
+
+  body[data-page="gift"] .brand{
+    grid-column:2!important;
+    grid-row:1!important;
+    justify-self:center!important;
+    margin:0!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:10px!important;
+    min-width:max-content!important;
+    color:#0b4b25!important;
+  }
+  body[data-page="gift"] .brand-logo{
+    width:46px!important;
+    height:46px!important;
+    flex:0 0 46px!important;
+    border:1px solid #d8c58b!important;
+    background:#fff!important;
+    box-shadow:0 2px 8px rgba(31,52,35,.055)!important;
+  }
+  body[data-page="gift"] .brand-wordmark{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    color:#0b4b25!important;
+    font-family:"DM Serif Display",Georgia,serif!important;
+    font-size:clamp(1.28rem,1.5vw,1.68rem)!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+  }
+
+  body[data-page="gift"] .nav-actions{
+    grid-column:3!important;
+    grid-row:1!important;
+    justify-self:end!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:8px!important;
+    direction:ltr!important;
+  }
+  body[data-page="gift"] .gift-v4-search{display:none!important}
+  body[data-page="gift"] .nav-search{
+    width:46px!important;
+    height:46px!important;
+    flex:0 0 46px!important;
+    display:grid!important;
+    place-items:center!important;
+    border:1px solid #ddd4c7!important;
+    border-radius:50%!important;
+    background:#fffdf8!important;
+    color:#0b4b25!important;
+  }
+  body[data-page="gift"] .nav-search svg{
+    width:19px!important;
+    height:19px!important;
+    fill:none!important;
+    stroke:currentColor!important;
+    stroke-width:1.9!important;
+  }
+  body[data-page="gift"] .nav-instagram{display:none!important}
+
+  body[data-page="gift"] .language-switch{
+    display:flex!important;
+    height:46px!important;
+    min-height:46px!important;
+    padding:4px!important;
+    gap:2px!important;
+    border:1px solid #ddd3c3!important;
+    border-radius:999px!important;
+    background:#eee7dc!important;
+  }
+  body[data-page="gift"] .language-switch button{
+    min-width:48px!important;
+    height:36px!important;
+    min-height:36px!important;
+    padding:0 10px!important;
+    border-radius:999px!important;
+    background:transparent!important;
+    color:#55705f!important;
+    font-size:.72rem!important;
+    font-weight:800!important;
+  }
+  body[data-page="gift"] .language-switch button.is-active{
+    background:#fff!important;
+    color:#0b4b25!important;
+    box-shadow:0 2px 7px rgba(33,49,35,.07)!important;
+  }
+
+  body[data-page="gift"] .cart-button{
+    height:46px!important;
+    min-height:46px!important;
+    padding:0 11px 0 14px!important;
+    gap:9px!important;
+    border:1px solid #ddd4c7!important;
+    border-radius:999px!important;
+    background:#fffdf8!important;
+    color:#0b4b25!important;
+    box-shadow:none!important;
+    font-size:.9rem!important;
+  }
+  body[data-page="gift"] .cart-button svg{
+    width:18px!important;
+    height:18px!important;
+  }
+  body[data-page="gift"] .cart-count{
+    width:24px!important;
+    height:24px!important;
+    background:#c8912a!important;
+    color:#17381f!important;
+    font-size:.64rem!important;
+  }
+}
+
+@media(min-width:1181px) and (max-width:1280px){
+  body[data-page="gift"] .nav{
+    width:min(100% - 28px,1480px)!important;
+    column-gap:8px!important;
+  }
+  body[data-page="gift"] .nav-links>a:not(.menu-utility-link){
+    padding-inline:6px!important;
+  }
+  body[data-page="gift"] .nav-links>a strong{
+    font-size:.78rem!important;
+  }
+  body[data-page="gift"] .brand-wordmark{
+    font-size:1.3rem!important;
+  }
+  body[data-page="gift"] .brand-logo{
+    width:42px!important;
+    height:42px!important;
+    flex-basis:42px!important;
+  }
+}
+

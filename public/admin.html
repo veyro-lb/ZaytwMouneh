@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="admin.css?v=20261004-menufix2" />
+  <link rel="stylesheet" href="admin.css?v=20261004-mobilebottom1" />
 </head>
 <body class="admin-body">
   <div class="admin-bg" aria-hidden="true"></div>
@@ -300,6 +300,24 @@
     </div>
   </div>
 
+  <nav class="mobile-admin-nav" id="mobileAdminNav" aria-label="Mobile owner navigation">
+    <button type="button" data-mobile-view="overview" class="is-active"><span>⌂</span><b>Overview</b></button>
+    <button type="button" data-mobile-view="products"><span>▦</span><b>Products</b></button>
+    <button type="button" data-mobile-view="orders"><span>◎</span><b>Orders</b><em id="mobileOrderCount">0</em></button>
+    <button type="button" data-mobile-more><span>•••</span><b>More</b></button>
+  </nav>
+
+  <div class="mobile-more-backdrop" id="mobileMoreBackdrop" hidden></div>
+  <section class="mobile-more-sheet" id="mobileMoreSheet" hidden aria-label="More owner tools">
+    <header><div><small>Owner tools</small><strong>More</strong></div><button type="button" id="closeMobileMore" aria-label="Close">×</button></header>
+    <div class="mobile-more-grid">
+      <button type="button" data-mobile-view="content"><span>✎</span><b>Website content</b><small>Edit customer-facing text</small></button>
+      <button type="button" data-mobile-view="analytics"><span>↗</span><b>Analytics</b><small>Traffic and customer actions</small></button>
+      <button type="button" data-mobile-view="activity"><span>◷</span><b>Activity</b><small>Recent owner changes</small></button>
+      <button type="button" data-mobile-view="settings"><span>⚙</span><b>Settings</b><small>Security, backend and backup</small></button>
+    </div>
+  </section>
+
   <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
 
   <div class="modal-backdrop" id="productModal" hidden>
@@ -419,6 +437,59 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
   <script src="products-data.js?v=20261002-1005"></script>
   <script src="product-photos.js?v=20261003-zip-originals3"></script>
-  <script src="admin-console.js?v=20261004-menufix3"></script>
+  <script src="admin.js?v=20261004-mobilebottom1"></script>
+  <!-- mobilebottom-fallback -->
+  <script>
+  (function(){
+    function q(s){return document.querySelector(s)}
+    function qa(s){return Array.from(document.querySelectorAll(s))}
+    function closeMore(){
+      var sheet=q("#mobileMoreSheet"), back=q("#mobileMoreBackdrop");
+      if(sheet)sheet.hidden=true;
+      if(back)back.hidden=true;
+      document.body.classList.remove("mobile-more-open");
+    }
+    function directView(view){
+      qa(".dashboard-view").forEach(function(p){p.classList.toggle("is-active",p.dataset.viewPanel===view)});
+      qa(".admin-nav button[data-view]").forEach(function(b){b.classList.toggle("is-active",b.dataset.view===view)});
+      qa("#mobileAdminNav [data-mobile-view]").forEach(function(b){b.classList.toggle("is-active",b.dataset.mobileView===view)});
+      var titles={overview:"Overview",products:"Products",orders:"Orders & history",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
+      var title=q("#viewTitle"); if(title)title.textContent=titles[view]||"Owner Console";
+      var side=q("#adminSidebar"); if(side)side.classList.remove("is-open");
+      var sideBack=q("#sidebarBackdrop"); if(sideBack)sideBack.hidden=true;
+      document.body.classList.remove("admin-menu-open");
+      closeMore();
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+    document.addEventListener("click",function(e){
+      var viewButton=e.target.closest("[data-mobile-view]");
+      if(viewButton){
+        e.preventDefault();
+        var view=viewButton.getAttribute("data-mobile-view");
+        var desktop=q('#adminNav button[data-view="'+view+'"]');
+        if(desktop)desktop.click();
+        setTimeout(function(){
+          var panel=q('.dashboard-view[data-view-panel="'+view+'"]');
+          if(panel&&!panel.classList.contains("is-active"))directView(view);
+          else{
+            qa("#mobileAdminNav [data-mobile-view]").forEach(function(b){b.classList.toggle("is-active",b.dataset.mobileView===view)});
+            closeMore();
+          }
+        },0);
+        return;
+      }
+      if(e.target.closest("[data-mobile-more]")){
+        e.preventDefault();
+        var sheet=q("#mobileMoreSheet"), back=q("#mobileMoreBackdrop");
+        if(sheet)sheet.hidden=false;
+        if(back)back.hidden=false;
+        document.body.classList.add("mobile-more-open");
+        return;
+      }
+      if(e.target.closest("#closeMobileMore")||e.target===q("#mobileMoreBackdrop"))closeMore();
+    },true);
+    document.addEventListener("keydown",function(e){if(e.key==="Escape")closeMore()});
+  })();
+  </script>
 </body>
 </html>

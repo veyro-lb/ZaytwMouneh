@@ -769,6 +769,7 @@ function applyAccessibleLanguage(){
   const navToggle=$("#navToggle");
   if(navToggle)navToggle.setAttribute("aria-label",navToggle.getAttribute("aria-expanded")==="true"?(ar?"إغلاق القائمة":"Close menu"):(ar?"فتح القائمة":"Open menu"));
   aria(".nav-search","Search the pantry","ابحث في المونة");
+  aria(".nav-instagram","Instagram","إنستغرام");
   aria("#languageSwitch","Language","اللغة");
   aria("#cartButton","Open cart","فتح السلة");
   aria("#cartDrawer","Shopping cart","سلة المشتريات");
@@ -777,6 +778,8 @@ function applyAccessibleLanguage(){
   aria("#modalQtyMinus","Decrease quantity","تقليل الكمية");
   aria("#modalQtyPlus","Increase quantity","زيادة الكمية");
   aria("#categories","Shop by category","تسوّق حسب القسم");
+  aria(".hero-trust-points","Why Zayt w Mouneh","لماذا زيت ومونة");
+  aria(".hanging-sign-stage","Hanging wooden pantry sign","لافتة المونة الخشبية");
   aria("#categoryQuickGrid","All product categories","كل أقسام المنتجات");
   aria("#categorySelect","Filter catalogue by category","تصفية المنتجات حسب القسم");
   aria(".catalogue-head-meta","Catalogue overview","ملخص المنتجات");

@@ -1,7 +1,7 @@
 {
   "sourceImageCount": 332,
-  "mappedProductCount": 261,
-  "uniqueSelectedImages": 247,
+  "mappedProductCount": 287,
+  "uniqueSelectedImages": 248,
   "assets": [
     {
       "products": [
@@ -624,8 +624,7 @@
     },
     {
       "products": [
-        "bandoura-mujafafeh",
-        "sun-dried-tomatoes"
+        "bandoura-mujafafeh"
       ],
       "asset": "assets/products/originals/bandoura-mujafafeh.jpg",
       "sourceZip": "02-WhatsApp-Unknown-2026-10-02-at-4.21.57-PM.zip",
@@ -1874,7 +1873,8 @@
     },
     {
       "products": [
-        "white-honey-blend"
+        "white-honey-blend",
+        "zayt-w-mouneh-white-honey-blend"
       ],
       "asset": "assets/products/originals/white-honey-blend.jpg",
       "sourceZip": "05-WhatsApp-Unknown-2026-10-02-at-4.20.47-PM.zip",
@@ -2733,6 +2733,17 @@
       "width": 1024,
       "height": 1536,
       "sha256": "6e8bea38fc2916008293ea54672859c98ee026bdde67d4b2d7a6cd7f17c64d13"
+    },
+    {
+      "products": [
+        "sun-dried-tomatoes"
+      ],
+      "asset": "assets/products/originals/sun-dried-tomatoes.jpg",
+      "sourceZip": "07-WhatsApp-Unknown-2026-10-02-at-4.14.51-PM.zip",
+      "sourceFile": "WhatsApp Image 2026-10-02 at 3.33.10 PM (2).jpeg",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "866def645adc7857d6fc8c581c93dd75afac24ca5a589710398722b9521ebe1c"
     }
   ],
   "sourceReview": [
@@ -5849,8 +5860,10 @@
       "file": "WhatsApp Image 2026-10-02 at 3.33.10 PM (2).jpeg",
       "width": 1024,
       "height": 1536,
-      "selectedFor": [],
-      "status": "reviewed-not-selected"
+      "selectedFor": [
+        "sun-dried-tomatoes"
+      ],
+      "status": "selected"
     },
     {
       "zip": "07-WhatsApp-Unknown-2026-10-02-at-4.14.51-PM.zip",
@@ -5919,120 +5932,8 @@
       "name": "White Sugar"
     },
     {
-      "id": "bisco-choco",
-      "name": "Bisco Choco"
-    },
-    {
-      "id": "caramel-craze",
-      "name": "Caramel Craze"
-    },
-    {
-      "id": "carob-biscuit",
-      "name": "Carob Biscuit"
-    },
-    {
-      "id": "carob-cookies",
-      "name": "Carob Cookies"
-    },
-    {
-      "id": "carob-date-bites",
-      "name": "Carob Date Bites"
-    },
-    {
-      "id": "carob-maacroun",
-      "name": "Carob Maacroun"
-    },
-    {
-      "id": "carobella",
-      "name": "Carobella"
-    },
-    {
-      "id": "cherry-craze",
-      "name": "Cherry Craze"
-    },
-    {
-      "id": "choco-cookies",
-      "name": "Choco Cookies"
-    },
-    {
-      "id": "choco-peanut-cookies",
-      "name": "Choco Peanut Cookies"
-    },
-    {
-      "id": "chocopeas",
-      "name": "Chocopeas"
-    },
-    {
-      "id": "coconut-cookies",
-      "name": "Coconut Cookies"
-    },
-    {
-      "id": "cocount-carob-balls",
-      "name": "Coconut Carob Balls"
-    },
-    {
-      "id": "craze-control",
-      "name": "Craze Control"
-    },
-    {
-      "id": "crunchy-craze",
-      "name": "Crunchy Craze"
-    },
-    {
-      "id": "crunchy-seeds",
-      "name": "Crunchy Seeds"
-    },
-    {
-      "id": "debsy-pretzy",
-      "name": "Debsy Pretzy"
-    },
-    {
-      "id": "ginger-biscuit",
-      "name": "Ginger Biscuit"
-    },
-    {
-      "id": "hazelnut-craze",
-      "name": "Hazelnut Craze"
-    },
-    {
-      "id": "nutty-bites",
-      "name": "Nutty Bites"
-    },
-    {
-      "id": "oat-kaak-with-cheese",
-      "name": "Oat Kaak with Cheese"
-    },
-    {
-      "id": "oat-kaak-with-sesame",
-      "name": "Oat Kaak with Sesame"
-    },
-    {
-      "id": "oat-kaak-with-sunflower-seeds",
-      "name": "Oat Kaak with Sunflower Seeds"
-    },
-    {
-      "id": "oat-kaak-with-thyme",
-      "name": "Oat Kaak with Thyme"
-    },
-    {
       "id": "peanuts-carob-bar",
       "name": "Peanuts Carob Bar"
-    },
-    {
-      "id": "raisin-cookies",
-      "name": "Raisin Cookies"
-    },
-    {
-      "id": "ricky-ricardo",
-      "name": "Ricky Ricardo"
-    },
-    {
-      "id": "sesame-carob-bar",
-      "name": "Sesame Carob Bar"
-    },
-    {
-      "id": "sesame-cookies",
-      "name": "Sesame Cookies"
     },
     {
       "id": "teen-hibal",
@@ -6075,10 +5976,6 @@
       "name": "Ceylon Tea"
     },
     {
-      "id": "zayt-w-mouneh-white-honey-blend",
-      "name": "Zayt w Mouneh White Honey Blend"
-    },
-    {
       "id": "lokmet-el-nahel",
       "name": "Bee Bite"
     },
@@ -6116,10 +6013,6 @@
     },
     {
       "id": "zaytoun-akhdar-mahshe-har",
-      "name": "Spicy Stuffed Green Olives"
-    },
-    {
-      "id": "zaytoun-akhdar-mehshe-har",
       "name": "Spicy Stuffed Green Olives"
     },
     {
@@ -6244,5 +6137,8 @@
       "file": "WhatsApp Video 2026-10-02 at 3.33.06 PM (1).mp4",
       "status": "video-not-used-for-static-product-card"
     }
-  ]
+  ],
+  "originalZipMappedProductCount": 258,
+  "existingOfficialSupplierMappedProductCount": 29,
+  "followup": "2026-10-03: synchronized public deployment photo map; dedicated ZIP dried-tomato photo; restored explicitly labeled salted-corn and branded white-honey mappings. Existing official Debsy mappings retained. All ZIP assets unchanged."
 }

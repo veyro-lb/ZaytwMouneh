@@ -1723,6 +1723,24 @@
     "width": 1024,
     "height": 1536,
     "quality": "original-supplied-shared"
+  },
+  "sun-dried-tomatoes": {
+    "url": "assets/products/originals/sun-dried-tomatoes.jpg",
+    "width": 1024,
+    "height": 1536,
+    "quality": "original-supplied"
+  },
+  "roasted-salted-corn": {
+    "url": "assets/products/originals/roasted-cheese-corn.jpg",
+    "width": 917,
+    "height": 1444,
+    "quality": "original-supplied-shared"
+  },
+  "zayt-w-mouneh-white-honey-blend": {
+    "url": "assets/products/originals/white-honey-blend.jpg",
+    "width": 1023,
+    "height": 1486,
+    "quality": "original-supplied-shared"
   }
 };
   const sourceFor = id => map[id] || null;

@@ -504,7 +504,67 @@
     "No phone saved":"لا يوجد رقم هاتف محفوظ",
     "total spend":"إجمالي الإنفاق",
     "orders":"طلبات",
-    "delivered":"تم توصيلها"
+    "delivered":"تم توصيلها",
+    "Owner inbox":"صندوق المالك",
+    "What needs your attention":"ما يحتاج إلى انتباهك",
+    "Everything looks good.":"كل شيء يبدو جيداً.",
+    "No urgent owner actions right now.":"لا توجد إجراءات عاجلة حالياً.",
+    "Waiting for owner review.":"بانتظار مراجعة المالك.",
+    "These active orders have been waiting the longest.":"هذه الطلبات النشطة تنتظر منذ مدة أطول.",
+    "Missing names, category, price, photo or availability.":"ينقصها اسم أو فئة أو سعر أو صورة أو حالة توفر.",
+    "Clear photos make the catalogue easier to shop.":"الصور الواضحة تجعل التسوق من الكتالوج أسهل.",
+    "Visible to customers but ordering is disabled.":"ظاهر للعملاء لكن الطلب متوقف.",
+    "Visible products that cannot be ordered yet.":"منتجات ظاهرة لكن لا يمكن طلبها بعد.",
+    "Enabled promo has expired":"العرض المفعّل انتهت صلاحيته",
+    "It is no longer shown to customers.":"لم يعد ظاهراً للعملاء.",
+    "Promo ends soon":"العرض ينتهي قريباً",
+    "Cloud backup recommended":"يُنصح بإنشاء نسخة سحابية",
+    "Latest backup is more than a day old.":"آخر نسخة احتياطية أقدم من يوم.",
+    "No cloud backup is available yet.":"لا توجد نسخة سحابية بعد.",
+    "Review orders":"مراجعة الطلبات",
+    "Open waiting":"عرض الطلبات المنتظرة",
+    "Fix products":"إصلاح المنتجات",
+    "Review photos":"مراجعة الصور",
+    "Review stock":"مراجعة التوفر",
+    "Review products":"مراجعة المنتجات",
+    "Update promo":"تحديث العرض",
+    "Back up now":"إنشاء نسخة الآن",
+    "Data tools":"أدوات البيانات",
+    "Import / Export Center":"مركز الاستيراد والتصدير",
+    "Download":"تنزيل",
+    "Excel, CSV & backup files":"ملفات Excel وCSV والنسخ الاحتياطية",
+    "Phone-friendly downloads":"تنزيلات مناسبة للهاتف",
+    "Products, variants, availability and categories.":"المنتجات والأحجام والتوفر والفئات.",
+    "Full order history with codes, customer and items.":"سجل الطلبات الكامل مع الرموز والعملاء والعناصر.",
+    "Repeat customers, phone, area, orders and spend.":"العملاء المتكررون والهاتف والمنطقة والطلبات والإنفاق.",
+    "Owner report":"تقرير المالك",
+    "One Excel workbook with products, orders, customers and categories.":"ملف Excel واحد للمنتجات والطلبات والعملاء والفئات.",
+    "Restorable backup":"نسخة قابلة للاستعادة",
+    "JSON backup for restoring products, settings and private notes.":"نسخة JSON لاستعادة المنتجات والإعدادات والملاحظات الخاصة.",
+    "Excel report":"تقرير Excel",
+    "Backup JSON":"نسخة JSON",
+    "Readable Excel":"Excel للقراءة",
+    "Upload":"رفع",
+    "Update products from Excel or CSV":"تحديث المنتجات من Excel أو CSV",
+    "A safety backup is created first":"يتم إنشاء نسخة أمان أولاً",
+    "Choose Excel or CSV file":"اختر ملف Excel أو CSV",
+    "Best workflow: export Products, edit it, then upload the edited file here.":"أفضل طريقة: صدّر المنتجات، عدّل الملف، ثم ارفع النسخة المعدلة هنا.",
+    "Products found":"المنتجات الموجودة",
+    "Ready":"جاهز",
+    "Issues":"مشاكل",
+    "Fix these before importing":"أصلح هذه المشاكل قبل الاستيراد",
+    "File is ready to import.":"الملف جاهز للاستيراد.",
+    "Result":"النتيجة",
+    "Clear file":"مسح الملف",
+    "Apply product import":"تطبيق استيراد المنتجات",
+    "Excel / CSV":"Excel / CSV",
+    "Import / Export Center":"مركز الاستيراد والتصدير",
+    "No data to export.":"لا توجد بيانات للتصدير.",
+    "Excel tools are still loading. Try again in a moment.":"أدوات Excel ما زالت قيد التحميل. حاول بعد لحظة.",
+    "The spreadsheet has no product rows.":"ملف الجدول لا يحتوي على صفوف منتجات.",
+    "No spreadsheet sheet was found.":"لم يتم العثور على ورقة داخل الملف.",
+    "Could not read spreadsheet.":"تعذّرت قراءة ملف الجدول.",
+    "Product import failed.":"فشل استيراد المنتجات."
   });
 
   function translatePhrase(value) {
@@ -553,6 +613,24 @@
     if(m)return `${translatePhrase(m[1])} · ${translatePhrase(m[2])}`;
     m=text.match(/^(.+): (New|Confirmed|Preparing|Out for delivery|Delivered|Cancelled)$/);
     if(m)return `${m[1]}: ${translatePhrase(m[2])}`;
+    m=text.match(/^(\d+) new orders?$/);
+    if(m)return `${m[1]} طلب جديد`;
+    m=text.match(/^(\d+) orders? waiting 30\+ min$/);
+    if(m)return `${m[1]} طلب بانتظار أكثر من 30 دقيقة`;
+    m=text.match(/^(\d+) incomplete products?$/);
+    if(m)return `${m[1]} منتج غير مكتمل`;
+    m=text.match(/^(\d+) products? missing photos$/);
+    if(m)return `${m[1]} منتج بدون صورة`;
+    m=text.match(/^(\d+) out of stock$/);
+    if(m)return `${m[1]} غير متوفر`;
+    m=text.match(/^(\d+) coming soon$/);
+    if(m)return `${m[1]} قريباً`;
+    m=text.match(/^(\d+) selected$/);
+    if(m)return `${m[1]} محدد`;
+    m=text.match(/^(\d+) issues?$/);
+    if(m)return `${m[1]} مشكلة`;
+    m=text.match(/^(\d+) products? imported successfully\.$/);
+    if(m)return `تم استيراد ${m[1]} منتج بنجاح.`;
     return text;
   }
 

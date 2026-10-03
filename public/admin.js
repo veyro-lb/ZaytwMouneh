@@ -3175,7 +3175,7 @@
 
   function setupInstallPrompt(){
     window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.installPrompt=e;$("installAdminHint").textContent="Ready to install on this device.";});
-    if("serviceWorker" in navigator)navigator.serviceWorker.register("admin-sw.js?v=20261004-toolkit6").catch(()=>{});
+    if("serviceWorker" in navigator)navigator.serviceWorker.register("admin-sw.js?v=20261004-toolkit7").catch(()=>{});
   }
   async function installAdminApp(){
     if(state.installPrompt){

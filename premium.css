@@ -4559,3 +4559,89 @@ body[data-page="shop"] .product-card:focus-within .product-photo-sprite{
     padding:6px!important;
   }
 }
+
+
+/* ===== v51 home pantry category icons ===== */
+body[data-page="home"] .hero-floating-accents,
+body[data-page="home"] .hero-floating-accent{
+  display:none!important;
+}
+
+body[data-page="home"] .home-pantry-hero .intro-category-chips a{
+  align-items:center!important;
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease!important;
+}
+
+body[data-page="home"] .home-pantry-hero .intro-category-chips a:hover,
+body[data-page="home"] .home-pantry-hero .intro-category-chips a:focus-visible{
+  transform:translateY(-2px)!important;
+  border-color:rgba(220,170,52,.45)!important;
+  background:#fbf5e9!important;
+  box-shadow:0 10px 22px rgba(0,0,0,.10)!important;
+}
+
+body[data-page="home"] .home-pantry-hero .intro-category-chips .intro-chip-icon{
+  width:46px!important;
+  height:46px!important;
+  flex:0 0 46px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:14px!important;
+  overflow:visible!important;
+  color:#0b4b25!important;
+  background:
+    radial-gradient(circle at 30% 22%,rgba(255,255,255,.88),transparent 38%),
+    linear-gradient(145deg,#f0dda8,#dfbd60)!important;
+  border:1px solid rgba(11,75,37,.10)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.72),0 4px 10px rgba(30,56,28,.08)!important;
+}
+
+body[data-page="home"] .home-pantry-hero .intro-category-chips .intro-chip-icon svg{
+  width:27px!important;
+  height:27px!important;
+  display:block!important;
+  overflow:visible!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:1.8!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+
+body[data-page="home"] .home-pantry-hero .intro-category-chips .intro-chip-icon-honey{
+  color:#8d5e08!important;
+  background:linear-gradient(145deg,#f5df91,#e6b83c)!important;
+}
+
+body[data-page="home"] .home-pantry-hero .intro-category-chips .intro-chip-icon-oil{
+  color:#174d2a!important;
+  background:linear-gradient(145deg,#e6e2ad,#c8cf75)!important;
+}
+
+body[data-page="home"] .home-pantry-hero .intro-category-chips .intro-chip-icon-mouneh{
+  color:#8a421f!important;
+  background:linear-gradient(145deg,#f2d7b4,#dca972)!important;
+}
+
+body[data-page="home"] .home-pantry-hero .intro-category-chips .intro-chip-icon-spices{
+  color:#873b20!important;
+  background:linear-gradient(145deg,#edc7a0,#d88d55)!important;
+}
+
+body[data-page="home"] .home-pantry-hero .intro-category-chips i{
+  margin-inline-start:auto!important;
+}
+
+@media(max-width:680px){
+  body[data-page="home"] .home-pantry-hero .intro-category-chips .intro-chip-icon{
+    width:44px!important;
+    height:44px!important;
+    flex-basis:44px!important;
+    border-radius:13px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-category-chips .intro-chip-icon svg{
+    width:25px!important;
+    height:25px!important;
+  }
+}

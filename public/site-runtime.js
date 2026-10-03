@@ -149,6 +149,7 @@
       kind:order.kind==="gift"?"gift":"order",
       status:"new",
       customer_name:String(order.customer_name||"").slice(0,120),
+      customer_phone:String(order.customer_phone||"").slice(0,40),
       area:String(order.area||"").slice(0,180),
       notes:String(order.notes||"").slice(0,800),
       items:order.items.slice(0,100).map(item=>({

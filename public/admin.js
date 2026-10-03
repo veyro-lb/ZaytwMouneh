@@ -10,9 +10,10 @@
   const basePhotoMap = window.ZWM_PRODUCT_PHOTOS?.map || {};
   const state = {
     client: null, user: null, membership: null,
-    overrides: new Map(), settings: new Map(), events: [], activity: [],
+    overrides: new Map(), settings: new Map(), events: [], activity: [], orders: [],
     products: [], editingId: null, imageFile: null, imageDims: null,
-    activeView: "overview", productFilter: { q:"", category:"", status:"" }
+    activeView: "overview", productFilter: { q:"", category:"", status:"" },
+    orderFilter: { q:"", status:"", kind:"" }
   };
 
   function enabled() {
@@ -115,20 +116,23 @@
 
   async function refreshAll() {
     const since = new Date(Date.now() - 90*86400000).toISOString();
-    const [overridesRes, settingsRes, eventsRes, activityRes] = await Promise.all([
+    const [overridesRes, settingsRes, eventsRes, activityRes, ordersRes] = await Promise.all([
       state.client.from(cfg.tables.products).select("*").order("updated_at",{ascending:false}),
       state.client.from(cfg.tables.settings).select("*"),
       state.client.from(cfg.tables.events).select("*").gte("created_at",since).order("created_at",{ascending:false}).limit(10000),
-      state.client.from(cfg.tables.activity).select("*").order("created_at",{ascending:false}).limit(300)
+      state.client.from(cfg.tables.activity).select("*").order("created_at",{ascending:false}).limit(300),
+      state.client.from(cfg.tables.orders || "orders").select("*").order("submitted_at",{ascending:false}).limit(1000)
     ]);
 
     if (overridesRes.error) toast("Could not load product changes.", "error");
     if (settingsRes.error) toast("Could not load website settings.", "error");
+    if (ordersRes.error) toast("Could not load order history.", "error");
 
     state.overrides = new Map((overridesRes.data || []).map(r => [r.product_id,r]));
     state.settings = new Map((settingsRes.data || []).map(r => [r.key,r.value]));
     state.events = eventsRes.data || [];
     state.activity = activityRes.data || [];
+    state.orders = ordersRes.data || [];
     rebuildProducts();
     renderEverything();
     $("lastUpdated").textContent = `Updated ${new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}`;
@@ -180,6 +184,7 @@
   function renderEverything() {
     populateCategoryControls();
     renderProducts();
+    renderOrders();
     renderContent();
     renderOverview();
     renderAnalytics();
@@ -241,6 +246,99 @@
       <div><b>${esc(p.nameEn||p.id)}</b><p>${esc(p.category||"—")} · <span class="status-badge status-${st}">${st}</span></p></div>
       <button type="button" data-edit-product="${esc(p.id)}">Edit</button>
     </article>`;
+  }
+
+  const ORDER_STATUS_LABELS = {
+    new:"New",
+    confirmed:"Confirmed",
+    preparing:"Preparing",
+    out_for_delivery:"Out for delivery",
+    delivered:"Delivered",
+    cancelled:"Cancelled"
+  };
+
+  function orderItemSummary(order) {
+    const items=Array.isArray(order.items)?order.items:[];
+    if(!items.length)return "No items";
+    const first=items.slice(0,2).map(i=>`${Number(i.qty)||1}× ${i.name||i.product_id||"Item"}`).join(", ");
+    return items.length>2?`${first} +${items.length-2} more`:first;
+  }
+
+  function orderSearchText(order) {
+    return [
+      order.reference,order.customer_name,order.area,order.notes,order.kind,order.status,
+      ...(Array.isArray(order.items)?order.items.flatMap(i=>[i.name,i.product_id,i.size]):[])
+    ].join(" ").toLowerCase();
+  }
+
+  function renderOrders() {
+    const {q,status,kind}=state.orderFilter;
+    const term=q.trim().toLowerCase();
+    const list=state.orders.filter(order=>{
+      if(status&&order.status!==status)return false;
+      if(kind&&order.kind!==kind)return false;
+      if(term&&!orderSearchText(order).includes(term))return false;
+      return true;
+    });
+
+    const active=state.orders.filter(o=>!["delivered","cancelled"].includes(o.status)).length;
+    $("navOrderCount").textContent=active;
+    $("ordersNewCount").textContent=state.orders.filter(o=>o.status==="new").length;
+    $("ordersPreparingCount").textContent=state.orders.filter(o=>["confirmed","preparing"].includes(o.status)).length;
+    $("ordersOutCount").textContent=state.orders.filter(o=>o.status==="out_for_delivery").length;
+    $("ordersDeliveredCount").textContent=state.orders.filter(o=>o.status==="delivered").length;
+    $("orderResultCount").textContent=`${list.length} order${list.length===1?"":"s"}`;
+
+    $("orderTableBody").innerHTML=list.map(orderRowHtml).join("")||'<tr><td colspan="6"><p class="empty-state">No orders match these filters.</p></td></tr>';
+    $("orderCardsMobile").innerHTML=list.map(orderCardHtml).join("")||'<p class="empty-state">No orders match these filters.</p>';
+  }
+
+  function orderStatusSelect(order) {
+    return `<select class="order-status-select status-${esc(order.status)}" data-order-status="${esc(order.reference)}" aria-label="Status for ${esc(order.reference)}">${Object.entries(ORDER_STATUS_LABELS).map(([value,label])=>`<option value="${value}" ${order.status===value?"selected":""}>${label}</option>`).join("")}</select>`;
+  }
+
+  function orderRowHtml(order) {
+    const extra=order.extra||{};
+    const customer=order.kind==="gift"?(extra.recipient||order.customer_name||"Gift order"):(order.customer_name||"Customer");
+    const kindLabel=order.kind==="gift"?"Gift":"Pantry";
+    return `<tr>
+      <td><div class="order-code-cell"><b>${esc(order.reference)}</b><small>${kindLabel}</small></div></td>
+      <td><div class="order-customer-cell"><b>${esc(customer)}</b><small>${esc(order.area||"Area not supplied")}</small></div></td>
+      <td><div class="order-items-cell"><b>${esc(orderItemSummary(order))}</b><small>${Array.isArray(order.items)?order.items.reduce((n,i)=>n+(Number(i.qty)||0),0):0} total items</small></div></td>
+      <td><b>${money(order.total)}</b></td>
+      <td>${orderStatusSelect(order)}</td>
+      <td><div class="order-date-cell"><b>${esc(when(order.submitted_at))}</b><small>${esc(new Date(order.submitted_at).toLocaleString([], {month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}))}</small></div></td>
+    </tr>`;
+  }
+
+  function orderCardHtml(order) {
+    const extra=order.extra||{};
+    const customer=order.kind==="gift"?(extra.recipient||order.customer_name||"Gift order"):(order.customer_name||"Customer");
+    return `<article class="order-mobile-card">
+      <div class="order-mobile-head"><div><b>${esc(order.reference)}</b><small>${order.kind==="gift"?"Gift":"Pantry order"} · ${esc(when(order.submitted_at))}</small></div><strong>${money(order.total)}</strong></div>
+      <p><b>${esc(customer)}</b> · ${esc(order.area||"Area not supplied")}</p>
+      <p>${esc(orderItemSummary(order))}</p>
+      ${orderStatusSelect(order)}
+    </article>`;
+  }
+
+  async function updateOrderStatus(reference,status) {
+    if(!ORDER_STATUS_LABELS[status])return;
+    const now=new Date().toISOString();
+    const patch={status,updated_at:now};
+    if(status==="confirmed")patch.confirmed_at=now;
+    if(status==="out_for_delivery")patch.out_for_delivery_at=now;
+    if(status==="delivered")patch.delivered_at=now;
+    if(status==="cancelled")patch.cancelled_at=now;
+    const {error}=await state.client.from(cfg.tables.orders||"orders").update(patch).eq("reference",reference);
+    if(error){toast(error.message||"Could not update order.","error");await refreshAll();return;}
+    await logActivity("update_delivery_status","order",reference,{status});
+    toast(`${reference}: ${ORDER_STATUS_LABELS[status]}`);
+    await refreshAll();
+  }
+
+  function exportOrders() {
+    downloadJson(`zwm-orders-${new Date().toISOString().slice(0,10)}.json`,state.orders);
   }
 
   function renderOverview() {
@@ -369,7 +467,7 @@
     state.activeView=view;
     $$(".dashboard-view").forEach(p=>p.classList.toggle("is-active",p.dataset.viewPanel===view));
     $$(".admin-nav button").forEach(b=>b.classList.toggle("is-active",b.dataset.view===view));
-    const titles={overview:"Overview",products:"Products",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
+    const titles={overview:"Overview",products:"Products",orders:"Orders & deliveries",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
     $("viewTitle").textContent=titles[view]||"Owner Console";
     closeSidebar();
     window.scrollTo({top:0,behavior:"smooth"});
@@ -631,6 +729,13 @@
     $("productStatusFilter")?.addEventListener("change",e=>{state.productFilter.status=e.target.value;renderProducts();});
     $("productTableBody")?.addEventListener("click",e=>{const b=e.target.closest("[data-edit-product]");if(b)openProductEditor(b.dataset.editProduct);});
     $("productCardsMobile")?.addEventListener("click",e=>{const b=e.target.closest("[data-edit-product]");if(b)openProductEditor(b.dataset.editProduct);});
+    $("orderSearch")?.addEventListener("input",e=>{state.orderFilter.q=e.target.value;renderOrders();});
+    $("orderStatusFilter")?.addEventListener("change",e=>{state.orderFilter.status=e.target.value;renderOrders();});
+    $("orderKindFilter")?.addEventListener("change",e=>{state.orderFilter.kind=e.target.value;renderOrders();});
+    const orderStatusHandler=e=>{const select=e.target.closest("[data-order-status]");if(select)updateOrderStatus(select.dataset.orderStatus,select.value);};
+    $("orderTableBody")?.addEventListener("change",orderStatusHandler);
+    $("orderCardsMobile")?.addEventListener("change",orderStatusHandler);
+    $("exportOrdersButton")?.addEventListener("click",exportOrders);
     $("analyticsRange")?.addEventListener("change",renderAnalytics);
     $("healthMissingPhotos")?.addEventListener("click",()=>applyHealthFilter("missing-photo"));
     $("healthHiddenProducts")?.addEventListener("click",()=>applyHealthFilter("hidden"));

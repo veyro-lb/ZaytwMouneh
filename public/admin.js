@@ -1174,12 +1174,14 @@
     if(!product||!state.user)return;
     const snapshot=clone(product);
     delete snapshot.__source;delete snapshot.__status;delete snapshot.__updated;
-    await state.client.from(cfg.tables.revisions||"product_revisions").insert({
-      product_id:product.id,
-      snapshot,
-      reason,
-      created_by:state.user.id
-    }).catch(()=>{});
+    try{
+      await state.client.from(cfg.tables.revisions||"product_revisions").insert({
+        product_id:product.id,
+        snapshot,
+        reason,
+        created_by:state.user.id
+      });
+    }catch{}
   }
 
   async function applyBulkProductAction(){

@@ -487,6 +487,45 @@
     await enterAs(data.user);
   }
 
+  async function handleBootstrap(e) {
+    e.preventDefault();
+    const name=$("bootstrapName").value.trim()||"Owner";
+    const email=$("bootstrapEmail").value.trim().toLowerCase();
+    const password=$("bootstrapPassword").value;
+    const setupCode=$("bootstrapCode").value.trim();
+    if(password.length<12){
+      setStatus($("bootstrapStatus"),"Use a password with at least 12 characters.","error");
+      return;
+    }
+    const button=$("bootstrapButton");
+    button.disabled=true;
+    setStatus($("bootstrapStatus"),"Creating the protected owner account…");
+    try{
+      const endpoint=cfg.supabaseUrl.replace(/\/$/,"")+"/functions/v1/"+(cfg.bootstrapFunction||"bootstrap-owner");
+      const response=await fetch(endpoint,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({email,password,setupCode,label:name})
+      });
+      const result=await response.json().catch(()=>({}));
+      if(!response.ok)throw new Error(result.error||"Could not create owner account.");
+
+      setStatus($("bootstrapStatus"),"Owner created. Signing you in…","success");
+      const {data,error}=await state.client.auth.signInWithPassword({email,password});
+      if(error||!data?.user)throw new Error(error?.message||"Owner was created, but automatic sign-in failed.");
+      $("loginEmail").value=email;
+      $("loginPassword").value="";
+      $("bootstrapPassword").value="";
+      $("bootstrapCode").value="";
+      await enterAs(data.user);
+      toast("Owner account activated.");
+    }catch(err){
+      setStatus($("bootstrapStatus"),err.message||"Owner setup failed.","error");
+    }finally{
+      button.disabled=false;
+    }
+  }
+
   async function signOut() {
     if(state.client) await state.client.auth.signOut();
     state.user=null; state.membership=null;
@@ -705,6 +744,7 @@
 
   function bindStaticUi() {
     $("loginForm")?.addEventListener("submit",handleLogin);
+    $("bootstrapForm")?.addEventListener("submit",handleBootstrap);
     $("signOutButton")?.addEventListener("click",signOut);
     $("settingsSignOut")?.addEventListener("click",signOut);
     $("refreshButton")?.addEventListener("click",()=>refreshAll().then(()=>toast("Dashboard refreshed.")));

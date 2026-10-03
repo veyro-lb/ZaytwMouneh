@@ -1,9 +1,9 @@
-const CACHE="zwm-owner-shell-v4";
+const CACHE="zwm-owner-shell-v5";
 const SHELL=[
   "/admin.html",
-  "/admin.css?v=20261004-toolkit4",
-  "/admin.js?v=20261004-toolkit4",
-  "/admin-config.js?v=20261004-toolkit4",
+  "/admin.css?v=20261004-toolkit5",
+  "/admin.js?v=20261004-toolkit5",
+  "/admin-config.js?v=20261004-toolkit5",
   "/assets/favicon.svg"
 ];
 

@@ -1,11 +1,11 @@
 /* Zayt w Mouneh owner dashboard connection.
-   Only put PUBLIC Supabase values here. Never put a secret/service-role key in browser code.
-   This file is intentionally disabled until a dedicated Zayt w Mouneh backend is connected. */
+   Only PUBLIC Supabase values belong here. Never put a secret/service-role key in browser code. */
 window.ZWM_CMS_CONFIG = Object.freeze({
-  enabled: false,
+  enabled: true,
   version: "2026-10-04",
-  supabaseUrl: "",
-  supabasePublishableKey: "",
+  supabaseUrl: "https://mraobsbgrtmgpdjqjrzr.supabase.co",
+  supabasePublishableKey: "sb_publishable_6vBP0VO4UaoULK05ry0bvw_GGuPtVwb",
+  bootstrapFunction: "bootstrap-owner",
   tables: Object.freeze({
     admins: "admin_users",
     products: "product_overrides",

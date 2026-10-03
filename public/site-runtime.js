@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const CONFIG_SRC = "admin-config.js?v=20261004-toolkit9";
+  const CONFIG_SRC = "admin-config.js?v=20261004-toolkit10";
   const PRODUCT_CACHE = "zwm:cms:product-overrides:v1";
   const SETTINGS_CACHE = "zwm:cms:settings:v1";
   const SESSION_KEY = "zwm:analytics:session:v1";

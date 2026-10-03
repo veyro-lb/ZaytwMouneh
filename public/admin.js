@@ -1663,6 +1663,59 @@
     $("deliveryFreeAbove").value=Number.isFinite(Number(delivery.freeAbove))?delivery.freeAbove:"";
     $("deliveryMinimum").value=Number.isFinite(Number(delivery.minimum))?delivery.minimum:"";
     $("deliveryEta").value=delivery.eta||"";
+    $("deliveryZoneRows").innerHTML="";
+    (Array.isArray(delivery.zones)?delivery.zones:[]).forEach(deliveryZoneRow);
+  }
+
+  function deliveryZoneRow(zone={}){
+    const row=document.createElement("div");
+    row.className="delivery-zone-row";
+    row.innerHTML=`
+      <label>Area<input data-zone="area" maxlength="120" value="${esc(zone.area||"")}" placeholder="e.g. Baabda"></label>
+      <label>Fee (USD)<input data-zone="fee" type="number" min="0" step="0.01" value="${Number.isFinite(Number(zone.fee))?esc(zone.fee):""}"></label>
+      <label>ETA<input data-zone="eta" maxlength="80" value="${esc(zone.eta||"")}" placeholder="e.g. Same day"></label>
+      <button type="button" data-remove-zone aria-label="Remove area">×</button>`;
+    $("deliveryZoneRows").appendChild(row);
+  }
+
+  function collectDeliveryZones(){
+    return $(".delivery-zone-row").map(row=>({
+      area:row.querySelector('[data-zone="area"]').value.trim(),
+      fee:Math.max(0,Number(row.querySelector('[data-zone="fee"]').value)||0),
+      eta:row.querySelector('[data-zone="eta"]').value.trim()
+    })).filter(z=>z.area);
+  }
+
+  function deliverySettingsFromForm(){
+    return {
+      fee:Math.max(0,Number($("deliveryFee").value)||0),
+      freeAbove:Math.max(0,Number($("deliveryFreeAbove").value)||0),
+      minimum:Math.max(0,Number($("deliveryMinimum").value)||0),
+      eta:$("deliveryEta").value.trim(),
+      zones:collectDeliveryZones()
+    };
+  }
+
+  function openContentPreview(mode="mobile"){
+    const lang=state.lang==="ar"?"ar":"en";
+    const announcement=lang==="ar"?($("announcementAr").value.trim()||$("announcementEn").value.trim()):($("announcementEn").value.trim()||$("announcementAr").value.trim());
+    const promoTitle=lang==="ar"?($("promoTitleAr").value.trim()||$("promoTitleEn").value.trim()):($("promoTitleEn").value.trim()||$("promoTitleAr").value.trim());
+    const promoBody=lang==="ar"?($("promoBodyAr").value.trim()||$("promoBodyEn").value.trim()):($("promoBodyEn").value.trim()||$("promoBodyAr").value.trim());
+    $("previewAnnouncement").textContent=announcement||"Announcement bar hidden";
+    $("previewAnnouncement").hidden=!$("announcementEnabled").checked;
+    $("previewPromoTitle").textContent=promoTitle;
+    $("previewPromoBody").textContent=promoBody;
+    $("previewPromo").hidden=!$("promoEnabled").checked||(!promoTitle&&!promoBody);
+    $("contentPreviewDevice").classList.toggle("is-mobile",mode!=="desktop");
+    $("contentPreviewDevice").classList.toggle("is-desktop",mode==="desktop");
+    $("contentPreviewDevice").dir=lang==="ar"?"rtl":"ltr";
+    $("contentPreviewModal").hidden=false;
+    document.body.style.overflow="hidden";
+  }
+
+  function closeContentPreview(){
+    $("contentPreviewModal").hidden=true;
+    if($("productModal").hidden&&$("orderModal").hidden&&$("manualOrderModal").hidden&&$("globalSearchModal").hidden)document.body.style.overflow="";
   }
 
   function renderAnalytics() {
@@ -1724,6 +1777,18 @@
     $("backendStorage").textContent = "Configured";
     const badge=$("backendStatusBadge");
     badge.textContent="Connected"; badge.className="status-badge status-live";
+    renderCloudBackups();
+  }
+
+  function renderCloudBackups(){
+    const root=$("cloudBackupList");
+    if(!root)return;
+    if(!state.backups.length){root.innerHTML='<p class="empty-state">No cloud backups yet.</p>';return;}
+    root.innerHTML=state.backups.slice(0,6).map(b=>`
+      <div class="cloud-backup-row">
+        <div><b>${esc(b.reason.replace(/_/g," "))}</b><small>${esc(new Date(b.created_at).toLocaleString())}</small></div>
+        <div><button type="button" data-download-cloud-backup="${b.id}">Download</button><button type="button" data-restore-cloud-backup="${b.id}">Restore</button></div>
+      </div>`).join("");
   }
 
   function setView(view) {
@@ -1833,12 +1898,7 @@
         startsAt:$("promoStartsAt").value?new Date($("promoStartsAt").value).toISOString():null,
         endsAt:$("promoEndsAt").value?new Date($("promoEndsAt").value).toISOString():null
       }},
-      {key:"delivery",value:{
-        fee:Math.max(0,Number($("deliveryFee").value)||0),
-        freeAbove:Math.max(0,Number($("deliveryFreeAbove").value)||0),
-        minimum:Math.max(0,Number($("deliveryMinimum").value)||0),
-        eta:$("deliveryEta").value.trim()
-      }}
+      {key:"delivery",value:deliverySettingsFromForm()}
     ].map(r=>({...r,updated_by:state.user.id,updated_at:new Date().toISOString()}));
     setStatus($("contentStatus"),"Saving…");
     const {error}=await state.client.from(cfg.tables.settings).upsert(rows,{onConflict:"key"});

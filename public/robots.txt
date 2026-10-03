@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zaytwmouneh.veyro-202.workers.dev/sitemap.xml

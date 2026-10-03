@@ -2344,6 +2344,409 @@
     toast(ok?"Backend health check passed.":"One backend service needs attention.",ok?"":"error");
   }
 
+
+  function exportStamp() {
+    return new Date().toISOString().slice(0,10);
+  }
+
+  function requireXlsx() {
+    if(!window.XLSX){
+      toast("Excel tools are still loading. Try again in a moment.","error");
+      return false;
+    }
+    return true;
+  }
+
+  function productSpreadsheetRows() {
+    const categories=new Map(categoryRecords().map(c=>[c.en,c]));
+    const rows=[];
+    for(const p of state.products){
+      const photo=photoFor(p)||{};
+      const category=categories.get(p.category)||{en:p.category||"",ar:AR_TRANSLATIONS[p.category]||""};
+      const visibility=["hidden","draft"].includes(p.__status)?p.__status:"live";
+      const note=state.notes.get(\`product:\${p.id}\`)?.note||"";
+      const variants=Array.isArray(p.variants)&&p.variants.length?p.variants:[{}];
+      variants.forEach(v=>rows.push({
+        "Product ID":p.id,
+        "English Name":p.nameEn||"",
+        "Arabic Name":p.nameAr||"",
+        "Category":category.en||"",
+        "Category Arabic":category.ar||"",
+        "Original / Supplier Name":p.original||"",
+        "Availability":availabilityFor(p),
+        "Visibility":visibility,
+        "Variant ID":v.id||"",
+        "Size EN":v.sizeEn||"",
+        "Size AR":v.sizeAr||"",
+        "Price USD":Number.isFinite(Number(v.price))?Number(v.price):"",
+        "Photo URL":photo.url||"",
+        "Photo Position X":Number(photo.positionX??50),
+        "Photo Position Y":Number(photo.positionY??50),
+        "Photo Zoom":Number(photo.zoom??100),
+        "Photo Rotation":Number(photo.rotation??0),
+        "Photo Fit":photo.fit==="contain"?"contain":"cover",
+        "Private Note":note
+      }));
+    }
+    return rows;
+  }
+
+  function orderSpreadsheetRows() {
+    return state.orders.map(order=>({
+      "Order Code":order.reference,
+      "Type":order.kind,
+      "Status":order.status,
+      "Customer":order.customer_name||order.extra?.recipient||"",
+      "Phone / WhatsApp":order.customer_phone||"",
+      "Area":order.area||"",
+      "Items":(Array.isArray(order.items)?order.items:[]).map(i=>\`\${Number(i.qty)||1}× \${i.name||i.product_id||"Item"}\${i.size?\` (\${i.size})\`:""}\`).join(" | "),
+      "Items JSON":JSON.stringify(order.items||[]),
+      "Subtotal / Total USD":Number(order.total)||0,
+      "Customer Notes":order.notes||"",
+      "Private Owner Note":order.private_notes||state.notes.get(\`order:\${order.reference}\`)?.note||"",
+      "Language":order.language||"",
+      "Submitted At":order.submitted_at||"",
+      "Confirmed At":order.confirmed_at||"",
+      "Out For Delivery At":order.out_for_delivery_at||"",
+      "Delivered At":order.delivered_at||"",
+      "Cancelled At":order.cancelled_at||""
+    }));
+  }
+
+  function customerSpreadsheetRows() {
+    return customerGroups().sort((a,b)=>new Date(b.last)-new Date(a.last)).map(c=>({
+      "Customer":c.name||"",
+      "Phone / WhatsApp":c.phone||"",
+      "Area":c.area||"",
+      "Orders":c.orders.length,
+      "Total Spend USD":Number(c.total)||0,
+      "Average Order USD":c.orders.length?(Number(c.total)||0)/c.orders.length:0,
+      "Last Order":c.last||"",
+      "Latest Order Code":c.orders.slice().sort((a,b)=>new Date(b.submitted_at)-new Date(a.submitted_at))[0]?.reference||""
+    }));
+  }
+
+  function categorySpreadsheetRows() {
+    return categoryRecords().map(c=>({
+      "Category":c.en,
+      "Category Arabic":c.ar||AR_TRANSLATIONS[c.en]||"",
+      "Products":state.products.filter(p=>p.category===c.en).length
+    }));
+  }
+
+  function settingsSpreadsheetRows() {
+    return [...state.settings.entries()].map(([key,value])=>({
+      "Setting":key,
+      "Value JSON":JSON.stringify(value)
+    }));
+  }
+
+  function notesSpreadsheetRows() {
+    return [...state.notes.values()].map(n=>({
+      "Type":n.subject_type,
+      "ID":n.subject_id,
+      "Private Note":n.note||"",
+      "Updated At":n.updated_at||""
+    }));
+  }
+
+  function appendWorkbookSheet(workbook,name,rows) {
+    const safeRows=Array.isArray(rows)&&rows.length?rows:[{"No data":""}];
+    const sheet=window.XLSX.utils.json_to_sheet(safeRows);
+    const headers=Object.keys(safeRows[0]||{});
+    sheet["!cols"]=headers.map(header=>({wch:Math.min(42,Math.max(12,header.length+2))}));
+    window.XLSX.utils.book_append_sheet(workbook,sheet,name.slice(0,31));
+  }
+
+  function downloadWorkbook(filename,sheets) {
+    if(!requireXlsx())return;
+    const workbook=window.XLSX.utils.book_new();
+    for(const [name,rows] of sheets)appendWorkbookSheet(workbook,name,rows);
+    const bytes=window.XLSX.write(workbook,{bookType:"xlsx",type:"array",compression:true});
+    downloadBlob(filename,new Blob([bytes],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+  }
+
+  function exportData(dataset,format) {
+    const stamp=exportStamp();
+    const products=productSpreadsheetRows();
+    const orders=orderSpreadsheetRows();
+    const customers=customerSpreadsheetRows();
+    const categories=categorySpreadsheetRows();
+
+    if(dataset==="products"){
+      if(format==="csv")downloadCsv(\`zwm-products-\${stamp}.csv\`,products);
+      else downloadWorkbook(\`zwm-products-\${stamp}.xlsx\`,[["Products",products],["Categories",categories]]);
+      return;
+    }
+    if(dataset==="orders"){
+      if(format==="csv")downloadCsv(\`zwm-orders-\${stamp}.csv\`,orders);
+      else downloadWorkbook(\`zwm-orders-\${stamp}.xlsx\`,[["Orders",orders]]);
+      return;
+    }
+    if(dataset==="customers"){
+      if(format==="csv")downloadCsv(\`zwm-customers-\${stamp}.csv\`,customers);
+      else downloadWorkbook(\`zwm-customers-\${stamp}.xlsx\`,[["Customers",customers]]);
+      return;
+    }
+    if(dataset==="report"){
+      downloadWorkbook(\`zwm-owner-report-\${stamp}.xlsx\`,[
+        ["Products",products],
+        ["Orders",orders],
+        ["Customers",customers],
+        ["Categories",categories],
+        ["Settings",settingsSpreadsheetRows()],
+        ["Private Notes",notesSpreadsheetRows()]
+      ]);
+      return;
+    }
+    if(dataset==="backup"){
+      if(format==="json"){
+        exportBackup();
+      }else{
+        downloadWorkbook(\`zwm-readable-backup-\${stamp}.xlsx\`,[
+          ["Products",products],
+          ["Orders",orders],
+          ["Customers",customers],
+          ["Categories",categories],
+          ["Settings",settingsSpreadsheetRows()],
+          ["Private Notes",notesSpreadsheetRows()]
+        ]);
+      }
+    }
+  }
+
+  function openDataCenter(dataset="") {
+    $("dataCenterModal").hidden=false;
+    document.body.style.overflow="hidden";
+    if(dataset){
+      const button=document.querySelector(\`[data-export-dataset="\${dataset}"]\`);
+      button?.closest("article")?.scrollIntoView({block:"center",behavior:"smooth"});
+    }
+  }
+
+  function closeDataCenter() {
+    $("dataCenterModal").hidden=true;
+    clearProductImport(false);
+    if($("productModal").hidden&&$("orderModal").hidden&&$("manualOrderModal").hidden&&$("globalSearchModal").hidden&&$("contentPreviewModal").hidden){
+      document.body.style.overflow="";
+    }
+  }
+
+  function normalizeImportKey(key) {
+    return safeText(key).trim().toLowerCase().replace(/[^a-z0-9]+/g,"");
+  }
+
+  function importValue(row,names) {
+    const map=new Map(Object.entries(row||{}).map(([k,v])=>[normalizeImportKey(k),v]));
+    for(const name of names){
+      const value=map.get(normalizeImportKey(name));
+      if(value!==undefined&&value!==null)return value;
+    }
+    return "";
+  }
+
+  function normalizeAvailability(value) {
+    const v=safeText(value).trim().toLowerCase().replace(/[\s-]+/g,"_");
+    if(["in_stock","instock","available","متوفر"].includes(v))return "in_stock";
+    if(["out_of_stock","outofstock","unavailable","غير_متوفر","غيرمتوفر"].includes(v))return "out_of_stock";
+    if(["coming_soon","comingsoon","soon","قريباً","قريبا"].includes(v))return "coming_soon";
+    return "";
+  }
+
+  function normalizeVisibility(value) {
+    const v=safeText(value).trim().toLowerCase();
+    if(["live","visible","published","منشور"].includes(v))return "live";
+    if(["draft","مسودة"].includes(v))return "draft";
+    if(["hidden","مخفي"].includes(v))return "hidden";
+    return "";
+  }
+
+  function prepareProductImport(rows,fileName="") {
+    const groups=new Map();
+    const globalIssues=[];
+    rows.forEach((row,rowIndex)=>{
+      const id=safeText(importValue(row,["Product ID","ID","product_id"])).trim();
+      if(!id){globalIssues.push(\`Row \${rowIndex+2}: Product ID is required.\`);return;}
+      if(!/^[A-Za-z0-9][A-Za-z0-9._-]{0,179}$/.test(id)){
+        globalIssues.push(\`Row \${rowIndex+2}: Product ID "\${id}" contains unsupported characters.\`);
+        return;
+      }
+      if(!groups.has(id))groups.set(id,{id,rows:[],issues:[],result:"Ready"});
+      groups.get(id).rows.push({...row,__rowNumber:rowIndex+2});
+    });
+
+    const prepared=[];
+    const categoryUpdates=new Map(storedCategoryRecords().map(c=>[c.en,c]));
+    for(const group of groups.values()){
+      const existing=state.products.find(p=>p.id===group.id)||null;
+      const first=group.rows[0];
+      const nameEn=safeText(importValue(first,["English Name","Name EN","nameEn"])).trim()||existing?.nameEn||"";
+      const nameAr=safeText(importValue(first,["Arabic Name","Name AR","nameAr"])).trim()||existing?.nameAr||"";
+      const category=safeText(importValue(first,["Category"])).trim()||existing?.category||"";
+      const categoryAr=safeText(importValue(first,["Category Arabic","Arabic Category"])).trim();
+      const original=safeText(importValue(first,["Original / Supplier Name","Original","Supplier Name"])).trim()||existing?.original||nameEn.toUpperCase();
+      const availability=normalizeAvailability(importValue(first,["Availability"]))||availabilityFor(existing||{});
+      const visibility=normalizeVisibility(importValue(first,["Visibility","Status"]))||(["hidden","draft"].includes(existing?.__status)?existing.__status:"live");
+      const note=safeText(importValue(first,["Private Note","Owner Note"]));
+      const photoUrl=safeText(importValue(first,["Photo URL","Image URL"])).trim();
+
+      if(!nameEn&&!nameAr)group.issues.push("English or Arabic product name is required.");
+      if(!category)group.issues.push("Category is required.");
+      if(category&&categoryAr)categoryUpdates.set(category,{en:category,ar:categoryAr});
+
+      const variants=[];
+      const variantIds=new Set();
+      for(const [index,row] of group.rows.entries()){
+        const sizeEn=safeText(importValue(row,["Size EN","Size","English Size"])).trim();
+        const sizeAr=safeText(importValue(row,["Size AR","Arabic Size"])).trim();
+        const rawPrice=importValue(row,["Price USD","Price","USD"]);
+        const price=Number(rawPrice);
+        let variantId=safeText(importValue(row,["Variant ID","Size ID"])).trim();
+        if(!variantId)variantId=\`\${group.id}-\${slugify(sizeEn||sizeAr||String(index+1))||index+1}\`;
+        if(!sizeEn&&!sizeAr)group.issues.push(\`Row \${row.__rowNumber}: size is required.\`);
+        if(rawPrice===""||!Number.isFinite(price)||price<0)group.issues.push(\`Row \${row.__rowNumber}: valid Price USD is required.\`);
+        if(variantIds.has(variantId))group.issues.push(\`Duplicate Variant ID "\${variantId}".\`);
+        variantIds.add(variantId);
+        if((sizeEn||sizeAr)&&Number.isFinite(price)&&price>=0)variants.push({id:variantId,sizeEn,sizeAr,price});
+      }
+      if(!variants.length)group.issues.push("At least one valid size/price row is required.");
+
+      const currentPhoto=existing?photoFor(existing):null;
+      let image=existing?.image?clone(existing.image):null;
+      if(photoUrl){
+        image={
+          url:photoUrl,
+          width:Number(importValue(first,["Photo Width"]))||image?.width||1200,
+          height:Number(importValue(first,["Photo Height"]))||image?.height||1200,
+          positionX:Math.max(0,Math.min(100,Number(importValue(first,["Photo Position X"]))||currentPhoto?.positionX||50)),
+          positionY:Math.max(0,Math.min(100,Number(importValue(first,["Photo Position Y"]))||currentPhoto?.positionY||50)),
+          zoom:Math.max(100,Math.min(180,Number(importValue(first,["Photo Zoom"]))||currentPhoto?.zoom||100)),
+          rotation:Number(importValue(first,["Photo Rotation"]))||currentPhoto?.rotation||0,
+          fit:safeText(importValue(first,["Photo Fit"])).trim().toLowerCase()==="contain"?"contain":"cover"
+        };
+      }
+
+      const payload={
+        id:group.id,
+        nameEn,nameAr,category,original,variants,
+        status:visibility,availability,
+        photoRemoved:existing?.photoRemoved||false,
+        image
+      };
+      prepared.push({
+        id:group.id,
+        payload,
+        note,
+        categoryAr,
+        existing:!!existing,
+        issues:[...new Set(group.issues)]
+      });
+    }
+
+    const issues=[...globalIssues,...prepared.flatMap(p=>p.issues.map(issue=>\`\${p.id}: \${issue}\`))];
+    return {fileName,products:prepared,categories:[...categoryUpdates.values()],issues};
+  }
+
+  function renderProductImportPreview() {
+    const data=state.productImport;
+    const panel=$("importPreviewPanel");
+    if(!data){panel.hidden=true;return;}
+    panel.hidden=false;
+    const valid=data.products.filter(p=>!p.issues.length);
+    $("importProductCount").textContent=data.products.length;
+    $("importValidCount").textContent=valid.length;
+    $("importIssueCount").textContent=data.issues.length;
+    $("importIssueList").innerHTML=data.issues.length
+      ? \`<div class="import-issues-box"><b>Fix these before importing</b>\${data.issues.slice(0,30).map(x=>\`<span>\${esc(x)}</span>\`).join("")}\${data.issues.length>30?\`<span>+\${data.issues.length-30} more issues</span>\`:""}</div>\`
+      : '<div class="import-ready-box">✓ File is ready to import.</div>';
+    $("importPreviewBody").innerHTML=data.products.slice(0,40).map(p=>\`<tr>
+      <td>\${esc(p.id)}</td>
+      <td><b>\${esc(p.payload.nameEn||p.payload.nameAr||p.id)}</b></td>
+      <td>\${esc(p.payload.category||"—")}</td>
+      <td>\${esc(AVAILABILITY_LABELS[p.payload.availability]||p.payload.availability)}</td>
+      <td>\${p.payload.variants.length}</td>
+      <td><span class="status-badge \${p.issues.length?"status-hidden":"status-live"}">\${p.issues.length?\`\${p.issues.length} issue\${p.issues.length===1?"":"s"}\`:p.existing?"Update":"New"}</span></td>
+    </tr>\`).join("");
+    $("applyProductImport").disabled=!!data.issues.length||!valid.length;
+  }
+
+  async function readProductImportFile(file) {
+    if(!file)return;
+    if(!requireXlsx())return;
+    try{
+      const bytes=await file.arrayBuffer();
+      const workbook=window.XLSX.read(bytes,{type:"array",cellDates:false});
+      const sheetName=workbook.SheetNames.find(name=>name.toLowerCase().includes("product"))||workbook.SheetNames[0];
+      if(!sheetName)throw new Error("No spreadsheet sheet was found.");
+      const rows=window.XLSX.utils.sheet_to_json(workbook.Sheets[sheetName],{defval:"",raw:false});
+      if(!rows.length)throw new Error("The spreadsheet has no product rows.");
+      state.productImport=prepareProductImport(rows,file.name);
+      renderProductImportPreview();
+    }catch(err){
+      state.productImport=null;
+      renderProductImportPreview();
+      toast(err.message||"Could not read spreadsheet.","error");
+    }
+  }
+
+  function clearProductImport(clearInput=true) {
+    state.productImport=null;
+    if(clearInput&&$("productImportFile"))$("productImportFile").value="";
+    renderProductImportPreview();
+  }
+
+  async function applyProductImport() {
+    const data=state.productImport;
+    if(!data||data.issues.length||!data.products.length)return;
+    const button=$("applyProductImport");
+    button.disabled=true;
+    try{
+      await createCloudBackup("before_spreadsheet_import",true);
+
+      const existingCustom=storedCategoryRecords();
+      const categoryMap=new Map(existingCustom.map(c=>[c.en,c]));
+      for(const category of data.categories){
+        if(category?.en)categoryMap.set(category.en,{en:category.en,ar:category.ar||categoryMap.get(category.en)?.ar||""});
+      }
+      const categoryRow={
+        key:"product_categories",
+        value:{items:[...categoryMap.values()]},
+        updated_by:state.user.id,
+        updated_at:new Date().toISOString()
+      };
+      const {error:categoryError}=await state.client.from(cfg.tables.settings).upsert(categoryRow,{onConflict:"key"});
+      if(categoryError)throw categoryError;
+
+      for(const item of data.products){
+        const existing=state.products.find(p=>p.id===item.id);
+        if(existing)await saveProductRevision(existing,"spreadsheet_import");
+        const {error}=await state.client.from(cfg.tables.products).upsert({
+          product_id:item.id,
+          action:"upsert",
+          payload:item.payload,
+          updated_at:new Date().toISOString(),
+          updated_by:state.user.id
+        },{onConflict:"product_id"});
+        if(error)throw error;
+        await upsertAdminNote("product",item.id,item.note);
+      }
+
+      await logActivity("spreadsheet_product_import","product","catalogue",{
+        file:data.fileName,
+        products:data.products.length
+      });
+      toast(\`\${data.products.length} products imported successfully.\`);
+      clearProductImport();
+      closeDataCenter();
+      await refreshAll();
+      setView("products");
+    }catch(err){
+      toast(err.message||"Product import failed.","error");
+    }finally{
+      button.disabled=false;
+    }
+  }
+
   function exportOverrides() {
     downloadJson(`zwm-product-changes-${new Date().toISOString().slice(0,10)}.json`,[...state.overrides.values()]);
   }

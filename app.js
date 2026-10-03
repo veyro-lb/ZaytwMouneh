@@ -835,6 +835,24 @@ function syncLanguageVisibility(){
   });
 }
 
+function setupLanguageVisibilityObserver(){
+  if(window.__zwmLanguageVisibilityObserver)return;
+  let queued=false;
+  const enforce=()=>{
+    queued=false;
+    syncLanguageVisibility();
+  };
+  const observer=new MutationObserver(mutations=>{
+    if(!mutations.some(m=>m.addedNodes&&m.addedNodes.length))return;
+    if(queued)return;
+    queued=true;
+    requestAnimationFrame(enforce);
+  });
+  observer.observe(document.body,{childList:true,subtree:true});
+  window.__zwmLanguageVisibilityObserver=observer;
+  syncLanguageVisibility();
+}
+
 function applyLanguage(next,{immediate=false}={}){
   lang=next==="ar"?"ar":"en";
   safeStorageSet(LANG_KEY,lang);
@@ -1871,6 +1889,7 @@ function init(){
   const requestedProduct=params.get("product");
   applyLanguage(lang,{immediate:true});
   renderStaticProductPhotos();
+  setupLanguageVisibilityObserver();
   prewarmLanguageFonts();
   if($("#heroShowcase")){startScenes();showScene(0);}
   setupNav();

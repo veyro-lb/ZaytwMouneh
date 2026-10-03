@@ -1808,7 +1808,7 @@
     $("draftProductsCount").textContent=drafts;
     renderOwnerInbox();
 
-    renderTrafficChart($("overviewChart"),stats.daily);
+    renderTrafficChart($("overviewChart"),stats.daily,{views:stats.views.length,sessions:stats.sessions.size});
     renderRankList($("topPagesList"),rankBy(stats.views,e=>cleanPath(e.page_path)).slice(0,5),"views");
     renderRecentActivity();
   }
@@ -1896,11 +1896,11 @@
     return [...map].map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value);
   }
 
-  function renderTrafficChart(root,data) {
+  function renderTrafficChart(root,data,totals={}) {
     if(!root)return;
     const rows=Array.isArray(data)?data:[];
-    const totalViews=rows.reduce((sum,d)=>sum+d.views,0);
-    const totalSessions=rows.reduce((sum,d)=>sum+d.sessions,0);
+    const totalViews=Number.isFinite(Number(totals.views))?Number(totals.views):rows.reduce((sum,d)=>sum+d.views,0);
+    const totalSessions=Number.isFinite(Number(totals.sessions))?Number(totals.sessions):rows.reduce((sum,d)=>sum+d.sessions,0);
     const width=700,height=180,left=24,right=14,top=18,bottom=22;
     const innerW=width-left-right,innerH=height-top-bottom;
     const max=Math.max(1,...rows.flatMap(d=>[d.views,d.sessions]));
@@ -2072,8 +2072,8 @@
     const latestEvent=state.events[0]?.created_at;
     $("analyticsFreshness").textContent=state.analyticsError
       ?"Analytics connection needs attention"
-      :latestEvent?`Last tracked event ${when(latestEvent)} · same data source as Overview`:"No tracked website activity yet";
-    renderTrafficChart($("analyticsChart"),stats.daily);
+      :latestEvent?`${stats.views.length.toLocaleString()} views · ${stats.sessions.size.toLocaleString()} sessions · Last tracked event ${when(latestEvent)}`:"No tracked website activity yet";
+    renderTrafficChart($("analyticsChart"),stats.daily,{views:stats.views.length,sessions:stats.sessions.size});
     renderRankList($("analyticsPages"),rankBy(stats.views,e=>cleanPath(e.page_path)).slice(0,8),"views");
     const productViews=stats.productViews.filter(e=>e.meta?.product_id);
     const ranked=rankBy(productViews,e=>e.meta?.product_id).slice(0,8).map(r=>({...r,label:state.products.find(p=>p.id===r.label)?.nameEn||r.label}));

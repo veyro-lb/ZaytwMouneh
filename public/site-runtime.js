@@ -1,10 +1,15 @@
 (() => {
   "use strict";
-  const CONFIG_SRC = "admin-config.js?v=20261004-1";
+  const CONFIG_SRC = "admin-config.js?v=20261004-toolkit9";
   const PRODUCT_CACHE = "zwm:cms:product-overrides:v1";
   const SETTINGS_CACHE = "zwm:cms:settings:v1";
   const SESSION_KEY = "zwm:analytics:session:v1";
   const RELOAD_KEY = "zwm:cms:last-reload:v1";
+  const PREVIEW_RELOAD_KEY = "zwm:cms:preview-last-reload:v1";
+  const ADMIN_SYNC_KEY = "zwm:cms:admin-sync:v1";
+  const PREVIEW_MODE = new URLSearchParams(location.search).get("zwm_admin_preview")==="1";
+  let previewSettings=null;
+  let refreshInFlight=null;
 
   function loadScript(src){
     return new Promise((resolve,reject)=>{
@@ -17,14 +22,16 @@
   function enabled(){const c=config();return !!(c.enabled&&c.supabaseUrl&&c.supabasePublishableKey)}
   function api(path,options={}){
     const c=config();
-    return fetch(c.supabaseUrl.replace(/\/$/,"")+"/rest/v1/"+path,{
+    const request={
       ...options,
       headers:{
         apikey:c.supabasePublishableKey,
         "Content-Type":"application/json",
         ...(options.headers||{})
       }
-    });
+    };
+    if(!request.method||String(request.method).toUpperCase()==="GET")request.cache="no-store";
+    return fetch(c.supabaseUrl.replace(/\/$/,"")+"/rest/v1/"+path,request);
   }
   async function getRows(table,query="select=*"){
     const r=await api(encodeURIComponent(table)+"?"+query);
@@ -46,8 +53,9 @@
   function readSettings(){return safeParse(localStorage.getItem(SETTINGS_CACHE),{})}
 
   function currentLang(){
-    const stored=localStorage.getItem("zwm-language")||localStorage.getItem("zwm:lang");
+    const stored=localStorage.getItem("zwm-lang-v2")||localStorage.getItem("zwm-language")||localStorage.getItem("zwm:lang");
     if(stored==="ar")return "ar";
+    if(stored==="en")return "en";
     return document.documentElement.lang==="ar"||document.documentElement.dir==="rtl"?"ar":"en";
   }
   function applySettings(settings=readSettings()){
@@ -73,6 +81,7 @@
       });
     }
     applyPromo(settings.promo||{});
+    applyDelivery(settings.delivery||{});
   }
 
   function applyPromo(promo){
@@ -99,24 +108,84 @@
     box.querySelector("span").textContent=body||"";
   }
 
-  async function refreshCms(){
-    const c=config(),t=c.tables||{};
-    const [overrides,settingsRows]=await Promise.all([
-      getRows(t.products||"product_overrides","select=product_id,action,payload,updated_at&order=updated_at.desc"),
-      getRows(t.settings||"site_settings","select=key,value,updated_at")
-    ]);
-    const previous=safeParse(localStorage.getItem(PRODUCT_CACHE),[]);
-    const prevSig=hash(previous),nextSig=hash(overrides);
-    localStorage.setItem(PRODUCT_CACHE,JSON.stringify(overrides));
-    const settings=cacheSettings(settingsRows);
-    applySettings(settings);
-    if(prevSig!==nextSig){
-      const sig=nextSig;
-      if(sessionStorage.getItem(RELOAD_KEY)!==sig){
-        sessionStorage.setItem(RELOAD_KEY,sig);
-        location.reload();
-      }
+  function deliveryQuote(subtotal=0,area="",delivery=(previewSettings||readSettings()).delivery||{}){
+    const amount=Math.max(0,Number(subtotal)||0);
+    const freeAbove=Math.max(0,Number(delivery.freeAbove)||0);
+    const minimum=Math.max(0,Number(delivery.minimum)||0);
+    const zones=Array.isArray(delivery.zones)?delivery.zones:[];
+    const normalized=String(area||"").trim().toLowerCase();
+    const zone=normalized?zones.find(z=>{
+      const key=String(z?.area||"").trim().toLowerCase();
+      return key&&(normalized.includes(key)||key.includes(normalized));
+    }):null;
+    const baseFee=Math.max(0,Number(zone?.fee ?? delivery.fee)||0);
+    const fee=freeAbove>0&&amount>=freeAbove?0:baseFee;
+    return {fee,freeAbove,minimum,eta:String(zone?.eta||delivery.eta||"").trim(),zone:zone||null};
+  }
+
+  function renderDeliverySummary(subtotal){
+    const form=document.getElementById("orderForm");
+    if(!form)return;
+    let box=document.getElementById("zwmDeliverySummary");
+    if(!box){
+      box=document.createElement("div");
+      box.id="zwmDeliverySummary";
+      box.setAttribute("role","note");
+      Object.assign(box.style,{margin:"10px 0 4px",padding:"10px 12px",border:"1px solid #dce4da",borderRadius:"12px",background:"#f4f7f1",color:"#314036",fontSize:"11px",lineHeight:"1.5"});
+      const anchor=document.getElementById("priceNote");
+      anchor?.parentNode?.insertBefore(box,anchor);
     }
+    const settings=(previewSettings||readSettings()).delivery||{};
+    const hasSettings=Number(settings.fee)>0||Number(settings.freeAbove)>0||Number(settings.minimum)>0||String(settings.eta||"").trim()||(Array.isArray(settings.zones)&&settings.zones.length);
+    if(!hasSettings){box.hidden=true;return}
+    box.hidden=false;
+    const parsedSubtotal=Number.isFinite(Number(subtotal))?Number(subtotal):Number(String(document.getElementById("cartTotal")?.textContent||"0").replace(/[^0-9.]/g,""))||0;
+    const areaInput=document.getElementById("customerArea");
+    if(areaInput&&!areaInput.dataset.zwmDeliveryBound){
+      areaInput.dataset.zwmDeliveryBound="1";
+      areaInput.addEventListener("input",()=>renderDeliverySummary());
+    }
+    const q=deliveryQuote(parsedSubtotal,areaInput?.value||"",settings);
+    const ar=currentLang()==="ar";
+    const parts=[];
+    if(q.minimum>0)parts.push((ar?"الحد الأدنى للطلب":"Minimum order")+": $"+q.minimum.toFixed(2));
+    if(q.fee===0&&(q.freeAbove>0&&parsedSubtotal>=q.freeAbove))parts.push(ar?"التوصيل مجاني لهذا الطلب":"Free delivery for this order");
+    else if(q.fee>0)parts.push((ar?"رسوم التوصيل":"Delivery")+": $"+q.fee.toFixed(2));
+    if(q.freeAbove>0&&parsedSubtotal<q.freeAbove)parts.push((ar?"توصيل مجاني فوق":"Free delivery above")+": $"+q.freeAbove.toFixed(2));
+    if(q.eta)parts.push((ar?"الوقت المتوقع":"Estimated delivery")+": "+q.eta);
+    if(q.zone?.area)parts.unshift((ar?"المنطقة":"Area")+": "+q.zone.area);
+    box.dir=ar?"rtl":"ltr";
+    box.textContent=parts.join(" · ");
+  }
+
+  function applyDelivery(){
+    renderDeliverySummary();
+  }
+
+  async function refreshCms(){
+    if(refreshInFlight)return refreshInFlight;
+    refreshInFlight=(async()=>{
+      const c=config(),t=c.tables||{};
+      const [overrides,settingsRows]=await Promise.all([
+        getRows(t.products||"product_overrides","select=product_id,action,payload,updated_at&order=updated_at.desc"),
+        getRows(t.settings||"site_settings","select=key,value,updated_at")
+      ]);
+      const previous=safeParse(localStorage.getItem(PRODUCT_CACHE),[]);
+      const prevSig=hash(previous),nextSig=hash(overrides);
+      localStorage.setItem(PRODUCT_CACHE,JSON.stringify(overrides));
+      const settings=cacheSettings(settingsRows);
+      applySettings(previewSettings||settings);
+      if(prevSig!==nextSig){
+        const sig=nextSig;
+        const reloadKey=PREVIEW_MODE?PREVIEW_RELOAD_KEY:RELOAD_KEY;
+        if(sessionStorage.getItem(reloadKey)!==sig){
+          sessionStorage.setItem(reloadKey,sig);
+          location.reload();
+        }
+      }
+      return settings;
+    })();
+    try{return await refreshInFlight}finally{refreshInFlight=null}
   }
 
   function sessionId(){
@@ -136,14 +205,14 @@
     return out;
   }
   function track(eventName,meta={}){
-    const c=config();if(!enabled()||c.analytics?.enabled===false)return;
+    const c=config();if(PREVIEW_MODE||!enabled()||c.analytics?.enabled===false)return;
     const row={event_name:eventName,page_path:(location.pathname+location.search).slice(0,300),session_id:sessionId(),referrer_host:referrerHost(),meta:eventMeta(meta)};
     api(encodeURIComponent(c.tables?.events||"site_events"),{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify(row)}).catch(()=>{});
   }
 
   function recordOrder(order){
     const c=config();
-    if(!enabled()||!order?.reference||!Array.isArray(order.items)||!order.items.length)return Promise.resolve(false);
+    if(PREVIEW_MODE||!enabled()||!order?.reference||!Array.isArray(order.items)||!order.items.length)return Promise.resolve(false);
     const row={
       reference:String(order.reference).slice(0,40),
       kind:order.kind==="gift"?"gift":"order",
@@ -176,7 +245,7 @@
     }).then(r=>r.ok||r.status===409).catch(()=>false);
   }
 
-  window.ZWM_CMS={recordOrder,track};
+  window.ZWM_CMS={recordOrder,track,getSettings:()=>previewSettings||readSettings(),deliveryQuote,renderDeliverySummary,refresh:refreshCms};
 
   function bindAnalytics(){
     track("page_view",{source:"site"});
@@ -201,13 +270,44 @@
     },{passive:true});
   }
 
+  function applyPreviewLanguage(lang){
+    const next=lang==="ar"?"ar":"en";
+    const key="zwm-lang-v2";
+    const previous=localStorage.getItem(key);
+    if(typeof window.applyLanguage==="function"){
+      window.applyLanguage(next,{immediate:true});
+      if(previous===null)localStorage.removeItem(key);else localStorage.setItem(key,previous);
+    }else{
+      document.documentElement.lang=next;
+      document.documentElement.dir=next==="ar"?"rtl":"ltr";
+    }
+  }
+
+  if(PREVIEW_MODE){
+    window.addEventListener("message",event=>{
+      if(event.origin!==location.origin||event.data?.type!=="zwm-admin-preview")return;
+      previewSettings=event.data.settings&&typeof event.data.settings==="object"?event.data.settings:{};
+      applyPreviewLanguage(event.data.lang);
+      applySettings(previewSettings);
+    });
+  }
+
   async function init(){
     try{await loadScript(CONFIG_SRC)}catch{return}
     if(!enabled())return;
     applySettings(readSettings());
-    bindAnalytics();
-    document.addEventListener("click",e=>{if(e.target.closest("[data-lang],#languageSwitch,.language-switch"))setTimeout(()=>applySettings(),80)},{passive:true});
+    if(!PREVIEW_MODE)bindAnalytics();
+    document.addEventListener("click",e=>{if(e.target.closest("[data-lang],#languageSwitch,.language-switch"))setTimeout(()=>applySettings(previewSettings||readSettings()),80)},{passive:true});
     refreshCms().catch(()=>{});
+    if(PREVIEW_MODE){
+      try{parent.postMessage({type:"zwm-preview-ready"},location.origin)}catch{}
+      return;
+    }
+    const requestSync=()=>{if(document.visibilityState!=="hidden")refreshCms().catch(()=>{})};
+    window.addEventListener("focus",requestSync);
+    document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")requestSync()});
+    window.addEventListener("storage",event=>{if(event.key===ADMIN_SYNC_KEY||event.key===SETTINGS_CACHE||event.key===PRODUCT_CACHE)requestSync()});
+    setInterval(requestSync,15000);
   }
   init();
 })();

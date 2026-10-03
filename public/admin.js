@@ -877,6 +877,7 @@
     renderAnalytics();
     renderActivity();
     renderSettings();
+    applyOverviewPreferences();
     localizeDom($("adminApp"));
     updateLanguageButtons();
   }
@@ -966,6 +967,18 @@
     return ["in_stock","out_of_stock","coming_soon"].includes(product?.availability)?product.availability:"in_stock";
   }
 
+  function productQualityScore(product){
+    const checks=[
+      !!safeText(product?.nameEn).trim(),
+      !!safeText(product?.nameAr).trim(),
+      !!safeText(product?.category).trim(),
+      Array.isArray(product?.variants)&&product.variants.some(v=>safeText(v?.sizeEn||v?.sizeAr).trim()&&Number.isFinite(Number(v?.price))),
+      !!photoFor(product),
+      !!availabilityFor(product)
+    ];
+    return Math.round((checks.filter(Boolean).length/checks.length)*100);
+  }
+
   function filteredProducts(){
     const {q,category,status,availability}=state.productFilter;
     const term=q.trim().toLowerCase();
@@ -974,7 +987,8 @@
       if(availability&&availabilityFor(p)!==availability)return false;
       const st=statusFor(p);
       if(status==="missing-photo"&&photoFor(p))return false;
-      if(status&&status!=="missing-photo"&&st!==status)return false;
+      if(status==="needs-attention"&&productQualityScore(p)>=100)return false;
+      if(status&& !["missing-photo","needs-attention"].includes(status) && st!==status)return false;
       if(term){
         const hay=[p.id,p.nameEn,p.nameAr,p.category,p.original,availabilityFor(p)].join(" ").toLowerCase();
         if(!hay.includes(term))return false;
@@ -1004,7 +1018,7 @@
     const checked=state.selectedProducts.has(p.id);
     return `<tr class="${checked?"is-selected":""}">
       <td class="select-col"><label class="selection-check"><input type="checkbox" data-select-product="${esc(p.id)}" ${checked?"checked":""}><span></span></label></td>
-      <td><div class="product-row-main">${photo?`<img class="product-thumb" src="${esc(photo.url)}" alt="">`:'<span class="product-thumb-placeholder">No photo</span>'}<div><b>${esc(p.nameEn||p.id)}</b><small>${esc(p.nameAr||p.id)} · ${esc(p.id)}</small></div></div></td>
+      <td><div class="product-row-main">${photo?`<img class="product-thumb" src="${esc(photo.url)}" alt="">`:'<span class="product-thumb-placeholder">No photo</span>'}<div><b>${esc(p.nameEn||p.id)}</b><small>${esc(p.nameAr||p.id)} · ${esc(p.id)} · ${productQualityScore(p)}% complete</small></div></div></td>
       <td>${esc(p.category?categoryDisplayName(p.category):"—")}</td>
       <td>${money(firstPrice)}</td>
       <td><span class="availability-badge availability-${availability}">${esc(AVAILABILITY_LABELS[availability])}</span></td>
@@ -1019,7 +1033,7 @@
     return `<article class="product-mobile-card ${checked?"is-selected":""}">
       <label class="selection-check product-card-select"><input type="checkbox" data-select-product="${esc(p.id)}" ${checked?"checked":""}><span></span></label>
       ${photo?`<img class="product-thumb" src="${esc(photo.url)}" alt="">`:'<span class="product-thumb-placeholder">No photo</span>'}
-      <div><b>${esc(p.nameEn||p.id)}</b><p>${esc(p.category?categoryDisplayName(p.category):"—")}</p><p><span class="availability-badge availability-${availability}">${esc(AVAILABILITY_LABELS[availability])}</span> <span class="status-badge status-${st}">${st}</span></p></div>
+      <div><b>${esc(p.nameEn||p.id)}</b><p>${esc(p.category?categoryDisplayName(p.category):"—")} · ${productQualityScore(p)}% complete</p><p><span class="availability-badge availability-${availability}">${esc(AVAILABILITY_LABELS[availability])}</span> <span class="status-badge status-${st}">${st}</span></p></div>
       <button type="button" data-edit-product="${esc(p.id)}">Edit</button>
     </article>`;
   }
@@ -1451,9 +1465,11 @@
     $("todaySales").textContent=money(deliveredToday.reduce((sum,o)=>sum+(Number(o.total)||0),0));
     $("todayDeliveredOrders").textContent=`${deliveredToday.length} delivered`;
 
+    const incomplete = state.products.filter(p=>productQualityScore(p)<100 && !["hidden","draft"].includes(p.__status)).length;
     const missing = state.products.filter(p=>!photoFor(p) && !["hidden","draft"].includes(p.__status)).length;
     const hidden = state.products.filter(p=>p.__status==="hidden").length;
     const drafts = state.products.filter(p=>p.__status==="draft").length;
+    $("incompleteProductsCount").textContent = incomplete;
     $("missingPhotosCount").textContent = missing;
     $("hiddenProductsCount").textContent = hidden;
     $("draftProductsCount").textContent = drafts;
@@ -1461,6 +1477,22 @@
     renderBarChart($("overviewChart"), dailyCounts(ev7,7,"page_view"));
     renderRankList($("topPagesList"), rankBy(views, e=>cleanPath(e.page_path)).slice(0,5), "views");
     renderRecentActivity();
+  }
+
+  const OVERVIEW_PREF_KEY="zwm:overview-prefs:v1";
+  function readOverviewPreferences(){
+    try{return {...{orders:true,traffic:true,health:true,pages:true,activity:true},...JSON.parse(localStorage.getItem(OVERVIEW_PREF_KEY)||"{}")};}
+    catch{return {orders:true,traffic:true,health:true,pages:true,activity:true};}
+  }
+  function applyOverviewPreferences(){
+    const prefs=readOverviewPreferences();
+    $("[data-overview-widget]").forEach(el=>{el.hidden=prefs[el.dataset.overviewWidget]===false;});
+    $("[data-overview-pref]").forEach(input=>{input.checked=prefs[input.dataset.overviewPref]!==false;});
+  }
+  function saveOverviewPreference(key,value){
+    const prefs=readOverviewPreferences();prefs[key]=value;
+    try{localStorage.setItem(OVERVIEW_PREF_KEY,JSON.stringify(prefs));}catch{}
+    applyOverviewPreferences();
   }
 
   function eventsWithin(days) {
@@ -2329,6 +2361,7 @@
     $("customerSort")?.addEventListener("change",e=>{state.customerFilter.sort=e.target.value;renderCustomers();});
     $("customerGrid")?.addEventListener("click",e=>{const b=e.target.closest("[data-customer-orders]");if(!b)return;const c=customerGroups().find(x=>x.key===b.dataset.customerOrders);if(!c)return;setView("orders");state.orderScope="all";state.orderCommand="";state.orderFilter.q=c.phone||c.name;$("orderSearch").value=state.orderFilter.q;renderOrders();});
     $("analyticsRange")?.addEventListener("change",renderAnalytics);
+    $("healthIncompleteProducts")?.addEventListener("click",()=>applyHealthFilter("needs-attention"));
     $("healthMissingPhotos")?.addEventListener("click",()=>applyHealthFilter("missing-photo"));
     $("healthHiddenProducts")?.addEventListener("click",()=>applyHealthFilter("hidden"));
     $("healthDraftProducts")?.addEventListener("click",()=>applyHealthFilter("draft"));
@@ -2336,6 +2369,7 @@
     $("exportBackupButton")?.addEventListener("click",exportBackup);
     $("restoreBackupInput")?.addEventListener("change",e=>restoreBackup(e.target.files?.[0]));
     $("installAdminApp")?.addEventListener("click",installAdminApp);
+    $("[data-overview-pref]").forEach(input=>input.addEventListener("change",()=>saveOverviewPreference(input.dataset.overviewPref,input.checked)));
     $("runHealthCheck")?.addEventListener("click",runHealthCheck);
     $("globalSearchButton")?.addEventListener("click",openGlobalSearch);
     $("mobileGlobalSearchButton")?.addEventListener("click",()=>{document.querySelector("#mobileMoreSheet").hidden=true;document.querySelector("#mobileMoreBackdrop").hidden=true;openGlobalSearch();});

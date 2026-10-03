@@ -70,6 +70,17 @@
     "Owner workspace":"مساحة عمل المالك",
     "Refresh data":"تحديث البيانات",
     "+ Add product":"+ إضافة منتج",
+    "+ Add category":"+ إضافة فئة",
+    "+ Add":"+ إضافة",
+    "Delete product":"حذف المنتج",
+    "Delete this product permanently? This cannot be undone.":"هل تريد حذف هذا المنتج نهائياً؟ لا يمكن التراجع عن ذلك.",
+    "Product deleted.":"تم حذف المنتج.",
+    "Could not delete product.":"تعذّر حذف المنتج.",
+    "Category name (English):":"اسم الفئة بالإنجليزية:",
+    "Category name (Arabic):":"اسم الفئة بالعربية:",
+    "Category added.":"تمت إضافة الفئة.",
+    "That category already exists.":"هذه الفئة موجودة مسبقاً.",
+    "Could not add category.":"تعذّرت إضافة الفئة.",
     "Add product":"إضافة منتج",
     "Owner":"المالك",
     "Today at a glance":"ملخص اليوم",
@@ -449,10 +460,10 @@
   }
 
   function updateLanguageButtons() {
-    $("[data-admin-language-toggle]").forEach(btn=>{
-      btn.textContent=state.lang==="ar"?"EN":"العربية";
-      btn.setAttribute("aria-label",state.lang==="ar"?"Switch admin language to English":"التبديل إلى واجهة الإدارة العربية");
-      btn.setAttribute("title",state.lang==="ar"?"Switch to English":"التبديل إلى العربية");
+    $$("[data-admin-lang]").forEach(btn=>{
+      const active=btn.dataset.adminLang===state.lang;
+      btn.classList.toggle("is-active",active);
+      btn.setAttribute("aria-pressed",active?"true":"false");
     });
   }
 
@@ -471,6 +482,10 @@
 
   function toggleAdminLanguage() {
     applyAdminLanguage(state.lang==="ar"?"en":"ar",true);
+  }
+
+  function chooseAdminLanguage(lang) {
+    applyAdminLanguage(lang==="ar"?"ar":"en",true);
   }
 
   function startLanguageObserver() {

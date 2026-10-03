@@ -25,7 +25,11 @@ function uiIcon(name,active=false){
 function productPhotoMarkup(p,cls="product-image"){
   const source=window.ZWM_PRODUCT_PHOTOS?.sourceFor(p.id);
   if(!source)return "";
-  return `<img class="${escapeHtml(cls)} product-photo-original" src="${escapeHtml(source.url)}" width="${source.width}" height="${source.height}" data-photo-width="${source.width}" data-photo-height="${source.height}" data-photo-quality="original-supplied" alt="${escapeHtml(currentName(p))}" loading="lazy" decoding="async">`;
+  const posX=Math.max(0,Math.min(100,Number(source.positionX??50)));
+  const posY=Math.max(0,Math.min(100,Number(source.positionY??50)));
+  const zoom=Math.max(100,Math.min(180,Number(source.zoom??100)));
+  const framingStyle=`--zwm-photo-position:${posX}% ${posY}%;--zwm-photo-scale:${zoom/100};`;
+  return `<img class="${escapeHtml(cls)} product-photo-original" src="${escapeHtml(source.url)}" width="${source.width}" height="${source.height}" data-photo-width="${source.width}" data-photo-height="${source.height}" data-photo-quality="${escapeHtml(source.quality||"original-supplied")}" style="${framingStyle}" alt="${escapeHtml(currentName(p))}" loading="lazy" decoding="async">`;
 }
 function renderStaticProductPhotos(root=document){
   root.querySelectorAll("[data-product-photo]").forEach(slot=>{
@@ -420,13 +424,20 @@ let heroVisible=true;
       if(Array.isArray(payload.variants))merged.variants=payload.variants;
       if(Number.isInteger(at))PRODUCTS_DATA[at]=merged;
       else{index.set(id,PRODUCTS_DATA.length);PRODUCTS_DATA.push(merged);}
-      if(payload.image?.url&&window.ZWM_PRODUCT_PHOTOS?.map){
-        window.ZWM_PRODUCT_PHOTOS.map[id]={
-          url:payload.image.url,
-          width:Number(payload.image.width)||1200,
-          height:Number(payload.image.height)||1200,
-          quality:"owner-dashboard"
-        };
+      if(window.ZWM_PRODUCT_PHOTOS?.map){
+        if(payload.photoRemoved){
+          delete window.ZWM_PRODUCT_PHOTOS.map[id];
+        }else if(payload.image?.url){
+          window.ZWM_PRODUCT_PHOTOS.map[id]={
+            url:payload.image.url,
+            width:Number(payload.image.width)||1200,
+            height:Number(payload.image.height)||1200,
+            positionX:Math.max(0,Math.min(100,Number(payload.image.positionX??50))),
+            positionY:Math.max(0,Math.min(100,Number(payload.image.positionY??50))),
+            zoom:Math.max(100,Math.min(180,Number(payload.image.zoom??100))),
+            quality:"owner-dashboard"
+          };
+        }
       }
     });
     for(let i=PRODUCTS_DATA.length-1;i>=0;i--)if(hidden.has(PRODUCTS_DATA[i]?.id))PRODUCTS_DATA.splice(i,1);

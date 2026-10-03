@@ -2458,6 +2458,29 @@
     const fee=Math.max(0,Number($("manualDeliveryFee").value)||0);
     $("manualOrderTotal").textContent=money(products+fee);
   }
+
+  function matchingDeliveryZone(area){
+    const value=safeText(area).trim().toLowerCase();
+    if(!value)return null;
+    const delivery=state.settings.get("delivery")||{};
+    const zones=Array.isArray(delivery.zones)?delivery.zones:[];
+    return zones.find(z=>{
+      const name=safeText(z.area).trim().toLowerCase();
+      return name&&(value===name||value.includes(name)||name.includes(value));
+    })||null;
+  }
+
+  function updateManualDeliveryFromArea(){
+    const delivery=state.settings.get("delivery")||{};
+    const zone=matchingDeliveryZone($("manualOrderArea").value);
+    const rows=manualOrderRows();
+    const productTotal=rows.reduce((sum,r)=>sum+Number(r.v.price)*r.qty,0);
+    const freeAbove=Math.max(0,Number(delivery.freeAbove)||0);
+    let fee=zone?Math.max(0,Number(zone.fee)||0):Math.max(0,Number(delivery.fee)||0);
+    if(freeAbove>0&&productTotal>=freeAbove)fee=0;
+    $("manualDeliveryFee").value=fee;
+    renderManualOrderTotal();
+  }
   function openManualOrder(){
     $("manualOrderForm").reset();$("manualOrderItems").innerHTML="";
     const delivery=state.settings.get("delivery")||{};
@@ -2613,6 +2636,20 @@
     $("installAdminApp")?.addEventListener("click",installAdminApp);
     $$("[data-overview-pref]").forEach(input=>input.addEventListener("change",()=>saveOverviewPreference(input.dataset.overviewPref,input.checked)));
     $("runHealthCheck")?.addEventListener("click",runHealthCheck);
+    $("addDeliveryZone")?.addEventListener("click",()=>deliveryZoneRow({}));
+    $("deliveryZoneRows")?.addEventListener("click",e=>{const b=e.target.closest("[data-remove-zone]");if(b)b.closest(".delivery-zone-row").remove();});
+    $("previewContentMobile")?.addEventListener("click",()=>openContentPreview("mobile"));
+    $("previewContentDesktop")?.addEventListener("click",()=>openContentPreview("desktop"));
+    $("closeContentPreview")?.addEventListener("click",closeContentPreview);
+    $("closeContentPreviewFooter")?.addEventListener("click",closeContentPreview);
+    $("contentPreviewModal")?.addEventListener("click",e=>{if(e.target===$("contentPreviewModal"))closeContentPreview();});
+    $("createCloudBackup")?.addEventListener("click",()=>createCloudBackup("manual"));
+    $("cloudBackupList")?.addEventListener("click",e=>{
+      const restore=e.target.closest("[data-restore-cloud-backup]");
+      if(restore){restoreCloudBackup(restore.dataset.restoreCloudBackup);return;}
+      const download=e.target.closest("[data-download-cloud-backup]");
+      if(download){const b=state.backups.find(x=>String(x.id)===String(download.dataset.downloadCloudBackup));if(b)downloadJson(`zwm-cloud-backup-${b.id}.json`,b.snapshot);}
+    });
     $("globalSearchButton")?.addEventListener("click",openGlobalSearch);
     $("mobileGlobalSearchButton")?.addEventListener("click",()=>{document.querySelector("#mobileMoreSheet").hidden=true;document.querySelector("#mobileMoreBackdrop").hidden=true;openGlobalSearch();});
     $("closeGlobalSearch")?.addEventListener("click",closeGlobalSearch);
@@ -2632,8 +2669,10 @@
     $("manualOrderForm")?.addEventListener("submit",createManualOrder);
     $("addManualOrderItem")?.addEventListener("click",addManualItemRow);
     $("manualOrderItems")?.addEventListener("click",e=>{const b=e.target.closest("[data-remove-manual-item]");if(b){b.closest(".manual-order-item").remove();if(!document.querySelector(".manual-order-item"))addManualItemRow();renderManualOrderTotal();}});
-    $("manualOrderItems")?.addEventListener("change",renderManualOrderTotal);
-    $("manualOrderItems")?.addEventListener("input",renderManualOrderTotal);
+    $("manualOrderItems")?.addEventListener("change",()=>{updateManualDeliveryFromArea();});
+    $("manualOrderItems")?.addEventListener("input",()=>{updateManualDeliveryFromArea();});
+    $("manualOrderArea")?.addEventListener("input",updateManualDeliveryFromArea);
+    $("manualOrderArea")?.addEventListener("change",updateManualDeliveryFromArea);
     $("manualDeliveryFee")?.addEventListener("input",renderManualOrderTotal);
     setupInstallPrompt();
     document.addEventListener("keydown",e=>{

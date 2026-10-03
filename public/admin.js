@@ -1722,6 +1722,7 @@
 
   function setImageFraming(x=50,y=50,zoom=100) {
     state.imagePosition={
+      ...state.imagePosition,
       x:Math.max(0,Math.min(100,Number(x)||50)),
       y:Math.max(0,Math.min(100,Number(y)||50)),
       zoom:Math.max(100,Math.min(180,Number(zoom)||100))
@@ -1738,10 +1739,14 @@
   function applyPreviewFraming() {
     const img=$("imagePreview").querySelector("img");
     if(!img)return;
-    const {x,y,zoom}=state.imagePosition;
+    const {x,y,zoom,rotation,fit,preview}=state.imagePosition;
     img.style.objectPosition=`${x}% ${y}%`;
-    img.style.transform=`scale(${zoom/100})`;
+    img.style.objectFit=fit||"cover";
+    img.style.transform=`rotate(${rotation||0}deg) scale(${zoom/100})`;
     img.style.transformOrigin=`${x}% ${y}%`;
+    $("imagePreview").classList.toggle("is-modal-preview",preview==="modal");
+    $$("[data-image-fit]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imageFit===fit));
+    $$("[data-image-preview]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imagePreview===preview));
   }
 
   function setImageRemoved(removed) {
@@ -1777,8 +1782,16 @@
     $("existingImageWidth").value=photo?.width||"";
     $("existingImageHeight").value=photo?.height||"";
     renderImagePreview(photo?.url||"");
+    state.imagePosition.rotation=Number(photo?.rotation)||0;
+    state.imagePosition.fit=photo?.fit==="contain"?"contain":"cover";
+    state.imagePosition.preview="card";
     setImageFraming(photo?.positionX??50,photo?.positionY??50,photo?.zoom??100);
     setImageRemoved(!!p?.photoRemoved || !photo);
+    const availability=availabilityFor(p||{});
+    const availabilityRadio=document.querySelector(`input[name="productAvailability"][value="${availability}"]`);
+    if(availabilityRadio)availabilityRadio.checked=true;
+    $("productPrivateNote").value=p?state.notes.get(`product:${p.id}`)?.note||"":"";
+    loadProductRevisions(id);
     $("deleteProductButton").hidden=!p;
     $("hideProductButton").hidden=!p||status==="hidden";
     $("restoreProductButton").hidden=!p||!state.overrides.has(p.id);
@@ -1837,7 +1850,25 @@
   }
 
   function resetImageFraming() {
+    state.imagePosition.rotation=0;
+    state.imagePosition.fit="cover";
+    state.imagePosition.preview="card";
     setImageFraming(50,50,100);
+  }
+
+  function rotateImage(delta){
+    state.imagePosition.rotation=((Number(state.imagePosition.rotation)||0)+delta+360)%360;
+    applyPreviewFraming();
+  }
+
+  function setImageFit(fit){
+    state.imagePosition.fit=fit==="contain"?"contain":"cover";
+    applyPreviewFraming();
+  }
+
+  function setImagePreviewMode(mode){
+    state.imagePosition.preview=mode==="modal"?"modal":"card";
+    applyPreviewFraming();
   }
 
   function updateFramingFromControls() {
@@ -1887,7 +1918,9 @@
     const framing={
       positionX:Math.round(state.imagePosition.x),
       positionY:Math.round(state.imagePosition.y),
-      zoom:Math.round(state.imagePosition.zoom)
+      zoom:Math.round(state.imagePosition.zoom),
+      rotation:Number(state.imagePosition.rotation)||0,
+      fit:state.imagePosition.fit==="contain"?"contain":"cover"
     };
     if(!state.imageFile) {
       const url=$("existingImageUrl").value;

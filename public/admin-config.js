@@ -12,7 +12,9 @@ window.ZWM_CMS_CONFIG = Object.freeze({
     settings: "site_settings",
     events: "site_events",
     activity: "admin_activity",
-    orders: "orders"
+    orders: "orders",
+    notes: "admin_notes",
+    revisions: "product_revisions"
   }),
   storageBucket: "product-images",
   analytics: Object.freeze({

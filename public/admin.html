@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex" />
+  <meta name="theme-color" content="#0f3d22" />
+  <title>Zayt w Mouneh — Owner Console</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261003-round1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css?v=20261004-1" />
+</head>
+<body class="admin-body">
+  <div class="admin-bg" aria-hidden="true"></div>
+
+  <main id="setupScreen" class="auth-shell" hidden>
+    <section class="auth-card auth-card-wide">
+      <div class="auth-brand">
+        <span class="auth-logo"><img src="assets/logo.svg?v=20261002-1005" alt="" /></span>
+        <div><strong>Zayt w Mouneh</strong><span>Owner Console</span></div>
+      </div>
+      <p class="auth-kicker">Secure backend required</p>
+      <h1>The dashboard UI is installed.<br><em>Connect the owner backend to activate it.</em></h1>
+      <p class="auth-copy">For security, this page will not accept a hard-coded browser password. Product changes, uploads and analytics require the dedicated protected database configured in <code>admin-config.js</code>.</p>
+      <div class="setup-grid">
+        <article><span>01</span><strong>Create the dedicated backend</strong><p>Use the included <code>supabase/admin_dashboard.sql</code> schema.</p></article>
+        <article><span>02</span><strong>Create the owner account</strong><p>Add only the owner's Auth user UUID to <code>admin_users</code>.</p></article>
+        <article><span>03</span><strong>Add public connection values</strong><p>Set the project URL and publishable key, then enable the config.</p></article>
+      </div>
+      <a class="button-primary" href="index.html">Back to website</a>
+    </section>
+  </main>
+
+  <main id="loginScreen" class="auth-shell" hidden>
+    <section class="auth-card">
+      <div class="auth-brand">
+        <span class="auth-logo"><img src="assets/logo.svg?v=20261002-1005" alt="" /></span>
+        <div><strong>Zayt w Mouneh</strong><span>Private owner access</span></div>
+      </div>
+      <p class="auth-kicker">Owner sign in</p>
+      <h1>Run the pantry<br><em>from one place.</em></h1>
+      <p class="auth-copy">This area is not part of the customer website. Only approved owner accounts can continue.</p>
+      <form id="loginForm" class="auth-form" autocomplete="on">
+        <label>Email<input id="loginEmail" type="email" autocomplete="username" required /></label>
+        <label>Password<input id="loginPassword" type="password" autocomplete="current-password" minlength="8" required /></label>
+        <button class="button-primary" id="loginButton" type="submit">Sign in securely</button>
+        <p class="form-status" id="loginStatus" role="status" aria-live="polite"></p>
+      </form>
+      <small class="auth-security">Protected by authenticated sessions and database row-level security.</small>
+    </section>
+  </main>
+
+  <div id="adminApp" class="admin-app" hidden>
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-head">
+        <a class="sidebar-brand" href="index.html" aria-label="Back to Zayt w Mouneh website">
+          <img src="assets/logo.svg?v=20261002-1005" alt="" />
+          <span><strong>Zayt w Mouneh</strong><small>Owner Console</small></span>
+        </a>
+        <button class="sidebar-close" id="sidebarClose" type="button" aria-label="Close menu">×</button>
+      </div>
+
+      <nav class="admin-nav" id="adminNav" aria-label="Owner dashboard">
+        <button type="button" class="is-active" data-view="overview"><span>⌂</span><b>Overview</b></button>
+        <button type="button" data-view="products"><span>▦</span><b>Products</b><em id="navProductCount">0</em></button>
+        <button type="button" data-view="content"><span>✎</span><b>Website content</b></button>
+        <button type="button" data-view="analytics"><span>↗</span><b>Analytics</b></button>
+        <button type="button" data-view="activity"><span>◷</span><b>Activity</b></button>
+        <button type="button" data-view="settings"><span>⚙</span><b>Settings</b></button>
+      </nav>
+
+      <div class="sidebar-foot">
+        <a href="index.html" target="_blank" rel="noopener">View live site <span>↗</span></a>
+        <button id="signOutButton" type="button">Sign out</button>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-label="Open dashboard menu">☰</button>
+          <div><p id="viewEyebrow">Owner workspace</p><h1 id="viewTitle">Overview</h1></div>
+        </div>
+        <div class="topbar-right">
+          <button class="icon-button" id="refreshButton" type="button" title="Refresh data">↻</button>
+          <button class="button-primary button-small" id="quickAddProduct" type="button">+ Add product</button>
+          <div class="owner-pill"><span id="ownerInitial">O</span><div><strong id="ownerName">Owner</strong><small id="ownerEmail">—</small></div></div>
+        </div>
+      </header>
+
+      <div class="admin-content">
+        <section class="dashboard-view is-active" data-view-panel="overview">
+          <div class="welcome-panel">
+            <div><p>Today at a glance</p><h2>Keep the pantry accurate, clear and easy to order.</h2><span id="lastUpdated">Loading dashboard…</span></div>
+            <button class="button-secondary" type="button" data-jump-view="products">Manage products <span>→</span></button>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric-card"><span class="metric-icon">◉</span><div><small>Page views · 7 days</small><strong id="metricViews">—</strong><em id="metricViewsHint">Loading</em></div></article>
+            <article class="metric-card"><span class="metric-icon">⌁</span><div><small>Unique sessions · 7 days</small><strong id="metricSessions">—</strong><em id="metricSessionsHint">Loading</em></div></article>
+            <article class="metric-card"><span class="metric-icon">↗</span><div><small>WhatsApp clicks · 7 days</small><strong id="metricWhatsApp">—</strong><em>High-intent customer action</em></div></article>
+            <article class="metric-card"><span class="metric-icon">▦</span><div><small>Live catalogue</small><strong id="metricProducts">328</strong><em id="metricProductsHint">Products visible</em></div></article>
+          </div>
+
+          <div class="overview-grid">
+            <article class="panel panel-wide">
+              <div class="panel-head"><div><p>Traffic</p><h3>Last 7 days</h3></div><button class="text-button" type="button" data-jump-view="analytics">Full analytics →</button></div>
+              <div class="mini-chart" id="overviewChart" aria-label="Seven day page views chart"></div>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><p>Catalogue health</p><h3>Needs attention</h3></div></div>
+              <div class="health-list">
+                <button type="button" id="healthMissingPhotos"><span><b id="missingPhotosCount">—</b> Missing photos</span><em>Review →</em></button>
+                <button type="button" id="healthHiddenProducts"><span><b id="hiddenProductsCount">—</b> Hidden products</span><em>Review →</em></button>
+                <button type="button" id="healthDraftProducts"><span><b id="draftProductsCount">—</b> Draft products</span><em>Review →</em></button>
+              </div>
+            </article>
+          </div>
+
+          <div class="overview-grid">
+            <article class="panel">
+              <div class="panel-head"><div><p>Top pages</p><h3>Where customers browse</h3></div></div>
+              <div id="topPagesList" class="rank-list"><p class="empty-state">No analytics yet.</p></div>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><p>Recent owner activity</p><h3>Latest changes</h3></div><button class="text-button" type="button" data-jump-view="activity">See all →</button></div>
+              <div id="recentActivityList" class="activity-list"><p class="empty-state">No changes yet.</p></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="products">
+          <div class="toolbar">
+            <div class="search-field"><span>⌕</span><input id="productSearch" type="search" placeholder="Search product, category or ID…" /></div>
+            <select id="productCategoryFilter" aria-label="Filter category"><option value="">All categories</option></select>
+            <select id="productStatusFilter" aria-label="Filter status"><option value="">All statuses</option><option value="live">Live</option><option value="edited">Edited</option><option value="new">New</option><option value="hidden">Hidden</option><option value="draft">Draft</option><option value="missing-photo">Missing photo</option></select>
+            <button class="button-primary button-small" id="addProductButton" type="button">+ Add product</button>
+          </div>
+          <div class="table-card">
+            <div class="table-summary"><span id="productResultCount">0 products</span><button id="exportProductsButton" class="text-button" type="button">Export changes ↓</button></div>
+            <div class="product-table-wrap">
+              <table class="product-table">
+                <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Status</th><th>Updated</th><th></th></tr></thead>
+                <tbody id="productTableBody"></tbody>
+              </table>
+            </div>
+            <div id="productCardsMobile" class="product-cards-mobile"></div>
+          </div>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="content">
+          <div class="section-intro"><div><p>Website content</p><h2>Change common customer-facing details without editing HTML.</h2></div><span>Changes publish after save.</span></div>
+          <form id="contentForm" class="content-grid">
+            <article class="panel content-panel">
+              <div class="panel-head"><div><p>Announcement bar</p><h3>Top-of-site message</h3></div><label class="switch"><input id="announcementEnabled" type="checkbox" /><span></span></label></div>
+              <label>English message<input id="announcementEn" type="text" maxlength="140" /></label>
+              <label>Arabic message<input id="announcementAr" type="text" maxlength="140" dir="rtl" /></label>
+            </article>
+            <article class="panel content-panel">
+              <div class="panel-head"><div><p>Orders</p><h3>WhatsApp destination</h3></div></div>
+              <label>WhatsApp number<input id="contentWhatsApp" type="tel" inputmode="tel" placeholder="96181581230" /></label>
+              <p class="field-help">Digits only, including country code. Existing WhatsApp order buttons will use this number.</p>
+            </article>
+            <article class="panel content-panel content-panel-wide">
+              <div class="panel-head"><div><p>Promo message</p><h3>Optional customer notice</h3></div><label class="switch"><input id="promoEnabled" type="checkbox" /><span></span></label></div>
+              <div class="two-col-fields">
+                <label>English title<input id="promoTitleEn" type="text" maxlength="90" /></label>
+                <label>Arabic title<input id="promoTitleAr" type="text" maxlength="90" dir="rtl" /></label>
+                <label>English message<textarea id="promoBodyEn" rows="4" maxlength="320"></textarea></label>
+                <label>Arabic message<textarea id="promoBodyAr" rows="4" maxlength="320" dir="rtl"></textarea></label>
+              </div>
+            </article>
+            <div class="form-actions content-save-row"><button class="button-primary" type="submit">Save website content</button><span id="contentStatus" class="form-status" role="status"></span></div>
+          </form>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="analytics">
+          <div class="analytics-head">
+            <div><p>Website analytics</p><h2>Simple signals that help you improve the store.</h2></div>
+            <select id="analyticsRange"><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select>
+          </div>
+          <div class="metric-grid analytics-metrics">
+            <article class="metric-card"><div><small>Page views</small><strong id="analyticsViews">—</strong><em id="analyticsViewsSub">Selected period</em></div></article>
+            <article class="metric-card"><div><small>Unique sessions</small><strong id="analyticsSessions">—</strong><em id="analyticsSessionsSub">Selected period</em></div></article>
+            <article class="metric-card"><div><small>Add to pantry</small><strong id="analyticsAdds">—</strong><em>Product intent</em></div></article>
+            <article class="metric-card"><div><small>WhatsApp clicks</small><strong id="analyticsWhatsApp">—</strong><em>Order/contact intent</em></div></article>
+          </div>
+          <div class="overview-grid">
+            <article class="panel panel-wide"><div class="panel-head"><div><p>Daily traffic</p><h3>Page views and customer actions</h3></div></div><div id="analyticsChart" class="analytics-chart"></div></article>
+            <article class="panel"><div class="panel-head"><div><p>Top pages</p><h3>Most viewed</h3></div></div><div id="analyticsPages" class="rank-list"></div></article>
+          </div>
+          <div class="overview-grid">
+            <article class="panel"><div class="panel-head"><div><p>Top products</p><h3>Most viewed products</h3></div></div><div id="analyticsProducts" class="rank-list"></div></article>
+            <article class="panel"><div class="panel-head"><div><p>Customer intent</p><h3>Useful conversion signals</h3></div></div><div id="intentBreakdown" class="intent-grid"></div></article>
+          </div>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="activity">
+          <div class="section-intro"><div><p>Owner activity</p><h2>A simple audit trail of dashboard changes.</h2></div></div>
+          <div class="table-card"><div id="activityTimeline" class="activity-timeline"></div></div>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="settings">
+          <div class="settings-grid">
+            <article class="panel">
+              <div class="panel-head"><div><p>Security</p><h3>Owner access</h3></div><span class="status-badge status-live">Protected</span></div>
+              <dl class="settings-list"><div><dt>Signed in as</dt><dd id="settingsEmail">—</dd></div><div><dt>Authorization</dt><dd>Owner allowlist + RLS</dd></div><div><dt>Session</dt><dd>Supabase Auth</dd></div></dl>
+              <button class="button-secondary" id="settingsSignOut" type="button">Sign out on this device</button>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><p>Backend</p><h3>Connection health</h3></div><span class="status-badge" id="backendStatusBadge">Checking</span></div>
+              <dl class="settings-list"><div><dt>Database</dt><dd id="backendDatabase">Checking…</dd></div><div><dt>Product images</dt><dd id="backendStorage">Checking…</dd></div><div><dt>Analytics</dt><dd id="backendAnalytics">Checking…</dd></div></dl>
+              <button class="button-secondary" id="runHealthCheck" type="button">Run health check</button>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><p>Data</p><h3>Owner backups</h3></div></div>
+              <p class="panel-copy">Export all dashboard-managed product overrides and public settings as JSON. The original static catalogue stays untouched as a fallback.</p>
+              <button class="button-secondary" id="exportBackupButton" type="button">Export dashboard backup ↓</button>
+            </article>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
+
+  <div class="modal-backdrop" id="productModal" hidden>
+    <section class="editor-modal" role="dialog" aria-modal="true" aria-labelledby="productEditorTitle">
+      <header class="editor-head"><div><p id="productEditorKicker">Product editor</p><h2 id="productEditorTitle">Add product</h2></div><button id="closeProductModal" type="button" aria-label="Close">×</button></header>
+      <form id="productForm" class="editor-form">
+        <input id="productEditingId" type="hidden" />
+        <div class="editor-grid">
+          <div class="editor-main">
+            <article class="editor-section">
+              <h3>Product details</h3>
+              <div class="two-col-fields">
+                <label>English name<input id="productNameEn" required maxlength="120" /></label>
+                <label>Arabic name<input id="productNameAr" required maxlength="120" dir="rtl" /></label>
+                <label>Category<select id="productCategory" required></select></label>
+                <label>Product ID<input id="productId" required maxlength="140" pattern="[a-z0-9][a-z0-9-]*" /></label>
+              </div>
+              <label>Original / supplier name<input id="productOriginal" maxlength="160" /></label>
+            </article>
+
+            <article class="editor-section">
+              <div class="editor-section-head"><div><h3>Sizes & prices</h3><p>Add every size a customer can choose.</p></div><button class="text-button" id="addVariantButton" type="button">+ Add size</button></div>
+              <div id="variantRows" class="variant-rows"></div>
+            </article>
+
+            <article class="editor-section">
+              <div class="editor-section-head"><div><h3>Visibility</h3><p>Draft products stay out of the live shop.</p></div></div>
+              <div class="status-options">
+                <label><input type="radio" name="productVisibility" value="live" checked /><span><b>Live</b><small>Visible to customers</small></span></label>
+                <label><input type="radio" name="productVisibility" value="draft" /><span><b>Draft</b><small>Saved but not shown</small></span></label>
+                <label><input type="radio" name="productVisibility" value="hidden" /><span><b>Hidden</b><small>Temporarily removed</small></span></label>
+              </div>
+            </article>
+          </div>
+
+          <aside class="editor-side">
+            <article class="editor-section image-editor">
+              <h3>Product photo</h3>
+              <div class="image-preview" id="imagePreview"><span>No photo</span></div>
+              <label class="upload-button">Choose image<input id="productImage" type="file" accept="image/jpeg,image/png,image/webp,image/avif" /></label>
+              <small>Use the clearest original image available. Max 10 MB.</small>
+              <input id="existingImageUrl" type="hidden" />
+              <input id="existingImageWidth" type="hidden" />
+              <input id="existingImageHeight" type="hidden" />
+            </article>
+            <article class="editor-section">
+              <h3>Quick checks</h3>
+              <ul class="check-list" id="editorChecklist"><li>English + Arabic names</li><li>Correct category</li><li>At least one size and price</li><li>Clear product photo when available</li></ul>
+            </article>
+          </aside>
+        </div>
+
+        <footer class="editor-actions">
+          <div><button class="danger-button" id="hideProductButton" type="button" hidden>Hide product</button><button class="text-button" id="restoreProductButton" type="button" hidden>Restore base version</button></div>
+          <div><span id="productFormStatus" class="form-status" role="status"></span><button class="button-secondary" id="cancelProductButton" type="button">Cancel</button><button class="button-primary" id="saveProductButton" type="submit">Save product</button></div>
+        </footer>
+      </form>
+    </section>
+  </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="admin-config.js?v=20261004-1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
+  <script src="products-data.js?v=20261002-1005"></script>
+  <script src="product-photos.js?v=20261003-zip-originals3"></script>
+  <script src="admin.js?v=20261004-1"></script>
+</body>
+</html>

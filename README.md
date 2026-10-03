@@ -4,7 +4,7 @@ Premium responsive static storefront for Zayt w Mouneh.
 
 ## Current experience
 
-- 332 grouped products with 423 priced size/pack variants from the supplied retail price list
+- 328 shopper-facing products with 423 priced size/pack variants from the supplied retail price list
 - 21 pantry categories
 - Full English and Arabic storefront modes, with RTL layout in Arabic
 - Language switch positioned beside the cart

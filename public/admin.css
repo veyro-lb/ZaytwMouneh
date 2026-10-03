@@ -261,3 +261,81 @@ html[dir="rtl"] .order-detail-section{
 @media(max-width:420px){
   .topbar-language-toggle{min-width:54px;max-width:62px;padding:0 7px}
 }
+
+/* Stable bilingual admin controls */
+.admin-language-switch{
+  display:inline-grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  min-height:40px;
+  padding:3px;
+  border:1px solid #d6ddd4;
+  border-radius:999px;
+  background:var(--paper);
+  gap:2px;
+  direction:ltr;
+}
+.admin-language-switch button{
+  min-width:48px;
+  height:32px;
+  padding:0 10px;
+  border:0;
+  border-radius:999px;
+  background:transparent;
+  color:#667068;
+  font:800 10px/1 "DM Sans",sans-serif;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.admin-language-switch button.is-active{
+  background:var(--green);
+  color:#fff;
+  box-shadow:0 2px 8px rgba(18,61,35,.16);
+}
+.auth-language-toggle{
+  position:absolute;
+  top:24px;
+  right:24px;
+  z-index:2;
+}
+html[dir="rtl"] .auth-language-toggle{right:auto;left:24px}
+.topbar-language-toggle{flex:0 0 auto}
+
+/* Product category and destructive actions */
+.field-inline-action{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:7px;
+  align-items:center;
+}
+.field-inline-action select{min-width:0}
+.field-action-button{
+  min-height:42px;
+  padding:9px 11px;
+  font-size:10px;
+  white-space:nowrap;
+}
+.editor-destructive-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.danger-strong{
+  background:#9d342d;
+  color:#fff;
+  border-color:#9d342d;
+}
+.danger-strong:hover{background:#7f2924}
+
+@media(max-width:680px){
+  .topbar-language-toggle button{min-width:42px;padding:0 7px}
+  .auth-language-toggle{top:16px;right:16px}
+  html[dir="rtl"] .auth-language-toggle{right:auto;left:16px}
+  .field-inline-action{grid-template-columns:1fr}
+  .field-action-button{width:100%}
+}
+@media(max-width:420px){
+  .topbar-language-toggle{min-height:36px}
+  .topbar-language-toggle button{min-width:38px;height:28px;font-size:9px}
+}

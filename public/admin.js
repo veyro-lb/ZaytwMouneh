@@ -1951,19 +1951,23 @@
       const variants=collectVariants(id);
       const image=await uploadProductImage(id);
       const visibility=document.querySelector('input[name="productVisibility"]:checked')?.value||"live";
+      const availability=document.querySelector('input[name="productAvailability"]:checked')?.value||"in_stock";
+      const previous=originalId?state.products.find(p=>p.id===originalId):null;
+      if(previous)await saveProductRevision(previous,"edit");
       const payload={
         id,category,
         nameEn:$("productNameEn").value.trim(),
         nameAr:$("productNameAr").value.trim(),
         original:$("productOriginal").value.trim()||$("productNameEn").value.trim().toUpperCase(),
-        variants,status:visibility,
+        variants,status:visibility,availability,
         photoRemoved:$("imageRemoved").value==="1",
         image:image||null
       };
       const row={product_id:id,action:"upsert",payload,updated_at:new Date().toISOString(),updated_by:state.user.id};
       const {error}=await state.client.from(cfg.tables.products).upsert(row,{onConflict:"product_id"});
       if(error)throw error;
-      await logActivity(originalId?"update_product":"create_product","product",id,{status:visibility,category});
+      await upsertAdminNote("product",id,$("productPrivateNote").value.trim());
+      await logActivity(originalId?"update_product":"create_product","product",id,{status:visibility,availability,category});
       toast(originalId?"Product updated.":"Product added.");
       closeProductEditor();
       await refreshAll();
@@ -1973,6 +1977,30 @@
     }finally{$("saveProductButton").disabled=false;}
   }
 
+  async function loadProductRevisions(productId){
+    const panel=$("productHistoryPanel"),root=$("productRevisionList");
+    if(!productId){panel.hidden=true;root.innerHTML="";return;}
+    const {data,error}=await state.client.from(cfg.tables.revisions||"product_revisions")
+      .select("*").eq("product_id",productId).order("created_at",{ascending:false}).limit(8);
+    if(error||!data?.length){panel.hidden=true;root.innerHTML="";return;}
+    panel.hidden=false;
+    root.innerHTML=data.map(r=>`<button type="button" data-restore-revision="${r.id}"><span><b>${esc(r.reason.replace(/_/g," "))}</b><small>${esc(new Date(r.created_at).toLocaleString())}</small></span><em>Restore</em></button>`).join("");
+  }
+
+  async function restoreProductRevision(revisionId){
+    const {data,error}=await state.client.from(cfg.tables.revisions||"product_revisions").select("*").eq("id",revisionId).single();
+    if(error||!data)return toast("Could not load that version.","error");
+    const current=state.products.find(p=>p.id===data.product_id);
+    if(current)await saveProductRevision(current,"before_restore");
+    const snapshot=clone(data.snapshot||{});
+    const {error:saveError}=await state.client.from(cfg.tables.products).upsert({
+      product_id:data.product_id,action:"upsert",payload:snapshot,
+      updated_at:new Date().toISOString(),updated_by:state.user.id
+    },{onConflict:"product_id"});
+    if(saveError)return toast("Could not restore product version.","error");
+    await logActivity("restore_product_revision","product",data.product_id,{revision_id:revisionId});
+    closeProductEditor();toast("Previous product version restored.");await refreshAll();
+  }
   async function hideCurrentProduct() {
     const id=state.editingId;if(!id)return;
     const p=state.products.find(x=>x.id===id);if(!p)return;

@@ -3,7 +3,7 @@ const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 function safeStorageGet(key,fallback=null){
   try{
-    const value=window.safeStorageGet(key);
+    const value=window.localStorage.getItem(key);
     return value===null?fallback:value;
   }catch{
     return fallback;
@@ -11,7 +11,7 @@ function safeStorageGet(key,fallback=null){
 }
 function safeStorageSet(key,value){
   try{
-    window.safeStorageSet(key,value);
+    window.localStorage.setItem(key,value);
     return true;
   }catch{
     return false;
@@ -1648,53 +1648,48 @@ function backdropMaybeOff(){
 }
 
 function shouldLimitHeroMedia(){
-  const narrow=window.matchMedia&&window.matchMedia("(max-width:760px)").matches;
   const connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
-  const constrained=Boolean(connection&&(connection.saveData||["slow-2g","2g"].includes(connection.effectiveType)));
-  return Boolean(narrow||constrained);
+  return Boolean((window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)||(connection&&connection.saveData));
 }
-function suspendHeroScenes(){
-  heroVisible=false;
-  $("[data-scene] video").forEach(video=>{
-    try{video.pause()}catch{}
-    video.removeAttribute("autoplay");
-    video.preload="none";
-  });
-}
-
+let heroManualPlayback=false;
 function showScene(i,manual=false){
   const scenes=$$("[data-scene]"),dots=$$("[data-scene-dot]");
   if(!scenes.length)return;
   const nextIndex=(i+scenes.length)%scenes.length;
   const changed=nextIndex!==sceneIndex;
   sceneIndex=nextIndex;
+  if(manual)heroManualPlayback=true;
+  const button=$("#scenePlayback");
   scenes.forEach((scene,n)=>{
     const activeNow=n===sceneIndex;
     scene.classList.toggle("is-active",activeNow);
     const video=scene.querySelector("video");
-    if(video){
-      if(activeNow&&heroVisible&&!document.hidden){
-        if(changed||manual||video.ended){
-          try{video.currentTime=0}catch{}
-        }
-        if(video.readyState===0)video.load();
-        const play=video.play();
-        if(play&&play.catch)play.catch(()=>{});
-      }else{
-        video.pause();
-      }
-    }
+    if(!video)return;
+    video.muted=true;
+    video.defaultMuted=true;
+    video.playsInline=true;
+    if(activeNow&&heroVisible&&!document.hidden&&(manual||heroManualPlayback||!shouldLimitHeroMedia())){
+      if(changed||video.ended){try{video.currentTime=0}catch{}}
+      const play=video.play();
+      if(play&&play.catch)play.catch(()=>{if(n===sceneIndex&&button)button.hidden=false;});
+    }else video.pause();
   });
-  dots.forEach((dot,n)=>dot.classList.toggle("is-active",n===sceneIndex));
+  dots.forEach((dot,n)=>{
+    dot.classList.toggle("is-active",n===sceneIndex);
+    dot.setAttribute("aria-pressed",String(n===sceneIndex));
+  });
 }
 function startScenes(){
-  clearInterval(sceneTimer);
-  const scenes=$$("[data-scene]");
-  scenes.forEach((scene,index)=>{
+  const button=$("#scenePlayback");
+  if(button)button.addEventListener("click",()=>showScene(sceneIndex,true));
+  $$("[data-scene]").forEach((scene,index)=>{
     const video=scene.querySelector("video");
     if(!video||video.dataset.sequenceBound==="1")return;
     video.dataset.sequenceBound="1";
     video.loop=false;
+    video.addEventListener("playing",()=>{if(index===sceneIndex&&button)button.hidden=true;});
+    video.addEventListener("pause",()=>{if(index===sceneIndex&&button)button.hidden=false;});
+    video.addEventListener("error",()=>{if(index===sceneIndex&&button)button.hidden=false;});
     video.addEventListener("ended",()=>{
       if(index===sceneIndex&&heroVisible&&!document.hidden)showScene(index+1);
     });
@@ -1817,7 +1812,7 @@ function init(){
   applyLanguage(lang,{immediate:true});
   renderStaticProductPhotos();
   prewarmLanguageFonts();
-  if($("#heroShowcase")){if(shouldLimitHeroMedia())suspendHeroScenes();else{showScene(0);startScenes();}}
+  if($("#heroShowcase")){startScenes();showScene(0);}
   setupNav();
   setupProgress();
   setupPerformance();

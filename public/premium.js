@@ -21,6 +21,17 @@
   function pname(p){if(typeof currentName==="function")return currentName(p);return isAr()?(p.nameAr||p.nameEn):p.nameEn}
   function pmoney(n){return typeof money==="function"?money(n):("$"+Number(n).toFixed(2))}
   function porigin(p){return typeof originFor==="function"?originFor(p):txt("Source · Lebanon","المصدر · لبنان")}
+  function pcategory(p){
+    if(!p)return "";
+    if(typeof categoryName==="function")return categoryName(p.category);
+    var fallback={
+      "Condiments":"مستلزمات المطبخ","Dates":"تمر","Debsy Carob":"دبسي خروب","Distillates + Syrups":"مقطرات وشرابات","Dried Foods":"أطعمة مجففة",
+      "Flour":"طحين","Grains":"حبوب","Herbs":"أعشاب","Honey":"عسل","Molasses":"دبس","Mouneh":"مونة","Nuts + Seeds":"مكسرات وبذور",
+      "Oils":"زيوت","Olive Oil":"زيت زيتون","Olives":"زيتون","Pickles":"مخللات","Pulses":"بقوليات","Soap":"صابون","Spices":"بهارات",
+      "Sweets + Candy":"حلويات وسكاكر","Vinegars":"خل"
+    };
+    return isAr()?(fallback[p.category]||p.category):p.category;
+  }
   function pimage(p){
     if(typeof productImageSrc==="function")return productImageSrc(p);
     return "";
@@ -164,7 +175,7 @@
     var detail=q(".provenance-detail",root),items=regionProducts(region);
     var labels={"Bekaa":["Bekaa","البقاع"],"Koura":["Koura","الكورة"],"Mount Lebanon":["Mount Lebanon","جبل لبنان"],"Chouf":["Chouf","الشوف"]};
     detail.innerHTML='<span class="region-label">'+esc(txt("Origin focus","مصدر مختار"))+'</span><h3>'+esc(isAr()?labels[region][1]:labels[region][0])+'</h3><p>'+esc(isAr()?regionCopy[region].ar:regionCopy[region].en)+'</p><div class="provenance-products">'+items.map(function(p){
-      return '<button class="provenance-product" type="button" data-origin-product="'+esc(p.id)+'"><small>'+esc(p.category)+'</small><strong>'+esc(pname(p))+'</strong></button>';
+      return '<button class="provenance-product" type="button" data-origin-product="'+esc(p.id)+'"><small>'+esc(pcategory(p))+'</small><strong>'+esc(pname(p))+'</strong></button>';
     }).join("")+'</div>';
     qa("[data-origin-product]",detail).forEach(function(btn){btn.addEventListener("click",function(){if(typeof openProduct==="function")openProduct(btn.dataset.originProduct)})});
   }
@@ -474,7 +485,7 @@
         '</label>'+
         '<label>'+esc(txt("Card language","لغة البطاقة"))+
           '<select id="premiumCardLanguage">'+
-            '<option value="English">English</option>'+
+            '<option value="English">'+esc(txt("English","الإنجليزية"))+'</option>'+
             '<option value="Arabic">العربية</option>'+
             '<option value="Bilingual">'+esc(txt("Bilingual","ثنائية اللغة"))+'</option>'+
           '</select>'+
@@ -506,8 +517,8 @@
         var extras=[
           "",
           txt("Gift presentation preferences:","تفضيلات تجهيز الهدية:"),
-          txt("Theme: ","الطابع: ")+(theme?theme.value:"—"),
-          txt("Card language: ","لغة البطاقة: ")+(card?card.value:"—"),
+          txt("Theme: ","الطابع: ")+(theme?theme.options[theme.selectedIndex].textContent:"—"),
+          txt("Card language: ","لغة البطاقة: ")+(card?card.options[card.selectedIndex].textContent:"—"),
           txt("Hide prices from recipient: ","إخفاء الأسعار عن المستلم: ")+(hide&&hide.checked?txt("Yes","نعم"):txt("No","لا"))
         ].join("\n");
         if(msg)msg.value=(original?original+"\n":"")+extras;
@@ -583,7 +594,7 @@
     var copy=q(".product-modal-copy");if(!copy)return;
     var extras=q(".premium-product-extras",copy);
     if(!extras){extras=document.createElement("div");extras.className="premium-product-extras";var actions=q(".product-modal-actions",copy);if(actions)actions.before(extras);else copy.appendChild(extras)}
-    var feedbackUrl="https://wa.me/96181581230?text="+encodeURIComponent(txt("Feedback about ","ملاحظات حول ")+p.nameEn+": ");
+    var feedbackUrl="https://wa.me/96181581230?text="+encodeURIComponent(txt("Feedback about ","ملاحظات حول ")+pname(p)+": ");
     extras.innerHTML='<div class="premium-product-extra"><span>'+esc(txt("Storage guidance","طريقة الحفظ"))+'</span><p>'+esc(storageGuidance(p))+'</p></div><div class="premium-product-extra"><span>'+esc(txt("Pairs well with","يناسب"))+'</span><p>'+esc(pairingText(p))+'</p></div><div class="premium-product-extra premium-feedback"><div><span>'+esc(txt("Availability","التوفر"))+'</span><p>'+esc(txt("Final availability is confirmed directly on WhatsApp before the order is final.","يتم تأكيد التوفر النهائي مباشرة عبر واتساب قبل تثبيت الطلب."))+'</p></div><div class="premium-product-toolbar"><button type="button" data-share-product="'+esc(p.id)+'">'+esc(txt("Share product","شارك المنتج"))+'</button><a href="'+esc(feedbackUrl)+'" target="_blank" rel="noopener">'+esc(txt("Send feedback","أرسل ملاحظتك"))+'</a></div></div>';
     q("[data-share-product]",extras).addEventListener("click",function(){
       var url=new URL(location.href);url.searchParams.set("product",p.id);
@@ -592,18 +603,22 @@
     var ld=q("#premiumProductSchema");if(!ld){ld=document.createElement("script");ld.type="application/ld+json";ld.id="premiumProductSchema";document.head.appendChild(ld)}
     ld.textContent=JSON.stringify(productJsonLd(p));
     var desc=txt("Shop ","تسوّق ")+pname(p)+" · "+porigin(p)+" · "+txt("sizes and prices from the current Zayt w Mouneh catalogue.","الأحجام والأسعار من كتالوج زيت ومونة الحالي.");
-    document.title=pname(p)+" | Zayt w Mouneh";
+    document.title=pname(p)+" | "+txt("Zayt w Mouneh","زيت ومونة");
     var md=q('meta[name="description"]');if(md)md.content=desc;
-    var ot=q('meta[property="og:title"]');if(ot)ot.content=pname(p)+" | Zayt w Mouneh";
+    var ot=q('meta[property="og:title"]');if(ot)ot.content=pname(p)+" | "+txt("Zayt w Mouneh","زيت ومونة");
     var od=q('meta[property="og:description"]');if(od)od.content=desc;
     track("product_viewed",{product:p.id,category:p.category});
   }
 
   function restoreMeta(){
-    document.title=initialTitle;
-    var md=q('meta[name="description"]');if(md)md.content=initialDescription;
-    var ot=q('meta[property="og:title"]');if(ot)ot.content=initialOgTitle;
-    var od=q('meta[property="og:description"]');if(od)od.content=initialOgDescription;
+    if(typeof applyPageMetadata==="function"){
+      applyPageMetadata();
+    }else{
+      document.title=initialTitle;
+      var md=q('meta[name="description"]');if(md)md.content=initialDescription;
+      var ot=q('meta[property="og:title"]');if(ot)ot.content=initialOgTitle;
+      var od=q('meta[property="og:description"]');if(od)od.content=initialOgDescription;
+    }
     var ld=q("#premiumProductSchema");if(ld)ld.remove();
   }
 
@@ -637,7 +652,7 @@
       ["zaatar-baladi-extra",txt("Zaatar mornings","صباحات الزعتر")],
       ["flower-honey",txt("Something sweet","لمسة حلوة")]
     ];
-    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Pantry moments","لحظات من المونة"))+'</p><h2>'+esc(txt("Food that feels","مونة تشبه"))+' <em>'+esc(txt("familiar.","البيت."))+'</em></h2></div><p>'+esc(txt("Follow the pantry for seasonal ideas, shop updates and everyday ways to bring Lebanese staples to the table.","تابع المونة لأفكار الموسم وأخبار المحل وطرق يومية لتقديم الأساسيات اللبنانية على السفرة."))+'</p></div><div class="moments-grid">'+pics.map(function(x){var p=safeProducts().find(function(item){return item.id===x[0]}),media=pvisual(p,"moment-product-image");return '<a class="moment-card" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">'+media+'<span>'+esc(x[1])+' ↗</span></a>'}).join("")+'</div><a class="moments-cta" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">@zaytwmouneh · Instagram ↗</a></div>';
+    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Pantry moments","لحظات من المونة"))+'</p><h2>'+esc(txt("Food that feels","مونة تشبه"))+' <em>'+esc(txt("familiar.","البيت."))+'</em></h2></div><p>'+esc(txt("Follow the pantry for seasonal ideas, shop updates and everyday ways to bring Lebanese staples to the table.","تابع المونة لأفكار الموسم وأخبار المحل وطرق يومية لتقديم الأساسيات اللبنانية على السفرة."))+'</p></div><div class="moments-grid">'+pics.map(function(x){var p=safeProducts().find(function(item){return item.id===x[0]}),media=pvisual(p,"moment-product-image");return '<a class="moment-card" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">'+media+'<span>'+esc(x[1])+' ↗</span></a>'}).join("")+'</div><a class="moments-cta" href="https://instagram.com/zaytwmouneh" target="_blank" rel="noopener">@zaytwmouneh · '+esc(txt("Instagram","إنستغرام"))+' ↗</a></div>';
     anchor.before(sec);
   }
 
@@ -695,6 +710,7 @@
     }else{
       injectGiftPremium();
     }
+    hydrateRecipePage();
     qa("[data-gift-lang]").forEach(function(x){x.classList.toggle("is-active",x.dataset.giftLang===(isAr()?"ar":"en"))});
     updateGiftPreview();
   }
@@ -724,73 +740,33 @@
 })();
 
 
-/* ===== v35 HD animated shop hero loader ===== */
+/* Native HD media: stream directly, retain a poster and manual playback. */
 (function(){
   function loadShopHeroVideo(){
     var video=document.getElementById("shopHeroVideo");
     if(!video)return;
-
-    var reduceMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
-    var saveData=Boolean(connection&&connection.saveData);
-    if(reduceMotion||saveData)return;
-
-    var mobile=window.matchMedia&&window.matchMedia("(max-width:760px)").matches;
-    var slowConnection=Boolean(connection&&["slow-2g","2g","3g"].indexOf(connection.effectiveType)!==-1);
-    var lowMemory=Number(navigator.deviceMemory||8)<=4;
-    var useLite=Boolean(mobile||slowConnection||lowMemory);
-    var folder=useLite?"assets/shop-hero-video/":"assets/shop-hero-video-hd/";
-    var partCount=useLite?5:9;
-    var expectedLength=useLite?47724:1061516;
-    var cacheTag=useLite?"20261003-mobile-stable1":"20261002-hero-hd1";
-    var parts=[];
-    for(var part=1;part<=partCount;part++){
-      parts.push(folder+"part"+String(part).padStart(2,"0")+".b64?v="+cacheTag);
+    var button=document.getElementById("homeVideoPlayback");
+    var visible=true,manual=false;
+    video.muted=true;
+    video.defaultMuted=true;
+    video.playsInline=true;
+    function play(){
+      if(!visible||document.hidden||(!manual&&shouldLimitHeroMedia()))return;
+      video.play().catch(function(){if(button)button.hidden=false;});
     }
-    video.preload=useLite?"metadata":"auto";
-
-    Promise.all(parts.map(function(url){
-      return fetch(url,{cache:"force-cache"}).then(function(response){
-        if(!response.ok)throw new Error("Hero video chunk failed: "+response.status);
-        return response.text();
-      });
-    })).then(function(chunks){
-      var base64=chunks.join("").replace(/\s+/g,"");
-      if(base64.length!==expectedLength)throw new Error("Hero video data is incomplete");
-
-      var binary=window.atob(base64);
-      var bytes=new Uint8Array(binary.length);
-      for(var i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
-
-      var objectUrl=URL.createObjectURL(new Blob([bytes],{type:"video/mp4"}));
-      window.addEventListener("pagehide",function(){
-        try{URL.revokeObjectURL(objectUrl)}catch(e){}
-      },{once:true});
-      video.muted=true;
-      video.defaultMuted=true;
-      video.loop=true;
-      video.playsInline=true;
-      video.setAttribute("muted","");
-      video.setAttribute("playsinline","");
-      video.src=objectUrl;
-
-      var reveal=function(){
-        video.classList.add("is-ready");
-      };
-      video.addEventListener("loadeddata",reveal,{once:true});
-      video.addEventListener("canplay",reveal,{once:true});
-      video.play().catch(function(){
-        /* First frame still fades in even if a browser blocks autoplay. */
-        reveal();
-      });
-    }).catch(function(error){
-      console.warn("Animated shop hero fallback active",error);
-    });
+    video.addEventListener("loadeddata",function(){video.classList.add("is-ready");});
+    video.addEventListener("playing",function(){video.classList.add("is-ready");if(button)button.hidden=true;});
+    video.addEventListener("pause",function(){if(button)button.hidden=false;});
+    video.addEventListener("error",function(){if(button)button.hidden=false;});
+    if(button)button.addEventListener("click",function(){manual=true;play();});
+    if("IntersectionObserver" in window)new IntersectionObserver(function(entries){
+      visible=entries[0].isIntersecting;
+      if(visible)play();else video.pause();
+    },{threshold:.05}).observe(video);
+    document.addEventListener("visibilitychange",function(){if(document.hidden)video.pause();else play();});
+    window.addEventListener("pageshow",play);
+    play();
   }
-
-  if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",loadShopHeroVideo,{once:true});
-  }else{
-    loadShopHeroVideo();
-  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",loadShopHeroVideo,{once:true});
+  else loadShopHeroVideo();
 })();

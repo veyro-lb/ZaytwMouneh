@@ -5794,3 +5794,67 @@ body[data-page="home"] .home-pantry-hero .shop-hero-video{
     transform:none!important;
   }
 }
+
+
+/* ===== v57 sharper mobile hero video ===== */
+@media(max-width:760px){
+  body[data-page="home"] .home-pantry-hero .shop-hero-video{
+    object-fit:cover!important;
+    object-position:72% center!important;
+    width:100%!important;
+    height:100%!important;
+    transform:none!important;
+    filter:none!important;
+    image-rendering:auto!important;
+    opacity:0;
+    backface-visibility:hidden!important;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  body[data-page="home"] .home-pantry-hero .shop-hero-video.is-ready{
+    opacity:1!important;
+  }
+
+  /* Lighter protection over the video so detail does not get crushed into mud. */
+  body[data-page="home"] .home-pantry-hero .shop-hero-video-shade{
+    background:
+      linear-gradient(180deg,
+        rgba(3,43,19,.50) 0%,
+        rgba(3,43,19,.34) 28%,
+        rgba(3,43,19,.18) 52%,
+        rgba(3,43,19,.28) 74%,
+        rgba(3,43,19,.42) 100%)!important;
+  }
+
+  /* Keep the content card readable without blurring the HD video behind it. */
+  body[data-page="home"] .home-pantry-hero .shop-intro-board{
+    background:rgba(3,45,20,.82)!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+}
+
+@media(max-width:420px){
+  body[data-page="home"] .home-pantry-hero .shop-hero-video{
+    object-position:74% center!important;
+  }
+}
+
+/* Keep a real video frame visible before playback or when autoplay is blocked. */
+body[data-page="home"] .home-pantry-hero .shop-hero-video{opacity:1!important;display:block!important}
+.hero-video-play{position:absolute;z-index:9;inset:auto auto 22px 22px;min-height:44px;padding:10px 16px;border:1px solid #e9c766;border-radius:24px;background:#07351fee;color:#fff4cf;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.hero-video-play[hidden]{display:none!important}
+.hero-video-play:focus-visible{outline:3px solid #fff;outline-offset:4px}
+#homeVideoPlayback{inset:auto 22px 22px auto}
+#scenePlayback{inset:20px auto auto 20px}
+.scene-controls .scene-dot{display:grid;place-items:center;width:44px;height:44px;background:transparent;box-shadow:none;border-radius:50%}
+.scene-controls .scene-dot::before{content:"";width:10px;height:10px;border-radius:50%;background:#ffffff70}
+.scene-controls .scene-dot.is-active::before{background:var(--gold2)}
+.scene-controls .scene-dot:focus-visible{outline:2px solid var(--gold2);outline-offset:1px}
+@media(max-width:760px){
+  body[data-page="shop"] .shop-story-hero .hero-showcase{display:block!important;height:250px!important;min-height:250px!important;margin-bottom:20px;order:0!important}
+  body[data-page="shop"] .shop-story-hero .scene-copy{left:14px;right:14px;bottom:54px;max-width:calc(100% - 28px);padding:12px!important}
+  body[data-page="shop"] .shop-story-hero .scene-copy strong{font-size:1.4rem!important;line-height:1.15}
+  body[data-page="shop"] .shop-story-hero .scene-copy small{display:none}
+  body[data-page="shop"] .shop-story-hero .scene-controls{right:14px;bottom:7px;gap:0;transform:none!important}
+}

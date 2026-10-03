@@ -740,83 +740,33 @@
 })();
 
 
-/* ===== v35 HD animated shop hero loader ===== */
+/* Native HD media: stream directly, retain a poster and manual playback. */
 (function(){
   function loadShopHeroVideo(){
     var video=document.getElementById("shopHeroVideo");
     if(!video)return;
-
-    var reduceMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
-    var saveData=Boolean(connection&&connection.saveData);
-    if(reduceMotion||saveData)return;
-
-    var mobile=window.matchMedia&&window.matchMedia("(max-width:760px)").matches;
-    var effectiveType=connection&&connection.effectiveType?connection.effectiveType:"4g";
-    var slowConnection=Boolean(["slow-2g","2g","3g"].indexOf(effectiveType)!==-1);
-    var veryLowMemory=Number(navigator.deviceMemory||8)<=2;
-
-    /*
-      Phones on normal 4G/Wi-Fi now receive the same 1280x720 HD master as desktop.
-      The old mobile path forced a tiny ~35 KB encode on every phone, which is why
-      the hero looked soft. Keep that lite encode only as a safety fallback for
-      genuinely slow / very low-memory devices.
-    */
-    var useLite=Boolean(slowConnection||veryLowMemory);
-    var folder=useLite?"assets/shop-hero-video/":"assets/shop-hero-video-hd/";
-    var partCount=useLite?5:9;
-    var expectedLength=useLite?47724:1061516;
-    var cacheTag=useLite?"20261003-mobile-lite2":"20261003-mobile-hd2";
-    var parts=[];
-    for(var part=1;part<=partCount;part++){
-      parts.push(folder+"part"+String(part).padStart(2,"0")+".b64?v="+cacheTag);
+    var button=document.getElementById("homeVideoPlayback");
+    var visible=true,manual=false;
+    video.muted=true;
+    video.defaultMuted=true;
+    video.playsInline=true;
+    function play(){
+      if(!visible||document.hidden||(!manual&&shouldLimitHeroMedia()))return;
+      video.play().catch(function(){if(button)button.hidden=false;});
     }
-    video.preload="auto";
-    video.dataset.videoQuality=useLite?"lite":"hd";
-    if(mobile&&!useLite)video.setAttribute("data-mobile-hd","true");
-
-    Promise.all(parts.map(function(url){
-      return fetch(url,{cache:"force-cache"}).then(function(response){
-        if(!response.ok)throw new Error("Hero video chunk failed: "+response.status);
-        return response.text();
-      });
-    })).then(function(chunks){
-      var base64=chunks.join("").replace(/\s+/g,"");
-      if(base64.length!==expectedLength)throw new Error("Hero video data is incomplete");
-
-      var binary=window.atob(base64);
-      var bytes=new Uint8Array(binary.length);
-      for(var i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
-
-      var objectUrl=URL.createObjectURL(new Blob([bytes],{type:"video/mp4"}));
-      window.addEventListener("pagehide",function(){
-        try{URL.revokeObjectURL(objectUrl)}catch(e){}
-      },{once:true});
-      video.muted=true;
-      video.defaultMuted=true;
-      video.loop=true;
-      video.playsInline=true;
-      video.setAttribute("muted","");
-      video.setAttribute("playsinline","");
-      video.src=objectUrl;
-
-      var reveal=function(){
-        video.classList.add("is-ready");
-      };
-      video.addEventListener("loadeddata",reveal,{once:true});
-      video.addEventListener("canplay",reveal,{once:true});
-      video.play().catch(function(){
-        /* First frame still fades in even if a browser blocks autoplay. */
-        reveal();
-      });
-    }).catch(function(error){
-      console.warn("Animated shop hero fallback active",error);
-    });
+    video.addEventListener("loadeddata",function(){video.classList.add("is-ready");});
+    video.addEventListener("playing",function(){video.classList.add("is-ready");if(button)button.hidden=true;});
+    video.addEventListener("pause",function(){if(button)button.hidden=false;});
+    video.addEventListener("error",function(){if(button)button.hidden=false;});
+    if(button)button.addEventListener("click",function(){manual=true;play();});
+    if("IntersectionObserver" in window)new IntersectionObserver(function(entries){
+      visible=entries[0].isIntersecting;
+      if(visible)play();else video.pause();
+    },{threshold:.05}).observe(video);
+    document.addEventListener("visibilitychange",function(){if(document.hidden)video.pause();else play();});
+    window.addEventListener("pageshow",play);
+    play();
   }
-
-  if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",loadShopHeroVideo,{once:true});
-  }else{
-    loadShopHeroVideo();
-  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",loadShopHeroVideo,{once:true});
+  else loadShopHeroVideo();
 })();

@@ -353,6 +353,33 @@ const EXTRA_UI={
   }
 };
 
+const PAGE_I18N={
+  home:{
+    en:{title:"Zayt w Mouneh | Lebanese Pantry & Mouneh",description:"Authentic Lebanese pantry essentials, mouneh and gifts since 2006, with clear prices and delivery across Lebanon.",skip:"Skip to catalogue"},
+    ar:{title:"زيت ومونة | مونة لبنانية أصيلة",description:"مونة لبنانية أصيلة وهدايا منذ 2006، مع أسعار واضحة وتوصيل إلى مختلف المناطق في لبنان.",skip:"الانتقال إلى المنتجات"}
+  },
+  shop:{
+    en:{title:"Shop Lebanese Pantry Essentials | Zayt w Mouneh",description:"Browse 300+ Lebanese pantry products with clear sizes and prices, origin information, favourites and direct WhatsApp ordering.",skip:"Skip to catalogue"},
+    ar:{title:"تسوّق المونة اللبنانية | زيت ومونة",description:"تصفّح أكثر من 300 منتج من المونة اللبنانية مع أحجام وأسعار واضحة ومعلومات المصدر والطلب المباشر عبر واتساب.",skip:"الانتقال إلى المنتجات"}
+  },
+  about:{
+    en:{title:"Our Story & Provenance | Zayt w Mouneh",description:"Learn about Zayt w Mouneh since 2006 and the origins behind the pantry: Bekaa, Koura, Mount Lebanon and Chouf.",skip:"Skip to our story"},
+    ar:{title:"قصتنا ومصادر المونة | زيت ومونة",description:"تعرّف إلى قصة زيت ومونة منذ 2006 وإلى مصادر المونة من البقاع والكورة وجبل لبنان والشوف.",skip:"الانتقال إلى قصتنا"}
+  },
+  contact:{
+    en:{title:"Contact, Delivery & Visit | Zayt w Mouneh",description:"Contact Zayt w Mouneh in Sebline, order on WhatsApp, and understand delivery and ordering across Lebanon.",skip:"Skip to contact"},
+    ar:{title:"التواصل والتوصيل والزيارة | زيت ومونة",description:"تواصل مع زيت ومونة في سبلين، اطلب عبر واتساب، وتعرّف إلى تفاصيل التوصيل والطلب في لبنان.",skip:"الانتقال إلى التواصل"}
+  },
+  gift:{
+    en:{title:"Lebanese Pantry Gifts | Zayt w Mouneh",description:"Choose a ready-made Lebanese pantry gift or build your own from the catalogue, with delivery across Lebanon.",skip:"Skip to gift builder"},
+    ar:{title:"هدايا من المونة اللبنانية | زيت ومونة",description:"اختر هدية جاهزة من المونة اللبنانية أو حضّر هديتك من كامل المنتجات مع توصيل إلى مختلف المناطق في لبنان.",skip:"الانتقال إلى تجهيز الهدية"}
+  },
+  recipes:{
+    en:{title:"Lebanese Pantry Recipes | Zayt w Mouneh",description:"Lebanese pantry recipe ideas from Zayt w Mouneh — build mujadara, manoushe, fattoush and other pantry bundles from the current catalogue.",skip:"Skip to recipes"},
+    ar:{title:"وصفات من المونة اللبنانية | زيت ومونة",description:"أفكار وصفات لبنانية من زيت ومونة، مع مكونات المونة للمجدّرة والمنقوشة والفتوش وغيرها من كامل المنتجات الحالية.",skip:"الانتقال إلى الوصفات"}
+  }
+};
+
 let lang=safeStorageGet(LANG_KEY)==="ar"?"ar":"en";
 let activeCategory="All";
 let query="";
@@ -722,6 +749,71 @@ function healthNoteFor(p){
   return null;
 }
 
+function applyPageMetadata(){
+  const copy=(PAGE_I18N[CURRENT_PAGE]||PAGE_I18N.home)[lang];
+  if(!copy)return;
+  document.title=copy.title;
+  const md=document.querySelector('meta[name="description"]');if(md)md.content=copy.description;
+  const ogTitle=document.querySelector('meta[property="og:title"]');if(ogTitle)ogTitle.content=copy.title;
+  const ogDesc=document.querySelector('meta[property="og:description"]');if(ogDesc)ogDesc.content=copy.description;
+  const ogLocale=document.querySelector('meta[property="og:locale"]');if(ogLocale)ogLocale.content=lang==="ar"?"ar_LB":"en_LB";
+  const skip=$("#skipLink");if(skip)skip.textContent=copy.skip;
+}
+
+function applyAccessibleLanguage(){
+  const ar=lang==="ar";
+  const aria=(selector,en,arText)=>{const el=document.querySelector(selector);if(el)el.setAttribute("aria-label",ar?arText:en)};
+  aria(".nav","Primary navigation","التنقل الرئيسي");
+  aria(".brand","Zayt w Mouneh home","الصفحة الرئيسية لزيت ومونة");
+  const brandLogo=document.querySelector(".brand-logo img");if(brandLogo)brandLogo.alt=ar?"شعار زيت ومونة":"Zayt w Mouneh logo";
+  const navToggle=$("#navToggle");
+  if(navToggle)navToggle.setAttribute("aria-label",navToggle.getAttribute("aria-expanded")==="true"?(ar?"إغلاق القائمة":"Close menu"):(ar?"فتح القائمة":"Open menu"));
+  aria(".nav-search","Search the pantry","ابحث في المونة");
+  aria("#languageSwitch","Language","اللغة");
+  aria("#cartButton","Open cart","فتح السلة");
+  aria("#cartDrawer","Shopping cart","سلة المشتريات");
+  aria("#cartClose","Close cart","إغلاق السلة");
+  aria("#productModalClose","Close product details","إغلاق تفاصيل المنتج");
+  aria("#modalQtyMinus","Decrease quantity","تقليل الكمية");
+  aria("#modalQtyPlus","Increase quantity","زيادة الكمية");
+  aria("#categories","Shop by category","تسوّق حسب القسم");
+  aria("#categoryQuickGrid","All product categories","كل أقسام المنتجات");
+  aria("#categorySelect","Filter catalogue by category","تصفية المنتجات حسب القسم");
+  aria(".catalogue-head-meta","Catalogue overview","ملخص المنتجات");
+  aria(".shop-trust-ribbon","Shopping benefits","مزايا التسوق");
+  aria(".pantry-scenes","Pantry films","مشاهد من المونة");
+  aria(".scene-controls","Choose hero film","اختر مشهد المونة");
+  const sceneLabels=ar?["عرض مشهد العسل","عرض مشهد العدس","عرض مشهد القمح"]:["Show honey film","Show lentil film","Show wheat film"];
+  $$("[data-scene-dot]").forEach((btn,i)=>btn.setAttribute("aria-label",sceneLabels[i]||sceneLabels[0]));
+  aria(".gift-v4-hero-card","How gifting works","كيف تعمل الهدية");
+  aria("#giftCategorySelect","Browse gift products by category","تصفّح منتجات الهدية حسب القسم");
+  const menuInstagram=document.querySelector('.menu-utility-link[href*="instagram"] span');if(menuInstagram)menuInstagram.textContent=ar?"إنستغرام":"Instagram";
+  const footerWhatsApp=document.querySelector('footer a[href^="https://wa.me"]');if(footerWhatsApp)footerWhatsApp.textContent=ar?"واتساب":"WhatsApp";
+  const socialInstagram=document.querySelector('#socialBand a[href*="instagram"] span');if(socialInstagram)socialInstagram.textContent=ar?"إنستغرام":"Instagram";
+  if($("#toastText")&&!$("#toast").classList.contains("is-visible"))$("#toastText").textContent=ar?"تمت الإضافة إلى السلة":"Added to cart";
+  if($("#productModalAdd")&&!currentModalProduct)$("#productModalAdd").textContent=UI[lang].add;
+}
+
+function renderGiftPresentationOptions(){
+  const theme=$("#giftTheme"),card=$("#giftCardLanguage");
+  if(theme){
+    const current=theme.value||"Olive green";
+    const labels=lang==="ar"
+      ?{"Olive green":"أخضر زيتوني","Natural linen":"كتان طبيعي","Warm gold":"ذهبي دافئ"}
+      :{"Olive green":"Olive green","Natural linen":"Natural linen","Warm gold":"Warm gold"};
+    theme.innerHTML=Object.entries(labels).map(([value,label])=>`<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`).join("");
+    theme.value=current;
+  }
+  if(card){
+    const current=card.value||"English";
+    const labels=lang==="ar"
+      ?{"English":"الإنجليزية","Arabic":"العربية","Bilingual":"ثنائية اللغة"}
+      :{"English":"English","Arabic":"Arabic","Bilingual":"English + العربية"};
+    card.innerHTML=Object.entries(labels).map(([value,label])=>`<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`).join("");
+    card.value=current;
+  }
+}
+
 function applyLanguage(next,{immediate=false}={}){
   lang=next==="ar"?"ar":"en";
   safeStorageSet(LANG_KEY,lang);
@@ -732,6 +824,8 @@ function applyLanguage(next,{immediate=false}={}){
     document.documentElement.classList.add("lang-switching");
     document.documentElement.lang=lang;
     document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+    applyPageMetadata();
+    applyAccessibleLanguage();
 
   const textMap={
     skipLink:"skipLink",announcementText:"announcementText",announcementOrder:"announcementOrder",brandWordmark:"brand",
@@ -1291,6 +1385,8 @@ function sendGiftOrder(){
   const sender=$("#giftSender")?.value.trim()||"—";
   const theme=$("#giftTheme")?.value||"Olive green";
   const cardLanguage=$("#giftCardLanguage")?.value||"English";
+  const themeLabel=lang==="ar"?({"Olive green":"أخضر زيتوني","Natural linen":"كتان طبيعي","Warm gold":"ذهبي دافئ"}[theme]||theme):theme;
+  const cardLanguageLabel=lang==="ar"?({"English":"الإنجليزية","Arabic":"العربية","Bilingual":"ثنائية اللغة"}[cardLanguage]||cardLanguage):({"English":"English","Arabic":"Arabic","Bilingual":"English + العربية"}[cardLanguage]||cardLanguage);
   const hidePrices=$("#giftHidePrices")?.checked!==false;
   const total=rows.reduce((sum,row)=>sum+row.qty*Number(row.v.price),0);
   const ref=orderReference("ZW-GIFT");
@@ -1303,8 +1399,8 @@ function sendGiftOrder(){
     (lang==="ar"?"المستلم":"Recipient")+": "+recipient,
     (lang==="ar"?"المناسبة":"Occasion")+": "+occasion,
     (lang==="ar"?"التغليف":"Packing")+": "+packing,
-    (lang==="ar"?"طابع الهدية":"Gift theme")+": "+theme,
-    (lang==="ar"?"لغة البطاقة":"Card language")+": "+cardLanguage,
+    (lang==="ar"?"طابع الهدية":"Gift theme")+": "+themeLabel,
+    (lang==="ar"?"لغة البطاقة":"Card language")+": "+cardLanguageLabel,
     (lang==="ar"?"إخفاء الأسعار عن المستلم":"Hide prices from recipient")+": "+(hidePrices?(lang==="ar"?"نعم":"Yes"):(lang==="ar"?"لا":"No")),
     (lang==="ar"?"منطقة التوصيل":"Delivery area")+": "+area,
     (lang==="ar"?"رسالة الهدية":"Gift message")+": "+message,
@@ -1343,6 +1439,7 @@ function applyExtraLanguage(){
   if($("#giftArea"))$("#giftArea").placeholder=t.giftAreaPlaceholder;
   if($("#giftMessage"))$("#giftMessage").placeholder=t.giftMessagePlaceholder;
   if($("#giftSender"))$("#giftSender").placeholder=t.giftSenderPlaceholder;
+  renderGiftPresentationOptions();
   renderGiftOptions();
   renderGiftCategorySelect();
   renderGiftPickerResults();
@@ -1659,12 +1756,14 @@ function setupNav(){
     n.classList.remove("is-open");
     document.body.classList.remove("menu-open");
     t.setAttribute("aria-expanded","false");
+    t.setAttribute("aria-label",lang==="ar"?"فتح القائمة":"Open menu");
   };
   t.addEventListener("click",e=>{
     e.stopPropagation();
     const open=n.classList.toggle("is-open");
     document.body.classList.toggle("menu-open",open);
     t.setAttribute("aria-expanded",String(open));
+    t.setAttribute("aria-label",open?(lang==="ar"?"إغلاق القائمة":"Close menu"):(lang==="ar"?"فتح القائمة":"Open menu"));
   });
   n.addEventListener("click",e=>e.stopPropagation());
   document.querySelectorAll("#navLinks a").forEach(a=>a.addEventListener("click",close));
@@ -1817,4 +1916,5 @@ function init(){
 
 window.chooseWelcomeLanguage=chooseWelcomeLanguage;
 window.applyLanguage=applyLanguage;
+window.applyPageMetadata=applyPageMetadata;
 document.addEventListener("DOMContentLoaded",init);

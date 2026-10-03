@@ -18,7 +18,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--green-2);box-shadow:0
 .button-primary{background:var(--green);color:#fff}.button-primary:hover{background:#0e321d}.button-secondary{background:#eef2ec;color:var(--green);border:1px solid #d7dfd5}.danger-button{background:#f7e8e6;color:var(--danger)}.button-small{padding:10px 14px;font-size:13px}
 .form-status{min-height:18px;margin:0;font-size:12px;color:var(--muted)}.form-status.is-error{color:var(--danger)}.form-status.is-success{color:var(--green-2)}.auth-security{display:block;margin-top:20px;color:#8a918b;font-size:11px}
 .setup-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0}.setup-grid article{padding:18px;border-radius:16px;background:#f2f4ee;border:1px solid #e0e5dc}.setup-grid span{display:block;color:var(--gold);font-weight:800;font-size:12px;margin-bottom:12px}.setup-grid strong{display:block;font-size:14px}.setup-grid p{font-size:12px;line-height:1.5;color:var(--muted);margin:8px 0 0}.setup-grid code,.auth-copy code{background:#e9ece5;border-radius:6px;padding:2px 5px}
-.admin-app{position:relative;z-index:1;min-height:100vh}.admin-sidebar{position:fixed;z-index:20;left:0;top:0;bottom:0;width:var(--sidebar);background:#0e321d;color:#e8efe9;padding:18px;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.06)}
+.admin-app{position:relative;z-index:auto;min-height:100vh}.admin-sidebar{position:fixed;z-index:20;left:0;top:0;bottom:0;width:var(--sidebar);background:#0e321d;color:#e8efe9;padding:18px;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.06)}
 .sidebar-head{display:flex;align-items:center;justify-content:space-between}.sidebar-brand{display:flex;align-items:center;gap:11px;color:#fff;text-decoration:none;padding:8px}.sidebar-brand img{width:42px;height:42px;object-fit:contain;background:#f7f2e8;border-radius:50%;padding:5px}.sidebar-brand span{display:grid}.sidebar-brand strong{font-size:14px}.sidebar-brand small{font-size:10px;color:#9eb2a4;margin-top:3px}.sidebar-close{display:none}
 .admin-nav{display:grid;gap:5px;margin-top:34px}.admin-nav button{border:0;background:transparent;color:#b9c9bc;border-radius:12px;padding:12px 13px;display:grid;grid-template-columns:26px 1fr auto;align-items:center;text-align:left;cursor:pointer}
 .admin-nav button b{font-size:13px}.admin-nav button span{font-size:15px}.admin-nav button em{font-style:normal;font-size:10px;background:rgba(255,255,255,.08);padding:3px 7px;border-radius:20px}.admin-nav button:hover,.admin-nav button.is-active{background:rgba(255,255,255,.10);color:#fff}
@@ -832,4 +832,109 @@ html[dir="rtl"] .auth-language-toggle{right:auto;left:24px}
 }
 @media(max-width:760px){
   html[dir="rtl"] .topbar-right .button-primary:after{content:"+ إضافة"}
+}
+
+/* =========================================================
+   Mobile navigation interaction fix
+   The app must not form a lower stacking context than its backdrop.
+   ========================================================= */
+.sidebar-backdrop{
+  z-index:110;
+  background:rgba(5,18,10,.52);
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+  touch-action:none;
+}
+.admin-sidebar{z-index:120}
+.admin-topbar{z-index:40}
+
+@media(max-width:900px){
+  .admin-sidebar{
+    top:0;
+    bottom:0;
+    height:100dvh;
+    max-height:100dvh;
+    z-index:120;
+    pointer-events:auto;
+    visibility:hidden;
+    opacity:0;
+    transform:translateX(-104%);
+    transition:transform .22s ease,opacity .18s ease,visibility 0s linear .22s;
+  }
+  .admin-sidebar.is-open{
+    visibility:visible;
+    opacity:1;
+    transform:translateX(0);
+    transition:transform .22s ease,opacity .18s ease;
+  }
+  html[dir="rtl"] .admin-sidebar{
+    transform:translateX(104%);
+  }
+  html[dir="rtl"] .admin-sidebar.is-open{
+    transform:translateX(0);
+  }
+  .sidebar-backdrop:not([hidden]){
+    display:block!important;
+    position:fixed;
+    inset:0;
+    z-index:110;
+  }
+  body.admin-menu-open{
+    overflow:hidden!important;
+    overscroll-behavior:none;
+    touch-action:none;
+  }
+  body.admin-menu-open .admin-sidebar{
+    touch-action:auto;
+  }
+}
+
+/* On the phone this is intentionally a full owner menu, not a narrow desktop drawer. */
+@media(max-width:560px){
+  .admin-sidebar{
+    width:100vw;
+    max-width:none;
+    padding:
+      calc(12px + env(safe-area-inset-top))
+      14px
+      calc(14px + env(safe-area-inset-bottom));
+    border:0;
+    box-shadow:none;
+  }
+  .sidebar-head{
+    min-height:58px;
+    flex:0 0 auto;
+  }
+  .sidebar-brand img{width:46px;height:46px}
+  .admin-nav{
+    margin-top:18px;
+    gap:7px;
+  }
+  .admin-nav button{
+    min-height:56px;
+    padding:13px 14px;
+    border-radius:14px;
+    font-size:14px;
+  }
+  .admin-nav button b{font-size:14px}
+  .admin-nav button span{font-size:18px}
+  .admin-nav button em{
+    min-width:32px;
+    min-height:24px;
+    display:grid;
+    place-items:center;
+  }
+  .sidebar-foot{
+    padding-top:12px;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .sidebar-foot a,.sidebar-foot button{
+    min-height:48px;
+    border-radius:12px;
+    padding:10px 12px;
+  }
+  .sidebar-foot a:active,.sidebar-foot button:active,
+  .admin-nav button:active{
+    background:rgba(255,255,255,.16);
+  }
 }

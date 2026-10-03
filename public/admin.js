@@ -3169,17 +3169,20 @@
     $("copyOrderCode")?.addEventListener("click",copyOrderCode);
     $("orderWhatsAppTools")?.addEventListener("click",e=>{const b=e.target.closest("[data-order-message]");if(b)sendOrderMessage(b.dataset.orderMessage);});
     $("saveOrderPrivateNote")?.addEventListener("click",saveOrderPrivateNote);
-    $("exportOrdersButton")?.addEventListener("click",exportOrders);
+    $("exportOrdersButton")?.addEventListener("click",()=>openDataCenter("orders"));
     $("customerSearch")?.addEventListener("input",e=>{state.customerFilter.q=e.target.value;renderCustomers();});
     $("customerSort")?.addEventListener("change",e=>{state.customerFilter.sort=e.target.value;renderCustomers();});
+    $("customerExportButton")?.addEventListener("click",()=>openDataCenter("customers"));
     $("customerGrid")?.addEventListener("click",e=>{const b=e.target.closest("[data-customer-orders]");if(!b)return;const c=customerGroups().find(x=>x.key===b.dataset.customerOrders);if(!c)return;setView("orders");state.orderScope="all";state.orderCommand="";state.orderFilter.q=c.phone||c.name;$("orderSearch").value=state.orderFilter.q;renderOrders();});
+    $("ownerInboxList")?.addEventListener("click",e=>{const b=e.target.closest("[data-inbox-action]");if(b)handleInboxAction(b.dataset.inboxAction);});
     $("analyticsRange")?.addEventListener("change",renderAnalytics);
     $("healthIncompleteProducts")?.addEventListener("click",()=>applyHealthFilter("needs-attention"));
     $("healthMissingPhotos")?.addEventListener("click",()=>applyHealthFilter("missing-photo"));
     $("healthHiddenProducts")?.addEventListener("click",()=>applyHealthFilter("hidden"));
     $("healthDraftProducts")?.addEventListener("click",()=>applyHealthFilter("draft"));
-    $("exportProductsButton")?.addEventListener("click",exportOverrides);
-    $("exportBackupButton")?.addEventListener("click",exportBackup);
+    $("exportProductsButton")?.addEventListener("click",()=>openDataCenter("products"));
+    $("exportBackupButton")?.addEventListener("click",()=>openDataCenter("backup"));
+    $("openDataCenterButton")?.addEventListener("click",()=>openDataCenter());
     $("restoreBackupInput")?.addEventListener("change",e=>restoreBackup(e.target.files?.[0]));
     $("installAdminApp")?.addEventListener("click",installAdminApp);
     $$("[data-overview-pref]").forEach(input=>input.addEventListener("change",()=>saveOverviewPreference(input.dataset.overviewPref,input.checked)));
@@ -3197,6 +3200,19 @@
       if(restore){restoreCloudBackup(restore.dataset.restoreCloudBackup);return;}
       const download=e.target.closest("[data-download-cloud-backup]");
       if(download){const b=state.backups.find(x=>String(x.id)===String(download.dataset.downloadCloudBackup));if(b)downloadJson(`zwm-cloud-backup-${b.id}.json`,b.snapshot);}
+    });
+    $("closeDataCenter")?.addEventListener("click",closeDataCenter);
+    $("dataCenterModal")?.addEventListener("click",e=>{if(e.target===$("dataCenterModal"))closeDataCenter();});
+    $("dataCenterModal")?.addEventListener("click",e=>{const b=e.target.closest("[data-export-dataset][data-export-format]");if(b)exportData(b.dataset.exportDataset,b.dataset.exportFormat);});
+    $("productImportFile")?.addEventListener("change",e=>readProductImportFile(e.target.files?.[0]));
+    $("clearProductImport")?.addEventListener("click",()=>clearProductImport());
+    $("applyProductImport")?.addEventListener("click",applyProductImport);
+    $("productImportDropzone")?.addEventListener("dragover",e=>{e.preventDefault();e.currentTarget.classList.add("is-dragging");});
+    $("productImportDropzone")?.addEventListener("dragleave",e=>e.currentTarget.classList.remove("is-dragging"));
+    $("productImportDropzone")?.addEventListener("drop",e=>{
+      e.preventDefault();e.currentTarget.classList.remove("is-dragging");
+      const file=e.dataTransfer?.files?.[0];
+      if(file){const input=$("productImportFile");const dt=new DataTransfer();dt.items.add(file);input.files=dt.files;readProductImportFile(file);}
     });
     $("globalSearchButton")?.addEventListener("click",openGlobalSearch);
     $("mobileGlobalSearchButton")?.addEventListener("click",()=>{document.querySelector("#mobileMoreSheet").hidden=true;document.querySelector("#mobileMoreBackdrop").hidden=true;openGlobalSearch();});
@@ -3225,9 +3241,14 @@
     setupInstallPrompt();
     document.addEventListener("keydown",e=>{
       if(e.key!=="Escape")return;
+      if(!$("dataCenterModal")?.hidden){closeDataCenter();return;}
+      if(!$("contentPreviewModal")?.hidden){closeContentPreview();return;}
+      if(!$("globalSearchModal")?.hidden){closeGlobalSearch();return;}
+      if(!$("manualOrderModal")?.hidden){closeManualOrder();return;}
+      if(!$("productModal")?.hidden){closeProductEditor();return;}
+      if(!$("orderModal")?.hidden){closeOrderDetails();return;}
+      if(!$("quickActionSheet")?.hidden){closeQuickActions();return;}
       if($("adminSidebar")?.classList.contains("is-open")){closeSidebar();return;}
-      if(!$("productModal")?.hidden)closeProductEditor();
-      else if(!$("orderModal")?.hidden)closeOrderDetails();
     });
     window.addEventListener("resize",()=>{
       if(window.innerWidth>900&&$("adminSidebar")?.classList.contains("is-open"))closeSidebar();

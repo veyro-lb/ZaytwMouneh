@@ -1300,6 +1300,7 @@
     $("orderDetailSent").textContent=`Created ${new Date(order.submitted_at).toLocaleString([], {year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}`;
     $("orderDetailCustomer").textContent=customer;
     $("orderDetailArea").textContent=order.area||"Area not supplied";
+    $("orderDetailPhone").textContent=order.customer_phone||"No phone saved";
     $("orderDetailKind").textContent=order.kind==="gift"?"Gift order":"Pantry order";
     $("orderDetailLanguage").textContent=order.language==="ar"?"Arabic order":"English order";
     $("orderDetailTotal").textContent=money(order.total);
@@ -1312,6 +1313,12 @@
         <strong>${money(item.subtotal ?? ((Number(item.unit_price)||0)*(Number(item.qty)||1)))}</strong>
       </div>`).join("")||'<p class="empty-state">No item details stored.</p>';
     $("orderDetailNotes").textContent=order.notes||"No notes.";
+    $("orderPrivateNote").value=order.private_notes||state.notes.get(`order:${order.reference}`)?.note||"";
+    const customerHistory=customerHistoryFor(order);
+    $("orderCustomerHistory").innerHTML=customerHistory?
+      `<div class="customer-history-summary"><div><b>${customerHistory.orders.length}</b><span>orders</span></div><div><b>${money(customerHistory.total)}</b><span>total spend</span></div></div>
+       <div class="customer-history-orders">${customerHistory.orders.slice().sort((a,b)=>new Date(b.submitted_at)-new Date(a.submitted_at)).slice(0,5).map(o=>`<button type="button" data-view-order="${esc(o.reference)}"><span>${esc(o.reference)}</span><b>${money(o.total)}</b><small>${esc(when(o.submitted_at))}</small></button>`).join("")}</div>`
+      :'<p class="empty-state">No previous orders found.</p>';
     $("orderGiftDetails").hidden=order.kind!=="gift";
     if(order.kind==="gift"){
       const fields=[
@@ -1341,6 +1348,62 @@
     }catch{
       toast("Could not copy the order code.","error");
     }
+  }
+
+  function orderMessage(order,status){
+    const name=order.customer_name||order.extra?.recipient||"";
+    const code=order.reference;
+    const en={
+      confirmed:`Hello ${name || "there"} 👋 Your Zayt w Mouneh order ${code} is confirmed. We’ll keep you updated as it moves forward.`,
+      preparing:`Hello ${name || "there"} 👋 Your Zayt w Mouneh order ${code} is being prepared now.`,
+      out_for_delivery:`Hello ${name || "there"} 👋 Your Zayt w Mouneh order ${code} is out for delivery and on the way.`,
+      delivered:`Hello ${name || "there"} 👋 Your Zayt w Mouneh order ${code} has been delivered. Thank you! 🌿`
+    };
+    const ar={
+      confirmed:`مرحباً ${name || ""} 👋 تم تأكيد طلبك من زيت ومونة رقم ${code}. سنبقيك على اطلاع على المراحل التالية.`,
+      preparing:`مرحباً ${name || ""} 👋 طلبك من زيت ومونة رقم ${code} قيد التحضير الآن.`,
+      out_for_delivery:`مرحباً ${name || ""} 👋 طلبك من زيت ومونة رقم ${code} خرج للتوصيل وهو في الطريق.`,
+      delivered:`مرحباً ${name || ""} 👋 تم توصيل طلبك من زيت ومونة رقم ${code}. شكراً لك 🌿`
+    };
+    return (order.language==="ar"?ar:en)[status]||en[status]||"";
+  }
+
+  async function sendOrderMessage(status){
+    const order=state.orders.find(o=>o.reference===state.selectedOrderReference);
+    if(!order)return;
+    const message=orderMessage(order,status);
+    const phone=safeText(order.customer_phone).replace(/\D/g,"");
+    if(phone){
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`,"_blank","noopener,noreferrer");
+      return;
+    }
+    try{await navigator.clipboard.writeText(message);toast("Customer update copied.");}
+    catch{toast("Could not copy customer update.","error");}
+  }
+
+  async function saveOrderPrivateNote(){
+    const order=state.orders.find(o=>o.reference===state.selectedOrderReference);
+    if(!order)return;
+    const note=$("orderPrivateNote").value.trim();
+    const {error}=await state.client.from(cfg.tables.orders||"orders").update({private_notes:note,updated_at:new Date().toISOString()}).eq("reference",order.reference);
+    if(error){toast("Could not save private note.","error");return;}
+    await upsertAdminNote("order",order.reference,note);
+    toast("Private note saved.");
+    await refreshAll();
+    openOrderDetails(order.reference);
+  }
+
+  async function upsertAdminNote(subjectType,subjectId,note){
+    if(!state.user)return;
+    const key=`${subjectType}:${subjectId}`;
+    if(!note){
+      await state.client.from(cfg.tables.notes||"admin_notes").delete().eq("subject_type",subjectType).eq("subject_id",subjectId);
+      state.notes.delete(key);
+      return;
+    }
+    const row={subject_type:subjectType,subject_id:subjectId,note,updated_at:new Date().toISOString(),updated_by:state.user.id};
+    const {error}=await state.client.from(cfg.tables.notes||"admin_notes").upsert(row,{onConflict:"subject_type,subject_id"});
+    if(!error)state.notes.set(key,row);
   }
 
   async function updateOrderStatus(reference,status) {

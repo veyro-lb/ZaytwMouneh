@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=20261003-welcomeclassic2" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"shop | Zayt w Mouneh","isPartOf":{"@type":"WebSite","name":"Zayt w Mouneh","url":"https://zaytwmouneh.veyro-202.workers.dev/"}}</script>
-  <link rel="stylesheet" href="premium.css?v=20261003-flow1" />
+  <link rel="stylesheet" href="premium.css?v=20261003-flow2" />
 </head>
 <body data-page="shop">
   <a class="skip-link" href="shop.html#shop" id="skipLink">Skip to catalogue</a>
@@ -75,12 +75,6 @@
         <span class="menu-label" id="menuLabel">Menu</span>
         <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
       </button>
-
-      <div class="desktop-primary-links" aria-label="Quick navigation">
-        <a href="shop.html"><span class="only-en">Shop</span><span class="only-ar" lang="ar">المتجر</span></a>
-        <a href="gift.html"><span class="only-en">Gift</span><span class="only-ar" lang="ar">هدية</span></a>
-      </div>
-
       <div class="nav-links" id="navLinks">
         <div class="menu-heading"><span id="menuHeading">Explore Zayt w Mouneh</span><small id="menuSubheading">Everything has its own place.</small></div>
         <a href="index.html"><span>01</span><strong id="navHome">Home</strong><b>↗</b></a>
@@ -174,7 +168,27 @@
       </div>
     </section>
 
-<section class="shop section" id="shop">
+
+    <section class="categories shell shop-category-hub" id="categories" aria-label="Shop by category">
+      <div class="category-quick-head">
+        <div class="category-quick-title-row">
+          <div>
+            <p class="eyebrow only-en">Shop by category</p>
+            <p class="eyebrow only-ar" lang="ar">تسوّق حسب القسم</p>
+            <strong id="categoryQuickLabel">All categories</strong>
+            <p id="categoryQuickCopy">Choose a pantry family and continue straight to its products.</p>
+          </div>
+          <span class="category-total-badge" id="categoryAllCount">21 categories</span>
+        </div>
+        <a href="#shop" class="category-search-shortcut" id="categorySearchShortcut">
+          <span class="only-en">Search products ↓</span>
+          <span class="only-ar" lang="ar">ابحث عن منتج ↓</span>
+        </a>
+      </div>
+      <div class="category-quick-grid category-quick-grid-all" id="categoryQuickGrid" aria-label="All product categories"></div>
+    </section>
+
+    <section class="shop section" id="shop">
       <div class="shell">
         <div class="shop-head catalogue-intro-card reveal interactive-glow">
           <div class="catalogue-intro-copy">
@@ -225,42 +239,6 @@
         <div><span aria-hidden="true">⌂</span><strong class="only-en">Delivery across Lebanon</strong><strong class="only-ar" lang="ar">توصيل في لبنان</strong><small class="only-en">Confirmed directly with you</small><small class="only-ar" lang="ar">نؤكد التفاصيل معك مباشرة</small></div>
       </div>
     </section>
-
-    <section class="categories section shell shop-category-hub" id="categories">
-      <div class="category-hub-head reveal">
-        <div class="category-hub-intro">
-          <p class="eyebrow" id="categoriesEyebrow">Shop the pantry</p>
-          <h2 id="categoriesTitle">Find what you need.</h2>
-          <p id="categoriesCopy">Start with a popular pantry family, browse everything, or jump straight to search.</p>
-          <div class="category-hub-actions">
-            <a class="button button-gold" id="browseAllProducts" href="#shop">Browse all products <span>↘</span></a>
-            <a class="button button-outline" id="focusProductSearch" href="#shop">Search products</a>
-          </div>
-        </div>
-        <div class="category-hub-guide" aria-label="How to shop">
-          <span class="category-hub-guide-icon" aria-hidden="true">✓</span>
-          <div class="category-hub-steps">
-            <strong>Easy to shop</strong>
-            <span><b>1</b> Pick a category</span>
-            <span><b>2</b> Search or browse</span>
-            <span><b>3</b> Choose size & add</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="category-quick-head">
-        <div class="category-quick-title-row">
-          <div>
-            <strong id="categoryQuickLabel">All categories</strong>
-            <p id="categoryQuickCopy">Choose a pantry family and jump straight to its products.</p>
-          </div>
-          <span class="category-total-badge" id="categoryAllCount">21 categories</span>
-        </div>
-        <a href="#shop" class="category-search-shortcut" id="categorySearchShortcut">Search the full catalogue →</a>
-      </div>
-      <div class="category-quick-grid category-quick-grid-all" id="categoryQuickGrid" aria-label="All product categories"></div>
-    </section>
-
     <div class="botanical-divider shell motion-reveal" aria-hidden="true">
       <span></span>
       <svg viewBox="0 0 420 58" role="presentation">
@@ -269,23 +247,6 @@
       </svg>
       <span></span>
     </div>
-
-    <section class="shop-featured premium-section motion-reveal" id="shopFeatured">
-      <div class="shell">
-        <div class="premium-head shop-featured-head">
-          <div>
-            <p class="premium-kicker only-en">Pantry favourites</p>
-            <p class="premium-kicker only-ar" lang="ar">مختارات المونة</p>
-            <h2 class="only-en">A few good places<br><em>to start.</em></h2>
-            <h2 class="only-ar" lang="ar">بداية سهلة من<br><em>مختاراتنا.</em></h2>
-          </div>
-          <p class="only-en">Popular Lebanese pantry staples with clear sizes and quick add. Tap any product for full details.</p>
-          <p class="only-ar" lang="ar">أصناف أساسية محبوبة بأحجام واضحة وإضافة سريعة. اضغط على أي منتج للتفاصيل.</p>
-        </div>
-        <div class="featured-grid shop-featured-grid" id="featuredGrid"></div>
-      </div>
-    </section>
-
     <section class="seasonal-story motion-reveal">
       <div class="shell seasonal-story-card interactive-glow">
         <div class="seasonal-story-copy">

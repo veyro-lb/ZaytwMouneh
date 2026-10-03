@@ -1596,6 +1596,83 @@
     downloadJson(`zwm-orders-${new Date().toISOString().slice(0,10)}.json`,state.orders);
   }
 
+  function ownerInboxItems(){
+    const items=[];
+    const now=Date.now();
+    const activeOrders=state.orders.filter(o=>!PAST_ORDER_STATUSES.has(o.status));
+    const newOrders=activeOrders.filter(o=>o.status==="new");
+    const waiting=activeOrders.filter(o=>now-new Date(o.submitted_at).getTime()>=30*60000);
+    const incomplete=state.products.filter(p=>productQualityScore(p)<100&&!["hidden","draft"].includes(p.__status));
+    const missingPhotos=state.products.filter(p=>!photoFor(p)&&!["hidden","draft"].includes(p.__status));
+    const outOfStock=state.products.filter(p=>availabilityFor(p)==="out_of_stock"&&!["hidden","draft"].includes(p.__status));
+    const comingSoon=state.products.filter(p=>availabilityFor(p)==="coming_soon"&&!["hidden","draft"].includes(p.__status));
+
+    if(newOrders.length)items.push({key:"new_orders",level:"urgent",icon:"◎",title:`${newOrders.length} new order${newOrders.length===1?"":"s"}`,body:"Waiting for owner review.",action:"Review orders"});
+    if(waiting.length)items.push({key:"waiting_orders",level:"urgent",icon:"◷",title:`${waiting.length} order${waiting.length===1?"":"s"} waiting 30+ min`,body:"These active orders have been waiting the longest.",action:"Open waiting"});
+    if(incomplete.length)items.push({key:"incomplete_products",level:"attention",icon:"▦",title:`${incomplete.length} incomplete product${incomplete.length===1?"":"s"}`,body:"Missing names, category, price, photo or availability.",action:"Fix products"});
+    if(missingPhotos.length)items.push({key:"missing_photos",level:"attention",icon:"◫",title:`${missingPhotos.length} product${missingPhotos.length===1?"":"s"} missing photos`,body:"Clear photos make the catalogue easier to shop.",action:"Review photos"});
+    if(outOfStock.length)items.push({key:"out_of_stock",level:"info",icon:"○",title:`${outOfStock.length} out of stock`,body:"Visible to customers but ordering is disabled.",action:"Review stock"});
+    if(comingSoon.length)items.push({key:"coming_soon",level:"info",icon:"◌",title:`${comingSoon.length} coming soon`,body:"Visible products that cannot be ordered yet.",action:"Review products"});
+
+    const promo=state.settings.get("promo")||{};
+    if(promo.enabled&&promo.endsAt){
+      const end=new Date(promo.endsAt).getTime();
+      const diff=end-now;
+      if(Number.isFinite(end)&&diff<0)items.push({key:"promo_expired",level:"urgent",icon:"✦",title:"Enabled promo has expired",body:"It is no longer shown to customers.",action:"Update promo"});
+      else if(Number.isFinite(end)&&diff<=48*3600000)items.push({key:"promo_ending",level:"attention",icon:"✦",title:"Promo ends soon",body:`Ends ${new Date(end).toLocaleString()}`,action:"Review promo"});
+    }
+
+    const latestBackup=state.backups[0]?.created_at?new Date(state.backups[0].created_at).getTime():0;
+    if(!latestBackup||now-latestBackup>36*3600000){
+      items.push({key:"backup_due",level:"info",icon:"↧",title:"Cloud backup recommended",body:latestBackup?"Latest backup is more than a day old.":"No cloud backup is available yet.",action:"Back up now"});
+    }
+    return items;
+  }
+
+  function renderOwnerInbox(){
+    const items=ownerInboxItems();
+    const count=items.length;
+    $("ownerInboxCount").textContent=count;
+    $("navInboxCount").textContent=count;
+    $("navInboxCount").hidden=count===0;
+    $("mobileInboxCount").textContent=count;
+    $("mobileInboxCount").hidden=count===0;
+    const root=$("ownerInboxList");
+    if(!items.length){
+      root.innerHTML='<div class="owner-inbox-clear"><span>✓</span><div><b>Everything looks good.</b><small>No urgent owner actions right now.</small></div></div>';
+      return;
+    }
+    root.innerHTML=items.map(item=>`<button type="button" class="owner-inbox-item inbox-${item.level}" data-inbox-action="${esc(item.key)}">
+      <span class="owner-inbox-icon">${item.icon}</span>
+      <span class="owner-inbox-copy"><b>${esc(item.title)}</b><small>${esc(item.body)}</small></span>
+      <em>${esc(item.action)} →</em>
+    </button>`).join("");
+  }
+
+  async function handleInboxAction(action){
+    if(action==="new_orders"){
+      setView("orders");state.orderScope="active";state.orderCommand="";state.orderFilter.status="new";$("orderStatusFilter").value="new";renderOrders();return;
+    }
+    if(action==="waiting_orders"){
+      setView("orders");state.orderScope="all";state.orderCommand="waiting";state.orderFilter.status="";$("orderStatusFilter").value="";renderOrders();return;
+    }
+    if(["incomplete_products","missing_photos","out_of_stock","coming_soon"].includes(action)){
+      setView("products");
+      state.productFilter.status=action==="incomplete_products"?"needs-attention":action==="missing_photos"?"missing-photo":"";
+      state.productFilter.availability=action==="out_of_stock"?"out_of_stock":action==="coming_soon"?"coming_soon":"";
+      $("productStatusFilter").value=state.productFilter.status;
+      $("productAvailabilityFilter").value=state.productFilter.availability;
+      renderProducts();return;
+    }
+    if(action==="promo_expired"||action==="promo_ending"){
+      setView("content");setTimeout(()=>$("promoTitleEn")?.focus(),100);return;
+    }
+    if(action==="backup_due"){
+      await createCloudBackup("owner_inbox",false);
+      renderOwnerInbox();
+    }
+  }
+
   function renderOverview() {
     const ev7 = eventsWithin(7);
     const views = ev7.filter(e=>e.event_name==="page_view");
@@ -1625,6 +1702,7 @@
     $("missingPhotosCount").textContent = missing;
     $("hiddenProductsCount").textContent = hidden;
     $("draftProductsCount").textContent = drafts;
+    renderOwnerInbox();
 
     renderBarChart($("overviewChart"), dailyCounts(ev7,7,"page_view"));
     renderRankList($("topPagesList"), rankBy(views, e=>cleanPath(e.page_path)).slice(0,5), "views");
@@ -1633,8 +1711,8 @@
 
   const OVERVIEW_PREF_KEY="zwm:overview-prefs:v1";
   function readOverviewPreferences(){
-    try{return {...{orders:true,traffic:true,health:true,pages:true,activity:true},...JSON.parse(localStorage.getItem(OVERVIEW_PREF_KEY)||"{}")};}
-    catch{return {orders:true,traffic:true,health:true,pages:true,activity:true};}
+    try{return {...{inbox:true,orders:true,traffic:true,health:true,pages:true,activity:true},...JSON.parse(localStorage.getItem(OVERVIEW_PREF_KEY)||"{}")};}
+    catch{return {inbox:true,orders:true,traffic:true,health:true,pages:true,activity:true};}
   }
   function applyOverviewPreferences(){
     const prefs=readOverviewPreferences();

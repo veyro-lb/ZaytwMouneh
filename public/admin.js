@@ -520,7 +520,7 @@
     products: [], editingId: null, imageFile: null, imageDims: null,
     activeView: "overview", productFilter: { q:"", category:"", status:"", availability:"" },
     selectedProducts:new Set(),
-    orderFilter: { q:"", status:"", kind:"" }, orderScope:"active", selectedOrderReference:null,
+    orderFilter: { q:"", status:"", kind:"" }, orderScope:"active", orderCommand:"", selectedOrderReference:null,
     customerFilter:{q:"",sort:"recent"},
     imagePosition:{x:50,y:50,zoom:100,rotation:0,fit:"cover",preview:"card"}, previewObjectUrl:null,
     installPrompt:null,

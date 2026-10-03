@@ -4946,3 +4946,29 @@ body.welcome-open{overflow:hidden!important}
   .welcome-board,
   .welcome-language-button{transition:none!important;animation:none!important}
 }
+
+
+/* ===== v51.1 classic welcome selector cleanup ===== */
+.welcome-lang-copy{
+  grid-row:auto!important;
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  place-items:initial!important;
+  align-items:start!important;
+  justify-items:start!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:inherit!important;
+  font-size:inherit!important;
+  font-weight:inherit!important;
+}
+.welcome-language-button.is-ar .welcome-lang-copy{
+  align-items:start!important;
+  justify-items:start!important;
+}
+.welcome-board-inner:after{
+  top:auto!important;
+  right:auto!important;
+  opacity:1!important;
+}

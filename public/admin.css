@@ -1149,3 +1149,121 @@ html[dir="rtl"] .auth-language-toggle{right:auto;left:24px}
   .mobile-more-grid{grid-template-columns:1fr}
   .mobile-more-grid button{min-height:78px}
 }
+
+/* =========================================================
+   Final compact phone header
+   Bottom navigation is primary, so the top row stays simple.
+   ========================================================= */
+@media(max-width:760px){
+  .admin-topbar{
+    height:58px;
+    min-height:58px;
+    padding:0 10px;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:center;
+    gap:8px;
+    background:rgba(247,244,236,.97);
+  }
+
+  /* Bottom nav replaces the hamburger on phones. */
+  .admin-topbar .mobile-menu-button{
+    display:none!important;
+  }
+
+  .topbar-left{
+    min-width:0;
+    display:block;
+  }
+  .topbar-left h1{
+    margin:0;
+    max-width:100%;
+    font-size:15px;
+    line-height:1.15;
+    font-weight:800;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .topbar-right{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:7px;
+    min-width:0;
+  }
+
+  .topbar-language-toggle{
+    width:94px;
+    min-width:94px;
+    height:40px;
+    min-height:40px;
+    padding:3px;
+    grid-template-columns:1fr 1fr;
+    gap:2px;
+    border-radius:14px;
+    background:#fffdf8;
+  }
+  .topbar-language-toggle button{
+    width:auto;
+    min-width:0;
+    height:32px;
+    min-height:32px;
+    padding:0 6px;
+    border-radius:10px;
+    font-size:9px;
+    letter-spacing:0;
+  }
+  .topbar-language-toggle button[data-admin-lang="ar"]{
+    font-family:"Noto Kufi Arabic","DM Sans",sans-serif;
+    font-size:9px;
+  }
+
+  .topbar-right .button-primary{
+    width:42px!important;
+    min-width:42px!important;
+    height:42px!important;
+    min-height:42px!important;
+    padding:0!important;
+    border-radius:12px;
+    flex:0 0 42px;
+    font-size:0!important;
+  }
+  .topbar-right .button-primary:after{
+    content:"+";
+    display:block;
+    font-size:22px!important;
+    font-weight:700;
+    line-height:1;
+  }
+  html[dir="rtl"] .topbar-right .button-primary:after{
+    content:"+";
+  }
+}
+
+/* Keep everything comfortably inside very narrow phone frames. */
+@media(max-width:360px){
+  .admin-topbar{
+    padding-left:8px;
+    padding-right:8px;
+    gap:6px;
+  }
+  .topbar-left h1{font-size:14px}
+  .topbar-language-toggle{
+    width:82px;
+    min-width:82px;
+  }
+  .topbar-language-toggle button{
+    padding:0 4px;
+    font-size:8px;
+  }
+  .topbar-right{gap:5px}
+  .topbar-right .button-primary{
+    width:40px!important;
+    min-width:40px!important;
+    height:40px!important;
+    min-height:40px!important;
+    flex-basis:40px;
+  }
+}

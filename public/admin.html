@@ -10,14 +10,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="admin.css?v=20261004-ar2" />
+  <link rel="stylesheet" href="admin.css?v=20261004-adminfix3" />
 </head>
 <body class="admin-body">
   <div class="admin-bg" aria-hidden="true"></div>
 
   <main id="setupScreen" class="auth-shell" hidden>
     <section class="auth-card auth-card-wide">
-      <button class="admin-language-toggle auth-language-toggle" type="button" data-admin-language-toggle data-no-i18n aria-label="Switch admin language">العربية</button>
+      <div class="admin-language-switch auth-language-toggle" data-no-i18n role="group" aria-label="Admin language">
+        <button type="button" data-admin-lang="en">EN</button>
+        <button type="button" data-admin-lang="ar">العربية</button>
+      </div>
       <div class="auth-brand">
         <span class="auth-logo"><img src="assets/logo.svg?v=20261002-1005" alt="" /></span>
         <div><strong>Zayt w Mouneh</strong><span>Owner Console</span></div>
@@ -36,7 +39,10 @@
 
   <main id="loginScreen" class="auth-shell" hidden>
     <section class="auth-card">
-      <button class="admin-language-toggle auth-language-toggle" type="button" data-admin-language-toggle data-no-i18n aria-label="Switch admin language">العربية</button>
+      <div class="admin-language-switch auth-language-toggle" data-no-i18n role="group" aria-label="Admin language">
+        <button type="button" data-admin-lang="en">EN</button>
+        <button type="button" data-admin-lang="ar">العربية</button>
+      </div>
       <div class="auth-brand">
         <span class="auth-logo"><img src="assets/logo.svg?v=20261002-1005" alt="" /></span>
         <div><strong>Zayt w Mouneh</strong><span>Private owner access</span></div>
@@ -102,7 +108,10 @@
           <div><p id="viewEyebrow">Owner workspace</p><h1 id="viewTitle">Overview</h1></div>
         </div>
         <div class="topbar-right">
-          <button class="admin-language-toggle topbar-language-toggle" type="button" data-admin-language-toggle data-no-i18n aria-label="Switch admin language">العربية</button>
+          <div class="admin-language-switch topbar-language-toggle" data-no-i18n role="group" aria-label="Admin language">
+            <button type="button" data-admin-lang="en">EN</button>
+            <button type="button" data-admin-lang="ar">العربية</button>
+          </div>
           <button class="icon-button" id="refreshButton" type="button" title="Refresh data">↻</button>
           <button class="button-primary button-small" id="quickAddProduct" type="button">+ Add product</button>
           <div class="owner-pill"><span id="ownerInitial">O</span><div><strong id="ownerName">Owner</strong><small id="ownerEmail">—</small></div></div>
@@ -155,6 +164,7 @@
             <div class="search-field"><span>⌕</span><input id="productSearch" type="search" placeholder="Search product, category or ID…" /></div>
             <select id="productCategoryFilter" aria-label="Filter category"><option value="">All categories</option></select>
             <select id="productStatusFilter" aria-label="Filter status"><option value="">All statuses</option><option value="live">Live</option><option value="edited">Edited</option><option value="new">New</option><option value="hidden">Hidden</option><option value="draft">Draft</option><option value="missing-photo">Missing photo</option></select>
+            <button class="button-secondary button-small" id="addCategoryButton" type="button">+ Add category</button>
             <button class="button-primary button-small" id="addProductButton" type="button">+ Add product</button>
           </div>
           <div class="table-card">
@@ -304,7 +314,7 @@
               <div class="two-col-fields">
                 <label>English name<input id="productNameEn" required maxlength="120" /></label>
                 <label>Arabic name<input id="productNameAr" required maxlength="120" dir="rtl" /></label>
-                <label>Category<select id="productCategory" required></select></label>
+                <label>Category<div class="field-inline-action"><select id="productCategory" required></select><button class="button-secondary field-action-button" id="addCategoryEditorButton" type="button">+ Add</button></div></label>
                 <label>Product ID<input id="productId" required maxlength="140" pattern="[a-z0-9][a-z0-9-]*" /></label>
               </div>
               <label>Original / supplier name<input id="productOriginal" maxlength="160" /></label>
@@ -355,7 +365,7 @@
         </div>
 
         <footer class="editor-actions">
-          <div><button class="danger-button" id="hideProductButton" type="button" hidden>Hide product</button><button class="text-button" id="restoreProductButton" type="button" hidden>Restore base version</button></div>
+          <div class="editor-destructive-actions"><button class="danger-button danger-strong" id="deleteProductButton" type="button" hidden>Delete product</button><button class="danger-button" id="hideProductButton" type="button" hidden>Hide product</button><button class="text-button" id="restoreProductButton" type="button" hidden>Restore base version</button></div>
           <div><span id="productFormStatus" class="form-status" role="status"></span><button class="button-secondary" id="cancelProductButton" type="button">Cancel</button><button class="button-primary" id="saveProductButton" type="submit">Save product</button></div>
         </footer>
       </form>
@@ -409,6 +419,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
   <script src="products-data.js?v=20261002-1005"></script>
   <script src="product-photos.js?v=20261003-zip-originals3"></script>
-  <script src="admin.js?v=20261004-ar2"></script>
+  <script src="admin.js?v=20261004-adminfix3"></script>
 </body>
 </html>

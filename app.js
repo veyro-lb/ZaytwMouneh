@@ -1014,7 +1014,7 @@ function renderProducts(){
     const selected=cardVariantFor(p);
     const q=qtyFor("card:"+p.id);
     const ps=productPriceSummary(p);
-    const listingNote=repeatedListingNote(p);
+    const listingNote=lang==="en"?repeatedListingNote(p):"";
     const sizeOptions=p.variants.length>1
       ? `<select class="card-variant-select" data-card-variant="${p.id}" aria-label="${escapeHtml(t.chooseSize)}">${p.variants.map(v=>`<option value="${escapeHtml(v.id)}"${v.id===selected.id?" selected":""}>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${money(v.price)}</option>`).join("")}</select>`
       : `<div class="single-size">${escapeHtml(lang==="ar"?selected.sizeAr:selected.sizeEn)}</div>`;

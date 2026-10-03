@@ -137,6 +137,42 @@
     api(encodeURIComponent(c.tables?.events||"site_events"),{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify(row)}).catch(()=>{});
   }
 
+  function recordOrder(order){
+    const c=config();
+    if(!enabled()||!order?.reference||!Array.isArray(order.items)||!order.items.length)return Promise.resolve(false);
+    const row={
+      reference:String(order.reference).slice(0,40),
+      kind:order.kind==="gift"?"gift":"order",
+      status:"new",
+      customer_name:String(order.customer_name||"").slice(0,120),
+      area:String(order.area||"").slice(0,180),
+      notes:String(order.notes||"").slice(0,800),
+      items:order.items.slice(0,100).map(item=>({
+        product_id:String(item.product_id||"").slice(0,160),
+        name:String(item.name||"").slice(0,180),
+        size:String(item.size||"").slice(0,100),
+        qty:Math.max(1,Math.min(999,Number(item.qty)||1)),
+        unit_price:Math.max(0,Number(item.unit_price)||0),
+        subtotal:Math.max(0,Number(item.subtotal)||0)
+      })),
+      total:Math.max(0,Number(order.total)||0),
+      currency:"USD",
+      language:order.language==="ar"?"ar":"en",
+      extra:order.extra&&typeof order.extra==="object"?order.extra:{},
+      submitted_at:new Date().toISOString(),
+      updated_at:new Date().toISOString()
+    };
+    track("whatsapp_click",{source:row.kind==="gift"?"gift_order":"cart_order"});
+    return api(encodeURIComponent(c.tables?.orders||"orders"),{
+      method:"POST",
+      keepalive:true,
+      headers:{Prefer:"return=minimal"},
+      body:JSON.stringify(row)
+    }).then(r=>r.ok||r.status===409).catch(()=>false);
+  }
+
+  window.ZWM_CMS={recordOrder,track};
+
   function bindAnalytics(){
     track("page_view",{source:"site"});
     document.addEventListener("click",e=>{

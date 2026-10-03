@@ -1009,6 +1009,25 @@
     await ensureDailyCloudBackup();
   }
 
+  async function loadAllEvents(since) {
+    const rows=[];
+    const pageSize=1000;
+    let from=0;
+    while(true){
+      const {data,error}=await state.client
+        .from(cfg.tables.events)
+        .select("*")
+        .gte("created_at",since)
+        .order("created_at",{ascending:false})
+        .range(from,from+pageSize-1);
+      if(error)return {data:rows,error};
+      rows.push(...(data||[]));
+      if(!data||data.length<pageSize)break;
+      from+=pageSize;
+    }
+    return {data:rows,error:null};
+  }
+
   async function loadAllOrders() {
     const rows=[];
     const pageSize=1000;
@@ -1032,7 +1051,7 @@
     const [overridesRes, settingsRes, eventsRes, activityRes, ordersRes, notesRes, backupsRes] = await Promise.all([
       state.client.from(cfg.tables.products).select("*").order("updated_at",{ascending:false}),
       state.client.from(cfg.tables.settings).select("*"),
-      state.client.from(cfg.tables.events).select("*").gte("created_at",since).order("created_at",{ascending:false}).limit(10000),
+      loadAllEvents(since),
       state.client.from(cfg.tables.activity).select("*").order("created_at",{ascending:false}).limit(300),
       loadAllOrders(),
       state.client.from(cfg.tables.notes || "admin_notes").select("*").order("updated_at",{ascending:false}).limit(5000),
@@ -1041,6 +1060,7 @@
 
     if (overridesRes.error) toast("Could not load product changes.", "error");
     if (settingsRes.error) toast("Could not load website settings.", "error");
+    if (eventsRes.error) toast("Could not load website analytics.", "error");
     if (ordersRes.error) toast("Could not load order history.", "error");
     if (notesRes.error) toast("Could not load private notes.", "error");
     if (backupsRes.error) toast("Could not load cloud backups.", "error");

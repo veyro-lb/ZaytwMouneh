@@ -1548,10 +1548,11 @@
 
     const minOrderTime=Date.now()-days*86400000;
     const periodOrders=state.orders.filter(o=>new Date(o.submitted_at).getTime()>=minOrderTime);
-    const orderValue=periodOrders.reduce((sum,o)=>sum+(Number(o.total)||0),0);
+    const valueOrders=periodOrders.filter(o=>o.status!=="cancelled");
+    const orderValue=valueOrders.reduce((sum,o)=>sum+(Number(o.total)||0),0);
     $("analyticsOrders").textContent=periodOrders.length.toLocaleString();
     $("analyticsOrderValue").textContent=money(orderValue);
-    $("analyticsAvgOrder").textContent=periodOrders.length?money(orderValue/periodOrders.length):money(0);
+    $("analyticsAvgOrder").textContent=valueOrders.length?money(orderValue/valueOrders.length):money(0);
     const gifts=periodOrders.filter(o=>o.kind==="gift").length;
     $("analyticsGiftShare").textContent=periodOrders.length?`${Math.round((gifts/periodOrders.length)*100)}%`:"0%";
 
@@ -1590,7 +1591,8 @@
   function setView(view) {
     state.activeView=view;
     $$(".dashboard-view").forEach(p=>p.classList.toggle("is-active",p.dataset.viewPanel===view));
-    $$(".admin-nav button").forEach(b=>b.classList.toggle("is-active",b.dataset.view===view));
+    $(".admin-nav button").forEach(b=>b.classList.toggle("is-active",b.dataset.view===view));
+    $("#mobileAdminNav [data-mobile-view]").forEach(b=>b.classList.toggle("is-active",b.dataset.mobileView===view));
     const titles={overview:"Overview",products:"Products",orders:"Orders & history",customers:"Customers",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
     $("viewTitle").textContent=titles[view]||"Owner Console";
     localizeDom($("viewTitle"));
@@ -2004,6 +2006,7 @@
   async function hideCurrentProduct() {
     const id=state.editingId;if(!id)return;
     const p=state.products.find(x=>x.id===id);if(!p)return;
+    await saveProductRevision(p,"hide");
     const existing=state.overrides.get(id);
     const payload={...clone(p),status:"hidden"};
     delete payload.__status;delete payload.__source;delete payload.__updated;
@@ -2031,6 +2034,7 @@
     if(!product)return;
     const question=state.lang==="ar"?translatePhrase("Delete this product permanently? This cannot be undone."):"Delete this product permanently? This cannot be undone.";
     if(!window.confirm(question))return;
+    await saveProductRevision(product,"delete");
 
     const button=$("deleteProductButton");
     button.disabled=true;
@@ -2351,7 +2355,7 @@
     $("manualOrderModal")?.addEventListener("click",e=>{if(e.target===$("manualOrderModal"))closeManualOrder();});
     $("manualOrderForm")?.addEventListener("submit",createManualOrder);
     $("addManualOrderItem")?.addEventListener("click",addManualItemRow);
-    $("manualOrderItems")?.addEventListener("click",e=>{const b=e.target.closest("[data-remove-manual-item]");if(b){b.closest(".manual-order-item").remove();if(!$(".manual-order-item"))addManualItemRow();renderManualOrderTotal();}});
+    $("manualOrderItems")?.addEventListener("click",e=>{const b=e.target.closest("[data-remove-manual-item]");if(b){b.closest(".manual-order-item").remove();if(!document.querySelector(".manual-order-item"))addManualItemRow();renderManualOrderTotal();}});
     $("manualOrderItems")?.addEventListener("change",renderManualOrderTotal);
     $("manualOrderItems")?.addEventListener("input",renderManualOrderTotal);
     $("manualDeliveryFee")?.addEventListener("input",renderManualOrderTotal);

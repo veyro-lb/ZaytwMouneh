@@ -1772,7 +1772,22 @@ function setupNav(){
   const t=$("#navToggle"),n=$("#navLinks");
   if(!t||!n)return;
   const compactQuery=window.matchMedia?window.matchMedia("(max-width:1080px)"):null;
+  const phoneQuery=window.matchMedia?window.matchMedia("(max-width:760px)"):null;
   const isCompact=()=>compactQuery?compactQuery.matches:window.innerWidth<=1080;
+  const isPhone=()=>phoneQuery?phoneQuery.matches:window.innerWidth<=760;
+  const originalParent=n.parentNode;
+  const originalNext=n.nextSibling;
+  const mountPhoneMenu=()=>{
+    if(!isPhone()||n.parentNode===document.body)return;
+    document.body.appendChild(n);
+    n.classList.add("is-mobile-portal");
+  };
+  const restorePhoneMenu=()=>{
+    if(!n.classList.contains("is-mobile-portal"))return;
+    n.classList.remove("is-mobile-portal");
+    if(originalNext&&originalNext.parentNode===originalParent)originalParent.insertBefore(n,originalNext);
+    else originalParent.appendChild(n);
+  };
   const syncA11y=()=>{
     const open=n.classList.contains("is-open");
     if(isCompact())n.setAttribute("aria-hidden",open?"false":"true");
@@ -1784,8 +1799,10 @@ function setupNav(){
     t.setAttribute("aria-expanded","false");
     t.setAttribute("aria-label",lang==="ar"?"فتح القائمة":"Open menu");
     syncA11y();
+    restorePhoneMenu();
   };
   const openMenu=()=>{
+    mountPhoneMenu();
     n.classList.add("is-open");
     document.body.classList.add("menu-open");
     t.setAttribute("aria-expanded","true");

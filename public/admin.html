@@ -10,13 +10,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="admin.css?v=20261004-2" />
+  <link rel="stylesheet" href="admin.css?v=20261004-ar1" />
 </head>
 <body class="admin-body">
   <div class="admin-bg" aria-hidden="true"></div>
 
   <main id="setupScreen" class="auth-shell" hidden>
     <section class="auth-card auth-card-wide">
+      <button class="admin-language-toggle auth-language-toggle" type="button" data-admin-language-toggle data-no-i18n aria-label="Switch admin language">العربية</button>
       <div class="auth-brand">
         <span class="auth-logo"><img src="assets/logo.svg?v=20261002-1005" alt="" /></span>
         <div><strong>Zayt w Mouneh</strong><span>Owner Console</span></div>
@@ -35,6 +36,7 @@
 
   <main id="loginScreen" class="auth-shell" hidden>
     <section class="auth-card">
+      <button class="admin-language-toggle auth-language-toggle" type="button" data-admin-language-toggle data-no-i18n aria-label="Switch admin language">العربية</button>
       <div class="auth-brand">
         <span class="auth-logo"><img src="assets/logo.svg?v=20261002-1005" alt="" /></span>
         <div><strong>Zayt w Mouneh</strong><span>Private owner access</span></div>
@@ -100,6 +102,7 @@
           <div><p id="viewEyebrow">Owner workspace</p><h1 id="viewTitle">Overview</h1></div>
         </div>
         <div class="topbar-right">
+          <button class="admin-language-toggle topbar-language-toggle" type="button" data-admin-language-toggle data-no-i18n aria-label="Switch admin language">العربية</button>
           <button class="icon-button" id="refreshButton" type="button" title="Refresh data">↻</button>
           <button class="button-primary button-small" id="quickAddProduct" type="button">+ Add product</button>
           <div class="owner-pill"><span id="ownerInitial">O</span><div><strong id="ownerName">Owner</strong><small id="ownerEmail">—</small></div></div>
@@ -406,6 +409,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
   <script src="products-data.js?v=20261002-1005"></script>
   <script src="product-photos.js?v=20261003-zip-originals3"></script>
-  <script src="admin.js?v=20261004-loginfix1"></script>
+  <script src="admin.js?v=20261004-ar1"></script>
 </body>
 </html>

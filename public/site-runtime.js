@@ -306,7 +306,7 @@
     const requestSync=()=>{if(document.visibilityState!=="hidden")refreshCms().catch(()=>{})};
     window.addEventListener("focus",requestSync);
     document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")requestSync()});
-    window.addEventListener("storage",event=>{if(event.key===ADMIN_SYNC_KEY||event.key===SETTINGS_CACHE||event.key===PRODUCT_CACHE)requestSync()});
+    window.addEventListener("storage",event=>{if(event.key===ADMIN_SYNC_KEY)requestSync()});
     setInterval(requestSync,15000);
   }
   init();

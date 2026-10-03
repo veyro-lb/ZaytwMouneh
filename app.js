@@ -1,6 +1,22 @@
 
 const $=(s,r=document)=>r.querySelector(s);
-const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const $=(s,r=document)=>Array.from(r.querySelectorAll(s));
+function safeStorageGet(key,fallback=null){
+  try{
+    const value=window.safeStorageGet(key);
+    return value===null?fallback:value;
+  }catch{
+    return fallback;
+  }
+}
+function safeStorageSet(key,value){
+  try{
+    window.safeStorageSet(key,value);
+    return true;
+  }catch{
+    return false;
+  }
+}
 function uiIcon(name,active=false){
   if(name==="heart")return `<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5S4 16 2.6 10.8C1.7 7.5 3.8 4.5 7 4.5c2 0 3.6 1 5 2.7 1.4-1.7 3-2.7 5-2.7 3.2 0 5.3 3 4.4 6.3C20 16 12 20.5 12 20.5Z" ${active?'fill="currentColor"':'fill="none"'} stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
   if(name==="eye")return `<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-5.6 9.5-5.6S21.5 12 21.5 12 18.1 17.6 12 17.6 2.5 12 2.5 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>`;
@@ -337,7 +353,7 @@ const EXTRA_UI={
   }
 };
 
-let lang=localStorage.getItem(LANG_KEY)==="ar"?"ar":"en";
+let lang=safeStorageGet(LANG_KEY)==="ar"?"ar":"en";
 let activeCategory="All";
 let query="";
 let visibleLimit=catalogPageSize();
@@ -497,7 +513,7 @@ function cartKey(productId,variantId){return `${productId}::${variantId}`}
 
 function loadCart(){
   try{
-    const raw=JSON.parse(localStorage.getItem(CART_KEY)||"{}");
+    const raw=JSON.parse(safeStorageGet(CART_KEY)||"{}");
     const valid={};
     for(const [key,item] of Object.entries(raw||{})){
       const p=productById(item.productId);
@@ -507,10 +523,10 @@ function loadCart(){
     return valid;
   }catch{return{}}
 }
-function saveCart(){localStorage.setItem(CART_KEY,JSON.stringify(cart))}
+function saveCart(){safeStorageSet(CART_KEY,JSON.stringify(cart))}
 function loadGiftItems(){
   try{
-    const raw=JSON.parse(localStorage.getItem(GIFT_KEY)||"{}"),valid={};
+    const raw=JSON.parse(safeStorageGet(GIFT_KEY)||"{}"),valid={};
     for(const [key,item] of Object.entries(raw||{})){
       const p=productById(item.productId),v=variantById(p,item.variantId);
       if(p&&v)valid[key]={productId:p.id,variantId:v.id,qty:Math.max(1,Number(item.qty)||1)};
@@ -518,7 +534,7 @@ function loadGiftItems(){
     return valid;
   }catch{return{}}
 }
-function saveGiftItems(){localStorage.setItem(GIFT_KEY,JSON.stringify(giftItems))}
+function saveGiftItems(){safeStorageSet(GIFT_KEY,JSON.stringify(giftItems))}
 function giftRows(){
   return Object.entries(giftItems).map(([key,item])=>{
     const p=productById(item.productId),v=variantById(p,item.variantId);
@@ -548,13 +564,13 @@ function changeGiftVariant(oldKey,productId,variantId){
   saveGiftItems();renderGiftSummary();renderGiftPickerResults();
 }
 function loadFavorites(){
-  try{return new Set(JSON.parse(localStorage.getItem(FAV_KEY)||"[]"))}catch{return new Set()}
+  try{return new Set(JSON.parse(safeStorageGet(FAV_KEY)||"[]"))}catch{return new Set()}
 }
-function saveFavorites(){localStorage.setItem(FAV_KEY,JSON.stringify([...favorites]))}
+function saveFavorites(){safeStorageSet(FAV_KEY,JSON.stringify([...favorites]))}
 function loadRecent(){
-  try{return (JSON.parse(localStorage.getItem(RECENT_KEY)||"[]")||[]).filter(id=>productById(id)).slice(0,10)}catch{return[]}
+  try{return (JSON.parse(safeStorageGet(RECENT_KEY)||"[]")||[]).filter(id=>productById(id)).slice(0,10)}catch{return[]}
 }
-function saveRecent(){localStorage.setItem(RECENT_KEY,JSON.stringify(recentViews))}
+function saveRecent(){safeStorageSet(RECENT_KEY,JSON.stringify(recentViews))}
 function toggleFavorite(id){
   if(favorites.has(id))favorites.delete(id);else favorites.add(id);
   saveFavorites();
@@ -708,7 +724,7 @@ function healthNoteFor(p){
 
 function applyLanguage(next,{immediate=false}={}){
   lang=next==="ar"?"ar":"en";
-  localStorage.setItem(LANG_KEY,lang);
+  safeStorageSet(LANG_KEY,lang);
   const t=UI[lang];
   $$("[data-lang]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.lang===lang));
 
@@ -1531,6 +1547,21 @@ function backdropMaybeOff(){
   setTimeout(()=>{if(!document.body.classList.contains("cart-open")&&!document.body.classList.contains("modal-open"))b.hidden=true},310);
 }
 
+function shouldLimitHeroMedia(){
+  const narrow=window.matchMedia&&window.matchMedia("(max-width:760px)").matches;
+  const connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  const constrained=Boolean(connection&&(connection.saveData||["slow-2g","2g"].includes(connection.effectiveType)));
+  return Boolean(narrow||constrained);
+}
+function suspendHeroScenes(){
+  heroVisible=false;
+  $("[data-scene] video").forEach(video=>{
+    try{video.pause()}catch{}
+    video.removeAttribute("autoplay");
+    video.preload="none";
+  });
+}
+
 function showScene(i,manual=false){
   const scenes=$$("[data-scene]"),dots=$$("[data-scene-dot]");
   if(!scenes.length)return;
@@ -1572,7 +1603,7 @@ function startScenes(){
 function openLanguageWelcome(){
   const modal=$("#languageWelcome");
   if(!modal)return;
-  if(localStorage.getItem(WELCOME_KEY)==="1"){
+  if(safeStorageGet(WELCOME_KEY)==="1"){
     modal.hidden=true;
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden","true");
@@ -1590,7 +1621,7 @@ function openLanguageWelcome(){
 }
 function chooseWelcomeLanguage(next,event){
   if(event){event.preventDefault?.();event.stopImmediatePropagation?.();}
-  localStorage.setItem(WELCOME_KEY,"1");
+  safeStorageSet(WELCOME_KEY,"1");
   const modal=$("#languageWelcome");
 
   if(modal){
@@ -1606,7 +1637,7 @@ function chooseWelcomeLanguage(next,event){
   }catch(error){
     console.error("Language switch failed:",error);
     lang=next==="ar"?"ar":"en";
-    localStorage.setItem(LANG_KEY,lang);
+    safeStorageSet(LANG_KEY,lang);
     document.documentElement.lang=lang;
     document.documentElement.dir=lang==="ar"?"rtl":"ltr";
   }finally{
@@ -1623,6 +1654,7 @@ function prewarmLanguageFonts(){
 
 function setupNav(){
   const t=$("#navToggle"),n=$("#navLinks");
+  if(!t||!n)return;
   const close=()=>{
     n.classList.remove("is-open");
     document.body.classList.remove("menu-open");
@@ -1641,9 +1673,11 @@ function setupNav(){
 }
 
 function setupProgress(){
+  const progress=$("#pageProgress");
+  if(!progress)return;
   const update=()=>{
     const d=document.documentElement,max=d.scrollHeight-innerHeight;
-    $("#pageProgress").style.width=`${max?scrollY/max*100:0}%`;
+    progress.style.width=`${max?scrollY/max*100:0}%`;
   };
   update();
   addEventListener("scroll",update,{passive:true});
@@ -1681,7 +1715,7 @@ function init(){
   applyLanguage(lang,{immediate:true});
   renderStaticProductPhotos();
   prewarmLanguageFonts();
-  if($("#heroShowcase")){showScene(0);startScenes();}
+  if($("#heroShowcase")){if(shouldLimitHeroMedia())suspendHeroScenes();else{showScene(0);startScenes();}}
   setupNav();
   setupProgress();
   setupPerformance();

@@ -731,19 +731,23 @@
     if(!video)return;
 
     var reduceMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if(reduceMotion)return;
+    var connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+    var saveData=Boolean(connection&&connection.saveData);
+    if(reduceMotion||saveData)return;
 
-    var parts=[
-      "assets/shop-hero-video-hd/part01.b64?v=20261002-hero-hd1",
-      "assets/shop-hero-video-hd/part02.b64?v=20261002-hero-hd1",
-      "assets/shop-hero-video-hd/part03.b64?v=20261002-hero-hd1",
-      "assets/shop-hero-video-hd/part04.b64?v=20261002-hero-hd1",
-      "assets/shop-hero-video-hd/part05.b64?v=20261002-hero-hd1",
-      "assets/shop-hero-video-hd/part06.b64?v=20261002-hero-hd1",
-      "assets/shop-hero-video-hd/part07.b64?v=20261002-hero-hd1",
-      "assets/shop-hero-video-hd/part08.b64?v=20261002-hero-hd1",
-      "assets/shop-hero-video-hd/part09.b64?v=20261002-hero-hd1"
-    ];
+    var mobile=window.matchMedia&&window.matchMedia("(max-width:760px)").matches;
+    var slowConnection=Boolean(connection&&["slow-2g","2g","3g"].indexOf(connection.effectiveType)!==-1);
+    var lowMemory=Number(navigator.deviceMemory||8)<=4;
+    var useLite=Boolean(mobile||slowConnection||lowMemory);
+    var folder=useLite?"assets/shop-hero-video/":"assets/shop-hero-video-hd/";
+    var partCount=useLite?5:9;
+    var expectedLength=useLite?47724:1061516;
+    var cacheTag=useLite?"20261003-mobile-stable1":"20261002-hero-hd1";
+    var parts=[];
+    for(var part=1;part<=partCount;part++){
+      parts.push(folder+"part"+String(part).padStart(2,"0")+".b64?v="+cacheTag);
+    }
+    video.preload=useLite?"metadata":"auto";
 
     Promise.all(parts.map(function(url){
       return fetch(url,{cache:"force-cache"}).then(function(response){
@@ -752,13 +756,16 @@
       });
     })).then(function(chunks){
       var base64=chunks.join("").replace(/\s+/g,"");
-      if(base64.length!==1061516)throw new Error("Hero video data is incomplete");
+      if(base64.length!==expectedLength)throw new Error("Hero video data is incomplete");
 
       var binary=window.atob(base64);
       var bytes=new Uint8Array(binary.length);
       for(var i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
 
       var objectUrl=URL.createObjectURL(new Blob([bytes],{type:"video/mp4"}));
+      window.addEventListener("pagehide",function(){
+        try{URL.revokeObjectURL(objectUrl)}catch(e){}
+      },{once:true});
       video.muted=true;
       video.defaultMuted=true;
       video.loop=true;

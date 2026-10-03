@@ -37,8 +37,16 @@
     return "";
   }
   function pvisual(p,cls){
-    if(!p||typeof productVisualMarkup!=="function")return "";
-    return productVisualMarkup(p,cls||"premium-product-image");
+    if(!p)return "";
+    var className=cls||"premium-product-image";
+    var source=window.ZWM_PRODUCT_PHOTOS&&typeof window.ZWM_PRODUCT_PHOTOS.sourceFor==="function"
+      ?window.ZWM_PRODUCT_PHOTOS.sourceFor(p.id)
+      :null;
+    if(source&&source.url){
+      return '<img class="'+esc(className)+' product-photo-original" src="'+esc(source.url)+'" width="'+Number(source.width||1)+'" height="'+Number(source.height||1)+'" data-photo-width="'+Number(source.width||0)+'" data-photo-height="'+Number(source.height||0)+'" data-photo-quality="original-supplied" alt="'+esc(pname(p))+'" loading="eager" decoding="async">';
+    }
+    if(typeof productVisualMarkup==="function")return productVisualMarkup(p,className);
+    return "";
   }
 
   function track(name,detail){
@@ -133,17 +141,35 @@
     return safeProducts().filter(function(p){return matchesCollection(p,id)}).slice(0,limit||10);
   }
 
+  function hydrateCollectionPhotos(root){
+    var host=root||q("#premiumCollections");
+    if(!host)return;
+    qa("[data-collection-product]",host).forEach(function(frame){
+      if(frame.querySelector("img"))return;
+      var p=safeProducts().find(function(item){return item.id===frame.dataset.collectionProduct});
+      if(!p)return;
+      var media=pvisual(p,"collection-product-image");
+      if(!media)return;
+      var note=q(".collection-photo-note",frame);
+      frame.insertAdjacentHTML("afterbegin",media);
+      if(note)frame.appendChild(note);
+    });
+  }
+
   function injectCollections(){
     if((document.body.dataset.page||"home")!=="home"||q("#premiumCollections"))return;
     var anchor=q(".categories");if(!anchor)return;
     var sec=document.createElement("section");sec.id="premiumCollections";sec.className="premium-section premium-collections";
     var cards=collections.map(function(c){
       var product=safeProducts().find(function(p){return p.id===c.productId}),media=pvisual(product,"collection-product-image");
-      return '<a class="collection-card collection-card--'+esc(c.id)+'" href="shop.html?collection='+encodeURIComponent(c.id)+'"><span class="collection-media" aria-hidden="true"><span class="collection-photo-frame">'+media+'<span class="collection-photo-note">'+esc(txt("A pantry pick","اختيار من التشكيلة"))+'</span></span></span><span class="collection-arrow">↗</span><span class="collection-copy"><small>'+esc(txt("Curated collection","تشكيلة مختارة"))+'</small><h3>'+esc(isAr()?c.titleAr:c.titleEn)+'</h3><p>'+esc(isAr()?c.copyAr:c.copyEn)+'</p></span></a>';
+      return '<a class="collection-card collection-card--'+esc(c.id)+'" href="shop.html?collection='+encodeURIComponent(c.id)+'"><span class="collection-media" aria-hidden="true"><span class="collection-photo-frame" data-collection-product="'+esc(c.productId)+'">'+media+'<span class="collection-photo-note">'+esc(txt("A pantry pick","اختيار من التشكيلة"))+'</span></span></span><span class="collection-arrow">↗</span><span class="collection-copy"><small>'+esc(txt("Curated collection","تشكيلة مختارة"))+'</small><h3>'+esc(isAr()?c.titleAr:c.titleEn)+'</h3><p>'+esc(isAr()?c.copyAr:c.copyEn)+'</p></span></a>';
     }).join("");
     sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Shop by mood","تسوّق حسب المناسبة"))+'</p><h2>'+esc(txt("Collections with a","تشكيلات لها"))+' <em>'+esc(txt("reason.","فكرة."))+'</em></h2></div><p>'+esc(txt("Categories are useful. Collections make the pantry easier to imagine on a real table, for a real meal or as a gift.","التصنيفات مفيدة، لكن التشكيلات تجعل المونة أسهل للتخيّل على سفرة حقيقية أو كهدية."))+'</p></div><div class="collection-grid">'+cards+'</div></div>';
     anchor.after(sec);
+    hydrateCollectionPhotos(sec);
   }
+
+  window.addEventListener("zwm-product-photos-ready",function(){hydrateCollectionPhotos()});
 
   var regionCopy={
     "Bekaa":{

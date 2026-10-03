@@ -477,6 +477,17 @@
     document.body.classList.toggle("admin-rtl",state.lang==="ar");
     document.title=state.lang==="ar"?"Zayt w Mouneh — لوحة المالك":"Zayt w Mouneh — Owner Console";
     localizeDom(document.body);
+
+    if(state.products?.length){
+      populateCategoryControls();
+      renderProducts();
+      renderOrders();
+      renderOverview();
+      renderAnalytics();
+      renderActivity();
+      renderSettings();
+      localizeDom($("adminApp"));
+    }
     updateLanguageButtons();
   }
 

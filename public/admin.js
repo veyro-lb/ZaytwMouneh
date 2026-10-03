@@ -697,12 +697,29 @@
   function esc(v) {
     return safeText(v).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   }
+  function downloadBlob(filename, blob) {
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download=filename;
+    a.style.display="none";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{a.remove();URL.revokeObjectURL(url);},1200);
+  }
   function downloadJson(filename, data) {
-    const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = filename; a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    downloadBlob(filename,new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"}));
+  }
+  function csvCell(value) {
+    const text=safeText(value);
+    return /[",\n\r]/.test(text)?`"${text.replace(/"/g,'""')}"`:text;
+  }
+  function downloadCsv(filename, rows) {
+    const list=Array.isArray(rows)?rows:[];
+    if(!list.length)return toast("No data to export.","error");
+    const headers=[...new Set(list.flatMap(row=>Object.keys(row||{})))];
+    const csv="\ufeff"+[headers.map(csvCell).join(","),...list.map(row=>headers.map(h=>csvCell(row?.[h]??"")).join(","))].join("\r\n");
+    downloadBlob(filename,new Blob([csv],{type:"text/csv;charset=utf-8"}));
   }
 
   function showOnly(id) {

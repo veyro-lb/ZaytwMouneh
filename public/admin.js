@@ -2364,7 +2364,7 @@
       const photo=photoFor(p)||{};
       const category=categories.get(p.category)||{en:p.category||"",ar:AR_TRANSLATIONS[p.category]||""};
       const visibility=["hidden","draft"].includes(p.__status)?p.__status:"live";
-      const note=state.notes.get(\`product:\${p.id}\`)?.note||"";
+      const note=state.notes.get(`product:${p.id}`)?.note||"";
       const variants=Array.isArray(p.variants)&&p.variants.length?p.variants:[{}];
       variants.forEach(v=>rows.push({
         "Product ID":p.id,
@@ -2399,11 +2399,11 @@
       "Customer":order.customer_name||order.extra?.recipient||"",
       "Phone / WhatsApp":order.customer_phone||"",
       "Area":order.area||"",
-      "Items":(Array.isArray(order.items)?order.items:[]).map(i=>\`\${Number(i.qty)||1}× \${i.name||i.product_id||"Item"}\${i.size?\` (\${i.size})\`:""}\`).join(" | "),
+      "Items":(Array.isArray(order.items)?order.items:[]).map(i=>`${Number(i.qty)||1}× ${i.name||i.product_id||"Item"}${i.size?` (${i.size})`:""}`).join(" | "),
       "Items JSON":JSON.stringify(order.items||[]),
       "Subtotal / Total USD":Number(order.total)||0,
       "Customer Notes":order.notes||"",
-      "Private Owner Note":order.private_notes||state.notes.get(\`order:\${order.reference}\`)?.note||"",
+      "Private Owner Note":order.private_notes||state.notes.get(`order:${order.reference}`)?.note||"",
       "Language":order.language||"",
       "Submitted At":order.submitted_at||"",
       "Confirmed At":order.confirmed_at||"",
@@ -2474,22 +2474,22 @@
     const categories=categorySpreadsheetRows();
 
     if(dataset==="products"){
-      if(format==="csv")downloadCsv(\`zwm-products-\${stamp}.csv\`,products);
-      else downloadWorkbook(\`zwm-products-\${stamp}.xlsx\`,[["Products",products],["Categories",categories]]);
+      if(format==="csv")downloadCsv(`zwm-products-${stamp}.csv`,products);
+      else downloadWorkbook(`zwm-products-${stamp}.xlsx`,[["Products",products],["Categories",categories]]);
       return;
     }
     if(dataset==="orders"){
-      if(format==="csv")downloadCsv(\`zwm-orders-\${stamp}.csv\`,orders);
-      else downloadWorkbook(\`zwm-orders-\${stamp}.xlsx\`,[["Orders",orders]]);
+      if(format==="csv")downloadCsv(`zwm-orders-${stamp}.csv`,orders);
+      else downloadWorkbook(`zwm-orders-${stamp}.xlsx`,[["Orders",orders]]);
       return;
     }
     if(dataset==="customers"){
-      if(format==="csv")downloadCsv(\`zwm-customers-\${stamp}.csv\`,customers);
-      else downloadWorkbook(\`zwm-customers-\${stamp}.xlsx\`,[["Customers",customers]]);
+      if(format==="csv")downloadCsv(`zwm-customers-${stamp}.csv`,customers);
+      else downloadWorkbook(`zwm-customers-${stamp}.xlsx`,[["Customers",customers]]);
       return;
     }
     if(dataset==="report"){
-      downloadWorkbook(\`zwm-owner-report-\${stamp}.xlsx\`,[
+      downloadWorkbook(`zwm-owner-report-${stamp}.xlsx`,[
         ["Products",products],
         ["Orders",orders],
         ["Customers",customers],
@@ -2503,7 +2503,7 @@
       if(format==="json"){
         exportBackup();
       }else{
-        downloadWorkbook(\`zwm-readable-backup-\${stamp}.xlsx\`,[
+        downloadWorkbook(`zwm-readable-backup-${stamp}.xlsx`,[
           ["Products",products],
           ["Orders",orders],
           ["Customers",customers],
@@ -2519,7 +2519,7 @@
     $("dataCenterModal").hidden=false;
     document.body.style.overflow="hidden";
     if(dataset){
-      const button=document.querySelector(\`[data-export-dataset="\${dataset}"]\`);
+      const button=document.querySelector(`[data-export-dataset="${dataset}"]`);
       button?.closest("article")?.scrollIntoView({block:"center",behavior:"smooth"});
     }
   }
@@ -2566,9 +2566,9 @@
     const globalIssues=[];
     rows.forEach((row,rowIndex)=>{
       const id=safeText(importValue(row,["Product ID","ID","product_id"])).trim();
-      if(!id){globalIssues.push(\`Row \${rowIndex+2}: Product ID is required.\`);return;}
+      if(!id){globalIssues.push(`Row ${rowIndex+2}: Product ID is required.`);return;}
       if(!/^[A-Za-z0-9][A-Za-z0-9._-]{0,179}$/.test(id)){
-        globalIssues.push(\`Row \${rowIndex+2}: Product ID "\${id}" contains unsupported characters.\`);
+        globalIssues.push(`Row ${rowIndex+2}: Product ID "${id}" contains unsupported characters.`);
         return;
       }
       if(!groups.has(id))groups.set(id,{id,rows:[],issues:[],result:"Ready"});
@@ -2602,10 +2602,10 @@
         const rawPrice=importValue(row,["Price USD","Price","USD"]);
         const price=Number(rawPrice);
         let variantId=safeText(importValue(row,["Variant ID","Size ID"])).trim();
-        if(!variantId)variantId=\`\${group.id}-\${slugify(sizeEn||sizeAr||String(index+1))||index+1}\`;
-        if(!sizeEn&&!sizeAr)group.issues.push(\`Row \${row.__rowNumber}: size is required.\`);
-        if(rawPrice===""||!Number.isFinite(price)||price<0)group.issues.push(\`Row \${row.__rowNumber}: valid Price USD is required.\`);
-        if(variantIds.has(variantId))group.issues.push(\`Duplicate Variant ID "\${variantId}".\`);
+        if(!variantId)variantId=`${group.id}-${slugify(sizeEn||sizeAr||String(index+1))||index+1}`;
+        if(!sizeEn&&!sizeAr)group.issues.push(`Row ${row.__rowNumber}: size is required.`);
+        if(rawPrice===""||!Number.isFinite(price)||price<0)group.issues.push(`Row ${row.__rowNumber}: valid Price USD is required.`);
+        if(variantIds.has(variantId))group.issues.push(`Duplicate Variant ID "${variantId}".`);
         variantIds.add(variantId);
         if((sizeEn||sizeAr)&&Number.isFinite(price)&&price>=0)variants.push({id:variantId,sizeEn,sizeAr,price});
       }
@@ -2643,7 +2643,7 @@
       });
     }
 
-    const issues=[...globalIssues,...prepared.flatMap(p=>p.issues.map(issue=>\`\${p.id}: \${issue}\`))];
+    const issues=[...globalIssues,...prepared.flatMap(p=>p.issues.map(issue=>`${p.id}: ${issue}`))];
     return {fileName,products:prepared,categories:[...categoryUpdates.values()],issues};
   }
 
@@ -2657,16 +2657,16 @@
     $("importValidCount").textContent=valid.length;
     $("importIssueCount").textContent=data.issues.length;
     $("importIssueList").innerHTML=data.issues.length
-      ? \`<div class="import-issues-box"><b>Fix these before importing</b>\${data.issues.slice(0,30).map(x=>\`<span>\${esc(x)}</span>\`).join("")}\${data.issues.length>30?\`<span>+\${data.issues.length-30} more issues</span>\`:""}</div>\`
+      ? `<div class="import-issues-box"><b>Fix these before importing</b>${data.issues.slice(0,30).map(x=>`<span>${esc(x)}</span>`).join("")}${data.issues.length>30?`<span>+${data.issues.length-30} more issues</span>`:""}</div>`
       : '<div class="import-ready-box">✓ File is ready to import.</div>';
-    $("importPreviewBody").innerHTML=data.products.slice(0,40).map(p=>\`<tr>
-      <td>\${esc(p.id)}</td>
-      <td><b>\${esc(p.payload.nameEn||p.payload.nameAr||p.id)}</b></td>
-      <td>\${esc(p.payload.category||"—")}</td>
-      <td>\${esc(AVAILABILITY_LABELS[p.payload.availability]||p.payload.availability)}</td>
-      <td>\${p.payload.variants.length}</td>
-      <td><span class="status-badge \${p.issues.length?"status-hidden":"status-live"}">\${p.issues.length?\`\${p.issues.length} issue\${p.issues.length===1?"":"s"}\`:p.existing?"Update":"New"}</span></td>
-    </tr>\`).join("");
+    $("importPreviewBody").innerHTML=data.products.slice(0,40).map(p=>`<tr>
+      <td>${esc(p.id)}</td>
+      <td><b>${esc(p.payload.nameEn||p.payload.nameAr||p.id)}</b></td>
+      <td>${esc(p.payload.category||"—")}</td>
+      <td>${esc(AVAILABILITY_LABELS[p.payload.availability]||p.payload.availability)}</td>
+      <td>${p.payload.variants.length}</td>
+      <td><span class="status-badge ${p.issues.length?"status-hidden":"status-live"}">${p.issues.length?`${p.issues.length} issue${p.issues.length===1?"":"s"}`:p.existing?"Update":"New"}</span></td>
+    </tr>`).join("");
     $("applyProductImport").disabled=!!data.issues.length||!valid.length;
   }
 
@@ -2735,7 +2735,7 @@
         file:data.fileName,
         products:data.products.length
       });
-      toast(\`\${data.products.length} products imported successfully.\`);
+      toast(`${data.products.length} products imported successfully.`);
       clearProductImport();
       closeDataCenter();
       await refreshAll();

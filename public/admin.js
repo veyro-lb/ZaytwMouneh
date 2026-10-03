@@ -1130,14 +1130,26 @@
 
   function orderSearchText(order) {
     return [
-      order.reference,order.customer_name,order.area,order.notes,order.kind,order.status,
+      order.reference,order.customer_name,order.customer_phone,order.area,order.notes,order.kind,order.status,
       ...(Array.isArray(order.items)?order.items.flatMap(i=>[i.name,i.product_id,i.size]):[])
     ].join(" ").toLowerCase();
   }
 
+  function isToday(value){
+    const d=new Date(value); if(Number.isNaN(d.getTime()))return false;
+    const now=new Date();
+    return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth()&&d.getDate()===now.getDate();
+  }
+
   function orderMatchesScope(order) {
-    if(state.orderScope==="past")return PAST_ORDER_STATUSES.has(order.status);
-    if(state.orderScope==="active")return !PAST_ORDER_STATUSES.has(order.status);
+    if(state.orderScope==="past"&&!PAST_ORDER_STATUSES.has(order.status))return false;
+    if(state.orderScope==="active"&&PAST_ORDER_STATUSES.has(order.status))return false;
+    if(state.orderCommand==="today"&&!isToday(order.submitted_at))return false;
+    if(state.orderCommand==="waiting"){
+      const age=Date.now()-new Date(order.submitted_at).getTime();
+      if(PAST_ORDER_STATUSES.has(order.status)||age<30*60000)return false;
+    }
+    if(state.orderCommand==="delivered_today"&&!(order.status==="delivered"&&isToday(order.delivered_at||order.updated_at)))return false;
     return true;
   }
 
@@ -1155,21 +1167,22 @@
     const active=state.orders.filter(o=>!PAST_ORDER_STATUSES.has(o.status)).length;
     const past=state.orders.filter(o=>PAST_ORDER_STATUSES.has(o.status)).length;
     $("navOrderCount").textContent=active;
+    if($("mobileOrderCount"))$("mobileOrderCount").textContent=active;
     $("orderActiveTabCount").textContent=active;
     $("orderPastTabCount").textContent=past;
     $("orderAllTabCount").textContent=state.orders.length;
     $$("[data-order-scope]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderScope===state.orderScope));
+    $$("[data-order-command]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderCommand===state.orderCommand));
 
     $("ordersNewCount").textContent=state.orders.filter(o=>o.status==="new").length;
     $("ordersPreparingCount").textContent=state.orders.filter(o=>["confirmed","preparing"].includes(o.status)).length;
     $("ordersOutCount").textContent=state.orders.filter(o=>o.status==="out_for_delivery").length;
     $("ordersDeliveredCount").textContent=state.orders.filter(o=>o.status==="delivered").length;
-    $("orderResultCount").textContent=`${list.length} order${list.length===1?"":"s"} · ${state.orderScope==="all"?"all history":state.orderScope}`;
+    $("orderResultCount").textContent=`${list.length} order${list.length===1?"":"s"} · ${state.orderCommand||state.orderScope}`;
 
     $("orderTableBody").innerHTML=list.map(orderRowHtml).join("")||'<tr><td colspan="7"><p class="empty-state">No orders match these filters.</p></td></tr>';
     $("orderCardsMobile").innerHTML=list.map(orderCardHtml).join("")||'<p class="empty-state">No orders match these filters.</p>';
   }
-
   function orderStatusSelect(order,extraClass="") {
     return `<select class="order-status-select status-${esc(order.status)} ${extraClass}" data-order-status="${esc(order.reference)}" aria-label="Status for ${esc(order.reference)}">${Object.entries(ORDER_STATUS_LABELS).map(([value,label])=>`<option value="${value}" ${order.status===value?"selected":""}>${label}</option>`).join("")}</select>`;
   }
@@ -1197,10 +1210,61 @@
       <p><b>${esc(customer)}</b> · ${esc(order.area||"Area not supplied")}</p>
       <p>${esc(orderItemSummary(order))}</p>
       ${orderStatusSelect(order)}
+      <div class="order-card-quick-actions">
+        <button type="button" data-order-quick-status="preparing" data-order-ref="${esc(order.reference)}">Preparing</button>
+        <button type="button" data-order-quick-status="out_for_delivery" data-order-ref="${esc(order.reference)}">On the way</button>
+        <button type="button" data-order-quick-status="delivered" data-order-ref="${esc(order.reference)}">Delivered</button>
+      </div>
       <button class="button-secondary order-details-button" type="button" data-view-order="${esc(order.reference)}">View full order & history</button>
     </article>`;
   }
 
+  function customerKey(order){
+    const phone=safeText(order.customer_phone).replace(/\D/g,"");
+    if(phone)return "phone:"+phone;
+    const name=safeText(order.customer_name||order.extra?.recipient).trim().toLowerCase();
+    const area=safeText(order.area).trim().toLowerCase();
+    return "name:"+name+"|"+area;
+  }
+
+  function customerGroups(){
+    const map=new Map();
+    for(const order of state.orders){
+      const key=customerKey(order);
+      if(!key||key==="name:|")continue;
+      if(!map.has(key))map.set(key,{key,name:order.customer_name||order.extra?.recipient||"Customer",phone:order.customer_phone||"",area:order.area||"",orders:[],total:0,last:null});
+      const c=map.get(key);
+      c.orders.push(order);
+      c.total+=Number(order.total)||0;
+      const d=new Date(order.submitted_at).getTime();
+      if(!c.last||d>new Date(c.last).getTime()){c.last=order.submitted_at;c.name=order.customer_name||order.extra?.recipient||c.name;c.area=order.area||c.area;c.phone=order.customer_phone||c.phone;}
+    }
+    return [...map.values()];
+  }
+
+  function renderCustomers(){
+    let items=customerGroups();
+    const q=state.customerFilter.q.trim().toLowerCase();
+    if(q)items=items.filter(c=>[c.name,c.phone,c.area].join(" ").toLowerCase().includes(q));
+    if(state.customerFilter.sort==="orders")items.sort((a,b)=>b.orders.length-a.orders.length);
+    else if(state.customerFilter.sort==="spend")items.sort((a,b)=>b.total-a.total);
+    else items.sort((a,b)=>new Date(b.last)-new Date(a.last));
+    $("navCustomerCount").textContent=items.length;
+    $("customerGrid").innerHTML=items.length?items.map(c=>`
+      <article class="customer-card" data-customer-key="${esc(c.key)}">
+        <div class="customer-card-head"><div><b>${esc(c.name)}</b><small>${esc(c.phone||c.area||"No phone saved")}</small></div><strong>${money(c.total)}</strong></div>
+        <div class="customer-card-stats"><span><b>${c.orders.length}</b> orders</span><span>Last ${esc(when(c.last))}</span></div>
+        <div class="customer-card-actions">
+          <button type="button" data-customer-orders="${esc(c.key)}">View orders</button>
+          ${c.phone?`<a href="https://wa.me/${esc(c.phone.replace(/\D/g,""))}" target="_blank" rel="noopener">WhatsApp</a>`:""}
+        </div>
+      </article>`).join(""):'<p class="empty-state">No customer history yet.</p>';
+  }
+
+  function customerHistoryFor(order){
+    const key=customerKey(order);
+    return customerGroups().find(c=>c.key===key)||null;
+  }
   function normalizedOrderHistory(order) {
     const history=Array.isArray(order.status_history)?order.status_history.filter(Boolean):[];
     const items=[{status:"new",at:order.submitted_at,source:"website"},...history];

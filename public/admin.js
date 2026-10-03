@@ -876,6 +876,7 @@
     $("settingsEmail").textContent = user.email || "—";
     showOnly("adminApp");
     await refreshAll();
+    await ensureDailyCloudBackup();
   }
 
   async function loadAllOrders() {
@@ -1193,6 +1194,7 @@
     const value=$("bulkProductValue").value;
     if(!ids.length||!action)return;
     if(action==="delete"&&!confirm(`Delete ${ids.length} selected products? This cannot be undone.`))return;
+    await createCloudBackup(`before_bulk_${action}`,true);
     $("applyBulkProductAction").disabled=true;
     try{
       for(const id of ids){
@@ -2190,6 +2192,7 @@
   async function restoreProductRevision(revisionId){
     const {data,error}=await state.client.from(cfg.tables.revisions||"product_revisions").select("*").eq("id",revisionId).single();
     if(error||!data)return toast("Could not load that version.","error");
+    await createCloudBackup("before_revision_restore",true);
     const current=state.products.find(p=>p.id===data.product_id);
     if(current)await saveProductRevision(current,"before_restore");
     const snapshot=clone(data.snapshot||{});
@@ -2232,6 +2235,7 @@
     if(!product)return;
     const question=state.lang==="ar"?translatePhrase("Delete this product permanently? This cannot be undone."):"Delete this product permanently? This cannot be undone.";
     if(!window.confirm(question))return;
+    await createCloudBackup("before_delete_product",true);
     await saveProductRevision(product,"delete");
 
     const button=$("deleteProductButton");
@@ -2307,6 +2311,83 @@
       privateNotes:[...state.notes.values()],
       orders:state.orders
     });
+  }
+
+  function backupSnapshot(includeOrders=false){
+    const snapshot={
+      exportedAt:new Date().toISOString(),
+      productOverrides:[...state.overrides.values()],
+      siteSettings:Object.fromEntries(state.settings),
+      privateNotes:[...state.notes.values()]
+    };
+    if(includeOrders)snapshot.orders=state.orders;
+    return snapshot;
+  }
+
+  async function createCloudBackup(reason="manual",silent=false){
+    if(!state.user)return null;
+    const row={reason:String(reason).slice(0,100),snapshot:backupSnapshot(false),created_by:state.user.id};
+    const {data,error}=await state.client.from(cfg.tables.backups||"admin_backups").insert(row).select("*").single();
+    if(error){if(!silent)toast("Could not create cloud backup.","error");return null;}
+    state.backups=[data,...state.backups].slice(0,12);
+    renderCloudBackups();
+    if(!silent)toast("Cloud backup created.");
+    return data;
+  }
+
+  async function ensureDailyCloudBackup(){
+    const day=new Date().toISOString().slice(0,10);
+    if(state.backups.some(b=>safeText(b.reason).includes(day)))return;
+    await createCloudBackup(`auto_daily_${day}`,true);
+  }
+
+  async function applyBackupSnapshot(data){
+    const overrides=Array.isArray(data?.productOverrides)?data.productOverrides:[];
+    for(const row of overrides){
+      if(!row?.product_id)continue;
+      const {error}=await state.client.from(cfg.tables.products).upsert({
+        product_id:row.product_id,
+        action:row.action||"upsert",
+        payload:row.payload||{},
+        updated_at:new Date().toISOString(),
+        updated_by:state.user.id
+      },{onConflict:"product_id"});
+      if(error)throw error;
+    }
+
+    const settings=data?.siteSettings&&typeof data.siteSettings==="object"?data.siteSettings:{};
+    const settingRows=Object.entries(settings).map(([key,value])=>({key,value,updated_at:new Date().toISOString(),updated_by:state.user.id}));
+    if(settingRows.length){
+      const {error}=await state.client.from(cfg.tables.settings).upsert(settingRows,{onConflict:"key"});
+      if(error)throw error;
+    }
+
+    const notes=Array.isArray(data?.privateNotes)?data.privateNotes:[];
+    for(const note of notes){
+      if(!note?.subject_type||!note?.subject_id)continue;
+      const {error}=await state.client.from(cfg.tables.notes||"admin_notes").upsert({
+        subject_type:note.subject_type,
+        subject_id:note.subject_id,
+        note:note.note||"",
+        updated_at:new Date().toISOString(),
+        updated_by:state.user.id
+      },{onConflict:"subject_type,subject_id"});
+      if(error)throw error;
+    }
+    return {products:overrides.length,settings:settingRows.length,notes:notes.length};
+  }
+
+  async function restoreCloudBackup(id){
+    const backup=state.backups.find(b=>String(b.id)===String(id));
+    if(!backup)return;
+    if(!confirm("Restore products, settings and private notes from this cloud backup? Order history will not be changed."))return;
+    try{
+      await createCloudBackup("before_cloud_restore",true);
+      const counts=await applyBackupSnapshot(backup.snapshot||{});
+      await logActivity("restore_cloud_backup","backup",String(id),counts);
+      toast("Cloud backup restored.");
+      await refreshAll();
+    }catch(err){toast(err.message||"Could not restore cloud backup.","error");}
   }
 
   function openQuickActions(){
@@ -2413,17 +2494,12 @@
     try{
       const data=JSON.parse(await file.text());
       if(!data||typeof data!=="object")throw new Error("Invalid backup file.");
-      if(!confirm("Restore products and public settings from this backup? Current order history will not be changed."))return;
-      const overrides=Array.isArray(data.productOverrides)?data.productOverrides:[];
-      for(const row of overrides){
-        if(!row?.product_id)continue;
-        await state.client.from(cfg.tables.products).upsert({product_id:row.product_id,action:row.action||"upsert",payload:row.payload||{},updated_at:new Date().toISOString(),updated_by:state.user.id},{onConflict:"product_id"});
-      }
-      const settings=data.siteSettings&&typeof data.siteSettings==="object"?data.siteSettings:{};
-      const settingRows=Object.entries(settings).map(([key,value])=>({key,value,updated_at:new Date().toISOString(),updated_by:state.user.id}));
-      if(settingRows.length)await state.client.from(cfg.tables.settings).upsert(settingRows,{onConflict:"key"});
-      await logActivity("restore_backup","backup","dashboard",{products:overrides.length,settings:settingRows.length});
-      toast("Backup restored.");await refreshAll();
+      if(!confirm("Restore products, public settings and private notes from this backup? Current order history will not be changed."))return;
+      await createCloudBackup("before_file_restore",true);
+      const counts=await applyBackupSnapshot(data);
+      await logActivity("restore_backup","backup","dashboard",counts);
+      toast("Backup restored.");
+      await refreshAll();
     }catch(err){toast(err.message||"Could not restore backup.","error");}
     finally{$("restoreBackupInput").value="";}
   }

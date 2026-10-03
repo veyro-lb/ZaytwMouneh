@@ -3351,6 +3351,7 @@
     $("previewContentDesktop")?.addEventListener("click",()=>openContentPreview("desktop"));
     $("[data-content-preview-mode]").forEach(btn=>btn.addEventListener("click",()=>setContentPreviewMode(btn.dataset.contentPreviewMode)));
     $("contentPreviewFrame")?.addEventListener("load",()=>setTimeout(sendContentPreviewDraft,0));
+    window.addEventListener("message",e=>{if(e.origin===location.origin&&e.data?.type==="zwm-preview-ready")sendContentPreviewDraft();});
     $("contentForm")?.addEventListener("input",()=>{if(!$("contentPreviewModal").hidden)sendContentPreviewDraft();});
     $("contentForm")?.addEventListener("change",()=>{if(!$("contentPreviewModal").hidden)sendContentPreviewDraft();});
     $("closeContentPreview")?.addEventListener("click",closeContentPreview);

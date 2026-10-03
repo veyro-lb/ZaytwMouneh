@@ -63,7 +63,7 @@ window.addEventListener("zwm-product-photos-ready",()=>{
 const WA="96181581230";
 const CART_KEY="zwm-cart-v5";
 const LANG_KEY="zwm-lang-v2";
-const WELCOME_KEY="zwm-welcome-seen-v1";
+const WELCOME_KEY="zwm-welcome-seen-v2";
 const FAV_KEY="zwm-favorites-v1";
 const RECENT_KEY="zwm-recent-v1";
 const GIFT_KEY="zwm-gift-items-v1";
@@ -1583,6 +1583,10 @@ function openLanguageWelcome(){
   modal.classList.add("is-open");
   modal.setAttribute("aria-hidden","false");
   document.body.classList.add("welcome-open");
+  requestAnimationFrame(()=>{
+    const firstChoice=modal.querySelector('[data-welcome-lang="en"]');
+    if(firstChoice)firstChoice.focus({preventScroll:true});
+  });
 }
 function chooseWelcomeLanguage(next,event){
   if(event){event.preventDefault?.();event.stopImmediatePropagation?.();}
@@ -1590,6 +1594,7 @@ function chooseWelcomeLanguage(next,event){
   const modal=$("#languageWelcome");
 
   if(modal){
+    modal.querySelectorAll("[data-welcome-lang]").forEach(btn=>btn.classList.toggle("is-selected",btn.dataset.welcomeLang===next));
     modal.classList.add("is-choosing");
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden","true");
@@ -1605,7 +1610,7 @@ function chooseWelcomeLanguage(next,event){
     document.documentElement.lang=lang;
     document.documentElement.dir=lang==="ar"?"rtl":"ltr";
   }finally{
-    if(modal)setTimeout(()=>{modal.hidden=true;modal.classList.remove("is-choosing")},180);
+    if(modal)setTimeout(()=>{modal.hidden=true;modal.classList.remove("is-choosing");modal.querySelectorAll("[data-welcome-lang]").forEach(btn=>btn.classList.remove("is-selected"))},220);
   }
 }
 

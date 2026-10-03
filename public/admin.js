@@ -9,6 +9,7 @@
   const baseById = new Map(baseProducts.map(p => [p.id, p]));
   const basePhotoMap = window.ZWM_PRODUCT_PHOTOS?.map || {};
   const ADMIN_LANG_KEY = "zwm:admin-lang:v1";
+  const CMS_SYNC_KEY = "zwm:cms:admin-sync:v1";
   const originalTextNodes = new WeakMap();
   const originalAttributes = new WeakMap();
   let languageObserver = null;
@@ -697,6 +698,7 @@
       localizeDom($("adminApp"));
     }
     updateLanguageButtons();
+    if($("contentPreviewModal")&&!$("contentPreviewModal").hidden)sendContentPreviewDraft();
   }
 
   function toggleAdminLanguage() {
@@ -809,7 +811,8 @@
     }
   }
 
-  const OWNER_SESSION_KEY = "zwm:owner-session:v2";
+  const OWNER_SESSION_KEY = "zwm:owner-session:v3";
+  const LEGACY_OWNER_SESSION_KEY = "zwm:owner-session:v2";
 
   function anonymousClient() {
     return window.supabase.createClient(cfg.supabaseUrl, cfg.supabasePublishableKey, {
@@ -826,18 +829,20 @@
 
   function readOwnerSession() {
     try{
-      const raw=localStorage.getItem(OWNER_SESSION_KEY);
+      localStorage.removeItem(LEGACY_OWNER_SESSION_KEY);
+      const raw=sessionStorage.getItem(OWNER_SESSION_KEY);
       const value=raw?JSON.parse(raw):null;
       return value&&value.access_token&&value.refresh_token?value:null;
     }catch{return null;}
   }
 
   function saveOwnerSession(session) {
-    try{localStorage.setItem(OWNER_SESSION_KEY,JSON.stringify(session));}catch{}
+    try{sessionStorage.setItem(OWNER_SESSION_KEY,JSON.stringify(session));}catch{}
   }
 
   function clearOwnerSession() {
-    try{localStorage.removeItem(OWNER_SESSION_KEY);}catch{}
+    try{sessionStorage.removeItem(OWNER_SESSION_KEY);}catch{}
+    try{localStorage.removeItem(LEGACY_OWNER_SESSION_KEY);}catch{}
     if(state.sessionRefreshTimer){
       clearTimeout(state.sessionRefreshTimer);
       state.sessionRefreshTimer=null;
@@ -968,6 +973,7 @@
     applyAdminLanguage(state.lang,false);
     startLanguageObserver();
     bindStaticUi();
+    if($("ownerBootstrap"))$("ownerBootstrap").hidden=cfg.allowBootstrap!==true;
     if (!enabled()) {
       showOnly("setupScreen");
       return;
@@ -1417,8 +1423,8 @@
     $("orderActiveTabCount").textContent=active;
     $("orderPastTabCount").textContent=past;
     $("orderAllTabCount").textContent=state.orders.length;
-    $$$("[data-order-scope]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderScope===state.orderScope));
-    $$$("[data-order-command]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderCommand===state.orderCommand));
+    $("[data-order-scope]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderScope===state.orderScope));
+    $("[data-order-command]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderCommand===state.orderCommand));
 
     $("ordersNewCount").textContent=state.orders.filter(o=>o.status==="new").length;
     $("ordersPreparingCount").textContent=state.orders.filter(o=>["confirmed","preparing"].includes(o.status)).length;
@@ -1900,21 +1906,56 @@
     };
   }
 
-  function openContentPreview(mode="mobile"){
-    const lang=state.lang==="ar"?"ar":"en";
-    const announcement=lang==="ar"?($("announcementAr").value.trim()||$("announcementEn").value.trim()):($("announcementEn").value.trim()||$("announcementAr").value.trim());
-    const promoTitle=lang==="ar"?($("promoTitleAr").value.trim()||$("promoTitleEn").value.trim()):($("promoTitleEn").value.trim()||$("promoTitleAr").value.trim());
-    const promoBody=lang==="ar"?($("promoBodyAr").value.trim()||$("promoBodyEn").value.trim()):($("promoBodyEn").value.trim()||$("promoBodyAr").value.trim());
-    $("previewAnnouncement").textContent=announcement||"Announcement bar hidden";
-    $("previewAnnouncement").hidden=!$("announcementEnabled").checked;
-    $("previewPromoTitle").textContent=promoTitle;
-    $("previewPromoBody").textContent=promoBody;
-    $("previewPromo").hidden=!$("promoEnabled").checked||(!promoTitle&&!promoBody);
-    $("contentPreviewDevice").classList.toggle("is-mobile",mode!=="desktop");
-    $("contentPreviewDevice").classList.toggle("is-desktop",mode==="desktop");
-    $("contentPreviewDevice").dir=lang==="ar"?"rtl":"ltr";
+  function contentSettingsFromForm(){
+    return {
+      announcement:{enabled:$("announcementEnabled").checked,en:$("announcementEn").value.trim(),ar:$("announcementAr").value.trim()},
+      contact:{whatsapp:$("contentWhatsApp").value.replace(/\D/g,"")},
+      promo:{
+        enabled:$("promoEnabled").checked,
+        titleEn:$("promoTitleEn").value.trim(),titleAr:$("promoTitleAr").value.trim(),
+        bodyEn:$("promoBodyEn").value.trim(),bodyAr:$("promoBodyAr").value.trim(),
+        startsAt:$("promoStartsAt").value?new Date($("promoStartsAt").value).toISOString():null,
+        endsAt:$("promoEndsAt").value?new Date($("promoEndsAt").value).toISOString():null
+      },
+      delivery:deliverySettingsFromForm()
+    };
+  }
+
+  function broadcastSiteUpdate(kind,id=""){
+    try{localStorage.setItem(CMS_SYNC_KEY,JSON.stringify({kind,id,at:Date.now()}));}catch{}
+  }
+
+  function sendContentPreviewDraft(){
+    const frame=$("contentPreviewFrame");
+    if(!frame?.contentWindow)return;
+    frame.contentWindow.postMessage({
+      type:"zwm-admin-preview",
+      settings:contentSettingsFromForm(),
+      lang:state.lang
+    },location.origin);
+  }
+
+  function setContentPreviewMode(mode="desktop"){
+    const resolved=mode==="mobile"?"mobile":"desktop";
+    const device=$("contentPreviewDevice");
+    device.classList.toggle("is-mobile",resolved==="mobile");
+    device.classList.toggle("is-desktop",resolved==="desktop");
+    $("[data-content-preview-mode]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.contentPreviewMode===resolved));
+    sendContentPreviewDraft();
+  }
+
+  function openContentPreview(mode="desktop"){
     $("contentPreviewModal").hidden=false;
     document.body.style.overflow="hidden";
+    setContentPreviewMode(mode);
+    const frame=$("contentPreviewFrame");
+    const previewUrl="index.html?zwm_admin_preview=1";
+    if(frame.dataset.previewReady!=="1"){
+      frame.dataset.previewReady="1";
+      frame.src=previewUrl;
+    }else{
+      sendContentPreviewDraft();
+    }
   }
 
   function closeContentPreview(){
@@ -2092,23 +2133,14 @@
 
   async function saveContent(e) {
     e.preventDefault();
-    const rows=[
-      {key:"announcement",value:{enabled:$("announcementEnabled").checked,en:$("announcementEn").value.trim(),ar:$("announcementAr").value.trim()}},
-      {key:"contact",value:{whatsapp:$("contentWhatsApp").value.replace(/\D/g,"")}},
-      {key:"promo",value:{
-        enabled:$("promoEnabled").checked,
-        titleEn:$("promoTitleEn").value.trim(),titleAr:$("promoTitleAr").value.trim(),
-        bodyEn:$("promoBodyEn").value.trim(),bodyAr:$("promoBodyAr").value.trim(),
-        startsAt:$("promoStartsAt").value?new Date($("promoStartsAt").value).toISOString():null,
-        endsAt:$("promoEndsAt").value?new Date($("promoEndsAt").value).toISOString():null
-      }},
-      {key:"delivery",value:deliverySettingsFromForm()}
-    ].map(r=>({...r,updated_by:state.user.id,updated_at:new Date().toISOString()}));
+    const settings=contentSettingsFromForm();
+    const rows=Object.entries(settings).map(([key,value])=>({key,value,updated_by:state.user.id,updated_at:new Date().toISOString()}));
     setStatus($("contentStatus"),"Saving…");
     const {error}=await state.client.from(cfg.tables.settings).upsert(rows,{onConflict:"key"});
     if(error){setStatus($("contentStatus"),error.message,"error");return;}
     await logActivity("update_site_content","site_settings","public",{keys:rows.map(r=>r.key)});
-    setStatus($("contentStatus"),"Saved and published.","success");
+    broadcastSiteUpdate("site_settings","public");
+    setStatus($("contentStatus"),"Saved, published and synced.","success");
     toast("Website content saved.");
     await refreshAll();
   }
@@ -2149,8 +2181,8 @@
     img.style.transform=`rotate(${rotation||0}deg) scale(${zoom/100})`;
     img.style.transformOrigin=`${x}% ${y}%`;
     $("imagePreview").classList.toggle("is-modal-preview",preview==="modal");
-    $$$("[data-image-fit]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imageFit===fit));
-    $$$("[data-image-preview]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imagePreview===preview));
+    $("[data-image-fit]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imageFit===fit));
+    $("[data-image-preview]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imagePreview===preview));
   }
 
   function setImageRemoved(removed) {
@@ -2478,6 +2510,7 @@
     const row={actor:state.user.id,action,target_type:targetType,target_id:targetId,details};
     const {error}=await state.client.from(cfg.tables.activity).insert(row);
     if(error) console.warn("Activity log:",error.message);
+    if(["product","category","site_settings"].includes(targetType))broadcastSiteUpdate(targetType,targetId);
   }
 
   function applyHealthFilter(type) {
@@ -3176,7 +3209,7 @@
 
   function setupInstallPrompt(){
     window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.installPrompt=e;$("installAdminHint").textContent="Ready to install on this device.";});
-    if("serviceWorker" in navigator)navigator.serviceWorker.register("admin-sw.js?v=20261004-toolkit8").catch(()=>{});
+    if("serviceWorker" in navigator)navigator.serviceWorker.register("admin-sw.js?v=20261004-toolkit9").catch(()=>{});
   }
   async function installAdminApp(){
     if(state.installPrompt){
@@ -3186,7 +3219,12 @@
   }
 
   function bindStaticUi() {
-    $$("[data-admin-lang]").forEach(btn=>btn.addEventListener("click",()=>chooseAdminLanguage(btn.dataset.adminLang)));
+    document.addEventListener("click",e=>{
+      const btn=e.target.closest("[data-admin-lang]");
+      if(!btn)return;
+      e.preventDefault();
+      chooseAdminLanguage(btn.dataset.adminLang);
+    },true);
     $("loginForm")?.addEventListener("submit",handleLogin);
     $("bootstrapForm")?.addEventListener("submit",handleBootstrap);
     $("signOutButton")?.addEventListener("click",signOut);
@@ -3241,6 +3279,7 @@
     $("bulkProductAction")?.addEventListener("change",configureBulkValue);
     $("applyBulkProductAction")?.addEventListener("click",applyBulkProductAction);
     $("clearProductSelection")?.addEventListener("click",clearProductSelection);
+    $("deselectAllProducts")?.addEventListener("click",clearProductSelection);
     $("selectVisibleProducts")?.addEventListener("click",()=>{filteredProducts().forEach(p=>state.selectedProducts.add(p.id));renderProducts();});
     const selectionHandler=e=>{const input=e.target.closest("[data-select-product]");if(input)toggleProductSelection(input.dataset.selectProduct,input.checked);};
     $("productTableBody")?.addEventListener("change",selectionHandler);
@@ -3290,6 +3329,10 @@
     $("deliveryZoneRows")?.addEventListener("click",e=>{const b=e.target.closest("[data-remove-zone]");if(b)b.closest(".delivery-zone-row").remove();});
     $("previewContentMobile")?.addEventListener("click",()=>openContentPreview("mobile"));
     $("previewContentDesktop")?.addEventListener("click",()=>openContentPreview("desktop"));
+    $("[data-content-preview-mode]").forEach(btn=>btn.addEventListener("click",()=>setContentPreviewMode(btn.dataset.contentPreviewMode)));
+    $("contentPreviewFrame")?.addEventListener("load",()=>setTimeout(sendContentPreviewDraft,0));
+    $("contentForm")?.addEventListener("input",()=>{if(!$("contentPreviewModal").hidden)sendContentPreviewDraft();});
+    $("contentForm")?.addEventListener("change",()=>{if(!$("contentPreviewModal").hidden)sendContentPreviewDraft();});
     $("closeContentPreview")?.addEventListener("click",closeContentPreview);
     $("closeContentPreviewFooter")?.addEventListener("click",closeContentPreview);
     $("contentPreviewModal")?.addEventListener("click",e=>{if(e.target===$("contentPreviewModal"))closeContentPreview();});

@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20261002-hdaudit2" />
+  <link rel="stylesheet" href="styles.css?v=20261003-welcomeclassic1" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":["LocalBusiness","Store"],"name":"Zayt w Mouneh","description":"Lebanese pantry essentials, mouneh and gifts with delivery across Lebanon.","foundingDate":"2006","telephone":"+96181581230","url":"https://zaytwmouneh.veyro-202.workers.dev/","sameAs":["https://instagram.com/zaytwmouneh"],"areaServed":{"@type":"Country","name":"Lebanon"},"address":{"@type":"PostalAddress","addressLocality":"Sebline","addressCountry":"LB"}}</script>
   <link rel="stylesheet" href="premium.css?v=20261002-cardhd1" />
 </head>
@@ -28,26 +28,31 @@
 
   <div class="language-welcome" id="languageWelcome" hidden aria-hidden="true">
     <div class="language-welcome-backdrop" aria-hidden="true"></div>
-    <section class="welcome-board" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
-      <div class="welcome-rope welcome-rope-left" aria-hidden="true"></div>
-      <div class="welcome-rope welcome-rope-right" aria-hidden="true"></div>
-<div class="welcome-board-inner">
-        <img class="welcome-logo" src="assets/logo.svg?v=20261002-1005" alt="Zayt w Mouneh" />
-        <p class="welcome-kicker">Zayt w Mouneh · زيت ومونة</p>
-        <h2 id="welcomeTitle">Welcome to the pantry.</h2>
-        <p class="welcome-intro">Natural Lebanese pantry essentials — grains, pulses, herbs, oils, honey and spices — selected with care for quality, craft and flavour.</p>
-        <p class="welcome-intro-ar" lang="ar" dir="rtl">مونة لبنانية طبيعية من الحبوب والبقوليات والأعشاب والزيوت والعسل والبهارات، مختارة بعناية من حيث الجودة والحرفة والنكهة.</p>
+    <section class="welcome-board" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle" aria-describedby="welcomeIntro">
+      <div class="welcome-board-inner">
+        <div class="welcome-crest" aria-hidden="true">
+          <span class="welcome-crest-ring"><img class="welcome-logo" src="assets/logo.svg?v=20261002-1005" alt="" /></span>
+          <small class="welcome-est">Established 2006</small>
+        </div>
+        <p class="welcome-kicker">Lebanese pantry · المونة اللبنانية</p>
+        <h2 id="welcomeTitle">Welcome to Zayt w Mouneh.</h2>
+        <p class="welcome-intro" id="welcomeIntro">Choose your preferred language to enter the pantry.</p>
+        <p class="welcome-intro-ar" lang="ar" dir="rtl">اختر اللغة التي تفضّلها للدخول إلى المونة.</p>
         <div class="welcome-divider-simple" aria-hidden="true"><span></span><i></i><span></span></div>
-        <p class="welcome-question">How would you like to browse?</p>
+        <p class="welcome-question">Select your language · اختر لغتك</p>
         <div class="welcome-language-options">
-          <button type="button" class="welcome-language-button" data-welcome-lang="en" onclick="window.chooseWelcomeLanguage && window.chooseWelcomeLanguage('en', event)">
-            <span>EN</span><strong>Continue in English</strong><small>Full English experience</small>
+          <button type="button" class="welcome-language-button" data-welcome-lang="en" aria-label="Continue in English" onclick="window.chooseWelcomeLanguage && window.chooseWelcomeLanguage('en', event)">
+            <span class="welcome-lang-monogram">EN</span>
+            <span class="welcome-lang-copy"><strong>English</strong><small>Continue in English</small></span>
+            <b class="welcome-lang-arrow" aria-hidden="true">→</b>
           </button>
-          <button type="button" class="welcome-language-button is-ar" data-welcome-lang="ar" onclick="window.chooseWelcomeLanguage && window.chooseWelcomeLanguage('ar', event)">
-            <span>ع</span><strong>المتابعة بالعربية</strong><small>الموقع كاملاً باللغة العربية</small>
+          <button type="button" class="welcome-language-button is-ar" data-welcome-lang="ar" aria-label="المتابعة بالعربية" onclick="window.chooseWelcomeLanguage && window.chooseWelcomeLanguage('ar', event)">
+            <span class="welcome-lang-monogram">ع</span>
+            <span class="welcome-lang-copy"><strong>العربية</strong><small>المتابعة بالعربية</small></span>
+            <b class="welcome-lang-arrow" aria-hidden="true">←</b>
           </button>
         </div>
-        <small class="welcome-quality-note">We only describe a product as organic when that status is explicitly verified or labelled.</small>
+        <small class="welcome-quality-note">You can change language anytime from the site header · يمكنك تغيير اللغة في أي وقت من أعلى الموقع</small>
       </div>
     </section>
   </div>
@@ -385,7 +390,7 @@
 
   <script src="products-data.js?v=20261002-1005"></script>
   <script src="product-photos.js?v=20261003-hdall3"></script>
-  <script src="app.js?v=20261003-verified1"></script>
+  <script src="app.js?v=20261003-welcomeclassic1"></script>
   <script src="premium.js?v=20261002-hdaudit2"></script>
 </body>
 </html>

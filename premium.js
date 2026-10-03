@@ -48,6 +48,14 @@
     if(typeof productVisualMarkup==="function")return productVisualMarkup(p,className);
     return "";
   }
+  function photoById(id,cls,alt){
+    var source=window.ZWM_PRODUCT_PHOTOS&&typeof window.ZWM_PRODUCT_PHOTOS.sourceFor==="function"
+      ?window.ZWM_PRODUCT_PHOTOS.sourceFor(id)
+      :null;
+    if(!source||!source.url)return "";
+    var className=cls||"premium-product-image";
+    return '<img class="'+esc(className)+' product-photo-original" src="'+esc(source.url)+'" width="'+Number(source.width||1)+'" height="'+Number(source.height||1)+'" data-photo-width="'+Number(source.width||0)+'" data-photo-height="'+Number(source.height||0)+'" data-photo-quality="original-supplied" alt="'+esc(alt||"Zayt w Mouneh product")+'" loading="eager" decoding="async">';
+  }
 
   function track(name,detail){
     var clean={name:name,detail:detail||{},at:new Date().toISOString(),version:PREMIUM_VERSION};
@@ -146,9 +154,7 @@
     if(!host)return;
     qa("[data-collection-product]",host).forEach(function(frame){
       if(frame.querySelector("img"))return;
-      var p=safeProducts().find(function(item){return item.id===frame.dataset.collectionProduct});
-      if(!p)return;
-      var media=pvisual(p,"collection-product-image");
+      var media=photoById(frame.dataset.collectionProduct,"collection-product-image",frame.dataset.collectionAlt||"Zayt w Mouneh product");
       if(!media)return;
       var note=q(".collection-photo-note",frame);
       frame.insertAdjacentHTML("afterbegin",media);
@@ -161,8 +167,9 @@
     var anchor=q(".categories");if(!anchor)return;
     var sec=document.createElement("section");sec.id="premiumCollections";sec.className="premium-section premium-collections";
     var cards=collections.map(function(c){
-      var product=safeProducts().find(function(p){return p.id===c.productId}),media=pvisual(product,"collection-product-image");
-      return '<a class="collection-card collection-card--'+esc(c.id)+'" href="shop.html?collection='+encodeURIComponent(c.id)+'"><span class="collection-media" aria-hidden="true"><span class="collection-photo-frame" data-collection-product="'+esc(c.productId)+'">'+media+'<span class="collection-photo-note">'+esc(txt("A pantry pick","اختيار من التشكيلة"))+'</span></span></span><span class="collection-arrow">↗</span><span class="collection-copy"><small>'+esc(txt("Curated collection","تشكيلة مختارة"))+'</small><h3>'+esc(isAr()?c.titleAr:c.titleEn)+'</h3><p>'+esc(isAr()?c.copyAr:c.copyEn)+'</p></span></a>';
+      var title=isAr()?c.titleAr:c.titleEn;
+      var media=photoById(c.productId,"collection-product-image",title);
+      return '<a class="collection-card collection-card--'+esc(c.id)+'" href="shop.html?collection='+encodeURIComponent(c.id)+'"><span class="collection-media" aria-hidden="true"><span class="collection-photo-frame" data-collection-product="'+esc(c.productId)+'" data-collection-alt="'+esc(title)+'">'+media+'<span class="collection-photo-note">'+esc(txt("A pantry pick","اختيار من التشكيلة"))+'</span></span></span><span class="collection-arrow">↗</span><span class="collection-copy"><small>'+esc(txt("Curated collection","تشكيلة مختارة"))+'</small><h3>'+esc(title)+'</h3><p>'+esc(isAr()?c.copyAr:c.copyEn)+'</p></span></a>';
     }).join("");
     sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Shop by mood","تسوّق حسب المناسبة"))+'</p><h2>'+esc(txt("Collections with a","تشكيلات لها"))+' <em>'+esc(txt("reason.","فكرة."))+'</em></h2></div><p>'+esc(txt("Categories are useful. Collections make the pantry easier to imagine on a real table, for a real meal or as a gift.","التصنيفات مفيدة، لكن التشكيلات تجعل المونة أسهل للتخيّل على سفرة حقيقية أو كهدية."))+'</p></div><div class="collection-grid">'+cards+'</div></div>';
     anchor.after(sec);

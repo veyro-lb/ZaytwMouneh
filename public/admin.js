@@ -651,7 +651,7 @@
     orderFilter: { q:"", status:"", kind:"" }, orderScope:"active", orderCommand:"", selectedOrderReference:null,
     customerFilter:{q:"",sort:"recent"},
     imagePosition:{x:50,y:50,zoom:100,rotation:0,fit:"cover",preview:"card"}, previewObjectUrl:null,
-    installPrompt:null,
+    installPrompt:null, productImport:null,
     session:null, sessionRefreshTimer:null,
     lang:readAdminLanguage()
   };

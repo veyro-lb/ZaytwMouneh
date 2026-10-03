@@ -1351,13 +1351,14 @@ function renderFeaturedProducts(){
   grid.innerHTML=items.map((p,index)=>{
     const v=defaultVariant(p);
     const ps=productPriceSummary(p);
+    const canOrder=productAvailability(p)==="in_stock";
     return `<article class="featured-product ${index===0?"is-featured-lead":""}" style="--featured-i:${index}" data-featured-view="${escapeHtml(p.id)}">
       <div class="featured-product-media">${productVisualMarkup(p,"featured-product-image")}<span class="featured-product-badge">${lang==="ar"?"مختار":"Featured"}</span></div>
       <div class="featured-product-copy">
         <p>${escapeHtml(categoryName(p.category))}</p>
         <h3>${escapeHtml(currentName(p))}</h3>
         <span class="featured-origin">${escapeHtml(originFor(p))}</span>
-        <div class="featured-product-foot"><span><strong>${money(ps.min)}</strong><small>${p.variants.length>1?(lang==="ar"?"من ":"from ")+money(ps.min):escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)}</small></span><button type="button" data-featured-add="${escapeHtml(p.id)}">${escapeHtml(UI[lang].add)} <b>+</b></button></div>
+        <div class="featured-product-foot"><span><strong>${money(ps.min)}</strong><small>${p.variants.length>1?(lang==="ar"?"من ":"from ")+money(ps.min):escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)}</small></span><button type="button" data-featured-add="${escapeHtml(p.id)}" ${canOrder?"":"disabled"}>${escapeHtml(canOrder?UI[lang].add:availabilityLabel(p))} <b>${canOrder?"+":""}</b></button></div>
       </div>
     </article>`;
   }).join("");

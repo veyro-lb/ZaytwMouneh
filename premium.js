@@ -752,18 +752,28 @@
     if(reduceMotion||saveData)return;
 
     var mobile=window.matchMedia&&window.matchMedia("(max-width:760px)").matches;
-    var slowConnection=Boolean(connection&&["slow-2g","2g","3g"].indexOf(connection.effectiveType)!==-1);
-    var lowMemory=Number(navigator.deviceMemory||8)<=4;
-    var useLite=Boolean(mobile||slowConnection||lowMemory);
+    var effectiveType=connection&&connection.effectiveType?connection.effectiveType:"4g";
+    var slowConnection=Boolean(["slow-2g","2g","3g"].indexOf(effectiveType)!==-1);
+    var veryLowMemory=Number(navigator.deviceMemory||8)<=2;
+
+    /*
+      Phones on normal 4G/Wi-Fi now receive the same 1280x720 HD master as desktop.
+      The old mobile path forced a tiny ~35 KB encode on every phone, which is why
+      the hero looked soft. Keep that lite encode only as a safety fallback for
+      genuinely slow / very low-memory devices.
+    */
+    var useLite=Boolean(slowConnection||veryLowMemory);
     var folder=useLite?"assets/shop-hero-video/":"assets/shop-hero-video-hd/";
     var partCount=useLite?5:9;
     var expectedLength=useLite?47724:1061516;
-    var cacheTag=useLite?"20261003-mobile-stable1":"20261002-hero-hd1";
+    var cacheTag=useLite?"20261003-mobile-lite2":"20261003-mobile-hd2";
     var parts=[];
     for(var part=1;part<=partCount;part++){
       parts.push(folder+"part"+String(part).padStart(2,"0")+".b64?v="+cacheTag);
     }
-    video.preload=useLite?"metadata":"auto";
+    video.preload="auto";
+    video.dataset.videoQuality=useLite?"lite":"hd";
+    if(mobile&&!useLite)video.setAttribute("data-mobile-hd","true");
 
     Promise.all(parts.map(function(url){
       return fetch(url,{cache:"force-cache"}).then(function(response){

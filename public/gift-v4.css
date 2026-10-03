@@ -1621,3 +1621,10 @@ body[data-page="gift"] .nav-search{display:none!important}
     direction:rtl!important;
   }
 }
+
+/* Owner-controlled photo framing in the gift catalogue. */
+.product-photo-original{
+  object-position:var(--zwm-photo-position,50% 50%)!important;
+  transform:scale(var(--zwm-photo-scale,1))!important;
+  transform-origin:var(--zwm-photo-position,50% 50%)!important;
+}

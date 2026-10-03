@@ -1574,3 +1574,91 @@ html[dir="rtl"] .owner-inbox-item em{text-align:left}
 @media(min-width:421px) and (max-width:760px){
   .content-preview-device.is-desktop{transform:scale(.34);margin-bottom:-449px}
 }
+
+/* Synchronized analytics traffic chart */
+.mini-chart.traffic-chart,
+.analytics-chart.traffic-chart{
+  height:auto;
+  min-height:0;
+  display:block;
+  padding:0;
+  overflow:hidden;
+}
+.traffic-chart-legend{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+  min-height:34px;
+  margin:2px 0 8px;
+}
+.traffic-chart-legend span{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:9px;
+  color:var(--muted);
+}
+.traffic-chart-legend b{
+  color:var(--ink);
+  font-size:11px;
+}
+.traffic-key{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  display:inline-block;
+}
+.traffic-key-views{background:#1f6a3a}
+.traffic-key-sessions{background:#b78642}
+.traffic-chart-canvas{
+  width:100%;
+  min-height:220px;
+  border-radius:14px;
+  background:linear-gradient(180deg,rgba(245,247,241,.72),rgba(255,255,255,.25));
+  overflow:hidden;
+}
+.traffic-chart-canvas svg{
+  display:block;
+  width:100%;
+  height:220px;
+  overflow:visible;
+}
+.traffic-grid-line{
+  stroke:#dfe5dc;
+  stroke-width:1;
+  vector-effect:non-scaling-stroke;
+}
+.traffic-y-label,.traffic-x-label{
+  fill:#778079;
+  font:8px "DM Sans",sans-serif;
+}
+.traffic-line{
+  fill:none;
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+}
+.traffic-line-views{stroke:#1f6a3a}
+.traffic-line-sessions{stroke:#b78642}
+.traffic-dot{
+  stroke:#fff;
+  stroke-width:2;
+  vector-effect:non-scaling-stroke;
+}
+.traffic-dot-views{fill:#1f6a3a}
+.traffic-dot-sessions{fill:#b78642}
+.analytics-freshness{
+  display:block;
+  margin-top:5px;
+  font-size:9px;
+  color:var(--muted);
+}
+@media(max-width:760px){
+  .traffic-chart-legend{gap:10px;margin-bottom:5px}
+  .traffic-chart-canvas{min-height:190px}
+  .traffic-chart-canvas svg{height:190px}
+  .traffic-line{stroke-width:2.5}
+  .traffic-y-label,.traffic-x-label{font-size:7.5px}
+}

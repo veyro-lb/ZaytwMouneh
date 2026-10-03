@@ -6587,3 +6587,7 @@ html[dir="rtl"] body[data-page="home"] .home-pantry-hero .intro-board-note.only-
 .availability-chip.availability-out_of_stock{background:#f6e7e4;color:#963d35}
 .availability-chip.availability-coming_soon{background:#eee9f5;color:#665079}
 .add-button:disabled,.card-qty button:disabled,#productModalAdd:disabled{opacity:.55;cursor:not-allowed;filter:saturate(.55)}
+
+.gift-result.is-unavailable{opacity:.66;cursor:not-allowed}
+.gift-result:disabled{pointer-events:none}
+.featured-product button:disabled{opacity:.55;cursor:not-allowed}

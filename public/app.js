@@ -71,6 +71,32 @@ window.addEventListener("zwm-product-photos-ready",()=>{
   if(currentModalProduct)renderModal(currentModalProduct.id,currentModalVariant?.id);
 });
 const WA="96181581230";
+function liveCmsSettings(){
+  try{
+    const connected=window.ZWM_CMS?.getSettings?.();
+    if(connected&&typeof connected==="object")return connected;
+    return JSON.parse(localStorage.getItem("zwm:cms:settings:v1")||"{}")||{};
+  }catch{return {}}
+}
+function currentWhatsAppNumber(){
+  const value=String(liveCmsSettings()?.contact?.whatsapp||"").replace(/\D/g,"");
+  return value||WA;
+}
+function deliveryQuoteFor(subtotal,area=""){
+  if(window.ZWM_CMS?.deliveryQuote)return window.ZWM_CMS.deliveryQuote(subtotal,area);
+  const delivery=liveCmsSettings()?.delivery||{};
+  const amount=Math.max(0,Number(subtotal)||0);
+  const freeAbove=Math.max(0,Number(delivery.freeAbove)||0);
+  const minimum=Math.max(0,Number(delivery.minimum)||0);
+  const zones=Array.isArray(delivery.zones)?delivery.zones:[];
+  const normalized=String(area||"").trim().toLowerCase();
+  const zone=normalized?zones.find(z=>{
+    const key=String(z?.area||"").trim().toLowerCase();
+    return key&&(normalized.includes(key)||key.includes(normalized));
+  }):null;
+  const baseFee=Math.max(0,Number(zone?.fee ?? delivery.fee)||0);
+  return {fee:freeAbove>0&&amount>=freeAbove?0:baseFee,freeAbove,minimum,eta:String(zone?.eta||delivery.eta||"").trim(),zone:zone||null};
+}
 const CART_KEY="zwm-cart-v5";
 const LANG_KEY="zwm-lang-v2";
 const WELCOME_KEY="zwm-welcome-seen-v3";
@@ -1234,6 +1260,7 @@ function renderCart(){
   $("#cartEmpty").hidden=rows.length>0;
   $("#orderForm").hidden=rows.length===0;
   $("#cartTotal").textContent=money(total);
+  window.ZWM_CMS?.renderDeliverySummary?.(total);
   renderGiftSummary();
   renderMobileOrderBar();
 
@@ -1492,14 +1519,24 @@ function sendGiftOrder(){
   const themeLabel=lang==="ar"?({"Olive green":"أخضر زيتوني","Natural linen":"كتان طبيعي","Warm gold":"ذهبي دافئ"}[theme]||theme):theme;
   const cardLanguageLabel=lang==="ar"?({"English":"الإنجليزية","Arabic":"العربية","Bilingual":"ثنائية اللغة"}[cardLanguage]||cardLanguage):({"English":"English","Arabic":"Arabic","Bilingual":"English + العربية"}[cardLanguage]||cardLanguage);
   const hidePrices=$("#giftHidePrices")?.checked!==false;
-  const total=rows.reduce((sum,row)=>sum+row.qty*Number(row.v.price),0);
+  const subtotal=rows.reduce((sum,row)=>sum+row.qty*Number(row.v.price),0);
+  const delivery=deliveryQuoteFor(subtotal,area==="—"?"":area);
+  if(delivery.minimum>0&&subtotal<delivery.minimum){
+    toast(lang==="ar"?`الحد الأدنى للطلب هو ${money(delivery.minimum)}.`:`Minimum order is ${money(delivery.minimum)}.`);
+    return;
+  }
+  const total=subtotal+delivery.fee;
   const ref=orderReference("ZW-GIFT");
   const lines=[
     lang==="ar"?"مرحباً زيت ومونة 👋":"Hello Zayt w Mouneh 👋","",
     (lang==="ar"?"رقم الطلب":"Order")+": "+ref,"",
     lang==="ar"?"أرغب بتحضير هذه الهدية:":"I would like to prepare this gift:","",
     ...rows.map((row,i)=>(i+1)+". "+currentName(row.p)+" — "+(lang==="ar"?row.v.sizeAr:row.v.sizeEn)+" — "+base.qty+": "+row.qty+" — "+money(row.v.price*row.qty)),
-    "",base.orderTotal+": "+money(total),
+    "",
+    (lang==="ar"?"مجموع المنتجات":"Products subtotal")+": "+money(subtotal),
+    ...(delivery.fee>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+money(delivery.fee)]:(delivery.freeAbove>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+(lang==="ar"?"مجاني":"Free")]:[])),
+    ...(delivery.eta?[(lang==="ar"?"الوقت المتوقع":"Estimated delivery")+": "+delivery.eta]:[]),
+    base.orderTotal+": "+money(total),
     (lang==="ar"?"المستلم":"Recipient")+": "+recipient,
     (lang==="ar"?"المناسبة":"Occasion")+": "+occasion,
     (lang==="ar"?"التغليف":"Packing")+": "+packing,
@@ -1534,10 +1571,14 @@ function sendGiftOrder(){
       packing,
       theme,
       card_language:cardLanguage,
-      hide_prices:hidePrices
+      hide_prices:hidePrices,
+      products_subtotal:subtotal,
+      delivery_fee:delivery.fee,
+      delivery_eta:delivery.eta,
+      delivery_zone:delivery.zone?.area||""
     }
   });
-  const url="https://wa.me/"+WA+"?text="+encodeURIComponent(lines.join("\n"));
+  const url="https://wa.me/"+currentWhatsAppNumber()+"?text="+encodeURIComponent(lines.join("\n"));
   const opened=window.open(url,"_blank","noopener,noreferrer");
   if(opened)toast(lang==="ar"?"تم فتح واتساب مع طلب الهدية":"WhatsApp opened with your gift request");
   else window.location.href=url;
@@ -1729,21 +1770,30 @@ function order(){
   const rows=cartRows();
   if(!rows.length)return;
   const t=UI[lang];
-  const total=rows.reduce((s,r)=>s+r.qty*Number(r.v.price),0);
+  const subtotal=rows.reduce((s,r)=>s+r.qty*Number(r.v.price),0);
   const name=$("#customerName").value.trim()||"—";
   const phone=$("#customerPhone")?.value.trim()||"—";
   const area=$("#customerArea").value.trim()||"—";
   const notes=$("#orderNotes").value.trim()||"—";
+  const delivery=deliveryQuoteFor(subtotal,area==="—"?"":area);
+  if(delivery.minimum>0&&subtotal<delivery.minimum){
+    toast(lang==="ar"?`الحد الأدنى للطلب هو ${money(delivery.minimum)}.`:`Minimum order is ${money(delivery.minimum)}.`);
+    return;
+  }
+  const total=subtotal+delivery.fee;
   const ref=orderReference("ZW");
   const lines=[
     t.orderHello,"",`${lang==="ar"?"رقم الطلب":"Order"}: ${ref}`,"",t.orderIntro,"",
     ...rows.map((r,i)=>{
       const itemName=currentName(r.p);
       const size=lang==="ar"?r.v.sizeAr:r.v.sizeEn;
-      const subtotal=money(r.v.price*r.qty);
-      return `${i+1}. ${itemName} — ${size} — ${t.qty}: ${r.qty} — ${money(r.v.price)} — ${t.subtotal}: ${subtotal}`;
+      const lineSubtotal=money(r.v.price*r.qty);
+      return `${i+1}. ${itemName} — ${size} — ${t.qty}: ${r.qty} — ${money(r.v.price)} — ${t.subtotal}: ${lineSubtotal}`;
     }),
     "",
+    `${lang==="ar"?"مجموع المنتجات":"Products subtotal"}: ${money(subtotal)}`,
+    ...(delivery.fee>0?[`${lang==="ar"?"التوصيل":"Delivery"}: ${money(delivery.fee)}`]:(delivery.freeAbove>0?[`${lang==="ar"?"التوصيل":"Delivery"}: ${lang==="ar"?"مجاني":"Free"}`]:[])),
+    ...(delivery.eta?[`${lang==="ar"?"الوقت المتوقع":"Estimated delivery"}: ${delivery.eta}`]:[]),
     `${t.orderTotal}: ${money(total)}`,
     `${t.customer}: ${name}`,
     ...(phone!=="—"?[`${t.orderPhone}: ${phone}`]:[]),
@@ -1769,9 +1819,9 @@ function order(){
     })),
     total,
     language:lang,
-    extra:{source:"cart"}
+    extra:{source:"cart",products_subtotal:subtotal,delivery_fee:delivery.fee,delivery_eta:delivery.eta,delivery_zone:delivery.zone?.area||""}
   });
-  const opened=window.open(`https://wa.me/${WA}?text=${encodeURIComponent(lines.join("\n"))}`,"_blank","noopener,noreferrer");
+  const opened=window.open(`https://wa.me/${currentWhatsAppNumber()}?text=${encodeURIComponent(lines.join("\n"))}`,"_blank","noopener,noreferrer");
   if(opened)toast(lang==="ar"?"تم فتح واتساب مع طلبك":"WhatsApp opened with your order");
 }
 
@@ -2112,4 +2162,4 @@ window.applyPageMetadata=applyPageMetadata;
 document.addEventListener("DOMContentLoaded",init);
 
 /* Load the optional owner CMS/analytics bridge without delaying the storefront. */
-(()=>{if(document.querySelector('script[data-zwm-site-runtime]'))return;const s=document.createElement("script");s.src="site-runtime.js?v=20261004-toolkit4";s.async=true;s.dataset.zwmSiteRuntime="1";document.head.appendChild(s);})();
+(()=>{if(document.querySelector('script[data-zwm-site-runtime]'))return;const s=document.createElement("script");s.src="site-runtime.js?v=20261004-toolkit9";s.async=true;s.dataset.zwmSiteRuntime="1";document.head.appendChild(s);})();

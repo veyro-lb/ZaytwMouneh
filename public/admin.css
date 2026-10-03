@@ -1518,3 +1518,12 @@ html[dir="rtl"] .owner-inbox-item,
 html[dir="rtl"] .import-preview-table th,
 html[dir="rtl"] .import-preview-table td{text-align:right}
 html[dir="rtl"] .owner-inbox-item em{text-align:left}
+
+/* Final interaction stack: modal workflows must always sit above phone navigation. */
+.modal-backdrop{z-index:300}
+.toast-stack{z-index:420}
+@media(max-width:760px){
+  body:has(.modal-backdrop:not([hidden])) .mobile-admin-nav{visibility:hidden;pointer-events:none}
+  .modal-backdrop:not([hidden]){display:flex}
+  .data-center-modal,.editor-modal,.order-detail-modal,.search-command-modal,.manual-order-modal,.content-preview-modal{position:relative;z-index:1}
+}

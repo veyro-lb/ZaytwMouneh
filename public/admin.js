@@ -1708,7 +1708,7 @@
   }
 
   function collectDeliveryZones(){
-    return $(".delivery-zone-row").map(row=>({
+    return $$(".delivery-zone-row").map(row=>({
       area:row.querySelector('[data-zone="area"]').value.trim(),
       fee:Math.max(0,Number(row.querySelector('[data-zone="fee"]').value)||0),
       eta:row.querySelector('[data-zone="eta"]').value.trim()

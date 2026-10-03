@@ -5994,3 +5994,29 @@ html[dir="rtl"] body[data-page="shop"] .shop-story-hero .premium-seasonal{margin
   body[data-page="shop"] .shop-story-hero .premium-seasonal strong{font-size:.62rem}
   body[data-page="shop"] .shop-story-hero .premium-seasonal a{font-size:.68rem}
 }
+
+/* ===== v56 collection image recovery ===== */
+/* Keep supplied collection photography visible above the decorative curved frame. */
+.collection-photo-frame{
+  isolation:isolate!important;
+}
+.collection-photo-frame::before,
+.collection-photo-frame::after{
+  z-index:2!important;
+}
+.collection-photo-frame .collection-product-image,
+.collection-photo-frame .product-photo-original{
+  position:relative!important;
+  z-index:1!important;
+  display:block!important;
+  opacity:1!important;
+  visibility:visible!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+}
+.collection-photo-frame .collection-photo-note{
+  z-index:3!important;
+}
+

@@ -444,6 +444,23 @@ let heroVisible=true;
   }catch(error){console.warn("Owner catalogue cache ignored:",error);}
 })();
 
+/* Include owner-created categories in the storefront once they contain products.
+   Arabic labels are read from the public settings cache when available. */
+try{
+  const cachedSettings=JSON.parse(localStorage.getItem("zwm:cms:settings:v1")||"{}");
+  const customCategories=Array.isArray(cachedSettings?.product_categories?.items)?cachedSettings.product_categories.items:[];
+  for(const item of customCategories){
+    const en=String(item?.en||"").trim();
+    const ar=String(item?.ar||"").trim();
+    if(en&&!CATEGORY_ORDER.includes(en))CATEGORY_ORDER.push(en);
+    if(en&&ar&&!CATEGORY_AR[en])CATEGORY_AR[en]=ar;
+  }
+}catch{}
+for(const product of PRODUCTS_DATA){
+  const category=String(product?.category||"").trim();
+  if(category&&!CATEGORY_ORDER.includes(category))CATEGORY_ORDER.push(category);
+}
+
 const CATEGORY_COUNTS=Object.fromEntries(CATEGORY_ORDER.map(cat=>[cat,PRODUCTS_DATA.filter(p=>p.category===cat).length]));
 const DISPLAY_NAME_COUNTS=PRODUCTS_DATA.reduce((acc,p)=>{
   const key=String(p.nameEn||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();

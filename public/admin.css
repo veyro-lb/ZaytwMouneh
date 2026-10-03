@@ -339,3 +339,493 @@ html[dir="rtl"] .auth-language-toggle{right:auto;left:24px}
   .topbar-language-toggle{min-height:36px}
   .topbar-language-toggle button{min-width:38px;height:28px;font-size:9px}
 }
+
+/* =========================================================
+   Mobile-first owner console pass
+   Optimized for the primary phone workflow (<= 760px)
+   ========================================================= */
+@media(max-width:760px){
+  :root{--mobile-pad:12px}
+  html,body{max-width:100%;overflow-x:hidden}
+  body.admin-body{font-size:14px}
+  button,a,input,select,textarea,summary{touch-action:manipulation}
+  button,.button-primary,.button-secondary,.danger-button,.upload-button,.row-action{
+    min-height:44px;
+  }
+  input,select,textarea{
+    min-height:46px;
+    font-size:16px; /* prevents iOS focus zoom */
+    border-radius:12px;
+  }
+  textarea{min-height:104px}
+  .text-button{min-height:40px;padding:8px 6px}
+
+  /* Top bar: compact but readable, no overlap */
+  .admin-topbar{
+    height:64px;
+    min-height:64px;
+    padding:0 10px;
+    gap:8px;
+  }
+  .topbar-left{gap:8px;min-width:0;flex:1}
+  .topbar-left h1{
+    font-size:16px;
+    line-height:1.15;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:100%;
+  }
+  .topbar-left p{display:none}
+  .topbar-right{gap:6px;flex:0 0 auto}
+  .mobile-menu-button,.icon-button{
+    width:44px;height:44px;min-width:44px;min-height:44px;border-radius:12px
+  }
+  .topbar-right .icon-button{display:none}
+  .topbar-language-toggle{
+    min-height:42px;
+    padding:3px;
+  }
+  .topbar-language-toggle button{
+    min-width:40px;
+    height:34px;
+    padding:0 7px;
+    font-size:10px;
+  }
+  .topbar-right .button-primary{
+    width:auto;
+    min-width:58px;
+    height:44px;
+    padding:0 10px;
+    font-size:0;
+    border-radius:12px;
+  }
+  .topbar-right .button-primary:after{
+    content:"+ Add";
+    font-size:11px;
+    font-weight:800;
+    white-space:nowrap;
+  }
+
+  /* Sidebar drawer */
+  .admin-sidebar{
+    width:min(88vw,320px);
+    padding:14px;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+  }
+  .sidebar-brand{padding:5px}
+  .sidebar-brand img{width:44px;height:44px}
+  .sidebar-brand strong{font-size:14px}
+  .sidebar-brand small{font-size:10px}
+  .sidebar-close{
+    width:44px;height:44px;min-height:44px;border-radius:12px;
+    display:grid;place-items:center;background:rgba(255,255,255,.08)
+  }
+  .admin-nav{margin-top:22px;gap:6px}
+  .admin-nav button{
+    min-height:52px;
+    padding:12px;
+    grid-template-columns:28px 1fr auto;
+    border-radius:13px;
+  }
+  .admin-nav button b{font-size:13px}
+  .admin-nav button span{font-size:17px}
+  .admin-nav button em{font-size:10px;min-width:28px;text-align:center}
+  .sidebar-foot a,.sidebar-foot button{
+    min-height:44px;
+    display:flex;
+    align-items:center;
+    font-size:12px;
+  }
+
+  /* Main content */
+  .admin-content{
+    padding:12px 10px calc(24px + env(safe-area-inset-bottom));
+  }
+  .welcome-panel{
+    padding:17px;
+    border-radius:18px;
+    gap:14px;
+  }
+  .welcome-panel h2{font-size:23px;line-height:1.15}
+  .welcome-panel>div>span{font-size:10px;line-height:1.45}
+  .welcome-panel .button-secondary{width:100%;min-height:44px}
+
+  .metric-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+    margin-top:10px;
+  }
+  .metric-card{
+    min-height:104px;
+    padding:13px;
+    border-radius:15px;
+    overflow:hidden;
+  }
+  .metric-card strong{font-size:23px;margin:8px 0 6px}
+  .metric-card small{font-size:10px}
+  .metric-card em{font-size:9px;line-height:1.35}
+  .metric-icon{display:none}
+
+  .overview-grid,.content-grid,.settings-grid{gap:10px}
+  .panel{padding:14px;border-radius:16px}
+  .panel-head{gap:8px}
+  .panel-head h3{font-size:14px}
+  .panel-head p{font-size:9px}
+  .mini-chart,.analytics-chart{height:180px;gap:5px}
+  .chart-bar{width:min(26px,86%)}
+
+  /* Section headings */
+  .section-intro,.analytics-head{
+    display:grid;
+    grid-template-columns:1fr;
+    align-items:start;
+    gap:8px;
+    margin-bottom:12px;
+  }
+  .section-intro h2,.analytics-head h2{
+    font-size:24px;
+    line-height:1.18;
+  }
+  .section-intro>span,.analytics-head>span{
+    font-size:10px;
+    line-height:1.45;
+  }
+  .analytics-head select{width:100%;min-height:44px}
+
+  /* Toolbars: one clear control per row on phones */
+  .toolbar,.order-toolbar{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .search-field,.toolbar .search-field,.order-toolbar .search-field{
+    grid-column:auto;
+    min-width:0;
+    width:100%;
+  }
+  .toolbar select,.toolbar button,.order-toolbar select,.order-toolbar button{
+    width:100%;
+    min-width:0;
+  }
+  .toolbar .button-primary,.toolbar .button-secondary{
+    grid-column:auto;
+    min-height:46px;
+  }
+
+  /* Products: card-first phone layout */
+  .table-card{border-radius:16px}
+  .table-summary{
+    padding:11px 12px;
+    gap:8px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .product-table-wrap{display:none}
+  .product-cards-mobile{
+    display:grid;
+    gap:9px;
+    padding:10px;
+  }
+  .product-mobile-card{
+    padding:11px;
+    border-radius:14px;
+    grid-template-columns:64px minmax(0,1fr);
+    gap:10px;
+    align-items:center;
+  }
+  .product-mobile-card .product-thumb,
+  .product-mobile-card .product-thumb-placeholder{
+    width:64px;height:64px;border-radius:12px;
+  }
+  .product-mobile-card>div{min-width:0}
+  .product-mobile-card b{
+    display:block;
+    font-size:12px;
+    line-height:1.35;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .product-mobile-card p{font-size:10px;line-height:1.4}
+  .product-mobile-card>button{
+    grid-column:1/-1;
+    width:100%;
+    min-height:44px;
+    padding:10px 12px;
+    border-radius:10px;
+    font-size:11px;
+    font-weight:800;
+    color:var(--green);
+    background:#f4f7f2;
+  }
+
+  /* Orders/history */
+  .order-scope-tabs{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:4px;
+    padding:4px;
+    overflow:visible;
+  }
+  .order-scope-tabs button{
+    min-width:0;
+    min-height:46px;
+    padding:7px 5px;
+    justify-content:center;
+    gap:4px;
+    font-size:10px;
+    line-height:1.25;
+    white-space:normal;
+    text-align:center;
+  }
+  .order-scope-tabs button em{
+    min-width:18px;height:18px;padding:0 4px;font-size:8px;
+  }
+  .order-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .order-table-wrap{display:none}
+  .order-cards-mobile{display:grid!important;gap:9px;padding:10px}
+  .order-mobile-card{
+    padding:13px;
+    gap:10px;
+    border-radius:15px;
+  }
+  .order-mobile-head{gap:8px}
+  .order-mobile-head>div{min-width:0}
+  .order-mobile-head b{
+    font-size:10px;
+    overflow-wrap:anywhere;
+  }
+  .order-mobile-head strong{font-size:14px;white-space:nowrap}
+  .order-mobile-card p{font-size:10px;line-height:1.5}
+  .order-status-select{
+    width:100%;
+    min-height:46px;
+    min-width:0;
+    padding-top:10px;
+    padding-bottom:10px;
+    font-size:11px;
+  }
+  .order-details-button{
+    min-height:46px;
+    font-size:11px;
+    font-weight:800;
+  }
+
+  /* Content/settings */
+  .two-col-fields{grid-template-columns:1fr;gap:10px}
+  .content-panel{gap:11px}
+  .content-save-row{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+  .content-save-row .button-primary{width:100%;min-height:48px}
+  .settings-list div{gap:8px;align-items:start}
+  .settings-list dd{max-width:58%;overflow-wrap:anywhere}
+
+  /* Product editor becomes a true mobile sheet */
+  .modal-backdrop{
+    padding:0;
+    align-items:stretch;
+  }
+  .editor-modal,.order-detail-modal{
+    width:100%;
+    height:100dvh;
+    max-height:100dvh;
+    border-radius:0;
+  }
+  .editor-head{
+    min-height:62px;
+    padding:11px 12px;
+    position:sticky;
+    top:0;
+    z-index:4;
+    background:var(--paper);
+  }
+  .editor-head h2{font-size:17px;line-height:1.2}
+  .editor-head p{font-size:8px}
+  .editor-head button{
+    width:44px;height:44px;min-height:44px;flex:0 0 44px;
+  }
+  .editor-grid{
+    display:block;
+    overflow:auto;
+    overscroll-behavior:contain;
+  }
+  .editor-main,.editor-side{padding:10px}
+  .editor-side{border-top:0}
+  .editor-section{
+    padding:13px;
+    border-radius:14px;
+    margin-bottom:9px;
+  }
+  .editor-section h3{font-size:13px}
+  .editor-section-head{gap:8px}
+  .editor-section-head .text-button{min-width:82px}
+  .status-options{gap:7px}
+  .status-options span{padding:11px}
+  .variant-row{
+    grid-template-columns:minmax(0,1fr) 92px 44px;
+    gap:6px;
+    align-items:end;
+  }
+  .variant-row label:nth-child(2){display:none}
+  .variant-row button{
+    width:44px;height:46px;min-height:46px;
+  }
+  .image-preview{max-height:none}
+  .image-position-preview{aspect-ratio:1/1}
+  .image-button-row{grid-template-columns:1fr;gap:7px}
+  .image-button-row>*{width:100%}
+  .image-position-controls label{font-size:10px!important}
+  .field-inline-action{grid-template-columns:1fr}
+  .field-action-button{width:100%;min-height:44px}
+
+  /* Keep save/delete actions visible while editing */
+  .editor-actions{
+    position:sticky;
+    bottom:0;
+    z-index:5;
+    padding:9px 10px calc(9px + env(safe-area-inset-bottom));
+    gap:8px;
+    background:rgba(255,253,248,.97);
+    backdrop-filter:blur(10px);
+    box-shadow:0 -8px 24px rgba(23,37,27,.08);
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .editor-actions>div{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px;
+  }
+  .editor-actions .editor-destructive-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .editor-actions .editor-destructive-actions>button{
+    width:100%;
+    min-height:44px;
+    font-size:10px;
+  }
+  .editor-actions .editor-destructive-actions .text-button{
+    grid-column:1/-1;
+  }
+  .editor-actions>div:last-child .form-status{
+    grid-column:1/-1;
+    min-height:0;
+    font-size:10px;
+  }
+  .editor-actions>div:last-child button{
+    width:100%;
+    min-height:48px;
+  }
+
+  /* Order detail full-screen mobile modal */
+  .order-detail-content{
+    padding:10px 10px calc(20px + env(safe-area-inset-bottom));
+    gap:10px;
+  }
+  .order-detail-hero{
+    padding:14px;
+    border-radius:15px;
+    align-items:stretch;
+    flex-direction:column;
+  }
+  .order-detail-hero strong{
+    font-size:15px;
+    overflow-wrap:anywhere;
+  }
+  .order-detail-hero .button-secondary{width:100%;min-height:44px}
+  .order-detail-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+  .order-detail-card,.order-detail-section{
+    padding:12px;
+    border-radius:13px;
+    min-width:0;
+  }
+  .order-detail-two-col{grid-template-columns:1fr}
+  .order-detail-item{
+    grid-template-columns:26px minmax(0,1fr) auto;
+    gap:8px;
+  }
+  .order-detail-item strong{white-space:nowrap}
+
+  /* Auth/login on phones */
+  .auth-shell{
+    min-height:100dvh;
+    padding:10px;
+    align-items:start;
+  }
+  .auth-card{
+    margin:auto 0;
+    padding:18px;
+    border-radius:20px;
+    width:100%;
+  }
+  .auth-language-toggle{
+    position:static;
+    width:max-content;
+    margin:0 0 14px auto;
+  }
+  html[dir="rtl"] .auth-language-toggle{
+    position:static;
+    margin:0 auto 14px 0;
+  }
+  .auth-brand{
+    margin-bottom:22px;
+    gap:11px;
+  }
+  .auth-logo{width:48px;height:48px}
+  .auth-card h1{
+    font-size:32px;
+    line-height:1.02;
+    margin-bottom:14px;
+  }
+  html[dir="rtl"] .auth-card h1{line-height:1.45;font-size:28px}
+  .auth-copy{font-size:13px;line-height:1.6;margin-bottom:20px}
+  .auth-form{gap:13px}
+  .auth-form label{font-size:12px}
+  .auth-form .button-primary,.auth-form .button-secondary{min-height:50px;font-size:14px}
+  .owner-bootstrap summary{min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .owner-bootstrap-inner{padding:12px}
+
+  /* Toasts should never run off a phone screen */
+  .toast-stack{
+    left:10px;
+    right:10px;
+    bottom:calc(10px + env(safe-area-inset-bottom));
+  }
+  .admin-toast{
+    min-width:0;
+    width:100%;
+    font-size:11px;
+    line-height:1.45;
+  }
+}
+
+/* Narrow phones: preserve density instead of turning every metric into a long single column */
+@media(max-width:390px){
+  .admin-content{padding-left:8px;padding-right:8px}
+  .metric-grid,.order-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .metric-card{padding:11px;min-height:98px}
+  .metric-card strong{font-size:21px}
+  .topbar-right .button-primary{min-width:48px;padding:0 8px}
+  .topbar-right .button-primary:after{content:"+";font-size:20px}
+  .topbar-language-toggle button{min-width:36px;padding:0 5px}
+  .order-detail-grid{grid-template-columns:1fr}
+}
+
+/* Very small phones */
+@media(max-width:340px){
+  .topbar-language-toggle{display:none}
+  .topbar-left h1{font-size:15px}
+  .metric-grid,.order-metrics{grid-template-columns:1fr}
+  .order-scope-tabs button{font-size:9px}
+}

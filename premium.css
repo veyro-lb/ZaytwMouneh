@@ -5912,3 +5912,85 @@ html[dir="rtl"] body .only-en{
     -webkit-backdrop-filter:none!important;
   }
 }
+
+/* Shop film backdrop: open, edge-to-edge footage with a quiet reading area. */
+body[data-page="shop"] .shop-story-hero{
+  isolation:isolate;background:#073b24!important;padding:52px 0 44px!important;
+}
+body[data-page="shop"] .shop-story-hero .hero-grain{display:none!important}
+body[data-page="shop"] .shop-story-hero .hero-grid{
+  position:static!important;display:block!important;min-height:380px!important;
+}
+body[data-page="shop"] .shop-story-hero .hero-copy{
+  position:relative;z-index:3;width:48%;max-width:600px;transform:none!important;
+}
+body[data-page="shop"] .shop-story-hero .hero-title{
+  max-width:12ch!important;font-size:clamp(3.3rem,4.6vw,5rem)!important;line-height:1!important;
+}
+body[data-page="shop"] .shop-story-hero .hero-lede{max-width:42ch!important;line-height:1.7!important}
+body[data-page="shop"] .shop-story-hero .hero-showcase{
+  position:absolute!important;inset:0 0 0 auto!important;width:62%!important;height:100%!important;min-height:0!important;
+  margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#073b24!important;
+  transform:none!important;overflow:hidden!important;z-index:1;
+}
+body[data-page="shop"] .shop-story-hero .scene-shade{
+  content:"";inset:0!important;border:0!important;border-radius:0!important;z-index:2;
+  background:linear-gradient(90deg,#073b24 0%,rgba(7,59,36,.92) 9%,rgba(7,59,36,.18) 43%,transparent 65%),linear-gradient(0deg,rgba(4,29,17,.72),transparent 50%);
+}
+body[data-page="shop"] .shop-story-hero .hero-logo-float,
+body[data-page="shop"] .shop-story-hero .hero-script{display:none!important}
+body[data-page="shop"] .shop-story-hero .scene-video{filter:saturate(.93) contrast(1.02);object-position:center!important}
+body[data-page="shop"] .shop-story-hero .hero-showcase::after{display:none!important}
+body[data-page="shop"] .shop-story-hero .scene-copy{
+  inset:auto max(32px,calc((100vw - 1240px)/2)) 74px auto!important;width:min(340px,58%);max-width:none!important;
+  padding:0!important;border:0!important;border-radius:0!important;background:none!important;backdrop-filter:none!important;box-shadow:none!important;text-shadow:0 2px 16px #0008;
+}
+body[data-page="shop"] .shop-story-hero .scene-copy strong{font-size:1.55rem!important;line-height:1.2!important;margin-top:7px!important}
+body[data-page="shop"] .shop-story-hero .scene-copy span{font-size:.6rem;letter-spacing:.16em}
+body[data-page="shop"] .shop-story-hero .scene-copy small{display:none!important}
+body[data-page="shop"] .shop-story-hero .scene-controls{
+  inset:auto max(28px,calc((100vw - 1240px)/2)) 16px auto!important;gap:2px;transform:none!important;z-index:8;
+}
+body[data-page="shop"] .shop-story-hero #scenePlayback{inset:22px max(28px,calc((100vw - 1240px)/2)) auto auto!important}
+body[data-page="shop"] .shop-story-hero .hero-stats{max-width:480px;border-color:#ffffff24!important}
+html[dir="rtl"] body[data-page="shop"] .shop-story-hero .hero-showcase{inset:0 auto 0 0!important}
+html[dir="rtl"] body[data-page="shop"] .shop-story-hero .scene-shade{
+  background:linear-gradient(270deg,#073b24 0%,rgba(7,59,36,.92) 9%,rgba(7,59,36,.18) 43%,transparent 65%),linear-gradient(0deg,rgba(4,29,17,.72),transparent 50%);
+}
+html[dir="rtl"] body[data-page="shop"] .shop-story-hero .scene-copy{inset:auto auto 74px max(32px,calc((100vw - 1240px)/2))!important}
+html[dir="rtl"] body[data-page="shop"] .shop-story-hero .scene-controls{inset:auto auto 16px max(28px,calc((100vw - 1240px)/2))!important}
+html[dir="rtl"] body[data-page="shop"] .shop-story-hero #scenePlayback{inset:22px auto auto max(28px,calc((100vw - 1240px)/2))!important}
+@media(max-width:760px){
+  body[data-page="shop"] .shop-story-hero{padding:0 0 24px!important}
+  body[data-page="shop"] .shop-story-hero .hero-grid{display:flex!important;flex-direction:column;gap:0!important;width:100%!important;min-height:0!important}
+  body[data-page="shop"] .shop-story-hero .hero-showcase{
+    position:relative!important;inset:auto!important;width:100%!important;height:clamp(230px,61vw,310px)!important;flex:none;order:-1!important;
+  }
+  body[data-page="shop"] .shop-story-hero .scene-shade,
+  html[dir="rtl"] body[data-page="shop"] .shop-story-hero .scene-shade{
+    background:linear-gradient(0deg,#073b24 0%,rgba(7,59,36,.76) 16%,transparent 70%)!important;
+  }
+  body[data-page="shop"] .shop-story-hero .hero-copy{width:calc(100% - 40px)!important;max-width:560px;margin:0 auto!important;padding:6px 0 0!important}
+  body[data-page="shop"] .shop-story-hero .hero-title{font-size:clamp(2.7rem,9.5vw,3.7rem)!important;max-width:16ch!important;line-height:1.02!important}
+  body[data-page="shop"] .shop-story-hero .hero-lede{font-size:.84rem!important;margin-top:12px!important;max-width:42ch!important}
+  body[data-page="shop"] .shop-story-hero .scene-copy,
+  html[dir="rtl"] body[data-page="shop"] .shop-story-hero .scene-copy{inset:auto 20px 65px 20px!important;width:auto;max-width:calc(100% - 40px)!important}
+  body[data-page="shop"] .shop-story-hero .scene-copy strong{font-size:1.3rem!important}
+  body[data-page="shop"] .shop-story-hero .scene-controls,
+  html[dir="rtl"] body[data-page="shop"] .shop-story-hero .scene-controls{inset:auto 16px 13px auto!important;gap:0}
+  body[data-page="shop"] .shop-story-hero .hero-stats{margin-top:16px!important}
+}
+
+body[data-page="shop"] .shop-story-hero .hero-stats>div{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+body[data-page="shop"] .shop-story-hero .premium-seasonal{
+  position:relative;z-index:3;width:min(42%,520px);margin:20px 0 0 max(28px,calc((100vw - 1240px)/2));
+  flex-direction:row;align-items:center;gap:14px;padding:14px 0 0;border:0;border-top:1px solid #ffffff24;border-radius:0;background:none;
+}
+body[data-page="shop"] .shop-story-hero .premium-seasonal>div>span{display:none}
+html[dir="rtl"] body[data-page="shop"] .shop-story-hero .premium-seasonal{margin:20px max(28px,calc((100vw - 1240px)/2)) 0 0}
+@media(max-width:760px){
+  body[data-page="shop"] .shop-story-hero .premium-seasonal,
+  html[dir="rtl"] body[data-page="shop"] .shop-story-hero .premium-seasonal{width:calc(100% - 40px);margin:16px auto 0;gap:10px}
+  body[data-page="shop"] .shop-story-hero .premium-seasonal strong{font-size:.62rem}
+  body[data-page="shop"] .shop-story-hero .premium-seasonal a{font-size:.68rem}
+}

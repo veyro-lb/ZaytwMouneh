@@ -131,6 +131,16 @@
             <button class="button-secondary" type="button" data-jump-view="products">Manage products <span>→</span></button>
           </div>
 
+          <section class="owner-inbox panel" data-overview-widget="inbox">
+            <div class="panel-head owner-inbox-head">
+              <div><p>Owner inbox</p><h3>What needs your attention</h3></div>
+              <span class="owner-inbox-count" id="ownerInboxCount">0</span>
+            </div>
+            <div class="owner-inbox-list" id="ownerInboxList">
+              <p class="empty-state">Everything looks good.</p>
+            </div>
+          </section>
+
           <div class="metric-grid">
             <article class="metric-card"><span class="metric-icon">◉</span><div><small>Page views · 7 days</small><strong id="metricViews">—</strong><em id="metricViewsHint">Loading</em></div></article>
             <article class="metric-card"><span class="metric-icon">⌁</span><div><small>Unique sessions · 7 days</small><strong id="metricSessions">—</strong><em id="metricSessionsHint">Loading</em></div></article>
@@ -201,7 +211,7 @@
             <button class="button-primary button-small" id="applyBulkProductAction" type="button">Apply</button>
           </div>
           <div class="table-card">
-            <div class="table-summary"><span id="productResultCount">0 products</span><div><button id="selectVisibleProducts" class="text-button" type="button">Select visible</button><button id="exportProductsButton" class="text-button" type="button">Export changes ↓</button></div></div>
+            <div class="table-summary"><span id="productResultCount">0 products</span><div><button id="selectVisibleProducts" class="text-button" type="button">Select visible</button><button id="exportProductsButton" class="text-button" type="button">Excel / CSV ↗</button></div></div>
             <div class="product-table-wrap">
               <table class="product-table">
                 <thead><tr><th class="select-col"><span class="sr-only">Select</span></th><th>Product</th><th>Category</th><th>Price</th><th>Availability</th><th>Status</th><th>Updated</th><th></th></tr></thead>
@@ -250,7 +260,7 @@
               <option value="cancelled">Cancelled</option>
             </select>
             <select id="orderKindFilter" aria-label="Filter order type"><option value="">All types</option><option value="order">Pantry orders</option><option value="gift">Gifts</option></select>
-            <button class="button-secondary button-small" id="exportOrdersButton" type="button">Export history ↓</button>
+            <button class="button-secondary button-small" id="exportOrdersButton" type="button">Excel / CSV</button>
           </div>
 
           <div class="table-card">
@@ -269,7 +279,7 @@
           <div class="section-intro"><div><p>Customer history</p><h2>See repeat customers, order history and spending at a glance.</h2></div><span>Customers are grouped by phone when available, otherwise by name and area.</span></div>
           <div class="toolbar">
             <div class="search-field"><span>⌕</span><input id="customerSearch" type="search" placeholder="Search customer, phone or area…" /></div>
-            <select id="customerSort"><option value="recent">Most recent</option><option value="orders">Most orders</option><option value="spend">Highest spend</option></select>
+            <select id="customerSort"><option value="recent">Most recent</option><option value="orders">Most orders</option><option value="spend">Highest spend</option></select><button class="button-secondary button-small" id="customerExportButton" type="button">Excel / CSV</button>
           </div>
           <div class="customer-grid" id="customerGrid"><p class="empty-state">No customer history yet.</p></div>
         </section>
@@ -371,7 +381,7 @@
               <div class="panel-head"><div><p>Data</p><h3>Owner backups</h3></div></div>
               <p class="panel-copy">Export all dashboard-managed product overrides and public settings as JSON. The original static catalogue stays untouched as a fallback.</p>
               <div class="settings-action-stack">
-                <button class="button-primary" id="createCloudBackup" type="button">Create cloud backup</button>
+                <button class="button-primary" id="openDataCenterButton" type="button">Import / Export Center</button><button class="button-secondary" id="createCloudBackup" type="button">Create cloud backup</button>
                 <button class="button-secondary" id="exportBackupButton" type="button">Export dashboard backup ↓</button>
                 <label class="button-secondary upload-backup-button">Restore backup<input id="restoreBackupInput" type="file" accept="application/json,.json" /></label>
               </div>
@@ -388,7 +398,7 @@
               <div class="panel-head"><div><p>Overview</p><h3>Customize your home screen</h3></div></div>
               <p class="panel-copy">Choose what you want to see first when you open the owner console on your phone.</p>
               <div class="overview-preference-list">
-                <label><input type="checkbox" data-overview-pref="orders" checked /><span>Order command center</span></label>
+                <label><input type="checkbox" data-overview-pref="inbox" checked /><span>Owner inbox</span></label><label><input type="checkbox" data-overview-pref="orders" checked /><span>Order command center</span></label>
                 <label><input type="checkbox" data-overview-pref="traffic" checked /><span>Traffic chart</span></label>
                 <label><input type="checkbox" data-overview-pref="health" checked /><span>Catalogue health</span></label>
                 <label><input type="checkbox" data-overview-pref="pages" checked /><span>Top pages</span></label>
@@ -402,7 +412,7 @@
   </div>
 
   <nav class="mobile-admin-nav" id="mobileAdminNav" aria-label="Mobile owner navigation">
-    <button type="button" data-mobile-view="overview" class="is-active"><span>⌂</span><b>Overview</b></button>
+    <button type="button" data-mobile-view="overview" class="is-active"><span>⌂</span><b>Overview</b><em id="mobileInboxCount">0</em></button>
     <button type="button" data-mobile-view="products"><span>▦</span><b>Products</b></button>
     <button type="button" data-mobile-view="orders"><span>◎</span><b>Orders</b><em id="mobileOrderCount">0</em></button>
     <button type="button" data-mobile-more><span>•••</span><b>More</b></button>
@@ -446,6 +456,45 @@
         </div>
       </div>
       <footer class="content-preview-footer"><span>Unsaved preview only — nothing is published until you press Save.</span><button class="button-primary" id="closeContentPreviewFooter" type="button">Done</button></footer>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="dataCenterModal" hidden>
+    <section class="data-center-modal" role="dialog" aria-modal="true" aria-labelledby="dataCenterTitle">
+      <header class="editor-head">
+        <div><p>Data tools</p><h2 id="dataCenterTitle">Import / Export Center</h2></div>
+        <button id="closeDataCenter" type="button" aria-label="Close">×</button>
+      </header>
+      <div class="data-center-body">
+        <section class="data-center-section">
+          <div class="data-center-section-head"><div><small>Download</small><h3>Excel, CSV & backup files</h3></div><span>Phone-friendly downloads</span></div>
+          <div class="export-data-grid">
+            <article><div><b>Products</b><small>Products, variants, availability and categories.</small></div><div><button type="button" data-export-dataset="products" data-export-format="xlsx">Excel</button><button type="button" data-export-dataset="products" data-export-format="csv">CSV</button></div></article>
+            <article><div><b>Orders</b><small>Full order history with codes, customer and items.</small></div><div><button type="button" data-export-dataset="orders" data-export-format="xlsx">Excel</button><button type="button" data-export-dataset="orders" data-export-format="csv">CSV</button></div></article>
+            <article><div><b>Customers</b><small>Repeat customers, phone, area, orders and spend.</small></div><div><button type="button" data-export-dataset="customers" data-export-format="xlsx">Excel</button><button type="button" data-export-dataset="customers" data-export-format="csv">CSV</button></div></article>
+            <article><div><b>Owner report</b><small>One Excel workbook with products, orders, customers and categories.</small></div><div><button type="button" data-export-dataset="report" data-export-format="xlsx">Excel report</button></div></article>
+            <article><div><b>Restorable backup</b><small>JSON backup for restoring products, settings and private notes.</small></div><div><button type="button" data-export-dataset="backup" data-export-format="json">Backup JSON</button><button type="button" data-export-dataset="backup" data-export-format="xlsx">Readable Excel</button></div></article>
+          </div>
+        </section>
+
+        <section class="data-center-section import-products-section">
+          <div class="data-center-section-head"><div><small>Upload</small><h3>Update products from Excel or CSV</h3></div><span>A safety backup is created first</span></div>
+          <label class="import-dropzone" id="productImportDropzone">
+            <input id="productImportFile" type="file" accept=".xlsx,.xls,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" />
+            <span>↑</span><b>Choose Excel or CSV file</b><small>Best workflow: export Products, edit it, then upload the edited file here.</small>
+          </label>
+          <div class="import-preview-panel" id="importPreviewPanel" hidden>
+            <div class="import-preview-summary">
+              <div><small>Products found</small><strong id="importProductCount">0</strong></div>
+              <div><small>Ready</small><strong id="importValidCount">0</strong></div>
+              <div><small>Issues</small><strong id="importIssueCount">0</strong></div>
+            </div>
+            <div id="importIssueList" class="import-issue-list"></div>
+            <div class="import-preview-table-wrap"><table class="import-preview-table"><thead><tr><th>ID</th><th>Product</th><th>Category</th><th>Availability</th><th>Variants</th><th>Result</th></tr></thead><tbody id="importPreviewBody"></tbody></table></div>
+            <div class="import-preview-actions"><button class="button-secondary" id="clearProductImport" type="button">Clear file</button><button class="button-primary" id="applyProductImport" type="button">Apply product import</button></div>
+          </div>
+        </section>
+      </div>
     </section>
   </div>
 
@@ -654,6 +703,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
   <script src="products-data.js?v=20261002-1005"></script>
   <script src="product-photos.js?v=20261003-zip-originals3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="admin.js?v=20261004-toolkit5"></script>
   <!-- mobilebottom-fallback -->
   <script>

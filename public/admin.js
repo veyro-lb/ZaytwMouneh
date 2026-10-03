@@ -1730,7 +1730,7 @@
   }
 
   function bindStaticUi() {
-    $("[data-admin-lang]").forEach(btn=>btn.addEventListener("click",()=>chooseAdminLanguage(btn.dataset.adminLang)));
+    $$("[data-admin-lang]").forEach(btn=>btn.addEventListener("click",()=>chooseAdminLanguage(btn.dataset.adminLang)));
     $("loginForm")?.addEventListener("submit",handleLogin);
     $("bootstrapForm")?.addEventListener("submit",handleBootstrap);
     $("signOutButton")?.addEventListener("click",signOut);
@@ -1767,7 +1767,7 @@
     $("productStatusFilter")?.addEventListener("change",e=>{state.productFilter.status=e.target.value;renderProducts();});
     $("productTableBody")?.addEventListener("click",e=>{const b=e.target.closest("[data-edit-product]");if(b)openProductEditor(b.dataset.editProduct);});
     $("productCardsMobile")?.addEventListener("click",e=>{const b=e.target.closest("[data-edit-product]");if(b)openProductEditor(b.dataset.editProduct);});
-    $("[data-order-scope]").forEach(btn=>btn.addEventListener("click",()=>{state.orderScope=btn.dataset.orderScope;renderOrders();}));
+    $$("[data-order-scope]").forEach(btn=>btn.addEventListener("click",()=>{state.orderScope=btn.dataset.orderScope;renderOrders();}));
     $("orderSearch")?.addEventListener("input",e=>{state.orderFilter.q=e.target.value;renderOrders();});
     $("orderStatusFilter")?.addEventListener("change",e=>{state.orderFilter.status=e.target.value;renderOrders();});
     $("orderKindFilter")?.addEventListener("change",e=>{state.orderFilter.kind=e.target.value;renderOrders();});

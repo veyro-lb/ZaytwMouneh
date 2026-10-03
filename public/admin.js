@@ -2611,7 +2611,22 @@
     const sheet=window.XLSX.utils.json_to_sheet(safeRows);
     const headers=Object.keys(safeRows[0]||{});
     sheet["!cols"]=headers.map(header=>({wch:Math.min(42,Math.max(12,header.length+2))}));
+    if(sheet["!ref"])sheet["!autofilter"]={ref:sheet["!ref"]};
     window.XLSX.utils.book_append_sheet(workbook,sheet,name.slice(0,31));
+  }
+
+  function productSpreadsheetInstructions() {
+    return [
+      {"Field":"Workflow","What to do":"Export Products → edit the Products sheet → upload the edited file in Import / Export Center."},
+      {"Field":"Product ID","What to do":"Do not change this for an existing product. It is the stable key used to match updates."},
+      {"Field":"Availability","What to do":"Use only: in_stock, out_of_stock, coming_soon."},
+      {"Field":"Visibility","What to do":"Use only: live, draft, hidden."},
+      {"Field":"Variants","What to do":"Keep one row per size/price. Products with multiple sizes use multiple rows with the same Product ID."},
+      {"Field":"Price USD","What to do":"Use numbers only, e.g. 4.50."},
+      {"Field":"Category","What to do":"Existing or new category name. Category Arabic is optional but recommended for new categories."},
+      {"Field":"Photos","What to do":"Photo URL/framing columns can be left unchanged. Blank Photo URL keeps the current product photo."},
+      {"Field":"Safety","What to do":"Import never deletes products omitted from the file. A cloud backup is created before applying an import."}
+    ];
   }
 
   function downloadWorkbook(filename,sheets) {
@@ -2631,7 +2646,7 @@
 
     if(dataset==="products"){
       if(format==="csv")downloadCsv(`zwm-products-${stamp}.csv`,products);
-      else downloadWorkbook(`zwm-products-${stamp}.xlsx`,[["Products",products],["Categories",categories]]);
+      else downloadWorkbook(`zwm-products-${stamp}.xlsx`,[["Instructions",productSpreadsheetInstructions()],["Products",products],["Categories",categories]]);
       return;
     }
     if(dataset==="orders"){
@@ -2646,6 +2661,7 @@
     }
     if(dataset==="report"){
       downloadWorkbook(`zwm-owner-report-${stamp}.xlsx`,[
+        ["Instructions",productSpreadsheetInstructions()],
         ["Products",products],
         ["Orders",orders],
         ["Customers",customers],
@@ -2660,6 +2676,7 @@
         exportBackup();
       }else{
         downloadWorkbook(`zwm-readable-backup-${stamp}.xlsx`,[
+          ["Instructions",productSpreadsheetInstructions()],
           ["Products",products],
           ["Orders",orders],
           ["Customers",customers],
@@ -2934,6 +2951,7 @@
     if(error){if(!silent)toast("Could not create cloud backup.","error");return null;}
     state.backups=[data,...state.backups].slice(0,12);
     renderCloudBackups();
+    if($("ownerInboxList"))renderOwnerInbox();
     if(!silent)toast("Cloud backup created.");
     return data;
   }

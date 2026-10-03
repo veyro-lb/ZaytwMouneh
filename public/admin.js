@@ -2649,25 +2649,34 @@
       const visibility=["hidden","draft"].includes(p.__status)?p.__status:"live";
       const note=state.notes.get(`product:${p.id}`)?.note||"";
       const variants=Array.isArray(p.variants)&&p.variants.length?p.variants:[{}];
+      const photoStatus=photo?.url?"Has photo":"Missing photo";
+      const completeness=productQualityScore(p);
+      const orderable=visibility==="live"&&availabilityFor(p)==="in_stock"?"Yes":"No";
+      const source=p.__source==="new"?"New in dashboard":p.__source==="edited"?"Edited in dashboard":"Base catalogue";
       variants.forEach(v=>rows.push({
         "Product ID":p.id,
         "English Name":p.nameEn||"",
         "Arabic Name":p.nameAr||"",
         "Category":category.en||"",
         "Category Arabic":category.ar||"",
-        "Original / Supplier Name":p.original||"",
         "Availability":availabilityFor(p),
         "Visibility":visibility,
+        "Orderable":orderable,
+        "Completeness %":completeness,
         "Variant ID":v.id||"",
         "Size EN":v.sizeEn||"",
         "Size AR":v.sizeAr||"",
         "Price USD":Number.isFinite(Number(v.price))?Number(v.price):"",
+        "Photo Status":photoStatus,
         "Photo URL":photo.url||"",
         "Photo Position X":Number(photo.positionX??50),
         "Photo Position Y":Number(photo.positionY??50),
         "Photo Zoom":Number(photo.zoom??100),
         "Photo Rotation":Number(photo.rotation??0),
         "Photo Fit":photo.fit==="contain"?"contain":"cover",
+        "Original / Supplier Name":p.original||"",
+        "Record Source":source,
+        "Last Updated":p.__updated||"",
         "Private Note":note
       }));
     }
@@ -2733,6 +2742,60 @@
     }));
   }
 
+  function analyticsSpreadsheetRows(days=30) {
+    const stats=analyticsSnapshot(days);
+    return stats.daily.map(day=>{
+      const start=day.date;
+      const end=new Date(start);end.setDate(start.getDate()+1);
+      const dayEvents=stats.events.filter(e=>{
+        const t=new Date(e.created_at);
+        return t>=start&&t<end;
+      });
+      return {
+        "Date":day.date.toLocaleDateString(undefined,{year:"numeric",month:"2-digit",day:"2-digit"}),
+        "Page Views":day.views,
+        "Sessions":day.sessions,
+        "WhatsApp Clicks":dayEvents.filter(e=>e.event_name==="whatsapp_click").length,
+        "Add to Pantry":dayEvents.filter(e=>e.event_name==="add_to_cart").length,
+        "Product Views":dayEvents.filter(e=>e.event_name==="product_view").length,
+        "Searches":dayEvents.filter(e=>e.event_name==="search").length
+      };
+    });
+  }
+
+  function topPageSpreadsheetRows(days=30) {
+    const stats=analyticsSnapshot(days);
+    return rankBy(stats.views,e=>cleanPath(e.page_path)).map(row=>({
+      "Page":row.label,
+      "Views":row.value
+    }));
+  }
+
+  function ownerSummaryRows() {
+    const s7=analyticsSnapshot(7),s30=analyticsSnapshot(30);
+    const live=state.products.filter(p=>!["hidden","draft"].includes(p.__status));
+    return [
+      {"Metric":"Exported at","Value":new Date().toLocaleString()},
+      {"Metric":"Total products","Value":state.products.length},
+      {"Metric":"Live catalogue","Value":live.length},
+      {"Metric":"Hidden products","Value":state.products.filter(p=>p.__status==="hidden").length},
+      {"Metric":"Draft products","Value":state.products.filter(p=>p.__status==="draft").length},
+      {"Metric":"In stock","Value":live.filter(p=>availabilityFor(p)==="in_stock").length},
+      {"Metric":"Out of stock","Value":live.filter(p=>availabilityFor(p)==="out_of_stock").length},
+      {"Metric":"Coming soon","Value":live.filter(p=>availabilityFor(p)==="coming_soon").length},
+      {"Metric":"Categories","Value":categoryRecords().length},
+      {"Metric":"Orders · all history","Value":state.orders.length},
+      {"Metric":"Orders · new","Value":state.orders.filter(o=>o.status==="new").length},
+      {"Metric":"Orders · delivered","Value":state.orders.filter(o=>o.status==="delivered").length},
+      {"Metric":"Customers","Value":customerGroups().length},
+      {"Metric":"Page views · 7 days","Value":s7.views.length},
+      {"Metric":"Sessions · 7 days","Value":s7.sessions.size},
+      {"Metric":"WhatsApp clicks · 7 days","Value":s7.whats.length},
+      {"Metric":"Page views · 30 days","Value":s30.views.length},
+      {"Metric":"Sessions · 30 days","Value":s30.sessions.size}
+    ];
+  }
+
   function appendWorkbookSheet(workbook,name,rows) {
     const safeRows=Array.isArray(rows)&&rows.length?rows:[{"No data":""}];
     const sheet=window.XLSX.utils.json_to_sheet(safeRows);
@@ -2770,31 +2833,50 @@
     const orders=orderSpreadsheetRows();
     const customers=customerSpreadsheetRows();
     const categories=categorySpreadsheetRows();
+    const analytics=analyticsSpreadsheetRows(30);
+    const topPages=topPageSpreadsheetRows(30);
+    const summary=ownerSummaryRows();
 
     if(dataset==="products"){
       if(format==="csv")downloadCsv(`zwm-products-${stamp}.csv`,products);
-      else downloadWorkbook(`zwm-products-${stamp}.xlsx`,[["Instructions",productSpreadsheetInstructions()],["Products",products],["Categories",categories]]);
+      else downloadWorkbook(`zwm-products-${stamp}.xlsx`,[
+        ["Products",products],
+        ["Categories",categories],
+        ["How to Edit",productSpreadsheetInstructions()]
+      ]);
       return;
     }
     if(dataset==="orders"){
       if(format==="csv")downloadCsv(`zwm-orders-${stamp}.csv`,orders);
-      else downloadWorkbook(`zwm-orders-${stamp}.xlsx`,[["Orders",orders]]);
+      else downloadWorkbook(`zwm-orders-${stamp}.xlsx`,[["Orders",orders],["Summary",summary]]);
       return;
     }
     if(dataset==="customers"){
       if(format==="csv")downloadCsv(`zwm-customers-${stamp}.csv`,customers);
-      else downloadWorkbook(`zwm-customers-${stamp}.xlsx`,[["Customers",customers]]);
+      else downloadWorkbook(`zwm-customers-${stamp}.xlsx`,[["Customers",customers],["Summary",summary]]);
+      return;
+    }
+    if(dataset==="analytics"){
+      if(format==="csv")downloadCsv(`zwm-analytics-30-days-${stamp}.csv`,analytics);
+      else downloadWorkbook(`zwm-analytics-30-days-${stamp}.xlsx`,[
+        ["Analytics · 30 days",analytics],
+        ["Top Pages",topPages],
+        ["Summary",summary]
+      ]);
       return;
     }
     if(dataset==="report"){
       downloadWorkbook(`zwm-owner-report-${stamp}.xlsx`,[
-        ["Instructions",productSpreadsheetInstructions()],
-        ["Products",products],
+        ["Summary",summary],
         ["Orders",orders],
+        ["Products",products],
         ["Customers",customers],
+        ["Analytics · 30 days",analytics],
+        ["Top Pages",topPages],
         ["Categories",categories],
         ["Settings",settingsSpreadsheetRows()],
-        ["Private Notes",notesSpreadsheetRows()]
+        ["Private Notes",notesSpreadsheetRows()],
+        ["How to Edit Products",productSpreadsheetInstructions()]
       ]);
       return;
     }
@@ -2803,13 +2885,15 @@
         exportBackup();
       }else{
         downloadWorkbook(`zwm-readable-backup-${stamp}.xlsx`,[
-          ["Instructions",productSpreadsheetInstructions()],
+          ["Summary",summary],
           ["Products",products],
           ["Orders",orders],
           ["Customers",customers],
           ["Categories",categories],
           ["Settings",settingsSpreadsheetRows()],
-          ["Private Notes",notesSpreadsheetRows()]
+          ["Private Notes",notesSpreadsheetRows()],
+          ["Analytics · 30 days",analytics],
+          ["How to Edit Products",productSpreadsheetInstructions()]
         ]);
       }
     }
@@ -3052,12 +3136,17 @@
     downloadJson(`zwm-product-changes-${new Date().toISOString().slice(0,10)}.json`,[...state.overrides.values()]);
   }
   function exportBackup() {
-    downloadJson(`zwm-dashboard-backup-${new Date().toISOString().slice(0,10)}.json`,{
-      exportedAt:new Date().toISOString(),
+    const exportedAt=new Date().toISOString();
+    downloadJson(`zwm-dashboard-backup-${exportedAt.slice(0,10)}.json`,{
+      schemaVersion:2,
+      exportedAt,
+      summary:Object.fromEntries(ownerSummaryRows().map(row=>[row.Metric,row.Value])),
+      catalogueSnapshot:state.products.map(p=>clone(p)),
       productOverrides:[...state.overrides.values()],
       siteSettings:Object.fromEntries(state.settings),
       privateNotes:[...state.notes.values()],
-      orders:state.orders
+      orders:state.orders,
+      analytics30Days:analyticsSpreadsheetRows(30)
     });
   }
 

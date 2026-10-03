@@ -726,7 +726,7 @@
 
   const state = {
     client: null, user: null, membership: null,
-    overrides: new Map(), settings: new Map(), events: [], activity: [], orders: [], notes: new Map(), backups: [],
+    overrides: new Map(), settings: new Map(), events: [], activity: [], orders: [], notes: new Map(), backups: [], analyticsError:null,
     products: [], editingId: null, imageFile: null, imageDims: null,
     activeView: "overview", productFilter: { q:"", category:"", status:"", availability:"" },
     selectedProducts:new Set(),
@@ -1068,6 +1068,7 @@
     state.overrides = new Map((overridesRes.data || []).map(r => [r.product_id,r]));
     state.settings = new Map((settingsRes.data || []).map(r => [r.key,r.value]));
     state.events = eventsRes.data || [];
+    state.analyticsError = eventsRes.error || null;
     state.activity = activityRes.data || [];
     state.orders = ordersRes.data || [];
     state.notes = new Map((notesRes.data || []).map(n => [`${n.subject_type}:${n.subject_id}`,n]));
@@ -2068,6 +2069,10 @@
     $("analyticsWhatsApp").textContent=stats.whats.length.toLocaleString();
     $("analyticsViewsSub").textContent=`${days} day period`;
     $("analyticsSessionsSub").textContent=stats.sessions.size?`${(stats.views.length/stats.sessions.size).toFixed(1)} views / session`:"No sessions yet";
+    const latestEvent=state.events[0]?.created_at;
+    $("analyticsFreshness").textContent=state.analyticsError
+      ?"Analytics connection needs attention"
+      :latestEvent?`Last tracked event ${when(latestEvent)} · same data source as Overview`:"No tracked website activity yet";
     renderTrafficChart($("analyticsChart"),stats.daily);
     renderRankList($("analyticsPages"),rankBy(stats.views,e=>cleanPath(e.page_path)).slice(0,8),"views");
     const productViews=stats.productViews.filter(e=>e.meta?.product_id);
@@ -2110,10 +2115,12 @@
 
   function renderSettings() {
     $("backendDatabase").textContent = state.overrides instanceof Map ? "Connected" : "Unavailable";
-    $("backendAnalytics").textContent = "Connected";
-    $("backendStorage").textContent = "Configured";
+    $("backendAnalytics").textContent=state.analyticsError?"Error":"Connected";
+    $("backendStorage").textContent="Configured";
     const badge=$("backendStatusBadge");
-    badge.textContent="Connected"; badge.className="status-badge status-live";
+    const ok=!state.analyticsError;
+    badge.textContent=ok?"Connected":"Needs attention";
+    badge.className="status-badge "+(ok?"status-live":"status-hidden");
     renderCloudBackups();
   }
 
@@ -2615,14 +2622,16 @@
   async function runHealthCheck() {
     const badge=$("backendStatusBadge");
     badge.textContent="Checking";badge.className="status-badge";
-    const [db,storage]=await Promise.all([
+    const [db,storage,analytics]=await Promise.all([
       state.client.from(cfg.tables.products).select("product_id",{head:true,count:"exact"}).limit(1),
-      state.client.storage.from(cfg.storageBucket).list("",{limit:1})
+      state.client.storage.from(cfg.storageBucket).list("",{limit:1}),
+      state.client.from(cfg.tables.events).select("id",{head:true,count:"exact"}).limit(1)
     ]);
     $("backendDatabase").textContent=db.error?"Error":"Connected";
     $("backendStorage").textContent=storage.error?"Error":"Connected";
-    $("backendAnalytics").textContent="Connected";
-    const ok=!db.error&&!storage.error;
+    $("backendAnalytics").textContent=analytics.error?"Error":"Connected";
+    state.analyticsError=analytics.error||null;
+    const ok=!db.error&&!storage.error&&!analytics.error;
     badge.textContent=ok?"Healthy":"Needs attention";badge.className="status-badge "+(ok?"status-live":"status-hidden");
     toast(ok?"Backend health check passed.":"One backend service needs attention.",ok?"":"error");
   }

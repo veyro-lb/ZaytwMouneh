@@ -1,5 +1,5 @@
-/* Original supplied artwork, matched by printed product names. No resizing or recompression.
-   Distinct products never share a photo unless the artwork itself is verified for that exact item. */
+/* Product artwork matched to exact catalog items. Uploaded originals are kept without resizing or recompression.
+   Shared artwork is used only when the supplied artwork explicitly covers both catalog items; official supplier imagery is used for exact Debsy products. */
 (function(){
   const map = {
   "american-rice": {
@@ -1501,6 +1501,228 @@
     "width": 1024,
     "height": 1536,
     "quality": "original-supplied"
+  },
+  "bisco-choco": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_biscochoco-300g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "caramel-craze": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_caramel-craze-7pcs_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "carob-biscuit": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_carob-biscuit-260g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "carob-cookies": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_carob-cookies-260g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "carob-date-bites": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_carob-date-bites-250g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "carob-maacroun": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_carob-maacroun-250g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "carob-molasses-plastic-jar": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_carob-molasses-1kg-plastic-jar_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "carobella": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_carobella-260g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "cherry-craze": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_cherry-craze-7pcs_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "choco-cookies": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_choco-cookies-260g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "choco-peanut-cookies": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_choco-peanut-cookies-370g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "chocopeas": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_chocopeas-300g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "coconut-cookies": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_coconut-cookies-260g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "cocount-carob-balls": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_coconut-carob-balls-270g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "craze-control": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_craze-control-7pcs_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "crunchy-craze": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_crunchy-craze-7pcs_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "crunchy-seeds": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_crunchy-seeds-210g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "debsy-pretzy": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_debsy-pretzy-300g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "ginger-biscuit": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_ginger-biscuits-240g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "hazelnut-craze": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_hazelnut-craze-7pcs_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "nutty-bites": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_nutty-bites-11pcs_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "oat-kaak-with-cheese": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_oat-kaak-with-cheese-220g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "oat-kaak-with-sesame": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_oat-kaak-with-sesame-seeds-240g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "oat-kaak-with-sunflower-seeds": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_oat-kaak-with-sunflower-seeds-240g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "oat-kaak-with-thyme": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_oat-kaak-with-thyme-220g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "raisin-cookies": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_raisin-cookies-260g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "ricky-ricardo": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_ricky-ricardo-190g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "sesame-carob-bar": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_sesame-carob-bar-250g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "sesame-cookies": {
+    "url": "https://debsy.shop/api/media/debsy/debsy_sesame-cookies-260g_1.jpg",
+    "width": 1000,
+    "height": 1000,
+    "quality": "official-product-image"
+  },
+  "sekar-nabet": {
+    "url": "assets/products/originals/secar-nabat.jpg",
+    "width": 1024,
+    "height": 1505,
+    "quality": "original-supplied-shared"
+  },
+  "maa-zaher": {
+    "url": "assets/products/originals/maa-ward.jpg",
+    "width": 1024,
+    "height": 1536,
+    "quality": "original-supplied-shared"
+  },
+  "burglur-abyad-neeme": {
+    "url": "assets/products/originals/burglur-abyad-kheshen.jpg",
+    "width": 1024,
+    "height": 1464,
+    "quality": "original-supplied-shared"
+  },
+  "kishek-meeza-beqaa": {
+    "url": "assets/products/originals/kishek-bakari-beqaa.jpg",
+    "width": 1086,
+    "height": 1448,
+    "quality": "original-supplied-shared"
+  },
+  "propolis-with-olive-oil": {
+    "url": "assets/products/originals/proplis-with-ethanol.jpg",
+    "width": 987,
+    "height": 1480,
+    "quality": "original-supplied-shared"
+  },
+  "debes-el-fleyfleh-har": {
+    "url": "assets/products/originals/debes-el-fleyfleh.jpg",
+    "width": 1086,
+    "height": 1448,
+    "quality": "original-supplied-shared"
+  },
+  "labneh-mkaazleh-zaatar": {
+    "url": "assets/products/originals/labneh-mkaazleh-habet-barakeh.jpg",
+    "width": 1024,
+    "height": 1536,
+    "quality": "original-supplied-shared"
+  },
+  "khal-el-tefeh": {
+    "url": "assets/products/originals/khal-el-enab.jpg",
+    "width": 1024,
+    "height": 1536,
+    "quality": "original-supplied-shared"
   }
 };
   const sourceFor = id => map[id] || null;

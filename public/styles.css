@@ -5423,3 +5423,69 @@ button:disabled{
 .footer-legal-button{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.07);color:#fff!important;font-size:.72rem;font-weight:800;letter-spacing:.01em;transition:.2s ease}
 .footer-legal-button:hover{background:#fff;color:var(--deep)!important;border-color:#fff;transform:translateY(-1px)}
 @media(max-width:600px){.footer-legal-bar{justify-content:flex-start}.footer-legal-button{flex:1 1 150px}}
+
+
+/* ===== persistent storefront controls v1 ===== */
+.site-header .nav>.nav-actions{overflow:visible!important}
+.site-header #languageSwitch,
+.site-header .language-switch{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  flex:0 0 auto!important;
+  pointer-events:auto!important;
+}
+.site-header #languageSwitch button,
+.site-header .language-switch button,
+.site-header #languageSwitch button:not(.is-active),
+.site-header .language-switch button:not(.is-active){
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+.site-header #mounehRewardsButton{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  flex-shrink:0!important;
+}
+.footer [data-footer-legal],
+.footer .footer-legal-bar{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+.footer .footer-legal-button{
+  display:inline-flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+@media(max-width:390px){
+  .site-header #languageSwitch button,
+  .site-header .language-switch button{
+    min-width:27px!important;
+    padding-inline:4px!important;
+    font-size:.56rem!important;
+  }
+}
+@media(max-width:335px){
+  .site-header #languageSwitch button,
+  .site-header .language-switch button,
+  .site-header #languageSwitch button:not(.is-active),
+  .site-header .language-switch button:not(.is-active){
+    display:flex!important;
+    min-width:24px!important;
+    padding-inline:3px!important;
+    font-size:.52rem!important;
+  }
+  .site-header #mounehRewardsButton,
+  .site-header .cart-button{
+    width:36px!important;
+    min-width:36px!important;
+    flex-basis:36px!important;
+  }
+}

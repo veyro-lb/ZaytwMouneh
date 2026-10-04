@@ -72,3 +72,27 @@
 @media(max-width:760px){
   .rewards-referral-security{grid-template-columns:1fr;gap:9px}
 }
+
+/* Readable rewards workspace, including Arabic and narrow screens. */
+.rewards-admin-shell{font-size:1rem;line-height:1.6}
+.rewards-mini-metric span,.rewards-panel-head p,.rewards-member-tools span,.rewards-member-head strong,.rewards-member-stats b,.reward-rule-card>div strong,.rewards-campaign-row strong,.rewards-member-modal label,.rewards-member-action h4{font-size:.875rem;letter-spacing:normal}
+.rewards-mini-metric small,.rewards-member-head small,.rewards-member-stats small,.rewards-campaign-row small,.rewards-member-action p,.rewards-member-modal header small,.rewards-member-modal header span,.rewards-referral-security p,.rewards-referral-security>div p,.rewards-auth-status-grid small{font-size:.8125rem;line-height:1.6;letter-spacing:normal}
+.rewards-settings-form label,.rewards-campaign-form label,.reward-rule-card label,.rewards-new-level label,.rewards-auth-status-grid article>span{font-size:.875rem;line-height:1.6}
+.rewards-admin-shell button,.rewards-member-modal button{min-height:44px;font-size:.875rem;line-height:1.4}
+.rewards-admin-shell input:not([type=checkbox]),.rewards-admin-shell select,.rewards-member-modal input,.rewards-member-modal select{min-height:44px;font-size:1rem;min-width:0;width:100%;box-sizing:border-box}
+.rewards-admin-panel{min-width:0;padding:20px}.rewards-panel-head{flex-wrap:wrap}.rewards-panel-head h3{font-size:1.15rem;line-height:1.5}
+.rewards-member-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));padding-inline-end:3px}
+.rewards-member-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.rewards-member-stats>div:last-child{grid-column:1/-1}
+.rewards-tier{font-size:.75rem;white-space:nowrap}.rewards-member-head strong{white-space:normal;overflow-wrap:anywhere}.rewards-member-head small{direction:ltr;unicode-bidi:isolate}
+.reward-rule-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:14px}.reward-rule-card{padding:16px;gap:12px}
+.rewards-campaign-form{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.rewards-campaign-form button{align-self:end}
+.rewards-ladder-actions{display:flex;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:16px}.rewards-ladder-actions p{flex:1;min-width:200px;font-size:.875rem;color:var(--muted);margin:0}
+.rewards-ladder-actions button,.rewards-new-level button{background:var(--green);color:white;padding:10px 16px;border:0;border-radius:10px;cursor:pointer}
+.rewards-new-level{padding:18px;margin-bottom:18px;border:1px solid var(--green-2);border-radius:14px;background:#f5f8f2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.rewards-new-level[hidden]{display:none}.rewards-new-level h4,.rewards-new-level p,.rewards-new-level>div{grid-column:1/-1;margin:0}.rewards-new-level label{display:grid;gap:6px}.rewards-new-level input{border:1px solid var(--line);border-radius:9px;padding:10px;background:white}.rewards-new-level>div{display:flex;gap:10px;flex-wrap:wrap}#rewardsCancelLevel{background:white;color:var(--green);border:1px solid var(--line)}
+.rewards-auth-status{order:3;margin:0}.rewards-auth-status summary{font-size:.875rem;font-weight:700;cursor:pointer;min-height:44px;display:list-item;padding:8px}.rewards-auth-status-head{margin-top:12px}.rewards-auth-status-grid strong{font-size:.875rem}
+.rewards-referral-security{order:2}.rewards-admin-summary{order:0}.rewards-admin-grid{order:1}.rewards-referral-security h3{font-size:1rem}
+.rewards-member-modal{width:min(960px,100%)}.rewards-member-modal-backdrop[hidden]{display:none}.rewards-member-action{align-content:start}.rewards-member-action p{min-height:4em}
+.rewards-admin-shell :focus-visible,.rewards-member-modal :focus-visible{outline:3px solid #b88723;outline-offset:3px}.rewards-admin-shell button:disabled{opacity:.6;cursor:wait}
+[dir=rtl] .rewards-admin-shell,[dir=rtl] .rewards-member-modal{text-align:right;letter-spacing:normal}
+@media(max-width:900px){.rewards-campaign-form{grid-template-columns:repeat(2,minmax(0,1fr))}.rewards-member-modal-body{grid-template-columns:1fr}.rewards-member-action p{min-height:0}}
+@media(max-width:560px){.rewards-admin-panel{padding:14px}.rewards-new-level,.rewards-campaign-form,.reward-rule-grid{grid-template-columns:1fr}.rewards-member-tools{flex-wrap:wrap}.rewards-member-tools input{width:100%}.rewards-panel-head .field-help{max-width:none}.rewards-mini-metric{padding:12px}.rewards-new-level{padding:14px}.rewards-campaign-row{align-items:start}.rewards-auth-status-grid{grid-template-columns:1fr}}

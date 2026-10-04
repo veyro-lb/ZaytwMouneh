@@ -1,4 +1,4 @@
-const CACHE="zwm-owner-shell-v16-network-first";
+const CACHE="zwm-owner-shell-v17-network-first";
 const FALLBACK="/admin.html";
 
 self.addEventListener("install",event=>{

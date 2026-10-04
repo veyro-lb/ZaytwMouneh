@@ -20,6 +20,93 @@
   }
 
   const AR_TRANSLATIONS = Object.freeze({
+    "Run the rewards club from the same owner console.":"إدارة نقاط المونة",
+    "Points settle only when an order is marked delivered. Cancelling a rewards order reverses its order-linked points and releases reserved vouchers.":"تُضاف النقاط بعد تأكيد تسليم الطلب. عند الإلغاء، تُعكس النقاط المرتبطة بالطلب وتُحرّر القسائم المحجوزة.",
+    "Customer accounts":"حسابات العملاء",
+    "Sign-in & verification setup":"إعداد تسجيل الدخول والتحقق",
+    "Live status from the account service":"حالة مباشرة من خدمة الحسابات",
+    "Email + password":"البريد الإلكتروني وكلمة المرور",
+    "Checking…":"جارٍ التحقق…",
+    "Website-created Zayt w Mouneh accounts":"حسابات زيت ومونة المُنشأة عبر الموقع",
+    "Email confirmation":"تأكيد البريد الإلكتروني",
+    "Required before rewards enrollment":"مطلوب قبل الانضمام إلى برنامج المكافآت",
+    "Google sign-in":"تسجيل الدخول عبر Google",
+    "Google OAuth provider":"خدمة تسجيل الدخول عبر Google",
+    "Branded email sender":"بريد إرسال رسائل الحساب",
+    "Not checked":"لم يتم التحقق",
+    "Sender settings are managed in the account service.":"تُدار إعدادات المرسِل في خدمة الحسابات.",
+    "Referral protection":"حماية مكافآت الإحالة",
+    "Delivery is the confirmation step.":"تأكيد التسليم هو شرط استحقاق المكافأة.",
+    "A referral code alone never earns points. The friend must use the code on a verified account, place a qualifying first order of at least $25, and the order must be marked":"رمز الإحالة وحده لا يمنح نقاطاً. يجب أن يستخدمه الصديق بحساب موثّق ويطلب لأول مرة بقيمة 25 دولاراً على الأقل، ثم يحدّد المالك حالة الطلب بأنه",
+    "by the owner in Orders & history. The database issues each referral bonus only once and blocks same-phone referrals.":"في قسم الطلبات والسجل. تُمنح مكافأة كل إحالة مرة واحدة فقط، وتُمنع الإحالات برقم الهاتف نفسه.",
+    "Members":"الأعضاء",
+    "Joined rewards accounts":"الحسابات المنضمّة للمكافآت",
+    "Points outstanding":"النقاط المتاحة للأعضاء",
+    "Positive member balances":"مجموع الأرصدة الموجبة",
+    "Available vouchers":"القسائم المتاحة",
+    "Wallet value not yet used":"قيمة القسائم غير المستخدمة",
+    "Active boosts":"حملات المضاعفة الجارية",
+    "Live multiplier campaigns":"الحملات الجارية حالياً",
+    "Golden members":"الأعضاء الذهبيون",
+    "Top annual-spend tier":"أعلى مستوى حسب الإنفاق السنوي",
+    "Balances, tiers & rewards":"الأرصدة والمستويات والمكافآت",
+    "Refresh ↻":"تحديث ↻",
+    "Search member, phone, code or tier…":"ابحث بالاسم أو الهاتف أو الرمز أو المستوى…",
+    "0 members":"0 أعضاء",
+    "Open this section to load rewards members.":"افتح هذا القسم لعرض أعضاء المكافآت.",
+    "Program":"البرنامج",
+    "Core earning settings":"إعدادات كسب النقاط",
+    "Rewards program enabled":"برنامج المكافآت مفعّل",
+    "Base points per $1":"النقاط الأساسية لكل دولار",
+    "Default is 1 point per $1 of product subtotal. Tier and campaign multipliers are applied automatically.":"المعدل الافتراضي نقطة لكل دولار من قيمة المنتجات. تُطبّق مضاعفات المستوى والحملات تلقائياً.",
+    "Save program settings":"حفظ إعدادات البرنامج",
+    "Reward ladder":"سُلّم المكافآت",
+    "Edit point milestones and voucher values":"مستويات النقاط وقيم القسائم",
+    "Minimum order protects margin when a voucher is used.":"حدّد النقاط وقيمة الخصم والحد الأدنى للطلب لكل مكافأة.",
+    "Add reward level":"إضافة مستوى مكافأة",
+    "New reward level":"مستوى مكافأة جديد",
+    "Points required":"النقاط المطلوبة",
+    "Discount ($)":"قيمة الخصم (دولار)",
+    "Minimum order ($)":"الحد الأدنى للطلب (دولار)",
+    "Add to ladder":"إضافة إلى السُلّم",
+    "Cancel":"إلغاء",
+    "Save to publish this level to customers. Existing vouchers keep their original value.":"احفظ لنشر المستوى للعملاء. تحتفظ القسائم السابقة بقيمتها الأصلية.",
+    "Pause a level to hide it from new redemptions; existing vouchers stay valid.":"أوقف المستوى لإخفائه من الاستبدالات الجديدة؛ تبقى القسائم السابقة صالحة.",
+    "Point boosts":"مضاعفة النقاط",
+    "Create a limited-time multiplier":"إنشاء حملة مضاعفة محدودة المدة",
+    "Choose a category for a targeted boost, or all categories for the whole pantry.":"اختر فئة لحملة مخصّصة أو اتركها فارغة لتشمل جميع المنتجات.",
+    "Title":"العنوان بالإنجليزية",
+    "Arabic title":"العنوان بالعربية",
+    "Category":"الفئة",
+    "All categories":"جميع الفئات",
+    "Olive Week":"أسبوع الزيتون",
+    "Multiplier":"المضاعِف",
+    "Starts":"البداية",
+    "Ends":"النهاية",
+    "Create boost":"إنشاء الحملة",
+    "Mouneh Points member":"عضو نقاط المونة",
+    "Member":"عضو",
+    "Adjust points":"تعديل النقاط",
+    "Add a bonus or subtract points with an owner reason. Every adjustment is logged.":"أضف أو اخصم نقاطاً مع توضيح السبب. يُحفظ كل تعديل في السجل.",
+    "Points (+ / −)":"النقاط (+ / −)",
+    "Reason":"السبب",
+    "Customer care bonus":"مكافأة لخدمة العميل",
+    "Apply point adjustment":"تطبيق تعديل النقاط",
+    "Tier override":"تحديد المستوى يدوياً",
+    "Leave automatic to use annual delivered spend: Olive at $200, Golden at $500.":"اختر المستوى التلقائي حسب قيمة الطلبات المسلّمة سنوياً: الزيتوني عند 200 دولار والذهبي عند 500 دولار.",
+    "Tier":"المستوى",
+    "Automatic":"تلقائي",
+    "Olive":"زيتوني",
+    "Golden":"ذهبي",
+    "Save tier":"حفظ المستوى",
+    "Gift a voucher":"إهداء قسيمة",
+    "Add a no-points-cost voucher directly to this member’s wallet.":"أضف قسيمة إلى محفظة العضو دون خصم نقاط.",
+    "Voucher value ($)":"قيمة القسيمة (دولار)",
+    "Thank you":"شكراً لك",
+    "Add voucher":"إضافة القسيمة",
+    "Close":"إغلاق",
+    "Save changes before refreshing.":"احفظ التعديلات قبل التحديث.",
+
     "Zayt w Mouneh":"زيت ومونة",
     "Owner Console":"لوحة المالك",
     "Zayt w Mouneh — Owner Console":"Zayt w Mouneh — لوحة المالك",
@@ -715,6 +802,7 @@
       localizeDom($("adminApp"));
     }
     updateLanguageButtons();
+    document.dispatchEvent(new CustomEvent("zwm:admin-language"));
     if($("contentPreviewModal")&&!$("contentPreviewModal").hidden)sendContentPreviewDraft();
   }
 
@@ -3522,7 +3610,7 @@
         reloadingForWorker=true;
         location.reload();
       });
-      navigator.serviceWorker.register("admin-sw.js?v=20261004-cachefix2",{updateViaCache:"none"})
+      navigator.serviceWorker.register("admin-sw.js?v=20261004-rewardladder1",{updateViaCache:"none"})
         .then(reg=>reg.update().catch(()=>{}))
         .catch(()=>{});
     }

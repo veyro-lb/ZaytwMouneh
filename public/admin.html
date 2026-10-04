@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="admin.css?v=20261004-cachefix2" />
-  <link rel="stylesheet" href="admin-rewards.css?v=20261004-cachefix2" />
+  <link rel="stylesheet" href="admin-rewards.css?v=20261004-ladder1" />
   <script id="zwm-admin-bfcache-guard">window.addEventListener("pageshow",function(e){if(e.persisted)location.reload()});</script>
 </head>
 <body class="admin-body">
@@ -290,15 +290,15 @@
         <section class="dashboard-view" data-view-panel="rewards">
           <div class="section-intro"><div><p>Mouneh Points</p><h2>Run the rewards club from the same owner console.</h2></div><span>Points settle only when an order is marked delivered. Cancelling a rewards order reverses its order-linked points and releases reserved vouchers.</span></div>
           <div class="rewards-admin-shell" id="rewardsAdminBody">
-            <div class="rewards-auth-status" id="rewardsAuthStatus">
+            <details class="rewards-auth-status" id="rewardsAuthStatus"><summary>Sign-in &amp; verification setup</summary>
               <div class="rewards-auth-status-head"><div><p>Customer accounts</p><h3>Sign-in & verification setup</h3></div><span>Live status from the account service</span></div>
               <div class="rewards-auth-status-grid">
-                <article><span>Email + password</span><strong id="rewardsAuthEmailStatus">Checking…</strong><small>Website-created Zayt w Mouneh accounts</small></article>
-                <article><span>Email confirmation</span><strong id="rewardsAuthConfirmStatus">Checking…</strong><small>Required before rewards enrollment</small></article>
-                <article><span>Google sign-in</span><strong id="rewardsAuthGoogleStatus">Checking…</strong><small>Google OAuth provider</small></article>
-                <article><span>Branded email sender</span><strong id="rewardsAuthSenderStatus">Needs SMTP</strong><small>Connect Resend/custom SMTP for a Zayt w Mouneh From address</small></article>
+                <article><span>Email + password</span><strong data-no-i18n id="rewardsAuthEmailStatus">Checking…</strong><small>Website-created Zayt w Mouneh accounts</small></article>
+                <article><span>Email confirmation</span><strong data-no-i18n id="rewardsAuthConfirmStatus">Checking…</strong><small>Required before rewards enrollment</small></article>
+                <article><span>Google sign-in</span><strong data-no-i18n id="rewardsAuthGoogleStatus">Checking…</strong><small>Google OAuth provider</small></article>
+                <article><span>Branded email sender</span><strong id="rewardsAuthSenderStatus">Not checked</strong><small>Sender settings are managed in the account service.</small></article>
               </div>
-            </div>
+            </details>
 
             <div class="rewards-referral-security">
               <div><span>✓</span><div><p>Referral protection</p><h3>Delivery is the confirmation step.</h3></div></div>
@@ -316,8 +316,8 @@
             <div class="rewards-admin-grid">
               <article class="rewards-admin-panel">
                 <div class="rewards-panel-head"><div><p>Members</p><h3>Balances, tiers & rewards</h3></div><button id="rewardsRefresh" type="button">Refresh ↻</button></div>
-                <div class="rewards-member-tools"><input id="rewardsMemberSearch" type="search" placeholder="Search member, phone, code or tier…" /><span id="rewardsMemberCount">0 members</span></div>
-                <div class="rewards-member-grid" id="rewardsMemberGrid"><p class="empty-state">Open this section to load rewards members.</p></div>
+                <div class="rewards-member-tools"><input id="rewardsMemberSearch" type="search" placeholder="Search member, phone, code or tier…" /><span data-no-i18n id="rewardsMemberCount">0 members</span></div>
+                <div class="rewards-member-grid" data-no-i18n id="rewardsMemberGrid"><p class="empty-state">Open this section to load rewards members.</p></div>
               </article>
 
               <article class="rewards-admin-panel">
@@ -332,21 +332,30 @@
 
               <article class="rewards-admin-panel rewards-admin-panel-wide">
                 <div class="rewards-panel-head"><div><p>Reward ladder</p><h3>Edit point milestones and voucher values</h3></div><span class="field-help">Minimum order protects margin when a voucher is used.</span></div>
-                <div class="reward-rule-grid" id="rewardsRuleGrid"></div>
+                <div class="rewards-ladder-actions"><button id="rewardsAddLevel" type="button" aria-expanded="false" aria-controls="rewardsNewLevel">Add reward level</button><p>Pause a level to hide it from new redemptions; existing vouchers stay valid.</p></div>
+                <form id="rewardsNewLevel" class="rewards-new-level" hidden>
+                  <h4>New reward level</h4>
+                  <label>Points required<input id="rewardsNewPoints" type="number" min="1" max="1000000" step="1" required></label>
+                  <label>Discount ($)<input id="rewardsNewValue" type="number" min="0.01" max="1000" step="0.01" required></label>
+                  <label>Minimum order ($)<input id="rewardsNewMinimum" type="number" min="0.01" max="1000000" step="0.01" required></label>
+                  <p>Save to publish this level to customers. Existing vouchers keep their original value.</p>
+                  <div><button type="submit">Add to ladder</button><button id="rewardsCancelLevel" type="button">Cancel</button></div>
+                </form>
+                <div class="reward-rule-grid" id="rewardsRuleGrid" data-no-i18n></div>
               </article>
 
               <article class="rewards-admin-panel rewards-admin-panel-wide">
-                <div class="rewards-panel-head"><div><p>Point boosts</p><h3>Create a limited-time multiplier</h3></div><span class="field-help">Use a category name for a targeted boost, or leave it blank for the whole pantry.</span></div>
+                <div class="rewards-panel-head"><div><p>Point boosts</p><h3>Create a limited-time multiplier</h3></div><span class="field-help">Choose a category for a targeted boost, or all categories for the whole pantry.</span></div>
                 <form class="rewards-campaign-form" id="rewardsCampaignForm">
                   <label>Title<input id="rewardsCampaignTitle" type="text" maxlength="100" required placeholder="Olive Week" /></label>
                   <label>Arabic title<input id="rewardsCampaignTitleAr" type="text" maxlength="100" dir="rtl" placeholder="أسبوع الزيتون" /></label>
-                  <label>Category<input id="rewardsCampaignCategory" type="text" placeholder="All categories" /></label>
+                  <label>Category<select id="rewardsCampaignCategory" data-no-i18n><option value="">All categories</option></select></label>
                   <label>Multiplier<select id="rewardsCampaignMultiplier"><option value="1.5">1.5×</option><option value="2" selected>2×</option><option value="3">3×</option></select></label>
                   <label>Starts<input id="rewardsCampaignStart" type="datetime-local" required /></label>
                   <label>Ends<input id="rewardsCampaignEnd" type="datetime-local" required /></label>
                   <button type="submit">Create boost</button>
                 </form>
-                <div class="rewards-campaign-list" id="rewardsCampaignList"></div>
+                <div class="rewards-campaign-list" data-no-i18n id="rewardsCampaignList"></div>
               </article>
             </div>
           </div>
@@ -780,7 +789,7 @@
 
   <div class="rewards-member-modal-backdrop" id="rewardsMemberModal" hidden>
     <section class="rewards-member-modal" role="dialog" aria-modal="true" aria-labelledby="rewardsMemberModalName">
-      <header><div><small>Mouneh Points member</small><strong id="rewardsMemberModalName">Member</strong><span id="rewardsMemberModalMeta">—</span></div><button type="button" id="rewardsMemberModalClose" aria-label="Close">×</button></header>
+      <header><div><small>Mouneh Points member</small><strong data-no-i18n id="rewardsMemberModalName">Member</strong><span data-no-i18n id="rewardsMemberModalMeta">—</span></div><button type="button" id="rewardsMemberModalClose" aria-label="Close">×</button></header>
       <div class="rewards-member-modal-body">
         <article class="rewards-member-action">
           <h4>Adjust points</h4><p>Add a bonus or subtract points with an owner reason. Every adjustment is logged.</p>
@@ -811,8 +820,8 @@
   <script src="products-data.js?v=20261004-cachefix2"></script>
   <script src="product-photos.js?v=20261004-cachefix2"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" onerror="this.onerror=null;this.src='https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js'"></script>
-  <script src="admin.js?v=20261004-brandarabic1"></script>
-  <script src="admin-rewards.js?v=20261004-cachefix2"></script>
+  <script src="admin.js?v=20261004-ladder1"></script>
+  <script src="admin-rewards.js?v=20261004-ladder1"></script>
   <!-- mobilebottom-fallback -->
   <script>
   (function(){

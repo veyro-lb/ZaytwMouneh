@@ -269,7 +269,7 @@
   }
 
   async function loadPublic(){
-    try{state.publicData=await rpc("public",{},false)||state.publicData}catch{}
+    try{state.publicData=await rpc("public",{},false)||state.publicData;state.publicLoaded=true;syncLegalLadder();}catch{}
   }
 
   async function claimSavedOrders(){
@@ -316,12 +316,26 @@
   ];
   function activeRewards(){
     const live=(state.publicData.rewards||[]).filter(r=>r&&r.active).sort((a,b)=>Number(a.points)-Number(b.points));
-    return live.length?live:DEFAULT_REWARD_LADDER;
+    return state.publicLoaded?live:[];
   }
   function rewardOptionsSummary(){
-    const rows=activeRewards();
-    return '<div class="mr-reward-options"><div class="mr-reward-options-copy"><small>'+tr("Your reward ladder","سلم مكافآتك")+'</small><strong>'+tr("First reward at 25 points","أول مكافأة عند 25 نقطة")+'</strong><span>'+tr("Spend about $25 at the base rate → earn 25 🌿 → unlock $1 off.","أنفق حوالي 25$ بالمعدل الأساسي ← اجمع 25 🌿 ← افتح خصم 1$.")+'</span></div><div class="mr-reward-values">'+
-      rows.map(r=>'<span'+(Number(r.points)===25?' class="is-starter"':'')+'>'+money(r.value)+'</span>').join("")+'</div></div>';
+    const rows=activeRewards(),first=rows[0];
+    if(!first)return '<p class="mr-empty">'+tr("No rewards are available right now.","لا توجد مكافآت متاحة حالياً.")+'</p>';
+    return '<div class="mr-reward-options"><div class="mr-reward-options-copy"><small>'+tr("Your reward ladder","سُلّم مكافآتك")+'</small><strong>'+tr("First reward at ","أول مكافأة عند ")+esc(first.points)+' '+tr("points","نقطة")+'</strong><span>'+money(first.value)+' '+tr("off · minimum order ","خصم · الحد الأدنى للطلب ")+money(first.minimum)+'</span></div><div class="mr-reward-values">'+rows.map((r,i)=>'<span'+(!i?' class="is-starter"':'')+'>'+money(r.value)+'</span>').join("")+'</div></div>';
+  }
+  function syncLegalLadder(){
+    document.querySelectorAll('.legal-reward-table').forEach(table=>{
+      const arabic=!!table.closest('[lang="ar"],.legal-lang-ar')||/نقاط|سلم/.test(table.getAttribute('aria-label')||'');
+      const t=(en,ar)=>arabic?ar:en;
+      const rows=activeRewards();
+      table.innerHTML='<div role="row"><strong>'+t('Points','النقاط')+'</strong><strong>'+t('Voucher','القسيمة')+'</strong><strong>'+t('Minimum order','الحد الأدنى للطلب')+'</strong></div>'+rows.map((r,i)=>'<div role="row"'+(!i?' class="is-starter"':'')+'><strong data-label="'+t('Points','النقاط')+'">'+esc(r.points)+' 🌿</strong><span data-label="'+t('Voucher','القسيمة')+'">'+money(r.value)+' '+t('off','خصم')+'</span><span data-label="'+t('Minimum order','الحد الأدنى للطلب')+'">'+money(r.minimum)+'</span></div>').join('');
+      if(table.nextElementSibling?.classList.contains('legal-fineprint'))table.nextElementSibling.textContent=t('Current reward levels. Existing vouchers keep the value and minimum order shown when issued.','مستويات المكافآت الحالية. تحتفظ القسائم السابقة بقيمتها والحد الأدنى للطلب المحدّد عند إصدارها.');
+      const starter=table.previousElementSibling;
+      if(starter?.classList.contains('legal-starter-reward')){
+        const small=starter.querySelector('small');
+        if(small)small.textContent=rows.length?t('First reward: ','أول مكافأة: ')+rows[0].points+' 🌿 · '+money(rows[0].value)+t(' off · minimum ',' خصم · الحد الأدنى ')+money(rows[0].minimum):t('No rewards are available right now.','لا توجد مكافآت متاحة حالياً.');
+      }
+    });
   }
 
   function nextReward(){
@@ -338,7 +352,7 @@
     return '<div class="mr-reward-grid">'+rows.map((r,index)=>{
       const points=Number(r.points)||0;
       const can=!publicOnly&&balance>=points;
-      const starter=points===25;
+      const starter=index===0;
       const remaining=Math.max(0,points-balance);
       return '<article class="mr-reward-card '+(can?"is-ready ":"")+(starter?"is-starter":"")+'">'+
         '<div class="mr-reward-card-top"><span class="mr-reward-step">'+(starter?tr("Starter reward","مكافأة البداية"):tr("Milestone","مرحلة"))+'</span><span class="mr-leaf">🌿</span></div>'+
@@ -998,7 +1012,9 @@
       window.addEventListener("storage",(e)=>{
         if(e.key===AUTH_KEY){state.session=readSession();loadDashboard().catch(()=>{})}
       });
-      const liveSync=()=>{if(document.visibilityState==="hidden"||!state.session)return;loadDashboard().catch(()=>{})};
+      let syncing=false;
+      const liveSync=async()=>{if(document.visibilityState==="hidden"||syncing)return;syncing=true;try{await loadPublic();if(state.session)await loadDashboard();else{render();renderCheckout();}}finally{syncing=false;}};
+      window.addEventListener("storage",e=>{if(e.key==="zwm:rewards-updated")liveSync();});
       window.addEventListener("focus",liveSync);
       document.addEventListener("visibilitychange",()=>{if(!document.hidden)liveSync()});
       setInterval(liveSync,15000);

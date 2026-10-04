@@ -123,8 +123,10 @@ function filteredOrders(){
   return state.orders;
 }
 function pointsText(o){
-  if(o.status==="delivered")return "+"+Number(o.points_awarded||0)+" 🌿";
-  if(o.status==="cancelled")return tr("No points","بدون نقاط");
+  if(o.rewards_state==="earned"||Number(o.points_awarded||0)>0)return "+"+Number(o.points_awarded||0)+" 🌿";
+  if(o.status==="cancelled"||o.rewards_state==="none")return tr("No points","بدون نقاط");
+  if(o.rewards_state==="waiting_payment")return Number(o.pending_points||0)>0?"~"+Number(o.pending_points)+" 🌿 "+tr("waiting for payment","بانتظار الدفع"):tr("Waiting for payment","بانتظار الدفع");
+  if(o.rewards_state==="waiting_delivery")return Number(o.pending_points||0)>0?"~"+Number(o.pending_points)+" 🌿 "+tr("waiting for delivery","بانتظار التسليم"):tr("Waiting for delivery","بانتظار التسليم");
   return Number(o.pending_points||0)>0?"~"+Number(o.pending_points)+" 🌿 "+tr("pending","معلّقة"):tr("Points pending","النقاط معلّقة");
 }
 function previewText(o){

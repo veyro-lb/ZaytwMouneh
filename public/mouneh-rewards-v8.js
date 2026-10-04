@@ -15,7 +15,27 @@
   const esc=(v)=>String(v??"").replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const ar=()=>document.documentElement.lang==="ar"||document.documentElement.dir==="rtl";
   const tr=(en,arText)=>ar()?arText:en;
-  const money=(v)=>"$"+(Number(v)||0).toFixed(2);
+  const ltr=(v)=>ar()?"\u2066"+String(v??"")+"\u2069":String(v??"");
+  const money=(v)=>ltr("$"+(Number(v)||0).toFixed(2));
+  const voucherStatusLabel=(status)=>{
+    const s=String(status||"").toLowerCase();
+    return s==="reserved"?tr("Reserved","محجوزة"):s==="available"?tr("Available","متاحة"):s==="used"?tr("Used","مستخدمة"):s==="expired"?tr("Expired","منتهية"):status||tr("Unknown","غير معروفة");
+  };
+  const ledgerReasonLabel=(reason)=>{
+    const raw=String(reason||"").trim();
+    const known={
+      "Welcome to Mouneh Rewards":tr("Welcome to Mouneh Rewards","مكافأة الانضمام إلى نقاط المونة"),
+      "Delivered and paid order":tr("Delivered and paid order","طلب تم تسليمه واستلام دفعه"),
+      "First delivered and paid order":tr("First delivered and paid order","مكافأة أول طلب تم تسليمه واستلام دفعه"),
+      "Friend completed their first qualifying order":tr("Friend completed their first qualifying order","أكمل صديقك أول طلب مؤهل"),
+      "Friend completed first qualifying delivered and paid order":tr("Friend completed first qualifying delivered and paid order","أكمل صديقك أول طلب مؤهل وتم تسليمه واستلام دفعه"),
+      "Referral welcome bonus":tr("Referral welcome bonus","مكافأة ترحيبية للإحالة"),
+      "Birthday surprise":tr("Birthday surprise","مفاجأة عيد الميلاد")
+    };
+    if(known[raw])return known[raw];
+    if(ar()&&raw.startsWith("Owner voucher:"))return raw.replace(/^Owner voucher:\s*/,"قسيمة من المالك: ");
+    return raw;
+  };
   const uuid=()=>crypto.randomUUID?crypto.randomUUID():"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,(c)=>{const r=Math.random()*16|0,v=c==="x"?r:(r&3|8);return v.toString(16)});
   const claimToken=()=>{const a=new Uint8Array(32);crypto.getRandomValues(a);return Array.from(a,(n)=>n.toString(16).padStart(2,"0")).join("")};
   const safeJson=(raw,fallback)=>{try{return JSON.parse(raw)||fallback}catch{return fallback}};
@@ -537,13 +557,13 @@
     const disqualified=Math.max(0,Number(rs.disqualified)||0);
     const pending=Math.max(0,Number(rs.pending??(joined-qualified-disqualified))||0);
     const link=referralShareLink(code);
-    return '<section class="mr-referral"><div class="mr-referral-main"><p>'+tr("Invite a friend","ادعُ صديقاً")+'</p><h3>'+tr("Share your pantry code","شارك رمز المونة الخاص بك")+'</h3><span>'+tr("You earn 50 points only when the referred friend joins before ordering and their first $25+ qualifying order is both delivered and paid. Your friend gets a 20-point referral bonus.","تحصل على 50 نقطة فقط عندما ينضم الصديق المُحال قبل الطلب ويكون أول طلب مؤهل بقيمة 25$ أو أكثر قد تم تسليمه ودفعه. ويحصل صديقك على 20 نقطة إحالة.")+'</span><div class="mr-referral-stats"><small>'+tr("Joined","انضموا")+'<b>'+joined+'</b></small><small>'+tr("Waiting","بانتظار استكمال الشروط")+'<b>'+pending+'</b></small><small>'+tr("Qualified","تأهلوا")+'<b>'+qualified+'</b></small>'+(disqualified?'<small>'+tr("Not eligible","غير مؤهل")+'<b>'+disqualified+'</b></small>':'')+'</div><em>✓ '+tr("Delivery and payment are verified in the owner order system before any referral points are issued.","يتم تأكيد التسليم واستلام الدفع في نظام الطلبات الخاص بالمالك قبل إصدار أي نقاط إحالة.")+'</em></div><button type="button" data-mr-copy="'+esc(link)+'"><small>'+tr("Your code","رمزك")+'</small><strong>'+esc(code)+'</strong><em>'+tr("Copy invite link","نسخ رابط الدعوة")+'</em></button></section>';
+    return '<section class="mr-referral"><div class="mr-referral-main"><p>'+tr("Invite a friend","ادعُ صديقاً")+'</p><h3>'+tr("Share your pantry code","شارك رمز المونة الخاص بك")+'</h3><span>'+tr("You earn 50 points only when the referred friend joins before ordering and their first $25+ qualifying order is both delivered and paid. Your friend gets a 20-point referral bonus.","تحصل على 50 نقطة فقط عندما ينضم الصديق المُحال قبل الطلب ويكون أول طلب مؤهل بقيمة 25 دولاراً أو أكثر قد تم تسليمه ودفعه. ويحصل صديقك على 20 نقطة إحالة.")+'</span><div class="mr-referral-stats"><small>'+tr("Joined","انضموا")+'<b>'+joined+'</b></small><small>'+tr("Waiting","بانتظار استكمال الشروط")+'<b>'+pending+'</b></small><small>'+tr("Qualified","تأهلوا")+'<b>'+qualified+'</b></small>'+(disqualified?'<small>'+tr("Not eligible","غير مؤهل")+'<b>'+disqualified+'</b></small>':'')+'</div><em>✓ '+tr("Delivery and payment are verified in the owner order system before any referral points are issued.","يتم تأكيد التسليم واستلام الدفع في نظام الطلبات الخاص بالمالك قبل إصدار أي نقاط إحالة.")+'</em></div><button type="button" data-mr-copy="'+esc(link)+'"><small>'+tr("Your code","رمزك")+'</small><strong>'+esc(code)+'</strong><em>'+tr("Copy invite link","نسخ رابط الدعوة")+'</em></button></section>';
   }
 
   function walletView(){
     const wallet=(state.dashboard?.wallet||[]).filter(w=>w.status!=="used");
     if(!wallet.length)return '<p class="mr-empty">'+tr("No vouchers yet. Redeem points to create one.","لا توجد قسائم بعد. استبدل النقاط لإنشاء واحدة.")+"</p>";
-    return '<div class="mr-wallet-list">'+wallet.map(w=>'<article><div><span>'+tr("Reward voucher","قسيمة مكافأة")+'</span><strong>'+money(w.value)+' '+tr("off","خصم")+'</strong><small>'+tr("Minimum order ","حد أدنى للطلب ")+money(w.minimum)+' · '+(w.status==="reserved"?tr("Reserved","محجوزة"):tr("Available","متاحة"))+'</small></div><b class="mr-status-pill">'+esc(w.status)+'</b></article>').join("")+"</div>";
+    return '<div class="mr-wallet-list">'+wallet.map(w=>'<article><div><span>'+tr("Reward voucher","قسيمة مكافأة")+'</span><strong>'+money(w.value)+' '+tr("off","خصم")+'</strong><small>'+tr("Minimum order ","حد أدنى للطلب ")+money(w.minimum)+' · '+(w.status==="reserved"?tr("Reserved","محجوزة"):tr("Available","متاحة"))+'</small></div><b class="mr-status-pill">'+esc(voucherStatusLabel(w.status))+'</b></article>').join("")+"</div>";
   }
 
   function walletHero(){
@@ -557,7 +577,7 @@
   function ledgerView(){
     const rows=(state.dashboard?.ledger||[]).slice(0,8);
     if(!rows.length)return "";
-    return '<div class="mr-ledger">'+rows.map(x=>'<div><span><b>'+esc(Number(x.points)>0?"+"+x.points:x.points)+' 🌿</b>'+esc(x.reason)+'</span><small>'+new Date(x.created_at).toLocaleDateString(ar()?"ar-LB":"en-LB",{month:"short",day:"numeric"})+'</small></div>').join("")+"</div>";
+    return '<div class="mr-ledger">'+rows.map(x=>'<div><span><b>'+esc(Number(x.points)>0?"+"+x.points:x.points)+' 🌿</b>'+esc(ledgerReasonLabel(x.reason))+'</span><small>'+new Date(x.created_at).toLocaleDateString(ar()?"ar-LB":"en-LB",{month:"short",day:"numeric"})+'</small></div>').join("")+"</div>";
   }
 
   function dashboardView(){

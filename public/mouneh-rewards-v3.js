@@ -4,11 +4,12 @@
   const AUTH_KEY="zwm:mouneh:session:v1";
   const CLAIMS_KEY="zwm:mouneh:claims:v1";
   const WALLET_KEY="zwm:mouneh:selected-wallet:v1";
+  const REFERRAL_KEY="zwm:mouneh:pending-referral:v1";
   const LEGAL_PENDING_KEY="zwm:mouneh:legal-consent-pending:v1";
   const LEGAL_CONSENT_VERSION="2026-10-04";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-rewards10";
-  const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null};
+  const VERSION="20261004-rewards11";
+  const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false,referralStatus:null};
 
   const $=(id)=>document.getElementById(id);
   const esc=(v)=>String(v??"").replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -20,6 +21,31 @@
   const safeJson=(raw,fallback)=>{try{return JSON.parse(raw)||fallback}catch{return fallback}};
   const saveLocal=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
   const readLocal=(k,f)=>{try{return safeJson(localStorage.getItem(k),f)}catch{return f}};
+  function normalizeReferral(value){
+    return String(value||"").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,20);
+  }
+  function pendingReferral(){
+    let fromUrl="";
+    try{fromUrl=normalizeReferral(new URL(location.href).searchParams.get("ref")||"")}catch{}
+    const stored=normalizeReferral(readLocal(REFERRAL_KEY,"")||"");
+    const code=fromUrl||stored;
+    if(code)saveLocal(REFERRAL_KEY,code);
+    return code;
+  }
+  function clearPendingReferral(){
+    try{localStorage.removeItem(REFERRAL_KEY)}catch{}
+    try{
+      const u=new URL(location.href);
+      if(u.searchParams.has("ref")){
+        u.searchParams.delete("ref");
+        history.replaceState({},document.title,u.pathname+(u.search||"")+(u.hash||""));
+      }
+    }catch{}
+  }
+  function referralShareLink(code){
+    const clean=normalizeReferral(code);
+    return clean?location.origin+"/?ref="+encodeURIComponent(clean):location.origin+"/";
+  }
   const authRedirectUrl=()=>location.origin+location.pathname+"?mouneh_auth=1";
   function cleanAuthUrl(){
     try{
@@ -127,16 +153,18 @@
     await loadDashboard();
     await ensureMemberFromAuth();
   }
-  async function signUp(email,password,name,phone){
+  async function signUp(email,password,name,phone,referral=""){
+    const referralCode=normalizeReferral(referral||pendingReferral());
+    if(referralCode)saveLocal(REFERRAL_KEY,referralCode);
     const path="signup?redirect_to="+encodeURIComponent(authRedirectUrl());
     const acceptedAt=new Date().toISOString();
-    const data=await authRequest(path,{email,password,data:{full_name:name,name,phone,terms_accepted_at:acceptedAt,privacy_acknowledged_at:acceptedAt,legal_consent_version:LEGAL_CONSENT_VERSION}});
+    const data=await authRequest(path,{email,password,data:{full_name:name,name,phone,referral_code:referralCode,terms_accepted_at:acceptedAt,privacy_acknowledged_at:acceptedAt,legal_consent_version:LEGAL_CONSENT_VERSION}});
     const s=data.session||null;
     state.pendingSignupEmail=email;
     if(s?.access_token){
       writeSession(s);state.authUser=data.user||null;
       await loadDashboard();
-      if(state.dashboard?.needsJoin)await rpc("join",{name,phone,referral:""});
+      if(state.dashboard?.needsJoin)await secureJoin(name,phone,referralCode);
       await loadDashboard();
       return {session:true,user:data.user||null};
     }
@@ -169,6 +197,7 @@
     return false;
   }
   async function signInWithGoogle(){
+    pendingReferral();
     if(state.googleEnabled===false)throw new Error(tr("Google sign-in is not enabled yet for this Zayt w Mouneh account.","تسجيل الدخول عبر Google غير مفعّل بعد لهذا الحساب."));
     rememberPendingLegalConsent();
     const redirect=encodeURIComponent(authRedirectUrl());
@@ -183,8 +212,9 @@
     const phone=String(meta.phone||"").trim();
     if(name&&phone){
       try{
-        await rpc("join",{name,phone,referral:""});
+        await secureJoin(name,phone,pendingReferral()||meta.referral_code||"");
         state.dashboard=await rpc("dashboard",{});
+        await loadReferralStatus();
       }catch{}
     }
   }
@@ -193,7 +223,7 @@
     if(s?.access_token){
       try{await authRequest("logout",undefined,s.access_token)}catch{}
     }
-    writeSession(null);state.dashboard=null;state.selectedWallet="";try{localStorage.removeItem(WALLET_KEY)}catch{}
+    writeSession(null);state.dashboard=null;state.referralStatus=null;state.selectedWallet="";try{localStorage.removeItem(WALLET_KEY)}catch{}
     render();renderCheckout();
   }
 
@@ -209,6 +239,31 @@
     }
     if(!r.ok)throw new Error(data.message||data.hint||data.details||tr("Mouneh Points request failed.","تعذّر طلب نقاط المونة."));
     return data;
+  }
+
+  async function namedRpc(name,p={},retry=true){
+    const s=await validSession();
+    if(!s?.access_token)throw new Error(tr("Sign in required.","يلزم تسجيل الدخول."));
+    const headers={"apikey":key(),"Authorization":"Bearer "+s.access_token,"Content-Type":"application/json","Prefer":"return=representation"};
+    const r=await fetch(baseUrl()+"/rest/v1/rpc/"+name,{method:"POST",headers,body:JSON.stringify(p)});
+    const data=await r.json().catch(()=>({}));
+    if(r.status===401&&s?.refresh_token&&retry){
+      await refreshSession();
+      return namedRpc(name,p,false);
+    }
+    if(!r.ok)throw new Error(data.message||data.hint||data.details||tr("Account request failed.","تعذّر طلب الحساب."));
+    return data;
+  }
+  async function secureJoin(name,phone,referral=""){
+    const code=normalizeReferral(referral||pendingReferral());
+    const out=await namedRpc("mouneh_join_secure",{name,phone,referral:code});
+    clearPendingReferral();
+    return out;
+  }
+  async function loadReferralStatus(){
+    if(!state.session||!state.dashboard?.member){state.referralStatus=null;return null;}
+    try{state.referralStatus=await namedRpc("mouneh_referral_status",{});return state.referralStatus}
+    catch{state.referralStatus=null;return null}
   }
 
   async function loadPublic(){
@@ -239,6 +294,7 @@
     try{
       state.dashboard=await rpc("dashboard",{});
       await claimSavedOrders();
+      await loadReferralStatus();
     }catch(err){
       if(/Join Mouneh Rewards first/i.test(String(err.message||"")))state.dashboard={needsJoin:true};
       else if(/verified email/i.test(String(err.message||"")))state.dashboard={needsVerification:true};
@@ -303,7 +359,7 @@
       '<form id="mrAuthForm" class="mr-auth-form '+(signup?"is-signup":"is-signin")+'">'+
       (signup?'<label>'+tr("Full name","الاسم الكامل")+'<input id="mrSignupName" name="name" autocomplete="name" maxlength="120" required></label>':"")+
       '<label>'+tr("Account email","بريد الحساب")+'<input id="mrEmail" type="email" autocomplete="email" required></label>'+
-      (signup?'<label>'+tr("Phone / WhatsApp number","رقم الهاتف / واتساب")+'<input id="mrSignupPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="40" required></label>':"")+
+      (signup?'<label>'+tr("Phone / WhatsApp number","رقم الهاتف / واتساب")+'<input id="mrSignupPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="40" required></label><label>'+tr("Referral code (optional)","رمز الإحالة (اختياري)")+'<input id="mrSignupReferral" value="'+esc(pendingReferral())+'" maxlength="20" autocomplete="off" autocapitalize="characters" placeholder="'+tr("Friend’s code","رمز صديقك")+'"></label>':"")+
       '<label>'+tr("Password","كلمة المرور")+'<input id="mrPassword" type="password" autocomplete="'+(signup?"new-password":"current-password")+'" minlength="8" required></label>'+
       (signup?'<label>'+tr("Confirm password","تأكيد كلمة المرور")+'<input id="mrPasswordConfirm" type="password" autocomplete="new-password" minlength="8" required></label>':"")+
       '<button class="mr-primary" type="submit">'+(signup?tr("Create account & verify email","إنشاء الحساب وتأكيد البريد"):tr("Sign in","تسجيل الدخول"))+'</button>'+
@@ -332,8 +388,42 @@
       return '<div class="mr-message"><span>✉</span><h2>'+tr("Verify your email first","أكد بريدك أولاً")+'</h2><p>'+tr("Open your Zayt w Mouneh verification email, then return here. We will recognize the verified account automatically.","افتح رسالة تأكيد زيت ومونة ثم عد إلى هنا وسنتعرف على الحساب المؤكد تلقائياً.")+'</p><button type="button" class="mr-primary" data-mr-signout>'+tr("Use another account","استخدم حساباً آخر")+"</button></div>";
     }
     return '<div class="mr-join"><p>'+tr("Finish your account","أكمل حسابك")+'</p><h2>'+tr("One quick step 🌿","خطوة أخيرة سريعة 🌿")+'</h2><span>'+tr("Google does not always share a phone number. We need these account details before opening your Mouneh Points Wallet.","Google لا يشارك رقم الهاتف دائماً. نحتاج هذه البيانات قبل فتح محفظة نقاط المونة.")+'</span>'+
-      '<form id="mrJoinForm"><label>'+tr("Full name","الاسم الكامل")+'<input id="mrJoinName" value="'+name+'" maxlength="120" required></label><label>'+tr("Account email","بريد الحساب")+'<input id="mrJoinEmail" type="email" value="'+email+'" readonly required></label><label>'+tr("Phone / WhatsApp number","رقم الهاتف / واتساب")+'<input id="mrJoinPhone" type="tel" inputmode="tel" autocomplete="tel" value="'+phone+'" maxlength="40" required></label><label>'+tr("Referral code (optional)","رمز الإحالة (اختياري)")+'<input id="mrReferral" maxlength="20"></label><button class="mr-primary" type="submit">'+tr("Open my Mouneh Points Wallet","افتح محفظة نقاط المونة")+'</button><span id="mrJoinStatus" class="mr-status"></span></form>'+
+      '<form id="mrJoinForm"><label>'+tr("Full name","الاسم الكامل")+'<input id="mrJoinName" value="'+name+'" maxlength="120" required></label><label>'+tr("Account email","بريد الحساب")+'<input id="mrJoinEmail" type="email" value="'+email+'" readonly required></label><label>'+tr("Phone / WhatsApp number","رقم الهاتف / واتساب")+'<input id="mrJoinPhone" type="tel" inputmode="tel" autocomplete="tel" value="'+phone+'" maxlength="40" required></label><label>'+tr("Referral code (optional)","رمز الإحالة (اختياري)")+'<input id="mrReferral" value="'+esc(pendingReferral())+'" maxlength="20" autocapitalize="characters"></label><button class="mr-primary" type="submit">'+tr("Open my Mouneh Points Wallet","افتح محفظة نقاط المونة")+'</button><span id="mrJoinStatus" class="mr-status"></span></form>'+
       '<button class="mr-text" type="button" data-mr-signout>'+tr("Sign out","تسجيل الخروج")+"</button></div>";
+  }
+
+  function accountIdentityView(){
+    const m=state.dashboard?.member||{};
+    const user=state.authUser||{};
+    const email=String(user.email||"");
+    const initial=String(m.name||email||"M").trim().charAt(0).toUpperCase()||"M";
+    return '<section class="mr-account-identity"><span class="mr-account-avatar">'+esc(initial)+'</span><div><small>'+tr("Signed in as","الحساب الحالي")+'</small><strong>'+esc(m.name||tr("Mouneh member","عضو المونة"))+'</strong><em>'+esc(email||m.phone||"")+'</em></div><b>✓ '+tr("Verified","مؤكد")+'</b></section>';
+  }
+
+  function orderStatusLabel(status){
+    const map=ar()
+      ?{new:"تم استلام الطلب",confirmed:"تم التأكيد",preparing:"قيد التحضير",out_for_delivery:"خرج للتوصيل",delivered:"تم التسليم",cancelled:"ملغي"}
+      :{new:"Order received",confirmed:"Confirmed",preparing:"Preparing",out_for_delivery:"Out for delivery",delivered:"Delivered",cancelled:"Cancelled"};
+    return map[status]||String(status||"");
+  }
+  function recentOrdersView(){
+    const rows=(state.dashboard?.orders||[]).slice(0,3);
+    if(!rows.length)return "";
+    return '<section class="mr-order-status"><div class="mr-section-head"><div><p>'+tr("Orders & points","الطلبات والنقاط")+'</p><h3>'+tr("What is confirmed and what is pending","ما تم تأكيده وما يزال قيد الانتظار")+'</h3></div></div><div class="mr-order-status-list">'+rows.map(o=>{
+      const delivered=o.status==="delivered";
+      const points=Number(o.awarded)||0;
+      return '<article><div><strong>'+esc(o.reference)+'</strong><small>'+esc(orderStatusLabel(o.status))+' · '+money(o.total)+'</small></div><span class="'+(delivered?"is-confirmed":"is-pending")+'">'+(delivered?("+"+points+" 🌿"):tr("Points pending","النقاط معلّقة"))+'</span></article>';
+    }).join("")+'</div><small class="mr-order-proof">✓ '+tr("Points become final only after Zayt w Mouneh confirms the order as delivered.","تصبح النقاط نهائية فقط بعد أن تؤكد زيت ومونة أن الطلب تم تسليمه.")+'</small></section>';
+  }
+  function referralView(){
+    const m=state.dashboard?.member||{};
+    const rs=state.referralStatus||{};
+    const code=String(rs.code||m.code||"");
+    const joined=Number(rs.joined??state.dashboard?.referrals??0)||0;
+    const qualified=Number(rs.qualified)||0;
+    const pending=Math.max(0,Number(rs.pending??(joined-qualified))||0);
+    const link=referralShareLink(code);
+    return '<section class="mr-referral"><div class="mr-referral-main"><p>'+tr("Invite a friend","ادعُ صديقاً")+'</p><h3>'+tr("Share your pantry code","شارك رمز المونة الخاص بك")+'</h3><span>'+tr("You earn 50 points after your friend’s first qualifying $25+ order is actually delivered. Your friend gets a 20-point welcome bonus.","تحصل على 50 نقطة بعد تسليم أول طلب مؤهل لصديقك بقيمة 25$ أو أكثر، ويحصل صديقك على 20 نقطة ترحيبية.")+'</span><div class="mr-referral-stats"><small>'+tr("Joined","انضموا")+'<b>'+joined+'</b></small><small>'+tr("Waiting","بانتظار التسليم")+'<b>'+pending+'</b></small><small>'+tr("Qualified","تأهلوا")+'<b>'+qualified+'</b></small></div><em>✓ '+tr("Delivery is verified by Zayt w Mouneh in the owner order system before any referral points are issued.","يتم تأكيد التسليم من زيت ومونة في نظام الطلبات الخاص بالمالك قبل إصدار أي نقاط إحالة.")+'</em></div><button type="button" data-mr-copy="'+esc(link)+'"><small>'+tr("Your code","رمزك")+'</small><strong>'+esc(code)+'</strong><em>'+tr("Copy invite link","نسخ رابط الدعوة")+'</em></button></section>';
   }
 
   function walletView(){
@@ -363,11 +453,13 @@
     const nextPct=next?Math.min(100,points/Number(next.points)*100):100;
     const code=String(m.code||"");
     return '<div class="mr-member-head"><div><p>'+tr("Your Mouneh Points","نقاط المونة الخاصة بك")+'</p><strong>'+points.toLocaleString()+' <span>🌿</span></strong><small>'+esc(tierLabel(m.tier))+' · '+tr("annual delivered spend ","إنفاق سنوي مستلم ")+money(m.annual_spend)+'</small></div><span class="mr-tier '+esc(m.tier||"member")+'">'+esc(tierLabel(m.tier))+"</span></div>"+
+      accountIdentityView()+
       (next?'<div class="mr-progress"><div><span>'+tr("Next reward","المكافأة التالية")+'</span><b>'+esc(next.points-points)+' '+tr("points to ","نقطة للوصول إلى ")+money(next.value)+' '+tr("off","خصم")+'</b></div><i><em style="width:'+nextPct+'%"></em></i></div>':'<div class="mr-progress is-complete"><div><span>'+tr("Top milestone reached","وصلت لأعلى مرحلة")+'</span><b>'+tr("Redeem whenever you are ready.","استبدل نقاطك عندما تريد.")+"</b></div></div>")+
       walletHero()+
       '<section class="mr-section"><div class="mr-section-head"><div><p>'+tr("Rewards","المكافآت")+'</p><h3>'+tr("Turn points into vouchers","حوّل نقاطك إلى قسائم")+"</h3></div></div>"+rewardCards(false)+"</section>"+
       '<section class="mr-section mr-wallet-section"><div class="mr-section-head"><div><p>'+tr("Mouneh Points Wallet","محفظة نقاط المونة")+'</p><h3>'+tr("Your reward vouchers","قسائم مكافآتك")+"</h3></div></div>"+walletView()+"</section>"+
-      '<section class="mr-referral"><div><p>'+tr("Invite a friend","ادعُ صديقاً")+'</p><h3>'+tr("Give the pantry a little push","شارك المونة مع من تحب")+'</h3><span>'+tr("Your friend gets a welcome boost after their qualifying first delivered order, and you get 50 points.","يحصل صديقك على دفعة ترحيبية بعد أول طلب مستلم مؤهل، وتحصل أنت على 50 نقطة.")+'</span></div><button type="button" data-mr-copy="'+esc(code)+'"><small>'+tr("Your code","رمزك")+'</small><strong>'+esc(code)+'</strong><em>'+tr("Copy","نسخ")+"</em></button></section>"+
+      recentOrdersView()+
+      referralView()+
       '<details class="mr-details"><summary>'+tr("Profile & birthday","الملف الشخصي وتاريخ الميلاد")+'</summary><form id="mrProfileForm"><label>'+tr("Name","الاسم")+'<input id="mrProfileName" value="'+esc(m.name||"")+'" maxlength="120"></label><label>'+tr("WhatsApp","واتساب")+'<input id="mrProfilePhone" value="'+esc(m.phone||"")+'" maxlength="40"></label><label>'+tr("Address","العنوان")+'<input id="mrProfileAddress" value="'+esc(m.address||"")+'" maxlength="500"></label><label>'+tr("Birthday","تاريخ الميلاد")+'<input id="mrProfileBirthday" type="date" value="'+esc(m.birthday||"")+'" '+(m.birthday?"disabled":"")+'></label><button type="submit">'+tr("Save profile","حفظ الملف")+'</button><span id="mrProfileStatus" class="mr-status"></span></form></details>'+
       '<section class="mr-section"><div class="mr-section-head"><div><p>'+tr("Recent activity","النشاط الأخير")+'</p><h3>'+tr("How your balance moved","حركة رصيدك")+"</h3></div></div>"+ledgerView()+"</section>"+
       '<div class="mr-footer-actions"><button type="button" data-mr-refresh>'+tr("Refresh","تحديث")+'</button><button type="button" data-mr-signout>'+tr("Sign out","تسجيل الخروج")+"</button></div>";
@@ -376,11 +468,16 @@
   function render(){
     const body=$("mounehRewardsBody");
     if(!body)return;
+    const navBtn=maintainPointsButton();
+    const navCopy=navBtn?.querySelector(".mr-nav-copy");
+    if(navCopy)navCopy.textContent=tr("Mouneh Points","نقاط المونة");
     const badge=$("mounehPointsBadge");
     if(badge){
       const points=Number(state.dashboard?.member?.balance);
       badge.textContent=Number.isFinite(points)?points:"";
       badge.hidden=!Number.isFinite(points);
+      const memberName=String(state.dashboard?.member?.name||"").trim();
+      if(navBtn&&memberName&&Number.isFinite(points))navBtn.setAttribute("aria-label",tr("Open Mouneh Points for ","فتح نقاط المونة لحساب ")+memberName+" · "+points+" "+tr("points","نقطة"));
     }
     if(state.loading){body.innerHTML='<div class="mr-loading"><span>🌿</span><p>'+tr("Loading your Mouneh Points…","جارٍ تحميل نقاط المونة…")+"</p></div>";return;}
     if(state.session&&state.dashboard?.member)body.innerHTML=dashboardView();
@@ -407,10 +504,60 @@
     }
   }
 
+  function requestOpen(){
+    if(!$("mounehRewardsDrawer")){state.pendingOpen=true;return;}
+    setDrawer(true);
+  }
+  function bindPointsButton(btn){
+    if(!btn||btn.dataset.mrBound)return;
+    btn.addEventListener("click",(e)=>{e.preventDefault();e.stopPropagation();requestOpen();});
+    btn.dataset.mrBound="1";
+  }
+  function maintainPointsButton(){
+    const nav=document.querySelector(".nav-actions");
+    let btn=$("mounehRewardsButton");
+    if(!btn){
+      btn=document.createElement("button");
+      btn.type="button";btn.id="mounehRewardsButton";btn.className="mouneh-points-nav";
+      btn.innerHTML='<span class="mr-nav-leaf">🌿</span><span class="mr-nav-copy">'+tr("Mouneh Points","نقاط المونة")+'</span><b id="mounehPointsBadge" hidden></b>';
+      btn.setAttribute("data-mr-open","");
+    }
+    btn.classList.add("mouneh-points-nav");
+    btn.removeAttribute("hidden");
+    btn.setAttribute("aria-label",tr("Open Mouneh Points","فتح نقاط المونة"));
+    btn.setAttribute("data-mr-open","");
+    btn.style.setProperty("display","flex","important");
+    btn.style.setProperty("visibility","visible","important");
+    btn.style.setProperty("opacity","1","important");
+    btn.style.setProperty("flex-shrink","0","important");
+    if(nav&&btn.parentElement!==nav){
+      const cart=nav.querySelector("#cartButton");
+      nav.insertBefore(btn,cart||null);
+      btn.classList.remove("is-floating");
+    }else if(!nav&&!btn.isConnected){
+      btn.classList.add("is-floating");
+      document.body.appendChild(btn);
+    }
+    bindPointsButton(btn);
+    return btn;
+  }
+  function startPointsButtonGuard(){
+    if(window.__ZWM_POINTS_GUARD)return;
+    window.__ZWM_POINTS_GUARD=true;
+    let queued=false;
+    const check=()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;maintainPointsButton()})};
+    new MutationObserver(check).observe(document.body,{childList:true,subtree:true});
+    window.addEventListener("resize",check,{passive:true});
+    window.addEventListener("orientationchange",check,{passive:true});
+    window.addEventListener("pageshow",check);
+    document.addEventListener("visibilitychange",()=>{if(!document.hidden)check()});
+    check();
+  }
+
   function injectUI(){
     if($("mounehRewardsDrawer"))return;
     const link=document.createElement("link");
-    link.rel="stylesheet";link.href="mouneh-rewards-v2.css?v="+VERSION;document.head.appendChild(link);
+    link.rel="stylesheet";link.href="mouneh-rewards-v3.css?v="+VERSION;document.head.appendChild(link);
 
     const nav=document.querySelector(".nav-actions");
     let btn=$("mounehRewardsButton");
@@ -448,6 +595,7 @@
       form.insertBefore(box,anchor||null);
     }
 
+    bindPointsButton(btn);
     $("mounehRewardsClose").addEventListener("click",()=>setDrawer(false));
     back.addEventListener("click",()=>setDrawer(false));
     document.addEventListener("keydown",(e)=>{if(e.key==="Escape"&&drawer.classList.contains("is-open"))setDrawer(false)});
@@ -471,7 +619,7 @@
     if(stored&&!wallet.some(w=>w.id===stored))state.selectedWallet="";
     else state.selectedWallet=stored;
     const maxBase=Math.floor(subtotal*Number(state.publicData.config?.base_rate||1)*(m.tier==="golden"?1.5:m.tier==="olive"?1.25:1));
-    box.innerHTML='<div class="mr-checkout-member"><div><span>🌿</span><p><strong>'+esc(m.balance)+' '+tr("points","نقطة")+'</strong><small>'+tr("About ","حوالي ")+maxBase+" "+tr("base points after delivery","نقطة أساسية بعد الاستلام")+'</small></p></div><button type="button" data-mr-open>'+tr("View account","الحساب")+'</button></div>'+
+    box.innerHTML='<div class="mr-checkout-member"><div><span>🌿</span><p><strong>'+esc(m.balance)+' '+tr("points","نقطة")+'</strong><small>'+tr("Earning for ","تُحتسب لحساب ")+esc(m.name||tr("your account","حسابك"))+' · '+tr("about ","حوالي ")+maxBase+" "+tr("points after delivery","نقطة بعد الاستلام")+'</small></p></div><button type="button" data-mr-open>'+tr("View account","الحساب")+'</button></div>'+
       (wallet.length?'<label class="mr-voucher-select">'+tr("Use a reward voucher","استخدم قسيمة مكافأة")+'<select id="mounehWalletSelect"><option value="">'+tr("No voucher","بدون قسيمة")+'</option>'+wallet.map(w=>'<option value="'+esc(w.id)+'" '+(state.selectedWallet===w.id?"selected":"")+'>'+money(w.value)+' '+tr("off · min ","خصم · حد أدنى ")+money(w.minimum)+'</option>').join("")+'</select></label>':'<small class="mr-checkout-note">'+tr("No available voucher for this basket yet.","لا توجد قسيمة متاحة لهذه السلة حالياً.")+"</small>");
     const select=$("mounehWalletSelect");
     if(select)select.addEventListener("change",()=>{state.selectedWallet=select.value;saveLocal(WALLET_KEY,state.selectedWallet)});
@@ -526,8 +674,9 @@
     if(p.name.length<2||p.phone.replace(/\D/g,"").length<7){if(status)status.textContent=tr("Name and a valid phone number are required.","الاسم ورقم هاتف صحيح مطلوبان.");return;}
     if(status)status.textContent=tr("Joining…","جارٍ الانضمام…");
     try{
-      await rpc("join",p);
+      await secureJoin(p.name,p.phone,p.referral);
       state.dashboard=await rpc("dashboard",{});
+      await loadReferralStatus();
       await claimSavedOrders();
       render();renderCheckout();
     }catch(err){if(status)status.textContent=err.message;}
@@ -570,7 +719,7 @@
         try{if(status)status.textContent=tr("Sending…","جارٍ الإرسال…");await resendVerification();if(status)status.textContent=tr("Sent. Check your inbox and spam folder.","تم الإرسال. تحقق من الوارد والبريد غير المرغوب.")}catch(err){if(status)status.textContent=err.message}finally{if(resend.isConnected){resend.disabled=false;resend.removeAttribute("aria-busy");delete resend.dataset.mrBusy}}
         return;
       }
-      if(e.target.closest("[data-mr-open]")){setDrawer(true);return;}
+      if(e.target.closest("[data-mr-open]")){requestOpen();return;}
       const signout=e.target.closest("[data-mr-signout]");
       if(signout){if(signout.dataset.mrBusy==="1")return;signout.dataset.mrBusy="1";signout.disabled=true;try{await signOut()}finally{if(signout.isConnected){signout.disabled=false;delete signout.dataset.mrBusy}}return;}
       const refresh=e.target.closest("[data-mr-refresh]");
@@ -596,11 +745,11 @@
         if(status)status.textContent=tr("Working…","جارٍ التنفيذ…");
         try{
           if(state.authMode==="signup-form"){
-            const name=$("mrSignupName").value.trim(),phone=$("mrSignupPhone").value.trim(),confirm=$("mrPasswordConfirm").value;
+            const name=$("mrSignupName").value.trim(),phone=$("mrSignupPhone").value.trim(),confirm=$("mrPasswordConfirm").value,referral=$("mrSignupReferral")?.value.trim()||pendingReferral();
             if(name.length<2)throw new Error(tr("Please enter your full name.","يرجى إدخال الاسم الكامل."));
             if(phone.replace(/\D/g,"").length<7)throw new Error(tr("Please enter a valid phone / WhatsApp number.","يرجى إدخال رقم هاتف / واتساب صحيح."));
             if(password!==confirm)throw new Error(tr("Passwords do not match.","كلمتا المرور غير متطابقتين."));
-            const out=await signUp(email,password,name,phone);
+            const out=await signUp(email,password,name,phone,referral);
             if(!out.session){render();return;}
           }else await signIn(email,password);
           state.authMode="public";state.authNotice="";render();
@@ -628,8 +777,10 @@
       if(!state.config.enabled||!state.config.supabaseUrl||!state.config.supabasePublishableKey)return;
       state.session=readSession();
       state.selectedWallet=readLocal(WALLET_KEY,"")||"";
+      pendingReferral();
       await consumeAuthCallback();
       injectUI();
+      startPointsButtonGuard();
       bindActions();
       await Promise.all([loadPublic(),loadAuthSettings()]);
       if(state.session){
@@ -640,6 +791,7 @@
         }catch{}
       }
       render();renderCheckout();
+      if(state.pendingOpen){state.pendingOpen=false;setDrawer(true);}
       try{
         if(sessionStorage.getItem("zwm:mouneh:just-verified")==="1"){
           sessionStorage.removeItem("zwm:mouneh:just-verified");
@@ -653,6 +805,8 @@
     }catch(err){console.warn("Mouneh Rewards unavailable:",err);}
   }
 
-  window.ZWM_REWARDS={submitOrder,refreshCheckout,open:()=>setDrawer(true),refresh:()=>loadDashboard(),getState:()=>({member:state.dashboard?.member||null,selectedWallet:state.selectedWallet})};
+  window.ZWM_REWARDS={submitOrder,refreshCheckout,open:requestOpen,refresh:()=>loadDashboard(),getState:()=>({member:state.dashboard?.member||null,selectedWallet:state.selectedWallet})};
+  const earlyRewardsButton=$("mounehRewardsButton");
+  if(earlyRewardsButton&&!earlyRewardsButton.dataset.mrBound)bindPointsButton(earlyRewardsButton);
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();

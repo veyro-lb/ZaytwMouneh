@@ -479,7 +479,7 @@
       points.style.setProperty("padding","0 10px","important");
       points.style.setProperty("gap","5px","important");
       const copy=points.querySelector(".mr-nav-copy");
-      if(copy){copy.textContent=document.documentElement.lang==="ar"?"نقاط المونة":"Mouneh Points";copy.style.setProperty("display","none","important");}
+      if(copy){const nextCopy=document.documentElement.lang==="ar"?"نقاط المونة":"Mouneh Points";if(copy.textContent!==nextCopy)copy.textContent=nextCopy;copy.style.setProperty("display","none","important");}
       let badge=points.querySelector("#mounehPointsBadge");
       if(!badge){badge=document.createElement("b");badge.id="mounehPointsBadge";badge.textContent="—";points.appendChild(badge)}
       badge.hidden=false;badge.style.setProperty("display","inline","important");
@@ -491,7 +491,7 @@
           if(window.__ZWM_REWARDS_RETRY_LOADING)return;
           window.__ZWM_REWARDS_RETRY_LOADING=true;
           const retry=document.createElement("script");
-          retry.src="mouneh-rewards-v3.js?v=20261004-account2";
+          retry.src="mouneh-rewards-v3.js?v=20261004-account3";
           retry.async=true;
           retry.dataset.mounehRewardsRetry="1";
           retry.addEventListener("load",()=>{window.__ZWM_REWARDS_RETRY_LOADING=false;window.ZWM_REWARDS?.open?.()},{once:true});
@@ -545,7 +545,7 @@
     if(!enabled())return;
     if(!PREVIEW_MODE&&!document.querySelector("script[data-mouneh-rewards]")){
       const rewardsScript=document.createElement("script");
-      rewardsScript.src="mouneh-rewards-v3.js?v=20261004-account2";
+      rewardsScript.src="mouneh-rewards-v3.js?v=20261004-account3";
       rewardsScript.async=true;
       rewardsScript.dataset.mounehRewards="1";
       document.head.appendChild(rewardsScript);

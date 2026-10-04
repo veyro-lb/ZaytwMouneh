@@ -54,3 +54,20 @@ body[data-page="terms"] .nav-links a[href="contact.html"]{background:transparent
   .legal-document p,.legal-document li{font-size:.9rem;line-height:1.72}
   .legal-callout{padding:16px}
 }
+
+.legal-rule-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0 24px}
+.legal-rule-grid>div{padding:14px;border:1px solid rgba(23,59,36,.11);border-radius:14px;background:#fff;display:grid;gap:4px}
+.legal-rule-grid small{font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;color:#758078}
+.legal-rule-grid strong{color:#154828;font-size:1rem}
+.legal-rule-grid span{color:#657067;font-size:.78rem;line-height:1.5}
+.legal-reward-table{margin:14px 0 10px;border:1px solid rgba(23,59,36,.12);border-radius:15px;overflow:hidden;background:#fff}
+.legal-reward-table>div{display:grid;grid-template-columns:.72fr 1fr 1.35fr;gap:10px;align-items:center;padding:11px 13px;border-bottom:1px solid rgba(23,59,36,.08);font-size:.8rem;color:#5b675e}
+.legal-reward-table>div:last-child{border-bottom:0}
+.legal-reward-table .is-head{background:#eef3e8;color:#244f32;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.legal-reward-table strong{color:#164728}
+.legal-fineprint{font-size:.78rem!important;color:#7b827c!important}
+@media(max-width:560px){
+  .legal-rule-grid{grid-template-columns:1fr}
+  .legal-reward-table>div{grid-template-columns:.72fr 1fr 1.2fr;gap:6px;padding:10px 9px;font-size:.72rem}
+  .legal-reward-table .is-head{font-size:.6rem}
+}

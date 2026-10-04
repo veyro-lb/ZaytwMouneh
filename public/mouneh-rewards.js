@@ -4,8 +4,8 @@
   const AUTH_KEY="zwm:mouneh:session:v1";
   const CLAIMS_KEY="zwm:mouneh:claims:v1";
   const WALLET_KEY="zwm:mouneh:selected-wallet:v1";
-  const CONFIG_SRC="admin-config.js?v=20261004-rewards1";
-  const VERSION="20261004-rewards1";
+  const CONFIG_SRC="admin-config.js?v=20261004-rewards3";
+  const VERSION="20261004-rewards3";
   const state={config:null,session:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0};
 
   const $=(id)=>document.getElementById(id);
@@ -259,15 +259,24 @@
     link.rel="stylesheet";link.href="mouneh-rewards.css?v="+VERSION;document.head.appendChild(link);
 
     const nav=document.querySelector(".nav-actions");
-    const btn=document.createElement("button");
-    btn.type="button";btn.id="mounehRewardsButton";btn.className="mouneh-points-nav";
-    btn.innerHTML='<span class="mr-nav-leaf">🌿</span><span class="mr-nav-copy">'+tr("Mouneh Points","نقاط المونة")+'</span><b id="mounehPointsBadge" hidden></b>';
-    btn.setAttribute("aria-label",tr("Open Mouneh Points","فتح نقاط المونة"));
-    if(nav){
-      const cart=nav.querySelector("#cartButton");
-      nav.insertBefore(btn,cart||null);
+    let btn=$("mounehRewardsButton");
+    if(!btn){
+      btn=document.createElement("button");
+      btn.type="button";btn.id="mounehRewardsButton";btn.className="mouneh-points-nav";
+      btn.innerHTML='<span class="mr-nav-leaf">🌿</span><span class="mr-nav-copy">'+tr("Mouneh Points","نقاط المونة")+'</span><b id="mounehPointsBadge" hidden></b>';
+      btn.setAttribute("aria-label",tr("Open Mouneh Points","فتح نقاط المونة"));
+      btn.setAttribute("data-mr-open","");
+      if(nav){
+        const cart=nav.querySelector("#cartButton");
+        nav.insertBefore(btn,cart||null);
+      }else{
+        btn.classList.add("is-floating");document.body.appendChild(btn);
+      }
     }else{
-      btn.classList.add("is-floating");document.body.appendChild(btn);
+      btn.setAttribute("aria-label",tr("Open Mouneh Points","فتح نقاط المونة"));
+      btn.setAttribute("data-mr-open","");
+      const copy=btn.querySelector(".mr-nav-copy");
+      if(copy)copy.textContent=tr("Mouneh Points","نقاط المونة");
     }
 
     const back=document.createElement("div");
@@ -285,7 +294,7 @@
       form.insertBefore(box,anchor||null);
     }
 
-    btn.addEventListener("click",()=>setDrawer(true));
+    if(!btn.dataset.mrBound){btn.addEventListener("click",()=>setDrawer(true));btn.dataset.mrBound="1";}
     $("mounehRewardsClose").addEventListener("click",()=>setDrawer(false));
     back.addEventListener("click",()=>setDrawer(false));
     document.addEventListener("keydown",(e)=>{if(e.key==="Escape"&&drawer.classList.contains("is-open"))setDrawer(false)});

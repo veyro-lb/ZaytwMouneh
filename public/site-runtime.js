@@ -113,9 +113,12 @@
     box.querySelector("span").textContent=body||"";
   }
 
+  const DEFAULT_FREE_DELIVERY_THRESHOLD=50;
+
   function deliveryQuote(subtotal=0,area="",delivery=(previewSettings||readSettings()).delivery||{}){
     const amount=Math.max(0,Number(subtotal)||0);
-    const freeAbove=Math.max(0,Number(delivery.freeAbove)||0);
+    const configuredFreeAbove=Math.max(0,Number(delivery.freeAbove)||0);
+    const freeAbove=configuredFreeAbove>0?configuredFreeAbove:DEFAULT_FREE_DELIVERY_THRESHOLD;
     const minimum=Math.max(0,Number(delivery.minimum)||0);
     const zones=Array.isArray(delivery.zones)?delivery.zones:[];
     const normalized=String(area||"").trim().toLowerCase();
@@ -128,39 +131,94 @@
     return {fee,freeAbove,minimum,eta:String(zone?.eta||delivery.eta||"").trim(),zone:zone||null};
   }
 
+  function ensureDeliveryProgressStyles(){
+    if(document.getElementById("zwmDeliveryProgressStyles"))return;
+    const style=document.createElement("style");
+    style.id="zwmDeliveryProgressStyles";
+    style.textContent=`
+      .zwm-delivery-progress{margin:8px 0 10px;padding:12px 13px;border:1px solid rgba(32,91,51,.17);border-radius:15px;background:linear-gradient(135deg,#f8fbf5 0%,#eef5e9 100%);color:#24372a;box-shadow:0 7px 22px rgba(35,73,44,.06)}
+      .zwm-delivery-progress.is-unlocked{border-color:rgba(32,112,57,.32);background:linear-gradient(135deg,#eff8ec 0%,#e5f3df 100%)}
+      .zwm-delivery-progress-top{display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center}
+      .zwm-delivery-progress-icon{display:grid;place-items:center;width:31px;height:31px;border-radius:10px;background:#fff;border:1px solid rgba(32,91,51,.12);font-size:16px;box-shadow:0 3px 10px rgba(35,73,44,.05)}
+      .zwm-delivery-progress-copy{min-width:0}
+      .zwm-delivery-progress-copy strong{display:block;font-size:12.5px;line-height:1.25;color:#183e24;font-weight:800}
+      .zwm-delivery-progress-copy small{display:block;margin-top:2px;font-size:10.5px;line-height:1.35;color:#68756c}
+      .zwm-delivery-progress-value{font-size:10.5px;line-height:1;font-weight:800;color:#1f6935;background:#fff;border:1px solid rgba(32,91,51,.13);border-radius:999px;padding:6px 7px;white-space:nowrap}
+      .zwm-delivery-progress-track{position:relative;height:7px;margin-top:10px;border-radius:999px;background:rgba(31,91,49,.12);overflow:hidden}
+      .zwm-delivery-progress-fill{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#6c9347,#1d6b37);transition:width .3s ease}
+      .zwm-delivery-progress.is-unlocked .zwm-delivery-progress-fill{background:linear-gradient(90deg,#2e7c45,#155b2d)}
+      .zwm-delivery-progress-meta{margin-top:7px;font-size:10px;line-height:1.45;color:#667169}
+      .zwm-delivery-progress-meta:empty{display:none}
+      html[dir="rtl"] .zwm-delivery-progress{text-align:right}
+      @media(max-width:600px){.zwm-delivery-progress{padding:11px 12px;border-radius:14px}.zwm-delivery-progress-copy strong{font-size:12px}.zwm-delivery-progress-copy small{font-size:10px}}
+      @media(prefers-reduced-motion:reduce){.zwm-delivery-progress-fill{transition:none}}
+    `;
+    document.head.appendChild(style);
+  }
+
   function renderDeliverySummary(subtotal){
     const form=document.getElementById("orderForm");
     if(!form)return;
+    ensureDeliveryProgressStyles();
+
     let box=document.getElementById("zwmDeliverySummary");
     if(!box){
-      box=document.createElement("div");
+      box=document.createElement("section");
       box.id="zwmDeliverySummary";
+      box.className="zwm-delivery-progress";
       box.setAttribute("role","note");
-      Object.assign(box.style,{margin:"10px 0 4px",padding:"10px 12px",border:"1px solid #dce4da",borderRadius:"12px",background:"#f4f7f1",color:"#314036",fontSize:"11px",lineHeight:"1.5"});
-      const anchor=document.getElementById("priceNote");
-      anchor?.parentNode?.insertBefore(box,anchor);
+      box.innerHTML='<div class="zwm-delivery-progress-top"><span class="zwm-delivery-progress-icon" aria-hidden="true">🚚</span><div class="zwm-delivery-progress-copy"><strong id="zwmDeliveryProgressTitle"></strong><small id="zwmDeliveryProgressSub"></small></div><b class="zwm-delivery-progress-value" id="zwmDeliveryProgressValue"></b></div><div class="zwm-delivery-progress-track" id="zwmDeliveryProgressTrack" role="progressbar" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0"><span class="zwm-delivery-progress-fill" id="zwmDeliveryProgressFill"></span></div><div class="zwm-delivery-progress-meta" id="zwmDeliveryProgressMeta"></div>';
+      const totalRow=form.querySelector(".cart-total-row");
+      if(totalRow?.parentNode)totalRow.parentNode.insertBefore(box,totalRow.nextSibling);
+      else form.prepend(box);
     }
-    const settings=(previewSettings||readSettings()).delivery||{};
-    const hasSettings=Number(settings.fee)>0||Number(settings.freeAbove)>0||Number(settings.minimum)>0||String(settings.eta||"").trim()||(Array.isArray(settings.zones)&&settings.zones.length);
-    if(!hasSettings){box.hidden=true;return}
+
     box.hidden=false;
+    const settings=(previewSettings||readSettings()).delivery||{};
     const parsedSubtotal=Number.isFinite(Number(subtotal))?Number(subtotal):Number(String(document.getElementById("cartTotal")?.textContent||"0").replace(/[^0-9.]/g,""))||0;
     const areaInput=document.getElementById("customerArea");
     if(areaInput&&!areaInput.dataset.zwmDeliveryBound){
       areaInput.dataset.zwmDeliveryBound="1";
       areaInput.addEventListener("input",()=>renderDeliverySummary());
     }
+
     const q=deliveryQuote(parsedSubtotal,areaInput?.value||"",settings);
     const ar=currentLang()==="ar";
-    const parts=[];
-    if(q.minimum>0)parts.push((ar?"الحد الأدنى للطلب":"Minimum order")+": $"+q.minimum.toFixed(2));
-    if(q.fee===0&&(q.freeAbove>0&&parsedSubtotal>=q.freeAbove))parts.push(ar?"التوصيل مجاني لهذا الطلب":"Free delivery for this order");
-    else if(q.fee>0)parts.push((ar?"رسوم التوصيل":"Delivery")+": $"+q.fee.toFixed(2));
-    if(q.freeAbove>0&&parsedSubtotal<q.freeAbove)parts.push((ar?"توصيل مجاني فوق":"Free delivery above")+": $"+q.freeAbove.toFixed(2));
-    if(q.eta)parts.push((ar?"الوقت المتوقع":"Estimated delivery")+": "+q.eta);
-    if(q.zone?.area)parts.unshift((ar?"المنطقة":"Area")+": "+q.zone.area);
+    const threshold=q.freeAbove||DEFAULT_FREE_DELIVERY_THRESHOLD;
+    const remaining=Math.max(0,threshold-parsedSubtotal);
+    const unlocked=parsedSubtotal>=threshold;
+    const progress=Math.max(0,Math.min(100,(parsedSubtotal/threshold)*100));
+
+    const title=document.getElementById("zwmDeliveryProgressTitle");
+    const sub=document.getElementById("zwmDeliveryProgressSub");
+    const value=document.getElementById("zwmDeliveryProgressValue");
+    const track=document.getElementById("zwmDeliveryProgressTrack");
+    const fill=document.getElementById("zwmDeliveryProgressFill");
+    const meta=document.getElementById("zwmDeliveryProgressMeta");
+
     box.dir=ar?"rtl":"ltr";
-    box.textContent=parts.join(" · ");
+    box.classList.toggle("is-unlocked",unlocked);
+    if(title)title.textContent=unlocked
+      ?(ar?"أصبح التوصيل مجانياً ✓":"Free delivery unlocked ✓")
+      :(ar?"باقي $"+remaining.toFixed(2)+" فقط للتوصيل المجاني":"Only $"+remaining.toFixed(2)+" away from free delivery");
+    if(sub)sub.textContent=ar
+      ?"توصيل مجاني للطلبات بقيمة $"+threshold.toFixed(2)+" أو أكثر"
+      :"Free delivery on orders of $"+threshold.toFixed(2)+" or more";
+    if(value)value.textContent=unlocked?(ar?"مجاني":"FREE"):Math.round(progress)+"%";
+    if(track){
+      track.setAttribute("aria-valuemax",String(threshold));
+      track.setAttribute("aria-valuenow",String(Math.min(parsedSubtotal,threshold).toFixed(2)));
+      track.setAttribute("aria-label",ar?"التقدم نحو التوصيل المجاني":"Progress toward free delivery");
+    }
+    if(fill)fill.style.width=progress+"%";
+
+    const parts=[];
+    if(q.zone?.area)parts.push((ar?"المنطقة":"Area")+": "+q.zone.area);
+    if(q.minimum>0)parts.push((ar?"الحد الأدنى للطلب":"Minimum order")+": $"+q.minimum.toFixed(2));
+    if(!unlocked&&q.fee>0)parts.push((ar?"رسوم التوصيل":"Delivery")+": $"+q.fee.toFixed(2));
+    if(!unlocked&&q.fee===0)parts.push(ar?"رسوم التوصيل للطلبات الأقل من $50 تُؤكّد حسب المنطقة عبر واتساب":"Delivery below $50 is confirmed by area on WhatsApp");
+    if(q.eta)parts.push((ar?"الوقت المتوقع":"Estimated delivery")+": "+q.eta);
+    if(meta)meta.textContent=parts.join(" · ");
   }
 
   function applyDelivery(){

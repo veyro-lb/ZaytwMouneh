@@ -1749,3 +1749,38 @@ html[dir="rtl"] .auth-language-toggle{
 
 .order-timeline-row.is-payment .order-timeline-dot{background:#b68724;border-color:#f4ead0}
 .order-timeline-row.is-payment b{color:#72540f}
+
+
+/* ===== admin-deep-audit-v1: final phone readability + touch targets ===== */
+@media(max-width:760px){
+  /* Keep interactive form text at iOS-safe size even when later component rules are more specific. */
+  .order-status-select,
+  .manual-order-item select,
+  .manual-order-item input,
+  .delivery-zone-row input,
+  .content-preview-page-picker select{
+    font-size:16px!important;
+    line-height:1.25!important;
+  }
+
+  .content-preview-page-picker select{
+    min-height:44px!important;
+    font-family:"DM Sans",sans-serif!important;
+    font-weight:700!important;
+  }
+
+  .preview-device-switch button,
+  .order-payment-confirm,
+  .cloud-backup-row button{
+    min-height:44px!important;
+  }
+
+  /* Order state is a primary owner workflow; keep it readable without losing density. */
+  .order-mobile-state-row>div>small{font-size:10px}
+  .order-mobile-state-row .order-payment-badge{font-size:11px;line-height:1.25}
+  .order-card-quick-actions button,
+  .order-payment-confirm{font-size:11px;line-height:1.25}
+  .payment-paid-at{font-size:10px!important;line-height:1.35}
+  .order-settlement-rule strong{font-size:12px}
+  .order-settlement-rule small{font-size:10px;line-height:1.5}
+}

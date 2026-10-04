@@ -201,9 +201,9 @@
     box.classList.toggle("is-unlocked",unlocked);
     if(title)title.textContent=unlocked
       ?(ar?"أصبح التوصيل مجانياً ✓":"Free delivery unlocked ✓")
-      :(ar?"باقي $"+remaining.toFixed(2)+" فقط للتوصيل المجاني":"Only $"+remaining.toFixed(2)+" away from free delivery");
+      :(ar?"باقي "+remaining.toFixed(2)+" دولار فقط للتوصيل المجاني":"Only $"+remaining.toFixed(2)+" away from free delivery");
     if(sub)sub.textContent=ar
-      ?"توصيل مجاني للطلبات بقيمة $"+threshold.toFixed(2)+" أو أكثر"
+      ?"توصيل مجاني للطلبات بقيمة "+threshold.toFixed(2)+" دولار أو أكثر"
       :"Free delivery on orders of $"+threshold.toFixed(2)+" or more";
     if(value)value.textContent=unlocked?(ar?"مجاني":"FREE"):Math.round(progress)+"%";
     if(track){
@@ -215,8 +215,8 @@
 
     const parts=[];
     if(q.zone?.area)parts.push((ar?"المنطقة":"Area")+": "+q.zone.area);
-    if(q.minimum>0)parts.push((ar?"الحد الأدنى للطلب":"Minimum order")+": $"+q.minimum.toFixed(2));
-    if(!unlocked&&q.fee>0)parts.push((ar?"رسوم التوصيل":"Delivery")+": $"+q.fee.toFixed(2));
+    if(q.minimum>0)parts.push(ar?"الحد الأدنى للطلب: "+q.minimum.toFixed(2)+" دولار":"Minimum order: $"+q.minimum.toFixed(2));
+    if(!unlocked&&q.fee>0)parts.push(ar?"رسوم التوصيل: "+q.fee.toFixed(2)+" دولار":"Delivery: $"+q.fee.toFixed(2));
     if(!unlocked&&q.fee===0)parts.push(ar?"رسوم التوصيل تُحسب حسب المنطقة وتظهر نهائياً عند إتمام الطلب":"Delivery is calculated by area and shown finally at checkout");
     if(q.eta)parts.push((ar?"الوقت المتوقع":"Estimated delivery")+": "+q.eta);
     if(meta)meta.textContent=parts.join(" · ");

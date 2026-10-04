@@ -246,3 +246,12 @@ html[dir="rtl"] .order-address-row,html[dir="rtl"] .order-recipient{text-align:r
   .order-actions{gap:8px}
   .order-actions a,.order-actions button{min-height:47px;border-radius:14px;padding:10px 12px}
 }
+
+
+/* Payment confirmation state on customer order */
+.order-payment-status{display:inline-flex;justify-content:flex-end;align-items:center;font-size:.78rem;font-weight:900}
+.order-payment-status.payment-paid{color:#1f6437}
+.order-payment-status.payment-pending{color:#7b5a0d}
+.order-payment-status.payment-failed,.order-payment-status.payment-refunded{color:#913d35}
+.order-payment-status.payment-partially_refunded{color:#805d2a}
+@media(max-width:620px){.order-payment-status{max-width:55%;text-align:end;overflow-wrap:anywhere}}

@@ -201,20 +201,98 @@
     const a=api(),s=state(); if(!a||!s.session)return render();
     syncing=true;try{await a.refresh?.();lastSyncedAt=Date.now()}catch{}finally{syncing=false;render(true)}
   }
+  function accountConsentAccepted(status){
+    const consent=$("#accountLegalConsent");
+    if(consent?.checked)return true;
+    if(status)status.textContent=tr("Please agree to the Terms of Service and confirm that you have read the Privacy Policy to continue.","يرجى الموافقة على شروط الخدمة وتأكيد قراءتك لسياسة الخصوصية للمتابعة.");
+    if(consent){consent.focus();try{consent.reportValidity()}catch{}}
+    return false;
+  }
   document.addEventListener("click",async e=>{
     const legalLink=e.target.closest("[data-auth-legal-link]");
     if(legalLink){e.stopPropagation();return}
     const tab=e.target.closest("[data-account-tab]"); if(tab){active=tab.dataset.accountTab;history.replaceState({},document.title,"#"+active);render(true);return}
-    const auth=e.target.closest("[data-account-auth]"); if(auth){e.preventDefault();guestAuthMode=auth.dataset.accountAuth==="signup"?"signup":"signin";if(state().authMode==="verify")api()?.auth?.setMode?.(guestAuthMode);try{history.replaceState({},document.title,location.pathname+(location.search||"")+"#"+guestAuthMode)}catch{}render(true);return}
+    const auth=e.target.closest("[data-account-auth]"); if(auth){e.preventDefault();guestAuthMode=auth.dataset.accountAuth==="signup"?"signup":"signin";api()?.auth?.setMode?.(guestAuthMode);try{history.replaceState({},document.title,location.pathname+(location.search||"")+"#"+guestAuthMode)}catch{}render(true);return}
+    const google=e.target.closest("[data-account-google]");
+    if(google){
+      e.preventDefault();
+      const status=$("#accountAuthStatus");
+      if(!accountConsentAccepted(status))return;
+      if(google.dataset.busy==="1")return;
+      google.dataset.busy="1";google.disabled=true;google.setAttribute("aria-busy","true");
+      try{
+        api()?.auth?.rememberLegalConsent?.();
+        if(status)status.textContent=tr("Opening Google…","جارٍ فتح Google…");
+        await api()?.auth?.signInWithGoogle?.();
+      }catch(err){
+        if(status)status.textContent=err?.message||String(err);
+        if(google.isConnected){google.disabled=state().googleEnabled===false;google.removeAttribute("aria-busy");delete google.dataset.busy}
+      }
+      return;
+    }
+    const resend=e.target.closest("[data-account-resend]");
+    if(resend){
+      e.preventDefault();
+      if(resend.dataset.busy==="1")return;
+      resend.dataset.busy="1";resend.disabled=true;resend.setAttribute("aria-busy","true");
+      const status=$("#accountVerifyStatus");
+      try{
+        if(status)status.textContent=tr("Sending…","جارٍ الإرسال…");
+        await api()?.auth?.resendVerification?.();
+        if(status)status.textContent=tr("Sent. Check your inbox and spam folder.","تم الإرسال. تحقق من الوارد والبريد غير المرغوب.");
+      }catch(err){if(status)status.textContent=err?.message||String(err)}
+      finally{if(resend.isConnected){resend.disabled=false;resend.removeAttribute("aria-busy");delete resend.dataset.busy}}
+      return;
+    }
     if(e.target.closest("[data-open-points]")){api()?.open?.();return}
     const copy=e.target.closest("[data-copy-ref]"); if(copy){const ok=await copyText(copy.dataset.copyRef);copy.textContent=ok?tr("Copied","تم النسخ"):tr("Copy failed","فشل النسخ");return}
     const signout=e.target.closest("[data-account-signout]"); if(signout){signout.disabled=true;try{await api()?.account?.signOut?.();active="overview";render(true)}finally{signout.disabled=false}return}
     const lang=e.target.closest("[data-lang]"); if(lang)setLang(lang.dataset.lang);
     const toggle=e.target.closest("#navToggle"); if(toggle&&document.documentElement.dataset.zwmReliableMenuBound!=="1"){const links=$("#navLinks"),open=toggle.getAttribute("aria-expanded")==="true";toggle.setAttribute("aria-expanded",String(!open));links?.classList.toggle("is-open",!open);document.body.classList.toggle("menu-open",!open);document.body.classList.remove("nav-open")}
   });
-  // account-auth-mode-capture: keep authentication inside account.html while reusing the secure rewards auth handler.
-  document.addEventListener("submit",e=>{if(e.target.id==="mrAuthForm")api()?.auth?.setMode?.(guestAuthMode)},true);
   document.addEventListener("submit",async e=>{
+    if(e.target.id==="accountAuthForm"){
+      e.preventDefault();
+      const form=e.target,status=$("#accountAuthStatus"),submit=form.querySelector('button[type="submit"]');
+      if(form.dataset.busy==="1")return;
+      if(!accountConsentAccepted(status))return;
+      if(!form.checkValidity()){try{form.reportValidity()}catch{};return}
+      form.dataset.busy="1";
+      if(submit){submit.disabled=true;submit.setAttribute("aria-busy","true")}
+      if(status)status.textContent=tr("Working…","جارٍ التنفيذ…");
+      try{
+        const data=new FormData(form);
+        const email=String(data.get("email")||"").trim();
+        const password=String(data.get("password")||"");
+        api()?.auth?.setMode?.(guestAuthMode);
+        if(guestAuthMode==="signup"){
+          const name=String(data.get("name")||"").trim();
+          const phone=String(data.get("phone")||"").trim();
+          const confirm=String(data.get("passwordConfirm")||"");
+          const referral=String(data.get("referral")||"").trim();
+          if(name.length<2)throw new Error(tr("Please enter your full name.","يرجى إدخال الاسم الكامل."));
+          if(phone.replace(/\D/g,"").length<7)throw new Error(tr("Please enter a valid phone / WhatsApp number.","يرجى إدخال رقم هاتف / واتساب صحيح."));
+          if(password!==confirm)throw new Error(tr("Passwords do not match.","كلمتا المرور غير متطابقتين."));
+          await api()?.auth?.signUp?.(email,password,name,phone,referral);
+        }else{
+          await api()?.auth?.signIn?.(email,password);
+        }
+        landingAfterAuth=true;
+        lastSyncedAt=Date.now();
+        const s=state();
+        if(s.session&&s.member){
+          active="overview";
+          try{history.replaceState({},document.title,location.pathname+"#overview")}catch{}
+        }
+        render(true);
+      }catch(err){
+        if(status)status.textContent=err?.message||String(err);
+      }finally{
+        delete form.dataset.busy;
+        if(submit&&submit.isConnected){submit.disabled=false;submit.removeAttribute("aria-busy")}
+      }
+      return;
+    }
     if(e.target.id==="accountCompleteForm"){
       e.preventDefault();
       const f=e.target,status=$("#accountCompleteStatus"),btn=f.querySelector('button[type="submit"]');

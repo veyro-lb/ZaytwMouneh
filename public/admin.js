@@ -3818,7 +3818,7 @@
         reloadingForWorker=true;
         location.reload();
       });
-      navigator.serviceWorker.register("admin-sw.js?v=20261004-adminqa2",{updateViaCache:"none"})
+      navigator.serviceWorker.register("admin-sw.js?v=20261004-orderpayment1",{updateViaCache:"none"})
         .then(reg=>reg.update().catch(()=>{}))
         .catch(()=>{});
     }

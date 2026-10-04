@@ -3824,7 +3824,7 @@
         reloadingForWorker=true;
         location.reload();
       });
-      navigator.serviceWorker.register("admin-sw.js?v=20261004-orderpayment1",{updateViaCache:"none"})
+      navigator.serviceWorker.register("admin-sw.js?v=20261004-orderpayment2",{updateViaCache:"none"})
         .then(reg=>reg.update().catch(()=>{}))
         .catch(()=>{});
     }

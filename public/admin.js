@@ -567,7 +567,20 @@
     "The spreadsheet has no product rows.":"ملف الجدول لا يحتوي على صفوف منتجات.",
     "No spreadsheet sheet was found.":"لم يتم العثور على ورقة داخل الملف.",
     "Could not read spreadsheet.":"تعذّرت قراءة ملف الجدول.",
-    "Product import failed.":"فشل استيراد المنتجات."
+    "Product import failed.":"فشل استيراد المنتجات.",
+    "Live traffic and customer activity from one synchronized event stream.":"حركة الموقع ونشاط العملاء مباشرة من مصدر بيانات واحد ومتزامن.",
+    "Loading analytics…":"جارٍ تحميل التحليلات…",
+    "Page views & sessions":"مشاهدات الصفحات والجلسات",
+    "Page views & sessions · 7 days":"مشاهدات الصفحات والجلسات · 7 أيام",
+    "Analytics connection needs attention":"اتصال التحليلات يحتاج إلى مراجعة",
+    "No tracked website activity yet":"لا يوجد نشاط موقع مسجّل بعد",
+    "Backup":"نسخة احتياطية",
+    "Restorable JSON":"JSON قابل للاستعادة",
+    "30-day daily traffic, sessions, WhatsApp activity, searches and top pages.":"حركة يومية لمدة 30 يوماً، الجلسات، نشاط واتساب، البحث وأهم الصفحات.",
+    "JSON is the restorable backup.":"ملف JSON هو النسخة القابلة للاستعادة.",
+    "Excel is a readable reference copy of the same owner data.":"ملف Excel نسخة مرجعية مقروءة من بيانات المالك نفسها.",
+    "Download a complete owner backup or readable Excel report. JSON is used for restore; Excel/CSV are for viewing, editing and reporting.":"نزّل نسخة مالك كاملة أو تقرير Excel مقروء. يُستخدم JSON للاستعادة، بينما Excel وCSV للعرض والتعديل والتقارير.",
+    "same data source as Overview":"نفس مصدر البيانات في نظرة عامة"
   });
 
   function translatePhrase(value) {
@@ -634,6 +647,8 @@
     if(m)return `${m[1]} مشكلة`;
     m=text.match(/^(\d+) products? imported successfully\.$/);
     if(m)return `تم استيراد ${m[1]} منتج بنجاح.`;
+    m=text.match(/^(\d+) views · (\d+) sessions · Last tracked event (.+)$/);
+    if(m)return `${m[1]} مشاهدة · ${m[2]} جلسة · آخر نشاط مسجّل ${translatePhrase(m[3])}`;
     return text;
   }
 

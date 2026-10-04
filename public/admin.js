@@ -797,14 +797,30 @@
     return safeText(v).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   }
   function downloadBlob(filename, blob) {
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement("a");
-    a.href=url;
-    a.download=filename;
-    a.style.display="none";
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(()=>{a.remove();URL.revokeObjectURL(url);},1200);
+    let url="";
+    let a=null;
+    try{
+      url=URL.createObjectURL(blob);
+      a=document.createElement("a");
+      a.href=url;
+      a.download=filename;
+      a.rel="noopener";
+      a.style.display="none";
+      document.body.appendChild(a);
+      if("download" in a){
+        a.click();
+      }else{
+        a.target="_blank";
+        a.click();
+      }
+      toast(`Download started: ${filename}`);
+    }catch(err){
+      console.error("Download failed:",err);
+      toast("Could not start the download on this device.","error");
+      throw err;
+    }finally{
+      setTimeout(()=>{a?.remove();if(url)URL.revokeObjectURL(url);},5000);
+    }
   }
   function downloadJson(filename, data) {
     downloadBlob(filename,new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"}));
@@ -2661,7 +2677,7 @@
 
   function requireXlsx() {
     if(!window.XLSX){
-      toast("Excel tools are still loading. Try again in a moment.","error");
+      toast("Excel tools could not load. Refresh once or use CSV as a fallback.","error");
       return false;
     }
     return true;
@@ -3566,7 +3582,13 @@
     });
     $("closeDataCenter")?.addEventListener("click",closeDataCenter);
     $("dataCenterModal")?.addEventListener("click",e=>{if(e.target===$("dataCenterModal"))closeDataCenter();});
-    $("dataCenterModal")?.addEventListener("click",e=>{const b=e.target.closest("[data-export-dataset][data-export-format]");if(b)exportData(b.dataset.exportDataset,b.dataset.exportFormat);});
+    $("dataCenterModal")?.addEventListener("click",e=>{
+      const b=e.target.closest("[data-export-dataset][data-export-format]");
+      if(!b)return;
+      e.preventDefault();
+      try{exportData(b.dataset.exportDataset,b.dataset.exportFormat);}
+      catch(err){console.error("Export failed:",err);toast("Could not create that download. Please try again.","error");}
+    });
     $("productImportFile")?.addEventListener("change",e=>readProductImportFile(e.target.files?.[0]));
     $("clearProductImport")?.addEventListener("click",()=>clearProductImport());
     $("applyProductImport")?.addEventListener("click",applyProductImport);

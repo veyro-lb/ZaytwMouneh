@@ -1110,7 +1110,11 @@
     auth:{
       setMode:(mode)=>{state.authMode=mode==="signup"||mode==="signup-form"?"signup-form":"signin-form";},
       getMode:()=>state.authMode,
-      signInWithGoogle
+      signIn,
+      signUp,
+      resendVerification,
+      signInWithGoogle,
+      rememberLegalConsent:rememberPendingLegalConsent
     },
     account:{
       addresses:accountAddresses,

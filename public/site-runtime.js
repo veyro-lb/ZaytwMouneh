@@ -324,7 +324,7 @@
     const bar=document.createElement("div");
     bar.className="footer-legal-bar";
     bar.setAttribute("data-footer-legal","");
-    bar.innerHTML='<a class="footer-legal-button" href="privacy.html"><span class="only-en">Privacy Policy</span><span class="only-ar" lang="ar">سياسة الخصوصية</span></a><a class="footer-legal-button" href="terms.html"><span class="only-en">Terms of Service</span><span class="only-ar" lang="ar">شروط الاستخدام</span></a>';
+    bar.innerHTML='<a class="footer-legal-button" href="/privacy.html"><span class="only-en">Privacy Policy</span><span class="only-ar" lang="ar">سياسة الخصوصية</span></a><a class="footer-legal-button" href="/terms.html"><span class="only-en">Terms of Service</span><span class="only-ar" lang="ar">شروط الخدمة</span></a>';
     const copyright=grid.querySelector(".copyright");
     if(copyright)grid.insertBefore(bar,copyright);else grid.appendChild(bar);
   }

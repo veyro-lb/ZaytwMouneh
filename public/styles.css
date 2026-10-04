@@ -5418,3 +5418,8 @@ button:disabled{
     transform:none!important;
   }
 }
+
+.footer-legal-bar{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;padding-top:8px}
+.footer-legal-button{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.07);color:#fff!important;font-size:.72rem;font-weight:800;letter-spacing:.01em;transition:.2s ease}
+.footer-legal-button:hover{background:#fff;color:var(--deep)!important;border-color:#fff;transform:translateY(-1px)}
+@media(max-width:600px){.footer-legal-bar{justify-content:flex-start}.footer-legal-button{flex:1 1 150px}}

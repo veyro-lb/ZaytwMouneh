@@ -296,16 +296,33 @@
     return state.dashboard;
   }
 
+  const DEFAULT_REWARD_LADDER=[
+    {id:"r50",points:50,value:2.5,minimum:15,active:true},
+    {id:"r100",points:100,value:5,minimum:25,active:true},
+    {id:"r200",points:200,value:12,minimum:60,active:true},
+    {id:"r350",points:350,value:25,minimum:125,active:true},
+    {id:"r500",points:500,value:35,minimum:175,active:true}
+  ];
+  function activeRewards(){
+    const live=(state.publicData.rewards||[]).filter(r=>r&&r.active).sort((a,b)=>Number(a.points)-Number(b.points));
+    return live.length?live:DEFAULT_REWARD_LADDER;
+  }
+  function rewardOptionsSummary(){
+    const rows=activeRewards();
+    return '<div class="mr-reward-options"><small>'+tr("Reward options","خيارات المكافآت")+'</small><strong>'+
+      rows.map(r=>money(r.value)).join(" · ")+'</strong><span>'+tr("including $25 off at 350 points","ومنها خصم 25$ عند 350 نقطة")+'</span></div>';
+  }
+
   function nextReward(){
     const points=Number(state.dashboard?.member?.balance)||0;
-    return (state.publicData.rewards||[]).filter(r=>r.active&&Number(r.points)>points).sort((a,b)=>Number(a.points)-Number(b.points))[0]||null;
+    return activeRewards().filter(r=>Number(r.points)>points)[0]||null;
   }
   function tierLabel(tier){
     return tier==="golden"?tr("Golden Pantry","المونة الذهبية"):tier==="olive"?tr("Olive Circle","دائرة الزيتون"):tr("Mouneh Member","عضو المونة");
   }
   function rewardCards(publicOnly=false){
     const balance=Number(state.dashboard?.member?.balance)||0;
-    const rows=(state.publicData.rewards||[]).filter(r=>r.active).sort((a,b)=>Number(a.points)-Number(b.points));
+    const rows=activeRewards();
     if(!rows.length)return '<p class="mr-empty">'+tr("Rewards are being prepared.","يتم تجهيز المكافآت.")+"</p>";
     return '<div class="mr-reward-grid">'+rows.map((r)=>{
       const can=!publicOnly&&balance>=Number(r.points);
@@ -327,6 +344,7 @@
       '<div class="mr-rule"><strong>$1 = 1 🌿</strong><small>'+tr("Base earning rate · points confirm after delivery","المعدل الأساسي · تتثبت النقاط بعد الاستلام")+'</small></div>'+
       '<div class="mr-wallet-preview"><span>◫</span><div><strong>'+tr("Mouneh Points Wallet","محفظة نقاط المونة")+'</strong><small>'+tr("Your redeemed vouchers stay together here until you use them.","تجتمع قسائمك المستبدلة هنا حتى تستخدمها.")+'</small></div></div>'+
     "</div>"+
+    rewardOptionsSummary()+
     rewardCards(true)+
     '<div class="mr-auth-actions"><button class="mr-primary" type="button" data-mr-auth="signup">'+tr("Join Mouneh Rewards","انضم إلى مكافآت المونة")+'</button><button type="button" data-mr-auth="signin">'+tr("I already have an account","لدي حساب")+"</button></div>"+
     '<div class="mr-benefits"><span>+10 '+tr("welcome points","نقاط ترحيبية")+'</span><span>+20 '+tr("first delivered order","أول طلب مستلم")+'</span><span>+50 '+tr("when a referred friend qualifies","عند تأهل صديق مُحال")+"</span></div>";
@@ -451,6 +469,7 @@
       '<a class="mr-full-account" href="account.html"><span>⌂</span><div><strong>'+tr("Open My Account","فتح حسابي")+'</strong><small>'+tr("Orders, rewards, referrals, addresses & security","الطلبات والمكافآت والإحالات والعناوين والأمان")+'</small></div><b>↗</b></a>'+
       (next?'<div class="mr-progress"><div><span>'+tr("Next reward","المكافأة التالية")+'</span><b>'+esc(next.points-points)+' '+tr("points to ","نقطة للوصول إلى ")+money(next.value)+' '+tr("off","خصم")+'</b></div><i><em style="width:'+nextPct+'%"></em></i></div>':'<div class="mr-progress is-complete"><div><span>'+tr("Top milestone reached","وصلت لأعلى مرحلة")+'</span><b>'+tr("Redeem whenever you are ready.","استبدل نقاطك عندما تريد.")+"</b></div></div>")+
       walletHero()+
+      rewardOptionsSummary()+
       '<section class="mr-section"><div class="mr-section-head"><div><p>'+tr("Rewards","المكافآت")+'</p><h3>'+tr("Turn points into vouchers","حوّل نقاطك إلى قسائم")+"</h3></div></div>"+rewardCards(false)+"</section>"+
       '<section class="mr-section mr-wallet-section"><div class="mr-section-head"><div><p>'+tr("Mouneh Points Wallet","محفظة نقاط المونة")+'</p><h3>'+tr("Your reward vouchers","قسائم مكافآتك")+"</h3></div></div>"+walletView()+"</section>"+
       recentOrdersView()+

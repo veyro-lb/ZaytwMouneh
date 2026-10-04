@@ -704,3 +704,9 @@
 @media(max-width:760px){.mouneh-account-nav{display:none!important}.mouneh-account-menu-link{display:grid!important}}
 
 .mr-order-status-list span.is-cancelled{background:#f3eeee;color:#8a5350}
+
+/* persistent header controls rewards14 */
+.site-header #mounehRewardsButton{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+.site-header .language-switch{display:flex!important;visibility:visible!important;opacity:1!important}
+.site-header .language-switch button,
+.site-header .language-switch button:not(.is-active){display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}

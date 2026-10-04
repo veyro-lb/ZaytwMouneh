@@ -59,7 +59,7 @@
         '<label>'+tr("Account email","بريد الحساب")+'<input id="mrEmail" type="email" autocomplete="email" required></label>'+
         (signup?'<label>'+tr("Phone / WhatsApp number","رقم الهاتف / واتساب")+'<input id="mrSignupPhone" type="tel" autocomplete="tel" required></label>':"")+
         '<label>'+tr("Password","كلمة المرور")+'<input id="mrPassword" type="password" autocomplete="'+(signup?"new-password":"current-password")+'" minlength="8" required></label>'+
-        (signup?'<label>'+tr("Confirm password","تأكيد كلمة المرور")+'<input id="mrPasswordConfirm" type="password" autocomplete="new-password" minlength="8" required></label><label>'+tr("Referral code (optional)","رمز الإحالة (اختياري)")+'<input id="mrSignupReferral" maxlength="20" autocomplete="off"></label>':"")+
+        (signup?'<label>'+tr("Confirm password","تأكيد كلمة المرور")+'<input id="mrPasswordConfirm" type="password" autocomplete="new-password" minlength="8" required></label><label>'+tr("Referral code (optional)","رمز الإحالة (اختياري)")+'<input id="mrSignupReferral" value="'+esc(s.pendingReferral||"")+'" maxlength="20" autocomplete="off" autocapitalize="characters"></label>':"")+
         '<button class="account-primary account-auth-submit" type="submit">'+(signup?tr("Create my account","إنشاء حسابي"):tr("Sign in to dashboard","تسجيل الدخول إلى اللوحة"))+'</button>'+
         '<p id="mrAuthStatus" class="account-status">'+esc(s.authNotice||"")+'</p>'+
       '</form>'+

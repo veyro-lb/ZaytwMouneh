@@ -1567,3 +1567,74 @@
   .mr-reward-card{min-height:118px!important;padding:9px!important}
   .mr-section{gap:8px!important}
 }
+
+
+/* ===== legalcheck1: safe consent control in rewards auth ===== */
+.mr-auth .mr-legal-consent.mr-auth-consent{
+  display:grid;
+  gap:8px;
+  padding:10px;
+  border:1px solid var(--mr-line);
+  border-radius:12px;
+  background:#f8faf5;
+}
+.mr-auth .mr-legal-toggle{
+  display:grid;
+  grid-template-columns:22px minmax(0,1fr);
+  gap:8px;
+  align-items:start;
+  color:var(--mr-muted);
+  font-size:9px;
+  font-weight:700;
+  line-height:1.5;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.mr-auth .mr-legal-toggle input{
+  position:absolute;
+  width:1px;
+  height:1px;
+  opacity:0;
+  pointer-events:none;
+}
+.mr-auth .mr-legal-check{
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  border:1.5px solid #aab6ad;
+  border-radius:7px;
+  background:#fff;
+  color:transparent;
+  font-size:10px;
+  font-weight:900;
+}
+.mr-auth .mr-legal-toggle:has(input:checked) .mr-legal-check{
+  background:var(--mr-green);
+  border-color:var(--mr-green);
+  color:#fff;
+}
+.mr-auth .mr-legal-toggle:has(input:focus-visible) .mr-legal-check{
+  box-shadow:0 0 0 3px rgba(18,61,35,.12);
+}
+.mr-auth .mr-legal-links{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+}
+.mr-auth .mr-legal-links a{
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 8px;
+  border:1px solid #d8ddd5;
+  border-radius:10px;
+  background:#fff;
+  color:var(--mr-green);
+  text-decoration:none;
+  text-align:center;
+  font-size:8.5px;
+  font-weight:800;
+  -webkit-tap-highlight-color:transparent;
+}

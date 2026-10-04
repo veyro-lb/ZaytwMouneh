@@ -378,7 +378,7 @@
   function injectUI(){
     if($("mounehRewardsDrawer"))return;
     const link=document.createElement("link");
-    link.rel="stylesheet";link.href="mouneh-rewards.css?v="+VERSION;document.head.appendChild(link);
+    link.rel="stylesheet";link.href="mouneh-rewards-v2.css?v="+VERSION;document.head.appendChild(link);
 
     const nav=document.querySelector(".nav-actions");
     let btn=$("mounehRewardsButton");

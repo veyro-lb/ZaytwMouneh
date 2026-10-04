@@ -148,8 +148,8 @@
       '<article class="reward-rule-card" data-reward-rule="'+esc(r.id)+'">'+
         '<div><span>🌿</span><strong>'+esc(r.points)+' '+tr('points','نقطة')+'</strong></div>'+
         '<label>'+tr("Points","النقاط")+'<input data-rule-field="points" type="number" min="1" max="1000000" step="1" required value="'+esc(r.points)+'"></label>'+
-        '<label>'+tr("Discount $","الخصم $")+'<input data-rule-field="value" type="number" min=".01" max="1000" step=".01" required value="'+esc(r.value)+'"></label>'+
-        '<label>'+tr("Minimum $","الحد الأدنى $")+'<input data-rule-field="minimum" type="number" min="0.01" max="1000000" step=".01" required value="'+esc(r.minimum)+'"></label>'+
+        '<label>'+tr("Discount $","الخصم (دولار)")+'<input data-rule-field="value" type="number" min=".01" max="1000" step=".01" required value="'+esc(r.value)+'"></label>'+
+        '<label>'+tr("Minimum $","الحد الأدنى (دولار)")+'<input data-rule-field="minimum" type="number" min="0.01" max="1000000" step=".01" required value="'+esc(r.minimum)+'"></label>'+
         '<label class="reward-rule-toggle"><input data-rule-field="active" type="checkbox" '+(r.active?"checked":"")+'><span>'+tr("Active","مفعّل")+'</span></label>'+
         '<button type="button" data-save-rule="'+esc(r.id)+'">'+tr("Save reward","حفظ المكافأة")+'</button>'+
       '</article>'

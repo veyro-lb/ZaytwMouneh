@@ -89,7 +89,7 @@
     }
     if(s.authMode==="verify"){
       const email=esc(s.pendingSignupEmail||"");
-      return '<div class="account-auth-layout"><section class="account-card account-auth-card account-verify-card"><div class="account-auth-mark">✉</div><p class="account-eyebrow">'+tr("My Account","حسابي")+'</p><h1>'+tr("Check your email","تحقق من بريدك")+'</h1><p>'+tr("We sent a verification link to ","أرسلنا رابط تأكيد إلى ")+'<strong>'+email+'</strong>. '+tr("Open it to verify your email, then return here. Your dashboard will open automatically after sign-in.","افتحه لتأكيد بريدك ثم عد إلى هنا. ستفتح لوحة حسابك تلقائياً بعد تسجيل الدخول.")+'</p><div class="account-actions"><button type="button" class="is-primary" data-account-resend>'+tr("Resend verification email","إعادة إرسال رسالة التأكيد")+'</button><button type="button" data-account-auth="signin">'+tr("Back to sign in","العودة لتسجيل الدخول")+'</button></div><p id="accountVerifyStatus" class="account-status" role="status"></p></section>'+guestBenefits()+'</div>';
+      return '<div class="account-auth-layout"><section class="account-card account-auth-card account-verify-card"><div class="account-auth-mark">✉</div><p class="account-eyebrow">'+tr("My Account","حسابي")+'</p><h1>'+tr("Check your email","تحقق من بريدك")+'</h1><p>'+tr("A verification email was requested for ","أرسلنا رابط تأكيد إلى ")+'<strong>'+email+'</strong>. '+tr("Open it to verify your email, then return here. If this email already belongs to an account, use Sign in instead. Your dashboard will open automatically after sign-in.","افتحه لتأكيد بريدك ثم عد إلى هنا. ستفتح لوحة حسابك تلقائياً بعد تسجيل الدخول.")+'</p><div class="account-actions"><button type="button" class="is-primary" data-account-resend>'+tr("Resend verification email","إعادة إرسال رسالة التأكيد")+'</button><button type="button" data-account-auth="signin">'+tr("Back to sign in","العودة لتسجيل الدخول")+'</button></div><p id="accountVerifyStatus" class="account-status" role="status"></p></section>'+guestBenefits()+'</div>';
     }
     const signup=guestAuthMode==="signup";
     const googleDisabled=s.googleEnabled===false;
@@ -251,7 +251,7 @@
       try{
         if(status)status.textContent=tr("Sending…","جارٍ الإرسال…");
         await api()?.auth?.resendVerification?.();
-        if(status)status.textContent=tr("Sent. Check your inbox and spam folder.","تم الإرسال. تحقق من الوارد والبريد غير المرغوب.");
+        if(status)status.textContent=tr("Verification request accepted. Check your inbox and spam folder.","تم الإرسال. تحقق من الوارد والبريد غير المرغوب.");
       }catch(err){if(status)status.textContent=err?.message||String(err)}
       finally{if(resend.isConnected){resend.disabled=false;resend.removeAttribute("aria-busy");delete resend.dataset.busy}}
       return;

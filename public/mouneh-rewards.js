@@ -251,6 +251,7 @@
       '<h2>'+tr("Your pantry gives back.","مونتك بتردّلك الجميل.")+'</h2>'+
       '<span>'+tr("Earn points on delivered orders, unlock rewards, referrals and member-only boosts.","اجمع نقاط على الطلبات المستلمة وافتح مكافآت وإحالات ومضاعفات خاصة بالأعضاء.")+'</span>'+
       '<div class="mr-rule"><strong>$1 = 1 🌿</strong><small>'+tr("Base earning rate · points confirm after delivery","المعدل الأساسي · تتثبت النقاط بعد الاستلام")+'</small></div>'+
+      '<div class="mr-wallet-preview"><span>◫</span><div><strong>'+tr("Mouneh Points Wallet","محفظة نقاط المونة")+'</strong><small>'+tr("Your redeemed vouchers stay together here until you use them.","تجتمع قسائمك المستبدلة هنا حتى تستخدمها.")+'</small></div></div>'+
     "</div>"+
     rewardCards(true)+
     '<div class="mr-auth-actions"><button class="mr-primary" type="button" data-mr-auth="signup">'+tr("Join Mouneh Rewards","انضم إلى مكافآت المونة")+'</button><button type="button" data-mr-auth="signin">'+tr("I already have an account","لدي حساب")+"</button></div>"+

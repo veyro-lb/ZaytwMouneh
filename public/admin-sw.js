@@ -1,4 +1,4 @@
-const CACHE="zwm-owner-shell-v22-orderpayment2";
+const CACHE="zwm-owner-shell-v23-orderpayment3";
 const FALLBACK="/admin.html";
 
 self.addEventListener("install",event=>{

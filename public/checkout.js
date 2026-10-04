@@ -153,7 +153,7 @@ function renderAreaSuggestions(force){
 }
 function chooseArea(id){
   var a=areaDirectory().find(function(x){return String(x.id)===String(id)});if(!a)return;
-  state.areaRecord=a;$("checkoutArea").value=state.lang==="ar"?(a.ar||a.en):(a.en||a.ar);closeAreaSuggestions();renderAreaMeta();renderSummary()
+  state.areaRecord=a;$("checkoutArea").value=state.lang==="ar"?(a.ar||a.en):(a.en||a.ar);if($("checkoutStatus"))$("checkoutStatus").textContent="";closeAreaSuggestions();renderAreaMeta();renderSummary()
 }
 function renderZones(){renderAreaMeta()}
 function renderAddresses(){
@@ -208,7 +208,7 @@ function addressPayload(){
   return {zone_id:z?String(z.id||z.area||z.name_en||""):"",area:area,cadastre_id:a?a.id:"",district:a?(a.districtEn||a.districtAr||""):"",governorate:a?(a.governorateEn||a.governorateAr||""):"",street:$("checkoutStreet").value.trim(),building:$("checkoutBuilding").value.trim(),floor_apartment:$("checkoutFloor").value.trim(),landmark:$("checkoutLandmark").value.trim(),instructions:$("checkoutInstructions").value.trim(),latitude:a&&a.lat!=null?a.lat:null,longitude:a&&a.lon!=null?a.lon:null,recipient_name:state.kind==="gift"?$("checkoutRecipientName").value.trim():"",recipient_phone:state.kind==="gift"?$("checkoutRecipientPhone").value.trim():""}
 }
 function fillAddress(a){
-  if(!a)return;$("checkoutArea").value=a.area||"";state.areaRecord=exactArea(a.area||"");$("checkoutStreet").value=a.street||a.address||"";$("checkoutBuilding").value=a.building||"";$("checkoutFloor").value=a.floor_apartment||"";$("checkoutLandmark").value=a.landmark||"";$("checkoutInstructions").value=a.delivery_notes||"";renderAreaMeta();renderSummary()
+  if(!a)return;$("checkoutArea").value=a.area||"";state.areaRecord=exactArea(a.area||"");$("checkoutStreet").value=a.street||a.address||"";$("checkoutBuilding").value=a.building||"";$("checkoutFloor").value=a.floor_apartment||"";$("checkoutLandmark").value=a.landmark||"";$("checkoutInstructions").value=a.delivery_notes||"";if($("checkoutStatus"))$("checkoutStatus").textContent="";renderAreaMeta();renderSummary()
 }
 function cartSignature(){return state.rows.map(function(r){return r.p.id+":"+r.v.id+":"+r.qty}).sort().join("|")}
 function checkoutAttempt(){

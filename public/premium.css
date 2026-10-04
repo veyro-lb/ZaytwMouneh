@@ -6591,3 +6591,178 @@ html[dir="rtl"] body[data-page="home"] .home-pantry-hero .intro-board-note.only-
 .gift-result.is-unavailable{opacity:.66;cursor:not-allowed}
 .gift-result:disabled{pointer-events:none}
 .featured-product button:disabled{opacity:.55;cursor:not-allowed}
+
+
+/* ===== uifix1: centered responsive intro + clean CTA alignment ===== */
+/* Keep route intros contained and visually balanced on narrower screens. */
+@media(max-width:980px){
+  .page-intro .page-intro-grid{
+    width:min(100% - 32px,820px)!important;
+    margin-inline:auto!important;
+    align-items:center!important;
+  }
+  .page-intro .page-intro-copy-wrap{
+    width:100%!important;
+    max-width:680px!important;
+    margin-inline:auto!important;
+  }
+  .page-intro .page-intro-copy{
+    width:auto!important;
+    max-width:44ch!important;
+  }
+}
+
+/* Phone/tablet: center the copy and actions so nothing feels clipped or off-axis. */
+@media(max-width:760px){
+  .page-intro{
+    overflow:hidden!important;
+  }
+  .page-intro .page-intro-grid{
+    width:min(100% - 24px,640px)!important;
+    margin-inline:auto!important;
+    gap:26px!important;
+  }
+  .page-intro .page-intro-copy-wrap{
+    width:100%!important;
+    max-width:590px!important;
+    margin-inline:auto!important;
+    padding-inline:0!important;
+    text-align:center!important;
+  }
+  html[dir="rtl"] .page-intro .page-intro-copy-wrap{
+    text-align:center!important;
+  }
+  .page-intro .eyebrow{
+    margin-inline:auto!important;
+    text-align:center!important;
+  }
+  .page-intro h1{
+    width:auto!important;
+    max-width:9.2ch!important;
+    margin-inline:auto!important;
+    text-align:center!important;
+    text-wrap:balance!important;
+    overflow:visible!important;
+  }
+  html[dir="rtl"] .page-intro h1{
+    max-width:13ch!important;
+    text-align:center!important;
+  }
+  .page-intro .page-intro-copy{
+    width:auto!important;
+    max-width:min(100%,42ch)!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    text-align:center!important;
+    text-wrap:pretty!important;
+    overflow-wrap:break-word!important;
+  }
+  html[dir="rtl"] .page-intro .page-intro-copy{
+    text-align:center!important;
+  }
+  .page-intro .page-intro-actions{
+    width:min(100%,560px)!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    align-items:stretch!important;
+    justify-content:center!important;
+    gap:10px!important;
+  }
+  html[dir="rtl"] .page-intro .page-intro-actions{
+    justify-content:center!important;
+  }
+  .page-intro .page-intro-actions>a,
+  .page-intro .intro-primary,
+  .page-intro .intro-secondary{
+    width:100%!important;
+    min-width:0!important;
+    min-height:48px!important;
+    margin:0!important;
+    padding:0 14px!important;
+    text-align:center!important;
+    white-space:normal!important;
+    line-height:1.25!important;
+  }
+
+  /* Home hero specifically: remove the stretched vertical spacing that caused the crop shown on phone. */
+  body[data-page="home"] .home-pantry-hero{
+    min-height:auto!important;
+    padding:42px 0 46px!important;
+  }
+  body[data-page="home"] .home-pantry-hero .page-intro-grid{
+    min-height:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:flex-start!important;
+    align-items:center!important;
+    gap:28px!important;
+  }
+  body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap{
+    width:100%!important;
+    max-width:590px!important;
+    margin-inline:auto!important;
+    padding:0!important;
+    text-align:center!important;
+  }
+  body[data-page="home"] .home-pantry-hero h1{
+    max-width:8.2ch!important;
+    margin-inline:auto!important;
+    font-size:clamp(3rem,11.5vw,4.15rem)!important;
+    line-height:.94!important;
+    text-align:center!important;
+  }
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero h1.only-ar{
+    max-width:13ch!important;
+    margin-inline:auto!important;
+    text-align:center!important;
+  }
+  body[data-page="home"] .home-pantry-hero .page-intro-copy,
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-copy.only-ar{
+    max-width:min(100%,42ch)!important;
+    margin:18px auto 0!important;
+    text-align:center!important;
+  }
+  body[data-page="home"] .home-pantry-hero .page-intro-actions,
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-actions{
+    width:min(100%,560px)!important;
+    margin:22px auto 0!important;
+    justify-content:center!important;
+  }
+  body[data-page="home"] .home-pantry-hero .shop-intro-board,
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero .shop-intro-board{
+    width:min(100%,590px)!important;
+    max-width:590px!important;
+    margin:0 auto!important;
+    justify-self:center!important;
+  }
+}
+
+@media(max-width:480px){
+  .page-intro .page-intro-actions,
+  body[data-page="home"] .home-pantry-hero .page-intro-actions{
+    grid-template-columns:1fr!important;
+    width:min(100%,390px)!important;
+  }
+  .page-intro .page-intro-actions>a{
+    min-height:50px!important;
+  }
+  body[data-page="home"] .home-pantry-hero h1{
+    font-size:clamp(2.75rem,13.2vw,3.65rem)!important;
+  }
+}
+
+/* Product quick-view affordance stays reachable on touch, not hover-only. */
+@media(hover:none),(pointer:coarse){
+  .product-card .quick-view-hint{
+    opacity:1!important;
+    transform:none!important;
+    pointer-events:none!important;
+  }
+  .product-card .product-view{
+    opacity:1!important;
+    visibility:visible!important;
+    pointer-events:auto!important;
+  }
+}

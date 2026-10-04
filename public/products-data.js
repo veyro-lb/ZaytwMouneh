@@ -222,7 +222,14 @@ const AR_PRODUCT_NAME_FIXES=Object.freeze({
   "hamod-el-hosrum-koura":"حامض الحصرم – الكورة",
   "honey-vingar":"خل العسل",
   "khal-el-enab":"خل العنب",
-  "khal-el-tefeh":"خل التفاح"
+  "khal-el-tefeh":"خل التفاح",
+
+  "molokhiya":"ملوخية مجففة",
+  "labneh-mkaazleh-habet-barakeh":"لبنة مكازلة بحبة البركة",
+  "labneh-mkaazleh-har":"لبنة مكازلة حارة",
+  "labneh-mkaazleh-naanaa":"لبنة مكازلة بالنعناع",
+  "somsom-be-kshroh":"سمسم بقشره",
+  "somsom-nay":"سمسم نيّئ"
 });
 const stripArabicBidiControls=(value)=>String(value??"")
   .replace(/[\u202A-\u202E\u2066-\u2069]/g,"")

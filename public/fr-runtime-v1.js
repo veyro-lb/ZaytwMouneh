@@ -1475,6 +1475,31 @@ var EXACT=Object.freeze({
 "Remove customer account":"Supprimer le compte client",
 "Deletes this customer’s sign-in, Mouneh Points profile, points, vouchers, reviews and saved addresses. Historical orders stay in Orders & history for business records.":"Supprime la connexion de ce client, son profil Mouneh Points, ses points, bons, avis et adresses enregistrées. Les commandes historiques restent dans Commandes & historique pour les dossiers de l’entreprise.",
 "Remove account":"Supprimer le compte"
+,
+"My Account | Zayt w Mouneh":"Mon compte | Zayt w Mouneh",
+"Zayt w Mouneh home":"Accueil Zayt w Mouneh",
+"Checkout | Zayt w Mouneh":"Paiement | Zayt w Mouneh",
+"Call when downstairs, blue gate…":"Appelez en bas, portail bleu…",
+"Mouneh Points are finalized only after successful delivery.":"Les Mouneh Points ne deviennent définitifs qu’après une livraison réussie.",
+"Transactional updates only — confirmation, preparation, delivery and completion.":"Uniquement les mises à jour transactionnelles — confirmation, préparation, livraison et finalisation.",
+"Cancel order":"Annuler la commande",
+"Continue shopping":"Continuer les achats",
+"For privacy, orders are only visible to the signed-in account that owns them or to the browser that placed a guest order.":"Pour protéger votre vie privée, les commandes ne sont visibles que par le compte connecté auquel elles appartiennent ou par le navigateur ayant passé une commande en tant qu’invité.",
+"Loading order…":"Chargement de la commande…",
+"Need help? WhatsApp us":"Besoin d’aide ? Écrivez-nous sur WhatsApp",
+"Order":"Commande",
+"Order again":"Commander à nouveau",
+"Order | Zayt w Mouneh":"Commande | Zayt w Mouneh",
+"Payment & total":"Paiement & total",
+"Payment method":"Mode de paiement",
+"Payment status":"Statut du paiement",
+"Thank you — your order is in.":"Merci — votre commande a bien été reçue.",
+"Updated now":"Mis à jour à l’instant",
+"View my orders":"Voir mes commandes",
+"We couldn’t open this order.":"Nous n’avons pas pu ouvrir cette commande.",
+"We’ll keep this page updated as your order moves forward.":"Cette page sera mise à jour au fur et à mesure de l’avancement de votre commande.",
+"What next?":"Et maintenant ?",
+"You can keep shopping, track this order here, or contact us if you need help.":"Vous pouvez continuer vos achats, suivre cette commande ici ou nous contacter si vous avez besoin d’aide."
 
 });
 
@@ -1606,6 +1631,8 @@ function dynamicFr(raw){
   if((m=t.match(/^(\d+)\s+orders?$/i)))return s.replace(t,m[1]+" commandes");
   if((m=t.match(/^(\d+)\s+points?$/i)))return s.replace(t,m[1]+" points");
   if((m=t.match(/^(\d+)\s+items?$/i)))return s.replace(t,m[1]+" articles");
+  if((m=t.match(/^(\d+)\s+delivered$/i)))return s.replace(t,m[1]+" livrées");
+  if((m=t.match(/^(\d+)\s+selected$/i)))return s.replace(t,m[1]+" sélectionné(s)");
   if((m=t.match(/^Qty\s+(\d+)$/i)))return s.replace(t,"Qté "+m[1]);
   if((m=t.match(/^(\$[\d,.]+)\s+off$/i)))return s.replace(t,m[1]+" de réduction");
   if((m=t.match(/^(\$[\d,.]+)\s+minimum$/i)))return s.replace(t,"minimum "+m[1]);

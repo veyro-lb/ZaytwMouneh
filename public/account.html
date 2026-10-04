@@ -52,6 +52,9 @@
         <a href="contact.html"><span>05</span><strong class="only-en">Contact</strong><strong class="only-ar" lang="ar">تواصل معنا</strong><b>↗</b></a>
       </div>
       <div class="nav-actions">
+        <a class="nav-search" href="shop.html#shop" aria-label="Search the pantry">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+        </a>
         <div class="language-switch" id="languageSwitch" aria-label="Language">
           <button type="button" data-lang="en" class="is-active">EN</button>
           <button type="button" data-lang="ar">عربي</button>
@@ -62,9 +65,9 @@
         <a id="mounehAccountButton" class="mouneh-account-nav" href="account.html#signin" aria-label="Sign in to My Account">
           <span class="mr-account-nav-avatar is-guest" aria-hidden="true"></span><span class="mr-account-nav-copy">Sign in</span>
         </a>
-        <a class="cart-button account-cart-link" id="cartButton" href="shop.html#shop" aria-label="Open pantry">
+        <a class="cart-button account-cart-link" id="cartButton" href="shop.html?open=cart" aria-label="Open cart">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l1.6 10.2a2 2 0 0 0 2 1.7h7.9a2 2 0 0 0 1.9-1.4L21 7H6.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="cart-label"><span class="only-en">Shop</span><span class="only-ar" lang="ar">المتجر</span></span>
+          <span class="cart-label"><span class="only-en">My pantry</span><span class="only-ar" lang="ar">السلة</span></span><span class="cart-count" id="cartCount">0</span>
         </a>
       </div>
     </nav>

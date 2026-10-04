@@ -3,6 +3,13 @@
   "name": "zaytwmouneh",
   "compatibility_date": "2026-10-01",
   "assets": {
-    "directory": "./public"
-  }
+    "directory": "./public",
+    "html_handling": "auto-trailing-slash",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/products/*"
+    ],
+    "not_found_handling": "404-page"
+  },
+  "main": "./worker.js"
 }

@@ -136,3 +136,15 @@ html[dir="rtl"] .area-suggestion small{text-align:left}
   .area-suggestion{padding:11px 9px}
   .area-suggestion small{max-width:52%}
 }
+
+
+/* ===== legalcheck2: safe checkout consent ===== */
+.legal-check{display:grid!important;gap:9px!important}
+.legal-check-toggle{display:grid;grid-template-columns:22px minmax(0,1fr);gap:9px;align-items:start;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.legal-check-toggle input{margin-top:3px}
+.legal-check-links{display:flex;flex-wrap:wrap;gap:8px;padding-inline-start:31px}
+.legal-check-links a{display:inline-flex;align-items:center;min-height:34px;padding:0 10px;border:1px solid rgba(23,76,42,.14);border-radius:999px;background:#fff;color:var(--commerce-green);text-decoration:none;font-size:.69rem;font-weight:900;-webkit-tap-highlight-color:transparent}
+@media(max-width:620px){
+  .legal-check-links{padding-inline-start:0;display:grid;grid-template-columns:1fr 1fr}
+  .legal-check-links a{justify-content:center;min-height:40px;text-align:center}
+}

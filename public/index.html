@@ -22,6 +22,24 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":["LocalBusiness","Store"],"name":"Zayt w Mouneh","description":"Lebanese pantry essentials, mouneh and gifts with delivery across Lebanon.","foundingDate":"2006","telephone":"+96181581230","url":"https://zaytwmouneh.veyro-202.workers.dev/","sameAs":["https://instagram.com/zaytwmouneh"],"areaServed":{"@type":"Country","name":"Lebanon"},"address":{"@type":"PostalAddress","addressLocality":"Sebline","addressCountry":"LB"}}</script>
   <link rel="stylesheet" href="premium.css?v=20261004-toolkit4" />
   <link rel="stylesheet" href="mouneh-rewards.css?v=20261004-rewards4" />
+  <style id="mounehPointsHeaderFix">
+    .site-header .nav>.nav-actions{overflow:visible!important}
+    .site-header #mounehRewardsButton{
+      display:flex!important;visibility:visible!important;opacity:1!important;
+      flex:0 0 auto!important;flex-shrink:0!important;min-width:112px!important;
+      min-height:46px!important;align-items:center!important;justify-content:center!important;
+      gap:7px!important;padding:0 12px!important;white-space:nowrap!important;
+    }
+    @media (min-width:761px) and (max-width:1500px){
+      .site-header #mounehRewardsButton{width:78px!important;min-width:78px!important;padding:0 8px!important}
+      .site-header #mounehRewardsButton .mr-nav-copy{font-size:0!important}
+      .site-header #mounehRewardsButton .mr-nav-copy::after{content:"Points";font-size:10px!important}
+    }
+    @media (max-width:760px){
+      .site-header #mounehRewardsButton{width:42px!important;min-width:42px!important;height:42px!important;min-height:42px!important;padding:0!important;flex-basis:42px!important}
+      .site-header #mounehRewardsButton .mr-nav-copy{display:none!important}
+    }
+  </style>
 </head>
 <body data-page="home" data-release="pantry-icons-2">
   <a class="skip-link" href="shop.html#shop" id="skipLink">Skip to catalogue</a>
@@ -106,7 +124,7 @@
           <button type="button" data-lang="en" class="is-active">EN</button>
           <button type="button" data-lang="ar">عربي</button>
         </div>
-        <button type="button" id="mounehRewardsButton" class="mouneh-points-nav" data-mr-open aria-label="Open Mouneh Points">
+        <button type="button" id="mounehRewardsButton" class="mouneh-points-nav" style="display:flex;flex:0 0 auto;visibility:visible;opacity:1" data-mr-open aria-label="Open Mouneh Points">
           <span class="mr-nav-leaf">🌿</span>
           <span class="mr-nav-copy">Mouneh Points</span>
           <b id="mounehPointsBadge" hidden></b>

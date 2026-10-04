@@ -1717,6 +1717,18 @@
     if(!ORDER_STATUS_LABELS[status])return;
     const order=state.orders.find(o=>o.reference===reference);
     if(!order||order.status===status)return;
+    if(status==="delivered"){
+      const confirmed=window.confirm(
+        "Confirm this order was actually delivered?\n\n"+
+        reference+"\n\n"+
+        "Only continue after the customer/courier delivery is complete. Marking Delivered finalizes Mouneh Points and can issue a referral reward. This action is recorded in the owner history."
+      );
+      if(!confirmed){
+        renderOrders();
+        if(state.selectedOrderReference===reference)openOrderDetails(reference);
+        return;
+      }
+    }
     const now=new Date().toISOString();
     const history=Array.isArray(order.status_history)?clone(order.status_history):[];
     history.push({status,previous:order.status,at:now,source:"owner"});

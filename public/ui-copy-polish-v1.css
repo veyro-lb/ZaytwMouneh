@@ -46,6 +46,13 @@ body {
   text-align: center;
 }
 
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
 :where(button,
        input[type="button"],
        input[type="submit"],

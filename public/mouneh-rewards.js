@@ -4,8 +4,8 @@
   const AUTH_KEY="zwm:mouneh:session:v1";
   const CLAIMS_KEY="zwm:mouneh:claims:v1";
   const WALLET_KEY="zwm:mouneh:selected-wallet:v1";
-  const CONFIG_SRC="admin-config.js?v=20261004-rewards3";
-  const VERSION="20261004-rewards3";
+  const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
+  const VERSION="20261004-rewards4";
   const state={config:null,session:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0};
 
   const $=(id)=>document.getElementById(id);

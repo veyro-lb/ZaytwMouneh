@@ -8,13 +8,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="ZWM Owner" />
-  <link rel="manifest" href="admin-manifest.webmanifest?v=20261004-cachefix2" />
+  <link rel="manifest" href="admin-manifest.webmanifest?v=20261004-orderpayment1" />
   <title>Zayt w Mouneh — Owner Console</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261003-round1" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="admin.css?v=20261004-cachefix2" />
+  <link rel="stylesheet" href="admin.css?v=20261004-orderpayment1" />
   <link rel="stylesheet" href="admin-rewards.css?v=20261004-membermodal3" />
   <script id="zwm-admin-bfcache-guard">window.addEventListener("pageshow",function(e){if(e.persisted)location.reload()});</script>
 </head>
@@ -228,14 +228,20 @@
         <section class="dashboard-view" data-view-panel="orders">
           <div class="section-intro">
             <div><p>Orders & deliveries</p><h2>Receive and manage every website and owner-created order in one place.</h2></div>
-            <span>Website checkout orders appear automatically. Use the status controls to confirm, prepare, dispatch, deliver or cancel orders.</span>
+            <span>Website checkout orders appear automatically. Delivery status and payment status are synced separately. Points settle only after delivery + confirmed payment.</span>
           </div>
 
           <div class="metric-grid order-metrics">
-            <article class="metric-card"><div><small>New</small><strong id="ordersNewCount">0</strong><em>Needs review</em></div></article>
-            <article class="metric-card"><div><small>Preparing</small><strong id="ordersPreparingCount">0</strong><em>Confirmed / preparing</em></div></article>
+            <article class="metric-card"><div><small>Order received</small><strong id="ordersNewCount">0</strong><em>Needs owner review</em></div></article>
+            <article class="metric-card"><div><small>Confirmed</small><strong id="ordersConfirmedCount">0</strong><em>Approved by owner</em></div></article>
+            <article class="metric-card"><div><small>Preparing</small><strong id="ordersPreparingCount">0</strong><em>Being prepared</em></div></article>
             <article class="metric-card"><div><small>Out for delivery</small><strong id="ordersOutCount">0</strong><em>On the way</em></div></article>
-            <article class="metric-card"><div><small>Delivered</small><strong id="ordersDeliveredCount">0</strong><em>Completed history</em></div></article>
+            <article class="metric-card"><div><small>Delivered</small><strong id="ordersDeliveredCount">0</strong><em>Delivery completed</em></div></article>
+            <article class="metric-card payment-metric"><div><small>Payment pending</small><strong id="ordersPaymentPendingCount">0</strong><em>Money not confirmed received</em></div></article>
+          </div>
+          <div class="order-settlement-rule">
+            <span>🌿</span>
+            <div><strong>Points require both checks</strong><small>Mouneh Points are issued only when the order is <b>Delivered</b> and payment is marked <b>Received</b>.</small></div>
           </div>
 
           <div class="order-command-strip">
@@ -747,7 +753,9 @@
           <article class="order-detail-card"><span>Customer / recipient</span><strong id="orderDetailCustomer">—</strong><small id="orderDetailArea">—</small><small id="orderDetailPhone">—</small></article>
           <article class="order-detail-card"><span>Order type</span><strong id="orderDetailKind">—</strong><small id="orderDetailLanguage">—</small><small id="orderDetailSource">—</small></article>
           <article class="order-detail-card"><span>Total</span><strong id="orderDetailTotal">—</strong><small id="orderDetailBreakdown">USD</small></article>
-          <article class="order-detail-card"><span>Current status</span><div id="orderDetailStatus"></div></article>
+          <article class="order-detail-card"><span>Current status</span><div id="orderDetailStatus"></div><small>Matches the customer tracking page.</small></article>
+          <article class="order-detail-card order-payment-card"><span>Payment</span><strong id="orderDetailPaymentStatus">—</strong><small id="orderDetailPaymentMethod">—</small><div id="orderDetailPaymentAction"></div></article>
+          <article class="order-detail-card order-rewards-card"><span>Mouneh Points</span><strong id="orderDetailRewardsState">—</strong><small id="orderDetailRewardsHelp">Delivery + payment are both required.</small></article>
         </div>
 
         <article class="order-detail-section">
@@ -822,7 +830,7 @@
   <script src="products-data.js?v=20261004-cachefix2"></script>
   <script src="product-photos.js?v=20261004-cachefix2"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" onerror="this.onerror=null;this.src='https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js'"></script>
-  <script src="admin.js?v=20261004-ordernotify1"></script>
+  <script src="admin.js?v=20261004-orderpayment1"></script>
   <script src="admin-rewards.js?v=20261004-nativecheckout3"></script>
   <!-- mobilebottom-fallback -->
   <script>

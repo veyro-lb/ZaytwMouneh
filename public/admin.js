@@ -1478,8 +1478,8 @@
     $("orderActiveTabCount").textContent=active;
     $("orderPastTabCount").textContent=past;
     $("orderAllTabCount").textContent=state.orders.length;
-    $$("[data-order-scope]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderScope===state.orderScope));
-    $$("[data-order-command]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderCommand===state.orderCommand));
+    $$$("[data-order-scope]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderScope===state.orderScope));
+    $$$("[data-order-command]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderCommand===state.orderCommand));
 
     $("ordersNewCount").textContent=state.orders.filter(o=>o.status==="new").length;
     $("ordersPreparingCount").textContent=state.orders.filter(o=>["confirmed","preparing"].includes(o.status)).length;
@@ -2365,8 +2365,8 @@
     img.style.transform=`rotate(${rotation||0}deg) scale(${zoom/100})`;
     img.style.transformOrigin=`${x}% ${y}%`;
     $("imagePreview").classList.toggle("is-modal-preview",preview==="modal");
-    $$("[data-image-fit]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imageFit===fit));
-    $$("[data-image-preview]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imagePreview===preview));
+    $$$("[data-image-fit]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imageFit===fit));
+    $$$("[data-image-preview]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imagePreview===preview));
   }
 
   function setImageRemoved(removed) {
@@ -2395,7 +2395,7 @@
     else $("productCategory").selectedIndex=0;
     (p?.variants?.length?p.variants:[{}]).forEach(variantRow);
     const status=p?.__status||"live";
-    const radio=$(`input[name="productVisibility"][value="${status==="draft"?"draft":status==="hidden"?"hidden":"live"}"]`);
+    const radio=document.querySelector(`input[name="productVisibility"][value="${status==="draft"?"draft":status==="hidden"?"hidden":"live"}"]`);
     if(radio)radio.checked=true;
     const photo=p?photoFor(p):null;
     $("existingImageUrl").value=photo?.url||"";
@@ -3505,7 +3505,33 @@
     toast("On iPhone: Share → Add to Home Screen. On Android: browser menu → Install app.");
   }
 
+  function bindCriticalActions() {
+    document.addEventListener("click",e=>{
+      const edit=e.target.closest("[data-edit-product]");
+      if(edit){
+        e.preventDefault();
+        openProductEditor(edit.dataset.editProduct||null);
+        return;
+      }
+
+      const health=e.target.closest("[data-health-filter]");
+      if(health){
+        e.preventDefault();
+        applyHealthFilter(health.dataset.healthFilter);
+        return;
+      }
+
+      const exportButton=e.target.closest("[data-export-dataset][data-export-format]");
+      if(exportButton){
+        e.preventDefault();
+        try{exportData(exportButton.dataset.exportDataset,exportButton.dataset.exportFormat);}
+        catch(err){console.error("Export failed:",err);toast("Could not create that download. Please try again.","error");}
+      }
+    },true);
+  }
+
   function bindStaticUi() {
+    bindCriticalActions();
     document.addEventListener("click",e=>{
       const btn=e.target.closest("[data-admin-lang]");
       if(!btn)return;
@@ -3551,10 +3577,10 @@
     $("imageZoom")?.addEventListener("input",updateFramingFromControls);
     $("rotateImageLeft")?.addEventListener("click",()=>rotateImage(-90));
     $("rotateImageRight")?.addEventListener("click",()=>rotateImage(90));
-    $("[data-image-fit]").forEach(btn=>btn.addEventListener("click",()=>setImageFit(btn.dataset.imageFit)));
-    $("[data-image-preview]").forEach(btn=>btn.addEventListener("click",()=>setImagePreviewMode(btn.dataset.imagePreview)));
+    $$("[data-image-fit]").forEach(btn=>btn.addEventListener("click",()=>setImageFit(btn.dataset.imageFit)));
+    $$("[data-image-preview]").forEach(btn=>btn.addEventListener("click",()=>setImagePreviewMode(btn.dataset.imagePreview)));
     $("productRevisionList")?.addEventListener("click",e=>{const b=e.target.closest("[data-restore-revision]");if(b)restoreProductRevision(Number(b.dataset.restoreRevision));});
-    bindImageDrag();
+    try{bindImageDrag();}catch(err){console.warn("Image drag controls unavailable:",err);}
     $("deleteProductButton")?.addEventListener("click",deleteCurrentProduct);
     $("hideProductButton")?.addEventListener("click",hideCurrentProduct);
     $("restoreProductButton")?.addEventListener("click",restoreCurrentProduct);
@@ -3571,10 +3597,8 @@
     const selectionHandler=e=>{const input=e.target.closest("[data-select-product]");if(input)toggleProductSelection(input.dataset.selectProduct,input.checked);};
     $("productTableBody")?.addEventListener("change",selectionHandler);
     $("productCardsMobile")?.addEventListener("change",selectionHandler);
-    $("productTableBody")?.addEventListener("click",e=>{const b=e.target.closest("[data-edit-product]");if(b)openProductEditor(b.dataset.editProduct);});
-    $("productCardsMobile")?.addEventListener("click",e=>{const b=e.target.closest("[data-edit-product]");if(b)openProductEditor(b.dataset.editProduct);});
-    $("[data-order-scope]").forEach(btn=>btn.addEventListener("click",()=>{state.orderScope=btn.dataset.orderScope;state.orderCommand="";renderOrders();}));
-    $("[data-order-command]").forEach(btn=>btn.addEventListener("click",()=>{state.orderCommand=state.orderCommand===btn.dataset.orderCommand?"":btn.dataset.orderCommand;state.orderScope="all";renderOrders();}));
+    $$("[data-order-scope]").forEach(btn=>btn.addEventListener("click",()=>{state.orderScope=btn.dataset.orderScope;state.orderCommand="";renderOrders();}));
+    $$("[data-order-command]").forEach(btn=>btn.addEventListener("click",()=>{state.orderCommand=state.orderCommand===btn.dataset.orderCommand?"":btn.dataset.orderCommand;state.orderScope="all";renderOrders();}));
     $$("[data-overview-order-filter]").forEach(btn=>btn.addEventListener("click",()=>{setView("orders");const v=btn.dataset.overviewOrderFilter;if(v==="delivered_today"){state.orderCommand="delivered_today";state.orderScope="all";state.orderFilter.status="";}else{state.orderCommand="today";state.orderScope="all";state.orderFilter.status=v;}$("orderStatusFilter").value=state.orderFilter.status;renderOrders();}));
     $("manualOrderButton")?.addEventListener("click",openManualOrder);
     $("orderSearch")?.addEventListener("input",e=>{state.orderFilter.q=e.target.value;renderOrders();});
@@ -3601,10 +3625,6 @@
     $("customerGrid")?.addEventListener("click",e=>{const b=e.target.closest("[data-customer-orders]");if(!b)return;const c=customerGroups().find(x=>x.key===b.dataset.customerOrders);if(!c)return;setView("orders");state.orderScope="all";state.orderCommand="";state.orderFilter.q=c.phone||c.name;$("orderSearch").value=state.orderFilter.q;renderOrders();});
     $("ownerInboxList")?.addEventListener("click",e=>{const b=e.target.closest("[data-inbox-action]");if(b)handleInboxAction(b.dataset.inboxAction);});
     $("analyticsRange")?.addEventListener("change",renderAnalytics);
-    $("healthIncompleteProducts")?.addEventListener("click",()=>applyHealthFilter("needs-attention"));
-    $("healthMissingPhotos")?.addEventListener("click",()=>applyHealthFilter("missing-photo"));
-    $("healthHiddenProducts")?.addEventListener("click",()=>applyHealthFilter("hidden"));
-    $("healthDraftProducts")?.addEventListener("click",()=>applyHealthFilter("draft"));
     $("exportProductsButton")?.addEventListener("click",()=>openDataCenter("products"));
     $("exportBackupButton")?.addEventListener("click",()=>openDataCenter("backup"));
     $("openDataCenterButton")?.addEventListener("click",()=>openDataCenter());
@@ -3635,13 +3655,6 @@
     });
     $("closeDataCenter")?.addEventListener("click",closeDataCenter);
     $("dataCenterModal")?.addEventListener("click",e=>{if(e.target===$("dataCenterModal"))closeDataCenter();});
-    $("dataCenterModal")?.addEventListener("click",e=>{
-      const b=e.target.closest("[data-export-dataset][data-export-format]");
-      if(!b)return;
-      e.preventDefault();
-      try{exportData(b.dataset.exportDataset,b.dataset.exportFormat);}
-      catch(err){console.error("Export failed:",err);toast("Could not create that download. Please try again.","error");}
-    });
     $("productImportFile")?.addEventListener("change",e=>readProductImportFile(e.target.files?.[0]));
     $("clearProductImport")?.addEventListener("click",()=>clearProductImport());
     $("applyProductImport")?.addEventListener("click",applyProductImport);

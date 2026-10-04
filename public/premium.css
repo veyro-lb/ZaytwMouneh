@@ -6766,3 +6766,83 @@ html[dir="rtl"] body[data-page="home"] .home-pantry-hero .intro-board-note.only-
     pointer-events:auto!important;
   }
 }
+
+
+/* ===== uifix2: center home hero at every viewport ===== */
+body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap{
+  justify-self:center!important;
+  text-align:center!important;
+}
+body[data-page="home"] .home-pantry-hero .eyebrow{
+  text-align:center!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+body[data-page="home"] .home-pantry-hero h1,
+html[dir="rtl"] body[data-page="home"] .home-pantry-hero h1.only-ar{
+  margin-left:auto!important;
+  margin-right:auto!important;
+  text-align:center!important;
+  text-wrap:balance!important;
+}
+body[data-page="home"] .home-pantry-hero .page-intro-copy,
+html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-copy.only-ar{
+  width:100%!important;
+  max-width:500px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  text-align:center!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  overflow-wrap:break-word!important;
+  text-wrap:pretty!important;
+}
+body[data-page="home"] .home-pantry-hero .page-intro-actions,
+html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-actions{
+  width:100%!important;
+  max-width:520px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  align-items:stretch!important;
+  justify-content:center!important;
+  gap:12px!important;
+}
+body[data-page="home"] .home-pantry-hero .page-intro-actions>a{
+  flex:1 1 0!important;
+  min-width:0!important;
+  min-height:50px!important;
+  padding:0 16px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  white-space:normal!important;
+  line-height:1.25!important;
+}
+@media(max-width:980px){
+  body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap{
+    max-width:620px!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+  body[data-page="home"] .home-pantry-hero .shop-intro-board,
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero .shop-intro-board{
+    justify-self:center!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+}
+@media(max-width:560px){
+  body[data-page="home"] .home-pantry-hero .page-intro-actions,
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-actions{
+    max-width:390px!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+  }
+  body[data-page="home"] .home-pantry-hero .page-intro-actions>a{
+    width:100%!important;
+    min-height:50px!important;
+  }
+}

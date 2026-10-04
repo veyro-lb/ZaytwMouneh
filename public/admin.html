@@ -289,6 +289,16 @@
         <section class="dashboard-view" data-view-panel="rewards">
           <div class="section-intro"><div><p>Mouneh Points</p><h2>Run the rewards club from the same owner console.</h2></div><span>Points settle only when an order is marked delivered. Cancelling a rewards order reverses its order-linked points and releases reserved vouchers.</span></div>
           <div class="rewards-admin-shell" id="rewardsAdminBody">
+            <div class="rewards-auth-status" id="rewardsAuthStatus">
+              <div class="rewards-auth-status-head"><div><p>Customer accounts</p><h3>Sign-in & verification setup</h3></div><span>Live status from the account service</span></div>
+              <div class="rewards-auth-status-grid">
+                <article><span>Email + password</span><strong id="rewardsAuthEmailStatus">Checking…</strong><small>Website-created Zayt w Mouneh accounts</small></article>
+                <article><span>Email confirmation</span><strong id="rewardsAuthConfirmStatus">Checking…</strong><small>Required before rewards enrollment</small></article>
+                <article><span>Google sign-in</span><strong id="rewardsAuthGoogleStatus">Checking…</strong><small>Google OAuth provider</small></article>
+                <article><span>Branded email sender</span><strong id="rewardsAuthSenderStatus">Needs SMTP</strong><small>Connect Resend/custom SMTP for a Zayt w Mouneh From address</small></article>
+              </div>
+            </div>
+
             <div class="rewards-admin-summary">
               <article class="rewards-mini-metric"><span>Members</span><strong id="rewardsMembersMetric">0</strong><small>Joined rewards accounts</small></article>
               <article class="rewards-mini-metric"><span>Points outstanding</span><strong id="rewardsPointsMetric">0</strong><small>Positive member balances</small></article>

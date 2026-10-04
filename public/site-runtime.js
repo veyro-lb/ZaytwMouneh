@@ -320,6 +320,13 @@
   async function init(){
     try{await loadScript(CONFIG_SRC)}catch{return}
     if(!enabled())return;
+    if(!PREVIEW_MODE&&!document.querySelector("script[data-mouneh-rewards]")){
+      const rewardsScript=document.createElement("script");
+      rewardsScript.src="mouneh-rewards.js?v=20261004-rewards1";
+      rewardsScript.async=true;
+      rewardsScript.dataset.mounehRewards="1";
+      document.head.appendChild(rewardsScript);
+    }
     applySettings(readSettings());
     if(!PREVIEW_MODE)bindAnalytics();
     document.addEventListener("click",e=>{if(e.target.closest("[data-lang],#languageSwitch,.language-switch"))setTimeout(()=>applySettings(previewSettings||readSettings()),80)},{passive:true});

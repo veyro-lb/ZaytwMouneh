@@ -3514,7 +3514,18 @@
 
   function setupInstallPrompt(){
     window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.installPrompt=e;$("installAdminHint").textContent="Ready to install on this device.";});
-    if("serviceWorker" in navigator)navigator.serviceWorker.register("admin-sw.js?v=20261004-toolkit15").catch(()=>{});
+    if("serviceWorker" in navigator){
+      let reloadingForWorker=false;
+      navigator.serviceWorker.addEventListener("controllerchange",()=>{
+        if(reloadingForWorker)return;
+        reloadingForWorker=true;
+        location.reload();
+      });
+      navigator.serviceWorker.register("admin-sw.js?v=20261004-cachefix2",{updateViaCache:"none"})
+        .then(reg=>reg.update().catch(()=>{}))
+        .catch(()=>{});
+    }
+    window.addEventListener("pageshow",event=>{if(event.persisted)location.reload()});
   }
   async function installAdminApp(){
     if(state.installPrompt){

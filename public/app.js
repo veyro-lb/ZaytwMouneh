@@ -17,6 +17,14 @@ function safeStorageSet(key,value){
     return false;
   }
 }
+function acceptSingleTap(el,ms=280){
+  if(!el)return true;
+  const now=Date.now();
+  const until=Number(el.dataset.zwmTapLock||0);
+  if(now<until)return false;
+  el.dataset.zwmTapLock=String(now+ms);
+  return true;
+}
 function uiIcon(name,active=false){
   if(name==="heart")return `<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5S4 16 2.6 10.8C1.7 7.5 3.8 4.5 7 4.5c2 0 3.6 1 5 2.7 1.4-1.7 3-2.7 5-2.7 3.2 0 5.3 3 4.4 6.3C20 16 12 20.5 12 20.5Z" ${active?'fill="currentColor"':'fill="none"'} stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
   if(name==="eye")return `<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-5.6 9.5-5.6S21.5 12 21.5 12 18.1 17.6 12 17.6 2.5 12 2.5 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>`;
@@ -1190,7 +1198,7 @@ function renderProducts(){
     }
   }
 
-  $$("[data-fav]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();toggleFavorite(btn.dataset.fav)}));
+  $("[data-fav]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,300))return;toggleFavorite(btn.dataset.fav)}));
   $$("[data-card-variant]").forEach(sel=>sel.addEventListener("change",e=>{
     e.stopPropagation();
     cardVariant[sel.dataset.cardVariant]=sel.value;
@@ -1202,14 +1210,15 @@ function renderProducts(){
     const display=$(`[data-card-qty="${cssEscape(btn.dataset.id)}"]`);
     if(display)display.textContent=draftQty[key];
   }));
-  $$("[data-add]").forEach(btn=>btn.addEventListener("click",e=>{
+  $("[data-add]").forEach(btn=>btn.addEventListener("click",e=>{
     e.stopPropagation();
+    if(!acceptSingleTap(btn,320))return;
     const p=productById(btn.dataset.add);
     if(!p)return;
     addToCart(p,cardVariantFor(p),qtyFor("card:"+p.id));
     animateAddToCart(btn,p);
   }));
-  $$("[data-view]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();openProduct(btn.dataset.view)}));
+  $("[data-view]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,260))return;openProduct(btn.dataset.view)}));
   $$("[data-product]").forEach(card=>{
     card.addEventListener("click",e=>{if(!e.target.closest("button,select"))openProduct(card.dataset.product)});
     card.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!e.target.closest("button,select")){e.preventDefault();openProduct(card.dataset.product)}});
@@ -1299,6 +1308,8 @@ function syncProductUrl(id){
 function openProduct(id){
   const p=productById(id);
   if(!p)return;
+  if(document.body.classList.contains("modal-open")&&currentModalProduct?.id===id)return;
+  window.ZWM_CLOSE_NAV?.();
   syncProductUrl(id);
   addRecent(id);
   closeCart();
@@ -1370,7 +1381,7 @@ function renderSearchSuggestions(){
     .slice(0,6);
   box.innerHTML=results.length?results.map(({p})=>`<button type="button" data-suggest="${escapeHtml(p.id)}"><span><strong>${escapeHtml(currentName(p))}</strong><small>${escapeHtml(categoryName(p.category))}</small></span><b>${money(productPriceSummary(p).min)}</b></button>`).join(""):`<p>${escapeHtml(EXTRA_UI[lang].searchNoSuggestions)}</p>`;
   box.hidden=false;
-  $$("[data-suggest]").forEach(btn=>btn.addEventListener("mousedown",e=>{e.preventDefault();box.hidden=true;openProduct(btn.dataset.suggest)}));
+  $("[data-suggest]").forEach(btn=>btn.addEventListener("pointerdown",e=>{e.preventDefault();if(!acceptSingleTap(btn,260))return;box.hidden=true;openProduct(btn.dataset.suggest)}));
 }
 
 function renderFeaturedProducts(){
@@ -1391,7 +1402,7 @@ function renderFeaturedProducts(){
     </article>`;
   }).join("");
   $$("[data-featured-view]").forEach(card=>card.addEventListener("click",e=>{if(!e.target.closest("button"))openProduct(card.dataset.featuredView)}));
-  $$("[data-featured-add]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();const p=productById(btn.dataset.featuredAdd);if(p){addToCart(p,defaultVariant(p),1);animateAddToCart(btn,p)}}));
+  $("[data-featured-add]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,320))return;const p=productById(btn.dataset.featuredAdd);if(p){addToCart(p,defaultVariant(p),1);animateAddToCart(btn,p)}}));
 }
 
 function renderGiftPresets(){
@@ -1407,7 +1418,7 @@ function renderGiftPresets(){
       <div><strong>${money(total)}</strong><button type="button" data-gift-preset="${escapeHtml(preset.id)}">${escapeHtml(lang==="ar"?"اختر هذه الهدية":"Choose this gift")}</button></div>
     </article>`;
   }).join("");
-  $$("[data-gift-preset]").forEach(btn=>btn.addEventListener("click",()=>applyGiftPreset(btn.dataset.giftPreset)));
+  $("[data-gift-preset]").forEach(btn=>btn.addEventListener("click",()=>{if(!acceptSingleTap(btn,320))return;applyGiftPreset(btn.dataset.giftPreset)}));
 }
 function applyGiftPreset(id){
   const preset=GIFT_PRESETS.find(x=>x.id===id);if(!preset)return;
@@ -1468,6 +1479,7 @@ function renderGiftPickerResults(){
     more.textContent=EXTRA_UI[lang].giftMore;
   }
   document.querySelectorAll("[data-gift-add]").forEach(btn=>btn.addEventListener("click",()=>{
+    if(!acceptSingleTap(btn,320))return;
     const p=productById(btn.dataset.giftAdd);if(!p)return;
     addGiftItem(p.id,defaultVariant(p).id,1);
   }));
@@ -1908,6 +1920,8 @@ async function order(){
 }
 
 function openCart(){
+  if(document.body.classList.contains("cart-open"))return;
+  window.ZWM_CLOSE_NAV?.();
   closeProduct();
   document.body.classList.add("cart-open");
   backdropOn();
@@ -2078,8 +2092,10 @@ function setupNav(){
   t.addEventListener("click",e=>{
     e.preventDefault();
     e.stopPropagation();
+    if(!acceptSingleTap(t,220))return;
     n.classList.contains("is-open")?close():openMenu();
   });
+  window.ZWM_CLOSE_NAV=close;
   n.addEventListener("click",e=>e.stopPropagation());
   document.querySelectorAll("#navLinks a").forEach(a=>a.addEventListener("click",close));
   document.addEventListener("click",()=>{if(n.classList.contains("is-open"))close()});
@@ -2125,6 +2141,8 @@ function cssEscape(value){
 }
 
 function init(){
+  if(window.__ZWM_STOREFRONT_BOUND)return;
+  window.__ZWM_STOREFRONT_BOUND=true;
   if($("#heroVariantCount"))$("#heroVariantCount").textContent=PRODUCTS_DATA.length;
   if($("#heroCategoryCount"))$("#heroCategoryCount").textContent=CATEGORY_ORDER.length;
   if($("#year"))$("#year").textContent=new Date().getFullYear();
@@ -2182,16 +2200,16 @@ function init(){
   if($("#categorySelect"))$("#categorySelect").addEventListener("change",e=>activateShopCategory(e.target.value,{scroll:false}));
   if($("#loadMore"))$("#loadMore").addEventListener("click",()=>{visibleLimit+=catalogPageSize();renderProducts()});
   if($("#clearSearch"))$("#clearSearch").addEventListener("click",()=>activateShopCategory("All",{scroll:false}));
-  if($("#favoritesOnly"))$("#favoritesOnly").addEventListener("click",()=>{favoritesOnly=!favoritesOnly;visibleLimit=catalogPageSize();renderFavoritesCount();renderProducts()});
+  if($("#favoritesOnly"))$("#favoritesOnly").addEventListener("click",e=>{if(!acceptSingleTap(e.currentTarget,260))return;favoritesOnly=!favoritesOnly;visibleLimit=catalogPageSize();renderFavoritesCount();renderProducts()});
   if($("#clearRecent"))$("#clearRecent").addEventListener("click",()=>{recentViews=[];saveRecent();renderRecent()});
 
-  $$("[data-lang]").forEach(btn=>btn.addEventListener("click",()=>applyLanguage(btn.dataset.lang)));
+  $("[data-lang]").forEach(btn=>btn.addEventListener("click",()=>{if(btn.dataset.lang===lang)return;if(!acceptSingleTap(btn,220))return;applyLanguage(btn.dataset.lang)}));
   $$("[data-welcome-lang]").forEach(btn=>btn.addEventListener("click",e=>chooseWelcomeLanguage(btn.dataset.welcomeLang,e)));
 
   const helpSearch=$("[data-help-search]");
   if(helpSearch)helpSearch.addEventListener("click",e=>{e.preventDefault();const shop=$("#shop");if(shop)shop.scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>{const input=$("#productSearch");if(input){input.focus();input.select()}},420)});
 
-  if($("#cartButton"))$("#cartButton").addEventListener("click",openCart);
+  if($("#cartButton"))$("#cartButton").addEventListener("click",e=>{if(!acceptSingleTap(e.currentTarget,220))return;openCart()});
   if($("#cartClose"))$("#cartClose").addEventListener("click",closeCart);
   if($("#cartBackdrop"))$("#cartBackdrop").addEventListener("click",()=>{closeCart();closeProduct()});
   if($("#cartBrowse"))$("#cartBrowse").addEventListener("click",()=>{closeCart();location.href="shop.html#shop"});
@@ -2208,13 +2226,13 @@ function init(){
     el.addEventListener("change",updateGiftV4Preview);
   });
   if($("#giftHidePrices"))$("#giftHidePrices").addEventListener("change",updateGiftV4Preview);
-  if($("#mobileOrderBar"))$("#mobileOrderBar").addEventListener("click",openCart);
+  if($("#mobileOrderBar"))$("#mobileOrderBar").addEventListener("click",e=>{if(!acceptSingleTap(e.currentTarget,220))return;openCart()});
 
   if($("#productModalClose"))$("#productModalClose").addEventListener("click",closeProduct);
   if($("#modalQtyMinus"))$("#modalQtyMinus").addEventListener("click",()=>{draftQty.modal=Math.max(1,qtyFor("modal")-1);$("#productModalQty").textContent=draftQty.modal});
   if($("#modalQtyPlus"))$("#modalQtyPlus").addEventListener("click",()=>{draftQty.modal=qtyFor("modal")+1;$("#productModalQty").textContent=draftQty.modal});
-  if($("#productModalAdd"))$("#productModalAdd").addEventListener("click",()=>{if(currentModalProduct&&currentModalVariant){addToCart(currentModalProduct,currentModalVariant,qtyFor("modal"));animateAddToCart($("#productModalAdd"),currentModalProduct)}});
-  if($("#modalFavorite"))$("#modalFavorite").addEventListener("click",()=>{if(currentModalProduct)toggleFavorite(currentModalProduct.id)});
+  if($("#productModalAdd"))$("#productModalAdd").addEventListener("click",e=>{const btn=e.currentTarget;if(!acceptSingleTap(btn,320))return;if(currentModalProduct&&currentModalVariant){addToCart(currentModalProduct,currentModalVariant,qtyFor("modal"));animateAddToCart(btn,currentModalProduct)}});
+  if($("#modalFavorite"))$("#modalFavorite").addEventListener("click",e=>{if(!acceptSingleTap(e.currentTarget,300))return;if(currentModalProduct)toggleFavorite(currentModalProduct.id)});
 
   $$("[data-scene-dot]").forEach(btn=>btn.addEventListener("click",()=>showScene(Number(btn.dataset.sceneDot),true)));
 

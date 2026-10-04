@@ -28,7 +28,7 @@
   }
   function guestView(s){
     return '<div class="account-guest">'+
-      '<section class="account-card account-guest-main"><p class="account-eyebrow">'+tr("My Account","حسابي")+'</p><h1>'+tr("You are browsing as a guest.","أنت تتصفح كزائر.")+'</h1><p>'+tr("No customer account is active on this device. You can still shop normally, or sign in to keep your Mouneh Points, vouchers, delivered-order history and referral progress together.","لا يوجد حساب عميل مسجّل على هذا الجهاز. يمكنك التسوق بشكل عادي، أو تسجيل الدخول لحفظ نقاط المونة والقسائم وسجل الطلبات المستلمة وتقدم الإحالات في مكان واحد.")+'</p><div class="account-actions"><button type="button" class="is-primary" data-account-auth="signin">'+tr("Sign in","تسجيل الدخول")+'</button><button type="button" data-account-auth="signup">'+tr("Create account","إنشاء حساب")+'</button><a href="shop.html">'+tr("Continue shopping","متابعة التسوق")+'</a></div></section>'+
+      '<section class="account-card account-guest-main"><p class="account-eyebrow">'+tr("My Account","حسابي")+'</p><h1>'+tr("You are browsing as a guest.","أنت تتصفح كزائر.")+'</h1><p>'+tr("No customer account is active on this device. You can still shop normally, or sign in to keep your Mouneh Points, vouchers, delivered-order history and referral progress together.","لا يوجد حساب عميل مسجّل على هذا الجهاز. يمكنك التسوق بشكل عادي، أو تسجيل الدخول لحفظ نقاط المونة والقسائم وسجل الطلبات المستلمة وتقدم الإحالات في مكان واحد.")+'</p><div class="account-actions"><a class="is-primary" href="account.html?auth=signin">'+tr("Sign in","تسجيل الدخول")+'</a><a href="account.html?auth=signup">'+tr("Create account","إنشاء حساب")+'</a><a href="shop.html">'+tr("Continue shopping","متابعة التسوق")+'</a></div></section>'+
       '<aside class="account-card"><p class="account-eyebrow">'+tr("Why create an account?","لماذا تنشئ حساباً؟")+'</p><div class="account-benefits"><span><b>🌿</b>'+tr("See your live points balance and reward vouchers.","شاهد رصيد نقاطك وقسائم المكافآت مباشرة.")+'</span><span><b>✓</b>'+tr("Points are confirmed only after an order is actually delivered.","تتثبت النقاط فقط بعد تسليم الطلب فعلياً.")+'</span><span><b>↗</b>'+tr("Track referral progress without guessing whether it qualified.","تابع حالة الإحالات بوضوح ومعرفة ما إذا تأهلت.")+'</span><span><b>⌂</b>'+tr("Keep profile and account security settings in one place.","احتفظ ببيانات الملف وإعدادات أمان الحساب في مكان واحد.")+'</span></div><p>'+tr("Already ordered before creating an account? Eligible saved orders can be linked when the secure claim information is available on this device.","طلبت سابقاً قبل إنشاء الحساب؟ يمكن ربط الطلبات المؤهلة عند توفر معلومات الربط الآمنة على هذا الجهاز.")+'</p></aside>'+
     '</div>';
   }
@@ -120,5 +120,24 @@
   new MutationObserver(()=>render(true)).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
   const stored=(()=>{try{return localStorage.getItem("zwm-lang-v2")}catch{return null}})(); if(stored)setLang(stored);
   $("#accountYear") && ($("#accountYear").textContent=new Date().getFullYear());
-  render(true);setInterval(sync,12000);
+  render(true);
+
+  const requestedAuth=(()=>{try{return new URL(location.href).searchParams.get("auth")||""}catch{return ""}})();
+  function openRequestedAuth(){
+    if(!requestedAuth)return true;
+    const a=api();
+    const fn=requestedAuth==="signup"?a?.openSignUp:a?.openSignIn;
+    if(typeof fn!=="function")return false;
+    fn.call(a);
+    try{
+      const u=new URL(location.href);u.searchParams.delete("auth");
+      history.replaceState({},document.title,u.pathname+(u.search||"")+(u.hash||""));
+    }catch{}
+    return true;
+  }
+  if(!openRequestedAuth()){
+    let attempts=0;
+    const authWait=setInterval(()=>{attempts+=1;if(openRequestedAuth()||attempts>80)clearInterval(authWait)},100);
+  }
+  setInterval(sync,12000);
 })();

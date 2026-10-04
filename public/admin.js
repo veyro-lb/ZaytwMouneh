@@ -751,6 +751,7 @@
     customerFilter:{q:"",sort:"recent"},
     imagePosition:{x:50,y:50,zoom:100,rotation:0,fit:"cover",preview:"card"}, previewObjectUrl:null,
     installPrompt:null, productImport:null,
+    contentDirty:false,
     session:null, sessionRefreshTimer:null,
     lang:readAdminLanguage()
   };
@@ -1099,7 +1100,7 @@
     if (backupsRes.error) toast("Could not load cloud backups.", "error");
 
     state.overrides = new Map((overridesRes.data || []).map(r => [r.product_id,r]));
-    state.settings = new Map((settingsRes.data || []).map(r => [r.key,r.value]));
+    if(!settingsRes.error) state.settings = new Map((settingsRes.data || []).map(r => [r.key,r.value]));
     state.events = eventsRes.data || [];
     state.analyticsError = eventsRes.error || null;
     state.activity = activityRes.data || [];
@@ -1161,7 +1162,7 @@
     renderProducts();
     renderOrders();
     renderCustomers();
-    renderContent();
+    if(!state.contentDirty) renderContent();
     renderOverview();
     renderAnalytics();
     renderActivity();
@@ -2052,6 +2053,48 @@
     };
   }
 
+  function contentValidationError(settings){
+    const number=settings.contact.whatsapp;
+    if(number.length<8||number.length>15)return "Enter a valid WhatsApp number including country code.";
+    if(settings.announcement.enabled&&!settings.announcement.en&&!settings.announcement.ar)return "Add an announcement message or switch the announcement off.";
+    const promo=settings.promo;
+    if(promo.enabled&&!promo.titleEn&&!promo.titleAr&&!promo.bodyEn&&!promo.bodyAr)return "Add promo text or switch the promo off.";
+    if(promo.startsAt&&promo.endsAt&&new Date(promo.endsAt).getTime()<new Date(promo.startsAt).getTime())return "Promo end date must be after the start date.";
+    return "";
+  }
+
+  function markContentDirty(){
+    state.contentDirty=true;
+    setStatus($("contentStatus"),"Unsaved changes");
+    const button=$("saveContentButton");
+    if(button){button.disabled=false;button.textContent="Save website content";}
+  }
+
+  function selectedContentPreviewPage(){
+    const allowed=new Set(["index.html","shop.html","gift.html","contact.html"]);
+    const value=$("contentPreviewPage")?.value||"index.html";
+    return allowed.has(value)?value:"index.html";
+  }
+
+  function updateLivePreviewLink(){
+    const link=$("openLivePreviewPage");
+    if(link)link.href=selectedContentPreviewPage();
+  }
+
+  function loadContentPreviewPage(force=false){
+    const frame=$("contentPreviewFrame");
+    if(!frame)return;
+    const page=selectedContentPreviewPage();
+    updateLivePreviewLink();
+    const next=page+"?zwm_admin_preview=1";
+    if(force||frame.dataset.previewPage!==page){
+      frame.dataset.previewPage=page;
+      frame.src=next;
+      return;
+    }
+    sendContentPreviewDraft();
+  }
+
   function broadcastSiteUpdate(kind,id=""){
     try{localStorage.setItem(CMS_SYNC_KEY,JSON.stringify({kind,id,at:Date.now()}));}catch{}
   }
@@ -2079,14 +2122,7 @@
     $("contentPreviewModal").hidden=false;
     document.body.style.overflow="hidden";
     setContentPreviewMode(mode);
-    const frame=$("contentPreviewFrame");
-    const previewUrl="index.html?zwm_admin_preview=1";
-    if(frame.dataset.previewReady!=="1"){
-      frame.dataset.previewReady="1";
-      frame.src=previewUrl;
-    }else{
-      sendContentPreviewDraft();
-    }
+    loadContentPreviewPage();
   }
 
   function closeContentPreview(){
@@ -2267,15 +2303,30 @@
   async function saveContent(e) {
     e.preventDefault();
     const settings=contentSettingsFromForm();
+    const validationError=contentValidationError(settings);
+    if(validationError){setStatus($("contentStatus"),validationError,"error");return;}
     const rows=Object.entries(settings).map(([key,value])=>({key,value,updated_by:state.user.id,updated_at:new Date().toISOString()}));
-    setStatus($("contentStatus"),"Saving…");
-    const {error}=await state.client.from(cfg.tables.settings).upsert(rows,{onConflict:"key"});
-    if(error){setStatus($("contentStatus"),error.message,"error");return;}
-    await logActivity("update_site_content","site_settings","public",{keys:rows.map(r=>r.key)});
-    broadcastSiteUpdate("site_settings","public");
-    setStatus($("contentStatus"),"Saved, published and synced.","success");
-    toast("Website content saved.");
-    await refreshAll();
+    const button=$("saveContentButton");
+    if(button){button.disabled=true;button.textContent="Saving…";}
+    setStatus($("contentStatus"),"Saving and publishing…");
+    try{
+      const {error}=await state.client.from(cfg.tables.settings).upsert(rows,{onConflict:"key"});
+      if(error)throw error;
+      rows.forEach(row=>state.settings.set(row.key,row.value));
+      state.contentDirty=false;
+      await logActivity("update_site_content","site_settings","public",{keys:rows.map(r=>r.key)});
+      broadcastSiteUpdate("site_settings","public");
+      await refreshAll();
+      const stamp=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+      setStatus($("contentStatus"),"Saved, live and synced · "+stamp,"success");
+      toast("Website content saved and published.");
+      if(!$("contentPreviewModal")?.hidden)sendContentPreviewDraft();
+    }catch(err){
+      state.contentDirty=true;
+      setStatus($("contentStatus"),err.message||"Could not save website content.","error");
+    }finally{
+      if(button){button.disabled=false;button.textContent="Save website content";}
+    }
   }
 
   function variantRow(v={}) {
@@ -3567,9 +3618,11 @@
     $("previewContentDesktop")?.addEventListener("click",()=>openContentPreview("desktop"));
     $$("[data-content-preview-mode]").forEach(btn=>btn.addEventListener("click",()=>setContentPreviewMode(btn.dataset.contentPreviewMode)));
     $("contentPreviewFrame")?.addEventListener("load",()=>setTimeout(sendContentPreviewDraft,0));
+    $("contentPreviewPage")?.addEventListener("change",()=>loadContentPreviewPage(true));
+    updateLivePreviewLink();
     window.addEventListener("message",e=>{if(e.origin===location.origin&&e.data?.type==="zwm-preview-ready")sendContentPreviewDraft();});
-    $("contentForm")?.addEventListener("input",()=>{if(!$("contentPreviewModal").hidden)sendContentPreviewDraft();});
-    $("contentForm")?.addEventListener("change",()=>{if(!$("contentPreviewModal").hidden)sendContentPreviewDraft();});
+    $("contentForm")?.addEventListener("input",()=>{markContentDirty();if(!$("contentPreviewModal").hidden)sendContentPreviewDraft();});
+    $("contentForm")?.addEventListener("change",()=>{markContentDirty();if(!$("contentPreviewModal").hidden)sendContentPreviewDraft();});
     $("closeContentPreview")?.addEventListener("click",closeContentPreview);
     $("closeContentPreviewFooter")?.addEventListener("click",closeContentPreview);
     $("contentPreviewModal")?.addEventListener("click",e=>{if(e.target===$("contentPreviewModal"))closeContentPreview();});
@@ -3640,6 +3693,11 @@
       if(window.innerWidth>900&&$("adminSidebar")?.classList.contains("is-open"))closeSidebar();
       if(window.innerWidth>900)$("adminSidebar")?.setAttribute("aria-hidden","false");
       else if(!$("adminSidebar")?.classList.contains("is-open"))$("adminSidebar")?.setAttribute("aria-hidden","true");
+    });
+    window.addEventListener("beforeunload",e=>{
+      if(!state.contentDirty)return;
+      e.preventDefault();
+      e.returnValue="";
     });
   }
 

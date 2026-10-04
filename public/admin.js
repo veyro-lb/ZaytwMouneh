@@ -1115,12 +1115,15 @@
     state.orderSyncBusy=true;
     const selected=state.selectedOrderReference;
     try{
-      state.orders=await loadAllOrders();
+      const ordersRes=await loadAllOrders();
+      if(ordersRes.error)throw ordersRes.error;
+      state.orders=ordersRes.data||[];
       renderOrders();renderCustomers();renderOverview();renderAnalytics();
       if(selected&&$("orderModal")&&!$("orderModal").hidden)openOrderDetails(selected);
       localizeDom($("adminApp"));
     }catch(err){
       console.warn("Live order refresh failed:",err);
+      toast("Could not refresh incoming orders. Retrying automatically.","error");
     }finally{state.orderSyncBusy=false;}
   }
   function startOrderLiveSync(){

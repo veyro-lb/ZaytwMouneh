@@ -428,6 +428,14 @@ const PAGE_I18N={
   recipes:{
     en:{title:"Lebanese Pantry Recipes | Zayt w Mouneh",description:"Lebanese pantry recipe ideas from Zayt w Mouneh — build mujadara, manoushe, fattoush and other pantry bundles from the current catalogue.",skip:"Skip to recipes"},
     ar:{title:"وصفات من المونة اللبنانية | زيت ومونة",description:"أفكار وصفات لبنانية من زيت ومونة، مع مكونات المونة للمجدّرة والمنقوشة والفتوش وغيرها من كامل المنتجات الحالية.",skip:"الانتقال إلى الوصفات"}
+  },
+  terms:{
+    en:{title:"Terms of Service | Zayt w Mouneh",description:"Terms governing Zayt w Mouneh website use, orders, delivery, accounts, gifts and Mouneh Points.",skip:"Skip to terms"},
+    ar:{title:"شروط الخدمة | زيت ومونة",description:"شروط استخدام موقع زيت ومونة والطلبات والتوصيل والحسابات والهدايا وبرنامج نقاط المونة.",skip:"الانتقال إلى شروط الخدمة"}
+  },
+  privacy:{
+    en:{title:"Privacy Policy | Zayt w Mouneh",description:"How Zayt w Mouneh collects, uses, protects and shares customer, account, order and Mouneh Points information.",skip:"Skip to privacy policy"},
+    ar:{title:"سياسة الخصوصية | زيت ومونة",description:"كيفية جمع زيت ومونة لبيانات العملاء والحسابات والطلبات ونقاط المونة واستخدامها وحمايتها ومشاركتها.",skip:"الانتقال إلى سياسة الخصوصية"}
   }
 };
 
@@ -935,10 +943,8 @@ function syncLanguageVisibility(){
       el.setAttribute("aria-hidden","true");
       el.dataset.langVisibilityGuard="1";
     }else{
-      if(el.dataset.langVisibilityGuard==="1"){
-        el.style.removeProperty("display");
-        delete el.dataset.langVisibilityGuard;
-      }
+      el.style.setProperty("display","revert","important");
+      delete el.dataset.langVisibilityGuard;
       el.removeAttribute("aria-hidden");
     }
   });

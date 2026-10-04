@@ -46,7 +46,7 @@
     const clean=normalizeReferral(code);
     return clean?location.origin+"/?ref="+encodeURIComponent(clean):location.origin+"/";
   }
-  const accountAuthUrl=()=>location.origin+"/account.html";
+  const accountAuthUrl=()=>location.origin+"/account";
   const authRedirectUrl=()=>accountAuthUrl()+"?mouneh_auth=1";
   function onAccountPage(){
     return document.body?.dataset?.page==="account"||/\/account(?:\.html)?\/?$/.test(location.pathname);
@@ -495,7 +495,7 @@
     const code=String(m.code||"");
     return '<div class="mr-member-head"><div><p>'+tr("Your Mouneh Points","نقاط المونة الخاصة بك")+'</p><strong>'+points.toLocaleString()+' <span>🌿</span></strong><small>'+esc(tierLabel(m.tier))+' · '+tr("annual delivered spend ","إنفاق سنوي مستلم ")+money(m.annual_spend)+'</small></div><span class="mr-tier '+esc(m.tier||"member")+'">'+esc(tierLabel(m.tier))+"</span></div>"+
       accountIdentityView()+
-      '<a class="mr-full-account" href="account.html"><span>⌂</span><div><strong>'+tr("Open My Account","فتح حسابي")+'</strong><small>'+tr("Orders, rewards, referrals, addresses & security","الطلبات والمكافآت والإحالات والعناوين والأمان")+'</small></div><b>↗</b></a>'+
+      '<a class="mr-full-account" href="/account#overview"><span>⌂</span><div><strong>'+tr("Open My Account","فتح حسابي")+'</strong><small>'+tr("Orders, rewards, referrals, addresses & security","الطلبات والمكافآت والإحالات والعناوين والأمان")+'</small></div><b>↗</b></a>'+
       (next?'<div class="mr-progress"><div><span>'+tr("Next reward","المكافأة التالية")+'</span><b>'+esc(next.points-points)+' '+tr("points to ","نقطة للوصول إلى ")+money(next.value)+' '+tr("off","خصم")+'</b></div><i><em style="width:'+nextPct+'%"></em></i></div>':'<div class="mr-progress is-complete"><div><span>'+tr("Top milestone reached","وصلت لأعلى مرحلة")+'</span><b>'+tr("Redeem whenever you are ready.","استبدل نقاطك عندما تريد.")+"</b></div></div>")+
       walletHero()+
       rewardOptionsSummary()+
@@ -565,7 +565,7 @@
       link=document.createElement("a");
       link.id="mounehAccountButton";
       link.className="mouneh-account-nav";
-      link.href="account.html";
+      link.href="/account#overview";
       link.innerHTML='<span class="mr-account-nav-avatar">●</span><span class="mr-account-nav-copy"></span>';
     }
     const member=state.dashboard?.member||null;
@@ -581,7 +581,7 @@
       avatar.classList.toggle("is-guest",!member);
     }
     if(copy&&copy.textContent!==copyText)copy.textContent=copyText;
-    link.href=member?"account.html#overview":"account.html#signin";
+    link.href=member?"/account#overview":"/account?auth=signin#signin";
     link.setAttribute("aria-label",member?tr("Open My Account for ","فتح حساب ")+(member.name||user?.email||""):tr("Sign in to My Account","تسجيل الدخول إلى حسابي"));
     if(nav){
       const cart=nav.querySelector("#cartButton");
@@ -1062,7 +1062,7 @@
   };
   if(window.__ZWM_PENDING_SIGNIN){
     window.__ZWM_PENDING_SIGNIN=0;
-    queueMicrotask(()=>{ if(document.body?.dataset?.page!=="account") location.href="account.html#signin"; });
+    queueMicrotask(()=>{ if(document.body?.dataset?.page!=="account") location.href="/account?auth=signin#signin"; });
   }
   const earlyRewardsButton=$("mounehRewardsButton");
   if(earlyRewardsButton&&!earlyRewardsButton.dataset.mrBound)bindPointsButton(earlyRewardsButton);

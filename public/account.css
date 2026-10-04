@@ -12,3 +12,121 @@ html[dir="rtl"] .account-tabs button{text-align:right}
 @media(max-width:980px){.account-layout{grid-template-columns:1fr}.account-side{position:static}.account-side .account-identity,.account-side-note{display:none}.account-tabs{display:flex;overflow:auto;padding-bottom:3px;scrollbar-width:none}.account-tabs::-webkit-scrollbar{display:none}.account-tabs button{width:auto;flex:0 0 auto;white-space:nowrap;border:1px solid var(--acc-line);background:#fff}.account-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.account-main{padding:22px 0 48px}.account-guest{grid-template-columns:1fr}.account-guest-main,.account-card{padding:18px}.account-hero{align-items:flex-start;flex-direction:column;padding:22px}.account-balance{text-align:start}.account-grid{grid-template-columns:1fr 1fr}.account-wallet-grid,.account-reward-grid,.account-security,.account-form{grid-template-columns:1fr}.account-form .full{grid-column:auto}.account-row{align-items:flex-start;flex-direction:column}.account-referral-code button{margin-inline-start:0;width:100%}.account-site-header .brand-wordmark{display:none}}
 @media(max-width:440px){.account-grid{grid-template-columns:1fr}.account-hero h1{font-size:2.35rem}}
+
+
+/* ===== account7: clear account navigation + balanced live dashboard ===== */
+/* Keep exactly one language visible even when shared mobile navigation rules force strong/span display. */
+html[lang="en"] body[data-page="account"] .only-ar,
+html[dir="ltr"] body[data-page="account"] .only-ar,
+html[lang="en"] body[data-page="account"] .site-header .nav .only-ar,
+html[dir="ltr"] body[data-page="account"] .site-header .nav .only-ar{display:none!important}
+html[lang="ar"] body[data-page="account"] .only-en,
+html[dir="rtl"] body[data-page="account"] .only-en,
+html[lang="ar"] body[data-page="account"] .site-header .nav .only-en,
+html[dir="rtl"] body[data-page="account"] .site-header .nav .only-en{display:none!important}
+
+.account-main{padding-top:30px}
+.account-shell{max-width:1360px!important}
+.account-layout{grid-template-columns:250px minmax(0,1fr);gap:22px}
+.account-side{top:108px;padding:18px;border-radius:22px}
+.account-identity{padding:4px 4px 16px;margin-bottom:10px;border-bottom:1px solid var(--acc-line)}
+.account-avatar{width:44px;height:44px;font-size:.98rem}
+.account-tabs{gap:5px}
+.account-tabs button{min-height:48px;padding:8px 10px;gap:10px;border:1px solid transparent;border-radius:14px;font-size:.83rem}
+.account-tabs button:hover{border-color:var(--acc-line);background:#f4f7f0}
+.account-tabs button.is-active{border-color:rgba(18,61,35,.08);background:#eaf2e5;box-shadow:inset 3px 0 0 var(--acc-green)}
+html[dir="rtl"] .account-tabs button.is-active{box-shadow:inset -3px 0 0 var(--acc-green)}
+.account-tab-icon{width:30px;height:30px;display:grid;place-items:center;flex:0 0 30px;border-radius:10px;background:#f6f4ec;color:var(--acc-green);font-size:.9rem}
+.account-tabs button.is-active .account-tab-icon{background:#fff}
+.account-side-note{display:grid;gap:4px;margin-top:14px;padding:14px 4px 2px;border-top:1px solid var(--acc-line);color:#738078}
+.account-side-note small{font-size:.66rem}
+.account-sync{display:flex;align-items:center;gap:7px;color:#3f5e47;font-size:.7rem;font-weight:800}
+.account-sync i{width:8px;height:8px;border-radius:50%;background:#4e8b56;box-shadow:0 0 0 4px rgba(78,139,86,.12)}
+
+.account-hero{min-height:190px;align-items:center;padding:28px 30px;margin-bottom:16px;border-radius:24px;box-shadow:0 18px 42px rgba(18,61,35,.12)}
+.account-hero h1{font-size:clamp(2.5rem,4vw,4.1rem);line-height:.94}
+.account-balance{appearance:none;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;min-width:160px;padding:16px 18px;border-radius:18px;text-align:end;cursor:pointer;transition:background .18s ease,transform .18s ease}
+.account-balance:hover{background:rgba(255,255,255,.14);transform:translateY(-1px)}
+.account-balance small{display:block;color:rgba(255,255,255,.72);font-weight:800}
+.account-balance strong{display:block;margin-top:4px;color:#fff;font-size:2rem}
+.account-balance em{display:block;margin-top:7px;color:#e6d282;font-style:normal;font-size:.66rem;font-weight:900}
+html[dir="rtl"] .account-balance{text-align:start}
+
+.account-panel{gap:14px}
+.account-card{border-radius:21px;box-shadow:0 12px 30px rgba(18,61,35,.045)}
+.account-grid{gap:10px}
+.account-stat{min-height:102px;padding:16px;border-radius:17px}
+.account-stat strong{font-size:1.45rem}
+.account-section-title h2{font-size:1.85rem}
+.account-section-title p{max-width:72ch;line-height:1.55}
+.account-panel[data-account-panel="referrals"] .account-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.account-panel[data-account-panel="points"] .account-card:first-child .account-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.account-referral-code{background:linear-gradient(135deg,#f6f8f1,#fbfaf5)}
+.account-row{min-height:64px}
+
+/* Account page desktop header: one-language labels, centered brand, compact account controls. */
+@media(min-width:1181px){
+  .account-site-header .nav{
+    width:min(100% - 36px,1540px)!important;
+    height:86px!important;
+    display:grid!important;
+    grid-template-columns:minmax(440px,1fr) auto minmax(440px,1fr)!important;
+    column-gap:18px!important;
+    overflow:visible!important;
+  }
+  .account-site-header .nav>.nav-toggle{display:none!important}
+  .account-site-header .nav>.nav-links{
+    position:static!important;grid-column:1!important;grid-row:1!important;
+    display:flex!important;align-items:center!important;justify-self:start!important;
+    width:auto!important;height:auto!important;margin:0!important;padding:0!important;
+    gap:2px!important;background:transparent!important;border:0!important;box-shadow:none!important;
+    opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:none!important;overflow:visible!important
+  }
+  .account-site-header .nav>.nav-links .menu-heading,
+  .account-site-header .nav>.nav-links .menu-utility{display:none!important}
+  .account-site-header .nav>.nav-links>a:not(.menu-utility-link){
+    display:flex!important;align-items:center!important;min-height:40px!important;
+    padding:0 10px!important;margin:0!important;border:0!important;border-radius:999px!important;
+    background:transparent!important;color:#174b2a!important
+  }
+  .account-site-header .nav>.nav-links>a:not(.menu-utility-link):hover{background:#eef3e9!important}
+  .account-site-header .nav>.nav-links>a>span,
+  .account-site-header .nav>.nav-links>a>b{display:none!important}
+  .account-site-header .nav>.nav-links>a strong{
+    color:#174b2a!important;font-size:.81rem!important;font-weight:800!important;
+    line-height:1!important;white-space:nowrap!important
+  }
+  .account-site-header .nav>.brand{
+    grid-column:2!important;grid-row:1!important;justify-self:center!important;margin:0!important;gap:10px!important
+  }
+  .account-site-header .nav .brand-logo{width:46px!important;height:46px!important}
+  .account-site-header .nav .brand-wordmark{display:block!important;font-size:1.55rem!important;white-space:nowrap!important}
+  .account-site-header .nav>.nav-actions{
+    grid-column:3!important;grid-row:1!important;justify-self:end!important;display:flex!important;align-items:center!important;gap:7px!important
+  }
+  .account-site-header .language-switch{height:44px!important;min-height:44px!important;padding:3px!important}
+  .account-site-header .language-switch button{height:36px!important;min-height:36px!important;min-width:40px!important;padding:0 8px!important;font-size:.68rem!important}
+  .account-site-header #mounehRewardsButton.mouneh-points-nav{height:44px!important;min-height:44px!important;min-width:58px!important;padding:0 10px!important}
+  .account-site-header .mouneh-account-nav{height:44px!important;min-height:44px!important;min-width:98px!important;padding:0 12px!important}
+  .account-site-header .cart-button{height:44px!important;min-height:44px!important;padding:0 13px!important;gap:7px!important}
+}
+
+@media(max-width:980px){
+  .account-layout{gap:14px}
+  .account-side{padding:12px;position:static}
+  .account-tabs{gap:7px}
+  .account-tabs button{min-height:44px;padding:7px 10px}
+  .account-tab-icon{width:27px;height:27px;flex-basis:27px}
+  .account-panel[data-account-panel="referrals"] .account-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .account-main{padding-top:16px}
+  .account-hero{min-height:0;padding:20px;border-radius:20px;gap:16px}
+  .account-hero h1{font-size:2.45rem}
+  .account-balance{width:100%;min-width:0;text-align:start;padding:14px 15px}
+  .account-balance strong{font-size:1.7rem}
+  .account-panel[data-account-panel="referrals"] .account-grid,
+  .account-panel[data-account-panel="points"] .account-card:first-child .account-grid{grid-template-columns:1fr}
+  .account-section-title{align-items:flex-start;flex-direction:column}
+  .account-section-title .account-primary{width:100%}
+}

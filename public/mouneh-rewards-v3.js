@@ -8,7 +8,7 @@
   const LEGAL_PENDING_KEY="zwm:mouneh:legal-consent-pending:v1";
   const LEGAL_CONSENT_VERSION="2026-10-04";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-account2";
+  const VERSION="20261004-account3";
   const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false,referralStatus:null};
 
   const $=(id)=>document.getElementById(id);
@@ -470,11 +470,12 @@
     if(!body){notifyAccount();return;}
     const navBtn=maintainPointsButton();
     const navCopy=navBtn?.querySelector(".mr-nav-copy");
-    if(navCopy){navCopy.textContent=tr("Mouneh Points","نقاط المونة");navCopy.style.setProperty("display","none","important");}
+    if(navCopy){const navText=tr("Mouneh Points","نقاط المونة");if(navCopy.textContent!==navText)navCopy.textContent=navText;navCopy.style.setProperty("display","none","important");}
     const badge=$("mounehPointsBadge");
     if(badge){
       const points=Number(state.dashboard?.member?.balance);
-      badge.textContent=Number.isFinite(points)?points:"—";
+      const badgeText=Number.isFinite(points)?String(points):"—";
+      if(badge.textContent!==badgeText)badge.textContent=badgeText;
       badge.hidden=false;
       const memberName=String(state.dashboard?.member?.name||"").trim();
       if(navBtn)navBtn.setAttribute("aria-label",memberName&&Number.isFinite(points)?tr("Open Mouneh Points for ","فتح نقاط المونة لحساب ")+memberName+" · "+points+" "+tr("points","نقطة"):tr("Mouneh Points · sign in to see your balance","نقاط المونة · سجّل الدخول لرؤية رصيدك"));
@@ -525,12 +526,14 @@
     const initial=(first||String(user?.email||"A")).charAt(0).toUpperCase();
     const avatar=link.querySelector(".mr-account-nav-avatar");
     const copy=link.querySelector(".mr-account-nav-copy");
-    if(avatar)avatar.textContent=member?initial:"○";
-    if(copy)copy.textContent=member?(first||tr("My Account","حسابي")):tr("Sign in","دخول");
+    const avatarText=member?initial:"○";
+    const copyText=member?(first||tr("My Account","حسابي")):tr("Sign in","دخول");
+    if(avatar&&avatar.textContent!==avatarText)avatar.textContent=avatarText;
+    if(copy&&copy.textContent!==copyText)copy.textContent=copyText;
     link.setAttribute("aria-label",member?tr("Open My Account for ","فتح حساب ")+(member.name||user?.email||""):tr("Sign in or open My Account","تسجيل الدخول أو فتح حسابي"));
     if(nav){
       const cart=nav.querySelector("#cartButton");
-      nav.insertBefore(link,cart||null);
+      if(link.parentElement!==nav||(cart&&link.nextElementSibling!==cart)||(!cart&&link!==nav.lastElementChild))nav.insertBefore(link,cart||null);
     }
     const duplicate=$("mounehAccountMenuLink");
     if(duplicate)duplicate.remove();
@@ -566,18 +569,22 @@
     if(!leaf){leaf=document.createElement("span");leaf.className="mr-nav-leaf";leaf.textContent="🌿";btn.prepend(leaf)}
     let copy=btn.querySelector(".mr-nav-copy");
     if(!copy){copy=document.createElement("span");copy.className="mr-nav-copy";copy.textContent=tr("Mouneh Points","نقاط المونة");btn.appendChild(copy)}
+    const copyText=tr("Mouneh Points","نقاط المونة");
+    if(copy.textContent!==copyText)copy.textContent=copyText;
     copy.style.setProperty("display","none","important");
     let badge=btn.querySelector("#mounehPointsBadge");
     if(!badge){badge=document.createElement("b");badge.id="mounehPointsBadge";badge.textContent="—";btn.appendChild(badge)}
     badge.hidden=false;
     badge.style.setProperty("display","inline","important");
     const points=Number(state.dashboard?.member?.balance);
-    badge.textContent=Number.isFinite(points)?points:"—";
+    const badgeText=Number.isFinite(points)?String(points):"—";
+    if(badge.textContent!==badgeText)badge.textContent=badgeText;
     btn.setAttribute("aria-label",Number.isFinite(points)?tr("Open Mouneh Points · ","فتح نقاط المونة · ")+points+" "+tr("points","نقطة"):tr("Mouneh Points · sign in to see your balance","نقاط المونة · سجّل الدخول لرؤية رصيدك"));
     if(nav){
       const account=maintainAccountEntry();
       const cart=nav.querySelector("#cartButton");
-      nav.insertBefore(btn,account||cart||null);
+      const ref=account||cart||null;
+      if(btn.parentElement!==nav||(ref&&btn.nextElementSibling!==ref)||(!ref&&btn!==nav.lastElementChild))nav.insertBefore(btn,ref);
       btn.classList.remove("is-floating");
     }else if(!btn.isConnected){
       btn.classList.add("is-floating");

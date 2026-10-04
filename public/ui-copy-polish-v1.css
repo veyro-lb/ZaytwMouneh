@@ -813,3 +813,134 @@ html[lang="ar"] body[data-page="home"] .home-pantry-hero .page-intro-copy.only-a
     min-width:0!important;
   }
 }
+
+
+/* ===== visual-pass-v3: dashboard/order/admin readable wrapping ===== */
+/* Account: labels and prose wrap by words; only account identifiers keep aggressive wrapping. */
+body[data-page="account"] .account-layout :is(h1,h2,h3,p,strong,label),
+body[data-page="account"] .account-tabs button>span:last-child,
+body[data-page="account"] .account-stat :is(strong,small),
+body[data-page="account"] .account-section-title :is(h2,p){
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+  hyphens:none!important;
+}
+
+body[data-page="account"] .account-identity small,
+body[data-page="account"] #accountAuthStatus,
+body[data-page="account"] #accountVerifyStatus{
+  overflow-wrap:anywhere!important;
+}
+
+/* Order/checkout: never chop human-facing statuses, item names or address labels. */
+.order-status-banner strong,
+.order-stage span,
+.order-item-copy>strong,
+.order-item-copy>small,
+.order-recipient strong,
+.order-recipient span,
+.order-address-row strong,
+.summary-line span,
+.summary-line strong{
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+  hyphens:none!important;
+}
+
+@media(max-width:620px){
+  .order-payment-status{
+    max-width:100%!important;
+    white-space:normal!important;
+    overflow-wrap:normal!important;
+    word-break:normal!important;
+  }
+}
+
+/* Admin: names, headings and action copy get a real text column instead of
+   being forced into tiny icon tracks. */
+.admin-body :where(
+  .panel,
+  .customer-card,
+  .order-mobile-card,
+  .quick-action-sheet,
+  .owner-inbox-item,
+  .rewards-member-card,
+  .rewards-member-modal
+) :where(h1,h2,h3,p,b,strong,small,label){
+  word-break:normal!important;
+  hyphens:none!important;
+}
+
+.admin-body .order-mobile-head{
+  min-width:0!important;
+}
+
+.admin-body .order-mobile-head>div{
+  min-width:0!important;
+}
+
+.admin-body .order-mobile-head strong{
+  white-space:normal!important;
+  overflow-wrap:normal!important;
+}
+
+.admin-body .customer-card-head>div{
+  min-width:0!important;
+}
+
+.admin-body .customer-card-head b{
+  overflow-wrap:break-word!important;
+  word-break:normal!important;
+}
+
+.admin-body .quick-action-grid button{
+  grid-template-columns:32px minmax(0,1fr)!important;
+  min-width:0!important;
+}
+
+.admin-body .quick-action-grid button>span{
+  grid-column:1!important;
+}
+
+.admin-body .quick-action-grid button>b,
+.admin-body .quick-action-grid button>small{
+  grid-column:2!important;
+  min-width:0!important;
+  white-space:normal!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+}
+
+@media(max-width:520px){
+  .admin-body .quick-action-grid{
+    grid-template-columns:1fr!important;
+  }
+
+  .admin-body .customer-card-actions{
+    grid-template-columns:1fr!important;
+  }
+
+  .admin-body .customer-card-actions :where(button,a){
+    min-height:44px!important;
+    white-space:normal!important;
+    line-height:1.3!important;
+  }
+}
+
+/* Rewards drawer: let readable labels wrap while keeping compact numeric badges intact. */
+.mouneh-rewards-drawer :where(.mr-rule,.mr-wallet-preview,.mr-referral,.mr-section-head,.mr-checkout-member)
+  :where(strong,small,span,p,h2,h3){
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+  hyphens:none!important;
+}
+
+@media(max-width:420px){
+  .mr-reward-grid{
+    grid-template-columns:1fr!important;
+  }
+
+  .mr-member-head{
+    flex-wrap:wrap!important;
+  }
+}

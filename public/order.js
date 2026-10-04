@@ -4,7 +4,7 @@
 var AUTH_KEY="zwm:mouneh:session:v1",CLAIMS_KEY="zwm:mouneh:claims:v1",CART_KEY="zwm-cart-v5",LANG_KEY="zwm-lang-v2";
 var state={lang:"en",order:null,ref:"",claim:"",products:[],lastStatus:"",refreshing:false,loaded:false};
 var $=function(id){return document.getElementById(id)};
-var money=function(v){return "$"+(Number(v)||0).toFixed(2)};
+var money=function(v){var value="$"+(Number(v)||0).toFixed(2);return isArabic()?"\u2066"+value+"\u2069":value};
 var esc=function(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
 
 function read(k,f){try{var v=localStorage.getItem(k);return v==null?f:JSON.parse(v)}catch{return f}}
@@ -22,7 +22,7 @@ async function rpc(action,p){
     body:JSON.stringify({action:action,p:p||{}})
   });
   var data=await r.json().catch(function(){return {}});
-  if(!r.ok)throw new Error(data.message||data.hint||data.details||"Order unavailable");
+  if(!r.ok)throw new Error(data.message||data.hint||data.details||(isArabic()?"تعذّر فتح الطلب.":"Order unavailable"));
   return data;
 }
 

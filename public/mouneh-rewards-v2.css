@@ -118,3 +118,134 @@
   .mr-reward-grid{grid-template-columns:1fr}
   .mr-wallet-kpis{grid-template-columns:1fr}
 }
+
+
+/* ===== rewards6: keep Mouneh Points visible in every header ===== */
+.site-header .nav{overflow:visible!important}
+.site-header .nav>.nav-actions{
+  overflow:visible!important;
+  position:relative!important;
+  z-index:6!important;
+}
+.site-header #mounehRewardsButton{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  z-index:7!important;
+  flex-shrink:0!important;
+}
+
+@media (min-width:761px) and (max-width:980px){
+  .site-header .nav-search{display:none!important}
+  .site-header .cart-button{
+    width:46px!important;
+    min-width:46px!important;
+    padding:0!important;
+    justify-content:center!important;
+  }
+  .site-header .cart-button .cart-label{display:none!important}
+  .site-header .language-switch button{
+    min-width:38px!important;
+    padding-inline:7px!important;
+  }
+}
+
+@media (max-width:760px){
+  .site-header .nav{
+    grid-template-columns:42px minmax(42px,1fr) auto!important;
+    gap:6px!important;
+    overflow:visible!important;
+  }
+  .site-header .nav>.nav-toggle{
+    grid-column:1!important;
+    grid-row:1!important;
+    justify-self:start!important;
+  }
+  .site-header .nav>.brand{
+    grid-column:2!important;
+    grid-row:1!important;
+    justify-self:center!important;
+    min-width:42px!important;
+  }
+  .site-header .nav>.nav-actions{
+    grid-column:3!important;
+    grid-row:1!important;
+    justify-self:end!important;
+    min-width:0!important;
+    gap:4px!important;
+  }
+  .site-header .language-switch{
+    height:42px!important;
+    min-height:42px!important;
+    padding:3px!important;
+    flex:0 0 auto!important;
+  }
+  .site-header .language-switch button{
+    min-width:31px!important;
+    min-height:34px!important;
+    height:34px!important;
+    padding:0 6px!important;
+    font-size:.61rem!important;
+  }
+  .site-header #mounehRewardsButton{
+    width:42px!important;
+    min-width:42px!important;
+    height:42px!important;
+    min-height:42px!important;
+    flex:0 0 42px!important;
+    padding:0!important;
+  }
+  .site-header #mounehRewardsButton .mr-nav-copy{display:none!important}
+  .site-header .cart-button{
+    width:42px!important;
+    min-width:42px!important;
+    height:42px!important;
+    min-height:42px!important;
+    flex:0 0 42px!important;
+    padding:0!important;
+  }
+}
+
+@media (max-width:390px){
+  .site-header .nav{
+    width:min(100% - 14px,1380px)!important;
+    grid-template-columns:38px minmax(38px,1fr) auto!important;
+    gap:4px!important;
+  }
+  .site-header .nav>.nav-toggle{
+    width:38px!important;
+    min-width:38px!important;
+    height:38px!important;
+  }
+  .site-header .nav .brand-logo{
+    width:38px!important;
+    height:38px!important;
+  }
+  .site-header .nav>.nav-actions{gap:3px!important}
+  .site-header .language-switch{
+    height:38px!important;
+    min-height:38px!important;
+    padding:2px!important;
+  }
+  .site-header .language-switch button{
+    min-width:27px!important;
+    min-height:32px!important;
+    height:32px!important;
+    padding:0 4px!important;
+    font-size:.56rem!important;
+  }
+  .site-header #mounehRewardsButton,
+  .site-header .cart-button{
+    width:38px!important;
+    min-width:38px!important;
+    height:38px!important;
+    min-height:38px!important;
+    flex-basis:38px!important;
+  }
+}
+
+@media (max-width:335px){
+  .site-header .language-switch button:not(.is-active){display:none!important}
+  .site-header .language-switch button.is-active{min-width:34px!important}
+}

@@ -553,18 +553,8 @@
       avatar.classList.toggle("is-guest",!member);
     }
     if(copy&&copy.textContent!==copyText)copy.textContent=copyText;
-    link.href=member?"account.html":"#signin";
-    link.setAttribute("aria-label",member?tr("Open My Account for ","فتح حساب ")+(member.name||user?.email||""):tr("Sign in","تسجيل الدخول"));
-    if(!link.dataset.mrAccountBound){
-      link.dataset.mrAccountBound="1";
-      link.addEventListener("click",(e)=>{
-        const guest=link.querySelector(".mr-account-nav-avatar")?.classList.contains("is-guest");
-        if(!guest)return;
-        e.preventDefault();
-        e.stopPropagation();
-        openSignIn();
-      });
-    }
+    link.href=member?"account.html#overview":"account.html#signin";
+    link.setAttribute("aria-label",member?tr("Open My Account for ","فتح حساب ")+(member.name||user?.email||""):tr("Sign in to My Account","تسجيل الدخول إلى حسابي"));
     if(nav){
       const cart=nav.querySelector("#cartButton");
       if(link.parentElement!==nav||(cart&&link.nextElementSibling!==cart)||(!cart&&link!==nav.lastElementChild))nav.insertBefore(link,cart||null);
@@ -1012,8 +1002,17 @@
       referralStatus:state.referralStatus||null,
       publicData:state.publicData||{rewards:[],campaigns:[],config:{}},
       selectedWallet:state.selectedWallet,
-      providers:authProviders()
+      providers:authProviders(),
+      authMode:state.authMode,
+      authNotice:state.authNotice,
+      pendingSignupEmail:state.pendingSignupEmail,
+      googleEnabled:state.googleEnabled
     }),
+    auth:{
+      setMode:(mode)=>{state.authMode=mode==="signup"||mode==="signup-form"?"signup-form":"signin-form";},
+      getMode:()=>state.authMode,
+      signInWithGoogle
+    },
     account:{
       addresses:accountAddresses,
       updateProfile:updateProfileData,
@@ -1027,7 +1026,7 @@
   };
   if(window.__ZWM_PENDING_SIGNIN){
     window.__ZWM_PENDING_SIGNIN=0;
-    queueMicrotask(()=>openSignIn());
+    queueMicrotask(()=>{ if(document.body?.dataset?.page!=="account") location.href="account.html#signin"; });
   }
   const earlyRewardsButton=$("mounehRewardsButton");
   if(earlyRewardsButton&&!earlyRewardsButton.dataset.mrBound)bindPointsButton(earlyRewardsButton);

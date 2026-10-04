@@ -385,5 +385,5 @@
       document.querySelector('[data-account-panel="'+hash+'"]')?.scrollIntoView?.({block:"start",behavior:"smooth"});
     }
   });
-  setInterval(sync,10000);
+  setInterval(sync,30000);
 })();

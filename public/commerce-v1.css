@@ -148,3 +148,101 @@ html[dir="rtl"] .area-suggestion small{text-align:left}
   .legal-check-links{padding-inline-start:0;display:grid;grid-template-columns:1fr 1fr}
   .legal-check-links a{justify-content:center;min-height:40px;text-align:center}
 }
+
+
+/* ===== order tracking polish: synced admin status + responsive customer view ===== */
+.order-shell{width:min(1120px,calc(100% - 32px))}
+.order-confirm-hero{max-width:780px;margin:0 auto}
+.order-confirm-hero p{margin:10px auto 0;max-width:680px;line-height:1.6}
+.order-number{max-width:100%;overflow-wrap:anywhere}
+
+.order-status-banner{padding:18px 20px;gap:18px}
+.order-status-banner>div{display:grid;gap:4px;min-width:0}
+.order-status-banner small{display:block;color:#677268;font-size:.72rem;font-weight:800;letter-spacing:.02em}
+.order-status-banner strong{display:block;color:var(--commerce-green-dark);font-size:1.16rem;line-height:1.2;overflow-wrap:anywhere}
+.order-status-banner>span{flex:0 0 auto;max-width:100%;white-space:normal;text-align:center;line-height:1.35}
+body[data-order-status="cancelled"] .order-status-banner{background:#fbefed}
+body[data-order-status="cancelled"] .order-status-banner strong{color:#8c342f}
+
+.order-timeline{margin:24px 2px 6px}
+.order-stage{min-width:0;padding-inline:5px;line-height:1.35}
+.order-stage span{display:block;overflow-wrap:anywhere}
+.order-stage.is-cancelled-stage{color:#9b352f}
+.order-stage.is-cancelled-stage i{background:#9b352f}
+.order-stage.is-cancelled-stage:before{background:#d8dfd9}
+
+.order-detail-grid>.commerce-card{min-width:0}
+.order-detail-grid .commerce-card-head h2{font-family:"DM Serif Display",serif;font-size:1.35rem;font-weight:400}
+.order-detail-grid .commerce-card-head p{font-size:.85rem}
+
+.order-detail-list{gap:0}
+.order-detail-item{align-items:flex-start;padding:14px 0;gap:18px}
+.order-detail-item:first-child{padding-top:2px}
+.order-detail-item:last-child{padding-bottom:0;border-bottom:0}
+.order-item-copy{min-width:0;display:grid;gap:5px}
+.order-item-copy>strong{display:block;color:var(--commerce-green-dark);font-size:1rem;line-height:1.35;overflow-wrap:anywhere}
+.order-item-copy>small{display:block;color:var(--commerce-muted);font-size:.78rem;line-height:1.45;overflow-wrap:anywhere}
+.order-item-price{flex:0 0 auto;color:var(--commerce-green-dark);font-size:1rem;white-space:nowrap}
+
+.order-recipient{display:grid;gap:3px;margin-bottom:12px;padding:12px 13px;border-radius:14px;background:#f4f7f1}
+.order-recipient small,.order-address-row small{color:#7b847c;font-size:.67rem;font-weight:800;letter-spacing:.01em}
+.order-recipient strong,.order-address-row strong{color:var(--commerce-ink);font-size:.88rem;line-height:1.45;overflow-wrap:anywhere}
+.order-recipient span{color:var(--commerce-muted);font-size:.78rem;overflow-wrap:anywhere}
+.order-address-lines{display:grid;gap:10px}
+.order-address-row{display:grid;gap:2px;padding-bottom:10px;border-bottom:1px solid rgba(23,76,42,.08)}
+.order-address-row:last-child{padding-bottom:0;border-bottom:0}
+.order-muted{margin:0;color:var(--commerce-muted);font-size:.8rem;line-height:1.55}
+#orderNote{margin-top:14px;padding-top:12px;border-top:1px solid rgba(23,76,42,.08);overflow-wrap:anywhere}
+
+#orderPoints{display:block;margin-top:6px;overflow-wrap:anywhere}
+.order-actions{align-items:center}
+.order-actions a,.order-actions button{min-width:0;line-height:1.25;text-align:center;white-space:normal}
+#orderActionStatus{color:var(--commerce-muted)}
+
+html[dir="rtl"] .order-stage{text-align:center}
+html[dir="rtl"] .order-address-row,html[dir="rtl"] .order-recipient{text-align:right}
+
+@media(max-width:900px){
+  .order-shell{width:min(100% - 24px,760px)}
+  .order-confirm-hero{padding-top:30px}
+}
+
+@media(max-width:620px){
+  .order-shell{width:min(100% - 18px,760px)}
+  .commerce-page{padding-bottom:48px}
+  .order-confirm-hero{padding:24px 4px 16px}
+  .order-confirm-mark{width:54px;height:54px;margin-bottom:12px;border-radius:18px;font-size:1.5rem}
+  .order-confirm-hero h1{font-size:clamp(1.9rem,10vw,2.65rem);line-height:1.04}
+  .order-confirm-hero p{font-size:.9rem;line-height:1.55}
+  .order-number{font-size:.76rem;text-align:center}
+
+  .order-status-banner{display:grid;grid-template-columns:1fr;align-items:start;padding:14px;margin-bottom:18px}
+  .order-status-banner>span{justify-self:start;padding:7px 10px;text-align:start}
+  html[dir="rtl"] .order-status-banner>span{justify-self:end;text-align:right}
+
+  .order-timeline{display:grid;grid-template-columns:1fr;overflow:visible;gap:0;margin:6px 2px 0;padding:2px 0}
+  .order-stage{display:grid;grid-template-columns:22px minmax(0,1fr);align-items:start;min-height:44px;padding:0 0 14px 0;text-align:start!important;font-size:.76rem}
+  .order-stage span{grid-column:2;align-self:start;padding-top:0;font-size:.78rem}
+  .order-stage:before{top:15px;bottom:-1px;left:auto;right:auto;inset-inline-start:7px;width:2px;height:auto}
+  .order-stage:first-child:before{left:auto;right:auto;inset-inline-start:7px}
+  .order-stage:last-child:before{display:none}
+  .order-stage i{top:0;left:auto;right:auto;inset-inline-start:0;transform:none}
+  .order-stage.is-current:before{background:#d8dfd9}
+  .order-stage.is-done:before{background:#6c9347}
+  .order-stage.is-cancelled-stage{min-height:30px}
+
+  .order-detail-grid{gap:11px!important}
+  .order-detail-grid+.order-detail-grid{margin-top:11px!important}
+  .order-detail-grid>.commerce-card{padding:16px}
+  .order-detail-grid .commerce-card-head{margin-bottom:13px}
+  .order-detail-grid .commerce-card-head h2{font-size:1.25rem}
+  .order-detail-item{gap:12px;padding:12px 0}
+  .order-item-copy>strong{font-size:.96rem}
+  .order-item-copy>small{font-size:.75rem}
+  .order-item-price{font-size:.94rem}
+
+  .summary-line{gap:10px}
+  .summary-line span,.summary-line strong{min-width:0;overflow-wrap:anywhere}
+  .order-actions{gap:8px}
+  .order-actions a,.order-actions button{min-height:47px;border-radius:14px;padding:10px 12px}
+}

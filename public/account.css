@@ -442,3 +442,59 @@ body[data-page="account"] .account-legal-toggle:has(#accountLegalConsent)>span:l
   html[dir="rtl"] body[data-page="account"] .account-legal-links{grid-template-columns:1fr}
   body[data-page="account"] .account-google strong{min-width:0;overflow-wrap:anywhere}
 }
+
+/* Signed-in dashboard: keep the mobile stack after all desktop refinements.
+   The earlier 980px rule was overridden by the later 250px sidebar layout. */
+body[data-page="account"] .account-layout,
+body[data-page="account"] .account-layout *{box-sizing:border-box}
+body[data-page="account"] .account-layout>*,
+body[data-page="account"] .account-panel>*,
+body[data-page="account"] .account-card,
+body[data-page="account"] .account-stat{min-width:0}
+body[data-page="account"] .account-layout :is(h1,h2,h3,p,strong,small,label){overflow-wrap:anywhere}
+
+@media(max-width:980px){
+  body[data-page="account"] .account-layout{grid-template-columns:minmax(0,1fr);gap:14px}
+  body[data-page="account"] .account-side{position:static;min-width:0;padding:14px}
+  body[data-page="account"] .account-side .account-identity{display:flex;margin:0 0 12px;padding:0 0 12px;gap:10px}
+  body[data-page="account"] .account-identity>div{min-width:0}
+  body[data-page="account"] .account-avatar{flex:0 0 40px;width:40px;height:40px}
+  body[data-page="account"] .account-identity small{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+  body[data-page="account"] .account-side-note{display:none}
+  body[data-page="account"] .account-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;gap:8px;margin:0;padding:0}
+  body[data-page="account"] .account-tabs button{width:100%;min-width:0;white-space:normal;min-height:48px;line-height:1.35;padding:9px;text-align:start}
+  body[data-page="account"] .account-tabs button>span:last-child{min-width:0;overflow-wrap:anywhere}
+  body[data-page="account"] .account-content{min-width:0;width:100%}
+}
+@media(max-width:700px){
+  body[data-page="account"] .account-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body[data-page="account"] .account-tabs button{font-size:.82rem;gap:7px}
+  body[data-page="account"] .account-hero{flex-direction:column;align-items:stretch;min-height:0;padding:20px;gap:14px}
+  body[data-page="account"] .account-hero>div{min-width:0}
+  body[data-page="account"] .account-hero h1{font-size:clamp(1.8rem,8vw,2.6rem);line-height:1.1}
+  body[data-page="account"] .account-hero p{font-size:.875rem;line-height:1.5}
+  body[data-page="account"] .account-balance{min-width:0;width:100%;text-align:start;padding:12px 14px}
+  body[data-page="account"] .account-balance strong{font-size:1.65rem}
+  body[data-page="account"] .account-balance em{font-size:.78rem}
+  body[data-page="account"] .account-grid,
+  body[data-page="account"] .account-panel[data-account-panel="referrals"] .account-grid,
+  body[data-page="account"] .account-panel[data-account-panel="points"] .account-card:first-child .account-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  body[data-page="account"] .account-stat{min-height:96px;padding:13px}
+  body[data-page="account"] .account-stat small{font-size:.78rem;line-height:1.45}
+  body[data-page="account"] .account-stat strong{font-size:1.2rem;line-height:1.35}
+  body[data-page="account"] .account-panel>.account-card{padding:16px}
+  body[data-page="account"] .account-section-title{align-items:stretch;gap:12px}
+  body[data-page="account"] .account-section-title h2{font-size:1.6rem;line-height:1.2}
+  body[data-page="account"] .account-card p{font-size:.875rem;line-height:1.6}
+  body[data-page="account"] .account-wallet-grid,
+  body[data-page="account"] .account-reward-grid,
+  body[data-page="account"] .account-security,
+  body[data-page="account"] .account-form{grid-template-columns:minmax(0,1fr)}
+  body[data-page="account"] .account-form input,
+  body[data-page="account"] .account-form select{min-width:0;min-height:48px;font:600 16px/1.4 "DM Sans",sans-serif}
+  body[data-page="account"] .account-form label{font-size:.82rem;line-height:1.5}
+  body[data-page="account"] .account-primary,
+  body[data-page="account"] .account-actions :is(a,button){min-height:46px;max-width:100%;white-space:normal;padding:10px 14px;line-height:1.4;text-align:center}
+  body[data-page="account"] .account-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+  body[data-page="account"] .account-pill{max-width:100%;white-space:normal;line-height:1.4}
+}

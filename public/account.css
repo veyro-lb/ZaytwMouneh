@@ -64,53 +64,6 @@ html[dir="rtl"] .account-balance{text-align:start}
 .account-referral-code{background:linear-gradient(135deg,#f6f8f1,#fbfaf5)}
 .account-row{min-height:64px}
 
-/* Account page desktop header: one-language labels, centered brand, compact account controls. */
-@media(min-width:1181px){
-  .account-site-header .nav{
-    width:min(100% - 36px,1540px)!important;
-    height:86px!important;
-    display:grid!important;
-    grid-template-columns:minmax(440px,1fr) auto minmax(440px,1fr)!important;
-    column-gap:18px!important;
-    overflow:visible!important;
-  }
-  .account-site-header .nav>.nav-toggle{display:none!important}
-  .account-site-header .nav>.nav-links{
-    position:static!important;grid-column:1!important;grid-row:1!important;
-    display:flex!important;align-items:center!important;justify-self:start!important;
-    width:auto!important;height:auto!important;margin:0!important;padding:0!important;
-    gap:2px!important;background:transparent!important;border:0!important;box-shadow:none!important;
-    opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:none!important;overflow:visible!important
-  }
-  .account-site-header .nav>.nav-links .menu-heading,
-  .account-site-header .nav>.nav-links .menu-utility{display:none!important}
-  .account-site-header .nav>.nav-links>a:not(.menu-utility-link){
-    display:flex!important;align-items:center!important;min-height:40px!important;
-    padding:0 10px!important;margin:0!important;border:0!important;border-radius:999px!important;
-    background:transparent!important;color:#174b2a!important
-  }
-  .account-site-header .nav>.nav-links>a:not(.menu-utility-link):hover{background:#eef3e9!important}
-  .account-site-header .nav>.nav-links>a>span,
-  .account-site-header .nav>.nav-links>a>b{display:none!important}
-  .account-site-header .nav>.nav-links>a strong{
-    color:#174b2a!important;font-size:.81rem!important;font-weight:800!important;
-    line-height:1!important;white-space:nowrap!important
-  }
-  .account-site-header .nav>.brand{
-    grid-column:2!important;grid-row:1!important;justify-self:center!important;margin:0!important;gap:10px!important
-  }
-  .account-site-header .nav .brand-logo{width:46px!important;height:46px!important}
-  .account-site-header .nav .brand-wordmark{display:block!important;font-size:1.55rem!important;white-space:nowrap!important}
-  .account-site-header .nav>.nav-actions{
-    grid-column:3!important;grid-row:1!important;justify-self:end!important;display:flex!important;align-items:center!important;gap:7px!important
-  }
-  .account-site-header .language-switch{height:44px!important;min-height:44px!important;padding:3px!important}
-  .account-site-header .language-switch button{height:36px!important;min-height:36px!important;min-width:40px!important;padding:0 8px!important;font-size:.68rem!important}
-  .account-site-header #mounehRewardsButton.mouneh-points-nav{height:44px!important;min-height:44px!important;min-width:58px!important;padding:0 10px!important}
-  .account-site-header .mouneh-account-nav{height:44px!important;min-height:44px!important;min-width:98px!important;padding:0 12px!important}
-  .account-site-header .cart-button{height:44px!important;min-height:44px!important;padding:0 13px!important;gap:7px!important}
-}
-
 @media(max-width:980px){
   .account-layout{gap:14px}
   .account-side{padding:12px;position:static}
@@ -147,23 +100,6 @@ body[data-page="account"] .account-stat{min-height:104px}
 body[data-page="account"] .account-section-title h2{font-size:clamp(1.65rem,2vw,2.15rem)}
 
 @media(min-width:1181px){
-  body[data-page="account"] .account-site-header .nav{
-    width:min(calc(100% - 32px),1600px)!important;
-    grid-template-columns:minmax(370px,1fr) auto minmax(430px,1fr)!important;
-    column-gap:14px!important;
-  }
-  body[data-page="account"] .account-site-header .nav>.nav-links{gap:0!important}
-  body[data-page="account"] .account-site-header .nav>.nav-links>a:not(.menu-utility-link){padding-inline:8px!important}
-  body[data-page="account"] .account-site-header .nav>.nav-links>a strong{font-size:.79rem!important}
-  body[data-page="account"] .account-site-header .nav .brand-wordmark{font-size:1.45rem!important}
-  body[data-page="account"] .account-site-header .nav>.nav-actions{gap:8px!important}
-  body[data-page="account"] .account-site-header #mounehRewardsButton.mouneh-points-nav{
-    min-width:62px!important;padding-inline:11px!important;border-radius:999px!important
-  }
-  body[data-page="account"] .account-site-header #mounehRewardsButton .mr-nav-copy{display:none!important}
-  body[data-page="account"] .account-site-header #mounehRewardsButton #mounehPointsBadge{display:inline!important}
-  body[data-page="account"] .account-site-header .mouneh-account-nav{max-width:160px!important}
-  body[data-page="account"] .account-site-header .mr-account-nav-copy{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   body[data-page="account"] .account-layout{grid-template-columns:240px minmax(0,1fr);gap:20px}
 }
 

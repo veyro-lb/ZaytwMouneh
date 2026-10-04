@@ -5,8 +5,8 @@
   const CLAIMS_KEY="zwm:mouneh:claims:v1";
   const WALLET_KEY="zwm:mouneh:selected-wallet:v1";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-rewards4";
-  const state={config:null,session:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0};
+  const VERSION="20261004-rewards5";
+  const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null};
 
   const $=(id)=>document.getElementById(id);
   const esc=(v)=>String(v??"").replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -18,6 +18,40 @@
   const safeJson=(raw,fallback)=>{try{return JSON.parse(raw)||fallback}catch{return fallback}};
   const saveLocal=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
   const readLocal=(k,f)=>{try{return safeJson(localStorage.getItem(k),f)}catch{return f}};
+  const authRedirectUrl=()=>location.origin+location.pathname+"?mouneh_auth=1";
+  function cleanAuthUrl(){
+    try{
+      const u=new URL(location.href);
+      ["mouneh_auth","error","error_code","error_description"].forEach(k=>u.searchParams.delete(k));
+      u.hash="";
+      history.replaceState({},document.title,u.pathname+(u.search||""));
+    }catch{}
+  }
+  async function consumeAuthCallback(){
+    const hash=new URLSearchParams(String(location.hash||"").replace(/^#/,""));
+    const url=new URL(location.href);
+    const err=hash.get("error_description")||hash.get("error")||url.searchParams.get("error_description")||url.searchParams.get("error");
+    if(err){
+      state.authNotice=decodeURIComponent(String(err).replace(/\+/g," "));
+      state.authMode="signin-form";
+      cleanAuthUrl();
+      return false;
+    }
+    const access=hash.get("access_token"),refresh=hash.get("refresh_token");
+    if(!access)return false;
+    const expiresIn=Number(hash.get("expires_in")||3600);
+    writeSession({
+      access_token:access,
+      refresh_token:refresh||"",
+      token_type:hash.get("token_type")||"bearer",
+      expires_in:expiresIn,
+      expires_at:Number(hash.get("expires_at")||Math.floor(Date.now()/1000)+expiresIn)
+    });
+    state.authMode="public";
+    state.authNotice=tr("Email verified. Welcome back to Zayt w Mouneh.","تم تأكيد البريد. أهلاً بك في زيت ومونة.");
+    cleanAuthUrl();
+    return true;
+  }
   const config=()=>window.ZWM_CMS_CONFIG||state.config||{};
   const baseUrl=()=>String(config().supabaseUrl||"").replace(/\/$/,"");
   const key=()=>config().supabasePublishableKey||"";
@@ -44,13 +78,25 @@
     const exp=Number(s.expires_at||0);
     return exp>0&&Date.now()/1000>exp-45;
   }
-  async function authRequest(path,body,token){
+  async function authRequest(path,body,token,method="POST"){
     const headers={"apikey":key(),"Content-Type":"application/json"};
     if(token)headers.Authorization="Bearer "+token;
-    const r=await fetch(baseUrl()+"/auth/v1/"+path,{method:"POST",headers,body:body===undefined?undefined:JSON.stringify(body)});
+    const r=await fetch(baseUrl()+"/auth/v1/"+path,{method,headers,body:method==="GET"||body===undefined?undefined:JSON.stringify(body)});
     const data=await r.json().catch(()=>({}));
     if(!r.ok)throw new Error(data.msg||data.message||data.error_description||data.error||tr("Authentication failed.","تعذّر تسجيل الدخول."));
     return data;
+  }
+  async function authGet(path,token){return authRequest(path,undefined,token,"GET");}
+  async function loadAuthSettings(){
+    try{
+      const data=await authGet("settings");
+      state.googleEnabled=!!data?.external?.google;
+    }catch{state.googleEnabled=null}
+  }
+  async function getAuthUser(){
+    const s=await validSession();
+    if(!s?.access_token){state.authUser=null;return null;}
+    try{state.authUser=await authGet("user",s.access_token);return state.authUser}catch{state.authUser=null;return null}
   }
   async function refreshSession(){
     if(!state.session?.refresh_token)return null;
@@ -73,13 +119,48 @@
     const s=data.session||data;
     if(!s?.access_token)throw new Error(tr("Could not start your session.","تعذّر بدء الجلسة."));
     writeSession(s);
+    state.authUser=data.user||null;
     await loadDashboard();
+    await ensureMemberFromAuth();
   }
-  async function signUp(email,password){
-    const data=await authRequest("signup",{email,password});
+  async function signUp(email,password,name,phone){
+    const path="signup?redirect_to="+encodeURIComponent(authRedirectUrl());
+    const data=await authRequest(path,{email,password,data:{full_name:name,name,phone}});
     const s=data.session||null;
-    if(s?.access_token){writeSession(s);await loadDashboard();return {session:true};}
+    state.pendingSignupEmail=email;
+    if(s?.access_token){
+      writeSession(s);state.authUser=data.user||null;
+      await loadDashboard();
+      if(state.dashboard?.needsJoin)await rpc("join",{name,phone,referral:""});
+      await loadDashboard();
+      return {session:true,user:data.user||null};
+    }
+    state.authMode="verify";
     return {session:false,user:data.user||null};
+  }
+  async function resendVerification(){
+    const email=String(state.pendingSignupEmail||"").trim();
+    if(!email)throw new Error(tr("Enter your email again to resend verification.","أدخل بريدك مجدداً لإعادة إرسال التأكيد."));
+    await authRequest("resend?redirect_to="+encodeURIComponent(authRedirectUrl()),{type:"signup",email});
+  }
+  async function signInWithGoogle(){
+    if(state.googleEnabled===false)throw new Error(tr("Google sign-in is not enabled yet for this Zayt w Mouneh account.","تسجيل الدخول عبر Google غير مفعّل بعد لهذا الحساب."));
+    const redirect=encodeURIComponent(authRedirectUrl());
+    const scopes=encodeURIComponent("openid email profile https://www.googleapis.com/auth/userinfo.email");
+    location.assign(baseUrl()+"/auth/v1/authorize?provider=google&redirect_to="+redirect+"&scopes="+scopes);
+  }
+  async function ensureMemberFromAuth(){
+    if(!state.session||!state.dashboard?.needsJoin)return;
+    const user=await getAuthUser();
+    const meta=user?.user_metadata||{};
+    const name=String(meta.full_name||meta.name||"").trim();
+    const phone=String(meta.phone||"").trim();
+    if(name&&phone){
+      try{
+        await rpc("join",{name,phone,referral:""});
+        state.dashboard=await rpc("dashboard",{});
+      }catch{}
+    }
   }
   async function signOut(){
     const s=await validSession();
@@ -176,22 +257,53 @@
     '<div class="mr-benefits"><span>+10 '+tr("welcome points","نقاط ترحيبية")+'</span><span>+20 '+tr("first delivered order","أول طلب مستلم")+'</span><span>+50 '+tr("when a referred friend qualifies","عند تأهل صديق مُحال")+"</span></div>";
   }
 
+  function googleButton(){
+    const disabled=state.googleEnabled===false;
+    return '<button class="mr-google" type="button" data-mr-google '+(disabled?"disabled":"")+'><span class="mr-google-g">G</span><strong>'+tr("Continue with Google","المتابعة عبر Google")+'</strong></button>'+
+      (disabled?'<small class="mr-provider-note">'+tr("Google sign-in still needs provider activation.","تسجيل Google يحتاج إلى تفعيل المزود.")+'</small>':"");
+  }
+
   function authView(){
+    const signup=state.authMode==="signup-form";
     return '<div class="mr-auth">'+
-      '<div class="mr-auth-tabs"><button type="button" data-mr-auth="signin" class="'+(state.authMode==="signin"?"is-active":"")+'">'+tr("Sign in","دخول")+'</button><button type="button" data-mr-auth="signup" class="'+(state.authMode==="signup"?"is-active":"")+'">'+tr("Create account","إنشاء حساب")+"</button></div>"+
-      '<h2>'+(state.authMode==="signup"?tr("Start collecting Mouneh Points","ابدأ بجمع نقاط المونة"):tr("Welcome back","أهلاً بعودتك"))+'</h2>'+
-      '<p>'+(state.authMode==="signup"?tr("Use an email you can access. You may be asked to verify it before joining.","استخدم بريداً يمكنك الوصول إليه. قد يُطلب منك تأكيده قبل الانضمام."):tr("Sign in to see your balance, vouchers and order history.","سجّل الدخول لرؤية رصيدك والقسائم وسجل الطلبات."))+'</p>'+
-      '<form id="mrAuthForm"><label>'+tr("Email","البريد الإلكتروني")+'<input id="mrEmail" type="email" autocomplete="email" required></label><label>'+tr("Password","كلمة المرور")+'<input id="mrPassword" type="password" autocomplete="'+(state.authMode==="signup"?"new-password":"current-password")+'" minlength="8" required></label>'+
-      '<button class="mr-primary" type="submit">'+(state.authMode==="signup"?tr("Create account","إنشاء الحساب"):tr("Sign in","تسجيل الدخول"))+'</button><span id="mrAuthStatus" class="mr-status"></span></form>'+
+      '<div class="mr-auth-tabs"><button type="button" data-mr-auth="signin" class="'+(!signup?"is-active":"")+'">'+tr("Sign in","دخول")+'</button><button type="button" data-mr-auth="signup" class="'+(signup?"is-active":"")+'">'+tr("Create account","إنشاء حساب")+"</button></div>"+
+      '<h2>'+(signup?tr("Create your Zayt w Mouneh account","أنشئ حساب زيت ومونة"):tr("Welcome back","أهلاً بعودتك"))+'</h2>'+
+      '<p>'+(signup?tr("One account for Mouneh Points, your wallet, rewards and future orders.","حساب واحد لنقاط المونة والمحفظة والمكافآت والطلبات القادمة."):tr("Sign in to open your Mouneh Points Wallet and rewards.","سجّل الدخول لفتح محفظة نقاط المونة ومكافآتك."))+'</p>'+
+      googleButton()+
+      '<div class="mr-or"><span></span><b>'+tr("or","أو")+'</b><span></span></div>'+
+      '<form id="mrAuthForm">'+
+      (signup?'<label>'+tr("Full name","الاسم الكامل")+'<input id="mrSignupName" name="name" autocomplete="name" maxlength="120" required></label>':"")+
+      '<label>'+tr("Account email","بريد الحساب")+'<input id="mrEmail" type="email" autocomplete="email" required></label>'+
+      (signup?'<label>'+tr("Phone / WhatsApp number","رقم الهاتف / واتساب")+'<input id="mrSignupPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="40" required></label>':"")+
+      '<label>'+tr("Password","كلمة المرور")+'<input id="mrPassword" type="password" autocomplete="'+(signup?"new-password":"current-password")+'" minlength="8" required></label>'+
+      (signup?'<label>'+tr("Confirm password","تأكيد كلمة المرور")+'<input id="mrPasswordConfirm" type="password" autocomplete="new-password" minlength="8" required></label>':"")+
+      '<button class="mr-primary" type="submit">'+(signup?tr("Create account & verify email","إنشاء الحساب وتأكيد البريد"):tr("Sign in","تسجيل الدخول"))+'</button>'+
+      '<span id="mrAuthStatus" class="mr-status">'+esc(state.authNotice||"")+'</span></form>'+
+      '<p class="mr-auth-trust">'+tr("Your account is securely stored with Zayt w Mouneh. We never store your password in plain text.","يُحفظ حسابك بأمان لدى زيت ومونة، ولا نخزن كلمة المرور كنص مكشوف.")+'</p>'+
       '<button class="mr-text" type="button" data-mr-back>'+tr("Back to rewards","العودة للمكافآت")+"</button></div>";
   }
 
+  function verifyView(){
+    const email=esc(state.pendingSignupEmail||"");
+    return '<div class="mr-verify"><div class="mr-verify-mark">✉</div><p>'+tr("Zayt w Mouneh account","حساب زيت ومونة")+'</p><h2>'+tr("Check your email","تحقق من بريدك")+'</h2>'+
+      '<span>'+tr("We sent a Zayt w Mouneh verification link to ","أرسلنا رابط تأكيد خاص بزيت ومونة إلى ")+'<strong>'+email+'</strong>. '+tr("Open it to confirm your email; you will return here signed in.","افتحه لتأكيد البريد وستعود إلى هنا وأنت مسجّل الدخول.")+'</span>'+
+      '<div class="mr-verify-note"><b>🌿</b><div><strong>'+tr("After verification","بعد التأكيد")+'</strong><small>'+tr("Your name and phone are already saved, and your Mouneh Points Wallet will be created automatically.","سيكون اسمك ورقمك محفوظين وستُنشأ محفظة نقاط المونة تلقائياً.")+'</small></div></div>'+
+      '<button type="button" class="mr-primary" data-mr-resend>'+tr("Resend verification email","إعادة إرسال رسالة التأكيد")+'</button>'+
+      '<span id="mrVerifyStatus" class="mr-status"></span>'+
+      '<button type="button" class="mr-text" data-mr-auth="signin">'+tr("Back to sign in","العودة لتسجيل الدخول")+'</button></div>';
+  }
+
   function joinView(){
+    const user=state.authUser||{};
+    const meta=user.user_metadata||{};
+    const name=esc(meta.full_name||meta.name||"");
+    const phone=esc(meta.phone||"");
+    const email=esc(user.email||"");
     if(state.dashboard?.needsVerification){
-      return '<div class="mr-message"><span>✉</span><h2>'+tr("Verify your email first","أكد بريدك أولاً")+'</h2><p>'+tr("Open the verification email from Zayt w Mouneh, then come back and sign in.","افتح رسالة التأكيد من زيت ومونة ثم عد وسجّل الدخول.")+'</p><button type="button" class="mr-primary" data-mr-signout>'+tr("Use another account","استخدم حساباً آخر")+"</button></div>";
+      return '<div class="mr-message"><span>✉</span><h2>'+tr("Verify your email first","أكد بريدك أولاً")+'</h2><p>'+tr("Open your Zayt w Mouneh verification email, then return here. We will recognize the verified account automatically.","افتح رسالة تأكيد زيت ومونة ثم عد إلى هنا وسنتعرف على الحساب المؤكد تلقائياً.")+'</p><button type="button" class="mr-primary" data-mr-signout>'+tr("Use another account","استخدم حساباً آخر")+"</button></div>";
     }
-    return '<div class="mr-join"><p>'+tr("One last step","خطوة أخيرة")+'</p><h2>'+tr("Join the Mouneh Club 🌿","انضم إلى نادي المونة 🌿")+'</h2><span>'+tr("You will start with 10 welcome points. Referral code is optional.","ستبدأ بـ10 نقاط ترحيبية. رمز الإحالة اختياري.")+'</span>'+
-      '<form id="mrJoinForm"><label>'+tr("Your name","اسمك")+'<input id="mrJoinName" maxlength="120" required></label><label>'+tr("WhatsApp number","رقم واتساب")+'<input id="mrJoinPhone" type="tel" inputmode="tel" maxlength="40"></label><label>'+tr("Referral code (optional)","رمز الإحالة (اختياري)")+'<input id="mrReferral" maxlength="20"></label><button class="mr-primary" type="submit">'+tr("Join & get 10 points","انضم واحصل على 10 نقاط")+'</button><span id="mrJoinStatus" class="mr-status"></span></form>'+
+    return '<div class="mr-join"><p>'+tr("Finish your account","أكمل حسابك")+'</p><h2>'+tr("One quick step 🌿","خطوة أخيرة سريعة 🌿")+'</h2><span>'+tr("Google does not always share a phone number. We need these account details before opening your Mouneh Points Wallet.","Google لا يشارك رقم الهاتف دائماً. نحتاج هذه البيانات قبل فتح محفظة نقاط المونة.")+'</span>'+
+      '<form id="mrJoinForm"><label>'+tr("Full name","الاسم الكامل")+'<input id="mrJoinName" value="'+name+'" maxlength="120" required></label><label>'+tr("Account email","بريد الحساب")+'<input id="mrJoinEmail" type="email" value="'+email+'" readonly required></label><label>'+tr("Phone / WhatsApp number","رقم الهاتف / واتساب")+'<input id="mrJoinPhone" type="tel" inputmode="tel" autocomplete="tel" value="'+phone+'" maxlength="40" required></label><label>'+tr("Referral code (optional)","رمز الإحالة (اختياري)")+'<input id="mrReferral" maxlength="20"></label><button class="mr-primary" type="submit">'+tr("Open my Mouneh Points Wallet","افتح محفظة نقاط المونة")+'</button><span id="mrJoinStatus" class="mr-status"></span></form>'+
       '<button class="mr-text" type="button" data-mr-signout>'+tr("Sign out","تسجيل الخروج")+"</button></div>";
   }
 
@@ -199,6 +311,14 @@
     const wallet=(state.dashboard?.wallet||[]).filter(w=>w.status!=="used");
     if(!wallet.length)return '<p class="mr-empty">'+tr("No vouchers yet. Redeem points to create one.","لا توجد قسائم بعد. استبدل النقاط لإنشاء واحدة.")+"</p>";
     return '<div class="mr-wallet-list">'+wallet.map(w=>'<article><div><span>'+tr("Reward voucher","قسيمة مكافأة")+'</span><strong>'+money(w.value)+' '+tr("off","خصم")+'</strong><small>'+tr("Minimum order ","حد أدنى للطلب ")+money(w.minimum)+' · '+(w.status==="reserved"?tr("Reserved","محجوزة"):tr("Available","متاحة"))+'</small></div><b class="mr-status-pill">'+esc(w.status)+'</b></article>').join("")+"</div>";
+  }
+
+  function walletHero(){
+    const rows=(state.dashboard?.wallet||[]).filter(w=>w.status!=="used");
+    const available=rows.filter(w=>w.status==="available");
+    const value=available.reduce((sum,w)=>sum+Number(w.value||0),0);
+    const points=Number(state.dashboard?.member?.balance)||0;
+    return '<section class="mr-wallet-hero"><div class="mr-wallet-title"><span>◫</span><div><p>'+tr("Mouneh Points Wallet","محفظة نقاط المونة")+'</p><h3>'+tr("Your points & vouchers in one place","نقاطك وقسائمك في مكان واحد")+'</h3></div></div><div class="mr-wallet-kpis"><div><small>'+tr("Points balance","رصيد النقاط")+'</small><strong>'+points.toLocaleString()+' 🌿</strong></div><div><small>'+tr("Available vouchers","القسائم المتاحة")+'</small><strong>'+available.length+' · '+money(value)+'</strong></div></div></section>';
   }
 
   function ledgerView(){
@@ -215,8 +335,9 @@
     const code=String(m.code||"");
     return '<div class="mr-member-head"><div><p>'+tr("Your Mouneh Points","نقاط المونة الخاصة بك")+'</p><strong>'+points.toLocaleString()+' <span>🌿</span></strong><small>'+esc(tierLabel(m.tier))+' · '+tr("annual delivered spend ","إنفاق سنوي مستلم ")+money(m.annual_spend)+'</small></div><span class="mr-tier '+esc(m.tier||"member")+'">'+esc(tierLabel(m.tier))+"</span></div>"+
       (next?'<div class="mr-progress"><div><span>'+tr("Next reward","المكافأة التالية")+'</span><b>'+esc(next.points-points)+' '+tr("points to ","نقطة للوصول إلى ")+money(next.value)+' '+tr("off","خصم")+'</b></div><i><em style="width:'+nextPct+'%"></em></i></div>':'<div class="mr-progress is-complete"><div><span>'+tr("Top milestone reached","وصلت لأعلى مرحلة")+'</span><b>'+tr("Redeem whenever you are ready.","استبدل نقاطك عندما تريد.")+"</b></div></div>")+
+      walletHero()+
       '<section class="mr-section"><div class="mr-section-head"><div><p>'+tr("Rewards","المكافآت")+'</p><h3>'+tr("Turn points into vouchers","حوّل نقاطك إلى قسائم")+"</h3></div></div>"+rewardCards(false)+"</section>"+
-      '<section class="mr-section"><div class="mr-section-head"><div><p>'+tr("Wallet","المحفظة")+'</p><h3>'+tr("Your available discounts","خصوماتك المتاحة")+"</h3></div></div>"+walletView()+"</section>"+
+      '<section class="mr-section mr-wallet-section"><div class="mr-section-head"><div><p>'+tr("Mouneh Points Wallet","محفظة نقاط المونة")+'</p><h3>'+tr("Your reward vouchers","قسائم مكافآتك")+"</h3></div></div>"+walletView()+"</section>"+
       '<section class="mr-referral"><div><p>'+tr("Invite a friend","ادعُ صديقاً")+'</p><h3>'+tr("Give the pantry a little push","شارك المونة مع من تحب")+'</h3><span>'+tr("Your friend gets a welcome boost after their qualifying first delivered order, and you get 50 points.","يحصل صديقك على دفعة ترحيبية بعد أول طلب مستلم مؤهل، وتحصل أنت على 50 نقطة.")+'</span></div><button type="button" data-mr-copy="'+esc(code)+'"><small>'+tr("Your code","رمزك")+'</small><strong>'+esc(code)+'</strong><em>'+tr("Copy","نسخ")+"</em></button></section>"+
       '<details class="mr-details"><summary>'+tr("Profile & birthday","الملف الشخصي وتاريخ الميلاد")+'</summary><form id="mrProfileForm"><label>'+tr("Name","الاسم")+'<input id="mrProfileName" value="'+esc(m.name||"")+'" maxlength="120"></label><label>'+tr("WhatsApp","واتساب")+'<input id="mrProfilePhone" value="'+esc(m.phone||"")+'" maxlength="40"></label><label>'+tr("Address","العنوان")+'<input id="mrProfileAddress" value="'+esc(m.address||"")+'" maxlength="500"></label><label>'+tr("Birthday","تاريخ الميلاد")+'<input id="mrProfileBirthday" type="date" value="'+esc(m.birthday||"")+'" '+(m.birthday?"disabled":"")+'></label><button type="submit">'+tr("Save profile","حفظ الملف")+'</button><span id="mrProfileStatus" class="mr-status"></span></form></details>'+
       '<section class="mr-section"><div class="mr-section-head"><div><p>'+tr("Recent activity","النشاط الأخير")+'</p><h3>'+tr("How your balance moved","حركة رصيدك")+"</h3></div></div>"+ledgerView()+"</section>"+
@@ -235,6 +356,7 @@
     if(state.loading){body.innerHTML='<div class="mr-loading"><span>🌿</span><p>'+tr("Loading your Mouneh Points…","جارٍ تحميل نقاط المونة…")+"</p></div>";return;}
     if(state.session&&state.dashboard?.member)body.innerHTML=dashboardView();
     else if(state.session&&state.dashboard)body.innerHTML=joinView();
+    else if(state.authMode==="verify")body.innerHTML=verifyView();
     else if(state.authMode==="signin-form"||state.authMode==="signup-form")body.innerHTML=authView();
     else body.innerHTML=publicView();
     body.dir=ar()?"rtl":"ltr";
@@ -249,7 +371,7 @@
     drawer.setAttribute("aria-hidden",String(!open));
     if(open){
       state.loading=true;render();
-      Promise.all([loadPublic(),validSession().then(()=>loadDashboard())]).catch(()=>{}).finally(()=>{state.loading=false;render();renderCheckout()});
+      Promise.all([loadPublic(),loadAuthSettings(),validSession().then(async()=>{if(state.session)await getAuthUser();await loadDashboard();await ensureMemberFromAuth();})]).catch(()=>{}).finally(()=>{state.loading=false;render();renderCheckout()});
     }
   }
 
@@ -370,6 +492,7 @@
   async function join(form){
     const status=$("mrJoinStatus");
     const p={name:$("mrJoinName").value.trim(),phone:$("mrJoinPhone").value.trim(),referral:$("mrReferral").value.trim()};
+    if(p.name.length<2||p.phone.replace(/\D/g,"").length<7){if(status)status.textContent=tr("Name and a valid phone number are required.","الاسم ورقم هاتف صحيح مطلوبان.");return;}
     if(status)status.textContent=tr("Joining…","جارٍ الانضمام…");
     try{
       await rpc("join",p);
@@ -396,7 +519,17 @@
         state.authMode=auth.dataset.mrAuth==="signup"?"signup-form":"signin-form";
         render();return;
       }
-      if(e.target.closest("[data-mr-back]")){state.authMode="public";render();return;}
+      if(e.target.closest("[data-mr-back]")){state.authMode="public";state.authNotice="";render();return;}
+      if(e.target.closest("[data-mr-google]")){
+        const status=$("mrAuthStatus");
+        try{if(status)status.textContent=tr("Opening Google…","جارٍ فتح Google…");await signInWithGoogle()}catch(err){if(status)status.textContent=err.message}
+        return;
+      }
+      if(e.target.closest("[data-mr-resend]")){
+        const status=$("mrVerifyStatus");
+        try{if(status)status.textContent=tr("Sending…","جارٍ الإرسال…");await resendVerification();if(status)status.textContent=tr("Sent. Check your inbox and spam folder.","تم الإرسال. تحقق من الوارد والبريد غير المرغوب.")}catch(err){if(status)status.textContent=err.message}
+        return;
+      }
       if(e.target.closest("[data-mr-open]")){setDrawer(true);return;}
       if(e.target.closest("[data-mr-signout]")){await signOut();return;}
       if(e.target.closest("[data-mr-refresh]")){state.loading=true;render();try{await loadDashboard()}finally{state.loading=false;render()}return;}
@@ -415,10 +548,14 @@
         if(status)status.textContent=tr("Working…","جارٍ التنفيذ…");
         try{
           if(state.authMode==="signup-form"){
-            const out=await signUp(email,password);
-            if(!out.session){if(status)status.textContent=tr("Account created. Check your email to verify it, then sign in.","تم إنشاء الحساب. تحقق من بريدك لتأكيده ثم سجّل الدخول.");return;}
+            const name=$("mrSignupName").value.trim(),phone=$("mrSignupPhone").value.trim(),confirm=$("mrPasswordConfirm").value;
+            if(name.length<2)throw new Error(tr("Please enter your full name.","يرجى إدخال الاسم الكامل."));
+            if(phone.replace(/\D/g,"").length<7)throw new Error(tr("Please enter a valid phone / WhatsApp number.","يرجى إدخال رقم هاتف / واتساب صحيح."));
+            if(password!==confirm)throw new Error(tr("Passwords do not match.","كلمتا المرور غير متطابقتين."));
+            const out=await signUp(email,password,name,phone);
+            if(!out.session){render();return;}
           }else await signIn(email,password);
-          state.authMode="public";render();
+          state.authMode="public";state.authNotice="";render();
         }catch(err){if(status)status.textContent=err.message;}
         return;
       }
@@ -434,10 +571,17 @@
       if(!state.config.enabled||!state.config.supabaseUrl||!state.config.supabasePublishableKey)return;
       state.session=readSession();
       state.selectedWallet=readLocal(WALLET_KEY,"")||"";
+      await consumeAuthCallback();
       injectUI();
       bindActions();
-      await loadPublic();
-      if(state.session){try{await loadDashboard()}catch{}}
+      await Promise.all([loadPublic(),loadAuthSettings()]);
+      if(state.session){
+        try{
+          await getAuthUser();
+          await loadDashboard();
+          await ensureMemberFromAuth();
+        }catch{}
+      }
       render();renderCheckout();
       window.addEventListener("storage",(e)=>{
         if(e.key===AUTH_KEY){state.session=readSession();loadDashboard().catch(()=>{})}

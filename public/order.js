@@ -2,7 +2,7 @@
 (function(){
 "use strict";
 var AUTH_KEY="zwm:mouneh:session:v1",CLAIMS_KEY="zwm:mouneh:claims:v1",CART_KEY="zwm-cart-v5",LANG_KEY="zwm-lang-v2";
-var state={lang:"en",order:null,ref:"",claim:"",products:[]};
+var state={lang:"en",order:null,ref:"",claim:"",products:[],lastStatus:""};
 var $=function(id){return document.getElementById(id)},money=function(v){return "$"+(Number(v)||0).toFixed(2)},esc=function(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
 function read(k,f){try{var v=localStorage.getItem(k);return v==null?f:JSON.parse(v)}catch{return f}}
 function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
@@ -59,7 +59,17 @@ function render(){
   $("orderLoading").hidden=true;$("orderError").hidden=true;$("orderContent").hidden=false
 }
 async function refresh(){
-  try{state.order=await rpc("detail",{reference:state.ref,claim_token:state.claim});render()}catch{$("orderLoading").hidden=true;$("orderContent").hidden=true;$("orderError").hidden=false}
+  try{
+    var previous=state.lastStatus||state.order?.status||"";
+    state.order=await rpc("detail",{reference:state.ref,claim_token:state.claim});
+    state.lastStatus=state.order?.status||"";
+    render();
+    if(previous&&state.lastStatus&&previous!==state.lastStatus){
+      $("orderActionStatus").textContent=state.lang==="ar"?"تم تحديث حالة طلبك: "+label(state.lastStatus):"Order status updated: "+label(state.lastStatus)+".";
+    }
+  }catch{
+    $("orderLoading").hidden=true;$("orderContent").hidden=true;$("orderError").hidden=false
+  }
 }
 async function cancel(){
   if(!confirm(state.lang==="ar"?"هل تريد إلغاء هذا الطلب؟":"Cancel this order?"))return;$("cancelOrderButton").disabled=true;$("orderActionStatus").textContent=state.lang==="ar"?"جارٍ الإلغاء…":"Cancelling…";
@@ -75,7 +85,7 @@ async function init(){
   document.querySelectorAll("[data-commerce-lang]").forEach(function(b){b.addEventListener("click",function(){setLang(b.dataset.commerceLang)})});setLang(state.lang);
   if(!state.ref){$("orderLoading").hidden=true;$("orderError").hidden=false;return}
   await refresh();$("cancelOrderButton").addEventListener("click",cancel);$("reorderButton").addEventListener("click",reorder);
-  setInterval(function(){if(!document.hidden)refresh()},15000);window.addEventListener("focus",refresh)
+  setInterval(function(){if(!document.hidden)refresh()},5000);window.addEventListener("focus",refresh);window.addEventListener("pageshow",refresh);document.addEventListener("visibilitychange",function(){if(!document.hidden)refresh()})
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init()
 })();

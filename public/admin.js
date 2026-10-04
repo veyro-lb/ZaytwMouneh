@@ -219,8 +219,8 @@
     "Updated":"آخر تحديث",
     "Edit":"تعديل",
     "No photo":"بلا صورة",
-    "Track every order sent from the website by its WhatsApp code.":"تتبّع كل طلب أُرسل من الموقع باستخدام رمز واتساب الخاص به.",
-    "“Sent” means the customer opened WhatsApp with the prepared order. Mark delivery progress here.":"«تم الإرسال» يعني أن العميل فتح واتساب مع الطلب الجاهز. حدّث مراحل التوصيل من هنا.",
+    "Receive and manage every website and owner-created order in one place.":"استقبل وأدر كل طلبات الموقع والطلبات التي ينشئها المالك في مكان واحد.",
+    "Website checkout orders appear automatically. Use the status controls to confirm, prepare, dispatch, deliver or cancel orders.":"تظهر طلبات الدفع عبر الموقع تلقائياً. استخدم عناصر التحكم بالحالة لتأكيد الطلب أو تحضيره أو إرساله للتوصيل أو تسليمه أو إلغائه.",
     "Needs review":"يحتاج مراجعة",
     "Preparing":"قيد التحضير",
     "Confirmed / preparing":"مؤكد / قيد التحضير",
@@ -3641,8 +3641,10 @@
       customer_name:$("manualCustomerName").value.trim(),customer_phone:$("manualCustomerPhone").value.trim(),area:$("manualOrderArea").value.trim(),
       notes:$("manualOrderNotes").value.trim(),private_notes:$("manualPrivateNote").value.trim(),
       items:rows.map(r=>({product_id:r.p.id,name:r.p.nameEn||r.p.id,size:r.v.sizeEn||r.v.sizeAr||"",qty:r.qty,unit_price:Number(r.v.price),subtotal:Number(r.v.price)*r.qty})),
+      subtotal:productTotal,discount_total:0,reward_discount:0,delivery_fee:fee,
       total:productTotal+fee,currency:"USD",language:state.lang==="ar"?"ar":"en",
-      extra:{source:"manual",delivery_fee:fee},status_history:[{status:"new",at:new Date().toISOString(),source:"owner"}],submitted_at:new Date().toISOString(),updated_at:new Date().toISOString()
+      payment_method:"cash_on_delivery",payment_status:"pending",created_source:"admin",
+      extra:{source:"manual",delivery_fee:fee,products_subtotal:productTotal},status_history:[{status:"new",at:new Date().toISOString(),source:"owner"}],submitted_at:new Date().toISOString(),updated_at:new Date().toISOString()
     };
     const {error}=await state.client.from(cfg.tables.orders||"orders").insert(order);
     if(error)return toast(error.message||"Could not create manual order.","error");

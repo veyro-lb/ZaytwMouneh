@@ -575,8 +575,8 @@
         account=document.createElement("a");
         account.id="mounehAccountButton";
         account.className="mouneh-account-nav";
-        account.href="#signin";
-        account.setAttribute("aria-label",document.documentElement.lang==="ar"?"تسجيل الدخول أو فتح حسابي":"Sign in or open My Account");
+        account.href="account.html#signin";
+        account.setAttribute("aria-label",document.documentElement.lang==="ar"?"تسجيل الدخول إلى حسابي":"Sign in to My Account");
         account.innerHTML='<span class="mr-account-nav-avatar is-guest" aria-hidden="true"></span><span class="mr-account-nav-copy">'+(document.documentElement.lang==="ar"?"دخول":"Sign in")+'</span>';
         nav.insertBefore(account,cart||null);
         persistentChromeRefs.account=account;
@@ -590,31 +590,12 @@
       account.style.setProperty("opacity","1","important");
       account.style.setProperty("pointer-events","auto","important");
       account.style.setProperty("flex-shrink","0","important");
-      if(!account.dataset.zwmSigninBound){
-        account.dataset.zwmSigninBound="1";
-        account.addEventListener("click",(event)=>{
-          const guest=account.querySelector(".mr-account-nav-avatar")?.classList.contains("is-guest");
-          if(!guest)return;
-          event.preventDefault();
-          event.stopPropagation();
-          if(window.ZWM_REWARDS?.openSignIn){window.ZWM_REWARDS.openSignIn();return}
-          if(window.__ZWM_SIGNIN_RETRY_LOADING)return;
-          window.__ZWM_SIGNIN_RETRY_LOADING=true;
-          const retry=document.createElement("script");
-          retry.src="mouneh-rewards-v6.js?v=20261004-authfix3";
-          retry.async=true;
-          retry.dataset.mounehRewardsRetry="signin";
-          retry.addEventListener("load",()=>{window.__ZWM_SIGNIN_RETRY_LOADING=false;window.ZWM_REWARDS?.openSignIn?.()},{once:true});
-          retry.addEventListener("error",()=>{window.__ZWM_SIGNIN_RETRY_LOADING=false},{once:true});
-          document.head.appendChild(retry);
-        });
-      }
       const guestAvatar=account.querySelector(".mr-account-nav-avatar.is-guest");
       if(guestAvatar){
         const accountCopy=account.querySelector(".mr-account-nav-copy");
         const guestText=document.documentElement.lang==="ar"?"دخول":"Sign in";
         if(accountCopy&&accountCopy.textContent!==guestText)accountCopy.textContent=guestText;
-        account.href="#signin";
+        account.href="account.html#signin";
         account.setAttribute("aria-label",document.documentElement.lang==="ar"?"تسجيل الدخول أو فتح حسابي":"Sign in or open My Account");
       }
 
@@ -664,7 +645,7 @@
           if(window.__ZWM_REWARDS_RETRY_LOADING)return;
           window.__ZWM_REWARDS_RETRY_LOADING=true;
           const retry=document.createElement("script");
-          retry.src="mouneh-rewards-v6.js?v=20261004-authfix3";
+          retry.src="mouneh-rewards-v6.js?v=20261004-accountauth1";
           retry.async=true;
           retry.dataset.mounehRewardsRetry="1";
           retry.addEventListener("load",()=>{window.__ZWM_REWARDS_RETRY_LOADING=false;window.ZWM_REWARDS?.open?.()},{once:true});
@@ -721,7 +702,7 @@
     if(!enabled())return;
     if(!PREVIEW_MODE&&!document.querySelector("script[data-mouneh-rewards]")){
       const rewardsScript=document.createElement("script");
-      rewardsScript.src="mouneh-rewards-v6.js?v=20261004-authfix3";
+      rewardsScript.src="mouneh-rewards-v6.js?v=20261004-accountauth1";
       rewardsScript.async=true;
       rewardsScript.dataset.mounehRewards="1";
       document.head.appendChild(rewardsScript);

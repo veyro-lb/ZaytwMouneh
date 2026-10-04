@@ -1,5 +1,5 @@
 :root{--mr-green:#123d23;--mr-green2:#1e5a34;--mr-cream:#f7f4ec;--mr-paper:#fffdf8;--mr-gold:#b99147;--mr-ink:#182019;--mr-muted:#6c746d;--mr-line:rgba(18,61,35,.14)}
-.mouneh-points-nav{position:relative;min-height:46px;border:1px solid rgba(18,61,35,.14);background:#f3f6ee;color:var(--mr-green);border-radius:999px;padding:0 13px;display:flex;align-items:center;gap:7px;cursor:pointer;font:700 11px/1 "DM Sans",sans-serif;white-space:nowrap}
+.mouneh-points-nav{position:relative!important;min-height:46px!important;min-width:max-content!important;flex:0 0 auto!important;visibility:visible!important;opacity:1!important;border:1px solid rgba(18,61,35,.14)!important;background:#f3f6ee!important;color:var(--mr-green)!important;border-radius:999px!important;padding:0 13px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;cursor:pointer;font:700 11px/1 "DM Sans",sans-serif!important;white-space:nowrap!important;overflow:visible!important}
 .mouneh-points-nav:hover{background:#e9f0e8}.mr-nav-leaf{font-size:15px}.mouneh-points-nav b{min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--mr-green);color:#fff;display:grid;place-items:center;font-size:9px}
 .mouneh-points-nav.is-floating{position:fixed;right:18px;bottom:18px;z-index:39;box-shadow:0 12px 36px rgba(18,61,35,.2)}
 .mouneh-rewards-backdrop{position:fixed;z-index:79;inset:0;background:rgba(7,20,11,.5);backdrop-filter:blur(3px)}
@@ -27,3 +27,16 @@
 [dir="rtl"] .mr-checkout-join{text-align:right}[dir="rtl"] .mr-progress b{text-align:left}
 @media(max-width:760px){.mr-nav-copy{display:none}.mouneh-points-nav{width:44px;min-width:44px;padding:0;justify-content:center}.mouneh-points-nav b{position:absolute;right:-4px;top:-3px}.mouneh-rewards-drawer{width:100%}.mr-drawer-body{padding:16px}.mr-hero h2,.mr-auth h2,.mr-join h2,.mr-message h2{font-size:28px}.mr-reward-grid{grid-template-columns:1fr 1fr}.mr-referral{grid-template-columns:1fr}.mr-referral button{justify-self:stretch}.mr-member-head strong{font-size:34px}}
 @media(max-width:390px){.mr-reward-grid{grid-template-columns:1fr}.mr-drawer-body{padding:13px}}
+
+/* Rewards header visibility guard: never let the points control collapse inside the centered desktop header. */
+.site-header .nav>.nav-actions{overflow:visible!important}
+.site-header .nav>.nav-actions>.mouneh-points-nav{display:flex!important;flex-shrink:0!important;visibility:visible!important;opacity:1!important}
+@media (min-width:761px) and (max-width:1500px){
+  .site-header .mouneh-points-nav{width:78px!important;min-width:78px!important;padding:0 9px!important}
+  .site-header .mouneh-points-nav .mr-nav-copy{font-size:0!important}
+  .site-header .mouneh-points-nav .mr-nav-copy::after{content:"Points";font-size:10px!important}
+}
+@media (max-width:760px){
+  .site-header .mouneh-points-nav{display:flex!important;width:42px!important;min-width:42px!important;height:42px!important;min-height:42px!important;padding:0!important;flex:0 0 42px!important}
+  .site-header .mouneh-points-nav .mr-nav-copy{display:none!important}
+}

@@ -42,6 +42,16 @@
       return value?.access_token?value:null;
     }catch{return null;}
   }
+  function currentOwnerId(){
+    try{
+      const token=session()?.access_token||"";
+      const payload=token.split(".")[1];
+      if(!payload)return "";
+      const normalized=payload.replace(/-/g,"+").replace(/_/g,"/");
+      const padded=normalized+"=".repeat((4-normalized.length%4)%4);
+      return JSON.parse(atob(padded))?.sub||"";
+    }catch{return "";}
+  }
   async function rpc(action,p={},retry=true){
     const s=session();
     if(!s)throw new Error(tr("Owner session required.","يلزم تسجيل دخول المالك."));
@@ -229,6 +239,17 @@
     $("rewardsGiftValue").value="";
     $("rewardsGiftMinimum").value="";
     $("rewardsGiftReason").value="";
+    const removeButton=$("rewardsRemoveAccountButton");
+    if(removeButton){
+      const protectedOwner=member.user_id===currentOwnerId();
+      removeButton.disabled=protectedOwner;
+      removeButton.textContent=protectedOwner
+        ?tr("Owner account — protected","حساب المالك — محمي")
+        :tr("Remove account","إزالة الحساب");
+      removeButton.title=protectedOwner
+        ?tr("The signed-in owner account cannot be removed here.","لا يمكن إزالة حساب المالك المسجّل دخوله من هنا.")
+        :"";
+    }
     $("rewardsMemberModal").hidden=false;
     document.body.classList.add("rewards-modal-open");
     $("rewardsMemberModalClose").focus();
@@ -260,9 +281,17 @@
     );
     if(!window.confirm(warning))return;
     const typed=window.prompt(tr("Type DELETE to confirm permanent account removal.","اكتب DELETE لتأكيد إزالة الحساب نهائياً."));
-    if(typed!=="DELETE")return;
+    if(typed===null)return;
+    if(String(typed).trim().toUpperCase()!=="DELETE"){
+      toast(tr("Type DELETE to confirm account removal.","اكتب DELETE لتأكيد إزالة الحساب."),true);
+      return;
+    }
     state.busy=true;
-    if(button)button.disabled=true;
+    const originalLabel=button?.textContent||"";
+    if(button){
+      button.disabled=true;
+      button.textContent=tr("Removing…","جارٍ الإزالة…");
+    }
     try{
       const result=await ownerFunction("admin-remove-customer",{user_id:userId});
       if(state.member?.user_id===userId)closeMember();
@@ -278,7 +307,13 @@
       toast(err?.message||tr("Could not remove customer account.","تعذّرت إزالة حساب العميل."),true);
     }finally{
       state.busy=false;
-      if(button&&document.contains(button))button.disabled=false;
+      if(button&&document.contains(button)){
+        const protectedOwner=state.member?.user_id===currentOwnerId();
+        button.disabled=!!protectedOwner;
+        button.textContent=protectedOwner
+          ?tr("Owner account — protected","حساب المالك — محمي")
+          :(originalLabel||tr("Remove account","إزالة الحساب"));
+      }
     }
   }
 

@@ -1,4 +1,4 @@
-const CACHE="zwm-owner-shell-v18-native-commerce";
+const CACHE="zwm-owner-shell-v19-native-checkout3";
 const FALLBACK="/admin.html";
 
 self.addEventListener("install",event=>{

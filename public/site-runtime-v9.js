@@ -217,7 +217,7 @@
     if(q.zone?.area)parts.push((ar?"المنطقة":"Area")+": "+q.zone.area);
     if(q.minimum>0)parts.push((ar?"الحد الأدنى للطلب":"Minimum order")+": $"+q.minimum.toFixed(2));
     if(!unlocked&&q.fee>0)parts.push((ar?"رسوم التوصيل":"Delivery")+": $"+q.fee.toFixed(2));
-    if(!unlocked&&q.fee===0)parts.push(ar?"رسوم التوصيل للطلبات الأقل من $50 تُؤكّد حسب المنطقة عبر واتساب":"Delivery below $50 is confirmed by area on WhatsApp");
+    if(!unlocked&&q.fee===0)parts.push(ar?"رسوم التوصيل تُحسب حسب المنطقة وتظهر نهائياً عند إتمام الطلب":"Delivery is calculated by area and shown finally at checkout");
     if(q.eta)parts.push((ar?"الوقت المتوقع":"Estimated delivery")+": "+q.eta);
     if(meta)meta.textContent=parts.join(" · ");
   }

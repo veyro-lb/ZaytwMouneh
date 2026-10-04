@@ -415,7 +415,7 @@
     "Could not load website settings.":"تعذّر تحميل إعدادات الموقع.",
     "Could not load order history.":"تعذّر تحميل سجل الطلبات.",
     "Could not update order.":"تعذّر تحديث الطلب.",
-    "WhatsApp order code copied.":"تم نسخ رمز طلب واتساب.",
+    "Order code copied.":"تم نسخ رمز الطلب.",
     "Could not copy the order code.":"تعذّر نسخ رمز الطلب.",
     "Dashboard refreshed.":"تم تحديث لوحة الإدارة.",
     "Backend health check passed.":"نجح فحص حالة النظام الخلفي.",
@@ -1796,7 +1796,7 @@
     if(!code)return;
     try{
       await navigator.clipboard.writeText(code);
-      toast("WhatsApp order code copied.");
+      toast("Order code copied.");
     }catch{
       toast("Could not copy the order code.","error");
     }

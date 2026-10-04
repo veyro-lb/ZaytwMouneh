@@ -1662,3 +1662,32 @@ html[dir="rtl"] .owner-inbox-item em{text-align:left}
   .traffic-line{stroke-width:2.5}
   .traffic-y-label,.traffic-x-label{font-size:7.5px}
 }
+
+
+/* =========================================================
+   Owner console v11 — fixed sign-in language placement
+   ========================================================= */
+.auth-language-toggle{
+  position:static!important;
+  width:max-content;
+  margin:0 0 18px auto!important;
+  inset:auto!important;
+}
+html[dir="rtl"] .auth-language-toggle{
+  position:static!important;
+  left:auto!important;
+  right:auto!important;
+  margin-left:auto!important;
+  margin-right:0!important;
+}
+@media(max-width:680px){
+  .auth-language-toggle{
+    position:static!important;
+    margin:0 0 16px auto!important;
+    inset:auto!important;
+  }
+  html[dir="rtl"] .auth-language-toggle{
+    margin-left:auto!important;
+    margin-right:0!important;
+  }
+}

@@ -617,3 +617,199 @@ html[lang="ar"] :where(button, .btn, .button, [class*="btn"], .account-primary, 
     min-width:0;
   }
 }
+
+
+/* ===== visual-pass-v2: anti-cramp and menu structure hardening ===== */
+/* Menu links: explicit placement prevents text from ever falling into the number column
+   when an older cached stylesheet hides auxiliary spans/arrows. */
+.site-header #navLinks>a:not(.menu-utility-link),
+#navLinks.is-mobile-portal>a:not(.menu-utility-link){
+  display:grid!important;
+  grid-template-columns:30px minmax(0,1fr) 24px!important;
+  align-items:center!important;
+  column-gap:10px!important;
+  min-width:0!important;
+}
+
+.site-header #navLinks>a:not(.menu-utility-link)>span:first-child,
+#navLinks.is-mobile-portal>a:not(.menu-utility-link)>span:first-child{
+  display:block!important;
+  grid-column:1!important;
+  grid-row:1!important;
+  width:auto!important;
+  min-width:0!important;
+  color:#b0841e!important;
+  font-size:.62rem!important;
+  font-weight:900!important;
+  letter-spacing:.08em!important;
+  white-space:nowrap!important;
+}
+
+.site-header #navLinks>a:not(.menu-utility-link)>strong,
+#navLinks.is-mobile-portal>a:not(.menu-utility-link)>strong{
+  display:block!important;
+  grid-column:2!important;
+  grid-row:1!important;
+  min-width:0!important;
+  width:auto!important;
+  max-width:100%!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+  hyphens:none!important;
+  line-height:1.25!important;
+}
+
+.site-header #navLinks>a:not(.menu-utility-link)>b,
+#navLinks.is-mobile-portal>a:not(.menu-utility-link)>b{
+  display:block!important;
+  grid-column:3!important;
+  grid-row:1!important;
+  justify-self:end!important;
+  width:auto!important;
+  min-width:0!important;
+  white-space:nowrap!important;
+}
+
+/* RTL keeps the text in the wide middle track while reversing the visual auxiliaries. */
+html[dir="rtl"] .site-header #navLinks>a:not(.menu-utility-link),
+html[dir="rtl"] #navLinks.is-mobile-portal>a:not(.menu-utility-link),
+html[lang="ar"] .site-header #navLinks>a:not(.menu-utility-link),
+html[lang="ar"] #navLinks.is-mobile-portal>a:not(.menu-utility-link){
+  grid-template-columns:24px minmax(0,1fr) 30px!important;
+}
+
+html[dir="rtl"] .site-header #navLinks>a:not(.menu-utility-link)>span:first-child,
+html[dir="rtl"] #navLinks.is-mobile-portal>a:not(.menu-utility-link)>span:first-child,
+html[lang="ar"] .site-header #navLinks>a:not(.menu-utility-link)>span:first-child,
+html[lang="ar"] #navLinks.is-mobile-portal>a:not(.menu-utility-link)>span:first-child{
+  grid-column:3!important;
+  text-align:right!important;
+}
+
+html[dir="rtl"] .site-header #navLinks>a:not(.menu-utility-link)>strong,
+html[dir="rtl"] #navLinks.is-mobile-portal>a:not(.menu-utility-link)>strong,
+html[lang="ar"] .site-header #navLinks>a:not(.menu-utility-link)>strong,
+html[lang="ar"] #navLinks.is-mobile-portal>a:not(.menu-utility-link)>strong{
+  grid-column:2!important;
+  text-align:right!important;
+}
+
+html[dir="rtl"] .site-header #navLinks>a:not(.menu-utility-link)>b,
+html[dir="rtl"] #navLinks.is-mobile-portal>a:not(.menu-utility-link)>b,
+html[lang="ar"] .site-header #navLinks>a:not(.menu-utility-link)>b,
+html[lang="ar"] #navLinks.is-mobile-portal>a:not(.menu-utility-link)>b{
+  grid-column:1!important;
+  justify-self:start!important;
+}
+
+/* On very narrow phones, simplify instead of squeezing three columns. */
+@media(max-width:420px){
+  .site-header #navLinks>a:not(.menu-utility-link),
+  #navLinks.is-mobile-portal>a:not(.menu-utility-link),
+  html[dir="rtl"] .site-header #navLinks>a:not(.menu-utility-link),
+  html[dir="rtl"] #navLinks.is-mobile-portal>a:not(.menu-utility-link),
+  html[lang="ar"] .site-header #navLinks>a:not(.menu-utility-link),
+  html[lang="ar"] #navLinks.is-mobile-portal>a:not(.menu-utility-link){
+    grid-template-columns:minmax(0,1fr)!important;
+    padding-inline:14px!important;
+  }
+
+  .site-header #navLinks>a:not(.menu-utility-link)>span:first-child,
+  .site-header #navLinks>a:not(.menu-utility-link)>b,
+  #navLinks.is-mobile-portal>a:not(.menu-utility-link)>span:first-child,
+  #navLinks.is-mobile-portal>a:not(.menu-utility-link)>b{
+    display:none!important;
+  }
+
+  .site-header #navLinks>a:not(.menu-utility-link)>strong,
+  #navLinks.is-mobile-portal>a:not(.menu-utility-link)>strong,
+  html[dir="rtl"] .site-header #navLinks>a:not(.menu-utility-link)>strong,
+  html[dir="rtl"] #navLinks.is-mobile-portal>a:not(.menu-utility-link)>strong,
+  html[lang="ar"] .site-header #navLinks>a:not(.menu-utility-link)>strong,
+  html[lang="ar"] #navLinks.is-mobile-portal>a:not(.menu-utility-link)>strong{
+    grid-column:1!important;
+    text-align:start!important;
+  }
+}
+
+/* Human-facing copy should wrap at words, not inside normal words.
+   Identifier/status fields keep their own specialized overflow rules. */
+:where(
+  .button,
+  .intro-primary,
+  .intro-secondary,
+  .menu-utility-link,
+  .mobile-menu-tool-copy strong,
+  .mobile-menu-tool-copy small,
+  .category-card,
+  .category-quick-card,
+  .product-card,
+  .featured-product,
+  .gift-preset-card,
+  .contact-links,
+  .account-card,
+  .commerce-card,
+  .checkout-card,
+  .order-card,
+  .panel,
+  .modal-card
+) :where(h1,h2,h3,h4,strong,span,p,small),
+:where(.button,.intro-primary,.intro-secondary,.menu-utility-link){
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+  hyphens:none!important;
+}
+
+/* Undo the older "anywhere" wrapping on the visible homepage intro copy. */
+body[data-page="home"] .home-pantry-hero .page-intro-copy,
+body[data-page="home"] .home-pantry-hero .page-intro-copy.only-en,
+html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-copy.only-ar,
+html[lang="ar"] body[data-page="home"] .home-pantry-hero .page-intro-copy.only-ar{
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+  hyphens:none!important;
+}
+
+/* Buttons/actions get room to breathe and center labels even when a legacy rule
+   changes their display mode. */
+:where(
+  .button,
+  .intro-primary,
+  .intro-secondary,
+  .menu-utility-link,
+  .category-search-shortcut,
+  .favorites-filter,
+  .gift-v4-quiet-button,
+  .gift-v4-primary-button,
+  .customer-orders-refresh,
+  .account-primary,
+  .account-secondary,
+  .native-order-open
+){
+  box-sizing:border-box!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:0!important;
+  text-align:center!important;
+  white-space:normal!important;
+  line-height:1.3!important;
+}
+
+/* Prevent multi-column action rows from becoming unusably narrow. */
+@media(max-width:700px){
+  :where(.page-intro-actions,.account-actions,.checkout-actions,.order-actions,.form-actions,.modal-actions){
+    min-width:0!important;
+  }
+
+  :where(.page-intro-actions,.account-actions,.checkout-actions,.order-actions,.form-actions,.modal-actions)>:where(a,button){
+    min-width:min(100%,140px)!important;
+  }
+
+  :where(.menu-heading,.menu-utility,.mobile-menu-tools,.category-quick-grid,.product-grid,.shop-help-actions)>*{
+    min-width:0!important;
+  }
+}

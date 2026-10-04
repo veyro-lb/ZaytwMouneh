@@ -395,6 +395,7 @@
         if(!persistentChromeRefs.instagram)persistentChromeRefs.instagram=actions.querySelector(".nav-instagram");
         if(!persistentChromeRefs.language)persistentChromeRefs.language=actions.querySelector("#languageSwitch");
         if(!persistentChromeRefs.points)persistentChromeRefs.points=actions.querySelector("#mounehRewardsButton");
+        if(!persistentChromeRefs.account)persistentChromeRefs.account=actions.querySelector("#mounehAccountButton");
         if(!persistentChromeRefs.cart)persistentChromeRefs.cart=actions.querySelector("#cartButton");
       }
       const links=persistentChromeRefs.navLinks||n.querySelector("#navLinks");
@@ -440,9 +441,11 @@
         if(utility&&!document.contains(utility))links.appendChild(utility);
       }
       if(actions&&document.contains(actions)){
-        const ordered=[persistentChromeRefs.search,persistentChromeRefs.instagram,persistentChromeRefs.language,persistentChromeRefs.points,persistentChromeRefs.cart].filter(Boolean);
+        const ordered=[persistentChromeRefs.search,persistentChromeRefs.instagram,persistentChromeRefs.language,persistentChromeRefs.points,persistentChromeRefs.account,persistentChromeRefs.cart].filter(Boolean);
         ordered.forEach(el=>{if(!document.contains(el))actions.appendChild(el)});
-        ordered.forEach(el=>actions.appendChild(el));
+        const currentKnown=Array.from(actions.children).filter(el=>ordered.includes(el));
+        const orderMatches=currentKnown.length===ordered.length&&ordered.every((el,index)=>currentKnown[index]===el);
+        if(!orderMatches)ordered.forEach(el=>actions.appendChild(el));
       }
     }
   }
@@ -562,30 +565,64 @@
         btn.style.setProperty("pointer-events","auto","important");
       });
 
+      let account=document.getElementById("mounehAccountButton")||persistentChromeRefs.account;
+      if(!account){
+        account=document.createElement("a");
+        account.id="mounehAccountButton";
+        account.className="mouneh-account-nav";
+        account.href="account.html?auth=signin";
+        account.setAttribute("aria-label",document.documentElement.lang==="ar"?"تسجيل الدخول أو فتح حسابي":"Sign in or open My Account");
+        account.innerHTML='<span class="mr-account-nav-avatar is-guest" aria-hidden="true"></span><span class="mr-account-nav-copy">'+(document.documentElement.lang==="ar"?"دخول":"Sign in")+'</span>';
+        nav.insertBefore(account,cart||null);
+        persistentChromeRefs.account=account;
+      }else if(account.parentElement!==nav){
+        nav.insertBefore(account,cart||null);
+      }
+      account.classList.add("mouneh-account-nav");
+      account.removeAttribute("hidden");
+      account.style.setProperty("display","inline-flex","important");
+      account.style.setProperty("visibility","visible","important");
+      account.style.setProperty("opacity","1","important");
+      account.style.setProperty("pointer-events","auto","important");
+      account.style.setProperty("flex-shrink","0","important");
+      const guestAvatar=account.querySelector(".mr-account-nav-avatar.is-guest");
+      if(guestAvatar){
+        const accountCopy=account.querySelector(".mr-account-nav-copy");
+        const guestText=document.documentElement.lang==="ar"?"دخول":"Sign in";
+        if(accountCopy&&accountCopy.textContent!==guestText)accountCopy.textContent=guestText;
+        account.href="account.html?auth=signin";
+        account.setAttribute("aria-label",document.documentElement.lang==="ar"?"تسجيل الدخول أو فتح حسابي":"Sign in or open My Account");
+      }
+
       let points=document.getElementById("mounehRewardsButton")||persistentChromeRefs.points;
       if(!points){
         points=document.createElement("button");
         points.type="button";
         points.id="mounehRewardsButton";
-        points.className="mouneh-points-nav";
+        points.className="mouneh-points-nav is-compact";
         points.setAttribute("data-mr-open","");
-        points.innerHTML='<span class="mr-nav-leaf">🌿</span><span class="mr-nav-copy">Mouneh Points</span><b id="mounehPointsBadge" hidden></b>';
-        nav.insertBefore(points,cart||null);
-      }else if(points.parentElement!==nav){
-        nav.insertBefore(points,cart||null);
+        points.innerHTML='<span class="mr-nav-leaf" aria-hidden="true">🌿</span><span class="mr-nav-copy">Mouneh Points</span><b id="mounehPointsBadge">—</b>';
+        nav.insertBefore(points,account||cart||null);
+        persistentChromeRefs.points=points;
+      }else if(points.parentElement!==nav||(account&&points.nextElementSibling!==account)){
+        nav.insertBefore(points,account||cart||null);
       }
-      points.classList.add("mouneh-points-nav");
+      points.classList.add("mouneh-points-nav","is-compact");
       points.removeAttribute("hidden");
       points.setAttribute("data-mr-open","");
       points.setAttribute("aria-label",document.documentElement.lang==="ar"?"فتح نقاط المونة":"Open Mouneh Points");
-      points.style.setProperty("display","flex","important");
+      points.style.setProperty("display","inline-flex","important");
       points.style.setProperty("visibility","visible","important");
       points.style.setProperty("opacity","1","important");
       points.style.setProperty("pointer-events","auto","important");
       points.style.setProperty("flex-shrink","0","important");
       const copy=points.querySelector(".mr-nav-copy");
-      if(copy)copy.textContent=document.documentElement.lang==="ar"?"نقاط المونة":"Mouneh Points";
-      const stableActions=[persistentChromeRefs.search,persistentChromeRefs.instagram,persistentChromeRefs.cart].filter(Boolean);
+      if(copy){copy.textContent=document.documentElement.lang==="ar"?"نقاط المونة":"Mouneh Points";copy.style.setProperty("display","none","important");}
+      let badge=points.querySelector("#mounehPointsBadge");
+      if(!badge){badge=document.createElement("b");badge.id="mounehPointsBadge";badge.textContent="—";points.appendChild(badge)}
+      badge.hidden=false;
+      badge.style.setProperty("display","inline","important");
+      const stableActions=[persistentChromeRefs.search,persistentChromeRefs.instagram,persistentChromeRefs.account,persistentChromeRefs.cart].filter(Boolean);
       stableActions.forEach(el=>{
         el.removeAttribute("hidden");
         el.style.setProperty("visibility","visible","important");
@@ -603,7 +640,7 @@
           if(window.__ZWM_REWARDS_RETRY_LOADING)return;
           window.__ZWM_REWARDS_RETRY_LOADING=true;
           const retry=document.createElement("script");
-          retry.src="mouneh-rewards-v4.js?v=20261004-legal6";
+          retry.src="mouneh-rewards-v4.js?v=20261004-account5";
           retry.async=true;
           retry.dataset.mounehRewardsRetry="1";
           retry.addEventListener("load",()=>{window.__ZWM_REWARDS_RETRY_LOADING=false;window.ZWM_REWARDS?.open?.()},{once:true});
@@ -660,7 +697,7 @@
     if(!enabled())return;
     if(!PREVIEW_MODE&&!document.querySelector("script[data-mouneh-rewards]")){
       const rewardsScript=document.createElement("script");
-      rewardsScript.src="mouneh-rewards-v4.js?v=20261004-legal6";
+      rewardsScript.src="mouneh-rewards-v4.js?v=20261004-account5";
       rewardsScript.async=true;
       rewardsScript.dataset.mounehRewards="1";
       document.head.appendChild(rewardsScript);

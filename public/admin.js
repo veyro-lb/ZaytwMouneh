@@ -379,6 +379,7 @@
     "Fri":"جمع",
     "Sat":"سبت",
     "Customers":"العملاء",
+    "Mouneh Points":"نقاط المونة",
     "Search everything":"ابحث في كل شيء",
     "Quick actions":"إجراءات سريعة",
     "What do you want to do?":"ماذا تريد أن تفعل؟",
@@ -2208,7 +2209,7 @@
     $$(".dashboard-view").forEach(p=>p.classList.toggle("is-active",p.dataset.viewPanel===view));
     $$(".admin-nav button").forEach(b=>b.classList.toggle("is-active",b.dataset.view===view));
     $$("#mobileAdminNav [data-mobile-view]").forEach(b=>b.classList.toggle("is-active",b.dataset.mobileView===view));
-    const titles={overview:"Overview",products:"Products",orders:"Orders & history",customers:"Customers",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
+    const titles={overview:"Overview",products:"Products",orders:"Orders & history",customers:"Customers",rewards:"Mouneh Points",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
     $("viewTitle").textContent=titles[view]||"Owner Console";
     localizeDom($("viewTitle"));
     closeSidebar();

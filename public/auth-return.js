@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const ACCOUNT_PATH="/account.html";
+  const ACCOUNT_PATH="/account";
   const path=location.pathname.replace(/\/+$/,"")||"/";
   const onAccount=path==="/account"||path==="/account.html";
   if(onAccount)return;

@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="styles.css?v=20261004-persistent-ui2" />
   <link rel="stylesheet" href="premium.css?v=20261004-toolkit4" />
   <link rel="stylesheet" href="mouneh-rewards-v6.css?v=20261004-shell2" />
-  <link rel="stylesheet" href="account.css?v=20261004-account8" />
+  <link rel="stylesheet" href="account.css?v=20261004-accountauth1" />
   <style id="legalRewardsVisibility">
     .footer-legal-bar{grid-column:1/-1!important;display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;flex-wrap:wrap!important;justify-content:center!important;gap:10px!important;margin-top:12px!important;padding:18px!important;border:1px solid rgba(255,255,255,.16)!important;border-radius:18px!important;background:rgba(255,255,255,.06)!important}
     .footer-legal-label{flex:1 0 100%!important;display:block!important;margin-bottom:2px!important;color:#d9b95a!important;font-size:.67rem!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:.14em!important;text-align:center!important}
@@ -59,7 +59,7 @@
         <button type="button" id="mounehRewardsButton" class="mouneh-points-nav is-compact" data-mr-open aria-label="Open Mouneh Points">
           <span class="mr-nav-leaf" aria-hidden="true">🌿</span><span class="mr-nav-copy">Mouneh Points</span><b id="mounehPointsBadge">—</b>
         </button>
-        <a id="mounehAccountButton" class="mouneh-account-nav" href="#signin" aria-label="Sign in or open My Account" onclick="event.preventDefault();if(window.ZWM_REWARDS?.openSignIn){window.ZWM_REWARDS.openSignIn()}else{window.__ZWM_PENDING_SIGNIN=1}">
+        <a id="mounehAccountButton" class="mouneh-account-nav" href="account.html#signin" aria-label="Sign in to My Account">
           <span class="mr-account-nav-avatar is-guest" aria-hidden="true"></span><span class="mr-account-nav-copy">Sign in</span>
         </a>
         <a class="cart-button account-cart-link" id="cartButton" href="shop.html#shop" aria-label="Open pantry">
@@ -98,8 +98,8 @@
     </div>
   </footer>
 
-  <script src="mouneh-rewards-v6.js?v=20261004-authfix3" data-mouneh-rewards="1"></script>
-  <script src="site-runtime-v6.js?v=20261004-authfix3" data-zwm-site-runtime="1"></script>
-  <script src="account.js?v=20261004-authfix4"></script>
+  <script src="mouneh-rewards-v6.js?v=20261004-accountauth1" data-mouneh-rewards="1"></script>
+  <script src="site-runtime-v6.js?v=20261004-accountauth1" data-zwm-site-runtime="1"></script>
+  <script src="account.js?v=20261004-accountauth1"></script>
 </body>
 </html>

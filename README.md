@@ -10,7 +10,7 @@ Premium responsive static storefront for Zayt w Mouneh.
 - Language switch positioned beside the cart
 - Product names, Arabic names, pack sizes and prices sourced from the supplied price-list PDF
 - Product cards and product detail modal with exact size selection
-- Estimated cart total and WhatsApp order summary with quantity, size, unit price and subtotal
+- Native website checkout with quantity, size, unit price, delivery details, rewards and order tracking
 - About / Mission section based on the supplied Zayt w Mouneh brand catalogue
 - Real supplied Zayt w Mouneh logo asset
 - Rope + wood design language interpreted as a suspended shop sign rather than a full background image
@@ -21,21 +21,17 @@ Premium responsive static storefront for Zayt w Mouneh.
 - Reduced-motion accessibility support
 - No framework, package manager, build step or Wrangler requirement
 
-## Cloudflare Pages
+## Production deployment
 
-This repository is a plain static site.
+**The production source of truth is `public/`.** Root-level legacy storefront copies are deprecated and should not be edited.
 
-- Framework preset: None
-- Build command: leave empty
-- Build output directory: /
-- Root directory: /
+Cloudflare Workers Static Assets deploys `./public` from `main` using `wrangler.jsonc`. The Worker handles only `/products/*` so product pages are server-rendered for SEO; the rest of the site remains static-first.
 
-If Cloudflare Pages is connected to this repository and watches `main`, commits deploy directly.
-
+HTML uses clean extensionless URLs. Versioned JS/CSS/assets use long-lived browser caching; account, checkout, order and admin surfaces are no-store.
 
 ## Commerce UX added
 
-- Delivery messaging for all of Lebanon, with final delivery details confirmed on WhatsApp
+- Delivery messaging and native website checkout for Lebanon, with WhatsApp reserved for support and optional transactional status updates
 - Fuzzy search that tolerates common spelling mistakes and searches English, Arabic and Arabizi/transliterated catalogue names
 - Search suggestions while typing
 - Saved/favorite products
@@ -69,3 +65,13 @@ Intentionally left for a later phase:
 261 product IDs now use 247 original, name-matched photographs supplied in the seven WhatsApp ZIPs. Files retain their original bytes and dimensions. Cards display one complete image with `object-fit: contain`; products without exact artwork use a neutral placeholder. See `docs/product-photo-migration.md` and `docs/product-photo-audit.json` for coverage and provenance.
 
 Photo follow-up (2026-10-03): root and `public/` mappings now agree. 287 of 328 current products have photos: 258 use unchanged uploaded ZIP originals and 29 use existing official Debsy images. 41 need exact source photography. See `docs/product-photo-followup.md`.
+
+
+## Production architecture
+
+- Native website checkout is the ordering channel. WhatsApp is support/status messaging, not the checkout transport.
+- Product SEO pages are server-rendered at `/products/<id>` from the same catalogue data used by the shop.
+- `public/product-index.json` is the compact product source used by the product-page Worker.
+- `public/sitemap.xml` includes every product page.
+- `public/_headers` owns cache and browser-security policy; `public/_redirects` owns legacy URL canonicalization.
+- Run `node tests/production-contract.cjs` before publishing.

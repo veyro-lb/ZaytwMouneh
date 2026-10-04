@@ -3057,12 +3057,29 @@
     return new Date().toISOString().slice(0,10);
   }
 
-  function requireXlsx() {
-    if(!window.XLSX){
-      toast("Excel tools could not load. Refresh once or use CSV as a fallback.","error");
-      return false;
+  let xlsxLoadPromise=null;
+  function loadAdminExternalScript(src) {
+    return new Promise((resolve,reject)=>{
+      const script=document.createElement("script");
+      script.src=src;
+      script.async=true;
+      script.onload=()=>resolve();
+      script.onerror=()=>reject(new Error("Script load failed"));
+      document.head.appendChild(script);
+    });
+  }
+  async function requireXlsx() {
+    if(window.XLSX)return true;
+    if(!xlsxLoadPromise){
+      xlsxLoadPromise=(async()=>{
+        try{await loadAdminExternalScript("https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js")}
+        catch{try{await loadAdminExternalScript("https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js")}catch{}}
+        return !!window.XLSX;
+      })();
     }
-    return true;
+    const ok=await xlsxLoadPromise;
+    if(!ok){xlsxLoadPromise=null;toast("Excel tools could not load. Use CSV as a fallback and try Excel again later.","error")}
+    return ok;
   }
 
   function productSpreadsheetRows() {
@@ -3256,15 +3273,15 @@
     ];
   }
 
-  function downloadWorkbook(filename,sheets) {
-    if(!requireXlsx())return;
+  async function downloadWorkbook(filename,sheets) {
+    if(!(await requireXlsx()))return;
     const workbook=window.XLSX.utils.book_new();
     for(const [name,rows] of sheets)appendWorkbookSheet(workbook,name,rows);
     const bytes=window.XLSX.write(workbook,{bookType:"xlsx",type:"array",compression:true});
     downloadBlob(filename,new Blob([bytes],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
   }
 
-  function exportData(dataset,format) {
+  async function exportData(dataset,format) {
     const stamp=exportStamp();
     const products=productSpreadsheetRows();
     const orders=orderSpreadsheetRows();
@@ -3276,7 +3293,7 @@
 
     if(dataset==="products"){
       if(format==="csv")downloadCsv(`zwm-products-${stamp}.csv`,products);
-      else downloadWorkbook(`zwm-products-${stamp}.xlsx`,[
+      else await downloadWorkbook(`zwm-products-${stamp}.xlsx`,[
         ["Products",products],
         ["Categories",categories],
         ["How to Edit",productSpreadsheetInstructions()]
@@ -3285,17 +3302,17 @@
     }
     if(dataset==="orders"){
       if(format==="csv")downloadCsv(`zwm-orders-${stamp}.csv`,orders);
-      else downloadWorkbook(`zwm-orders-${stamp}.xlsx`,[["Orders",orders],["Summary",summary]]);
+      else await downloadWorkbook(`zwm-orders-${stamp}.xlsx`,[["Orders",orders],["Summary",summary]]);
       return;
     }
     if(dataset==="customers"){
       if(format==="csv")downloadCsv(`zwm-customers-${stamp}.csv`,customers);
-      else downloadWorkbook(`zwm-customers-${stamp}.xlsx`,[["Customers",customers],["Summary",summary]]);
+      else await downloadWorkbook(`zwm-customers-${stamp}.xlsx`,[["Customers",customers],["Summary",summary]]);
       return;
     }
     if(dataset==="analytics"){
       if(format==="csv")downloadCsv(`zwm-analytics-30-days-${stamp}.csv`,analytics);
-      else downloadWorkbook(`zwm-analytics-30-days-${stamp}.xlsx`,[
+      else await downloadWorkbook(`zwm-analytics-30-days-${stamp}.xlsx`,[
         ["Analytics · 30 days",analytics],
         ["Top Pages",topPages],
         ["Summary",summary]
@@ -3303,7 +3320,7 @@
       return;
     }
     if(dataset==="report"){
-      downloadWorkbook(`zwm-owner-report-${stamp}.xlsx`,[
+      await downloadWorkbook(`zwm-owner-report-${stamp}.xlsx`,[
         ["Summary",summary],
         ["Orders",orders],
         ["Products",products],
@@ -3494,7 +3511,7 @@
 
   async function readProductImportFile(file) {
     if(!file)return;
-    if(!requireXlsx())return;
+    if(!(await requireXlsx()))return;
     try{
       const bytes=await file.arrayBuffer();
       const workbook=window.XLSX.read(bytes,{type:"array",cellDates:false});
@@ -3830,17 +3847,16 @@
   function setupInstallPrompt(){
     window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.installPrompt=e;$("installAdminHint").textContent="Ready to install on this device.";});
     if("serviceWorker" in navigator){
-      let reloadingForWorker=false;
-      navigator.serviceWorker.addEventListener("controllerchange",()=>{
-        if(reloadingForWorker)return;
-        reloadingForWorker=true;
-        location.reload();
-      });
-      navigator.serviceWorker.register("admin-sw.js?v=20261004-orderpayment3",{updateViaCache:"none"})
+      navigator.serviceWorker.register("admin-sw.js?v=20261004-mobile-stability5",{updateViaCache:"none"})
         .then(reg=>reg.update().catch(()=>{}))
         .catch(()=>{});
+      navigator.serviceWorker.addEventListener("controllerchange",()=>{
+        if(document.visibilityState!=="hidden"&&state.user)refreshAll().catch(()=>{});
+      });
     }
-    window.addEventListener("pageshow",event=>{if(event.persisted)location.reload()});
+    window.addEventListener("pageshow",event=>{
+      if(event.persisted&&state.user)refreshAll().catch(()=>{});
+    });
   }
   async function installAdminApp(){
     if(state.installPrompt){
@@ -3870,8 +3886,8 @@
       const exportButton=e.target.closest("[data-export-dataset][data-export-format]");
       if(exportButton){
         e.preventDefault();
-        try{exportData(exportButton.dataset.exportDataset,exportButton.dataset.exportFormat);}
-        catch(err){console.error("Export failed:",err);toast("Could not create that download. Please try again.","error");}
+        exportData(exportButton.dataset.exportDataset,exportButton.dataset.exportFormat)
+          .catch(err=>{console.error("Export failed:",err);toast("Could not create that download. Please try again.","error");});
       }
     },true);
   }

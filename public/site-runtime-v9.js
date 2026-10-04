@@ -240,12 +240,10 @@
       const settings=cacheSettings(settingsRows);
       applySettings(previewSettings||settings);
       if(prevSig!==nextSig){
-        const sig=nextSig;
-        const reloadKey=PREVIEW_MODE?PREVIEW_RELOAD_KEY:RELOAD_KEY;
-        if(sessionStorage.getItem(reloadKey)!==sig){
-          sessionStorage.setItem(reloadKey,sig);
-          location.reload();
-        }
+        document.documentElement.dataset.zwmCatalogCache=nextSig;
+        try{
+          window.dispatchEvent(new CustomEvent("zwm:catalog-cache-updated",{detail:{signature:nextSig}}));
+        }catch{}
       }
       return settings;
     })();
@@ -919,7 +917,7 @@
     window.addEventListener("focus",requestSync);
     document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")requestSync()});
     window.addEventListener("storage",event=>{if(event.key===ADMIN_SYNC_KEY)requestSync()});
-    setInterval(requestSync,15000);
+    setInterval(requestSync,60000);
   }
   init();
 })();

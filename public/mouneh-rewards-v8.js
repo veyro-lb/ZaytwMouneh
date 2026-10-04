@@ -1090,7 +1090,7 @@
       window.addEventListener("storage",e=>{if(e.key==="zwm:rewards-updated")liveSync();});
       window.addEventListener("focus",liveSync);
       document.addEventListener("visibilitychange",()=>{if(!document.hidden)liveSync()});
-      setInterval(liveSync,15000);
+      setInterval(liveSync,60000);
       new MutationObserver(()=>{const newAr=ar();const drawer=$("mounehRewardsDrawer");if(drawer&&drawer.dataset.mrAr!==String(newAr)){drawer.dataset.mrAr=String(newAr);render();renderCheckout();}}).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
     }catch(err){console.warn("Mouneh Rewards unavailable:",err);}
   }

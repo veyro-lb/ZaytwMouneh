@@ -9,7 +9,7 @@ ar:{backCart:"العودة للسلة →",account:"حسابي",eyebrow:"طلب 
 };
 var $=function(id){return document.getElementById(id)};
 var esc=function(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
-var money=function(v){return "$"+(Number(v)||0).toFixed(2)};
+var ltr=function(v){return state.lang==="ar"?"\u2066"+String(v==null?"":v)+"\u2069":String(v==null?"":v)};\nvar money=function(v){return ltr("$"+(Number(v)||0).toFixed(2))};
 function read(key,fallback){try{var v=localStorage.getItem(key);return v==null?fallback:JSON.parse(v)}catch{return fallback}}
 function write(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch{}}
 function remove(key){try{localStorage.removeItem(key)}catch{}}
@@ -24,7 +24,7 @@ async function rpc(name,body,retry){
   var r=await fetch(String(c.supabaseUrl||"").replace(/\/$/,"")+"/rest/v1/rpc/"+name,{method:"POST",headers:headers,body:JSON.stringify(body||{})});
   var data=await r.json().catch(function(){return {}});
   if(r.status===401&&retry!==false){await new Promise(function(res){setTimeout(res,500)});return rpc(name,body,false)}
-  if(!r.ok)throw new Error(data.message||data.hint||data.details||"Request failed");
+  if(!r.ok)throw new Error(data.message||data.hint||data.details||(state.lang==="ar"?"تعذّر تنفيذ الطلب.":"Request failed."));
   return data
 }
 async function authUser(){
@@ -189,7 +189,7 @@ function chooseArea(id){
 function renderZones(){renderAreaMeta()}
 function renderAddresses(){
   var wrap=$("savedAddressWrap"),sel=$("savedAddressSelect");if(!state.dashboard||!state.addresses.length){wrap.hidden=true;return}
-  wrap.hidden=false;var current=sel.value;sel.innerHTML='<option value="">'+esc(state.lang==="ar"?"اختر عنواناً محفوظاً":"Choose saved address")+'</option>'+state.addresses.map(function(a){return '<option value="'+esc(a.id)+'">'+esc((a.label||"Address")+" · "+(a.area||""))+'</option>'}).join("");if(state.addresses.some(function(a){return a.id===current}))sel.value=current
+  wrap.hidden=false;var current=sel.value;sel.innerHTML='<option value="">'+esc(state.lang==="ar"?"اختر عنواناً محفوظاً":"Choose saved address")+'</option>'+state.addresses.map(function(a){return '<option value="'+esc(a.id)+'">'+esc((a.label||(state.lang==="ar"?"عنوان":"Address"))+" · "+(a.area||""))+'</option>'}).join("");if(state.addresses.some(function(a){return a.id===current}))sel.value=current
 }
 function renderRewards(){
   var box=$("checkoutRewards"),m=state.dashboard&&state.dashboard.member,sub=subtotal();

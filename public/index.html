@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=20261004-mobileheader1" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":["LocalBusiness","Store"],"name":"Zayt w Mouneh","description":"Lebanese pantry essentials, mouneh and gifts with delivery across Lebanon.","foundingDate":"2006","telephone":"+96181581230","url":"https://zaytwmouneh.veyro-202.workers.dev/","sameAs":["https://instagram.com/zaytwmouneh"],"areaServed":{"@type":"Country","name":"Lebanon"},"address":{"@type":"PostalAddress","addressLocality":"Sebline","addressCountry":"LB"}}</script>
-  <link rel="stylesheet" href="premium.css?v=20261004-uifix3" />
+  <link rel="stylesheet" href="premium.css?v=20261004-uifix4" />
   <link rel="stylesheet" href="mouneh-rewards-v8.css?v=20261004-panel-fit2" />
   
   <style id="legalRewardsVisibility">
@@ -43,8 +43,111 @@
     }
   </style>
   <link rel="stylesheet" href="storefront-shell.css?v=20261004-brandarabic1" />
-  <meta name="zwm-release" content="20261004-uifix3" />
-  <script src="storefront-release.js?v=20261004-uifix3" defer></script>
+  <meta name="zwm-release" content="20261004-uifix4" />
+  <script src="storefront-release.js?v=20261004-uifix4" defer></script>
+  <style id="homeHeroBalanceFix">
+    /* Exact hero balance fix for the 560–900px range shown in the screenshot. */
+    @media (max-width:900px){
+      body[data-page="home"] .home-pantry-hero{
+        min-height:0!important;
+        padding:64px 0 56px!important;
+      }
+      body[data-page="home"] .home-pantry-hero .page-intro-grid{
+        width:min(calc(100% - 28px),720px)!important;
+        min-height:0!important;
+        margin-inline:auto!important;
+        display:block!important;
+      }
+      body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap{
+        width:100%!important;
+        max-width:660px!important;
+        margin:0 auto!important;
+        padding:18px 0 0!important;
+        display:flex!important;
+        flex-direction:column!important;
+        align-items:center!important;
+        text-align:center!important;
+      }
+      body[data-page="home"] .home-pantry-hero .eyebrow{
+        margin:0 auto 14px!important;
+        text-align:center!important;
+      }
+      body[data-page="home"] .home-pantry-hero h1,
+      html[dir="rtl"] body[data-page="home"] .home-pantry-hero h1.only-ar{
+        margin:0 auto!important;
+        text-align:center!important;
+      }
+      body[data-page="home"] .home-pantry-hero .page-intro-copy,
+      html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-copy.only-ar{
+        width:100%!important;
+        max-width:610px!important;
+        margin:24px auto 0!important;
+        padding:0 8px!important;
+        color:#fff!important;
+        font-size:clamp(1.16rem,2.75vw,1.34rem)!important;
+        font-weight:550!important;
+        line-height:1.48!important;
+        letter-spacing:-.012em!important;
+        text-align:center!important;
+        white-space:normal!important;
+        overflow:visible!important;
+        overflow-wrap:normal!important;
+        text-wrap:pretty!important;
+      }
+      body[data-page="home"] .home-pantry-hero .page-intro-actions,
+      html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-actions{
+        width:min(100%,500px)!important;
+        max-width:500px!important;
+        margin:18px auto 0!important;
+        display:grid!important;
+        grid-template-columns:repeat(2,minmax(0,1fr))!important;
+        gap:12px!important;
+        align-items:stretch!important;
+      }
+      body[data-page="home"] .home-pantry-hero .page-intro-actions>a{
+        width:100%!important;
+        min-width:0!important;
+        min-height:48px!important;
+        padding:0 14px!important;
+        display:flex!important;
+        align-items:center!important;
+        justify-content:center!important;
+        border-radius:999px!important;
+        font-size:.84rem!important;
+        font-weight:850!important;
+        line-height:1.2!important;
+        text-align:center!important;
+        white-space:normal!important;
+      }
+      body[data-page="home"] .home-pantry-hero .shop-intro-board,
+      html[dir="rtl"] body[data-page="home"] .home-pantry-hero .shop-intro-board{
+        width:min(100%,620px)!important;
+        max-width:620px!important;
+        margin:34px auto 0!important;
+      }
+    }
+    @media (max-width:560px){
+      body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap{
+        padding-top:10px!important;
+      }
+      body[data-page="home"] .home-pantry-hero .page-intro-copy,
+      html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-copy.only-ar{
+        max-width:39ch!important;
+        font-size:1.04rem!important;
+        line-height:1.55!important;
+      }
+      body[data-page="home"] .home-pantry-hero .page-intro-actions,
+      html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-actions{
+        width:min(100%,360px)!important;
+        grid-template-columns:1fr!important;
+        gap:10px!important;
+      }
+      body[data-page="home"] .home-pantry-hero .page-intro-actions>a{
+        min-height:48px!important;
+        font-size:.8rem!important;
+      }
+    }
+  </style>
 </head>
 <body data-page="home" data-release="pantry-icons-2">
   <a class="skip-link" href="shop.html#shop" id="skipLink">Skip to catalogue</a>
@@ -450,7 +553,7 @@
   <script src="site-runtime-v9.js?v=20261004-mobileauth1" data-zwm-site-runtime="1"></script>
   <script src="products-data.js?v=20261004-mobileheader1"></script>
   <script src="product-photos.js?v=20261004-mobileheader1"></script>
-  <script src="app.js?v=20261004-uifix3"></script>
+  <script src="app.js?v=20261004-uifix4"></script>
   <script src="premium-v2.js?v=20261004-mobileheader1"></script>
 </body>
 </html>

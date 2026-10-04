@@ -2277,4 +2277,4 @@ document.addEventListener("DOMContentLoaded",init);
 
 /* Load exactly one owner CMS/analytics bridge without delaying the storefront.
    Current pages ship site-runtime-v5 directly; this is only a safe fallback. */
-(()=>{if(document.querySelector('script[data-zwm-site-runtime],script[src*="site-runtime-v5.js"]'))return;const s=document.createElement("script");s.src="site-runtime-v5.js?v=20261004-shell1";s.async=true;s.dataset.zwmSiteRuntime="1";document.head.appendChild(s);})();
+(()=>{if(document.querySelector('script[data-zwm-site-runtime],script[src*="site-runtime-v6.js"]'))return;const s=document.createElement("script");s.src="site-runtime-v6.js?v=20261004-shell2";s.async=true;s.dataset.zwmSiteRuntime="1";document.head.appendChild(s);})();

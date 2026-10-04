@@ -114,7 +114,7 @@
     });
     await persistPendingLegalConsent();
     state.authMode="public";
-    state.authNotice=tr("Email verified. Welcome to your Mouneh Points Wallet 🌿","تم تأكيد البريد. أهلاً بك في محفظة نقاط المونة 🌿");
+    state.authNotice=tr("Signed in successfully. Finishing your account…","تم تسجيل الدخول بنجاح. جارٍ تجهيز حسابك…");
     try{sessionStorage.setItem("zwm:mouneh:just-verified","1")}catch{}
     cleanAuthUrl();
     if(goToAccountAfterAuth())return true;
@@ -263,6 +263,30 @@
       }catch{}
     }
   }
+  async function completeAccountSetup(name,phone,referral=""){
+    const cleanName=String(name||"").trim();
+    const cleanPhone=String(phone||"").trim();
+    const cleanReferral=normalizeReferral(referral||pendingReferral());
+    if(cleanName.length<2)throw new Error(tr("Please enter your full name.","يرجى إدخال الاسم الكامل."));
+    if(cleanPhone.replace(/\D/g,"").length<7)throw new Error(tr("Please enter a valid phone / WhatsApp number.","يرجى إدخال رقم هاتف / واتساب صحيح."));
+    const s=await validSession();
+    if(!s?.access_token)throw new Error(tr("Your sign-in session expired. Please sign in again.","انتهت جلسة تسجيل الدخول. يرجى تسجيل الدخول مجدداً."));
+    try{
+      const user=await authRequest("user",{data:{full_name:cleanName,name:cleanName,phone:cleanPhone,referral_code:cleanReferral||undefined}},s.access_token,"PUT");
+      if(user)state.authUser=user;
+    }catch{}
+    await secureJoin(cleanName,cleanPhone,cleanReferral);
+    state.dashboard=await rpc("dashboard",{});
+    await loadReferralStatus();
+    await claimSavedOrders();
+    state.authMode="public";
+    state.authNotice="";
+    notifyAccount();
+    render();
+    renderCheckout();
+    return state.dashboard;
+  }
+
   async function signOut(){
     const s=await validSession();
     if(s?.access_token){
@@ -1037,7 +1061,8 @@
       try{
         if(sessionStorage.getItem("zwm:mouneh:just-verified")==="1"){
           sessionStorage.removeItem("zwm:mouneh:just-verified");
-          setDrawer(true);
+          if(!onAccountPage())setDrawer(true);
+          else notifyAccount();
         }
       }catch{}
       window.addEventListener("storage",(e)=>{
@@ -1089,7 +1114,8 @@
       deleteWithPassword:deleteAccountWithPassword,
       deleteWithGoogle:deleteAccountWithGoogle,
       signOut,
-      refresh:loadDashboard
+      refresh:loadDashboard,
+      completeSetup:completeAccountSetup
     }
   };
   if(window.__ZWM_PENDING_SIGNIN){

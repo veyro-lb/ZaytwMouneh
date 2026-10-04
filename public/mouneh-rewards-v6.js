@@ -1025,6 +1025,10 @@
       refresh:loadDashboard
     }
   };
+  if(window.__ZWM_PENDING_SIGNIN){
+    window.__ZWM_PENDING_SIGNIN=0;
+    queueMicrotask(()=>openSignIn());
+  }
   const earlyRewardsButton=$("mounehRewardsButton");
   if(earlyRewardsButton&&!earlyRewardsButton.dataset.mrBound)bindPointsButton(earlyRewardsButton);
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();

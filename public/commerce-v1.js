@@ -23,29 +23,38 @@ function injectStyle(){
   if(document.querySelector('link[href*="commerce-v1.css"]'))return;
   var l=document.createElement("link");l.rel="stylesheet";l.href="/commerce-v1.css?v="+VERSION;document.head.appendChild(l)
 }
+// DOM observers must settle; do not replace unchanged text on every frame.
+var markupCache=new WeakMap();
+function setText(el,text){if(el.textContent!==text)el.textContent=text}
+function setMarkup(el,html){
+  var cached=markupCache.get(el);
+  if(cached&&cached.html===html&&cached.text===el.textContent)return;
+  el.innerHTML=html;
+  markupCache.set(el,{html:html,text:el.textContent});
+}
 function updateOrderCopy(){
   var announcement=document.getElementById("announcementOrder");
-  if(announcement){announcement.textContent=tr("Shop online","تسوّق أونلاين");announcement.href="/shop.html#shop";announcement.removeAttribute("target")}
+  if(announcement){setText(announcement,tr("Shop online","تسوّق أونلاين"));announcement.href="/shop.html#shop";announcement.removeAttribute("target")}
   var title=document.getElementById("orderTitle"),intro=document.getElementById("orderIntroCopy"),s3=document.getElementById("step3Title"),s3c=document.getElementById("step3Copy");
-  if(title)title.innerHTML=tr("From shelf to<br><em>your door.</em>","من الرف إلى<br><em>باب بيتك.</em>");
-  if(intro)intro.textContent=tr("Build your pantry, review everything, then place the order directly on the website.","حضّر سلتك وراجعها ثم أرسل الطلب مباشرة عبر الموقع.");
-  if(s3)s3.textContent=tr("Checkout","الدفع والطلب");
-  if(s3c)s3c.textContent=tr("Enter delivery details, review the final total and place your order securely.","أدخل تفاصيل التوصيل وراجع المجموع النهائي ثم أرسل طلبك بأمان.");
-  document.querySelectorAll(".footer-delivery").forEach(function(el){el.innerHTML='<span class="only-en">Website checkout · WhatsApp support available</span><span class="only-ar" lang="ar">طلب مباشر عبر الموقع · واتساب متاح للمساعدة</span>'})
+  if(title)setMarkup(title,tr("From shelf to<br><em>your door.</em>","من الرف إلى<br><em>باب بيتك.</em>"));
+  if(intro)setText(intro,tr("Build your pantry, review everything, then place the order directly on the website.","حضّر سلتك وراجعها ثم أرسل الطلب مباشرة عبر الموقع."));
+  if(s3)setText(s3,tr("Checkout","الدفع والطلب"));
+  if(s3c)setText(s3c,tr("Enter delivery details, review the final total and place your order securely.","أدخل تفاصيل التوصيل وراجع المجموع النهائي ثم أرسل طلبك بأمان."));
+  document.querySelectorAll(".footer-delivery").forEach(function(el){setMarkup(el,'<span class="only-en">Website checkout · WhatsApp support available</span><span class="only-ar" lang="ar">طلب مباشر عبر الموقع · واتساب متاح للمساعدة</span>')})
 }
 function updateGift(){
   var form=document.getElementById("giftForm"),btn=document.getElementById("giftSend"),note=document.getElementById("giftNote");if(!form)return;
-  if(btn)btn.innerHTML='<span class="only-en">Continue to secure checkout</span><span class="only-ar" lang="ar">المتابعة لإتمام الطلب بأمان</span><b>→</b>';
-  if(note)note.textContent=tr("Gift details, delivery and the final total are confirmed in website checkout. WhatsApp is available only if you need help.","يتم تأكيد تفاصيل الهدية والتوصيل والمجموع النهائي عبر إتمام الطلب في الموقع. واتساب متاح للمساعدة فقط.");
+  if(btn)setMarkup(btn,'<span class="only-en">Continue to secure checkout</span><span class="only-ar" lang="ar">المتابعة لإتمام الطلب بأمان</span><b>→</b>');
+  if(note)setText(note,tr("Gift details, delivery and the final total are confirmed in website checkout. WhatsApp is available only if you need help.","يتم تأكيد تفاصيل الهدية والتوصيل والمجموع النهائي عبر إتمام الطلب في الموقع. واتساب متاح للمساعدة فقط."));
 }
 function updateCart(){
   var form=document.getElementById("orderForm");if(!form)return;
   form.classList.add("native-cart-form");
   var heading=document.getElementById("orderDetailsTitle"),note=document.getElementById("orderDetailsNote"),btn=document.getElementById("sendOrderButton"),price=document.getElementById("priceNote");
-  if(heading)heading.textContent=tr("Ready for checkout","جاهز لإتمام الطلب");
-  if(note)note.textContent=tr("Delivery, rewards and final total are confirmed at checkout.","يتم تأكيد التوصيل والمكافآت والمجموع النهائي عند إتمام الطلب.");
-  if(btn){btn.innerHTML=tr("Checkout <span>→</span>","إتمام الطلب <span>←</span>");btn.setAttribute("aria-label",tr("Go to checkout","الانتقال لإتمام الطلب"))}
-  if(price)price.textContent=tr("Final prices and availability are rechecked securely before your order is created.","يتم التحقق من الأسعار والتوفر بأمان قبل إنشاء الطلب.");
+  if(heading)setText(heading,tr("Ready for checkout","جاهز لإتمام الطلب"));
+  if(note)setText(note,tr("Delivery, rewards and final total are confirmed at checkout.","يتم تأكيد التوصيل والمكافآت والمجموع النهائي عند إتمام الطلب."));
+  if(btn){setMarkup(btn,tr("Checkout <span>→</span>","إتمام الطلب <span>←</span>"));btn.setAttribute("aria-label",tr("Go to checkout","الانتقال لإتمام الطلب"))}
+  if(price)setText(price,tr("Final prices and availability are rechecked securely before your order is created.","يتم التحقق من الأسعار والتوفر بأمان قبل إنشاء الطلب."));
 }
 function decorateOrders(){
   if(document.body.dataset.page!=="account")return;
@@ -81,6 +90,9 @@ function renderAddressPanel(){
   var content=document.querySelector(".account-content");if(!content)return;
   var panel=document.getElementById("nativeAddressesPanel");
   if(!panel){panel=document.createElement("section");panel.id="nativeAddressesPanel";panel.className="account-panel account-native-addresses";content.appendChild(panel)}
+  var stamp=JSON.stringify([lang(),editingAddress,addressRows]);
+  if(panel.dataset.renderStamp===stamp)return;
+  panel.dataset.renderStamp=stamp;
   var edit=addressRows.find(function(x){return x.id===editingAddress});
   panel.innerHTML='<article class="account-card"><div class="account-section-title"><div><h2>'+tr("Saved addresses","العناوين المحفوظة")+'</h2><p>'+tr("Save the Lebanon-style delivery details you use most often. Old orders keep their original address snapshot.","احفظ تفاصيل التوصيل التي تستخدمها عادة. تبقى الطلبات القديمة محتفظة بعنوانها الأصلي.")+'</p></div></div>'+addressForm(edit)+'</article>'+
     '<article class="account-card"><div class="account-section-title"><div><h2>'+tr("Your addresses","عناوينك")+'</h2></div></div><div class="account-list">'+

@@ -623,6 +623,7 @@
 
     const setOpen=open=>{
       panel.classList.toggle("is-open",!!open);
+      panel.inert=!open;
       panel.classList.remove("is-mobile-portal");
       document.body.classList.toggle("menu-open",!!open);
       toggle.setAttribute("aria-expanded",open?"true":"false");
@@ -688,6 +689,7 @@
     ensureMobileMenuTools(panel);
 
     // Always begin from a sane closed state unless already explicitly open.
+    panel.inert=!panel.classList.contains("is-open");
     if(!panel.classList.contains("is-open")){
       document.body.classList.remove("menu-open");
       toggle.setAttribute("aria-expanded","false");
@@ -716,7 +718,8 @@
 
     const menuHeading=document.getElementById("menuHeading");
     if(menuHeading&&!menuHeading.classList.contains("only-en")&&!menuHeading.classList.contains("only-ar")){
-      menuHeading.textContent=arabic?"اكتشف زيت ومونة":"Explore Zayt w Mouneh";
+      const headingText=arabic?"اكتشف زيت ومونة":"Explore Zayt w Mouneh";
+      if(menuHeading.textContent!==headingText)menuHeading.textContent=headingText;
     }
 
     document.querySelectorAll(".copyright").forEach(el=>{
@@ -813,7 +816,7 @@
       points.style.setProperty("pointer-events","auto","important");
       points.style.setProperty("flex-shrink","0","important");
       const copy=points.querySelector(".mr-nav-copy");
-      if(copy){copy.textContent=document.documentElement.lang==="ar"?"نقاط المونة":"Mouneh Points";copy.style.setProperty("display","none","important");}
+      if(copy){const text=document.documentElement.lang==="ar"?"نقاط المونة":"Mouneh Points";if(copy.textContent!==text)copy.textContent=text;copy.style.setProperty("display","none","important");}
       let badge=points.querySelector("#mounehPointsBadge");
       if(!badge){badge=document.createElement("b");badge.id="mounehPointsBadge";badge.textContent="—";points.appendChild(badge)}
       badge.hidden=false;

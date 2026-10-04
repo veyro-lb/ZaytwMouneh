@@ -1261,6 +1261,7 @@ function renderCart(){
   $("#orderForm").hidden=rows.length===0;
   $("#cartTotal").textContent=money(total);
   window.ZWM_CMS?.renderDeliverySummary?.(total);
+  window.ZWM_REWARDS?.refreshCheckout?.(total);
   renderGiftSummary();
   renderMobileOrderBar();
 
@@ -1766,7 +1767,7 @@ function orderReference(prefix="ZW"){
   const suffix=[...bytes].map(n=>alphabet[n%alphabet.length]).join("");
   return `${prefix}-${stamp}-${suffix}`;
 }
-function order(){
+async function order(){
   const rows=cartRows();
   if(!rows.length)return;
   const t=UI[lang];
@@ -1777,52 +1778,96 @@ function order(){
   const notes=$("#orderNotes").value.trim()||"—";
   const delivery=deliveryQuoteFor(subtotal,area==="—"?"":area);
   if(delivery.minimum>0&&subtotal<delivery.minimum){
-    toast(lang==="ar"?`الحد الأدنى للطلب هو ${money(delivery.minimum)}.`:`Minimum order is ${money(delivery.minimum)}.`);
+    toast(lang==="ar"?"الحد الأدنى للطلب هو "+money(delivery.minimum)+".":"Minimum order is "+money(delivery.minimum)+".");
     return;
   }
-  const total=subtotal+delivery.fee;
-  const ref=orderReference("ZW");
-  const lines=[
-    t.orderHello,"",`${lang==="ar"?"رقم الطلب":"Order"}: ${ref}`,"",t.orderIntro,"",
-    ...rows.map((r,i)=>{
-      const itemName=currentName(r.p);
-      const size=lang==="ar"?r.v.sizeAr:r.v.sizeEn;
-      const lineSubtotal=money(r.v.price*r.qty);
-      return `${i+1}. ${itemName} — ${size} — ${t.qty}: ${r.qty} — ${money(r.v.price)} — ${t.subtotal}: ${lineSubtotal}`;
-    }),
-    "",
-    `${lang==="ar"?"مجموع المنتجات":"Products subtotal"}: ${money(subtotal)}`,
-    ...(delivery.fee>0?[`${lang==="ar"?"التوصيل":"Delivery"}: ${money(delivery.fee)}`]:(delivery.freeAbove>0?[`${lang==="ar"?"التوصيل":"Delivery"}: ${lang==="ar"?"مجاني":"Free"}`]:[])),
-    ...(delivery.eta?[`${lang==="ar"?"الوقت المتوقع":"Estimated delivery"}: ${delivery.eta}`]:[]),
-    `${t.orderTotal}: ${money(total)}`,
-    `${t.customer}: ${name}`,
-    ...(phone!=="—"?[`${t.orderPhone}: ${phone}`]:[]),
-    `${t.orderArea}: ${area}`,
-    `${t.orderNotes}: ${notes}`,
-    "",
-    t.orderConfirm
-  ];
-  window.ZWM_CMS?.recordOrder?.({
-    reference:ref,
-    kind:"order",
-    customer_name:name==="—"?"":name,
-    customer_phone:phone==="—"?"":phone,
-    area:area==="—"?"":area,
-    notes:notes==="—"?"":notes,
-    items:rows.map(r=>({
-      product_id:r.p.id,
-      name:r.p.nameEn||currentName(r.p),
-      size:r.v.sizeEn||r.v.sizeAr||"",
-      qty:r.qty,
-      unit_price:Number(r.v.price),
-      subtotal:Number(r.v.price)*r.qty
-    })),
-    total,
-    language:lang,
-    extra:{source:"cart",products_subtotal:subtotal,delivery_fee:delivery.fee,delivery_eta:delivery.eta,delivery_zone:delivery.zone?.area||""}
-  });
-  const opened=window.open(`https://wa.me/${currentWhatsAppNumber()}?text=${encodeURIComponent(lines.join("\n"))}`,"_blank","noopener,noreferrer");
-  if(opened)toast(lang==="ar"?"تم فتح واتساب مع طلبك":"WhatsApp opened with your order");
+
+  const button=$("#sendOrderButton");
+  if(button){button.disabled=true;button.dataset.originalText=button.dataset.originalText||button.textContent;button.textContent=lang==="ar"?"جارٍ تجهيز الطلب…":"Preparing order…";}
+
+  const itemPayload=rows.map(r=>({
+    product_id:r.p.id,
+    variant_id:r.v.id,
+    name:r.p.nameEn||currentName(r.p),
+    size:r.v.sizeEn||r.v.sizeAr||"",
+    qty:r.qty,
+    unit_price:Number(r.v.price),
+    subtotal:Number(r.v.price)*r.qty
+  }));
+  const extra={source:"cart",products_subtotal:subtotal,delivery_fee:delivery.fee,delivery_eta:delivery.eta,delivery_zone:delivery.zone?.area||""};
+  let result=null;
+  let ref="";
+  let discount=0;
+  let pendingPoints=0;
+
+  try{
+    if(window.ZWM_REWARDS?.submitOrder){
+      result=await window.ZWM_REWARDS.submitOrder({
+        kind:"order",
+        customer_name:name==="—"?"":name,
+        customer_phone:phone==="—"?"":phone,
+        area:area==="—"?"":area,
+        notes:notes==="—"?"":notes,
+        items:itemPayload,
+        language:lang,
+        extra
+      });
+      ref=result?.reference||"";
+      discount=Math.max(0,Number(result?.discount)||0);
+      pendingPoints=Math.max(0,Number(result?.pending_points)||0);
+      if(!ref)throw new Error(lang==="ar"?"تعذّر إنشاء رقم الطلب.":"Could not create the order reference.");
+    }else{
+      ref=orderReference("ZW");
+      const fallbackTotal=subtotal+delivery.fee;
+      await window.ZWM_CMS?.recordOrder?.({
+        reference:ref,
+        kind:"order",
+        customer_name:name==="—"?"":name,
+        customer_phone:phone==="—"?"":phone,
+        area:area==="—"?"":area,
+        notes:notes==="—"?"":notes,
+        items:itemPayload,
+        total:fallbackTotal,
+        language:lang,
+        extra
+      });
+    }
+
+    const total=Math.max(0,subtotal-discount+delivery.fee);
+    const lines=[
+      t.orderHello,"",(lang==="ar"?"رقم الطلب":"Order")+": "+ref,"",t.orderIntro,"",
+      ...rows.map((r,i)=>{
+        const itemName=currentName(r.p);
+        const size=lang==="ar"?r.v.sizeAr:r.v.sizeEn;
+        const lineSubtotal=money(r.v.price*r.qty);
+        return (i+1)+". "+itemName+" — "+size+" — "+t.qty+": "+r.qty+" — "+money(r.v.price)+" — "+t.subtotal+": "+lineSubtotal;
+      }),
+      "",
+      (lang==="ar"?"مجموع المنتجات":"Products subtotal")+": "+money(subtotal),
+      ...(discount>0?[(lang==="ar"?"مكافأة نقاط المونة":"Mouneh Points reward")+": -"+money(discount)]:[]),
+      ...(delivery.fee>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+money(delivery.fee)]:(delivery.freeAbove>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+(lang==="ar"?"مجاني":"Free")]:[])),
+      ...(delivery.eta?[(lang==="ar"?"الوقت المتوقع":"Estimated delivery")+": "+delivery.eta]:[]),
+      t.orderTotal+": "+money(total),
+      t.customer+": "+name,
+      ...(phone!=="—"?[t.orderPhone+": "+phone]:[]),
+      t.orderArea+": "+area,
+      t.orderNotes+": "+notes,
+      ...(pendingPoints>0?["",(lang==="ar"?"نقاط متوقعة بعد الاستلام":"Points pending after delivery")+": "+pendingPoints+" 🌿"]:[]),
+      "",
+      t.orderConfirm
+    ];
+
+    window.ZWM_CMS?.track?.("whatsapp_click",{source:"cart_order"});
+    const url="https://wa.me/"+currentWhatsAppNumber()+"?text="+encodeURIComponent(lines.join("\n"));
+    const opened=window.open(url,"_blank","noopener,noreferrer");
+    if(opened)toast(lang==="ar"?(pendingPoints>0?"تم فتح واتساب · "+pendingPoints+" نقطة بعد الاستلام":"تم فتح واتساب مع طلبك"):(pendingPoints>0?"WhatsApp opened · "+pendingPoints+" points after delivery":"WhatsApp opened with your order"));
+    else window.location.href=url;
+  }catch(error){
+    console.error("Order submit failed:",error);
+    toast(error?.message||(lang==="ar"?"تعذّر تجهيز الطلب. حاول مجدداً.":"Could not prepare the order. Please try again."));
+  }finally{
+    if(button){button.disabled=false;button.textContent=button.dataset.originalText||t.sendOrder||"Send order on WhatsApp";}
+  }
 }
 
 function openCart(){

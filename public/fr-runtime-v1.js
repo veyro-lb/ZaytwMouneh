@@ -1065,24 +1065,22 @@ function addStyles(){
   if(document.getElementById("zwmFrenchStyles"))return;
   var st=document.createElement("style");
   st.id="zwmFrenchStyles";
-  st.textContent=".fr-language-ready{position:relative}.fr-lang-button{white-space:nowrap}.fr-globe-toggle{display:none!important;align-items:center;justify-content:center;min-width:34px;min-height:34px;padding:0 8px}.fr-globe-menu{display:none;position:absolute;top:calc(100% + 8px);right:0;z-index:9999;min-width:150px;padding:6px;border:1px solid rgba(0,0,0,.12);border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(0,0,0,.14)}.fr-globe-menu.is-open{display:grid;gap:4px}.fr-globe-menu button{width:100%;text-align:left;padding:9px 10px;border:0;border-radius:8px;background:transparent;cursor:pointer}.fr-globe-menu button.is-active{font-weight:700;background:rgba(0,0,0,.06)}@media(max-width:680px){.fr-language-ready>button:not(.fr-globe-toggle){display:none!important}.fr-language-ready>.fr-globe-toggle{display:inline-flex!important}.fr-language-ready>.fr-globe-menu.is-open{display:grid!important}}";
+  st.textContent=".fr-language-ready{position:relative;overflow:visible!important}.fr-language-ready>button:not(.fr-globe-toggle){display:none!important}.fr-language-ready>.fr-globe-toggle{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:36px!important;min-width:36px!important;height:36px!important;min-height:36px!important;padding:0!important;border-radius:999px!important;line-height:1!important;cursor:pointer}.fr-globe-toggle svg{width:18px;height:18px;display:block;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}.fr-globe-menu{display:none!important;position:absolute;top:calc(100% + 8px);right:0;z-index:99999;min-width:142px;padding:6px;border:1px solid rgba(0,0,0,.12);border-radius:12px;background:#fff;color:#1f2b24;box-shadow:0 12px 30px rgba(0,0,0,.14)}.fr-globe-menu.is-open{display:grid!important;gap:3px}.fr-globe-menu button{display:block!important;width:100%!important;min-width:0!important;height:auto!important;min-height:0!important;text-align:left!important;padding:9px 10px!important;border:0!important;border-radius:8px!important;background:transparent!important;color:inherit!important;cursor:pointer!important;font:inherit!important;line-height:1.2!important;white-space:nowrap!important}.fr-globe-menu button[dir=rtl]{text-align:right!important}.fr-globe-menu button:hover,.fr-globe-menu button:focus-visible{background:rgba(0,0,0,.05)!important}.fr-globe-menu button.is-active{font-weight:700!important;background:rgba(0,0,0,.07)!important}html[dir=rtl] .fr-globe-menu{right:auto;left:0}";
   document.head.appendChild(st);
 }
 function choiceButton(code,label){
   var b=document.createElement("button");
-  b.type="button";b.dataset.frSet=code;b.textContent=label;b.className="fr-menu-choice";
+  b.type="button";b.dataset.frSet=code;b.textContent=label;b.className="fr-menu-choice";b.setAttribute("lang",code);b.setAttribute("dir",code==="ar"?"rtl":"ltr");
   if((code==="fr"&&isFrench())||(code!=="fr"&&!isFrench()&&get(LANG_KEY)===code))b.classList.add("is-active");
   return b;
 }
 function prepareGroup(group,kind){
   if(!group||group.dataset.frReady==="1")return;
   group.dataset.frReady="1";group.classList.add("fr-language-ready");
-  var fr=document.createElement("button");
-  fr.type="button";fr.className="fr-lang-button";fr.dataset.frSet="fr";fr.textContent="FR";fr.setAttribute("aria-label","Français");
-  if(isFrench())fr.classList.add("is-active");
-  group.appendChild(fr);
   var globe=document.createElement("button");
-  globe.type="button";globe.className="fr-globe-toggle";globe.dataset.frMenuToggle="1";globe.textContent="🌐";globe.setAttribute("aria-label","Changer de langue");globe.setAttribute("aria-expanded","false");
+  globe.type="button";globe.className="fr-globe-toggle";globe.dataset.frMenuToggle="1";
+  globe.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path></svg>';
+  globe.setAttribute("aria-label","Changer de langue");globe.setAttribute("title","Changer de langue");globe.setAttribute("aria-expanded","false");
   group.appendChild(globe);
   var menu=document.createElement("div");menu.className="fr-globe-menu";menu.setAttribute("role","menu");
   menu.appendChild(choiceButton("en","English"));menu.appendChild(choiceButton("ar","العربية"));menu.appendChild(choiceButton("fr","Français"));
@@ -1132,7 +1130,21 @@ document.addEventListener("click",function(e){
       if(code==="en"||code==="ar"){e.preventDefault();e.stopImmediatePropagation();switchLocale(code,!!native.dataset.welcomeLang);return}
     }
   }
+  document.querySelectorAll(".fr-globe-menu.is-open").forEach(function(menu){
+    menu.classList.remove("is-open");
+    var t=menu.parentElement&&menu.parentElement.querySelector("[data-fr-menu-toggle]");
+    if(t)t.setAttribute("aria-expanded","false");
+  });
 },true);
+
+document.addEventListener("keydown",function(e){
+  if(e.key!=="Escape")return;
+  document.querySelectorAll(".fr-globe-menu.is-open").forEach(function(menu){
+    menu.classList.remove("is-open");
+    var t=menu.parentElement&&menu.parentElement.querySelector("[data-fr-menu-toggle]");
+    if(t){t.setAttribute("aria-expanded","false");t.focus({preventScroll:true})}
+  });
+});
 
 function boot(){
   addStyles();ensureControls();

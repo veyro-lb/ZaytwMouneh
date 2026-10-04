@@ -749,6 +749,8 @@
   }
 
   function init(){
+    if(window.__ZWM_PREMIUM_BOUND)return;
+    window.__ZWM_PREMIUM_BOUND=true;
     document.documentElement.classList.add("premium-ui");
     wrapCommerceFunctions();
     injectNavigation();
@@ -764,7 +766,6 @@
     localBusinessSchema();
     bindOrderMemory();
     bindRecipeButtons(document);
-    qa("[data-lang],[data-welcome-lang]").forEach(function(btn){btn.addEventListener("click",function(){setTimeout(refreshLanguage,40)})});
     new MutationObserver(function(muts){if(muts.some(function(m){return m.attributeName==="lang"||m.attributeName==="dir"}))setTimeout(refreshLanguage,0)}).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
   }
 
@@ -776,8 +777,10 @@
 /* Native HD media: stream directly, retain a poster and manual playback. */
 (function(){
   function loadShopHeroVideo(){
+    if(window.__ZWM_HOME_VIDEO_BOUND)return;
     var video=document.getElementById("shopHeroVideo");
     if(!video)return;
+    window.__ZWM_HOME_VIDEO_BOUND=true;
     var button=document.getElementById("homeVideoPlayback");
     var visible=true,manual=false;
     video.muted=true;

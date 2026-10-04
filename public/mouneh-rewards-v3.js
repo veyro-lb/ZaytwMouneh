@@ -8,7 +8,7 @@
   const LEGAL_PENDING_KEY="zwm:mouneh:legal-consent-pending:v1";
   const LEGAL_CONSENT_VERSION="2026-10-04";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-account3";
+  const VERSION="20261004-account4";
   const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false,referralStatus:null};
 
   const $=(id)=>document.getElementById(id);
@@ -526,10 +526,14 @@
     const initial=(first||String(user?.email||"A")).charAt(0).toUpperCase();
     const avatar=link.querySelector(".mr-account-nav-avatar");
     const copy=link.querySelector(".mr-account-nav-copy");
-    const avatarText=member?initial:"○";
+    const avatarText=member?initial:"";
     const copyText=member?(first||tr("My Account","حسابي")):tr("Sign in","دخول");
-    if(avatar&&avatar.textContent!==avatarText)avatar.textContent=avatarText;
+    if(avatar){
+      if(avatar.textContent!==avatarText)avatar.textContent=avatarText;
+      avatar.classList.toggle("is-guest",!member);
+    }
     if(copy&&copy.textContent!==copyText)copy.textContent=copyText;
+    link.href=member?"account.html":"account.html?auth=signin";
     link.setAttribute("aria-label",member?tr("Open My Account for ","فتح حساب ")+(member.name||user?.email||""):tr("Sign in or open My Account","تسجيل الدخول أو فتح حسابي"));
     if(nav){
       const cart=nav.querySelector("#cartButton");
@@ -924,16 +928,21 @@
     window.__ZWM_REWARDS_INIT_STARTED=true;
     try{
       startPointsButtonGuard();
+      injectUI();
+      bindActions();
+      render();
       if(!window.ZWM_CMS_CONFIG)await loadScript(CONFIG_SRC);
       state.config=window.ZWM_CMS_CONFIG||{};
-      if(!state.config.enabled||!state.config.supabaseUrl||!state.config.supabasePublishableKey)return;
+      if(!state.config.enabled||!state.config.supabaseUrl||!state.config.supabasePublishableKey){
+        state.authNotice=tr("Account services are temporarily unavailable. Please try again shortly.","خدمات الحساب غير متاحة مؤقتاً. يرجى المحاولة بعد قليل.");
+        render();
+        return;
+      }
       state.session=readSession();
       state.selectedWallet=readLocal(WALLET_KEY,"")||"";
       pendingReferral();
       await consumeAuthCallback();
-      injectUI();
       startPointsButtonGuard();
-      bindActions();
       await Promise.all([loadPublic(),loadAuthSettings()]);
       if(state.session){
         try{

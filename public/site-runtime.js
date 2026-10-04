@@ -377,14 +377,139 @@
 
   function ensureLegalFooter(){
     const footer=document.querySelector("footer.footer");
-    if(!footer||footer.querySelector("[data-footer-legal]"))return;
+    if(!footer)return null;
     const grid=footer.querySelector(".footer-grid,.footer-inner")||footer;
-    const bar=document.createElement("div");
-    bar.className="footer-legal-bar";
-    bar.setAttribute("data-footer-legal","");
-    bar.innerHTML='<a class="footer-legal-button" href="/privacy.html"><span class="only-en">Privacy Policy</span><span class="only-ar" lang="ar">سياسة الخصوصية</span></a><a class="footer-legal-button" href="/terms.html"><span class="only-en">Terms of Service</span><span class="only-ar" lang="ar">شروط الخدمة</span></a>';
-    const copyright=grid.querySelector(".copyright");
-    if(copyright)grid.insertBefore(bar,copyright);else grid.appendChild(bar);
+    let bar=footer.querySelector("[data-footer-legal]");
+    if(!bar){
+      bar=document.createElement("div");
+      bar.className="footer-legal-bar";
+      bar.setAttribute("data-footer-legal","");
+      const copyright=grid.querySelector(".copyright");
+      if(copyright)grid.insertBefore(bar,copyright);else grid.appendChild(bar);
+    }
+    const ensureLink=(kind,href,en,arText)=>{
+      let link=bar.querySelector('[data-legal-link="'+kind+'"]')||bar.querySelector('a[href="'+href+'"],a[href="'+href.replace(/^\//,"")+'"]');
+      if(!link){
+        link=document.createElement("a");
+        link.className="footer-legal-button";
+        link.href=href;
+        bar.appendChild(link);
+      }
+      link.classList.add("footer-legal-button");
+      link.setAttribute("data-legal-link",kind);
+      link.removeAttribute("hidden");
+      link.style.setProperty("display","inline-flex","important");
+      link.style.setProperty("visibility","visible","important");
+      link.style.setProperty("opacity","1","important");
+      link.style.setProperty("pointer-events","auto","important");
+      if(!link.querySelector(".only-en")||!link.querySelector(".only-ar")){
+        link.innerHTML='<span class="only-en">'+en+'</span><span class="only-ar" lang="ar">'+arText+'</span>';
+      }
+      return link;
+    };
+    ensureLink("privacy","/privacy.html","Privacy Policy","سياسة الخصوصية");
+    ensureLink("terms","/terms.html","Terms of Service","شروط الخدمة");
+    bar.removeAttribute("hidden");
+    bar.style.setProperty("display","flex","important");
+    bar.style.setProperty("visibility","visible","important");
+    bar.style.setProperty("opacity","1","important");
+    return bar;
+  }
+
+  function ensurePersistentChrome(){
+    const nav=document.querySelector(".site-header .nav-actions");
+    if(nav){
+      const cart=nav.querySelector("#cartButton");
+
+      let switcher=document.getElementById("languageSwitch");
+      if(!switcher){
+        switcher=document.createElement("div");
+        switcher.id="languageSwitch";
+        switcher.className="language-switch";
+        switcher.setAttribute("aria-label","Language");
+        switcher.innerHTML='<button type="button" data-lang="en">EN</button><button type="button" data-lang="ar">عربي</button>';
+        nav.insertBefore(switcher,cart||null);
+      }else if(switcher.parentElement!==nav){
+        nav.insertBefore(switcher,cart||null);
+      }
+      switcher.removeAttribute("hidden");
+      switcher.style.setProperty("display","flex","important");
+      switcher.style.setProperty("visibility","visible","important");
+      switcher.style.setProperty("opacity","1","important");
+      switcher.querySelectorAll("[data-lang]").forEach(btn=>{
+        btn.removeAttribute("hidden");
+        btn.style.setProperty("display","flex","important");
+        btn.style.setProperty("visibility","visible","important");
+        btn.style.setProperty("opacity","1","important");
+        btn.style.setProperty("pointer-events","auto","important");
+      });
+
+      let points=document.getElementById("mounehRewardsButton");
+      if(!points){
+        points=document.createElement("button");
+        points.type="button";
+        points.id="mounehRewardsButton";
+        points.className="mouneh-points-nav";
+        points.setAttribute("data-mr-open","");
+        points.innerHTML='<span class="mr-nav-leaf">🌿</span><span class="mr-nav-copy">Mouneh Points</span><b id="mounehPointsBadge" hidden></b>';
+        nav.insertBefore(points,cart||null);
+      }else if(points.parentElement!==nav){
+        nav.insertBefore(points,cart||null);
+      }
+      points.classList.add("mouneh-points-nav");
+      points.removeAttribute("hidden");
+      points.setAttribute("data-mr-open","");
+      points.setAttribute("aria-label",document.documentElement.lang==="ar"?"فتح نقاط المونة":"Open Mouneh Points");
+      points.style.setProperty("display","flex","important");
+      points.style.setProperty("visibility","visible","important");
+      points.style.setProperty("opacity","1","important");
+      points.style.setProperty("pointer-events","auto","important");
+      points.style.setProperty("flex-shrink","0","important");
+      const copy=points.querySelector(".mr-nav-copy");
+      if(copy)copy.textContent=document.documentElement.lang==="ar"?"نقاط المونة":"Mouneh Points";
+      if(!points.dataset.zwmPersistentBound){
+        points.dataset.zwmPersistentBound="1";
+        points.addEventListener("click",()=>{
+          if(!points.dataset.mrBound)window.ZWM_REWARDS?.open?.();
+        });
+      }
+    }
+    ensureLegalFooter();
+  }
+
+  function bindPersistentChrome(){
+    if(window.__ZWM_PERSISTENT_CHROME_BOUND)return;
+    window.__ZWM_PERSISTENT_CHROME_BOUND=true;
+    let queued=false;
+    const check=()=>{
+      if(queued)return;
+      queued=true;
+      requestAnimationFrame(()=>{queued=false;ensurePersistentChrome()});
+    };
+    new MutationObserver(check).observe(document.body,{childList:true,subtree:true});
+    window.addEventListener("pageshow",check);
+    window.addEventListener("resize",check,{passive:true});
+    window.addEventListener("orientationchange",check,{passive:true});
+    document.addEventListener("visibilitychange",()=>{if(!document.hidden)check()});
+    document.addEventListener("click",event=>{
+      const btn=event.target.closest("#languageSwitch [data-lang]");
+      if(!btn)return;
+      const next=btn.dataset.lang==="ar"?"ar":"en";
+      setTimeout(()=>{
+        if(document.documentElement.lang===next)return;
+        if(typeof window.applyLanguage==="function")window.applyLanguage(next,{immediate:true});
+        else{
+          try{localStorage.setItem("zwm-lang-v2",next)}catch{}
+          document.documentElement.lang=next;
+          document.documentElement.dir=next==="ar"?"rtl":"ltr";
+          document.querySelectorAll(".only-en").forEach(el=>el.style.setProperty("display",next==="ar"?"none":"revert","important"));
+          document.querySelectorAll(".only-ar").forEach(el=>el.style.setProperty("display",next==="ar"?"revert":"none","important"));
+          document.querySelectorAll("[data-lang]").forEach(el=>el.classList.toggle("is-active",el.dataset.lang===next));
+          ensurePersistentChrome();
+        }
+      },60);
+    });
+    check();
   }
 
   async function init(){
@@ -392,13 +517,14 @@
     if(!enabled())return;
     if(!PREVIEW_MODE&&!document.querySelector("script[data-mouneh-rewards]")){
       const rewardsScript=document.createElement("script");
-      rewardsScript.src="mouneh-rewards-v3.js?v=20261004-rewards13";
+      rewardsScript.src="mouneh-rewards-v3.js?v=20261004-rewards14";
       rewardsScript.async=true;
       rewardsScript.dataset.mounehRewards="1";
       document.head.appendChild(rewardsScript);
     }
     applySettings(readSettings());
-    ensureLegalFooter();
+    ensurePersistentChrome();
+    bindPersistentChrome();
     if(!PREVIEW_MODE)bindAnalytics();
     document.addEventListener("click",e=>{if(e.target.closest("[data-lang],#languageSwitch,.language-switch"))setTimeout(()=>applySettings(previewSettings||readSettings()),80)},{passive:true});
     refreshCms().catch(()=>{});

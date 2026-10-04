@@ -772,7 +772,10 @@
     "Preview device":"جهاز المعاينة",
     "Zayt w Mouneh website preview":"معاينة موقع زيت ومونة",
     "Photo preview":"معاينة الصورة",
-    "Driver note, follow-up, customer preference…":"ملاحظة للسائق أو متابعة أو تفضيل للعميل…"
+    "Driver note, follow-up, customer preference…":"ملاحظة للسائق أو متابعة أو تفضيل للعميل…",
+    "Remove customer account":"إزالة حساب العميل",
+    "Deletes this customer’s sign-in, Mouneh Points profile, points, vouchers, reviews and saved addresses. Historical orders stay in Orders & history for business records.":"يحذف تسجيل دخول هذا العميل وملف نقاط المونة والنقاط والقسائم والمراجعات والعناوين المحفوظة. تبقى الطلبات السابقة في قسم الطلبات والسجل لأغراض السجلات التجارية.",
+    "Remove account":"إزالة الحساب"
   });
 
   function translatePhrase(value) {

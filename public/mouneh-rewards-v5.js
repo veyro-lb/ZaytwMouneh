@@ -552,8 +552,18 @@
       avatar.classList.toggle("is-guest",!member);
     }
     if(copy&&copy.textContent!==copyText)copy.textContent=copyText;
-    link.href=member?"account.html":"account.html?auth=signin";
-    link.setAttribute("aria-label",member?tr("Open My Account for ","فتح حساب ")+(member.name||user?.email||""):tr("Sign in or open My Account","تسجيل الدخول أو فتح حسابي"));
+    link.href=member?"account.html":"#signin";
+    link.setAttribute("aria-label",member?tr("Open My Account for ","فتح حساب ")+(member.name||user?.email||""):tr("Sign in","تسجيل الدخول"));
+    if(!link.dataset.mrAccountBound){
+      link.dataset.mrAccountBound="1";
+      link.addEventListener("click",(e)=>{
+        const guest=link.querySelector(".mr-account-nav-avatar")?.classList.contains("is-guest");
+        if(!guest)return;
+        e.preventDefault();
+        e.stopPropagation();
+        openSignIn();
+      });
+    }
     if(nav){
       const cart=nav.querySelector("#cartButton");
       if(link.parentElement!==nav||(cart&&link.nextElementSibling!==cart)||(!cart&&link!==nav.lastElementChild))nav.insertBefore(link,cart||null);

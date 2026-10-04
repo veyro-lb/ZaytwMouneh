@@ -97,7 +97,10 @@
       '<section class="account-card account-auth-card"><p class="account-eyebrow">'+tr("My Zayt w Mouneh","حساب زيت ومونة")+'</p><div class="account-auth-tabs" role="tablist"><button type="button" data-account-auth="signin" class="'+(!signup?"is-active":"")+'">'+tr("Sign in","تسجيل الدخول")+'</button><button type="button" data-account-auth="signup" class="'+(signup?"is-active":"")+'">'+tr("Create account","إنشاء حساب")+'</button></div>'+
       '<h1>'+(signup?tr("Create your account.","أنشئ حسابك."):tr("Welcome back.","أهلاً بعودتك."))+'</h1>'+
       '<p>'+(signup?tr("One account keeps your Mouneh Points, vouchers, orders and referrals together.","حساب واحد يجمع نقاط المونة والقسائم والطلبات والإحالات في مكان واحد."):tr("Sign in to open your full customer dashboard — not just the points wallet.","سجّل الدخول لفتح لوحة حسابك الكاملة، وليس محفظة النقاط فقط."))+'</p>'+
-      '<label class="account-legal-consent"><input id="mrLegalConsent" type="checkbox" form="mrAuthForm" required aria-required="true"><span>'+tr("I agree to the ","أوافق على ")+'<a href="/terms-and-rewards.html?rev=20261004-legal7" target="_blank" rel="noopener">'+tr("Terms of Service","شروط الخدمة")+'</a>'+tr(" and confirm I have read the "," وأقرّ بأنني قرأت ")+'<a href="/privacy-and-data.html?rev=20261004-legal7" target="_blank" rel="noopener">'+tr("Privacy Policy","سياسة الخصوصية")+'</a>.</span></label>'+
+      '<div class="account-legal-consent">'+
+        '<label class="account-legal-toggle" for="mrLegalConsent"><input id="mrLegalConsent" type="checkbox" form="mrAuthForm" required aria-required="true"><span class="account-legal-check" aria-hidden="true">✓</span><span>'+tr("I agree to the Terms of Service and confirm that I have read the Privacy Policy.","أوافق على شروط الخدمة وأقرّ بأنني قرأت سياسة الخصوصية.")+'</span></label>'+
+        '<div class="account-legal-links"><a data-auth-legal-link="terms" href="/terms-and-rewards.html?rev=20261004-legal7" target="_blank" rel="noopener noreferrer">'+tr("Open Terms of Service","فتح شروط الخدمة")+' ↗</a><a data-auth-legal-link="privacy" href="/privacy-and-data.html?rev=20261004-legal7" target="_blank" rel="noopener noreferrer">'+tr("Open Privacy Policy","فتح سياسة الخصوصية")+' ↗</a></div>'+
+      '</div>'+
       '<button class="account-google '+(googleDisabled?"is-disabled":"")+'" type="button" data-mr-google '+(googleDisabled?'disabled aria-disabled="true"':"")+'><span>G</span><strong>'+tr("Continue with Google","المتابعة عبر Google")+'</strong></button>'+
       '<div class="account-or"><span></span><b>'+tr("or","أو")+'</b><span></span></div>'+
       '<form id="mrAuthForm" class="account-auth-form">'+
@@ -199,8 +202,10 @@
     syncing=true;try{await a.refresh?.();lastSyncedAt=Date.now()}catch{}finally{syncing=false;render(true)}
   }
   document.addEventListener("click",async e=>{
+    const legalLink=e.target.closest("[data-auth-legal-link]");
+    if(legalLink){e.stopPropagation();return}
     const tab=e.target.closest("[data-account-tab]"); if(tab){active=tab.dataset.accountTab;history.replaceState({},document.title,"#"+active);render(true);return}
-    const auth=e.target.closest("[data-account-auth]"); if(auth){guestAuthMode=auth.dataset.accountAuth==="signup"?"signup":"signin";if(state().authMode==="verify")api()?.auth?.setMode?.(guestAuthMode);try{history.replaceState({},document.title,location.pathname+(location.search||"")+"#"+guestAuthMode)}catch{}render(true);return}
+    const auth=e.target.closest("[data-account-auth]"); if(auth){e.preventDefault();guestAuthMode=auth.dataset.accountAuth==="signup"?"signup":"signin";if(state().authMode==="verify")api()?.auth?.setMode?.(guestAuthMode);try{history.replaceState({},document.title,location.pathname+(location.search||"")+"#"+guestAuthMode)}catch{}render(true);return}
     if(e.target.closest("[data-open-points]")){api()?.open?.();return}
     const copy=e.target.closest("[data-copy-ref]"); if(copy){const ok=await copyText(copy.dataset.copyRef);copy.textContent=ok?tr("Copied","تم النسخ"):tr("Copy failed","فشل النسخ");return}
     const signout=e.target.closest("[data-account-signout]"); if(signout){signout.disabled=true;try{await api()?.account?.signOut?.();active="overview";render(true)}finally{signout.disabled=false}return}

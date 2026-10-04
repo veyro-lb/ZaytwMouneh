@@ -1,76 +1,35 @@
 /release.json
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/storefront-release.js
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/storefront-shell.css
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/mouneh-rewards-v7.css
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/mouneh-rewards-v7.js
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/site-runtime-v7.js
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/app.js
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/account.js
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/terms-and-rewards
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/terms-and-rewards.html
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/privacy-and-data
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/privacy-and-data.html
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/terms
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/terms.html
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/privacy
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/privacy.html
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/terms-of-service
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/terms-of-service.html
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/privacy-policy
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/privacy-policy.html
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/admin.html
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
-  Referrer-Policy: no-referrer
-
-/
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-
-/index.html
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Pragma: no-cache
+  Expires: 0
 
 /*.html
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Pragma: no-cache
+  Expires: 0
+
+/
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Pragma: no-cache
+  Expires: 0
+
+/*.js
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Pragma: no-cache
+  Expires: 0
+
+/*.css
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Pragma: no-cache
+  Expires: 0
+
+/*.json
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Pragma: no-cache
+  Expires: 0
+
+/assets/*
+  Cache-Control: public, max-age=0, must-revalidate
 
 /*
   Cache-Control: no-cache, must-revalidate
@@ -78,11 +37,16 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 
-/assets/*
-  Cache-Control: no-cache, must-revalidate
+/admin
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Pragma: no-cache
+  Expires: 0
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
+  Referrer-Policy: no-referrer
 
-/*.css
-  Cache-Control: no-cache, must-revalidate
-
-/*.js
-  Cache-Control: no-cache, must-revalidate
+/admin.html
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Pragma: no-cache
+  Expires: 0
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
+  Referrer-Policy: no-referrer

@@ -20,6 +20,7 @@
   }
 
   const AR_TRANSLATIONS = Object.freeze({
+    "Zayt w Mouneh":"زيت ومونة",
     "Owner Console":"لوحة المالك",
     "Zayt w Mouneh — Owner Console":"Zayt w Mouneh — لوحة المالك",
     "Loading":"جارٍ التحميل",
@@ -700,7 +701,7 @@
     document.documentElement.lang=state.lang;
     document.documentElement.dir=state.lang==="ar"?"rtl":"ltr";
     document.body.classList.toggle("admin-rtl",state.lang==="ar");
-    document.title=state.lang==="ar"?"Zayt w Mouneh — لوحة المالك":"Zayt w Mouneh — Owner Console";
+    document.title=state.lang==="ar"?"زيت ومونة — لوحة المالك":"Zayt w Mouneh — Owner Console";
     localizeDom(document.body);
 
     if(state.products?.length){

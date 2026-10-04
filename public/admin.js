@@ -1631,10 +1631,16 @@
     if(source==="phone_manual")return "Phone";
     return "Other";
   }
+  const ORDER_QUICK_LABELS=Object.freeze({
+    confirmed:"Approve order",
+    preparing:"Start preparing",
+    out_for_delivery:"Taken / out for delivery",
+    delivered:"Mark delivered"
+  });
   function orderQuickActionHtml(order){
     const next=(ORDER_NEXT_STATUS[order.status]||[]).find(s=>s!=="cancelled");
     if(!next)return "";
-    return `<button type="button" data-order-quick-status="${esc(next)}" data-order-ref="${esc(order.reference)}">${esc(ORDER_STATUS_LABELS[next])}</button>`;
+    return `<button type="button" data-order-quick-status="${esc(next)}" data-order-ref="${esc(order.reference)}">${esc(ORDER_QUICK_LABELS[next]||ORDER_STATUS_LABELS[next])}</button>`;
   }
 
   function orderRowHtml(order) {
@@ -1836,6 +1842,39 @@
     catch{toast("Could not copy customer update.","error");}
   }
 
+  async function notifyOrderStatusWhatsApp(order,status){
+    if(!order||!status||!state.session?.access_token)return {sent:false,reason:"no_owner_session"};
+    if(!order.customer_phone)return {sent:false,reason:"missing_phone"};
+    try{
+      const endpoint=cfg.supabaseUrl.replace(/\/$/,"")+"/functions/v1/order-status-whatsapp";
+      const response=await fetchWithTimeout(endpoint,{
+        method:"POST",
+        headers:{
+          "apikey":cfg.supabasePublishableKey,
+          "Authorization":"Bearer "+state.session.access_token,
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({reference:order.reference,status})
+      },12000);
+      const result=await response.json().catch(()=>({}));
+      if(response.ok&&result?.sent){
+        await logActivity("whatsapp_status_sent","order",order.reference,{status,provider_message_id:result.provider_message_id||null});
+        return {sent:true};
+      }
+      await logActivity("whatsapp_status_pending","order",order.reference,{status,reason:result?.reason||result?.error||"not_sent"});
+      return {
+        sent:false,
+        reason:result?.reason||"not_sent",
+        error:result?.error||"",
+        fallbackUrl:result?.fallback_url||"",
+        message:result?.message||orderMessage(order,status)
+      };
+    }catch(err){
+      await logActivity("whatsapp_status_pending","order",order.reference,{status,reason:"network_error"});
+      return {sent:false,reason:"network_error",error:err?.message||String(err),message:orderMessage(order,status)};
+    }
+  }
+
   async function saveOrderPrivateNote(){
     const order=state.orders.find(o=>o.reference===state.selectedOrderReference);
     if(!order)return;
@@ -1888,6 +1927,18 @@
     if(error){toast(error.message||"Could not update order.","error");await refreshAll();return;}
     await logActivity("update_delivery_status","order",reference,{from:order.status,status});
     toast(`${reference}: ${ORDER_STATUS_LABELS[status]}`);
+    const notice=await notifyOrderStatusWhatsApp(order,status);
+    if(notice.sent){
+      toast("Customer notified on WhatsApp.");
+    }else if(notice.reason==="not_opted_in"){
+      toast("Status updated. Customer did not opt in to automatic WhatsApp updates.");
+    }else if(notice.reason==="whatsapp_business_not_configured"){
+      toast("Status updated. WhatsApp Business auto-send still needs provider setup.");
+    }else if(notice.reason==="missing_phone"){
+      toast("Status updated. No customer WhatsApp number is saved.");
+    }else if(notice.reason==="provider_error"){
+      toast("Status updated, but WhatsApp could not send automatically.","error");
+    }
     await refreshAll();
     if(state.selectedOrderReference===reference)openOrderDetails(reference);
   }

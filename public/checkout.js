@@ -55,7 +55,21 @@ function currentWallet(){
 function rewardDiscount(){var w=currentWallet();return w?Math.min(subtotal(),Number(w.value)||0):0}
 function deliverySettings(){return state.config&&state.config.delivery||{}}
 function activeZones(){var z=deliverySettings().zones;return Array.isArray(z)?z.filter(function(x){return x&&x.active!==false}):[]}
+var areaDirectoryPromise=null;
 function areaDirectory(){return Array.isArray(window.ZWM_LEBANON_AREAS)?window.ZWM_LEBANON_AREAS:[]}
+function ensureAreaDirectory(){
+  var ready=areaDirectory();if(ready.length)return Promise.resolve(ready);
+  if(areaDirectoryPromise)return areaDirectoryPromise;
+  areaDirectoryPromise=new Promise(function(resolve){
+    var script=document.createElement("script");
+    script.src="/lebanon-areas.js?v=20261004-deliveryarea6";
+    script.async=true;
+    script.onload=function(){resolve(areaDirectory())};
+    script.onerror=function(){areaDirectoryPromise=null;resolve([])};
+    document.head.appendChild(script)
+  });
+  return areaDirectoryPromise
+}
 function rememberArea(value){
   var v=String(value||"").trim();
   state.areaText=v;
@@ -245,7 +259,7 @@ async function maybeSaveAddress(){
   var d=addressPayload();await rpc("mouneh_addresses",{action:"upsert",p:{label:state.lang==="ar"?"المنزل":"Home",area:d.area,street:d.street,building:d.building,floor_apartment:d.floor_apartment,landmark:d.landmark,delivery_notes:d.instructions,is_default:state.addresses.length===0}})
 }
 async function submit(e){
-  e.preventDefault();if(state.busy)return;var form=$("nativeCheckoutForm");if(!form.reportValidity())return;
+  e.preventDefault();if(state.busy)return;await ensureAreaDirectory();var form=$("nativeCheckoutForm");if(!form.reportValidity())return;
   var d=addressPayload(),zones=activeZones();if(!d.area){$("checkoutStatus").textContent=state.lang==="ar"?"اختر أو اكتب منطقة التوصيل.":"Please select or enter a delivery area.";$("checkoutArea").focus();return}if(zones.length&&!selectedZone()){$("checkoutStatus").textContent=state.lang==="ar"?"التوصيل غير متاح حالياً لهذه المنطقة. اختر منطقة أخرى أو تواصل معنا.":"Delivery is not currently available for this area. Choose another area or contact us.";return}
   var q=quote();if(!q.available){$("checkoutStatus").textContent=state.lang==="ar"?"التوصيل متوقف مؤقتاً. تواصل معنا للمساعدة.":"Delivery is temporarily paused. Contact us for help.";return}if(q.minimum>0&&q.eligible<q.minimum){$("checkoutStatus").textContent=(state.lang==="ar"?"الحد الأدنى للطلب هو ":"Minimum order is ")+money(q.minimum)+".";return}
   if(state.rows.some(function(r){return !r.available})){$("checkoutStatus").textContent=state.lang==="ar"?"هناك منتج غير متوفر. عد إلى السلة لمراجعته.":"One item is no longer available. Return to your cart to review it.";return}
@@ -281,11 +295,17 @@ async function init(){
   $("savedAddressSelect").addEventListener("change",function(){var a=state.addresses.find(function(x){return x.id===$("savedAddressSelect").value});fillAddress(a)});
   $("clearSavedAddress").addEventListener("click",function(){$("savedAddressSelect").value="";state.areaRecord=null;rememberArea("");["checkoutArea","checkoutStreet","checkoutBuilding","checkoutFloor","checkoutLandmark","checkoutInstructions"].forEach(function(id){$(id).value=""});renderAreaMeta();renderSummary()});
   var areaInput=$("checkoutArea"),areaBox=$("areaSuggestions");
-  areaInput.addEventListener("input",function(){state.areaRecord=null;rememberArea(areaInput.value);renderAreaMeta();renderAreaSuggestions(false);renderSummary();$("checkoutStatus").textContent=""});
+  areaInput.addEventListener("input",function(){
+    state.areaRecord=null;rememberArea(areaInput.value);renderAreaMeta();renderSummary();$("checkoutStatus").textContent="";
+    if(areaInput.value.trim())ensureAreaDirectory().then(function(){renderAreaSuggestions(false)});
+    else closeAreaSuggestions()
+  });
   areaInput.addEventListener("change",function(){rememberArea(areaInput.value);renderAreaMeta();renderSummary();$("checkoutStatus").textContent=""});
   areaInput.addEventListener("blur",function(){rememberArea(areaInput.value)});
-  areaInput.addEventListener("focus",function(){renderAreaSuggestions(true)});
+  areaInput.addEventListener("focus",function(){ensureAreaDirectory().then(function(){renderAreaSuggestions(true)})});
   areaInput.addEventListener("keydown",function(e){if(e.key==="Escape")closeAreaSuggestions()});
+  if("requestIdleCallback" in window)requestIdleCallback(function(){ensureAreaDirectory()},{timeout:2500});
+  else setTimeout(function(){ensureAreaDirectory()},1200);
   areaBox.addEventListener("click",function(e){var b=e.target.closest("[data-area-id]");if(b)chooseArea(b.dataset.areaId)});
   document.addEventListener("click",function(e){if(!e.target.closest(".checkout-area-field"))closeAreaSuggestions()});
   ["checkoutStreet","checkoutBuilding"].forEach(function(id){var el=$(id);if(el)el.addEventListener("input",function(){renderSummary();$("checkoutStatus").textContent=""})});

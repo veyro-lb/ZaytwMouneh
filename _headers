@@ -7,13 +7,13 @@
 /storefront-shell.css
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
 
-/mouneh-rewards-v6.css
+/mouneh-rewards-v7.css
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
 
-/mouneh-rewards-v6.js
+/mouneh-rewards-v7.js
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
 
-/site-runtime-v6.js
+/site-runtime-v7.js
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
 
 /app.js

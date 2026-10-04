@@ -3,7 +3,9 @@
 
   const cfg = window.ZWM_CMS_CONFIG || {};
   const $ = (id) => document.getElementById(id);
-  const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
+  const $ = (sel, root=document) => [...root.querySelectorAll(sel)];
+  // Compatibility alias: keeps the console usable even if an older patch accidentally references $$.
+  const $$ = $;
   const clone = (v) => typeof structuredClone === "function" ? structuredClone(v) : JSON.parse(JSON.stringify(v));
   const baseProducts = typeof PRODUCTS_DATA !== "undefined" ? clone(PRODUCTS_DATA) : [];
   const baseById = new Map(baseProducts.map(p => [p.id, p]));
@@ -3427,7 +3429,7 @@
 
   function setupInstallPrompt(){
     window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.installPrompt=e;$("installAdminHint").textContent="Ready to install on this device.";});
-    if("serviceWorker" in navigator)navigator.serviceWorker.register("admin-sw.js?v=20261004-toolkit10").catch(()=>{});
+    if("serviceWorker" in navigator)navigator.serviceWorker.register("admin-sw.js?v=20261004-toolkit11").catch(()=>{});
   }
   async function installAdminApp(){
     if(state.installPrompt){
@@ -3482,8 +3484,8 @@
     $("imageZoom")?.addEventListener("input",updateFramingFromControls);
     $("rotateImageLeft")?.addEventListener("click",()=>rotateImage(-90));
     $("rotateImageRight")?.addEventListener("click",()=>rotateImage(90));
-    $$$("[data-image-fit]").forEach(btn=>btn.addEventListener("click",()=>setImageFit(btn.dataset.imageFit)));
-    $$$("[data-image-preview]").forEach(btn=>btn.addEventListener("click",()=>setImagePreviewMode(btn.dataset.imagePreview)));
+    $("[data-image-fit]").forEach(btn=>btn.addEventListener("click",()=>setImageFit(btn.dataset.imageFit)));
+    $("[data-image-preview]").forEach(btn=>btn.addEventListener("click",()=>setImagePreviewMode(btn.dataset.imagePreview)));
     $("productRevisionList")?.addEventListener("click",e=>{const b=e.target.closest("[data-restore-revision]");if(b)restoreProductRevision(Number(b.dataset.restoreRevision));});
     bindImageDrag();
     $("deleteProductButton")?.addEventListener("click",deleteCurrentProduct);
@@ -3504,8 +3506,8 @@
     $("productCardsMobile")?.addEventListener("change",selectionHandler);
     $("productTableBody")?.addEventListener("click",e=>{const b=e.target.closest("[data-edit-product]");if(b)openProductEditor(b.dataset.editProduct);});
     $("productCardsMobile")?.addEventListener("click",e=>{const b=e.target.closest("[data-edit-product]");if(b)openProductEditor(b.dataset.editProduct);});
-    $$$("[data-order-scope]").forEach(btn=>btn.addEventListener("click",()=>{state.orderScope=btn.dataset.orderScope;state.orderCommand="";renderOrders();}));
-    $$$("[data-order-command]").forEach(btn=>btn.addEventListener("click",()=>{state.orderCommand=state.orderCommand===btn.dataset.orderCommand?"":btn.dataset.orderCommand;state.orderScope="all";renderOrders();}));
+    $("[data-order-scope]").forEach(btn=>btn.addEventListener("click",()=>{state.orderScope=btn.dataset.orderScope;state.orderCommand="";renderOrders();}));
+    $("[data-order-command]").forEach(btn=>btn.addEventListener("click",()=>{state.orderCommand=state.orderCommand===btn.dataset.orderCommand?"":btn.dataset.orderCommand;state.orderScope="all";renderOrders();}));
     $$("[data-overview-order-filter]").forEach(btn=>btn.addEventListener("click",()=>{setView("orders");const v=btn.dataset.overviewOrderFilter;if(v==="delivered_today"){state.orderCommand="delivered_today";state.orderScope="all";state.orderFilter.status="";}else{state.orderCommand="today";state.orderScope="all";state.orderFilter.status=v;}$("orderStatusFilter").value=state.orderFilter.status;renderOrders();}));
     $("manualOrderButton")?.addEventListener("click",openManualOrder);
     $("orderSearch")?.addEventListener("input",e=>{state.orderFilter.q=e.target.value;renderOrders();});

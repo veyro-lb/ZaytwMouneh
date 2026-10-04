@@ -1,0 +1,1530 @@
+:root{--mr-green:#123d23;--mr-green2:#1e5a34;--mr-cream:#f7f4ec;--mr-paper:#fffdf8;--mr-gold:#b99147;--mr-ink:#182019;--mr-muted:#6c746d;--mr-line:rgba(18,61,35,.14)}
+.mouneh-points-nav{position:relative!important;min-height:46px!important;min-width:max-content!important;flex:0 0 auto!important;visibility:visible!important;opacity:1!important;border:1px solid rgba(18,61,35,.14)!important;background:#f3f6ee!important;color:var(--mr-green)!important;border-radius:999px!important;padding:0 13px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;cursor:pointer;font:700 11px/1 "DM Sans",sans-serif!important;white-space:nowrap!important;overflow:visible!important}
+.mouneh-points-nav:hover{background:#e9f0e8}.mr-nav-leaf{font-size:15px}.mouneh-points-nav b{min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--mr-green);color:#fff;display:grid;place-items:center;font-size:9px}
+.mouneh-points-nav.is-floating{position:fixed;right:18px;bottom:18px;z-index:39;box-shadow:0 12px 36px rgba(18,61,35,.2)}
+.mouneh-rewards-backdrop{position:fixed;z-index:79;inset:0;background:rgba(7,20,11,.5);backdrop-filter:blur(3px)}
+.mouneh-rewards-drawer{position:fixed;z-index:80;right:0;top:0;width:min(520px,100%);height:100dvh;background:var(--mr-paper);box-shadow:-24px 0 70px rgba(9,27,15,.2);transform:translateX(105%);transition:transform .28s ease;display:flex;flex-direction:column;color:var(--mr-ink);font-family:"DM Sans",sans-serif}
+[dir="rtl"] .mouneh-rewards-drawer{right:auto;left:0;transform:translateX(-105%)}.mouneh-rewards-drawer.is-open{transform:none}.mouneh-rewards-open{overflow:hidden}
+.mr-drawer-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--mr-line);background:linear-gradient(135deg,#f7f4ec,#eef3ea)}
+.mr-drawer-head>div{display:flex;align-items:center;gap:11px}.mr-drawer-head>div>span{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--mr-green);font-size:18px}.mr-drawer-head>div>div{display:grid}.mr-drawer-head small{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--mr-muted)}.mr-drawer-head strong{font:400 21px/1.1 "DM Serif Display",serif;color:var(--mr-green)}
+.mr-drawer-head button{width:38px;height:38px;border:1px solid var(--mr-line);border-radius:50%;background:#fff;color:var(--mr-green);font-size:24px;cursor:pointer}.mr-drawer-body{padding:20px;overflow:auto;overscroll-behavior:contain;display:grid;gap:18px}
+.mr-hero{text-align:center;padding:20px 14px 8px}.mr-hero-mark{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--mr-green);font-size:25px;margin:0 auto 13px}.mr-hero>p,.mr-member-head p,.mr-section-head p,.mr-referral p,.mr-join>p{margin:0 0 6px;text-transform:uppercase;letter-spacing:.13em;font-size:9px;font-weight:800;color:var(--mr-green2)}
+.mr-hero h2,.mr-auth h2,.mr-join h2,.mr-message h2{font:400 31px/1.02 "DM Serif Display",serif;margin:0;color:var(--mr-green)}.mr-hero>span,.mr-auth>p,.mr-join>span,.mr-referral span,.mr-message p{display:block;margin:10px auto 0;max-width:410px;color:var(--mr-muted);font-size:12px;line-height:1.65}
+.mr-rule{margin:18px auto 0;padding:13px 16px;border:1px dashed rgba(18,61,35,.25);border-radius:15px;background:#f2f5ee;display:grid;gap:3px;max-width:340px}.mr-rule strong{font-size:18px;color:var(--mr-green)}.mr-rule small{font-size:9px;color:var(--mr-muted)}
+.mr-reward-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.mr-reward-card{position:relative;padding:14px;border:1px solid var(--mr-line);border-radius:16px;background:#fff;display:grid;gap:5px;overflow:hidden}.mr-reward-card.is-ready{border-color:rgba(185,145,71,.55);background:linear-gradient(145deg,#fff,#fbf5e7)}.mr-reward-card .mr-leaf{position:absolute;right:8px;top:7px;opacity:.2}.mr-reward-card strong{font-size:10px;color:var(--mr-green2)}.mr-reward-card b{font-size:18px;color:var(--mr-green)}.mr-reward-card small{font-size:9px;line-height:1.45;color:var(--mr-muted)}.mr-reward-card button{margin-top:5px;min-height:35px;border:0;border-radius:10px;background:var(--mr-green);color:#fff;font-size:9px;font-weight:800;cursor:pointer}.mr-reward-card button:disabled{background:#edf0e9;color:#90978f;cursor:default}
+.mr-auth-actions{display:grid;gap:8px;margin-top:3px}.mr-auth-actions button,.mr-primary{min-height:48px;border-radius:13px;border:1px solid var(--mr-line);background:#fff;color:var(--mr-green);font-size:11px;font-weight:800;cursor:pointer}.mr-auth-actions .mr-primary,.mr-primary{background:var(--mr-green);color:#fff;border-color:var(--mr-green)}.mr-benefits{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}.mr-benefits span{padding:7px 9px;border-radius:999px;background:#eef3ea;color:var(--mr-green);font-size:8px;font-weight:700}
+.mr-auth,.mr-join,.mr-message{padding:10px 4px;display:grid;gap:12px}.mr-auth-tabs{display:grid;grid-template-columns:1fr 1fr;padding:4px;background:#edf1e9;border-radius:12px;margin-bottom:8px}.mr-auth-tabs button{border:0;background:transparent;border-radius:9px;min-height:39px;color:var(--mr-muted);font-size:10px;font-weight:800;cursor:pointer}.mr-auth-tabs button.is-active{background:#fff;color:var(--mr-green);box-shadow:0 3px 10px rgba(18,61,35,.08)}
+.mr-auth form,.mr-join form,.mr-details form{display:grid;gap:10px}.mr-auth label,.mr-join label,.mr-details label,.mr-voucher-select{display:grid;gap:5px;color:var(--mr-muted);font-size:9px;font-weight:700}.mr-auth input,.mr-join input,.mr-details input,.mr-voucher-select select{width:100%;min-height:45px;border:1px solid #d8ddd5;background:#fff;border-radius:11px;padding:0 12px;color:var(--mr-ink);outline:none}.mr-auth input:focus,.mr-join input:focus,.mr-details input:focus,.mr-voucher-select select:focus{border-color:var(--mr-green2);box-shadow:0 0 0 3px rgba(30,90,52,.08)}
+.mr-status{min-height:14px;font-size:9px;color:#9b4b3f}.mr-text{justify-self:start;border:0;background:none;color:var(--mr-green2);font-size:10px;font-weight:800;cursor:pointer;padding:6px 0}.mr-message{text-align:center;padding-top:35px}.mr-message>span{font-size:35px}
+.mr-member-head{padding:15px;border-radius:19px;background:linear-gradient(140deg,#123d23,#1d5632);color:#fff;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.mr-member-head p{color:#d5e5d7}.mr-member-head strong{font:400 38px/1 "DM Serif Display",serif}.mr-member-head strong span{font-size:20px}.mr-member-head small{display:block;margin-top:7px;color:#d5e5d7;font-size:9px}.mr-tier{padding:7px 9px;border-radius:999px;background:rgba(255,255,255,.13);font-size:8px;font-weight:800;white-space:nowrap}.mr-tier.golden{background:#c49a4d;color:#17321f}.mr-tier.olive{background:#dbe8cf;color:#17321f}
+.mr-progress{padding:13px 14px;border:1px solid var(--mr-line);border-radius:15px;background:#fff;display:grid;gap:9px}.mr-progress>div{display:flex;align-items:center;justify-content:space-between;gap:10px}.mr-progress span{font-size:9px;color:var(--mr-muted)}.mr-progress b{font-size:9px;color:var(--mr-green);text-align:right}.mr-progress i{height:7px;background:#edf1e9;border-radius:999px;overflow:hidden}.mr-progress i em{display:block;height:100%;background:linear-gradient(90deg,var(--mr-green2),var(--mr-gold));border-radius:inherit}
+.mr-section{display:grid;gap:10px}.mr-section-head{display:flex;justify-content:space-between;align-items:end}.mr-section-head h3,.mr-referral h3{margin:0;font-size:14px;color:var(--mr-ink)}.mr-wallet-list{display:grid;gap:8px}.mr-wallet-list article{padding:12px;border:1px solid var(--mr-line);border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px}.mr-wallet-list article>div{display:grid;gap:3px}.mr-wallet-list span{font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--mr-muted)}.mr-wallet-list strong{font-size:16px;color:var(--mr-green)}.mr-wallet-list small{font-size:8px;color:var(--mr-muted)}.mr-status-pill{font-size:7px;text-transform:uppercase;background:#eef3ea;color:var(--mr-green);padding:6px 7px;border-radius:999px}
+.mr-referral{padding:15px;border-radius:17px;background:#f0f3e9;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center}.mr-referral span{margin:7px 0 0;font-size:9px}.mr-referral button{border:1px dashed rgba(18,61,35,.35);border-radius:12px;background:#fff;padding:9px 12px;display:grid;gap:2px;text-align:center;cursor:pointer;color:var(--mr-green)}.mr-referral button small{font-size:7px;text-transform:uppercase}.mr-referral button strong{font-size:15px;letter-spacing:.08em}.mr-referral button em{font-size:7px;font-style:normal;color:var(--mr-muted)}
+.mr-details{border:1px solid var(--mr-line);border-radius:15px;background:#fff;overflow:hidden}.mr-details summary{padding:13px 14px;cursor:pointer;font-size:10px;font-weight:800;color:var(--mr-green)}.mr-details form{padding:0 14px 14px}.mr-details form button{min-height:40px;border:0;border-radius:10px;background:#eef3ea;color:var(--mr-green);font-size:9px;font-weight:800;cursor:pointer}
+.mr-ledger{display:grid;border:1px solid var(--mr-line);border-radius:14px;overflow:hidden;background:#fff}.mr-ledger>div{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-bottom:1px solid #edf0e9}.mr-ledger>div:last-child{border-bottom:0}.mr-ledger span{display:grid;gap:2px;font-size:9px;color:var(--mr-muted)}.mr-ledger span b{font-size:10px;color:var(--mr-green)}.mr-ledger small{font-size:8px;color:var(--mr-muted)}
+.mr-footer-actions{display:flex;justify-content:space-between;border-top:1px solid var(--mr-line);padding-top:13px}.mr-footer-actions button{border:0;background:none;color:var(--mr-muted);font-size:9px;font-weight:800;cursor:pointer}.mr-empty{margin:0;padding:13px;border-radius:12px;background:#f4f5f0;color:var(--mr-muted);font-size:9px;text-align:center}.mr-loading{min-height:320px;display:grid;place-items:center;align-content:center;gap:10px;color:var(--mr-muted)}.mr-loading span{font-size:30px;animation:mrPulse 1.2s ease-in-out infinite}.mr-loading p{font-size:10px}@keyframes mrPulse{50%{transform:scale(1.12);opacity:.65}}
+.mouneh-checkout-rewards{margin:10px 0;display:grid;gap:8px}.mr-checkout-join{width:100%;border:1px solid #d9e2d5;background:#f1f6ee;border-radius:13px;padding:10px 11px;display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center;text-align:left;color:var(--mr-green);cursor:pointer}.mr-checkout-join>span{font-size:17px}.mr-checkout-join>div{display:grid;gap:2px}.mr-checkout-join strong{font-size:10px}.mr-checkout-join small{font-size:8px;line-height:1.4;color:#647266}.mr-checkout-member{border:1px solid #d9e2d5;background:#f1f6ee;border-radius:13px;padding:9px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px}.mr-checkout-member>div{display:flex;align-items:center;gap:8px}.mr-checkout-member p{display:grid;margin:0}.mr-checkout-member strong{font-size:10px;color:var(--mr-green)}.mr-checkout-member small,.mr-checkout-note{font-size:8px;color:#647266}.mr-checkout-member button{border:0;background:none;color:var(--mr-green2);font-size:8px;font-weight:800;cursor:pointer}.mr-voucher-select{padding:0 2px}.mr-voucher-select select{min-height:40px}
+[dir="rtl"] .mr-checkout-join{text-align:right}[dir="rtl"] .mr-progress b{text-align:left}
+@media(max-width:760px){.mr-nav-copy{display:none}.mouneh-points-nav{width:44px;min-width:44px;padding:0;justify-content:center}.mouneh-points-nav b{position:absolute;right:-4px;top:-3px}.mouneh-rewards-drawer{width:100%}.mr-drawer-body{padding:16px}.mr-hero h2,.mr-auth h2,.mr-join h2,.mr-message h2{font-size:28px}.mr-reward-grid{grid-template-columns:1fr 1fr}.mr-referral{grid-template-columns:1fr}.mr-referral button{justify-self:stretch}.mr-member-head strong{font-size:34px}}
+@media(max-width:390px){.mr-reward-grid{grid-template-columns:1fr}.mr-drawer-body{padding:13px}}
+
+/* Rewards header visibility guard: never let the points control collapse inside the centered desktop header. */
+.site-header .nav>.nav-actions{overflow:visible!important}
+.site-header .nav>.nav-actions>.mouneh-points-nav{display:flex!important;flex-shrink:0!important;visibility:visible!important;opacity:1!important}
+@media (min-width:761px) and (max-width:1500px){
+  .site-header .mouneh-points-nav{width:78px!important;min-width:78px!important;padding:0 9px!important}
+  .site-header .mouneh-points-nav .mr-nav-copy{font-size:0!important}
+  .site-header .mouneh-points-nav .mr-nav-copy::after{content:"Points";font-size:10px!important}
+}
+@media (max-width:760px){
+  .site-header .mouneh-points-nav{display:flex!important;width:42px!important;min-width:42px!important;height:42px!important;min-height:42px!important;padding:0!important;flex:0 0 42px!important}
+  .site-header .mouneh-points-nav .mr-nav-copy{display:none!important}
+}
+
+
+/* ===== Mouneh Points account + wallet refinement v2 ===== */
+.mouneh-rewards-drawer{width:min(440px,calc(100vw - 28px));top:14px;right:14px;height:calc(100dvh - 28px);border-radius:24px;overflow:hidden;border:1px solid rgba(18,61,35,.10);box-shadow:-18px 22px 70px rgba(9,27,15,.22)}
+[dir="rtl"] .mouneh-rewards-drawer{right:auto;left:14px}
+.mr-drawer-head{padding:15px 17px;flex:0 0 auto}
+.mr-drawer-head>div>span{width:36px;height:36px;font-size:16px}
+.mr-drawer-head strong{font-size:19px}
+.mr-drawer-body{padding:17px 18px 20px;gap:14px}
+.mr-hero{padding:14px 8px 3px}
+.mr-hero-mark{width:50px;height:50px;font-size:22px;margin-bottom:10px}
+.mr-hero h2,.mr-auth h2,.mr-join h2,.mr-message h2,.mr-verify h2{font-size:27px;line-height:1.05}
+.mr-hero>span,.mr-auth>p,.mr-join>span,.mr-referral span,.mr-message p,.mr-verify>span{font-size:11px;line-height:1.58}
+.mr-reward-card{padding:12px;border-radius:14px}
+.mr-reward-card b{font-size:16px}
+.mr-reward-card small{font-size:8.5px}
+.mr-auth,.mr-join,.mr-message,.mr-verify{padding:5px 1px;gap:11px}
+.mr-auth-tabs{margin-bottom:2px}
+.mr-auth form,.mr-join form,.mr-details form{gap:9px}
+.mr-auth label,.mr-join label,.mr-details label,.mr-voucher-select{font-size:9.5px}
+.mr-auth input,.mr-join input,.mr-details input,.mr-voucher-select select{min-height:44px;border-radius:11px;font-size:12px}
+.mr-primary{min-height:46px}
+.mr-google{width:100%;min-height:47px;border:1px solid #d8ddd5;background:#fff;color:#26352b;border-radius:13px;display:flex;align-items:center;justify-content:center;gap:10px;font:800 11px/1 "DM Sans",sans-serif;cursor:pointer}
+.mr-google:hover{background:#f8faf7;border-color:#c5d0c3}
+.mr-google:disabled{opacity:.55;cursor:not-allowed}
+.mr-google-g{width:24px;height:24px;border:1px solid #dfe3df;border-radius:50%;display:grid;place-items:center;background:#fff;font-size:13px;font-weight:900;color:#325c9a}
+.mr-provider-note{display:block;margin-top:-5px;text-align:center;font-size:8px;color:#9b6a43}
+.mr-or{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:9px;color:#899087;font-size:8px;text-transform:uppercase;letter-spacing:.12em}
+.mr-or span{height:1px;background:#e6e9e3}
+.mr-or b{font-weight:800}
+.mr-auth-trust{margin:0!important;padding:9px 11px;border-radius:11px;background:#f5f6f2;color:#7b837b!important;font-size:8.5px!important;line-height:1.45!important}
+.mr-verify{text-align:center;padding:16px 4px}
+.mr-verify>p{margin:0;text-transform:uppercase;letter-spacing:.13em;font-size:8px;font-weight:900;color:var(--mr-green2)}
+.mr-verify-mark{width:58px;height:58px;margin:0 auto 4px;border-radius:50%;display:grid;place-items:center;background:#eef3ea;color:var(--mr-green);font-size:25px}
+.mr-verify>span{display:block;color:var(--mr-muted)}
+.mr-verify>span strong{color:var(--mr-green)}
+.mr-verify-note{display:flex;gap:10px;align-items:center;text-align:left;padding:11px;border:1px solid var(--mr-line);border-radius:13px;background:#fff}
+[dir="rtl"] .mr-verify-note{text-align:right}
+.mr-verify-note>b{width:34px;height:34px;flex:0 0 34px;border-radius:50%;display:grid;place-items:center;background:#eef3ea}
+.mr-verify-note>div{display:grid;gap:2px}
+.mr-verify-note strong{font-size:10px;color:var(--mr-green)}
+.mr-verify-note small{font-size:8px;line-height:1.45;color:var(--mr-muted)}
+.mr-wallet-preview{margin-top:12px;display:flex;gap:9px;align-items:center;text-align:left;padding:10px 11px;border:1px solid var(--mr-line);border-radius:13px;background:#fff}
+[dir="rtl"] .mr-wallet-preview{text-align:right}
+.mr-wallet-preview>span{width:34px;height:34px;flex:0 0 34px;border-radius:10px;display:grid;place-items:center;background:#eef3ea;color:var(--mr-green);font-size:18px}
+.mr-wallet-preview>div{display:grid;gap:2px}.mr-wallet-preview strong{font-size:10px;color:var(--mr-green)}.mr-wallet-preview small{font-size:8px;line-height:1.4;color:var(--mr-muted)}
+.mr-wallet-hero{padding:13px;border-radius:16px;background:linear-gradient(145deg,#f4f7f0,#fff);border:1px solid #dce5d8;display:grid;gap:11px}
+.mr-wallet-title{display:flex;align-items:center;gap:9px}
+.mr-wallet-title>span{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:var(--mr-green);color:#fff;font-size:16px}
+.mr-wallet-title>div{display:grid;gap:1px}
+.mr-wallet-title p{margin:0;font-size:8px;text-transform:uppercase;letter-spacing:.12em;font-weight:900;color:var(--mr-green2)}
+.mr-wallet-title h3{margin:0;font-size:12px;color:var(--mr-ink)}
+.mr-wallet-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mr-wallet-kpis>div{padding:10px;border-radius:11px;background:#fff;border:1px solid #e7ebe4;display:grid;gap:3px}
+.mr-wallet-kpis small{font-size:7.5px;color:var(--mr-muted)}
+.mr-wallet-kpis strong{font-size:13px;color:var(--mr-green)}
+.mr-wallet-section{padding-top:2px}
+.mr-member-head{padding:13px 14px;border-radius:16px}
+.mr-member-head strong{font-size:34px}
+.mr-progress{padding:11px 12px}
+.mr-referral{padding:13px;border-radius:15px}
+.mr-details summary{padding:11px 12px}
+.mr-ledger>div{padding:9px 10px}
+
+@media(max-width:760px){
+  .mouneh-rewards-drawer{top:0!important;right:0!important;left:auto!important;width:100%!important;height:100dvh!important;border-radius:0!important;border:0!important}
+  [dir="rtl"] .mouneh-rewards-drawer{right:auto!important;left:0!important}
+  .mr-drawer-head{padding:13px 14px}
+  .mr-drawer-body{padding:14px 14px calc(20px + env(safe-area-inset-bottom));gap:13px}
+  .mr-hero h2,.mr-auth h2,.mr-join h2,.mr-message h2,.mr-verify h2{font-size:25px}
+  .mr-auth,.mr-join,.mr-verify{padding-inline:0}
+  .mr-google,.mr-primary{min-height:46px}
+  .mr-wallet-kpis{grid-template-columns:1fr 1fr}
+}
+@media(max-width:360px){
+  .mr-reward-grid{grid-template-columns:1fr}
+  .mr-wallet-kpis{grid-template-columns:1fr}
+}
+
+
+/* ===== rewards6: keep Mouneh Points visible in every header ===== */
+.site-header .nav{overflow:visible!important}
+.site-header .nav>.nav-actions{
+  overflow:visible!important;
+  position:relative!important;
+  z-index:6!important;
+}
+.site-header #mounehRewardsButton{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  z-index:7!important;
+  flex-shrink:0!important;
+}
+
+@media (min-width:761px) and (max-width:980px){
+  .site-header .nav-search{display:none!important}
+  .site-header .cart-button{
+    width:46px!important;
+    min-width:46px!important;
+    padding:0!important;
+    justify-content:center!important;
+  }
+  .site-header .cart-button .cart-label{display:none!important}
+  .site-header .language-switch button{
+    min-width:38px!important;
+    padding-inline:7px!important;
+  }
+}
+
+@media (max-width:760px){
+  .site-header .nav{
+    grid-template-columns:42px minmax(42px,1fr) auto!important;
+    gap:6px!important;
+    overflow:visible!important;
+  }
+  .site-header .nav>.nav-toggle{
+    grid-column:1!important;
+    grid-row:1!important;
+    justify-self:start!important;
+  }
+  .site-header .nav>.brand{
+    grid-column:2!important;
+    grid-row:1!important;
+    justify-self:center!important;
+    min-width:42px!important;
+  }
+  .site-header .nav>.nav-actions{
+    grid-column:3!important;
+    grid-row:1!important;
+    justify-self:end!important;
+    min-width:0!important;
+    gap:4px!important;
+  }
+  .site-header .language-switch{
+    height:42px!important;
+    min-height:42px!important;
+    padding:3px!important;
+    flex:0 0 auto!important;
+  }
+  .site-header .language-switch button{
+    min-width:31px!important;
+    min-height:34px!important;
+    height:34px!important;
+    padding:0 6px!important;
+    font-size:.61rem!important;
+  }
+  .site-header #mounehRewardsButton{
+    width:42px!important;
+    min-width:42px!important;
+    height:42px!important;
+    min-height:42px!important;
+    flex:0 0 42px!important;
+    padding:0!important;
+  }
+  .site-header #mounehRewardsButton .mr-nav-copy{display:none!important}
+  .site-header .cart-button{
+    width:42px!important;
+    min-width:42px!important;
+    height:42px!important;
+    min-height:42px!important;
+    flex:0 0 42px!important;
+    padding:0!important;
+  }
+}
+
+@media (max-width:390px){
+  .site-header .nav{
+    width:min(100% - 14px,1380px)!important;
+    grid-template-columns:38px minmax(38px,1fr) auto!important;
+    gap:4px!important;
+  }
+  .site-header .nav>.nav-toggle{
+    width:38px!important;
+    min-width:38px!important;
+    height:38px!important;
+  }
+  .site-header .nav .brand-logo{
+    width:38px!important;
+    height:38px!important;
+  }
+  .site-header .nav>.nav-actions{gap:3px!important}
+  .site-header .language-switch{
+    height:38px!important;
+    min-height:38px!important;
+    padding:2px!important;
+  }
+  .site-header .language-switch button{
+    min-width:27px!important;
+    min-height:32px!important;
+    height:32px!important;
+    padding:0 4px!important;
+    font-size:.56rem!important;
+  }
+  .site-header #mounehRewardsButton,
+  .site-header .cart-button{
+    width:38px!important;
+    min-width:38px!important;
+    height:38px!important;
+    min-height:38px!important;
+    flex-basis:38px!important;
+  }
+}
+
+@media (max-width:335px){
+  .site-header .language-switch button:not(.is-active){display:none!important}
+  .site-header .language-switch button.is-active{min-width:34px!important}
+}
+
+
+/* ===== rewards7 account drawer fitting + layering ===== */
+.mouneh-rewards-backdrop{
+  z-index:4990!important;
+  background:rgba(7,20,11,.46)!important;
+  backdrop-filter:blur(5px)!important;
+}
+.mouneh-rewards-drawer{
+  z-index:5000!important;
+  top:12px!important;
+  right:12px!important;
+  width:min(520px,calc(100vw - 24px))!important;
+  height:calc(100dvh - 24px)!important;
+  border-radius:26px!important;
+  border:1px solid rgba(18,61,35,.11)!important;
+  background:#fffdf8!important;
+  box-shadow:-22px 26px 78px rgba(9,27,15,.22)!important;
+  overflow:hidden!important;
+}
+[dir="rtl"] .mouneh-rewards-drawer{
+  right:auto!important;
+  left:12px!important;
+}
+.mr-drawer-head{
+  flex:0 0 auto!important;
+  min-height:72px!important;
+  padding:14px 18px!important;
+  border-bottom:1px solid rgba(18,61,35,.10)!important;
+  background:linear-gradient(180deg,#f7f3e9 0%,#fbf9f4 100%)!important;
+}
+.mr-drawer-head>div>span{
+  width:40px!important;
+  height:40px!important;
+  border-radius:13px!important;
+}
+.mr-drawer-head strong{
+  font-size:21px!important;
+}
+.mr-drawer-head button{
+  width:40px!important;
+  height:40px!important;
+  border-radius:12px!important;
+}
+.mr-drawer-body{
+  padding:20px 22px 24px!important;
+  gap:16px!important;
+  scrollbar-gutter:stable!important;
+  overscroll-behavior:contain!important;
+}
+.mr-auth,.mr-join,.mr-message,.mr-verify{
+  padding:2px 0 12px!important;
+  gap:13px!important;
+}
+.mr-auth-tabs{
+  margin:0 0 2px!important;
+  padding:4px!important;
+  border-radius:14px!important;
+}
+.mr-auth-tabs button{
+  min-height:42px!important;
+  border-radius:10px!important;
+  font-size:11px!important;
+}
+.mr-auth h2,.mr-join h2,.mr-message h2,.mr-verify h2{
+  max-width:470px!important;
+  font-size:clamp(30px,4vw,36px)!important;
+  line-height:1.02!important;
+  letter-spacing:-.02em!important;
+}
+.mr-auth>p,.mr-join>span,.mr-message p,.mr-verify>span{
+  margin:0!important;
+  max-width:470px!important;
+  font-size:12px!important;
+  line-height:1.55!important;
+}
+.mr-google{
+  min-height:52px!important;
+  border-radius:15px!important;
+  border-color:#d8ddd5!important;
+  font-size:12px!important;
+  background:#fff!important;
+}
+.mr-google:not(:disabled):hover{
+  transform:translateY(-1px);
+  background:#fbfcfa!important;
+  border-color:#bcc9ba!important;
+}
+.mr-google.is-disabled,.mr-google:disabled{
+  opacity:1!important;
+  color:#8b918b!important;
+  background:#f6f5f1!important;
+  border-style:dashed!important;
+}
+.mr-google-g{
+  width:26px!important;
+  height:26px!important;
+}
+.mr-provider-note{
+  margin:-4px 0 1px!important;
+  padding:7px 10px!important;
+  border-radius:10px!important;
+  background:#f7f2e8!important;
+  color:#8a6945!important;
+  font-size:9px!important;
+  line-height:1.35!important;
+  text-align:center!important;
+}
+.mr-or{
+  margin:0!important;
+  gap:11px!important;
+  font-size:9px!important;
+}
+.mr-or span{
+  background:#dde2da!important;
+}
+.mr-auth-form{
+  display:grid!important;
+  gap:11px!important;
+}
+.mr-auth-form.is-signup{
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  column-gap:12px!important;
+  row-gap:11px!important;
+}
+.mr-auth-form.is-signup label:nth-of-type(3){
+  grid-column:1/-1!important;
+}
+.mr-auth-form>.mr-primary,
+.mr-auth-form>.mr-status{
+  grid-column:1/-1!important;
+}
+.mr-auth label,.mr-join label{
+  gap:6px!important;
+  color:#536359!important;
+  font-size:10px!important;
+  font-weight:800!important;
+}
+.mr-auth input,.mr-join input{
+  min-height:49px!important;
+  height:49px!important;
+  padding:0 14px!important;
+  border-radius:13px!important;
+  border-color:#d6ddd4!important;
+  font-size:13px!important;
+  background:#fff!important;
+}
+.mr-auth input:focus,.mr-join input:focus{
+  border-color:#b99147!important;
+  box-shadow:0 0 0 4px rgba(185,145,71,.12)!important;
+}
+.mr-primary{
+  min-height:50px!important;
+  border-radius:14px!important;
+  font-size:12px!important;
+}
+.mr-status{
+  min-height:0!important;
+  font-size:9px!important;
+  line-height:1.4!important;
+}
+.mr-status:empty{
+  display:none!important;
+}
+.mr-auth-trust{
+  padding:9px 11px!important;
+  border:1px solid #e6e8e2!important;
+  border-radius:11px!important;
+  background:#f7f7f3!important;
+}
+.mr-text{
+  font-size:10px!important;
+  padding:4px 0!important;
+}
+
+@media (min-width:601px) and (max-width:760px){
+  .mouneh-rewards-drawer{
+    top:10px!important;
+    right:10px!important;
+    left:auto!important;
+    width:min(520px,calc(100vw - 20px))!important;
+    height:calc(100dvh - 20px)!important;
+    border-radius:24px!important;
+  }
+  [dir="rtl"] .mouneh-rewards-drawer{
+    right:auto!important;
+    left:10px!important;
+  }
+}
+
+@media (max-width:600px){
+  .mouneh-rewards-drawer{
+    top:0!important;
+    right:0!important;
+    left:auto!important;
+    width:100%!important;
+    height:100dvh!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+  }
+  [dir="rtl"] .mouneh-rewards-drawer{
+    right:auto!important;
+    left:0!important;
+  }
+  .mr-drawer-head{
+    min-height:66px!important;
+    padding:12px 14px!important;
+  }
+  .mr-drawer-body{
+    padding:15px 15px calc(22px + env(safe-area-inset-bottom))!important;
+    gap:14px!important;
+  }
+  .mr-auth h2,.mr-join h2,.mr-message h2,.mr-verify h2{
+    font-size:30px!important;
+  }
+}
+
+@media (max-width:560px){
+  .mr-auth-form.is-signup{
+    grid-template-columns:1fr!important;
+  }
+  .mr-auth-form.is-signup label:nth-of-type(3),
+  .mr-auth-form>.mr-primary,
+  .mr-auth-form>.mr-status{
+    grid-column:auto!important;
+  }
+  .mr-auth input,.mr-join input{
+    min-height:48px!important;
+    height:48px!important;
+  }
+}
+
+.mr-auth-legal{margin:1px 2px 0!important;color:#7c837c!important;font-size:8.5px!important;line-height:1.5!important;text-align:center}
+.mr-auth-legal a,.mr-legal-consent a{color:#275f3a;text-decoration:underline;text-underline-offset:2px;font-weight:700}
+.mr-legal-consent{display:grid!important;grid-template-columns:20px 1fr;gap:9px!important;align-items:start!important;padding:11px 12px;border:1px solid #d9e2d8;border-radius:12px;background:#f8faf6;cursor:pointer}
+.mr-auth-consent{margin:12px 0 8px}
+.mr-legal-consent>input{width:18px!important;height:18px!important;min-height:0!important;margin:1px 0 0!important;accent-color:#1b5b35;cursor:pointer}
+.mr-legal-consent>span{font-size:10px;line-height:1.6;color:#5f6861;text-transform:none;letter-spacing:0}
+.mr-legal-consent:has(input:focus-visible){outline:2px solid #275f3a;outline-offset:2px}
+.mr-legal-consent:has(input:checked){border-color:#aac4b0;background:#f3f8f2}
+
+
+/* ===== rewards11 persistent points + account/referral clarity ===== */
+/* Keep the Points control present even when other header code reflows or rewrites navigation. */
+.site-header .nav>.nav-actions{
+  display:flex!important;
+  align-items:center!important;
+  flex-wrap:nowrap!important;
+  overflow:visible!important;
+}
+.site-header #mounehRewardsButton{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  flex:0 0 auto!important;
+  transform:none!important;
+}
+.site-header #mounehRewardsButton .mr-nav-leaf{
+  display:inline-block!important;
+  flex:0 0 auto!important;
+}
+
+.mr-account-identity{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) auto;
+  align-items:center;
+  gap:11px;
+  padding:11px 12px;
+  border:1px solid #dfe6dc;
+  border-radius:14px;
+  background:#fbfcf9;
+}
+.mr-account-avatar{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:var(--mr-green);
+  color:#fff;
+  font:400 20px/1 "DM Serif Display",serif;
+}
+.mr-account-identity>div{min-width:0;display:grid;gap:2px}
+.mr-account-identity small{
+  color:var(--mr-muted);
+  font-size:8px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
+.mr-account-identity strong{
+  color:var(--mr-ink);
+  font-size:11px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.mr-account-identity em{
+  color:var(--mr-muted);
+  font-size:8.5px;
+  font-style:normal;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.mr-account-identity>b{
+  align-self:start;
+  padding:6px 8px;
+  border-radius:999px;
+  background:#edf5ec;
+  color:var(--mr-green2);
+  font-size:8px;
+  white-space:nowrap;
+}
+
+.mr-order-status{display:grid;gap:9px}
+.mr-order-status-list{display:grid;gap:7px}
+.mr-order-status-list article{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 11px;
+  border:1px solid var(--mr-line);
+  border-radius:12px;
+  background:#fff;
+}
+.mr-order-status-list article>div{min-width:0;display:grid;gap:3px}
+.mr-order-status-list strong{color:var(--mr-ink);font-size:9.5px}
+.mr-order-status-list small{color:var(--mr-muted);font-size:8px}
+.mr-order-status-list span{
+  flex:0 0 auto;
+  padding:6px 8px;
+  border-radius:999px;
+  font-size:8px;
+  font-weight:900;
+}
+.mr-order-status-list span.is-confirmed{background:#eaf4e8;color:var(--mr-green)}
+.mr-order-status-list span.is-pending{background:#f7f1e5;color:#8c6636}
+.mr-order-proof{
+  display:block;
+  color:#667269;
+  font-size:8px;
+  line-height:1.45;
+}
+
+.mr-referral{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:12px!important;
+  padding:14px!important;
+  border:1px solid #dce5d8!important;
+  border-radius:16px!important;
+  background:linear-gradient(145deg,#f0f4ea,#f9faf6)!important;
+}
+.mr-referral-main{min-width:0;display:grid;gap:5px}
+.mr-referral-main p{margin:0!important}
+.mr-referral-main h3{margin:0;color:var(--mr-ink);font-size:13px}
+.mr-referral-main>span{
+  margin:0!important;
+  max-width:none!important;
+  color:var(--mr-muted);
+  font-size:8.5px!important;
+  line-height:1.5!important;
+}
+.mr-referral-main>em{
+  color:#607066;
+  font-size:7.5px;
+  line-height:1.45;
+  font-style:normal;
+}
+.mr-referral-stats{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-top:2px;
+}
+.mr-referral-stats small{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 7px;
+  border-radius:999px;
+  background:#fff;
+  border:1px solid #e1e7de;
+  color:var(--mr-muted);
+  font-size:7px;
+}
+.mr-referral-stats b{color:var(--mr-green);font-size:8px}
+.mr-referral>button{
+  min-width:108px;
+  max-width:130px;
+  padding:9px 10px!important;
+  border:1px dashed rgba(18,61,35,.30)!important;
+  border-radius:12px!important;
+  background:#fff!important;
+}
+.mr-referral>button strong{font-size:13px!important}
+.mr-referral>button em{margin-top:3px}
+
+#mrSignupReferral,#mrReferral{text-transform:uppercase;letter-spacing:.05em}
+.mr-auth-form.is-signup label{grid-column:auto!important}
+.mr-auth-form.is-signup .mr-primary,
+.mr-auth-form.is-signup .mr-status{grid-column:1/-1!important}
+
+@media(max-width:560px){
+  .mr-account-identity{
+    grid-template-columns:38px minmax(0,1fr) auto;
+    padding:10px;
+  }
+  .mr-account-avatar{width:38px;height:38px}
+  .mr-referral{grid-template-columns:1fr!important}
+  .mr-referral>button{width:100%!important;max-width:none!important}
+}
+@media(max-width:390px){
+  .site-header #mounehRewardsButton{
+    display:flex!important;
+    min-width:38px!important;
+    width:38px!important;
+    flex-basis:38px!important;
+  }
+  .site-header .language-switch button{display:flex!important}
+}
+@media(max-width:335px){
+  .site-header .language-switch button,
+  .site-header .language-switch button:not(.is-active){
+    display:flex!important;
+    min-width:24px!important;
+    padding-inline:3px!important;
+    font-size:.52rem!important;
+  }
+  .site-header #mounehRewardsButton,
+  .site-header .cart-button{
+    width:36px!important;
+    min-width:36px!important;
+    flex-basis:36px!important;
+  }
+}
+
+
+/* Customer account entry + full-account bridge */
+.mouneh-account-nav{min-height:46px;display:flex;align-items:center;gap:7px;padding:0 11px;border:1px solid rgba(18,61,35,.14);border-radius:999px;background:#fff;color:var(--mr-green);text-decoration:none;font:800 10px/1 "DM Sans",sans-serif;white-space:nowrap;flex:0 0 auto}
+.mouneh-account-nav:hover{background:#f3f6ee}
+.mr-account-nav-avatar{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--mr-green);color:#fff;font-size:10px;font-weight:800}
+.mr-account-nav-copy{max-width:88px;overflow:hidden;text-overflow:ellipsis}
+.mr-full-account{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:12px 13px;border-radius:15px;background:#eef3ea;border:1px solid var(--mr-line);color:var(--mr-green);text-decoration:none}
+.mr-full-account>span{width:34px;height:34px;border-radius:11px;background:#fff;display:grid;place-items:center}
+.mr-full-account>div{display:grid;gap:2px}.mr-full-account strong{font-size:10px}.mr-full-account small{font-size:8px;line-height:1.4;color:var(--mr-muted)}.mr-full-account>b{font-size:12px}
+@media(max-width:1050px){.mouneh-account-nav{width:44px;min-width:44px;padding:0;justify-content:center}.mr-account-nav-copy{display:none}}
+@media(max-width:760px){.mouneh-account-nav{display:none!important}.mouneh-account-menu-link{display:grid!important}}
+
+.mr-order-status-list span.is-cancelled{background:#f3eeee;color:#8a5350}
+
+/* persistent header controls rewards14 */
+.site-header #mounehRewardsButton{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+.site-header .language-switch{display:flex!important;visibility:visible!important;opacity:1!important}
+.site-header .language-switch button,
+.site-header .language-switch button:not(.is-active){display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+
+
+/* ===== account2 compact header + no duplicate account nav ===== */
+#mounehAccountMenuLink{display:none!important}
+.site-header #mounehRewardsButton.mouneh-points-nav,
+.site-header #mounehRewardsButton.mouneh-points-nav.is-compact{
+  width:auto!important;min-width:52px!important;min-height:44px!important;height:44px!important;
+  padding:0 10px!important;gap:5px!important;justify-content:center!important;border-radius:999px!important;
+}
+.site-header #mounehRewardsButton .mr-nav-copy{display:none!important}
+.site-header #mounehRewardsButton #mounehPointsBadge{
+  display:inline!important;visibility:visible!important;opacity:1!important;min-width:12px!important;
+  font-size:10px!important;line-height:1!important;font-weight:900!important;
+}
+.site-header .mouneh-account-nav{min-height:44px!important;height:44px!important}
+@media(max-width:760px){
+  .site-header #mounehRewardsButton.mouneh-points-nav{min-width:48px!important;width:auto!important;height:42px!important;min-height:42px!important;padding:0 8px!important}
+  .site-header .mouneh-account-nav{height:42px!important;min-height:42px!important;padding:0 9px!important}
+  .site-header .mouneh-account-nav .mr-account-nav-copy{max-width:62px!important}
+}
+
+
+/* ===== account4 stable header controls ===== */
+.site-header .nav>.nav-actions{
+  display:flex!important;align-items:center!important;gap:8px!important;overflow:visible!important;
+}
+.site-header .nav-search{
+  width:50px!important;height:50px!important;min-width:50px!important;min-height:50px!important;
+  border:1px solid rgba(18,61,35,.14)!important;border-radius:999px!important;background:#fff!important;
+}
+.site-header .language-switch{
+  min-height:50px!important;height:50px!important;padding:4px!important;
+  border:1px solid rgba(18,61,35,.12)!important;border-radius:999px!important;background:#eee9df!important;
+}
+.site-header .language-switch button{
+  min-width:62px!important;height:40px!important;border-radius:999px!important;
+  font-size:12px!important;font-weight:800!important;
+}
+.site-header #mounehRewardsButton.mouneh-points-nav,
+.site-header #mounehRewardsButton.mouneh-points-nav.is-compact{
+  display:inline-flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;
+  width:auto!important;min-width:70px!important;height:50px!important;min-height:50px!important;
+  flex:0 0 auto!important;align-items:center!important;justify-content:center!important;
+  gap:7px!important;padding:0 14px!important;border:1px solid rgba(18,61,35,.12)!important;
+  border-radius:999px!important;background:#f1f6ee!important;color:#174b2a!important;
+  box-shadow:none!important;
+}
+.site-header #mounehRewardsButton .mr-nav-leaf{font-size:19px!important;line-height:1!important}
+.site-header #mounehRewardsButton .mr-nav-copy{display:none!important}
+.site-header #mounehRewardsButton #mounehPointsBadge{
+  display:inline!important;visibility:visible!important;opacity:1!important;
+  width:auto!important;min-width:0!important;height:auto!important;min-height:0!important;
+  margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
+  background:transparent!important;color:#174b2a!important;box-shadow:none!important;
+  font:900 13px/1 "DM Sans",sans-serif!important;
+}
+.site-header .mouneh-account-nav{
+  display:inline-flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;
+  min-width:112px!important;width:auto!important;height:50px!important;min-height:50px!important;
+  align-items:center!important;justify-content:center!important;gap:8px!important;padding:0 15px!important;
+  border:1px solid rgba(18,61,35,.14)!important;border-radius:999px!important;background:#fff!important;
+  color:#174b2a!important;text-decoration:none!important;box-shadow:none!important;
+  font:800 12px/1 "DM Sans",sans-serif!important;
+}
+.site-header .mouneh-account-nav:hover,
+.site-header #mounehRewardsButton:hover{background:#eaf2e6!important}
+.site-header .mr-account-nav-avatar{
+  position:relative!important;width:28px!important;height:28px!important;min-width:28px!important;
+  border-radius:50%!important;display:grid!important;place-items:center!important;
+  background:#174b2a!important;color:#fff!important;font:900 10px/1 "DM Sans",sans-serif!important;
+}
+.site-header .mr-account-nav-avatar.is-guest{font-size:0!important}
+.site-header .mr-account-nav-avatar.is-guest::before{
+  content:"";position:absolute;top:6px;left:9px;width:8px;height:8px;
+  border:1.7px solid #fff;border-radius:50%;box-sizing:border-box;
+}
+.site-header .mr-account-nav-avatar.is-guest::after{
+  content:"";position:absolute;left:7px;bottom:6px;width:12px;height:7px;
+  border:1.7px solid #fff;border-top-left-radius:8px;border-top-right-radius:8px;
+  border-bottom:0;box-sizing:border-box;
+}
+.site-header .mr-account-nav-copy{
+  display:inline!important;max-width:94px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;
+}
+.site-header .cart-button{
+  height:50px!important;min-height:50px!important;border:1px solid rgba(18,61,35,.14)!important;
+  border-radius:999px!important;background:#fff!important;
+}
+@media(max-width:1050px){
+  .site-header .mouneh-account-nav{min-width:50px!important;width:50px!important;padding:0!important}
+  .site-header .mouneh-account-nav .mr-account-nav-copy{display:none!important}
+  .site-header #mounehRewardsButton.mouneh-points-nav{min-width:62px!important;padding:0 11px!important}
+}
+@media(max-width:760px){
+  .site-header .nav>.nav-actions{gap:6px!important}
+  .site-header .nav-search{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important}
+  .site-header .language-switch{height:44px!important;min-height:44px!important;padding:3px!important}
+  .site-header .language-switch button{height:36px!important;min-width:48px!important;font-size:11px!important}
+  .site-header #mounehRewardsButton.mouneh-points-nav{display:inline-flex!important;height:44px!important;min-height:44px!important;min-width:58px!important;padding:0 9px!important}
+  .site-header .mouneh-account-nav{display:inline-flex!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;padding:0!important}
+  .site-header .mr-account-nav-avatar{width:26px!important;height:26px!important;min-width:26px!important}
+  .site-header .cart-button{height:44px!important;min-height:44px!important}
+}
+
+
+/* ===== account6 responsive navigation fit ===== */
+.site-header .nav-actions,
+.site-header .nav-actions a,
+.site-header .nav-actions button,
+.site-header .language-switch button{
+  -webkit-user-select:none!important;
+  user-select:none!important;
+}
+.site-header .brand{
+  min-width:0!important;
+}
+.site-header .brand-wordmark{
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+
+/* Laptop/menu mode: protect the full brand instead of letting utilities overlap it. */
+@media(min-width:1081px) and (max-width:1180px){
+  .site-header .nav{
+    width:min(100% - 28px,1380px)!important;
+    display:grid!important;
+    grid-template-columns:46px minmax(230px,1fr) auto!important;
+    column-gap:12px!important;
+    align-items:center!important;
+  }
+  .site-header .nav>.nav-toggle{
+    grid-column:1!important;
+    grid-row:1!important;
+    display:flex!important;
+    width:44px!important;
+    height:44px!important;
+    justify-self:start!important;
+  }
+  .site-header .nav>.brand{
+    grid-column:2!important;
+    grid-row:1!important;
+    justify-self:start!important;
+    margin:0!important;
+    gap:9px!important;
+    min-width:0!important;
+    max-width:100%!important;
+  }
+  .site-header .nav .brand-logo{
+    width:43px!important;
+    height:43px!important;
+    flex:0 0 43px!important;
+  }
+  .site-header .nav .brand-wordmark{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    max-width:none!important;
+    font-size:1.42rem!important;
+    white-space:nowrap!important;
+  }
+  .site-header .nav>.nav-actions{
+    grid-column:3!important;
+    grid-row:1!important;
+    justify-self:end!important;
+    gap:7px!important;
+    min-width:max-content!important;
+  }
+  .site-header .nav-search{
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    min-height:44px!important;
+    flex-basis:44px!important;
+  }
+  .site-header .language-switch{
+    height:44px!important;
+    min-height:44px!important;
+    padding:3px!important;
+  }
+  .site-header .language-switch button{
+    min-width:40px!important;
+    height:36px!important;
+    min-height:36px!important;
+    padding:0 7px!important;
+    font-size:.67rem!important;
+  }
+  .site-header #mounehRewardsButton.mouneh-points-nav{
+    min-width:58px!important;
+    width:auto!important;
+    height:44px!important;
+    min-height:44px!important;
+    padding:0 10px!important;
+    gap:5px!important;
+  }
+  .site-header #mounehRewardsButton #mounehPointsBadge{
+    font-size:12px!important;
+  }
+  .site-header .mouneh-account-nav{
+    min-width:94px!important;
+    width:auto!important;
+    height:44px!important;
+    min-height:44px!important;
+    padding:0 11px!important;
+    gap:7px!important;
+  }
+  .site-header .mr-account-nav-avatar{
+    width:25px!important;
+    height:25px!important;
+    min-width:25px!important;
+  }
+  .site-header .mr-account-nav-copy{
+    display:inline!important;
+    max-width:62px!important;
+    font-size:11px!important;
+  }
+  .site-header .cart-button{
+    height:44px!important;
+    min-height:44px!important;
+    padding:0 9px 0 12px!important;
+    gap:8px!important;
+    font-size:.82rem!important;
+  }
+}
+
+/* Tablet: keep controls useful, but prioritize the logo and prevent overlap. */
+@media(max-width:1080px){
+  .site-header .nav{
+    width:min(100% - 24px,1380px)!important;
+    grid-template-columns:44px minmax(54px,1fr) auto!important;
+    column-gap:8px!important;
+    align-items:center!important;
+  }
+  .site-header .nav>.nav-toggle{
+    grid-column:1!important;
+    display:flex!important;
+    width:42px!important;
+    height:42px!important;
+    justify-self:start!important;
+  }
+  .site-header .nav>.brand{
+    grid-column:2!important;
+    justify-self:start!important;
+    gap:7px!important;
+    min-width:0!important;
+  }
+  .site-header .nav .brand-logo{
+    width:40px!important;
+    height:40px!important;
+    flex:0 0 40px!important;
+  }
+  .site-header .nav .brand-wordmark{
+    display:none!important;
+  }
+  .site-header .nav>.nav-actions{
+    grid-column:3!important;
+    justify-self:end!important;
+    gap:5px!important;
+    min-width:max-content!important;
+  }
+  .site-header .nav-search{display:none!important}
+  .site-header .language-switch{
+    height:42px!important;
+    min-height:42px!important;
+    padding:3px!important;
+  }
+  .site-header .language-switch button{
+    min-width:34px!important;
+    height:34px!important;
+    min-height:34px!important;
+    padding:0 5px!important;
+    font-size:.61rem!important;
+  }
+  .site-header #mounehRewardsButton.mouneh-points-nav{
+    min-width:54px!important;
+    height:42px!important;
+    min-height:42px!important;
+    padding:0 8px!important;
+    gap:4px!important;
+  }
+  .site-header .mouneh-account-nav{
+    min-width:42px!important;
+    width:42px!important;
+    height:42px!important;
+    min-height:42px!important;
+    padding:0!important;
+  }
+  .site-header .mouneh-account-nav .mr-account-nav-copy{display:none!important}
+  .site-header .mr-account-nav-avatar{
+    width:25px!important;
+    height:25px!important;
+    min-width:25px!important;
+  }
+  .site-header .cart-button{
+    width:42px!important;
+    min-width:42px!important;
+    height:42px!important;
+    min-height:42px!important;
+    padding:0!important;
+    justify-content:center!important;
+  }
+  .site-header .cart-button .cart-label{display:none!important}
+}
+
+/* Phones: no disappearing controls, no squeezed brand. */
+@media(max-width:760px){
+  .site-header .nav{
+    width:min(100% - 16px,1380px)!important;
+    grid-template-columns:40px minmax(38px,1fr) auto!important;
+    column-gap:5px!important;
+  }
+  .site-header .nav>.nav-toggle{width:38px!important;height:38px!important}
+  .site-header .nav .brand-logo{width:36px!important;height:36px!important;flex-basis:36px!important}
+  .site-header .nav>.nav-actions{gap:4px!important}
+  .site-header .language-switch{height:38px!important;min-height:38px!important;padding:2px!important}
+  .site-header .language-switch button{min-width:29px!important;height:32px!important;min-height:32px!important;padding:0 4px!important;font-size:.56rem!important}
+  .site-header #mounehRewardsButton.mouneh-points-nav{min-width:48px!important;height:38px!important;min-height:38px!important;padding:0 7px!important}
+  .site-header .mouneh-account-nav{width:38px!important;min-width:38px!important;height:38px!important;min-height:38px!important}
+  .site-header .cart-button{width:38px!important;min-width:38px!important;height:38px!important;min-height:38px!important}
+}
+
+
+/* ===== rewards25-design: clearer Mouneh Points wallet + reward ladder ===== */
+.mr-reward-options{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  gap:14px!important;
+  align-items:center!important;
+  padding:15px 16px!important;
+  border:1px solid rgba(21,72,40,.12)!important;
+  border-radius:18px!important;
+  background:linear-gradient(135deg,#f3f7ee 0%,#fffdf7 55%,#fbf3dc 100%)!important;
+  box-shadow:0 10px 28px rgba(18,61,35,.05)!important;
+}
+.mr-reward-options-copy{display:grid;gap:3px;min-width:0}
+.mr-reward-options-copy small{
+  margin:0!important;
+  color:#6d7a6f!important;
+  font-size:7.5px!important;
+  font-weight:900!important;
+  letter-spacing:.12em!important;
+  text-transform:uppercase!important;
+}
+.mr-reward-options-copy strong{
+  color:var(--mr-green)!important;
+  font:400 18px/1.08 "DM Serif Display",serif!important;
+}
+.mr-reward-options-copy span{
+  color:var(--mr-muted)!important;
+  font-size:8.5px!important;
+  line-height:1.45!important;
+}
+.mr-reward-values{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  justify-content:flex-end!important;
+  gap:5px!important;
+  max-width:190px!important;
+}
+.mr-reward-values span{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:42px!important;
+  min-height:28px!important;
+  padding:0 8px!important;
+  border:1px solid #e2e8df!important;
+  border-radius:999px!important;
+  background:#fff!important;
+  color:var(--mr-green)!important;
+  font-size:8px!important;
+  font-weight:900!important;
+  box-shadow:0 3px 9px rgba(18,61,35,.04)!important;
+}
+.mr-reward-values span.is-starter{
+  border-color:#d8b34e!important;
+  background:#173f26!important;
+  color:#fff8df!important;
+}
+
+.mr-reward-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+.mr-reward-card{
+  min-height:166px!important;
+  padding:13px!important;
+  border-radius:18px!important;
+  border:1px solid #e3e8e0!important;
+  background:linear-gradient(180deg,#fff 0%,#fdfdf9 100%)!important;
+  box-shadow:0 7px 18px rgba(19,58,33,.035)!important;
+  gap:7px!important;
+  align-content:start!important;
+}
+.mr-reward-card:hover{
+  border-color:#ced9cc!important;
+  box-shadow:0 10px 24px rgba(19,58,33,.07)!important;
+}
+.mr-reward-card.is-starter{
+  grid-column:1/-1!important;
+  min-height:0!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  grid-template-areas:
+    "top top"
+    "points value"
+    "minimum value"
+    "action action"!important;
+  align-items:center!important;
+  column-gap:16px!important;
+  padding:16px!important;
+  border-color:rgba(187,148,61,.38)!important;
+  background:
+    radial-gradient(circle at 88% 18%,rgba(222,182,83,.22),transparent 28%),
+    linear-gradient(135deg,#fffdf7,#f7f2df)!important;
+}
+.mr-reward-card.is-ready{
+  border-color:rgba(38,103,56,.33)!important;
+  background:linear-gradient(145deg,#f8fbf5,#fffaf0)!important;
+}
+.mr-reward-card.is-starter.is-ready{
+  border-color:#cfaa48!important;
+  box-shadow:0 10px 26px rgba(185,145,71,.13)!important;
+}
+.mr-reward-card-top{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+}
+.mr-reward-card.is-starter .mr-reward-card-top{grid-area:top}
+.mr-reward-step{
+  display:inline-flex!important;
+  align-items:center!important;
+  min-height:22px!important;
+  padding:0 8px!important;
+  border-radius:999px!important;
+  background:#eef3e9!important;
+  color:#477052!important;
+  font-size:6.8px!important;
+  font-weight:900!important;
+  letter-spacing:.08em!important;
+  text-transform:uppercase!important;
+}
+.mr-reward-card.is-starter .mr-reward-step{
+  background:#173f26!important;
+  color:#fff4cf!important;
+}
+.mr-reward-card .mr-leaf{
+  position:static!important;
+  display:inline-grid!important;
+  place-items:center!important;
+  width:26px!important;
+  height:26px!important;
+  border-radius:50%!important;
+  background:#f0f4ec!important;
+  opacity:1!important;
+  font-size:12px!important;
+}
+.mr-reward-card.is-starter .mr-leaf{background:#fff7dc!important}
+.mr-reward-points{
+  display:flex!important;
+  align-items:baseline!important;
+  gap:4px!important;
+}
+.mr-reward-card.is-starter .mr-reward-points{grid-area:points}
+.mr-reward-points strong{
+  color:var(--mr-green)!important;
+  font:400 29px/1 "DM Serif Display",serif!important;
+}
+.mr-reward-points span{
+  color:#68766b!important;
+  font-size:7.5px!important;
+  font-weight:800!important;
+  text-transform:uppercase!important;
+  letter-spacing:.08em!important;
+}
+.mr-reward-value{
+  display:flex!important;
+  align-items:baseline!important;
+  gap:4px!important;
+}
+.mr-reward-card.is-starter .mr-reward-value{
+  grid-area:value;
+  justify-self:end!important;
+  align-self:center!important;
+}
+.mr-reward-value b{
+  color:#16472a!important;
+  font:800 20px/1 "DM Sans",sans-serif!important;
+}
+.mr-reward-card.is-starter .mr-reward-value b{
+  font-size:28px!important;
+  color:#8a6714!important;
+}
+.mr-reward-value span{
+  color:#6e776f!important;
+  font-size:7.5px!important;
+  font-weight:800!important;
+  text-transform:uppercase!important;
+}
+.mr-reward-card>small{
+  color:#738077!important;
+  font-size:8px!important;
+  line-height:1.4!important;
+}
+.mr-reward-card.is-starter>small{grid-area:minimum}
+.mr-reward-card button{
+  min-height:38px!important;
+  margin-top:auto!important;
+  border-radius:11px!important;
+  font-size:8px!important;
+  letter-spacing:.01em!important;
+}
+.mr-reward-card.is-starter button{grid-area:action}
+.mr-reward-card button:not(:disabled){
+  background:linear-gradient(135deg,#174528,#245f37)!important;
+  box-shadow:0 6px 14px rgba(23,69,40,.15)!important;
+}
+.mr-reward-card button:disabled{
+  background:#f0f2ee!important;
+  color:#899189!important;
+  border:1px solid #e4e8e1!important;
+}
+.mr-reward-hint{
+  grid-area:action;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:34px!important;
+  border-radius:10px!important;
+  background:#fff7dc!important;
+  color:#8a6714!important;
+  font-size:7.5px!important;
+  font-style:normal!important;
+  font-weight:900!important;
+}
+
+.mr-wallet-hero{
+  border-radius:19px!important;
+  background:
+    radial-gradient(circle at 90% 10%,rgba(211,170,64,.13),transparent 28%),
+    linear-gradient(145deg,#f5f8f1,#fffdf8)!important;
+  border-color:#dbe4d7!important;
+  box-shadow:0 8px 22px rgba(18,61,35,.04)!important;
+}
+.mr-member-head{
+  background:
+    radial-gradient(circle at 88% 15%,rgba(226,190,94,.18),transparent 30%),
+    linear-gradient(140deg,#123d23,#1d5632)!important;
+  box-shadow:0 12px 28px rgba(18,61,35,.13)!important;
+}
+.mr-progress{
+  border-radius:17px!important;
+  background:linear-gradient(180deg,#fff,#fafbf8)!important;
+}
+.mr-progress i{height:8px!important}
+.mr-section-head h3{font-size:15px!important}
+
+@media(max-width:460px){
+  .mr-reward-options{
+    grid-template-columns:1fr!important;
+    gap:10px!important;
+  }
+  .mr-reward-values{
+    justify-content:flex-start!important;
+    max-width:none!important;
+  }
+  .mr-reward-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .mr-reward-card{
+    min-height:160px!important;
+    padding:12px!important;
+  }
+  .mr-reward-card.is-starter{
+    grid-template-columns:1fr auto!important;
+    padding:14px!important;
+  }
+}
+@media(max-width:340px){
+  .mr-reward-grid{grid-template-columns:1fr!important}
+  .mr-reward-card.is-starter{grid-column:auto!important}
+}
+
+
+/* ===== rewards-fit: proportional viewport-safe Mouneh Points panel ===== */
+@media (min-width:761px){
+  .mouneh-rewards-drawer{
+    top:50%!important;
+    right:14px!important;
+    bottom:auto!important;
+    width:min(440px,calc(100vw - 28px))!important;
+    height:min(760px,calc(100dvh - 28px))!important;
+    min-height:0!important;
+    max-height:calc(100dvh - 28px)!important;
+    border-radius:22px!important;
+    transform:translate(108%,-50%)!important;
+    box-shadow:-18px 22px 58px rgba(9,27,15,.20)!important;
+  }
+  .mouneh-rewards-drawer.is-open{
+    transform:translate(0,-50%)!important;
+  }
+  [dir="rtl"] .mouneh-rewards-drawer{
+    right:auto!important;
+    left:14px!important;
+    transform:translate(-108%,-50%)!important;
+  }
+  [dir="rtl"] .mouneh-rewards-drawer.is-open{
+    transform:translate(0,-50%)!important;
+  }
+  .mr-drawer-head{
+    min-height:64px!important;
+    padding:11px 14px!important;
+  }
+  .mr-drawer-head>div>span{
+    width:36px!important;
+    height:36px!important;
+  }
+  .mr-drawer-head strong{
+    font-size:19px!important;
+  }
+  .mr-drawer-head button{
+    width:36px!important;
+    height:36px!important;
+  }
+  .mr-drawer-body{
+    min-height:0!important;
+    padding:15px 16px 18px!important;
+    gap:13px!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+  }
+  .mr-hero{
+    padding:11px 8px 3px!important;
+  }
+  .mr-hero-mark{
+    width:48px!important;
+    height:48px!important;
+    margin-bottom:9px!important;
+    font-size:21px!important;
+  }
+  .mr-hero h2{
+    font-size:27px!important;
+  }
+  .mr-hero>span{
+    margin-top:7px!important;
+    font-size:10.5px!important;
+    line-height:1.5!important;
+  }
+  .mr-rule{
+    margin-top:12px!important;
+    padding:10px 13px!important;
+  }
+  .mr-wallet-preview{
+    margin-top:9px!important;
+  }
+  .mr-reward-options{
+    padding:12px 13px!important;
+    gap:10px!important;
+  }
+  .mr-reward-card{
+    min-height:146px!important;
+    padding:11px!important;
+  }
+  .mr-reward-card.is-starter{
+    padding:13px!important;
+  }
+  .mr-member-head{
+    padding:12px 13px!important;
+  }
+  .mr-wallet-hero{
+    padding:11px!important;
+  }
+  .mr-progress{
+    padding:10px 11px!important;
+  }
+}
+
+/* Short laptop screens: compress vertically before anything can leave the viewport. */
+@media (min-width:761px) and (max-height:720px){
+  .mouneh-rewards-drawer{
+    height:calc(100dvh - 20px)!important;
+    max-height:calc(100dvh - 20px)!important;
+    right:10px!important;
+    border-radius:18px!important;
+  }
+  [dir="rtl"] .mouneh-rewards-drawer{
+    left:10px!important;
+  }
+  .mr-drawer-head{
+    min-height:56px!important;
+    padding:8px 12px!important;
+  }
+  .mr-drawer-head>div>span,
+  .mr-drawer-head button{
+    width:34px!important;
+    height:34px!important;
+  }
+  .mr-drawer-body{
+    padding:11px 13px 14px!important;
+    gap:10px!important;
+  }
+  .mr-hero{
+    padding:5px 6px 0!important;
+  }
+  .mr-hero-mark{
+    width:40px!important;
+    height:40px!important;
+    margin-bottom:6px!important;
+    font-size:18px!important;
+  }
+  .mr-hero h2{
+    font-size:23px!important;
+  }
+  .mr-hero>span{
+    font-size:9.5px!important;
+    line-height:1.4!important;
+  }
+  .mr-rule{
+    margin-top:8px!important;
+    padding:8px 11px!important;
+  }
+  .mr-reward-options{
+    padding:10px 11px!important;
+  }
+  .mr-reward-card{
+    min-height:132px!important;
+    gap:5px!important;
+  }
+  .mr-reward-points strong{
+    font-size:25px!important;
+  }
+  .mr-reward-value b{
+    font-size:18px!important;
+  }
+}
+
+/* Tablet: compact edge panel, still fully inside the viewport. */
+@media (min-width:601px) and (max-width:760px){
+  .mouneh-rewards-drawer{
+    top:10px!important;
+    right:10px!important;
+    left:auto!important;
+    width:min(420px,calc(100vw - 20px))!important;
+    height:calc(100dvh - 20px)!important;
+    max-height:calc(100dvh - 20px)!important;
+    border-radius:20px!important;
+    transform:translateX(108%)!important;
+  }
+  .mouneh-rewards-drawer.is-open{
+    transform:none!important;
+  }
+  [dir="rtl"] .mouneh-rewards-drawer{
+    right:auto!important;
+    left:10px!important;
+    transform:translateX(-108%)!important;
+  }
+  [dir="rtl"] .mouneh-rewards-drawer.is-open{
+    transform:none!important;
+  }
+  .mr-drawer-body{
+    min-height:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    padding:14px 15px 18px!important;
+  }
+}
+
+/* Phones: use the whole viewport cleanly, with safe-area aware scrolling. */
+@media (max-width:600px){
+  .mouneh-rewards-drawer{
+    inset:0!important;
+    width:100vw!important;
+    max-width:100vw!important;
+    height:100dvh!important;
+    max-height:100dvh!important;
+    min-height:0!important;
+    border-radius:0!important;
+    transform:translateX(105%)!important;
+  }
+  .mouneh-rewards-drawer.is-open{
+    transform:none!important;
+  }
+  [dir="rtl"] .mouneh-rewards-drawer{
+    inset:0!important;
+    transform:translateX(-105%)!important;
+  }
+  [dir="rtl"] .mouneh-rewards-drawer.is-open{
+    transform:none!important;
+  }
+  .mr-drawer-head{
+    min-height:60px!important;
+    padding:calc(8px + env(safe-area-inset-top)) 12px 8px!important;
+  }
+  .mr-drawer-body{
+    min-height:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    padding:12px 12px calc(18px + env(safe-area-inset-bottom))!important;
+    gap:11px!important;
+  }
+  .mr-hero{
+    padding:8px 5px 2px!important;
+  }
+  .mr-hero-mark{
+    width:44px!important;
+    height:44px!important;
+    margin-bottom:7px!important;
+  }
+  .mr-hero h2{
+    font-size:24px!important;
+  }
+  .mr-reward-options{
+    padding:11px 12px!important;
+  }
+  .mr-reward-card{
+    min-height:144px!important;
+  }
+}

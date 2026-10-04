@@ -4,8 +4,10 @@
   const AUTH_KEY="zwm:mouneh:session:v1";
   const CLAIMS_KEY="zwm:mouneh:claims:v1";
   const WALLET_KEY="zwm:mouneh:selected-wallet:v1";
+  const LEGAL_PENDING_KEY="zwm:mouneh:legal-consent-pending:v1";
+  const LEGAL_CONSENT_VERSION="2026-10-04";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-rewards8";
+  const VERSION="20261004-rewards10";
   const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null};
 
   const $=(id)=>document.getElementById(id);
@@ -47,6 +49,7 @@
       expires_in:expiresIn,
       expires_at:Number(hash.get("expires_at")||Math.floor(Date.now()/1000)+expiresIn)
     });
+    await persistPendingLegalConsent();
     state.authMode="public";
     state.authNotice=tr("Email verified. Welcome to your Mouneh Points Wallet 🌿","تم تأكيد البريد. أهلاً بك في محفظة نقاط المونة 🌿");
     try{sessionStorage.setItem("zwm:mouneh:just-verified","1")}catch{}
@@ -126,7 +129,8 @@
   }
   async function signUp(email,password,name,phone){
     const path="signup?redirect_to="+encodeURIComponent(authRedirectUrl());
-    const data=await authRequest(path,{email,password,data:{full_name:name,name,phone}});
+    const acceptedAt=new Date().toISOString();
+    const data=await authRequest(path,{email,password,data:{full_name:name,name,phone,terms_accepted_at:acceptedAt,privacy_acknowledged_at:acceptedAt,legal_consent_version:LEGAL_CONSENT_VERSION}});
     const s=data.session||null;
     state.pendingSignupEmail=email;
     if(s?.access_token){
@@ -144,8 +148,29 @@
     if(!email)throw new Error(tr("Enter your email again to resend verification.","أدخل بريدك مجدداً لإعادة إرسال التأكيد."));
     await authRequest("resend?redirect_to="+encodeURIComponent(authRedirectUrl()),{type:"signup",email});
   }
+  function rememberPendingLegalConsent(){
+    try{sessionStorage.setItem(LEGAL_PENDING_KEY,new Date().toISOString())}catch{}
+  }
+  async function persistPendingLegalConsent(){
+    let acceptedAt="";
+    try{acceptedAt=String(sessionStorage.getItem(LEGAL_PENDING_KEY)||"")}catch{}
+    if(!acceptedAt||!state.session?.access_token)return;
+    try{
+      const user=await authRequest("user",{data:{terms_accepted_at:acceptedAt,privacy_acknowledged_at:acceptedAt,legal_consent_version:LEGAL_CONSENT_VERSION}},state.session.access_token,"PUT");
+      if(user)state.authUser=user;
+      try{sessionStorage.removeItem(LEGAL_PENDING_KEY)}catch{}
+    }catch{}
+  }
+  function legalConsentAccepted(status){
+    const consent=$("mrLegalConsent");
+    if(consent?.checked)return true;
+    if(status)status.textContent=tr("Please accept the Terms of Service and Privacy Policy to continue.","يرجى الموافقة على شروط الاستخدام وسياسة الخصوصية للمتابعة.");
+    if(consent){consent.focus();try{consent.reportValidity()}catch{}}
+    return false;
+  }
   async function signInWithGoogle(){
     if(state.googleEnabled===false)throw new Error(tr("Google sign-in is not enabled yet for this Zayt w Mouneh account.","تسجيل الدخول عبر Google غير مفعّل بعد لهذا الحساب."));
+    rememberPendingLegalConsent();
     const redirect=encodeURIComponent(authRedirectUrl());
     const scopes=encodeURIComponent("openid email profile https://www.googleapis.com/auth/userinfo.email");
     location.assign(baseUrl()+"/auth/v1/authorize?provider=google&redirect_to="+redirect+"&scopes="+scopes);
@@ -271,8 +296,9 @@
       '<div class="mr-auth-tabs"><button type="button" data-mr-auth="signin" class="'+(!signup?"is-active":"")+'">'+tr("Sign in","دخول")+'</button><button type="button" data-mr-auth="signup" class="'+(signup?"is-active":"")+'">'+tr("Create account","إنشاء حساب")+"</button></div>"+
       '<h2>'+(signup?tr("Create your Zayt w Mouneh account","أنشئ حساب زيت ومونة"):tr("Welcome back","أهلاً بعودتك"))+'</h2>'+
       '<p>'+(signup?tr("One account for Mouneh Points, your wallet, rewards and future orders.","حساب واحد لنقاط المونة والمحفظة والمكافآت والطلبات القادمة."):tr("Sign in to open your Mouneh Points Wallet and rewards.","سجّل الدخول لفتح محفظة نقاط المونة ومكافآتك."))+'</p>'+
+      '<label class="mr-legal-consent"><input id="mrLegalConsent" type="checkbox" form="mrAuthForm" required aria-required="true"><span>'+tr("I agree to the ","أوافق على ")+'<a href="terms.html" target="_blank" rel="noopener">'+tr("Terms of Service","شروط الاستخدام")+'</a>'+tr(" and acknowledge the "," وأقرّ باطلاعي على ")+'<a href="privacy.html" target="_blank" rel="noopener">'+tr("Privacy Policy","سياسة الخصوصية")+'</a>.</span></label>'+
+      '<p class="mr-auth-legal">'+tr("Required for sign in, account creation, and Google sign-in.","مطلوب لتسجيل الدخول وإنشاء الحساب والمتابعة عبر Google.")+'</p>'+
       googleButton()+
-      '<p class="mr-auth-legal">'+tr("By continuing, you agree to our ","بالمتابعة، أنت توافق على ")+'<a href="terms.html" target="_blank">'+tr("Terms of Service","شروط الاستخدام")+'</a>'+tr(" and acknowledge our "," وتقرّ باطلاعك على ")+'<a href="privacy.html" target="_blank">'+tr("Privacy Policy","سياسة الخصوصية")+'</a>.</p>'+
       '<div class="mr-or"><span></span><b>'+tr("or","أو")+'</b><span></span></div>'+
       '<form id="mrAuthForm" class="mr-auth-form '+(signup?"is-signup":"is-signin")+'">'+
       (signup?'<label>'+tr("Full name","الاسم الكامل")+'<input id="mrSignupName" name="name" autocomplete="name" maxlength="120" required></label>':"")+
@@ -280,7 +306,6 @@
       (signup?'<label>'+tr("Phone / WhatsApp number","رقم الهاتف / واتساب")+'<input id="mrSignupPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="40" required></label>':"")+
       '<label>'+tr("Password","كلمة المرور")+'<input id="mrPassword" type="password" autocomplete="'+(signup?"new-password":"current-password")+'" minlength="8" required></label>'+
       (signup?'<label>'+tr("Confirm password","تأكيد كلمة المرور")+'<input id="mrPasswordConfirm" type="password" autocomplete="new-password" minlength="8" required></label>':"")+
-      (signup?'<label class="mr-legal-consent"><input id="mrLegalConsent" type="checkbox" required><span>'+tr("I agree to the ","أوافق على ")+'<a href="terms.html" target="_blank">'+tr("Terms of Service","شروط الاستخدام")+'</a>'+tr(" and acknowledge the "," وأقرّ باطلاعي على ")+'<a href="privacy.html" target="_blank">'+tr("Privacy Policy","سياسة الخصوصية")+'</a>.</span></label>':"")+
       '<button class="mr-primary" type="submit">'+(signup?tr("Create account & verify email","إنشاء الحساب وتأكيد البريد"):tr("Sign in","تسجيل الدخول"))+'</button>'+
       '<span id="mrAuthStatus" class="mr-status">'+esc(state.authNotice||"")+'</span></form>'+
       '<p class="mr-auth-trust">'+tr("Your account is securely stored with Zayt w Mouneh. We never store your password in plain text.","يُحفظ حسابك بأمان لدى زيت ومونة، ولا نخزن كلمة المرور كنص مكشوف.")+'</p>'+
@@ -530,9 +555,10 @@
       if(e.target.closest("[data-mr-back]")){state.authMode="public";state.authNotice="";render();return;}
       const google=e.target.closest("[data-mr-google]");
       if(google){
+        const status=$("mrAuthStatus");
+        if(!legalConsentAccepted(status))return;
         if(google.dataset.mrBusy==="1")return;
         google.dataset.mrBusy="1";google.disabled=true;google.setAttribute("aria-busy","true");
-        const status=$("mrAuthStatus");
         try{if(status)status.textContent=tr("Opening Google…","جارٍ فتح Google…");await signInWithGoogle()}catch(err){if(status)status.textContent=err.message;if(google.isConnected){google.disabled=state.googleEnabled===false;google.removeAttribute("aria-busy");delete google.dataset.mrBusy}}
         return;
       }
@@ -566,6 +592,7 @@
         const submit=form.querySelector('button[type="submit"]');
         if(submit){submit.disabled=true;submit.setAttribute("aria-busy","true")}
         const status=$("mrAuthStatus"),email=$("mrEmail").value.trim(),password=$("mrPassword").value;
+        if(!legalConsentAccepted(status)){delete form.dataset.mrBusy;if(submit){submit.disabled=false;submit.removeAttribute("aria-busy")}return;}
         if(status)status.textContent=tr("Working…","جارٍ التنفيذ…");
         try{
           if(state.authMode==="signup-form"){

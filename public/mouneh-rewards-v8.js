@@ -942,16 +942,12 @@
       return false;
     }
   }
-  function openSignIn(){
-    state.authMode="signin-form";
-    render();
-    requestOpen();
+  function goToCanonicalAccountAuth(mode){
+    const next=mode==="signup"?"signup":"signin";
+    location.assign("/account?auth="+next+"#"+next);
   }
-  function openSignUp(){
-    state.authMode="signup-form";
-    render();
-    requestOpen();
-  }
+  function openSignIn(){goToCanonicalAccountAuth("signin")}
+  function openSignUp(){goToCanonicalAccountAuth("signup")}
 
   function bindActions(){
     if(window.__ZWM_REWARDS_ACTIONS_BOUND)return;
@@ -961,8 +957,9 @@
       if(legalLink){e.stopPropagation();return}
       const auth=e.target.closest("[data-mr-auth]");
       if(auth){
-        state.authMode=auth.dataset.mrAuth==="signup"?"signup-form":"signin-form";
-        render();return;
+        e.preventDefault();
+        goToCanonicalAccountAuth(auth.dataset.mrAuth==="signup"?"signup":"signin");
+        return;
       }
       if(e.target.closest("[data-mr-back]")){state.authMode="public";state.authNotice="";render();return;}
       const google=e.target.closest("[data-mr-google]");

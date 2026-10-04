@@ -240,7 +240,7 @@ const UI={
   en:{
     skipLink:"Skip to catalogue",
     announcementText:"Authentic Lebanese pantry essentials · Since 2006",
-    announcementOrder:"Order on WhatsApp",
+    announcementOrder:"Shop online",
     brand:"Zayt w Mouneh",
     navHome:"Home",navShop:"Shop",navCategories:"Categories",navAbout:"Our Story",navContact:"Contact",
     cartLabel:"My pantry",
@@ -269,17 +269,17 @@ const UI={
     shopEyebrow:"Current product catalogue",shopTitle:'Names, sizes and<br><em>prices — clearly.</em>',shopNote:"Choose a category, search a product, select the exact pack size, then add it to your pantry list. Prices below come from the supplied retail price list.",
     searchPlaceholder:"Search zaatar, lentils, honey, grains, spices…",categorySelectLabel:"Category",resultLabel:"products",
     emptyTitle:"Nothing found.",emptyCopy:"Try a different spelling or another category.",clearFilters:"Clear filters",loadMore:"Load more products",
-    orderEyebrow:"Simple ordering",orderTitle:'From shelf to<br><em>WhatsApp.</em>',orderIntroCopy:"No complicated checkout. Build your pantry list here, then send one clear message.",
+    orderEyebrow:"Simple ordering",orderTitle:'From shelf to<br><em>your door.</em>',orderIntroCopy:"Build your pantry list, review everything, then place the order directly on the website.",
     step1Title:"Choose",step1Copy:"Open a product and pick the exact size you want.",
     step2Title:"Review",step2Copy:"Check quantities, prices and your estimated total.",
-    step3Title:"Send",step3Copy:"WhatsApp opens with your complete order ready to review.",
+    step3Title:"Checkout",step3Copy:"Enter delivery details, review the final total and place your order securely.",
     contactEyebrow:"Contact & orders",contactTitle:'Bring the pantry <em>home.</em>',contactCopy:"Questions, availability, delivery or a custom pantry list — reach us directly.",
     phone:"Phone",whatsapp:"WhatsApp",instagram:"Instagram",location:"Location",lebanon:"Lebanon",
     footerCopy:"A pantry of Lebanese memory, curated with care.",footerCatalogue:"Catalogue",footerAbout:"About",
     cartEyebrow:"Your pantry list",cartTitle:"My pantry",cartSaved:"Saved on this device",cartEmptyTitle:"Your pantry is empty.",cartEmptyCopy:"Add products from the catalogue and they’ll appear here.",browseProducts:"Browse products",
-    total:"Estimated total",orderDetailsTitle:"Order details",orderDetailsNote:"Sent only when you press WhatsApp",
+    total:"Estimated total",orderDetailsTitle:"Ready for checkout",orderDetailsNote:"Delivery, rewards and the final total are confirmed at checkout.",
     yourName:"Your name",namePlaceholder:"Name",phone:"WhatsApp number (optional)",phonePlaceholder:"e.g. 961 70 123 456",area:"Area / location",areaPlaceholder:"e.g. Baabda",notes:"Order notes",notesPlaceholder:"Delivery notes, substitutions, anything we should know…",
-    sendOrder:"Send order on WhatsApp <span>↗</span>",priceNote:"Prices are shown from the supplied retail list; final availability is confirmed on WhatsApp.",
+    sendOrder:"Checkout <span>→</span>",priceNote:"Final prices and availability are securely rechecked before the order is created.",
     what:"What it is",use:"Use it for",nutritionLabel:"Nutrition note",nutritionBadge:"Nutritious choice",chooseSize:"Choose size",add:"Add to pantry",update:"Update pantry",view:"View",from:"From",sizeOptions:"size options",
     remove:"Remove",details:"View details",qty:"Qty",unitPrice:"Unit",subtotal:"Subtotal",
     standard:"Standard",added:"Added to cart",updated:"Cart updated",removed:"Removed",
@@ -294,7 +294,7 @@ const UI={
   ar:{
     skipLink:"الانتقال إلى المنتجات",
     announcementText:"مونة لبنانية أصيلة · منذ 2006",
-    announcementOrder:"اطلب عبر واتساب",
+    announcementOrder:"تسوّق أونلاين",
     brand:"زيت ومونة",
     navHome:"الرئيسية",navShop:"المتجر",navCategories:"الأقسام",navAbout:"قصتنا",navContact:"تواصل",
     cartLabel:"السلة",
@@ -323,17 +323,17 @@ const UI={
     shopEyebrow:"لائحة المنتجات الحالية",shopTitle:'الأسماء والأحجام<br><em>والأسعار بوضوح.</em>',shopNote:"اختر القسم وابحث عن المنتج وحدّد الحجم المطلوب ثم أضفه إلى لائحة المونة. الأسعار أدناه مأخوذة من لائحة أسعار البيع المرفقة.",
     searchPlaceholder:"ابحث عن زعتر، عدس، عسل، حبوب، بهارات…",categorySelectLabel:"القسم",resultLabel:"منتج",
     emptyTitle:"لا توجد نتائج.",emptyCopy:"جرّب اسماً آخر أو قسماً مختلفاً.",clearFilters:"إلغاء الفلاتر",loadMore:"عرض المزيد",
-    orderEyebrow:"طلب بسيط",orderTitle:'من الرفّ إلى<br><em>واتساب.</em>',orderIntroCopy:"من دون خطوات معقّدة. جهّز لائحة المونة هنا ثم أرسلها برسالة واحدة واضحة.",
+    orderEyebrow:"طلب بسيط",orderTitle:'من الرفّ إلى<br><em>باب بيتك.</em>',orderIntroCopy:"جهّز سلتك وراجعها ثم أرسل الطلب مباشرة عبر الموقع.",
     step1Title:"اختر",step1Copy:"افتح المنتج وحدّد الحجم الذي تريده.",
     step2Title:"راجع",step2Copy:"تأكد من الكميات والأسعار والمجموع التقديري.",
-    step3Title:"أرسل",step3Copy:"يفتح واتساب مع الطلب كاملاً وجاهزاً للمراجعة.",
+    step3Title:"إتمام الطلب",step3Copy:"أدخل تفاصيل التوصيل وراجع المجموع النهائي ثم أرسل طلبك بأمان.",
     contactEyebrow:"التواصل والطلبات",contactTitle:'خذ المونة <em>إلى البيت.</em>',contactCopy:"للاستفسار عن التوفر أو التوصيل أو تجهيز لائحة خاصة، تواصل معنا مباشرة.",
     phone:"الهاتف",whatsapp:"واتساب",instagram:"إنستغرام",location:"الموقع",lebanon:"لبنان",
     footerCopy:"مونة من ذاكرة لبنان، مختارة بعناية.",footerCatalogue:"المنتجات",footerAbout:"من نحن",
     cartEyebrow:"لائحة المونة",cartTitle:"السلة",cartSaved:"محفوظة على هذا الجهاز",cartEmptyTitle:"السلة فارغة.",cartEmptyCopy:"أضف منتجات من المتجر وستظهر هنا.",browseProducts:"تصفّح المنتجات",
-    total:"المجموع التقديري",orderDetailsTitle:"تفاصيل الطلب",orderDetailsNote:"لا تُرسل إلا عند الضغط على واتساب",
+    total:"المجموع التقديري",orderDetailsTitle:"جاهز لإتمام الطلب",orderDetailsNote:"يتم تأكيد التوصيل والمكافآت والمجموع النهائي عند إتمام الطلب.",
     yourName:"الاسم",namePlaceholder:"اسمك",phone:"رقم واتساب (اختياري)",phonePlaceholder:"مثلاً 961 70 123 456",area:"المنطقة / الموقع",areaPlaceholder:"مثلاً بعبدا",notes:"ملاحظات الطلب",notesPlaceholder:"ملاحظات التوصيل أو الاستبدال أو أي تفاصيل إضافية…",
-    sendOrder:"إرسال الطلب عبر واتساب <span>↗</span>",priceNote:"الأسعار مأخوذة من لائحة البيع المرفقة؛ يتم تأكيد التوفر والمجموع النهائي عبر واتساب.",
+    sendOrder:"إتمام الطلب <span>←</span>",priceNote:"يتم التحقق من الأسعار والتوفر بأمان قبل إنشاء الطلب.",
     what:"ما هو",use:"كيف يُستخدم",nutritionLabel:"ملاحظة غذائية",nutritionBadge:"خيار مُغذٍ",chooseSize:"اختر الحجم",add:"أضف إلى السلة",update:"حدّث السلة",view:"عرض",from:"ابتداءً من",sizeOptions:"خيارات أحجام",
     remove:"حذف",details:"عرض التفاصيل",qty:"الكمية",unitPrice:"السعر",subtotal:"المجموع",
     standard:"قياس واحد",added:"تمت الإضافة إلى السلة",updated:"تم تحديث السلة",removed:"تم الحذف",
@@ -352,24 +352,24 @@ const EXTRA_UI={
     navGift:"Make a gift",menuLabel:"Menu",menuHeading:"Explore Zayt w Mouneh",menuSubheading:"Everything has its own place.",menuLocation:"Sebline · Directions",
     trustEyebrow:"Why shop with us",trustTitle:"Old pantry values. Clear modern service.",
     trustSinceTitle:"Since 2006",trustSinceCopy:"A long-running Lebanese pantry built around mouneh, everyday staples and careful selection.",
-    trustDeliveryTitle:"Delivery all over Lebanon",trustDeliveryCopy:"We deliver across Lebanon. Availability, timing and delivery details are confirmed directly on WhatsApp.",
+    trustDeliveryTitle:"Delivery all over Lebanon",trustDeliveryCopy:"We deliver across Lebanon. Delivery details and the final fee are confirmed securely at checkout.",
     trustPriceTitle:"Clear sizes & prices",trustPriceCopy:"Choose the exact listed pack size and see the retail price before sending your order.",
-    trustWhatsAppTitle:"Direct WhatsApp ordering",trustWhatsAppCopy:"Your full pantry list, quantities and estimated total are prepared into one clear message.",
+    trustWhatsAppTitle:"Secure website checkout",trustWhatsAppCopy:"Review items, delivery, rewards and the final total, then place the order directly on the website.",
     favorites:"Saved",favorite:"Save",favorited:"Saved",favoritesEmpty:"You have no saved products yet.",
     recentEyebrow:"Recently viewed",recentTitle:"Pick up where you left off.",clearRecent:"Clear",
     giftEyebrow:"Make a gift",giftTitle:"Build a pantry gift, your way.",
-    giftCopy:"Choose anything from the shop, then turn your current pantry list into a packed gift for someone. Add the recipient, occasion and a message; we’ll confirm presentation, availability and delivery on WhatsApp.",
+    giftCopy:"Choose anything from the shop, then turn your current pantry list into a packed gift. Add the recipient, occasion and message, then finish delivery and payment details in secure website checkout.",
     giftPerk1:"Choose any products",giftPerk2:"Packed as a gift",giftPerk3:"Delivery across Lebanon",
     giftBrowse:"Browse the shop ↗",giftBuilderLabel:"Your gift basket",giftEmpty:"Choose products above and they’ll appear here.",giftProductsLabel:"Choose what goes inside",giftProductsHint:"Search or browse the full catalogue and add any product directly to this gift.",giftProductPlaceholder:"Search any product for the gift…",giftUseCart:"Add my cart items",giftSelectedTitle:"Inside the gift",giftClear:"Clear",giftAdd:"Add",giftRemove:"Remove",giftAllCategories:"All categories",giftMore:"Show more products",
     giftRecipient:"Recipient name",giftRecipientPlaceholder:"Who is the gift for?",giftOccasion:"Occasion",giftPackaging:"Packing style",giftArea:"Delivery area",giftAreaPlaceholder:"Area in Lebanon",
     giftMessage:"Gift message",giftMessagePlaceholder:"Write a short note for the recipient…",giftSender:"Your name",giftSenderPlaceholder:"Your name",
-    giftSend:"Send gift request on WhatsApp ↗",giftNote:"Gift packing, final availability and delivery details are confirmed on WhatsApp before the order is final.",
+    giftSend:"Continue to secure checkout →",giftNote:"Gift details, delivery and the final total are confirmed in website checkout. WhatsApp is available only if you need help.",
     giftOccasions:["Birthday","Thank you","Visit / hosting","Holiday","Just because","Other"],
     giftPackings:["Classic pantry gift","Celebration gift","Custom arrangement"],
     giftNeedItems:"Choose at least one product for the gift first.",
     socialEyebrow:"From our pantry",socialTitle:"See what’s happening at the shop.",socialCopy:"Follow Zayt w Mouneh for pantry ideas, shop updates and everyday mouneh inspiration.",
-    footerDelivery:"Delivery all over Lebanon · Orders confirmed on WhatsApp",footerExploreTitle:"Explore",footerGift:"Make a gift",footerContactTitle:"Contact",
-    mobileReview:"Review & WhatsApp",
+    footerDelivery:"Delivery all over Lebanon · Secure website checkout",footerExploreTitle:"Explore",footerGift:"Make a gift",footerContactTitle:"Contact",
+    mobileReview:"Review & checkout",
     related:"You may also like",
     badgeMulti:"Multiple sizes",badgeTraditional:"Traditional mouneh",badgeClassic:"Lebanese classic",badgeBaking:"Baking staple",badgeBreakfast:"Breakfast pantry",
     contactCopy:"Questions, availability, gift orders or delivery anywhere in Lebanon — reach us directly.",locationValue:"JC9Q+Q7X · Sebline, Lebanon",contactHoursLabel:"Opening hours",contactHoursValue:"Mon–Sat 9:00–20:00 · Sun 12:00–20:00",footerLocation:"Sebline · Get directions",
@@ -379,24 +379,24 @@ const EXTRA_UI={
     navGift:"حضّر هدية",menuLabel:"القائمة",menuHeading:"استكشف زيت ومونة",menuSubheading:"كل شيء في مكانه.",menuLocation:"سبلين · الاتجاهات",
     trustEyebrow:"لماذا زيت ومونة",trustTitle:"قيم المونة القديمة. خدمة واضحة وعصرية.",
     trustSinceTitle:"منذ 2006",trustSinceCopy:"مونة لبنانية عريقة تجمع أساسيات البيت والأصناف التقليدية والاختيار بعناية.",
-    trustDeliveryTitle:"توصيل إلى كل لبنان",trustDeliveryCopy:"نوصّل إلى جميع المناطق في لبنان. يتم تأكيد التوفر والوقت وتفاصيل التوصيل مباشرة عبر واتساب.",
+    trustDeliveryTitle:"توصيل إلى كل لبنان",trustDeliveryCopy:"نوصّل إلى جميع المناطق في لبنان. يتم تأكيد تفاصيل التوصيل والرسوم النهائية بأمان عند إتمام الطلب.",
     trustPriceTitle:"أحجام وأسعار واضحة",trustPriceCopy:"اختر الحجم المدرج وشاهد سعر البيع قبل إرسال الطلب.",
-    trustWhatsAppTitle:"طلب مباشر عبر واتساب",trustWhatsAppCopy:"نجهّز لائحة المونة كاملة مع الكميات والمجموع التقديري في رسالة واضحة واحدة.",
+    trustWhatsAppTitle:"إتمام طلب آمن عبر الموقع",trustWhatsAppCopy:"راجع المنتجات والتوصيل والمكافآت والمجموع النهائي ثم أرسل الطلب مباشرة عبر الموقع.",
     favorites:"المحفوظات",favorite:"حفظ",favorited:"محفوظ",favoritesEmpty:"لا توجد منتجات محفوظة بعد.",
     recentEyebrow:"شوهدت مؤخراً",recentTitle:"تابع من حيث توقفت.",clearRecent:"مسح",
     giftEyebrow:"حضّر هدية",giftTitle:"حضّر هدية مونة على ذوقك.",
-    giftCopy:"اختر أي منتجات من المتجر، ثم حوّل لائحة المونة الحالية إلى هدية مغلّفة لشخص تحبه. أضف اسم المستلم والمناسبة والرسالة، ونؤكد التغليف والتوفر والتوصيل عبر واتساب.",
+    giftCopy:"اختر أي منتجات من المتجر، ثم حوّلها إلى هدية مغلّفة. أضف اسم المستلم والمناسبة والرسالة، ثم أكمل التوصيل والدفع عبر إتمام الطلب الآمن في الموقع.",
     giftPerk1:"اختر أي منتجات",giftPerk2:"تغليف كهدية",giftPerk3:"توصيل إلى كل لبنان",
     giftBrowse:"تصفّح المتجر ↗",giftBuilderLabel:"سلة الهدية",giftEmpty:"اختر المنتجات أعلاه وستظهر هنا.",giftProductsLabel:"اختر ما تريد داخل الهدية",giftProductsHint:"ابحث أو تصفّح كامل المنتجات وأضف أي صنف مباشرة إلى الهدية.",giftProductPlaceholder:"ابحث عن أي منتج للهدية…",giftUseCart:"أضف منتجات سلتي",giftSelectedTitle:"داخل الهدية",giftClear:"مسح",giftAdd:"أضف",giftRemove:"حذف",giftAllCategories:"كل الأقسام",giftMore:"عرض المزيد",
     giftRecipient:"اسم المستلم",giftRecipientPlaceholder:"لمن الهدية؟",giftOccasion:"المناسبة",giftPackaging:"طريقة التغليف",giftArea:"منطقة التوصيل",giftAreaPlaceholder:"أي منطقة في لبنان",
     giftMessage:"رسالة الهدية",giftMessagePlaceholder:"اكتب رسالة قصيرة للمستلم…",giftSender:"اسمك",giftSenderPlaceholder:"اسمك",
-    giftSend:"إرسال طلب الهدية عبر واتساب ↗",giftNote:"يتم تأكيد التغليف والتوفر وتفاصيل التوصيل عبر واتساب قبل تثبيت الطلب.",
+    giftSend:"المتابعة لإتمام الطلب بأمان ←",giftNote:"يتم تأكيد تفاصيل الهدية والتوصيل والمجموع النهائي في الموقع. واتساب متاح للمساعدة فقط.",
     giftOccasions:["عيد ميلاد","شكر","زيارة / ضيافة","مناسبة أو عيد","من دون مناسبة","أخرى"],
     giftPackings:["هدية مونة كلاسيكية","تغليف احتفالي","تنسيق مخصص"],
     giftNeedItems:"اختر منتجاً واحداً على الأقل للهدية أولاً.",
     socialEyebrow:"من مونة المحل",socialTitle:"تابع أخبار المونة والمتجر.",socialCopy:"تابع زيت ومونة على إنستغرام لأفكار المونة وتحديثات المحل وإلهام يومي.",
-    footerDelivery:"توصيل إلى كل لبنان · تأكيد الطلب عبر واتساب",footerExploreTitle:"استكشف",footerGift:"حضّر هدية",footerContactTitle:"تواصل",
-    mobileReview:"راجع واطلب عبر واتساب",
+    footerDelivery:"توصيل إلى كل لبنان · إتمام طلب آمن عبر الموقع",footerExploreTitle:"استكشف",footerGift:"حضّر هدية",footerContactTitle:"تواصل",
+    mobileReview:"راجع وأكمل الطلب",
     related:"قد يعجبك أيضاً",
     badgeMulti:"عدة أحجام",badgeTraditional:"مونة تقليدية",badgeClassic:"كلاسيكي لبناني",badgeBaking:"أساسي للخَبز",badgeBreakfast:"من مونة الفطور",
     contactCopy:"للاستفسار عن التوفر أو الهدايا أو التوصيل إلى أي منطقة في لبنان، تواصل معنا مباشرة.",locationValue:"JC9Q+Q7X · سبلين، لبنان",contactHoursLabel:"ساعات العمل",contactHoursValue:"الإثنين–السبت 9:00–20:00 · الأحد 12:00–20:00",footerLocation:"سبلين · الاتجاهات",
@@ -410,16 +410,16 @@ const PAGE_I18N={
     ar:{title:"زيت ومونة | مونة لبنانية أصيلة",description:"مونة لبنانية أصيلة وهدايا منذ 2006، مع أسعار واضحة وتوصيل إلى مختلف المناطق في لبنان.",skip:"الانتقال إلى المنتجات"}
   },
   shop:{
-    en:{title:"Shop Lebanese Pantry Essentials | Zayt w Mouneh",description:"Browse 300+ Lebanese pantry products with clear sizes and prices, origin information, favourites and direct WhatsApp ordering.",skip:"Skip to catalogue"},
-    ar:{title:"تسوّق المونة اللبنانية | زيت ومونة",description:"تصفّح أكثر من 300 منتج من المونة اللبنانية مع أحجام وأسعار واضحة ومعلومات المصدر والطلب المباشر عبر واتساب.",skip:"الانتقال إلى المنتجات"}
+    en:{title:"Shop Lebanese Pantry Essentials | Zayt w Mouneh",description:"Browse 300+ Lebanese pantry products with clear sizes and prices, origin information, favourites and secure website checkout.",skip:"Skip to catalogue"},
+    ar:{title:"تسوّق المونة اللبنانية | زيت ومونة",description:"تصفّح أكثر من 300 منتج من المونة اللبنانية مع أحجام وأسعار واضحة ومعلومات المصدر وإتمام طلب آمن عبر الموقع.",skip:"الانتقال إلى المنتجات"}
   },
   about:{
     en:{title:"Our Story & Provenance | Zayt w Mouneh",description:"Learn about Zayt w Mouneh since 2006 and the origins behind the pantry: Bekaa, Koura, Mount Lebanon and Chouf.",skip:"Skip to our story"},
     ar:{title:"قصتنا ومصادر المونة | زيت ومونة",description:"تعرّف إلى قصة زيت ومونة منذ 2006 وإلى مصادر المونة من البقاع والكورة وجبل لبنان والشوف.",skip:"الانتقال إلى قصتنا"}
   },
   contact:{
-    en:{title:"Contact, Delivery & Visit | Zayt w Mouneh",description:"Contact Zayt w Mouneh in Sebline, order on WhatsApp, and understand delivery and ordering across Lebanon.",skip:"Skip to contact"},
-    ar:{title:"التواصل والتوصيل والزيارة | زيت ومونة",description:"تواصل مع زيت ومونة في سبلين، اطلب عبر واتساب، وتعرّف إلى تفاصيل التوصيل والطلب في لبنان.",skip:"الانتقال إلى التواصل"}
+    en:{title:"Contact, Delivery & Visit | Zayt w Mouneh",description:"Contact Zayt w Mouneh in Sebline and learn about secure website ordering and delivery across Lebanon.",skip:"Skip to contact"},
+    ar:{title:"التواصل والتوصيل والزيارة | زيت ومونة",description:"تواصل مع زيت ومونة في سبلين وتعرّف إلى الطلب الآمن عبر الموقع وتفاصيل التوصيل في لبنان.",skip:"الانتقال إلى التواصل"}
   },
   gift:{
     en:{title:"Lebanese Pantry Gifts | Zayt w Mouneh",description:"Choose a ready-made Lebanese pantry gift or build your own from the catalogue, with delivery across Lebanon.",skip:"Skip to gift builder"},
@@ -1532,119 +1532,24 @@ function updateGiftV4Preview(){
   if(from)from.textContent=sender?(lang==="ar"?"— من "+sender:"— From "+sender):(lang==="ar"?"— بمحبة":"— With care");
 }
 async function sendGiftOrder(){
-  const rows=giftRows(),t=EXTRA_UI[lang],base=UI[lang];
+  const rows=giftRows(),t=EXTRA_UI[lang];
   if(!rows.length){toast(t.giftNeedItems);return}
-  const recipient=$("#giftRecipient")?.value.trim()||"—";
-  const occasion=t.giftOccasions[Number($("#giftOccasion")?.value)||0];
-  const packing=t.giftPackings[Number($("#giftPackaging")?.value)||0];
-  const area=$("#giftArea")?.value.trim()||"—";
-  const message=$("#giftMessage")?.value.trim()||"—";
-  const sender=$("#giftSender")?.value.trim()||"—";
-  const theme=$("#giftTheme")?.value||"Olive green";
-  const cardLanguage=$("#giftCardLanguage")?.value||"English";
-  const themeLabel=lang==="ar"?({"Olive green":"أخضر زيتوني","Natural linen":"كتان طبيعي","Warm gold":"ذهبي دافئ"}[theme]||theme):theme;
-  const cardLanguageLabel=lang==="ar"?({"English":"الإنجليزية","Arabic":"العربية","Bilingual":"ثنائية اللغة"}[cardLanguage]||cardLanguage):({"English":"English","Arabic":"Arabic","Bilingual":"English + العربية"}[cardLanguage]||cardLanguage);
-  const hidePrices=$("#giftHidePrices")?.checked!==false;
-  const subtotal=rows.reduce((sum,row)=>sum+row.qty*Number(row.v.price),0);
-  const delivery=deliveryQuoteFor(subtotal,area==="—"?"":area);
-  if(delivery.minimum>0&&subtotal<delivery.minimum){
-    toast(lang==="ar"?"الحد الأدنى للطلب هو "+money(delivery.minimum)+".":"Minimum order is "+money(delivery.minimum)+".");
-    return;
-  }
-
-  const button=$("#giftForm")?.querySelector('button[type="submit"]');
-  if(button){button.disabled=true;button.dataset.originalText=button.dataset.originalText||button.textContent;button.textContent=lang==="ar"?"جارٍ تجهيز الهدية…":"Preparing gift…";}
-
-  const items=rows.map(row=>({
-    product_id:row.p.id,
-    variant_id:row.v.id,
-    name:row.p.nameEn||currentName(row.p),
-    size:row.v.sizeEn||row.v.sizeAr||"",
-    qty:row.qty,
-    unit_price:Number(row.v.price),
-    subtotal:Number(row.v.price)*row.qty
-  }));
-  const extra={
-    source:"gift_builder",
-    recipient:recipient==="—"?"":recipient,
-    occasion,
-    packing,
-    theme,
-    card_language:cardLanguage,
-    hide_prices:hidePrices,
-    products_subtotal:subtotal,
-    delivery_fee:delivery.fee,
-    delivery_eta:delivery.eta,
-    delivery_zone:delivery.zone?.area||""
+  const occasionSelect=$("#giftOccasion");
+  const packingSelect=$("#giftPackaging");
+  const meta={
+    recipient:$("#giftRecipient")?.value.trim()||"",
+    occasion:occasionSelect?.selectedOptions?.[0]?.textContent||"",
+    packing:packingSelect?.selectedOptions?.[0]?.textContent||"",
+    area:$("#giftArea")?.value.trim()||"",
+    message:$("#giftMessage")?.value.trim()||"",
+    sender:$("#giftSender")?.value.trim()||"",
+    theme:$("#giftTheme")?.value||"",
+    card_language:$("#giftCardLanguage")?.value||"",
+    hide_prices:$("#giftHidePrices")?.checked!==false
   };
-
-  try{
-    let ref="",pendingPoints=0,discount=0;
-    if(window.ZWM_REWARDS?.submitOrder){
-      const result=await window.ZWM_REWARDS.submitOrder({
-        kind:"gift",
-        customer_name:sender==="—"?"":sender,
-        area:area==="—"?"":area,
-        notes:message==="—"?"":message,
-        items,
-        language:lang,
-        extra,
-        allow_wallet:false
-      });
-      ref=result?.reference||"";
-      pendingPoints=Math.max(0,Number(result?.pending_points)||0);
-      discount=Math.max(0,Number(result?.discount)||0);
-      if(!ref)throw new Error(lang==="ar"?"تعذّر إنشاء رقم طلب الهدية.":"Could not create the gift order reference.");
-    }else{
-      ref=orderReference("ZW-GIFT");
-      await window.ZWM_CMS?.recordOrder?.({
-        reference:ref,
-        kind:"gift",
-        customer_name:sender==="—"?"":sender,
-        area:area==="—"?"":area,
-        notes:message==="—"?"":message,
-        items,
-        total:subtotal+delivery.fee,
-        language:lang,
-        extra
-      });
-    }
-    const total=Math.max(0,subtotal-discount+delivery.fee);
-    const lines=[
-      lang==="ar"?"مرحباً زيت ومونة 👋":"Hello Zayt w Mouneh 👋","",
-      (lang==="ar"?"رقم الطلب":"Order")+": "+ref,"",
-      lang==="ar"?"أرغب بتحضير هذه الهدية:":"I would like to prepare this gift:","",
-      ...rows.map((row,i)=>(i+1)+". "+currentName(row.p)+" — "+(lang==="ar"?row.v.sizeAr:row.v.sizeEn)+" — "+base.qty+": "+row.qty+" — "+money(row.v.price*row.qty)),
-      "",
-      (lang==="ar"?"مجموع المنتجات":"Products subtotal")+": "+money(subtotal),
-      ...(discount>0?[(lang==="ar"?"مكافأة نقاط المونة":"Mouneh Points reward")+": -"+money(discount)]:[]),
-      ...(delivery.fee>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+money(delivery.fee)]:(delivery.freeAbove>0&&subtotal>=delivery.freeAbove?[(lang==="ar"?"التوصيل":"Delivery")+": "+(lang==="ar"?"مجاني":"Free")]:delivery.freeAbove>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+(lang==="ar"?"يُؤكّد عبر واتساب":"Confirmed on WhatsApp")]:[])),
-      ...(delivery.eta?[(lang==="ar"?"الوقت المتوقع":"Estimated delivery")+": "+delivery.eta]:[]),
-      base.orderTotal+": "+money(total),
-      (lang==="ar"?"المستلم":"Recipient")+": "+recipient,
-      (lang==="ar"?"المناسبة":"Occasion")+": "+occasion,
-      (lang==="ar"?"التغليف":"Packing")+": "+packing,
-      (lang==="ar"?"طابع الهدية":"Gift theme")+": "+themeLabel,
-      (lang==="ar"?"لغة البطاقة":"Card language")+": "+cardLanguageLabel,
-      (lang==="ar"?"إخفاء الأسعار عن المستلم":"Hide prices from recipient")+": "+(hidePrices?(lang==="ar"?"نعم":"Yes"):(lang==="ar"?"لا":"No")),
-      (lang==="ar"?"منطقة التوصيل":"Delivery area")+": "+area,
-      (lang==="ar"?"رسالة الهدية":"Gift message")+": "+message,
-      (lang==="ar"?"المرسل":"Sender")+": "+sender,
-      ...(pendingPoints>0?["",(lang==="ar"?"نقاط متوقعة بعد الاستلام":"Points pending after delivery")+": "+pendingPoints+" 🌿"]:[]),
-      "",
-      lang==="ar"?"يرجى تأكيد التغليف والتوفر والتوصيل والمجموع النهائي. شكراً!":"Please confirm gift packing, availability, delivery and the final total. Thank you!"
-    ];
-    window.ZWM_CMS?.track?.("whatsapp_click",{source:"gift_order"});
-    const url="https://wa.me/"+currentWhatsAppNumber()+"?text="+encodeURIComponent(lines.join("\n"));
-    const opened=window.open(url,"_blank","noopener,noreferrer");
-    if(opened)toast(lang==="ar"?(pendingPoints>0?"تم فتح واتساب · "+pendingPoints+" نقطة بعد الاستلام":"تم فتح واتساب مع طلب الهدية"):(pendingPoints>0?"WhatsApp opened · "+pendingPoints+" points after delivery":"WhatsApp opened with your gift request"));
-    else window.location.href=url;
-  }catch(error){
-    console.error("Gift order submit failed:",error);
-    toast(error?.message||(lang==="ar"?"تعذّر تجهيز الهدية. حاول مجدداً.":"Could not prepare the gift. Please try again."));
-  }finally{
-    if(button){button.disabled=false;button.textContent=button.dataset.originalText||t.giftSend||"Send gift request";}
-  }
+  try{sessionStorage.setItem("zwm:native-gift:meta:v1",JSON.stringify(meta))}catch{}
+  window.ZWM_CMS?.track?.("checkout_started",{source:"gift_builder"});
+  location.href="/checkout.html?kind=gift";
 }
 function renderMobileOrderBar(){
   const bar=$("#mobileOrderBar");if(!bar)return;
@@ -1832,106 +1737,9 @@ function orderReference(prefix="ZW"){
 async function order(){
   const rows=cartRows();
   if(!rows.length)return;
-  const t=UI[lang];
-  const subtotal=rows.reduce((s,r)=>s+r.qty*Number(r.v.price),0);
-  const name=$("#customerName").value.trim()||"—";
-  const phone=$("#customerPhone")?.value.trim()||"—";
-  const area=$("#customerArea").value.trim()||"—";
-  const notes=$("#orderNotes").value.trim()||"—";
-  const delivery=deliveryQuoteFor(subtotal,area==="—"?"":area);
-  if(delivery.minimum>0&&subtotal<delivery.minimum){
-    toast(lang==="ar"?"الحد الأدنى للطلب هو "+money(delivery.minimum)+".":"Minimum order is "+money(delivery.minimum)+".");
-    return;
-  }
-
-  const button=$("#sendOrderButton");
-  if(button){button.disabled=true;button.dataset.originalText=button.dataset.originalText||button.textContent;button.textContent=lang==="ar"?"جارٍ تجهيز الطلب…":"Preparing order…";}
-
-  const itemPayload=rows.map(r=>({
-    product_id:r.p.id,
-    variant_id:r.v.id,
-    name:r.p.nameEn||currentName(r.p),
-    size:r.v.sizeEn||r.v.sizeAr||"",
-    qty:r.qty,
-    unit_price:Number(r.v.price),
-    subtotal:Number(r.v.price)*r.qty
-  }));
-  const extra={source:"cart",products_subtotal:subtotal,delivery_fee:delivery.fee,delivery_eta:delivery.eta,delivery_zone:delivery.zone?.area||""};
-  let result=null;
-  let ref="";
-  let discount=0;
-  let pendingPoints=0;
-
-  try{
-    if(window.ZWM_REWARDS?.submitOrder){
-      result=await window.ZWM_REWARDS.submitOrder({
-        kind:"order",
-        customer_name:name==="—"?"":name,
-        customer_phone:phone==="—"?"":phone,
-        area:area==="—"?"":area,
-        notes:notes==="—"?"":notes,
-        items:itemPayload,
-        language:lang,
-        extra
-      });
-      ref=result?.reference||"";
-      discount=Math.max(0,Number(result?.discount)||0);
-      pendingPoints=Math.max(0,Number(result?.pending_points)||0);
-      if(!ref)throw new Error(lang==="ar"?"تعذّر إنشاء رقم الطلب.":"Could not create the order reference.");
-    }else{
-      ref=orderReference("ZW");
-      const fallbackTotal=subtotal+delivery.fee;
-      await window.ZWM_CMS?.recordOrder?.({
-        reference:ref,
-        kind:"order",
-        customer_name:name==="—"?"":name,
-        customer_phone:phone==="—"?"":phone,
-        area:area==="—"?"":area,
-        notes:notes==="—"?"":notes,
-        items:itemPayload,
-        total:fallbackTotal,
-        language:lang,
-        extra
-      });
-    }
-
-    const total=Math.max(0,subtotal-discount+delivery.fee);
-    const lines=[
-      t.orderHello,"",(lang==="ar"?"رقم الطلب":"Order")+": "+ref,"",t.orderIntro,"",
-      ...rows.map((r,i)=>{
-        const itemName=currentName(r.p);
-        const size=lang==="ar"?r.v.sizeAr:r.v.sizeEn;
-        const lineSubtotal=money(r.v.price*r.qty);
-        return (i+1)+". "+itemName+" — "+size+" — "+t.qty+": "+r.qty+" — "+money(r.v.price)+" — "+t.subtotal+": "+lineSubtotal;
-      }),
-      "",
-      (lang==="ar"?"مجموع المنتجات":"Products subtotal")+": "+money(subtotal),
-      ...(discount>0?[(lang==="ar"?"مكافأة نقاط المونة":"Mouneh Points reward")+": -"+money(discount)]:[]),
-      ...(delivery.fee>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+money(delivery.fee)]:(delivery.freeAbove>0&&subtotal>=delivery.freeAbove?[(lang==="ar"?"التوصيل":"Delivery")+": "+(lang==="ar"?"مجاني":"Free")]:delivery.freeAbove>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+(lang==="ar"?"يُؤكّد عبر واتساب":"Confirmed on WhatsApp")]:[])),
-      ...(delivery.eta?[(lang==="ar"?"الوقت المتوقع":"Estimated delivery")+": "+delivery.eta]:[]),
-      t.orderTotal+": "+money(total),
-      t.customer+": "+name,
-      ...(phone!=="—"?[t.orderPhone+": "+phone]:[]),
-      t.orderArea+": "+area,
-      t.orderNotes+": "+notes,
-      ...(pendingPoints>0?["",(lang==="ar"?"نقاط متوقعة بعد الاستلام":"Points pending after delivery")+": "+pendingPoints+" 🌿"]:[]),
-      "",
-      t.orderConfirm
-    ];
-
-    window.ZWM_CMS?.track?.("whatsapp_click",{source:"cart_order"});
-    const url="https://wa.me/"+currentWhatsAppNumber()+"?text="+encodeURIComponent(lines.join("\n"));
-    const opened=window.open(url,"_blank","noopener,noreferrer");
-    if(opened)toast(lang==="ar"?(pendingPoints>0?"تم فتح واتساب · "+pendingPoints+" نقطة بعد الاستلام":"تم فتح واتساب مع طلبك"):(pendingPoints>0?"WhatsApp opened · "+pendingPoints+" points after delivery":"WhatsApp opened with your order"));
-    else window.location.href=url;
-  }catch(error){
-    console.error("Order submit failed:",error);
-    toast(error?.message||(lang==="ar"?"تعذّر تجهيز الطلب. حاول مجدداً.":"Could not prepare the order. Please try again."));
-  }finally{
-    if(button){button.disabled=false;button.textContent=button.dataset.originalText||t.sendOrder||"Send order on WhatsApp";}
-  }
+  window.ZWM_CMS?.track?.("checkout_started",{source:"cart"});
+  location.href="/checkout.html";
 }
-
 function openCart(){
   if(document.body.classList.contains("cart-open"))return;
   window.ZWM_CLOSE_NAV?.();

@@ -22,6 +22,7 @@
   const AR_TRANSLATIONS = Object.freeze({
     "Run the rewards club from the same owner console.":"إدارة نقاط المونة",
     "Points settle only when an order is marked delivered. Cancelling a rewards order reverses its order-linked points and releases reserved vouchers.":"تُضاف النقاط بعد تأكيد تسليم الطلب. عند الإلغاء، تُعكس النقاط المرتبطة بالطلب وتُحرّر القسائم المحجوزة.",
+    "Points settle only when an order is Delivered and payment is confirmed received. Cancelling or refunding an order reverses its order-linked points and releases eligible reserved vouchers.":"تُضاف النقاط فقط بعد تأكيد التسليم واستلام الدفع. عند الإلغاء أو رد المبلغ، تُعكس النقاط المرتبطة بالطلب وتُحرّر القسائم المؤهلة.",
     "Customer accounts":"حسابات العملاء",
     "Sign-in & verification setup":"إعداد تسجيل الدخول والتحقق",
     "Live status from the account service":"حالة مباشرة من خدمة الحسابات",
@@ -37,6 +38,7 @@
     "Sender settings are managed in the account service.":"تُدار إعدادات المرسِل في خدمة الحسابات.",
     "Referral protection":"حماية مكافآت الإحالة",
     "Delivery is the confirmation step.":"تأكيد التسليم هو شرط استحقاق المكافأة.",
+    "Delivery + payment confirm the reward.":"يجب تأكيد التسليم واستلام الدفع لاستحقاق المكافأة.",
     "A referral code alone never earns points. The friend must join with the code":"رمز الإحالة وحده لا يمنح نقاطاً. يجب أن ينضم الصديق باستخدام الرمز",
     "before ordering":"قبل تقديم الطلب",
     "their first delivered order must be at least $25 after discount, and the order must be marked":"ويجب أن تبلغ قيمة أول طلب مُسلّم 25 دولاراً على الأقل بعد الخصم، ثم يحدّد المالك حالة الطلب بأنه",
@@ -96,6 +98,7 @@
     "Apply point adjustment":"تطبيق تعديل النقاط",
     "Tier override":"تحديد المستوى يدوياً",
     "Leave automatic to use annual delivered spend: Olive at $200, Golden at $500.":"اختر المستوى التلقائي حسب قيمة الطلبات المسلّمة سنوياً: الزيتوني عند 200 دولار والذهبي عند 500 دولار.",
+    "Leave automatic to use annual paid & delivered spend: Olive at $200, Golden at $500.":"اختر المستوى التلقائي حسب قيمة الطلبات المدفوعة والمسلّمة سنوياً: الزيتوني عند 200 دولار والذهبي عند 500 دولار.",
     "Tier":"المستوى",
     "Automatic":"تلقائي",
     "Olive":"زيتوني",

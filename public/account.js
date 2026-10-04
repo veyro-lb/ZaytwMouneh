@@ -169,12 +169,27 @@
   document.addEventListener("zwm:account-updated",()=>{lastSyncedAt=Date.now();render(true)});
   window.addEventListener("focus",sync);
   window.addEventListener("online",sync);
+  window.addEventListener("storage",syncAccountShellChrome);
+  window.addEventListener("pageshow",syncAccountShellChrome);
   window.addEventListener("pageshow",sync);
   window.addEventListener("storage",e=>{if(!e.key||String(e.key).startsWith("zwm"))sync()});
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)sync()});
   new MutationObserver(()=>render(true)).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+  function syncAccountShellChrome(){
+    document.querySelectorAll("[data-footer-year]").forEach(el=>{el.textContent=new Date().getFullYear()});
+    const count=$("#cartCount");
+    if(count){
+      let total=0;
+      try{
+        const raw=JSON.parse(localStorage.getItem("zwm-cart-v5")||"{}");
+        total=Object.values(raw||{}).reduce((sum,item)=>sum+Math.max(0,Number(item?.qty)||0),0);
+      }catch{}
+      count.textContent=String(total);
+    }
+  }
   const stored=(()=>{try{return localStorage.getItem("zwm-lang-v2")}catch{return null}})(); if(stored)setLang(stored); else syncLanguageVisibility();
   $("#accountYear") && ($("#accountYear").textContent=new Date().getFullYear());
+  syncAccountShellChrome();
   render(true);
 
   if(requestedAuthOnLoad){

@@ -246,28 +246,15 @@
     return data;
   }
 
-  async function namedRpc(name,p={},retry=true){
-    const s=await validSession();
-    if(!s?.access_token)throw new Error(tr("Sign in required.","يلزم تسجيل الدخول."));
-    const headers={"apikey":key(),"Authorization":"Bearer "+s.access_token,"Content-Type":"application/json","Prefer":"return=representation"};
-    const r=await fetch(baseUrl()+"/rest/v1/rpc/"+name,{method:"POST",headers,body:JSON.stringify(p)});
-    const data=await r.json().catch(()=>({}));
-    if(r.status===401&&s?.refresh_token&&retry){
-      await refreshSession();
-      return namedRpc(name,p,false);
-    }
-    if(!r.ok)throw new Error(data.message||data.hint||data.details||tr("Account request failed.","تعذّر طلب الحساب."));
-    return data;
-  }
   async function secureJoin(name,phone,referral=""){
     const code=normalizeReferral(referral||pendingReferral());
-    const out=await namedRpc("mouneh_join_secure",{name,phone,referral:code});
+    const out=await rpc("join_secure",{name,phone,referral:code});
     clearPendingReferral();
     return out;
   }
   async function loadReferralStatus(){
     if(!state.session||!state.dashboard?.member){state.referralStatus=null;return null;}
-    try{state.referralStatus=await namedRpc("mouneh_referral_status",{});return state.referralStatus}
+    try{state.referralStatus=await rpc("referral_status",{});return state.referralStatus}
     catch{state.referralStatus=null;return null}
   }
 

@@ -8,7 +8,7 @@
   const LEGAL_PENDING_KEY="zwm:mouneh:legal-consent-pending:v1";
   const LEGAL_CONSENT_VERSION="2026-10-04";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-rewards12";
+  const VERSION="20261004-rewards13";
   const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false,referralStatus:null};
 
   const $=(id)=>document.getElementById(id);
@@ -403,8 +403,10 @@
     if(!rows.length)return "";
     return '<section class="mr-order-status"><div class="mr-section-head"><div><p>'+tr("Orders & points","الطلبات والنقاط")+'</p><h3>'+tr("What is confirmed and what is pending","ما تم تأكيده وما يزال قيد الانتظار")+'</h3></div></div><div class="mr-order-status-list">'+rows.map(o=>{
       const delivered=o.status==="delivered";
+      const cancelled=o.status==="cancelled";
       const points=Number(o.awarded)||0;
-      return '<article><div><strong>'+esc(o.reference)+'</strong><small>'+esc(orderStatusLabel(o.status))+' · '+money(o.total)+'</small></div><span class="'+(delivered?"is-confirmed":"is-pending")+'">'+(delivered?("+"+points+" 🌿"):tr("Points pending","النقاط معلّقة"))+'</span></article>';
+      const pointLabel=delivered?("+"+points+" 🌿"):cancelled?tr("No points","بدون نقاط"):tr("Points pending","النقاط معلّقة");
+      return '<article><div><strong>'+esc(o.reference)+'</strong><small>'+esc(orderStatusLabel(o.status))+' · '+money(o.total)+'</small></div><span class="'+(delivered?"is-confirmed":cancelled?"is-cancelled":"is-pending")+'">'+pointLabel+'</span></article>';
     }).join("")+'</div><small class="mr-order-proof">✓ '+tr("Points become final only after Zayt w Mouneh confirms the order as delivered.","تصبح النقاط نهائية فقط بعد أن تؤكد زيت ومونة أن الطلب تم تسليمه.")+'</small></section>';
   }
   function referralView(){
@@ -764,6 +766,7 @@
     if(window.__ZWM_REWARDS_INIT_STARTED)return;
     window.__ZWM_REWARDS_INIT_STARTED=true;
     try{
+      startPointsButtonGuard();
       if(!window.ZWM_CMS_CONFIG)await loadScript(CONFIG_SRC);
       state.config=window.ZWM_CMS_CONFIG||{};
       if(!state.config.enabled||!state.config.supabaseUrl||!state.config.supabasePublishableKey)return;

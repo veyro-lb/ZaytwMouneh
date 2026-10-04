@@ -191,7 +191,7 @@ html[lang="ar"] :where(button, .btn, .button, [class*="btn"], .account-primary, 
 }
 
 /* Homepage pantry hero — desktop editorial balance. */
-@media (min-width:981px){
+@media (min-width:1181px){
   body[data-page="home"] .home-pantry-hero{
     min-height:650px!important;
     padding:52px 0 56px!important;
@@ -336,6 +336,88 @@ html[lang="ar"] :where(button, .btn, .button, [class*="btn"], .account-primary, 
     margin:25px 0 0!important;
     direction:rtl!important;
     justify-content:flex-start!important;
+  }
+}
+
+
+/* Mid-size desktop/laptop: two columns, no squeezed centre track. */
+@media (min-width:981px) and (max-width:1180px){
+  body[data-page="home"] .home-pantry-hero{
+    min-height:620px!important;
+    padding:48px 0 52px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-grid{
+    width:min(100% - 48px,1120px)!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(390px,455px)!important;
+    gap:30px!important;
+    align-items:center!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap{
+    grid-column:1!important;
+    max-width:520px!important;
+    justify-self:start!important;
+    text-align:left!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .eyebrow{
+    text-align:left!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero h1.only-en{
+    max-width:10.7ch!important;
+    margin:0!important;
+    font-size:clamp(3.9rem,6.1vw,5.15rem)!important;
+    line-height:.93!important;
+    text-align:left!important;
+    overflow-wrap:normal!important;
+    word-break:normal!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-copy.only-en{
+    max-width:46ch!important;
+    margin:20px 0 0!important;
+    text-align:left!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-actions{
+    width:auto!important;
+    max-width:500px!important;
+    margin:23px 0 0!important;
+    display:flex!important;
+    flex-wrap:wrap!important;
+    justify-content:flex-start!important;
+    gap:10px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-actions>a{
+    flex:1 1 190px!important;
+    min-width:175px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .shop-intro-board{
+    grid-column:2!important;
+    width:100%!important;
+    max-width:455px!important;
+    margin:0!important;
+    padding:21px!important;
+    justify-self:end!important;
+  }
+
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap,
+  html[lang="ar"] body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap,
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero h1.only-ar,
+  html[lang="ar"] body[data-page="home"] .home-pantry-hero h1.only-ar,
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-copy.only-ar,
+  html[lang="ar"] body[data-page="home"] .home-pantry-hero .page-intro-copy.only-ar{
+    text-align:right!important;
+  }
+
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-actions,
+  html[lang="ar"] body[data-page="home"] .home-pantry-hero .page-intro-actions{
+    direction:rtl!important;
   }
 }
 

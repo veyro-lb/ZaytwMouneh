@@ -9,7 +9,8 @@ ar:{backCart:"العودة للسلة →",account:"حسابي",eyebrow:"طلب 
 };
 var $=function(id){return document.getElementById(id)};
 var esc=function(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
-var ltr=function(v){return state.lang==="ar"?"\u2066"+String(v==null?"":v)+"\u2069":String(v==null?"":v)};\nvar money=function(v){return ltr("$"+(Number(v)||0).toFixed(2))};
+var ltr=function(v){return state.lang==="ar"?"\u2066"+String(v==null?"":v)+"\u2069":String(v==null?"":v)};
+var money=function(v){return ltr("$"+(Number(v)||0).toFixed(2))};
 function read(key,fallback){try{var v=localStorage.getItem(key);return v==null?fallback:JSON.parse(v)}catch{return fallback}}
 function write(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch{}}
 function remove(key){try{localStorage.removeItem(key)}catch{}}

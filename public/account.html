@@ -15,6 +15,13 @@
   <link rel="stylesheet" href="premium.css?v=20261004-toolkit4" />
   <link rel="stylesheet" href="mouneh-rewards-v3.css?v=20261004-account3" />
   <link rel="stylesheet" href="account.css?v=20261004-account3" />
+  <style id="legalRewardsVisibility">
+    .footer-legal-bar{grid-column:1/-1!important;display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;flex-wrap:wrap!important;justify-content:center!important;gap:10px!important;margin-top:12px!important;padding:18px!important;border:1px solid rgba(255,255,255,.16)!important;border-radius:18px!important;background:rgba(255,255,255,.06)!important}
+    .footer-legal-label{flex:1 0 100%!important;display:block!important;margin-bottom:2px!important;color:#d9b95a!important;font-size:.67rem!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:.14em!important;text-align:center!important}
+    .footer-legal-button{display:inline-flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;align-items:center!important;justify-content:center!important;min-height:40px!important;padding:0 15px!important;border:1px solid rgba(255,255,255,.22)!important;border-radius:999px!important;background:rgba(255,255,255,.08)!important;color:#fff!important;font-size:.72rem!important;font-weight:800!important}
+    .footer-legal-rewards{background:#d7ad35!important;color:#173820!important;border-color:#d7ad35!important}
+    @media(max-width:600px){.footer-legal-bar{justify-content:flex-start!important;padding:14px!important}.footer-legal-label{text-align:left!important}.footer-legal-button{flex:1 1 100%!important}}
+  </style>
 </head>
 <body data-page="account">
   <a class="skip-link" href="#accountMain"><span class="only-en">Skip to account</span><span class="only-ar" lang="ar">الانتقال إلى الحساب</span></a>
@@ -76,16 +83,19 @@
       <div class="footer-column">
         <strong><span class="only-en">Account help</span><span class="only-ar" lang="ar">مساعدة الحساب</span></strong>
         <a href="contact.html"><span class="only-en">Contact us</span><span class="only-ar" lang="ar">تواصل معنا</span></a>
-        <a href="privacy.html"><span class="only-en">Privacy Policy</span><span class="only-ar" lang="ar">سياسة الخصوصية</span></a>
-        <a href="terms.html"><span class="only-en">Terms of Service</span><span class="only-ar" lang="ar">شروط الخدمة</span></a>
       </div>
-      <div class="footer-legal-bar" data-footer-legal></div>
+      <div class="footer-legal-bar" data-footer-legal>
+        <strong class="footer-legal-label"><span class="only-en">Legal & Rewards</span><span class="only-ar" lang="ar">القانون والمكافآت</span></strong>
+        <a class="footer-legal-button" data-legal-link="privacy" href="/privacy.html?rev=20261004-legal5"><span class="only-en">Privacy Policy</span><span class="only-ar" lang="ar">سياسة الخصوصية</span></a>
+        <a class="footer-legal-button" data-legal-link="terms" href="/terms.html?rev=20261004-legal5"><span class="only-en">Terms of Service</span><span class="only-ar" lang="ar">شروط الخدمة</span></a>
+        <a class="footer-legal-button footer-legal-rewards" data-legal-link="rewards" href="/terms.html?rev=20261004-legal5#terms-rewards"><span class="only-en">Mouneh Points Rules 🌿</span><span class="only-ar" lang="ar">قواعد نقاط المونة 🌿</span></a>
+      </div>
       <p class="copyright">© <span id="accountYear"></span> Zayt w Mouneh.</p>
     </div>
   </footer>
 
   <script src="mouneh-rewards-v3.js?v=20261004-account3" data-mouneh-rewards="1"></script>
-  <script src="site-runtime.js?v=20261004-account3"></script>
+  <script src="site-runtime-v3.js?v=20261004-legal5"></script>
   <script src="account.js?v=20261004-account3"></script>
 </body>
 </html>

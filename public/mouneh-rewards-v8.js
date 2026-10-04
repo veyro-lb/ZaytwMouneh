@@ -8,7 +8,7 @@
   const LEGAL_PENDING_KEY="zwm:mouneh:legal-consent-pending:v1";
   const LEGAL_CONSENT_VERSION="2026-10-04";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-mobileauth3";
+  const VERSION="20261004-mobileauth4";
   const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false,referralStatus:null};
 
   const $=(id)=>document.getElementById(id);
@@ -151,7 +151,7 @@
     if(token)headers.Authorization="Bearer "+token;
     const r=await fetch(baseUrl()+"/auth/v1/"+path,{method,headers,body:method==="GET"||body===undefined?undefined:JSON.stringify(body)});
     const data=await r.json().catch(()=>({}));
-    if(!r.ok)throw new Error(data.msg||data.message||data.error_description||data.error||tr("Authentication failed.","تعذّر تسجيل الدخول."));
+    if(!r.ok){const err=new Error(data.msg||data.message||data.error_description||data.error||tr("Authentication failed.","تعذّر تسجيل الدخول."));err.code=data.error_code||data.code||"";err.status=r.status;err.data=data;throw err;}
     return data;
   }
   async function authGet(path,token){return authRequest(path,undefined,token,"GET");}
@@ -203,16 +203,30 @@
     const acceptedAt=new Date().toISOString();
     const data=await authRequest(path,{email,password,data:{full_name:name,name,phone,referral_code:referralCode,terms_accepted_at:acceptedAt,privacy_acknowledged_at:acceptedAt,legal_consent_version:LEGAL_CONSENT_VERSION}});
     const s=data.session||null;
-    state.pendingSignupEmail=email;
+    const user=data.user||null;
     if(s?.access_token){
-      writeSession(s);state.authUser=data.user||null;
+      state.pendingSignupEmail="";
+      writeSession(s);state.authUser=user;
       await loadDashboard();
       if(state.dashboard?.needsJoin)await secureJoin(name,phone,referralCode);
       await loadDashboard();
-      return {session:true,user:data.user||null};
+      return {session:true,user};
     }
+    const identities=Array.isArray(user?.identities)?user.identities:null;
+    const confirmationSent=!!user?.confirmation_sent_at;
+    if((identities&&identities.length===0)||!confirmationSent){
+      state.pendingSignupEmail="";
+      state.authMode="signin";
+      state.authNotice=tr(
+        "This email already has an account, or no new verification email was generated. Sign in instead. If you do not remember the password, use password recovery.",
+        "هذا البريد مرتبط بحساب موجود، أو لم يتم إنشاء رسالة تأكيد جديدة. سجّل الدخول بدلاً من ذلك. إذا نسيت كلمة المرور فاستخدم استعادة كلمة المرور."
+      );
+      throw new Error(state.authNotice);
+    }
+    state.pendingSignupEmail=email;
+    state.authNotice="";
     state.authMode="verify";
-    return {session:false,user:data.user||null};
+    return {session:false,user,confirmationSent:true};
   }
   async function resendVerification(){
     const email=String(state.pendingSignupEmail||"").trim();

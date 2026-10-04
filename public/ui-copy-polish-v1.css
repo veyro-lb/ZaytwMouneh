@@ -1,0 +1,169 @@
+/* Zayt w Mouneh — typography, spacing and bilingual UI polish.
+   Presentation-only overrides: no routing, auth, checkout or business logic. */
+
+:root {
+  --zwm-touch-target: 44px;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+:where(p, li, label, small, strong, span, td, th, dd, dt) {
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+:where(button, input, select, textarea) {
+  font: inherit;
+}
+
+:where(button,
+       input[type="button"],
+       input[type="submit"],
+       input[type="reset"],
+       .btn,
+       .button,
+       [class*="btn"],
+       .account-primary,
+       .account-secondary,
+       .native-order-open) {
+  box-sizing: border-box;
+  min-height: 40px;
+  max-width: 100%;
+  line-height: 1.25;
+  text-align: center;
+}
+
+:where(button,
+       input[type="button"],
+       input[type="submit"],
+       input[type="reset"],
+       .btn,
+       .button,
+       [class*="btn"],
+       .account-primary,
+       .account-secondary,
+       .native-order-open) {
+  align-items: center;
+  justify-content: center;
+}
+
+button,
+a.btn,
+a.button,
+a[class*="btn"],
+.account-primary,
+.account-secondary,
+.native-order-open {
+  white-space: normal;
+}
+
+:where(.account-actions,
+       .native-address-actions,
+       .commerce-actions,
+       .checkout-actions,
+       .order-actions,
+       .admin-actions,
+       .modal-actions,
+       .form-actions) {
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+:where(.account-actions, .native-address-actions, .checkout-actions, .order-actions) > :where(button, a) {
+  min-width: 0;
+}
+
+html[dir="rtl"] body,
+html[lang="ar"] body {
+  letter-spacing: 0;
+}
+
+html[dir="rtl"] :where(p, li, label, small),
+html[lang="ar"] :where(p, li, label, small) {
+  line-height: 1.75;
+}
+
+html[dir="rtl"] :where(button, .btn, .button, [class*="btn"], .account-primary, .account-secondary),
+html[lang="ar"] :where(button, .btn, .button, [class*="btn"], .account-primary, .account-secondary) {
+  line-height: 1.45;
+}
+
+:where(input, select, textarea) {
+  min-width: 0;
+  max-width: 100%;
+}
+
+:where(.account-card, .commerce-card, .order-card, .admin-card, .modal-card, .drawer, .panel) {
+  min-width: 0;
+}
+
+@media (max-width: 700px) {
+  :where(button,
+         input[type="button"],
+         input[type="submit"],
+         input[type="reset"],
+         .btn,
+         .button,
+         [class*="btn"],
+         .account-primary,
+         .account-secondary,
+         .native-order-open) {
+    min-height: var(--zwm-touch-target);
+  }
+
+  :where(input:not([type="checkbox"]):not([type="radio"]),
+         select,
+         textarea) {
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  :where(.account-actions,
+         .checkout-actions,
+         .order-actions,
+         .modal-actions,
+         .form-actions) > :where(button, a) {
+    flex: 1 1 150px;
+  }
+
+  :where(.account-card, .commerce-card, .order-card, .admin-card, .modal-card) {
+    overflow-wrap: break-word;
+  }
+}
+
+/* Admin stays dense on desktop, but labels/buttons must remain readable and centered. */
+.admin-body :where(button, .admin-btn, [class*="admin-"][class*="button"]) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.admin-body :where(.admin-toolbar, .admin-actions, .modal-actions) {
+  gap: 10px;
+}
+
+@media (max-width: 760px) {
+  .admin-body :where(button, .admin-btn, [class*="admin-"][class*="button"]) {
+    min-height: var(--zwm-touch-target);
+    white-space: normal;
+    line-height: 1.3;
+  }
+
+  .admin-body :where(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+    font-size: 16px;
+  }
+}

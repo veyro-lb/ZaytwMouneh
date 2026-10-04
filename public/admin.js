@@ -959,9 +959,21 @@
   }
 
   function showOnly(id) {
+    const ownerVisible=id==="adminApp";
     for (const key of ["setupScreen","loginScreen","adminApp"]) {
       const el = $(key);
       if (el) el.hidden = key !== id;
+    }
+    const mobileNav=$("mobileAdminNav");
+    if(mobileNav)mobileNav.hidden=!ownerVisible;
+    if(!ownerVisible){
+      for(const key of ["mobileMoreSheet","mobileMoreBackdrop","quickActionSheet","quickActionBackdrop"]){
+        const el=$(key);if(el)el.hidden=true;
+      }
+      $("adminSidebar")?.classList.remove("is-open");
+      if($("sidebarBackdrop"))$("sidebarBackdrop").hidden=true;
+      document.body.classList.remove("admin-menu-open","mobile-more-open");
+      document.body.style.overflow="";
     }
   }
 

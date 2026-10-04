@@ -5,8 +5,8 @@
   const CLAIMS_KEY="zwm:mouneh:claims:v1";
   const WALLET_KEY="zwm:mouneh:selected-wallet:v1";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-rewards8";
-  const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null};
+  const VERSION="20261004-rewards9";
+  const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false};
 
   const $=(id)=>document.getElementById(id);
   const esc=(v)=>String(v??"").replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -380,6 +380,11 @@
     }
   }
 
+  function requestOpen(){
+    if(!$("mounehRewardsDrawer")){state.pendingOpen=true;return;}
+    setDrawer(true);
+  }
+
   function injectUI(){
     if($("mounehRewardsDrawer"))return;
     const link=document.createElement("link");
@@ -421,6 +426,10 @@
       form.insertBefore(box,anchor||null);
     }
 
+    if(!btn.dataset.mrBound){
+      btn.addEventListener("click",(e)=>{e.preventDefault();e.stopPropagation();requestOpen();});
+      btn.dataset.mrBound="1";
+    }
     $("mounehRewardsClose").addEventListener("click",()=>setDrawer(false));
     back.addEventListener("click",()=>setDrawer(false));
     document.addEventListener("keydown",(e)=>{if(e.key==="Escape"&&drawer.classList.contains("is-open"))setDrawer(false)});
@@ -542,7 +551,7 @@
         try{if(status)status.textContent=tr("Sending…","جارٍ الإرسال…");await resendVerification();if(status)status.textContent=tr("Sent. Check your inbox and spam folder.","تم الإرسال. تحقق من الوارد والبريد غير المرغوب.")}catch(err){if(status)status.textContent=err.message}finally{if(resend.isConnected){resend.disabled=false;resend.removeAttribute("aria-busy");delete resend.dataset.mrBusy}}
         return;
       }
-      if(e.target.closest("[data-mr-open]")){setDrawer(true);return;}
+      if(e.target.closest("[data-mr-open]")){requestOpen();return;}
       const signout=e.target.closest("[data-mr-signout]");
       if(signout){if(signout.dataset.mrBusy==="1")return;signout.dataset.mrBusy="1";signout.disabled=true;try{await signOut()}finally{if(signout.isConnected){signout.disabled=false;delete signout.dataset.mrBusy}}return;}
       const refresh=e.target.closest("[data-mr-refresh]");
@@ -611,6 +620,7 @@
         }catch{}
       }
       render();renderCheckout();
+      if(state.pendingOpen){state.pendingOpen=false;setDrawer(true);}
       try{
         if(sessionStorage.getItem("zwm:mouneh:just-verified")==="1"){
           sessionStorage.removeItem("zwm:mouneh:just-verified");
@@ -624,6 +634,11 @@
     }catch(err){console.warn("Mouneh Rewards unavailable:",err);}
   }
 
-  window.ZWM_REWARDS={submitOrder,refreshCheckout,open:()=>setDrawer(true),refresh:()=>loadDashboard(),getState:()=>({member:state.dashboard?.member||null,selectedWallet:state.selectedWallet})};
+  window.ZWM_REWARDS={submitOrder,refreshCheckout,open:requestOpen,refresh:()=>loadDashboard(),getState:()=>({member:state.dashboard?.member||null,selectedWallet:state.selectedWallet})};
+  const earlyRewardsButton=$("mounehRewardsButton");
+  if(earlyRewardsButton&&!earlyRewardsButton.dataset.mrBound){
+    earlyRewardsButton.addEventListener("click",(e)=>{e.preventDefault();e.stopPropagation();requestOpen();});
+    earlyRewardsButton.dataset.mrBound="1";
+  }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();

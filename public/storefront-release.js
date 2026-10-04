@@ -5,6 +5,7 @@
   const manifest="/release.json";
   const RELEASE_PARAM="__zwm_release";
   const FRESH_PARAM="__zwm_fresh";
+  const PROBE_PARAM="__zwm_probe";
   let checking=false;
   let lastCheck=0;
 
@@ -12,7 +13,7 @@
     try{
       const url=new URL(location.href);
       let changed=false;
-      [RELEASE_PARAM,FRESH_PARAM].forEach(key=>{
+      [RELEASE_PARAM,FRESH_PARAM,PROBE_PARAM].forEach(key=>{
         if(url.searchParams.has(key)){url.searchParams.delete(key);changed=true;}
       });
       if(changed)history.replaceState(history.state,document.title,url.pathname+(url.search||"")+url.hash);
@@ -21,9 +22,16 @@
 
   function freshUrl(input=location.href,release=""){
     const url=new URL(input,location.href);
+    url.searchParams.delete(PROBE_PARAM);
     url.searchParams.set(FRESH_PARAM,Date.now().toString(36));
     if(release)url.searchParams.set(RELEASE_PARAM,release);
     return url.toString();
+  }
+
+  function signatureKey(value){
+    let h=2166136261;
+    for(let i=0;i<value.length;i++){h^=value.charCodeAt(i);h=Math.imul(h,16777619);}
+    return (h>>>0).toString(36);
   }
 
   function forceFresh(release="",reason="fresh"){
@@ -36,46 +44,90 @@
     return true;
   }
 
-  async function checkRelease(force=false){
-    const now=Date.now();
-    if(checking||(!force&&now-lastCheck<4000))return;
-    checking=true;
-    lastCheck=now;
+  function localAssets(root,base){
+    const out=[];
+    root.querySelectorAll('script[src],link[rel="stylesheet"][href]').forEach(node=>{
+      const raw=node.getAttribute("src")||node.getAttribute("href");
+      if(!raw)return;
+      try{
+        const url=new URL(raw,base);
+        if(url.origin!==location.origin)return;
+        out.push(url.pathname+url.search);
+      }catch{}
+    });
+    return [...new Set(out)].sort();
+  }
+
+  async function freshDocumentSignature(now){
     try{
-      const res=await fetch(manifest+"?t="+now,{
+      const probe=new URL(location.href);
+      probe.hash="";
+      [RELEASE_PARAM,FRESH_PARAM,PROBE_PARAM].forEach(key=>probe.searchParams.delete(key));
+      probe.searchParams.set(PROBE_PARAM,String(now));
+      const response=await fetch(probe.toString(),{
         cache:"no-store",
         headers:{"Cache-Control":"no-cache","Pragma":"no-cache"}
       });
-      if(!res.ok)return;
-      const data=await res.json();
-      const latest=String(data?.release||"").trim();
-      if(latest&&current&&latest!==current){
-        forceFresh(latest,"release");
-        return;
+      if(!response.ok)return null;
+      const html=await response.text();
+      const parsed=new DOMParser().parseFromString(html,"text/html");
+      const assets=localAssets(parsed,probe.toString());
+      const release=String(parsed.querySelector('meta[name="zwm-release"]')?.content||"").trim();
+      return {assets,release,key:signatureKey(release+"|"+assets.join("|"))};
+    }catch{return null}
+  }
+
+  async function checkRelease(force=false){
+    const now=Date.now();
+    if(checking||(!force&&now-lastCheck<5000))return;
+    checking=true;
+    lastCheck=now;
+    try{
+      const [manifestResponse,freshDoc]=await Promise.all([
+        fetch(manifest+"?t="+now,{cache:"no-store",headers:{"Cache-Control":"no-cache","Pragma":"no-cache"}}).catch(()=>null),
+        freshDocumentSignature(now)
+      ]);
+
+      if(manifestResponse?.ok){
+        const data=await manifestResponse.json().catch(()=>null);
+        const latest=String(data?.release||"").trim();
+        if(latest&&current&&latest!==current){
+          forceFresh(latest,"release-"+latest);
+          return;
+        }
+      }
+
+      if(freshDoc){
+        const liveAssets=new Set(localAssets(document,location.href));
+        const missing=freshDoc.assets.filter(asset=>!liveAssets.has(asset));
+        const releaseMismatch=freshDoc.release&&current&&freshDoc.release!==current;
+        if(releaseMismatch||missing.length){
+          forceFresh(freshDoc.release||current,"assets-"+freshDoc.key);
+          return;
+        }
       }
       cleanTransientParams();
     }catch{
-      /* A network interruption must never block the storefront. */
+      /* Network loss must never block the storefront. */
     }finally{
       checking=false;
     }
   }
 
-  // Back/forward cache is the main reason an already-open tab can look like an old deployment.
   window.addEventListener("pageshow",event=>{
     if(event.persisted){
-      if(forceFresh(current,"bfcache"))return;
+      location.replace(freshUrl(location.href,current));
+      return;
     }
     checkRelease(true);
   });
   window.addEventListener("focus",()=>checkRelease(false));
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)checkRelease(false)});
 
-  // Force ordinary same-origin page navigation to request a fresh document.
   document.addEventListener("click",event=>{
     if(event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
     const link=event.target.closest?.("a[href]");
-    if(!link||link.hasAttribute("download")||link.target&&link.target!=="_self")return;
+    if(!link||link.hasAttribute("download")||(link.target&&link.target!=="_self"))return;
     let url;
     try{url=new URL(link.href,location.href)}catch{return}
     if(url.origin!==location.origin)return;

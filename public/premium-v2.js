@@ -688,7 +688,7 @@
     qa(".product-card").forEach(function(card){
       if(card.querySelector(".premium-availability"))return;
       var actions=card.querySelector(".product-actions");if(!actions)return;
-      var note=document.createElement("span");note.className="premium-availability";note.textContent=txt("Availability confirmed on WhatsApp","التوفر يُؤكد عبر واتساب");actions.before(note);
+      var note=document.createElement("span");note.className="premium-availability";note.textContent=txt("Availability verified with your order","يتم التحقق من التوفر مع طلبك");actions.before(note);
     });
   }
 
@@ -711,7 +711,7 @@
   }
 
   function bindOrderMemory(){
-    var f=q("#orderForm");if(f)f.addEventListener("submit",function(){saveLastOrder();track("whatsapp_order_started",{items:basketPayload().length})},true);
+    var f=q("#orderForm");if(f)f.addEventListener("submit",function(){saveLastOrder();track("checkout_started",{items:basketPayload().length})},true);
   }
 
   function refreshLanguage(){

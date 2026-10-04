@@ -540,6 +540,73 @@
     }
   }
 
+  function ensureMobileMenuTools(panel){
+    if(!panel)return;
+    let tools=panel.querySelector("[data-mobile-menu-tools]");
+    if(!tools){
+      tools=document.createElement("section");
+      tools.className="mobile-menu-tools";
+      tools.setAttribute("data-mobile-menu-tools","");
+      tools.setAttribute("aria-label","Quick account and site actions");
+      tools.innerHTML=
+        '<a class="mobile-menu-tool mobile-menu-search" data-mobile-menu-search href="shop.html#shop"><span class="mobile-menu-tool-icon" aria-hidden="true">⌕</span><span class="mobile-menu-tool-copy"><strong></strong><small></small></span></a>'+
+        '<a class="mobile-menu-tool mobile-menu-account" data-mobile-menu-account href="account.html#signin"><span class="mobile-menu-tool-icon" aria-hidden="true">●</span><span class="mobile-menu-tool-copy"><strong></strong><small></small></span></a>'+
+        '<button type="button" class="mobile-menu-tool mobile-menu-points" data-mobile-menu-points><span class="mobile-menu-tool-icon" aria-hidden="true">🌿</span><span class="mobile-menu-tool-copy"><strong></strong><small></small></span><b data-mobile-points-balance>—</b></button>'+
+        '<div class="mobile-menu-language" data-mobile-menu-language><span class="mobile-menu-language-copy"><strong></strong><small></small></span><div class="mobile-menu-language-buttons"><button type="button" data-mobile-lang="en">EN</button><button type="button" data-mobile-lang="ar">عربي</button></div></div>';
+      panel.appendChild(tools);
+    }
+
+    const arabic=document.documentElement.dir==="rtl"||document.documentElement.lang==="ar";
+    const setText=(el,value)=>{if(el&&el.textContent!==value)el.textContent=value};
+
+    const search=tools.querySelector("[data-mobile-menu-search]");
+    if(search){
+      setText(search.querySelector("strong"),arabic?"ابحث في المونة":"Search the pantry");
+      setText(search.querySelector("small"),arabic?"اعثر على المنتجات بسرعة":"Find products quickly");
+    }
+
+    const sourceAccount=document.getElementById("mounehAccountButton");
+    const account=tools.querySelector("[data-mobile-menu-account]");
+    if(account){
+      const guest=sourceAccount?.querySelector(".mr-account-nav-avatar")?.classList.contains("is-guest")!==false;
+      const href=sourceAccount?.getAttribute("href")||"account.html#signin";
+      if(account.getAttribute("href")!==href)account.setAttribute("href",href);
+      setText(account.querySelector("strong"),guest?(arabic?"تسجيل الدخول":"Sign in"):(arabic?"حسابي":"My Account"));
+      setText(account.querySelector("small"),guest?(arabic?"افتح حسابك ولوحة التحكم":"Open your account dashboard"):(arabic?"النقاط والطلبات والملف":"Points, orders & profile"));
+    }
+
+    const points=tools.querySelector("[data-mobile-menu-points]");
+    if(points){
+      setText(points.querySelector("strong"),arabic?"نقاط المونة":"Mouneh Points");
+      setText(points.querySelector("small"),arabic?"المحفظة والمكافآت":"Wallet & rewards");
+      const sourceBalance=document.getElementById("mounehPointsBadge");
+      setText(points.querySelector("[data-mobile-points-balance]"),String(sourceBalance?.textContent||"—").trim()||"—");
+    }
+
+    const language=tools.querySelector("[data-mobile-menu-language]");
+    if(language){
+      setText(language.querySelector("strong"),arabic?"اللغة":"Language");
+      setText(language.querySelector("small"),arabic?"غيّر لغة الموقع":"Change site language");
+      language.querySelectorAll("[data-mobile-lang]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.mobileLang===(arabic?"ar":"en")));
+    }
+
+    const compact=window.matchMedia("(max-width: 760px)").matches;
+    [document.querySelector(".site-header .nav-search"),document.querySelector(".site-header .nav-instagram"),document.getElementById("languageSwitch"),document.getElementById("mounehRewardsButton"),sourceAccount].filter(Boolean).forEach(el=>{
+      if(compact){
+        if(!el.hasAttribute("data-mobile-prev-tabindex"))el.setAttribute("data-mobile-prev-tabindex",el.getAttribute("tabindex")??"");
+        el.setAttribute("aria-hidden","true");
+        el.setAttribute("tabindex","-1");
+      }else{
+        el.removeAttribute("aria-hidden");
+        const prev=el.getAttribute("data-mobile-prev-tabindex");
+        if(prev!==null){
+          if(prev==="")el.removeAttribute("tabindex");else el.setAttribute("tabindex",prev);
+          el.removeAttribute("data-mobile-prev-tabindex");
+        }
+      }
+    });
+  }
+
   function ensureReliableMenu(){
     const toggle=document.getElementById("navToggle");
     const panel=document.getElementById("navLinks");
@@ -578,6 +645,26 @@
           setOpen(!menu.classList.contains("is-open"));
           return;
         }
+        const pointsTool=event.target.closest?.("[data-mobile-menu-points]");
+        if(pointsTool){
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          setOpen(false);
+          document.getElementById("mounehRewardsButton")?.click();
+          return;
+        }
+        const langTool=event.target.closest?.("[data-mobile-lang]");
+        if(langTool){
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          setOpen(false);
+          const source=document.querySelector('#languageSwitch [data-lang="'+langTool.dataset.mobileLang+'"]');
+          source?.click();
+          setTimeout(()=>ensureMobileMenuTools(document.getElementById("navLinks")),90);
+          return;
+        }
+        const menuLink=event.target.closest?.("#navLinks a[href]");
+        if(menuLink)setOpen(false);
         if(menu?.classList.contains("is-open")){
           const inside=event.target.closest?.("#navLinks");
           if(!inside)setOpen(false);
@@ -597,6 +684,8 @@
         setOpen(false);
       });
     }
+
+    ensureMobileMenuTools(panel);
 
     // Always begin from a sane closed state unless already explicitly open.
     if(!panel.classList.contains("is-open")){
@@ -711,7 +800,7 @@
           if(window.__ZWM_REWARDS_RETRY_LOADING)return;
           window.__ZWM_REWARDS_RETRY_LOADING=true;
           const retry=document.createElement("script");
-          retry.src="mouneh-rewards-v7.js?v=20261004-shell3";
+          retry.src="mouneh-rewards-v7.js?v=20261004-mobileheader1";
           retry.async=true;
           retry.dataset.mounehRewardsRetry="1";
           retry.addEventListener("load",()=>{window.__ZWM_REWARDS_RETRY_LOADING=false;window.ZWM_REWARDS?.open?.()},{once:true});
@@ -769,7 +858,7 @@
     if(!enabled())return;
     if(!PREVIEW_MODE&&!document.querySelector("script[data-mouneh-rewards]")){
       const rewardsScript=document.createElement("script");
-      rewardsScript.src="mouneh-rewards-v7.js?v=20261004-shell3";
+      rewardsScript.src="mouneh-rewards-v7.js?v=20261004-mobileheader1";
       rewardsScript.async=true;
       rewardsScript.dataset.mounehRewards="1";
       document.head.appendChild(rewardsScript);

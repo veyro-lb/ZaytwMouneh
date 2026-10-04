@@ -445,7 +445,10 @@
       '<div class="mr-auth-tabs"><button type="button" data-mr-auth="signin" class="'+(!signup?"is-active":"")+'">'+tr("Sign in","دخول")+'</button><button type="button" data-mr-auth="signup" class="'+(signup?"is-active":"")+'">'+tr("Create account","إنشاء حساب")+"</button></div>"+
       '<h2>'+(signup?tr("Create your Zayt w Mouneh account","أنشئ حساب زيت ومونة"):tr("Welcome back","أهلاً بعودتك"))+'</h2>'+
       '<p>'+(signup?tr("One account for Mouneh Points, your wallet, rewards and future orders.","حساب واحد لنقاط المونة والمحفظة والمكافآت والطلبات القادمة."):tr("Sign in to open your Mouneh Points Wallet and rewards.","سجّل الدخول لفتح محفظة نقاط المونة ومكافآتك."))+'</p>'+
-      '<label class="mr-legal-consent mr-auth-consent"><input id="mrLegalConsent" type="checkbox" form="mrAuthForm" required aria-required="true"><span>'+tr("I agree to the ","أوافق على ")+'<a href="/terms-and-rewards.html?rev=20261004-legal7" target="_blank" rel="noopener">'+tr("Terms of Service","شروط الخدمة")+'</a>'+tr(" and confirm that I have read the "," وأقرّ بأنني قرأت ")+'<a href="/privacy-and-data.html?rev=20261004-legal7" target="_blank" rel="noopener">'+tr("Privacy Policy","سياسة الخصوصية")+'</a>.</span></label>'+
+      '<div class="mr-legal-consent mr-auth-consent">'+
+        '<label class="mr-legal-toggle" for="mrLegalConsent"><input id="mrLegalConsent" type="checkbox" form="mrAuthForm" required aria-required="true"><span class="mr-legal-check" aria-hidden="true">✓</span><span>'+tr("I agree to the Terms of Service and confirm that I have read the Privacy Policy.","أوافق على شروط الخدمة وأقرّ بأنني قرأت سياسة الخصوصية.")+'</span></label>'+
+        '<div class="mr-legal-links"><a data-mr-legal-link="terms" href="/terms-and-rewards.html?rev=20261004-legal7" target="_blank" rel="noopener noreferrer">'+tr("Terms of Service","شروط الخدمة")+' ↗</a><a data-mr-legal-link="privacy" href="/privacy-and-data.html?rev=20261004-legal7" target="_blank" rel="noopener noreferrer">'+tr("Privacy Policy","سياسة الخصوصية")+' ↗</a></div>'+
+      '</div>'+
       '<p class="mr-auth-legal">'+tr("Required before sign in, account creation, or Google sign-in.","يجب تحديد خانة الموافقة قبل تسجيل الدخول أو إنشاء حساب أو المتابعة عبر Google.")+'</p>'+
       googleButton()+
       '<div class="mr-or"><span></span><b>'+tr("or","أو")+'</b><span></span></div>'+
@@ -953,6 +956,8 @@
     if(window.__ZWM_REWARDS_ACTIONS_BOUND)return;
     window.__ZWM_REWARDS_ACTIONS_BOUND=true;
     document.addEventListener("click",async(e)=>{
+      const legalLink=e.target.closest("[data-mr-legal-link]");
+      if(legalLink){e.stopPropagation();return}
       const auth=e.target.closest("[data-mr-auth]");
       if(auth){
         state.authMode=auth.dataset.mrAuth==="signup"?"signup-form":"signin-form";

@@ -8,7 +8,7 @@
   const LEGAL_PENDING_KEY="zwm:mouneh:legal-consent-pending:v1";
   const LEGAL_CONSENT_VERSION="2026-10-04";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-rewards13";
+  const VERSION="20261004-account1";
   const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false,referralStatus:null};
 
   const $=(id)=>document.getElementById(id);
@@ -448,6 +448,7 @@
     const code=String(m.code||"");
     return '<div class="mr-member-head"><div><p>'+tr("Your Mouneh Points","نقاط المونة الخاصة بك")+'</p><strong>'+points.toLocaleString()+' <span>🌿</span></strong><small>'+esc(tierLabel(m.tier))+' · '+tr("annual delivered spend ","إنفاق سنوي مستلم ")+money(m.annual_spend)+'</small></div><span class="mr-tier '+esc(m.tier||"member")+'">'+esc(tierLabel(m.tier))+"</span></div>"+
       accountIdentityView()+
+      '<a class="mr-full-account" href="account.html"><span>⌂</span><div><strong>'+tr("Open My Account","فتح حسابي")+'</strong><small>'+tr("Orders, rewards, referrals, addresses & security","الطلبات والمكافآت والإحالات والعناوين والأمان")+'</small></div><b>↗</b></a>'+
       (next?'<div class="mr-progress"><div><span>'+tr("Next reward","المكافأة التالية")+'</span><b>'+esc(next.points-points)+' '+tr("points to ","نقطة للوصول إلى ")+money(next.value)+' '+tr("off","خصم")+'</b></div><i><em style="width:'+nextPct+'%"></em></i></div>':'<div class="mr-progress is-complete"><div><span>'+tr("Top milestone reached","وصلت لأعلى مرحلة")+'</span><b>'+tr("Redeem whenever you are ready.","استبدل نقاطك عندما تريد.")+"</b></div></div>")+
       walletHero()+
       '<section class="mr-section"><div class="mr-section-head"><div><p>'+tr("Rewards","المكافآت")+'</p><h3>'+tr("Turn points into vouchers","حوّل نقاطك إلى قسائم")+"</h3></div></div>"+rewardCards(false)+"</section>"+
@@ -459,9 +460,14 @@
       '<div class="mr-footer-actions"><button type="button" data-mr-refresh>'+tr("Refresh","تحديث")+'</button><button type="button" data-mr-signout>'+tr("Sign out","تسجيل الخروج")+"</button></div>";
   }
 
+  function notifyAccount(){
+    try{document.dispatchEvent(new CustomEvent("zwm:account-updated",{detail:{signedIn:!!state.dashboard?.member}}))}catch{}
+  }
+
   function render(){
     const body=$("mounehRewardsBody");
-    if(!body)return;
+    const accountEntry=maintainAccountEntry();
+    if(!body){notifyAccount();return;}
     const navBtn=maintainPointsButton();
     const navCopy=navBtn?.querySelector(".mr-nav-copy");
     if(navCopy)navCopy.textContent=tr("Mouneh Points","نقاط المونة");
@@ -473,13 +479,14 @@
       const memberName=String(state.dashboard?.member?.name||"").trim();
       if(navBtn&&memberName&&Number.isFinite(points))navBtn.setAttribute("aria-label",tr("Open Mouneh Points for ","فتح نقاط المونة لحساب ")+memberName+" · "+points+" "+tr("points","نقطة"));
     }
-    if(state.loading){body.innerHTML='<div class="mr-loading"><span>🌿</span><p>'+tr("Loading your Mouneh Points…","جارٍ تحميل نقاط المونة…")+"</p></div>";return;}
+    if(state.loading){body.innerHTML='<div class="mr-loading"><span>🌿</span><p>'+tr("Loading your Mouneh Points…","جارٍ تحميل نقاط المونة…")+"</p></div>";notifyAccount();return;}
     if(state.session&&state.dashboard?.member)body.innerHTML=dashboardView();
     else if(state.session&&state.dashboard)body.innerHTML=joinView();
     else if(state.authMode==="verify")body.innerHTML=verifyView();
     else if(state.authMode==="signin-form"||state.authMode==="signup-form")body.innerHTML=authView();
     else body.innerHTML=publicView();
     body.dir=ar()?"rtl":"ltr";
+    notifyAccount();
   }
 
   function setDrawer(open){
@@ -502,6 +509,49 @@
     if(!$("mounehRewardsDrawer")){state.pendingOpen=true;return;}
     setDrawer(true);
   }
+  function maintainAccountEntry(){
+    const nav=document.querySelector(".nav-actions");
+    let link=$("mounehAccountButton");
+    if(!link){
+      link=document.createElement("a");
+      link.id="mounehAccountButton";
+      link.className="mouneh-account-nav";
+      link.href="account.html";
+      link.innerHTML='<span class="mr-account-nav-avatar">●</span><span class="mr-account-nav-copy"></span>';
+    }
+    const member=state.dashboard?.member||null;
+    const user=state.authUser||null;
+    const first=member?.name?String(member.name).trim().split(/\s+/)[0]:"";
+    const initial=(first||String(user?.email||"A")).charAt(0).toUpperCase();
+    const avatar=link.querySelector(".mr-account-nav-avatar");
+    const copy=link.querySelector(".mr-account-nav-copy");
+    if(avatar)avatar.textContent=member?initial:"○";
+    if(copy)copy.textContent=member?(first||tr("My Account","حسابي")):tr("Sign in","دخول");
+    link.setAttribute("aria-label",member?tr("Open My Account for ","فتح حساب ")+(member.name||user?.email||""):tr("Sign in or open My Account","تسجيل الدخول أو فتح حسابي"));
+    if(nav&&link.parentElement!==nav){
+      const points=nav.querySelector("#mounehRewardsButton");
+      const cart=nav.querySelector("#cartButton");
+      nav.insertBefore(link,points||cart||null);
+    }
+
+    const menu=document.querySelector("#navLinks");
+    if(menu){
+      let menuLink=$("mounehAccountMenuLink");
+      if(!menuLink){
+        menuLink=document.createElement("a");
+        menuLink.id="mounehAccountMenuLink";
+        menuLink.className="mouneh-account-menu-link";
+        menuLink.href="account.html";
+        menuLink.innerHTML='<span>06</span><strong></strong><b>↗</b>';
+        const utility=menu.querySelector(".menu-utility");
+        menu.insertBefore(menuLink,utility||null);
+      }
+      const strong=menuLink.querySelector("strong");
+      if(strong)strong.textContent=member?(tr("My Account · ","حسابي · ")+(first||member.name)):tr("My Account / Sign in","حسابي / دخول");
+    }
+    return link;
+  }
+
   function bindPointsButton(btn){
     if(!btn||btn.dataset.mrBound)return;
     btn.addEventListener("click",(e)=>{e.preventDefault();e.stopPropagation();requestOpen();});
@@ -539,7 +589,7 @@
     if(window.__ZWM_POINTS_GUARD)return;
     window.__ZWM_POINTS_GUARD=true;
     let queued=false;
-    const check=()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;maintainPointsButton()})};
+    const check=()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;maintainAccountEntry();maintainPointsButton()})};
     new MutationObserver(check).observe(document.body,{childList:true,subtree:true});
     window.addEventListener("resize",check,{passive:true});
     window.addEventListener("orientationchange",check,{passive:true});
@@ -589,6 +639,7 @@
       form.insertBefore(box,anchor||null);
     }
 
+    maintainAccountEntry();
     bindPointsButton(btn);
     $("mounehRewardsClose").addEventListener("click",()=>setDrawer(false));
     back.addEventListener("click",()=>setDrawer(false));
@@ -684,6 +735,99 @@
       state.dashboard=await rpc("dashboard",{});
       render();
     }catch(err){if(status)status.textContent=err.message;}
+  }
+
+
+  function authProviders(){
+    const providers=new Set();
+    const user=state.authUser||{};
+    if(user.app_metadata?.provider)providers.add(String(user.app_metadata.provider));
+    (user.identities||[]).forEach(x=>{if(x?.provider)providers.add(String(x.provider))});
+    return Array.from(providers);
+  }
+  async function updateProfileData(p={}){
+    await rpc("profile",{
+      name:String(p.name||"").trim(),
+      phone:String(p.phone||"").trim(),
+      address:p.address===undefined?undefined:String(p.address||"").trim(),
+      birthday:String(p.birthday||"")
+    });
+    state.dashboard=await rpc("dashboard",{});
+    render();renderCheckout();
+    return state.dashboard;
+  }
+  async function accountAddresses(action="list",p={}){
+    return namedRpc("mouneh_addresses",{action,p});
+  }
+  async function savePreferredLanguage(language){
+    const lang=language==="ar"?"ar":"en";
+    await namedRpc("mouneh_account_preferences",{language:lang});
+    state.dashboard=await rpc("dashboard",{});
+    render();
+    return lang;
+  }
+  async function changeAccountPassword(currentPassword,newPassword){
+    const user=await getAuthUser();
+    const email=String(user?.email||"").trim();
+    const providers=authProviders();
+    if(!providers.includes("email"))throw new Error(tr("This account signs in with Google. Manage its password through Google.","هذا الحساب يسجّل الدخول عبر Google. أدِر كلمة المرور من Google."));
+    if(String(currentPassword||"").length<1)throw new Error(tr("Enter your current password.","أدخل كلمة المرور الحالية."));
+    if(String(newPassword||"").length<8)throw new Error(tr("New password must be at least 8 characters.","يجب أن تكون كلمة المرور الجديدة 8 أحرف على الأقل."));
+    const signed=await authRequest("token?grant_type=password",{email,password:String(currentPassword)});
+    const fresh=signed.session||signed;
+    if(!fresh?.access_token)throw new Error(tr("Current password could not be verified.","تعذّر التحقق من كلمة المرور الحالية."));
+    writeSession(fresh);
+    const updated=await authRequest("user",{password:String(newPassword)},fresh.access_token,"PUT");
+    state.authUser=updated||user;
+    notifyAccount();
+    return true;
+  }
+  async function finalizeAccountDeletion(confirmEmail){
+    const email=String(confirmEmail||"").trim();
+    await namedRpc("mouneh_delete_account",{confirm_email:email});
+    writeSession(null);
+    state.authUser=null;state.dashboard=null;state.referralStatus=null;state.selectedWallet="";
+    try{localStorage.removeItem(WALLET_KEY)}catch{}
+    try{sessionStorage.setItem("zwm:mouneh:account-deleted","1")}catch{}
+    render();renderCheckout();
+    return {deleted:true};
+  }
+  async function deleteAccountWithPassword(currentPassword,confirmEmail){
+    const user=await getAuthUser();
+    const email=String(user?.email||"").trim();
+    if(email.toLowerCase()!==String(confirmEmail||"").trim().toLowerCase())throw new Error(tr("Type your account email exactly to confirm deletion.","اكتب بريد حسابك تماماً لتأكيد الحذف."));
+    const providers=authProviders();
+    if(!providers.includes("email"))return {needsGoogle:true};
+    const signed=await authRequest("token?grant_type=password",{email,password:String(currentPassword||"")});
+    const fresh=signed.session||signed;
+    if(!fresh?.access_token)throw new Error(tr("Current password could not be verified.","تعذّر التحقق من كلمة المرور الحالية."));
+    writeSession(fresh);
+    return finalizeAccountDeletion(email);
+  }
+  async function deleteAccountWithGoogle(confirmEmail){
+    const user=await getAuthUser();
+    const email=String(user?.email||"").trim();
+    if(email.toLowerCase()!==String(confirmEmail||"").trim().toLowerCase())throw new Error(tr("Type your account email exactly to confirm deletion.","اكتب بريد حسابك تماماً لتأكيد الحذف."));
+    try{sessionStorage.setItem("zwm:mouneh:delete-pending",email)}catch{}
+    return signInWithGoogle();
+  }
+  async function processPendingAccountDeletion(){
+    let email="";
+    try{email=String(sessionStorage.getItem("zwm:mouneh:delete-pending")||"")}catch{}
+    if(!email||!state.session)return false;
+    try{
+      await finalizeAccountDeletion(email);
+      try{sessionStorage.removeItem("zwm:mouneh:delete-pending")}catch{}
+      return true;
+    }catch(err){
+      try{sessionStorage.removeItem("zwm:mouneh:delete-pending");sessionStorage.setItem("zwm:mouneh:delete-error",String(err.message||err))}catch{}
+      return false;
+    }
+  }
+  function openSignIn(){
+    state.authMode="signin-form";
+    render();
+    requestOpen();
   }
 
   function bindActions(){
@@ -783,6 +927,7 @@
           await getAuthUser();
           await loadDashboard();
           await ensureMemberFromAuth();
+          await processPendingAccountDeletion();
         }catch{}
       }
       render();renderCheckout();
@@ -800,7 +945,34 @@
     }catch(err){console.warn("Mouneh Rewards unavailable:",err);}
   }
 
-  window.ZWM_REWARDS={submitOrder,refreshCheckout,open:requestOpen,refresh:()=>loadDashboard(),getState:()=>({member:state.dashboard?.member||null,selectedWallet:state.selectedWallet})};
+  window.ZWM_REWARDS={
+    submitOrder,
+    refreshCheckout,
+    open:requestOpen,
+    openSignIn,
+    refresh:()=>loadDashboard(),
+    getState:()=>({
+      ready:!!state.config,
+      session:!!state.session,
+      member:state.dashboard?.member||null,
+      dashboard:state.dashboard||null,
+      authUser:state.authUser||null,
+      referralStatus:state.referralStatus||null,
+      publicData:state.publicData||{rewards:[],campaigns:[],config:{}},
+      selectedWallet:state.selectedWallet,
+      providers:authProviders()
+    }),
+    account:{
+      addresses:accountAddresses,
+      updateProfile:updateProfileData,
+      saveLanguage:savePreferredLanguage,
+      changePassword:changeAccountPassword,
+      deleteWithPassword:deleteAccountWithPassword,
+      deleteWithGoogle:deleteAccountWithGoogle,
+      signOut,
+      refresh:loadDashboard
+    }
+  };
   const earlyRewardsButton=$("mounehRewardsButton");
   if(earlyRewardsButton&&!earlyRewardsButton.dataset.mrBound)bindPointsButton(earlyRewardsButton);
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();

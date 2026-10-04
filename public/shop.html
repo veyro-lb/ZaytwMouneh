@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="styles.css?v=20261003-mobilemenufix1" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"shop | Zayt w Mouneh","isPartOf":{"@type":"WebSite","name":"Zayt w Mouneh","url":"https://zaytwmouneh.veyro-202.workers.dev/"}}</script>
   <link rel="stylesheet" href="premium.css?v=20261004-toolkit4" />
+  <link rel="stylesheet" href="mouneh-rewards.css?v=20261004-rewards3" />
 </head>
 <body data-page="shop">
   <a class="skip-link" href="shop.html#shop" id="skipLink">Skip to catalogue</a>
@@ -105,6 +106,11 @@
           <button type="button" data-lang="en" class="is-active">EN</button>
           <button type="button" data-lang="ar">عربي</button>
         </div>
+        <button type="button" id="mounehRewardsButton" class="mouneh-points-nav" data-mr-open aria-label="Open Mouneh Points">
+          <span class="mr-nav-leaf">🌿</span>
+          <span class="mr-nav-copy">Mouneh Points</span>
+          <b id="mounehPointsBadge" hidden></b>
+        </button>
         <button class="cart-button" id="cartButton" aria-label="Open cart">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l1.6 10.2a2 2 0 0 0 2 1.7h7.9a2 2 0 0 0 1.9-1.4L21 7H6.1M9 20h.01M17 20h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span class="cart-label" id="cartLabel">My pantry</span>
@@ -444,11 +450,12 @@
 
   <button class="mobile-order-bar" id="mobileOrderBar" type="button" hidden><span id="mobileOrderText">Review order</span><strong id="mobileOrderMeta">0 items · $0.00</strong></button>
   <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastText">Added to cart</span></div>
+  <script src="mouneh-rewards.js?v=20261004-rewards3" data-mouneh-rewards="1"></script>
 
-  <script src="site-runtime.js?v=20261004-rewards2"></script>
+  <script src="site-runtime.js?v=20261004-rewards3"></script>
   <script src="products-data.js?v=20261002-1005"></script>
   <script src="product-photos.js?v=20261003-zip-originals3"></script>
-  <script src="app.js?v=20261004-rewards2"></script>
+  <script src="app.js?v=20261004-rewards3"></script>
   <script src="premium.js?v=20261003-runtimefix1"></script>
 </body>
 </html>

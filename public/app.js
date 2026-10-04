@@ -1506,7 +1506,7 @@ function updateGiftV4Preview(){
   if(msg)msg.textContent=message||(lang==="ar"?"نكهة صغيرة من لبنان، مختارة لك.":"A little taste of Lebanon, chosen for you.");
   if(from)from.textContent=sender?(lang==="ar"?"— من "+sender:"— From "+sender):(lang==="ar"?"— بمحبة":"— With care");
 }
-function sendGiftOrder(){
+async function sendGiftOrder(){
   const rows=giftRows(),t=EXTRA_UI[lang],base=UI[lang];
   if(!rows.length){toast(t.giftNeedItems);return}
   const recipient=$("#giftRecipient")?.value.trim()||"—";
@@ -1523,66 +1523,103 @@ function sendGiftOrder(){
   const subtotal=rows.reduce((sum,row)=>sum+row.qty*Number(row.v.price),0);
   const delivery=deliveryQuoteFor(subtotal,area==="—"?"":area);
   if(delivery.minimum>0&&subtotal<delivery.minimum){
-    toast(lang==="ar"?`الحد الأدنى للطلب هو ${money(delivery.minimum)}.`:`Minimum order is ${money(delivery.minimum)}.`);
+    toast(lang==="ar"?"الحد الأدنى للطلب هو "+money(delivery.minimum)+".":"Minimum order is "+money(delivery.minimum)+".");
     return;
   }
-  const total=subtotal+delivery.fee;
-  const ref=orderReference("ZW-GIFT");
-  const lines=[
-    lang==="ar"?"مرحباً زيت ومونة 👋":"Hello Zayt w Mouneh 👋","",
-    (lang==="ar"?"رقم الطلب":"Order")+": "+ref,"",
-    lang==="ar"?"أرغب بتحضير هذه الهدية:":"I would like to prepare this gift:","",
-    ...rows.map((row,i)=>(i+1)+". "+currentName(row.p)+" — "+(lang==="ar"?row.v.sizeAr:row.v.sizeEn)+" — "+base.qty+": "+row.qty+" — "+money(row.v.price*row.qty)),
-    "",
-    (lang==="ar"?"مجموع المنتجات":"Products subtotal")+": "+money(subtotal),
-    ...(delivery.fee>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+money(delivery.fee)]:(delivery.freeAbove>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+(lang==="ar"?"مجاني":"Free")]:[])),
-    ...(delivery.eta?[(lang==="ar"?"الوقت المتوقع":"Estimated delivery")+": "+delivery.eta]:[]),
-    base.orderTotal+": "+money(total),
-    (lang==="ar"?"المستلم":"Recipient")+": "+recipient,
-    (lang==="ar"?"المناسبة":"Occasion")+": "+occasion,
-    (lang==="ar"?"التغليف":"Packing")+": "+packing,
-    (lang==="ar"?"طابع الهدية":"Gift theme")+": "+themeLabel,
-    (lang==="ar"?"لغة البطاقة":"Card language")+": "+cardLanguageLabel,
-    (lang==="ar"?"إخفاء الأسعار عن المستلم":"Hide prices from recipient")+": "+(hidePrices?(lang==="ar"?"نعم":"Yes"):(lang==="ar"?"لا":"No")),
-    (lang==="ar"?"منطقة التوصيل":"Delivery area")+": "+area,
-    (lang==="ar"?"رسالة الهدية":"Gift message")+": "+message,
-    (lang==="ar"?"المرسل":"Sender")+": "+sender,"",
-    lang==="ar"?"يرجى تأكيد التغليف والتوفر والتوصيل والمجموع النهائي. شكراً!":"Please confirm gift packing, availability, delivery and the final total. Thank you!"
-  ];
-  window.ZWM_CMS?.recordOrder?.({
-    reference:ref,
-    kind:"gift",
-    customer_name:sender==="—"?"":sender,
-    area:area==="—"?"":area,
-    notes:message==="—"?"":message,
-    items:rows.map(row=>({
-      product_id:row.p.id,
-      name:row.p.nameEn||currentName(row.p),
-      size:row.v.sizeEn||row.v.sizeAr||"",
-      qty:row.qty,
-      unit_price:Number(row.v.price),
-      subtotal:Number(row.v.price)*row.qty
-    })),
-    total,
-    language:lang,
-    extra:{
-      source:"gift_builder",
-      recipient:recipient==="—"?"":recipient,
-      occasion,
-      packing,
-      theme,
-      card_language:cardLanguage,
-      hide_prices:hidePrices,
-      products_subtotal:subtotal,
-      delivery_fee:delivery.fee,
-      delivery_eta:delivery.eta,
-      delivery_zone:delivery.zone?.area||""
+
+  const button=$("#giftForm")?.querySelector('button[type="submit"]');
+  if(button){button.disabled=true;button.dataset.originalText=button.dataset.originalText||button.textContent;button.textContent=lang==="ar"?"جارٍ تجهيز الهدية…":"Preparing gift…";}
+
+  const items=rows.map(row=>({
+    product_id:row.p.id,
+    variant_id:row.v.id,
+    name:row.p.nameEn||currentName(row.p),
+    size:row.v.sizeEn||row.v.sizeAr||"",
+    qty:row.qty,
+    unit_price:Number(row.v.price),
+    subtotal:Number(row.v.price)*row.qty
+  }));
+  const extra={
+    source:"gift_builder",
+    recipient:recipient==="—"?"":recipient,
+    occasion,
+    packing,
+    theme,
+    card_language:cardLanguage,
+    hide_prices:hidePrices,
+    products_subtotal:subtotal,
+    delivery_fee:delivery.fee,
+    delivery_eta:delivery.eta,
+    delivery_zone:delivery.zone?.area||""
+  };
+
+  try{
+    let ref="",pendingPoints=0,discount=0;
+    if(window.ZWM_REWARDS?.submitOrder){
+      const result=await window.ZWM_REWARDS.submitOrder({
+        kind:"gift",
+        customer_name:sender==="—"?"":sender,
+        area:area==="—"?"":area,
+        notes:message==="—"?"":message,
+        items,
+        language:lang,
+        extra,
+        allow_wallet:false
+      });
+      ref=result?.reference||"";
+      pendingPoints=Math.max(0,Number(result?.pending_points)||0);
+      discount=Math.max(0,Number(result?.discount)||0);
+      if(!ref)throw new Error(lang==="ar"?"تعذّر إنشاء رقم طلب الهدية.":"Could not create the gift order reference.");
+    }else{
+      ref=orderReference("ZW-GIFT");
+      await window.ZWM_CMS?.recordOrder?.({
+        reference:ref,
+        kind:"gift",
+        customer_name:sender==="—"?"":sender,
+        area:area==="—"?"":area,
+        notes:message==="—"?"":message,
+        items,
+        total:subtotal+delivery.fee,
+        language:lang,
+        extra
+      });
     }
-  });
-  const url="https://wa.me/"+currentWhatsAppNumber()+"?text="+encodeURIComponent(lines.join("\n"));
-  const opened=window.open(url,"_blank","noopener,noreferrer");
-  if(opened)toast(lang==="ar"?"تم فتح واتساب مع طلب الهدية":"WhatsApp opened with your gift request");
-  else window.location.href=url;
+    const total=Math.max(0,subtotal-discount+delivery.fee);
+    const lines=[
+      lang==="ar"?"مرحباً زيت ومونة 👋":"Hello Zayt w Mouneh 👋","",
+      (lang==="ar"?"رقم الطلب":"Order")+": "+ref,"",
+      lang==="ar"?"أرغب بتحضير هذه الهدية:":"I would like to prepare this gift:","",
+      ...rows.map((row,i)=>(i+1)+". "+currentName(row.p)+" — "+(lang==="ar"?row.v.sizeAr:row.v.sizeEn)+" — "+base.qty+": "+row.qty+" — "+money(row.v.price*row.qty)),
+      "",
+      (lang==="ar"?"مجموع المنتجات":"Products subtotal")+": "+money(subtotal),
+      ...(discount>0?[(lang==="ar"?"مكافأة نقاط المونة":"Mouneh Points reward")+": -"+money(discount)]:[]),
+      ...(delivery.fee>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+money(delivery.fee)]:(delivery.freeAbove>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+(lang==="ar"?"مجاني":"Free")]:[])),
+      ...(delivery.eta?[(lang==="ar"?"الوقت المتوقع":"Estimated delivery")+": "+delivery.eta]:[]),
+      base.orderTotal+": "+money(total),
+      (lang==="ar"?"المستلم":"Recipient")+": "+recipient,
+      (lang==="ar"?"المناسبة":"Occasion")+": "+occasion,
+      (lang==="ar"?"التغليف":"Packing")+": "+packing,
+      (lang==="ar"?"طابع الهدية":"Gift theme")+": "+themeLabel,
+      (lang==="ar"?"لغة البطاقة":"Card language")+": "+cardLanguageLabel,
+      (lang==="ar"?"إخفاء الأسعار عن المستلم":"Hide prices from recipient")+": "+(hidePrices?(lang==="ar"?"نعم":"Yes"):(lang==="ar"?"لا":"No")),
+      (lang==="ar"?"منطقة التوصيل":"Delivery area")+": "+area,
+      (lang==="ar"?"رسالة الهدية":"Gift message")+": "+message,
+      (lang==="ar"?"المرسل":"Sender")+": "+sender,
+      ...(pendingPoints>0?["",(lang==="ar"?"نقاط متوقعة بعد الاستلام":"Points pending after delivery")+": "+pendingPoints+" 🌿"]:[]),
+      "",
+      lang==="ar"?"يرجى تأكيد التغليف والتوفر والتوصيل والمجموع النهائي. شكراً!":"Please confirm gift packing, availability, delivery and the final total. Thank you!"
+    ];
+    window.ZWM_CMS?.track?.("whatsapp_click",{source:"gift_order"});
+    const url="https://wa.me/"+currentWhatsAppNumber()+"?text="+encodeURIComponent(lines.join("\n"));
+    const opened=window.open(url,"_blank","noopener,noreferrer");
+    if(opened)toast(lang==="ar"?(pendingPoints>0?"تم فتح واتساب · "+pendingPoints+" نقطة بعد الاستلام":"تم فتح واتساب مع طلب الهدية"):(pendingPoints>0?"WhatsApp opened · "+pendingPoints+" points after delivery":"WhatsApp opened with your gift request"));
+    else window.location.href=url;
+  }catch(error){
+    console.error("Gift order submit failed:",error);
+    toast(error?.message||(lang==="ar"?"تعذّر تجهيز الهدية. حاول مجدداً.":"Could not prepare the gift. Please try again."));
+  }finally{
+    if(button){button.disabled=false;button.textContent=button.dataset.originalText||t.giftSend||"Send gift request";}
+  }
 }
 function renderMobileOrderBar(){
   const bar=$("#mobileOrderBar");if(!bar)return;

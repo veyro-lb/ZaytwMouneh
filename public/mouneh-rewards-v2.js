@@ -48,7 +48,8 @@
       expires_at:Number(hash.get("expires_at")||Math.floor(Date.now()/1000)+expiresIn)
     });
     state.authMode="public";
-    state.authNotice=tr("Email verified. Welcome back to Zayt w Mouneh.","تم تأكيد البريد. أهلاً بك في زيت ومونة.");
+    state.authNotice=tr("Email verified. Welcome to your Mouneh Points Wallet 🌿","تم تأكيد البريد. أهلاً بك في محفظة نقاط المونة 🌿");
+    try{sessionStorage.setItem("zwm:mouneh:just-verified","1")}catch{}
     cleanAuthUrl();
     return true;
   }
@@ -584,6 +585,12 @@
         }catch{}
       }
       render();renderCheckout();
+      try{
+        if(sessionStorage.getItem("zwm:mouneh:just-verified")==="1"){
+          sessionStorage.removeItem("zwm:mouneh:just-verified");
+          setDrawer(true);
+        }
+      }catch{}
       window.addEventListener("storage",(e)=>{
         if(e.key===AUTH_KEY){state.session=readSession();loadDashboard().catch(()=>{})}
       });

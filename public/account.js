@@ -15,7 +15,7 @@
 
   function syncLanguageVisibility(){
     const showArabic=ar();
-    $(".only-en, .only-ar").forEach(el=>{
+    $$(".only-en, .only-ar").forEach(el=>{
       const hide=showArabic?el.classList.contains("only-en"):el.classList.contains("only-ar");
       if(hide)el.style.setProperty("display","none","important");
       else el.style.removeProperty("display");
@@ -28,7 +28,7 @@
     const next=lang==="ar"?"ar":"en";
     try{localStorage.setItem("zwm-lang-v2",next)}catch{}
     document.documentElement.lang=next;document.documentElement.dir=next==="ar"?"rtl":"ltr";
-    $("[data-lang]").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===next));
+    $$("[data-lang]").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===next));
     syncLanguageVisibility();
     render(true);
   }

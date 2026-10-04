@@ -695,7 +695,40 @@
     }
   }
 
+  function syncBrandLanguage(){
+    const arabic=document.documentElement.lang==="ar"||document.documentElement.dir==="rtl";
+    const brandName=arabic?"زيت ومونة":"Zayt w Mouneh";
+    const homeLabel=arabic?"زيت ومونة — الرئيسية":"Zayt w Mouneh home";
+    const logoAlt=arabic?"شعار زيت ومونة":"Zayt w Mouneh logo";
+
+    document.querySelectorAll(".brand-wordmark,#brandWordmark,#footerBrand,#copyrightBrand,[data-brand-name]").forEach(el=>{
+      if(el.textContent!==brandName)el.textContent=brandName;
+      if(arabic)el.setAttribute("lang","ar");else el.removeAttribute("lang");
+    });
+
+    document.querySelectorAll("a.brand").forEach(link=>link.setAttribute("aria-label",homeLabel));
+    document.querySelectorAll(".brand-logo img").forEach(img=>{
+      if(img.hasAttribute("alt")&&img.getAttribute("alt")!=="")img.setAttribute("alt",logoAlt);
+    });
+
+    const menuHeading=document.getElementById("menuHeading");
+    if(menuHeading&&!menuHeading.classList.contains("only-en")&&!menuHeading.classList.contains("only-ar")){
+      menuHeading.textContent=arabic?"اكتشف زيت ومونة":"Explore Zayt w Mouneh";
+    }
+
+    document.querySelectorAll(".copyright").forEach(el=>{
+      el.childNodes.forEach(node=>{
+        if(node.nodeType!==Node.TEXT_NODE)return;
+        const next=node.nodeValue
+          .replace(/Zayt w Mouneh/g,brandName)
+          .replace(/زيت ومونة/g,brandName);
+        if(next!==node.nodeValue)node.nodeValue=next;
+      });
+    });
+  }
+
   function ensurePersistentChrome(){
+    syncBrandLanguage();
     ensureFreshLegalPage();
     restorePersistentShell();
     const nav=document.querySelector(".site-header .nav-actions");
@@ -823,6 +856,7 @@
       requestAnimationFrame(()=>{queued=false;ensurePersistentChrome()});
     };
     new MutationObserver(check).observe(document.body,{childList:true,subtree:true});
+    new MutationObserver(()=>{syncBrandLanguage();check()}).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
     window.addEventListener("pageshow",event=>{
       ensureFreshLegalPage();
       check();
@@ -835,17 +869,19 @@
       if(!btn)return;
       const next=btn.dataset.lang==="ar"?"ar":"en";
       setTimeout(()=>{
-        if(document.documentElement.lang===next)return;
-        if(typeof window.applyLanguage==="function")window.applyLanguage(next,{immediate:true});
-        else{
-          try{localStorage.setItem("zwm-lang-v2",next)}catch{}
-          document.documentElement.lang=next;
-          document.documentElement.dir=next==="ar"?"rtl":"ltr";
-          document.querySelectorAll(".only-en").forEach(el=>el.style.setProperty("display",next==="ar"?"none":"revert","important"));
-          document.querySelectorAll(".only-ar").forEach(el=>el.style.setProperty("display",next==="ar"?"revert":"none","important"));
-          document.querySelectorAll("[data-lang]").forEach(el=>el.classList.toggle("is-active",el.dataset.lang===next));
-          ensurePersistentChrome();
+        if(document.documentElement.lang!==next){
+          if(typeof window.applyLanguage==="function")window.applyLanguage(next,{immediate:true});
+          else{
+            try{localStorage.setItem("zwm-lang-v2",next)}catch{}
+            document.documentElement.lang=next;
+            document.documentElement.dir=next==="ar"?"rtl":"ltr";
+            document.querySelectorAll(".only-en").forEach(el=>el.style.setProperty("display",next==="ar"?"none":"revert","important"));
+            document.querySelectorAll(".only-ar").forEach(el=>el.style.setProperty("display",next==="ar"?"revert":"none","important"));
+            document.querySelectorAll("[data-lang]").forEach(el=>el.classList.toggle("is-active",el.dataset.lang===next));
+          }
         }
+        syncBrandLanguage();
+        ensurePersistentChrome();
       },60);
     });
     check();

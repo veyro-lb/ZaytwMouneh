@@ -1603,7 +1603,8 @@
     return `<span class="order-payment-badge payment-${esc(status)}">${esc(paymentStatusLabel(order))}</span>`;
   }
   function paymentActionHtml(order){
-    if((order?.payment_status||"pending")==="pending"){
+    if(!order||order.status==="cancelled")return "";
+    if((order.payment_status||"pending")==="pending"){
       return `<button type="button" class="order-payment-confirm" data-order-payment-received="${esc(order.reference)}">Confirm payment received</button>`;
     }
     return "";
@@ -1620,7 +1621,7 @@
 
   function orderSearchText(order) {
     return [
-      order.reference,order.customer_name,order.customer_phone,order.area,order.notes,order.kind,order.status,
+      order.reference,order.customer_name,order.customer_phone,order.area,order.notes,order.kind,order.status,order.payment_status,paymentStatusLabel(order),
       ...(Array.isArray(order.items)?order.items.flatMap(i=>[i.name,i.product_id,i.size]):[])
     ].join(" ").toLowerCase();
   }
@@ -1798,12 +1799,23 @@
   }
 
   function renderOrderTimeline(order) {
-    const history=normalizedOrderHistory(order);
-    $("orderDetailTimeline").innerHTML=history.map((item,index)=>`
-      <div class="order-timeline-row">
-        <span class="order-timeline-dot"></span>
-        <div><b>${esc(ORDER_STATUS_LABELS[item.status]||item.status)}</b><small>${esc(new Date(item.at).toLocaleString([], {year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}))}${item.source==="website"?" · Website order":" · Owner update"}</small></div>
-      </div>`).join("") || '<p class="empty-state">No status history yet.</p>';
+    const delivery=normalizedOrderHistory(order).map(item=>({...item,kind:"delivery"}));
+    const payments=(Array.isArray(order.payment_status_history)?order.payment_status_history:[])
+      .filter(item=>item?.status&&item?.at)
+      .map(item=>({...item,kind:"payment"}));
+    const history=[...delivery,...payments].sort((a,b)=>new Date(a.at)-new Date(b.at));
+    $("orderDetailTimeline").innerHTML=history.map(item=>{
+      const payment=item.kind==="payment";
+      const title=payment?(PAYMENT_STATUS_LABELS[item.status]||item.status):(ORDER_STATUS_LABELS[item.status]||item.status);
+      const source=payment
+        ?(item.source==="payment_service"?"Payment service":"Owner payment update")
+        :(item.source==="website"?"Website order":"Owner delivery update");
+      return `
+        <div class="order-timeline-row ${payment?"is-payment":""}">
+          <span class="order-timeline-dot"></span>
+          <div><b>${esc(title)}</b><small>${esc(new Date(item.at).toLocaleString([], {year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}))} · ${esc(source)}</small></div>
+        </div>`;
+    }).join("") || '<p class="empty-state">No order history yet.</p>';
   }
 
   function openOrderDetails(reference) {

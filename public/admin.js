@@ -1709,7 +1709,7 @@
       <td><div class="order-code-cell"><b>${esc(order.reference)}</b><small>${kindLabel} · ${esc(orderSourceLabel(order))}</small></div></td>
       <td><div class="order-customer-cell"><b>${esc(customer)}</b><small>${esc(order.area||"Area not supplied")}</small></div></td>
       <td><div class="order-items-cell"><b>${esc(orderItemSummary(order))}</b><small>${Array.isArray(order.items)?order.items.reduce((n,i)=>n+(Number(i.qty)||0),0):0} total items</small></div></td>
-      <td><div class="order-total-payment"><b>${money(order.total)}</b>${paymentBadgeHtml(order)}</div></td>
+      <td><div class="order-total-payment"><b>${money(order.total)}</b>${paymentBadgeHtml(order)}${paymentActionHtml(order)}</div></td>
       <td><div class="order-status-stack">${orderStatusSelect(order)}<small>${esc(ORDER_STATUS_LABELS[order.status]||order.status)}</small></div></td>
       <td><div class="order-date-cell"><b>${esc(when(order.submitted_at))}</b><small>${esc(new Date(order.submitted_at).toLocaleString([], {month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}))}</small></div></td>
       <td><button class="row-action" type="button" data-view-order="${esc(order.reference)}">Details</button></td>

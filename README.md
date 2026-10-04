@@ -19,7 +19,7 @@ Premium responsive static storefront for Zayt w Mouneh.
 - Responsive mobile, tablet and laptop layouts
 - Cart persistence with localStorage
 - Reduced-motion accessibility support
-- No framework, package manager, build step or Wrangler requirement
+- No frontend framework or build step; Cloudflare Wrangler deploys the static assets plus the small product-page Worker
 
 ## Production deployment
 
@@ -64,7 +64,7 @@ Intentionally left for a later phase:
 
 261 product IDs now use 247 original, name-matched photographs supplied in the seven WhatsApp ZIPs. Files retain their original bytes and dimensions. Cards display one complete image with `object-fit: contain`; products without exact artwork use a neutral placeholder. See `docs/product-photo-migration.md` and `docs/product-photo-audit.json` for coverage and provenance.
 
-Photo follow-up (2026-10-03): root and `public/` mappings now agree. 287 of 328 current products have photos: 258 use unchanged uploaded ZIP originals and 29 use existing official Debsy images. 41 need exact source photography. See `docs/product-photo-followup.md`.
+Photo follow-up (2026-10-03): 287 of 328 current products have photos: 258 use unchanged uploaded ZIP originals and 29 use existing official Debsy images. 41 need exact source photography. The deployed mapping lives only in `public/`. See `docs/product-photo-followup.md`.
 
 
 ## Production architecture

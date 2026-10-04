@@ -108,6 +108,20 @@ html[lang="ar"] :where(button, .btn, .button, [class*="btn"], .account-primary, 
   line-height: 1.45;
 }
 
+/* Keep inherently LTR values stable inside Arabic layouts without changing Arabic labels. */
+html[dir="rtl"] :where(input[type="email"], input[type="tel"], input[type="url"], input[inputmode="tel"], input[autocomplete="email"]),
+html[lang="ar"] :where(input[type="email"], input[type="tel"], input[type="url"], input[inputmode="tel"], input[autocomplete="email"]) {
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: left;
+}
+
+html[dir="rtl"] :where(#orderNumber, .account-referral-code strong),
+html[lang="ar"] :where(#orderNumber, .account-referral-code strong) {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
 :where(input, select, textarea) {
   min-width: 0;
   max-width: 100%;

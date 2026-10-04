@@ -4,8 +4,6 @@
   const cfg = window.ZWM_CMS_CONFIG || {};
   const $ = (id) => document.getElementById(id);
   const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
-  // Compatibility alias: older patches occasionally referenced a third-dollar selector helper.
-  const $$$ = $$;
   const clone = (v) => typeof structuredClone === "function" ? structuredClone(v) : JSON.parse(JSON.stringify(v));
   const baseProducts = typeof PRODUCTS_DATA !== "undefined" ? clone(PRODUCTS_DATA) : [];
   const baseById = new Map(baseProducts.map(p => [p.id, p]));
@@ -1478,8 +1476,8 @@
     $("orderActiveTabCount").textContent=active;
     $("orderPastTabCount").textContent=past;
     $("orderAllTabCount").textContent=state.orders.length;
-    $$$("[data-order-scope]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderScope===state.orderScope));
-    $$$("[data-order-command]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderCommand===state.orderCommand));
+    $("[data-order-scope]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderScope===state.orderScope));
+    $("[data-order-command]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderCommand===state.orderCommand));
 
     $("ordersNewCount").textContent=state.orders.filter(o=>o.status==="new").length;
     $("ordersPreparingCount").textContent=state.orders.filter(o=>["confirmed","preparing"].includes(o.status)).length;
@@ -2365,8 +2363,8 @@
     img.style.transform=`rotate(${rotation||0}deg) scale(${zoom/100})`;
     img.style.transformOrigin=`${x}% ${y}%`;
     $("imagePreview").classList.toggle("is-modal-preview",preview==="modal");
-    $$$("[data-image-fit]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imageFit===fit));
-    $$$("[data-image-preview]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imagePreview===preview));
+    $("[data-image-fit]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imageFit===fit));
+    $("[data-image-preview]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.imagePreview===preview));
   }
 
   function setImageRemoved(removed) {
@@ -2698,10 +2696,17 @@
   }
 
   function applyHealthFilter(type) {
-    setView("products");
-    $("productStatusFilter").value=type;
+    state.productFilter.q="";
+    state.productFilter.category="";
     state.productFilter.status=type;
+    state.productFilter.availability="";
+    if($("productSearch"))$("productSearch").value="";
+    if($("productCategoryFilter"))$("productCategoryFilter").value="";
+    if($("productStatusFilter"))$("productStatusFilter").value=type;
+    if($("productAvailabilityFilter"))$("productAvailabilityFilter").value="";
+    setView("products");
     renderProducts();
+    requestAnimationFrame(()=>$("productResultCount")?.scrollIntoView({block:"center",behavior:"smooth"}));
   }
 
   async function runHealthCheck() {
@@ -3496,7 +3501,7 @@
 
   function setupInstallPrompt(){
     window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.installPrompt=e;$("installAdminHint").textContent="Ready to install on this device.";});
-    if("serviceWorker" in navigator)navigator.serviceWorker.register("admin-sw.js?v=20261004-toolkit13").catch(()=>{});
+    if("serviceWorker" in navigator)navigator.serviceWorker.register("admin-sw.js?v=20261004-toolkit14").catch(()=>{});
   }
   async function installAdminApp(){
     if(state.installPrompt){
@@ -3510,14 +3515,16 @@
       const edit=e.target.closest("[data-edit-product]");
       if(edit){
         e.preventDefault();
-        openProductEditor(edit.dataset.editProduct||null);
+        try{openProductEditor(edit.dataset.editProduct||null);}
+        catch(err){console.error("Product editor failed:",err);toast("Could not open the product editor. Refresh and try again.","error");}
         return;
       }
 
       const health=e.target.closest("[data-health-filter]");
       if(health){
         e.preventDefault();
-        applyHealthFilter(health.dataset.healthFilter);
+        try{applyHealthFilter(health.dataset.healthFilter);}
+        catch(err){console.error("Catalogue health shortcut failed:",err);toast("Could not open that product list. Refresh and try again.","error");}
         return;
       }
 

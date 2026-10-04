@@ -174,3 +174,364 @@ html[lang="ar"] :where(button, .btn, .button, [class*="btn"], .account-primary, 
     font-size: 16px;
   }
 }
+
+
+/* ===== visual-pass-v1: final desktop + mobile proportion cleanup ===== */
+/* Never split display words such as "essentials," across lines. */
+:where(h1,h2,h3,h4,h5,h6){
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+  hyphens:none!important;
+}
+
+/* Keep CTA copy visually centred without making labels feel squeezed. */
+:where(.intro-primary,.intro-secondary,.button,.account-primary,.account-secondary){
+  line-height:1.25;
+  text-wrap:balance;
+}
+
+/* Homepage pantry hero — desktop editorial balance. */
+@media (min-width:981px){
+  body[data-page="home"] .home-pantry-hero{
+    min-height:650px!important;
+    padding:52px 0 56px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-grid{
+    width:min(100% - 76px,1540px)!important;
+    grid-template-columns:minmax(555px,600px) minmax(70px,1fr) minmax(480px,535px)!important;
+    gap:clamp(24px,2.2vw,38px)!important;
+    align-items:center!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap{
+    max-width:600px!important;
+    justify-self:start!important;
+    padding:6px 0!important;
+    text-align:left!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .eyebrow{
+    margin:0 0 17px!important;
+    text-align:left!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero h1.only-en{
+    width:auto!important;
+    max-width:10.7ch!important;
+    margin:0!important;
+    font-size:clamp(4.35rem,4.8vw,5.85rem)!important;
+    line-height:.92!important;
+    letter-spacing:-.04em!important;
+    text-align:left!important;
+    text-wrap:initial!important;
+    overflow-wrap:normal!important;
+    word-break:normal!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-copy.only-en{
+    width:auto!important;
+    max-width:49ch!important;
+    margin:22px 0 0!important;
+    padding:0!important;
+    font-size:.98rem!important;
+    line-height:1.62!important;
+    text-align:left!important;
+    text-wrap:pretty!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-actions{
+    width:auto!important;
+    max-width:510px!important;
+    margin:25px 0 0!important;
+    display:flex!important;
+    flex-wrap:wrap!important;
+    justify-content:flex-start!important;
+    align-items:stretch!important;
+    gap:11px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-actions>a{
+    flex:1 1 210px!important;
+    min-width:190px!important;
+    min-height:49px!important;
+    padding:0 20px!important;
+    font-size:.78rem!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .shop-intro-board{
+    width:100%!important;
+    max-width:535px!important;
+    min-height:0!important;
+    padding:24px!important;
+    margin:0!important;
+    border-radius:27px!important;
+    align-self:center!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-stat-pair{
+    gap:11px!important;
+    margin-bottom:22px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-stat-pair>div{
+    min-height:104px!important;
+    padding:17px 19px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-stat-pair strong{
+    font-size:2.65rem!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-category-chips{
+    gap:10px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-category-chips a{
+    min-height:72px!important;
+    padding:10px 13px!important;
+    border-radius:17px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-category-chips a>span{
+    width:46px!important;
+    height:46px!important;
+    flex-basis:46px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-board-note{
+    margin-top:17px!important;
+    padding-top:14px!important;
+    font-size:.76rem!important;
+  }
+
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap,
+  html[lang="ar"] body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap{
+    justify-self:start!important;
+    text-align:right!important;
+  }
+
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero .eyebrow,
+  html[lang="ar"] body[data-page="home"] .home-pantry-hero .eyebrow{
+    text-align:right!important;
+  }
+
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero h1.only-ar,
+  html[lang="ar"] body[data-page="home"] .home-pantry-hero h1.only-ar{
+    max-width:13ch!important;
+    margin:0!important;
+    text-align:right!important;
+    overflow-wrap:normal!important;
+    word-break:normal!important;
+  }
+
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-copy.only-ar,
+  html[lang="ar"] body[data-page="home"] .home-pantry-hero .page-intro-copy.only-ar{
+    margin:22px 0 0!important;
+    text-align:right!important;
+  }
+
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero .page-intro-actions,
+  html[lang="ar"] body[data-page="home"] .home-pantry-hero .page-intro-actions{
+    margin:25px 0 0!important;
+    direction:rtl!important;
+    justify-content:flex-start!important;
+  }
+}
+
+/* Tablet: keep the hero compact and keep every headline word intact. */
+@media (min-width:761px) and (max-width:980px){
+  body[data-page="home"] .home-pantry-hero{
+    padding:50px 0 52px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero h1.only-en{
+    max-width:10.7ch!important;
+    font-size:clamp(3.65rem,7.6vw,4.7rem)!important;
+    line-height:.93!important;
+    overflow-wrap:normal!important;
+    word-break:normal!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-copy{
+    max-width:48ch!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .shop-intro-board{
+    margin-top:30px!important;
+    padding:21px!important;
+  }
+}
+
+/* Phone: compact vertical rhythm, two-column quick choices where space allows. */
+@media (max-width:760px){
+  .site-header .announcement-inner>span{
+    font-size:.62rem!important;
+    letter-spacing:.03em!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero{
+    min-height:0!important;
+    padding:40px 0 42px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-grid{
+    width:min(calc(100% - 24px),620px)!important;
+    gap:24px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap{
+    max-width:560px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .eyebrow{
+    margin-bottom:12px!important;
+    font-size:.6rem!important;
+    line-height:1.45!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero h1.only-en{
+    width:auto!important;
+    max-width:10.6ch!important;
+    margin-inline:auto!important;
+    font-size:clamp(2.95rem,11.4vw,3.85rem)!important;
+    line-height:.94!important;
+    letter-spacing:-.035em!important;
+    overflow-wrap:normal!important;
+    word-break:normal!important;
+    text-wrap:initial!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-copy{
+    max-width:40ch!important;
+    margin-top:17px!important;
+    padding:0!important;
+    font-size:.9rem!important;
+    line-height:1.58!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-actions{
+    width:min(100%,410px)!important;
+    margin-top:21px!important;
+    gap:9px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-actions>a{
+    min-height:50px!important;
+    padding:0 16px!important;
+    font-size:.76rem!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .shop-intro-board{
+    width:min(100%,560px)!important;
+    margin:28px auto 0!important;
+    padding:18px!important;
+    border-radius:21px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-stat-pair{
+    gap:8px!important;
+    margin-bottom:17px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-stat-pair>div{
+    min-height:86px!important;
+    padding:14px!important;
+    border-radius:15px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-stat-pair strong{
+    font-size:2.15rem!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-stat-pair span{
+    margin-top:6px!important;
+    font-size:.68rem!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-board-kicker{
+    margin-bottom:12px!important;
+    font-size:.65rem!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-category-chips{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-category-chips a{
+    min-width:0!important;
+    min-height:67px!important;
+    padding:9px 10px!important;
+    gap:9px!important;
+    border-radius:15px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-category-chips a>span{
+    width:40px!important;
+    height:40px!important;
+    flex:0 0 40px!important;
+    border-radius:12px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-category-chips b{
+    min-width:0!important;
+    font-size:.78rem!important;
+    line-height:1.2!important;
+    white-space:normal!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-category-chips i{
+    font-size:1rem!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-board-note{
+    margin-top:13px!important;
+    padding-top:12px!important;
+    font-size:.66rem!important;
+    line-height:1.5!important;
+  }
+
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero h1.only-ar,
+  html[lang="ar"] body[data-page="home"] .home-pantry-hero h1.only-ar{
+    max-width:13ch!important;
+    overflow-wrap:normal!important;
+    word-break:normal!important;
+  }
+}
+
+@media (max-width:420px){
+  body[data-page="home"] .home-pantry-hero{
+    padding:34px 0 38px!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero h1.only-en{
+    max-width:10.5ch!important;
+    font-size:clamp(2.65rem,12.8vw,3.35rem)!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .page-intro-actions{
+    width:100%!important;
+    grid-template-columns:1fr!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-category-chips{
+    grid-template-columns:1fr!important;
+  }
+
+  body[data-page="home"] .home-pantry-hero .intro-category-chips a{
+    min-height:62px!important;
+  }
+}
+
+/* General small-screen card/action cleanup across storefront pages. */
+@media (max-width:700px){
+  :where(.button,.intro-primary,.intro-secondary,.account-primary,.account-secondary){
+    min-height:48px;
+    padding-inline:15px;
+  }
+
+  :where(.section-heading,.account-section-title,.catalogue-intro-card){
+    min-width:0;
+  }
+}

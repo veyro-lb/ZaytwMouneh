@@ -498,3 +498,108 @@ body[data-page="account"] .account-layout :is(h1,h2,h3,p,strong,small,label){ove
   body[data-page="account"] .account-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
   body[data-page="account"] .account-pill{max-width:100%;white-space:normal;line-height:1.4}
 }
+
+
+/* ===== account10: mobile dashboard visibility + compact navigation ===== */
+@media(max-width:700px){
+  body[data-page="account"] .account-main{padding:12px 0 38px}
+  body[data-page="account"] .account-main>.shell{width:min(100% - 12px,720px)}
+  body[data-page="account"] .account-layout{gap:10px}
+  body[data-page="account"] .account-side{padding:8px 8px 9px;border-radius:15px;overflow:hidden}
+  body[data-page="account"] .account-side .account-identity{display:none!important}
+  body[data-page="account"] .account-tabs{
+    display:flex!important;
+    grid-template-columns:none!important;
+    gap:7px;
+    margin:0;
+    padding:1px 0 4px;
+    overflow-x:auto!important;
+    overflow-y:hidden;
+    scroll-snap-type:x proximity;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  body[data-page="account"] .account-tabs::-webkit-scrollbar{display:none}
+  body[data-page="account"] .account-tabs button{
+    flex:0 0 auto;
+    width:auto!important;
+    min-width:max-content;
+    min-height:42px;
+    padding:7px 10px;
+    gap:7px;
+    border:1px solid var(--acc-line);
+    border-radius:12px;
+    background:#fff;
+    white-space:nowrap!important;
+    font-size:.78rem;
+    line-height:1.2;
+    scroll-snap-align:start;
+  }
+  body[data-page="account"] .account-tabs button.is-active{
+    background:#eaf2e5;
+    border-color:rgba(18,61,35,.14);
+    box-shadow:none!important;
+  }
+  body[data-page="account"] .account-tab-icon{
+    width:25px;height:25px;flex:0 0 25px;border-radius:8px;font-size:.78rem
+  }
+  body[data-page="account"] .account-content{display:block;width:100%}
+  body[data-page="account"] .account-hero{
+    margin-bottom:10px;
+    padding:15px;
+    gap:11px;
+    border-radius:17px;
+    box-shadow:0 10px 28px rgba(18,61,35,.12)
+  }
+  body[data-page="account"] .account-hero h1{
+    font-size:clamp(1.72rem,8vw,2.2rem);
+    line-height:1.06
+  }
+  body[data-page="account"] .account-hero p{
+    margin-top:6px;
+    font-size:.79rem;
+    line-height:1.42
+  }
+  body[data-page="account"] .account-balance{
+    padding:10px 12px;
+    border-radius:14px
+  }
+  body[data-page="account"] .account-balance strong{
+    font-size:1.42rem;
+    line-height:1.2
+  }
+  body[data-page="account"] .account-balance em{
+    margin-top:4px;
+    font-size:.72rem
+  }
+  body[data-page="account"] .account-panel{gap:10px}
+  body[data-page="account"] .account-panel>.account-card{padding:13px;border-radius:16px}
+  body[data-page="account"] .account-grid,
+  body[data-page="account"] .account-panel[data-account-panel="referrals"] .account-grid,
+  body[data-page="account"] .account-panel[data-account-panel="points"] .account-card:first-child .account-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px
+  }
+  body[data-page="account"] .account-stat{
+    min-height:82px;
+    padding:11px;
+    border-radius:14px
+  }
+  body[data-page="account"] .account-stat small{font-size:.72rem;line-height:1.35}
+  body[data-page="account"] .account-stat strong{font-size:1.08rem;line-height:1.25}
+  body[data-page="account"] .account-section-title{gap:8px}
+  body[data-page="account"] .account-section-title h2{font-size:1.42rem;line-height:1.12}
+  body[data-page="account"] .account-section-title p{font-size:.78rem;line-height:1.45}
+  body[data-page="account"] .account-card p{font-size:.82rem;line-height:1.5}
+  body[data-page="account"] .account-row{min-height:0;padding:11px;border-radius:13px}
+  body[data-page="account"] .account-actions{margin-top:14px}
+}
+@media(max-width:390px){
+  body[data-page="account"] .account-main>.shell{width:min(100% - 8px,720px)}
+  body[data-page="account"] .account-hero{padding:13px}
+  body[data-page="account"] .account-grid,
+  body[data-page="account"] .account-panel[data-account-panel="referrals"] .account-grid,
+  body[data-page="account"] .account-panel[data-account-panel="points"] .account-card:first-child .account-grid{
+    grid-template-columns:minmax(0,1fr)
+  }
+}

@@ -1,8 +1,8 @@
 
 (function(){
 "use strict";
-var CART_KEY="zwm-cart-v5",GIFT_KEY="zwm-gift-items-v1",GIFT_META_KEY="zwm:native-gift:meta:v1",LANG_KEY="zwm-lang-v2",AUTH_KEY="zwm:mouneh:session:v1",CLAIMS_KEY="zwm:mouneh:claims:v1",WALLET_KEY="zwm:mouneh:selected-wallet:v1",REQUEST_KEY="zwm:native-checkout:request:v1";
-var state={lang:"en",kind:"order",giftMeta:{},config:null,products:[],cart:{},rows:[],dashboard:null,addresses:[],authUser:null,walletId:"",busy:false,areaRecord:null};
+var CART_KEY="zwm-cart-v5",GIFT_KEY="zwm-gift-items-v1",GIFT_META_KEY="zwm:native-gift:meta:v1",LANG_KEY="zwm-lang-v2",AUTH_KEY="zwm:mouneh:session:v1",CLAIMS_KEY="zwm:mouneh:claims:v1",WALLET_KEY="zwm:mouneh:selected-wallet:v1",REQUEST_KEY="zwm:native-checkout:request:v1",AREA_DRAFT_KEY="zwm:native-checkout:area:v1";
+var state={lang:"en",kind:"order",giftMeta:{},config:null,products:[],cart:{},rows:[],dashboard:null,addresses:[],authUser:null,walletId:"",busy:false,areaRecord:null,areaText:""};
 var T={
 en:{backCart:"← Back to cart",account:"My Account",eyebrow:"Secure website order",title:"Checkout",intro:"Confirm your details once, see the complete total, and place your Zayt w Mouneh order directly on the website.",emptyTitle:"Your pantry is empty.",emptyCopy:"Add products before starting checkout.",startShopping:"Start shopping",customerTitle:"Customer",customerHelp:"We only collect what is needed to fulfil your order.",name:"Full name",phone:"Phone / WhatsApp",email:"Email (optional for guests)",recipientName:"Recipient name",recipientPhone:"Recipient phone",giftDeliveryHelp:"Use the recipient contact if the driver should call them directly.",deliveryTitle:"Delivery",deliveryHelp:"Use the details a local driver would need in Lebanon.",savedAddress:"Deliver to a saved address",anotherAddress:"Use another",area:"Area / City",street:"Street / Neighborhood",building:"Building / Residence",floor:"Floor / Apartment",landmark:"Nearby landmark",instructions:"Delivery instructions",saveAddress:"Save this address to my account",rewardsTitle:"Rewards",rewardsHelp:"Mouneh Points are finalized only after successful delivery.",paymentTitle:"Payment",paymentHelp:"More payment methods can be added later without changing your order history.",cod:"Cash on Delivery",codHelp:"Pay when your order arrives.",notesTitle:"Order note",notesHelp:"Optional — tell us anything useful for this delivery.",notes:"Anything we should know?",reviewTitle:"Review & place order",reviewHelp:"Your final total is re-calculated securely on the server before the order is created.",summaryTitle:"Order summary",subtotal:"Subtotal",reward:"Reward",delivery:"Delivery",total:"Total",placeOrder:"Place Order",needHelp:"Need help?",whatsappSupport:"Chat with us on WhatsApp",terms:'I agree to the <a href="/terms-and-rewards.html" target="_blank" rel="noopener">Terms of Service</a>, <a href="/privacy-and-data.html" target="_blank" rel="noopener">Privacy Policy</a> and applicable order/delivery terms.'},
 ar:{backCart:"العودة للسلة →",account:"حسابي",eyebrow:"طلب آمن عبر الموقع",title:"إتمام الطلب",intro:"أكّد بياناتك مرة واحدة، شاهد المجموع الكامل، وأرسل طلب زيت ومونة مباشرة عبر الموقع.",emptyTitle:"سلتك فارغة.",emptyCopy:"أضف منتجات قبل بدء إتمام الطلب.",startShopping:"ابدأ التسوق",customerTitle:"العميل",customerHelp:"نجمع فقط البيانات اللازمة لتنفيذ الطلب.",name:"الاسم الكامل",phone:"رقم الهاتف / واتساب",email:"البريد الإلكتروني (اختياري للضيف)",recipientName:"اسم المستلم",recipientPhone:"هاتف المستلم",giftDeliveryHelp:"استخدم رقم المستلم إذا كان على السائق الاتصال به مباشرة.",deliveryTitle:"التوصيل",deliveryHelp:"استخدم التفاصيل التي يحتاجها سائق التوصيل في لبنان.",savedAddress:"التوصيل إلى عنوان محفوظ",anotherAddress:"استخدام عنوان آخر",area:"المنطقة / المدينة",street:"الشارع / الحي",building:"المبنى / السكن",floor:"الطابق / الشقة",landmark:"معلم قريب",instructions:"تعليمات التوصيل",saveAddress:"حفظ هذا العنوان في حسابي",rewardsTitle:"المكافآت",rewardsHelp:"تتثبت نقاط المونة فقط بعد نجاح التسليم.",paymentTitle:"الدفع",paymentHelp:"يمكن إضافة طرق دفع أخرى لاحقاً من دون تغيير سجل طلباتك.",cod:"الدفع عند الاستلام",codHelp:"ادفع عند وصول طلبك.",notesTitle:"ملاحظة الطلب",notesHelp:"اختياري — أخبرنا بما يفيد في هذا التوصيل.",notes:"هل هناك شيء يجب أن نعرفه؟",reviewTitle:"المراجعة وإرسال الطلب",reviewHelp:"يعاد احتساب المجموع النهائي بأمان على الخادم قبل إنشاء الطلب.",summaryTitle:"ملخص الطلب",subtotal:"المجموع الفرعي",reward:"المكافأة",delivery:"التوصيل",total:"المجموع",placeOrder:"إرسال الطلب",needHelp:"تحتاج مساعدة؟",whatsappSupport:"تواصل معنا عبر واتساب",terms:'أوافق على <a href="/terms-and-rewards.html" target="_blank" rel="noopener">شروط الخدمة</a> و<a href="/privacy-and-data.html" target="_blank" rel="noopener">سياسة الخصوصية</a> وشروط الطلب والتوصيل المطبقة.'}
@@ -56,6 +56,23 @@ function rewardDiscount(){var w=currentWallet();return w?Math.min(subtotal(),Num
 function deliverySettings(){return state.config&&state.config.delivery||{}}
 function activeZones(){var z=deliverySettings().zones;return Array.isArray(z)?z.filter(function(x){return x&&x.active!==false}):[]}
 function areaDirectory(){return Array.isArray(window.ZWM_LEBANON_AREAS)?window.ZWM_LEBANON_AREAS:[]}
+function rememberArea(value){
+  var v=String(value||"").trim();
+  state.areaText=v;
+  try{if(v)sessionStorage.setItem(AREA_DRAFT_KEY,v);else sessionStorage.removeItem(AREA_DRAFT_KEY)}catch{}
+  return v
+}
+function readArea(){
+  var input=$("checkoutArea"),direct=String(input&&input.value||"").trim();
+  if(direct){rememberArea(direct);return direct}
+  if(state.areaText)return state.areaText;
+  try{var saved=String(sessionStorage.getItem(AREA_DRAFT_KEY)||"").trim();if(saved){state.areaText=saved;return saved}}catch{}
+  if(state.areaRecord)return String(state.lang==="ar"?(state.areaRecord.ar||state.areaRecord.en):(state.areaRecord.en||state.areaRecord.ar)||"").trim();
+  if(state.kind==="gift"&&state.giftMeta&&state.giftMeta.area)return String(state.giftMeta.area).trim();
+  var savedSelect=$("savedAddressSelect"),savedAddress=savedSelect&&state.addresses.find(function(x){return x.id===savedSelect.value});
+  if(savedAddress&&savedAddress.area)return String(savedAddress.area).trim();
+  return ""
+}
 function norm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[ًٌٍَُِّْـ]/g,"").toLowerCase().replace(/[^a-z0-9\u0600-\u06ff]+/g," ").trim()}
 function areaDisplay(a){if(!a)return"";var name=state.lang==="ar"?(a.ar||a.en):(a.en||a.ar),district=state.lang==="ar"?(a.districtAr||a.districtEn):(a.districtEn||a.districtAr),gov=state.lang==="ar"?(a.governorateAr||a.governorateEn):(a.governorateEn||a.governorateAr);return [name,district,gov].filter(Boolean).join(" · ")}
 function exactArea(value){
@@ -76,7 +93,7 @@ function areaMatches(query){
   }).filter(Boolean).sort(function(x,y){return y.score-x.score||String(x.a.en).localeCompare(String(y.a.en))}).slice(0,10).map(function(x){return x.a})
 }
 function currentAreaRecord(){
-  var input=$("checkoutArea"),value=input?input.value.trim():"";
+  var input=$("checkoutArea"),value=readArea();
   if(state.areaRecord&&(norm(value)===norm(state.areaRecord.en)||norm(value)===norm(state.areaRecord.ar)||norm(value)===norm(areaDisplay(state.areaRecord))))return state.areaRecord;
   state.areaRecord=exactArea(value);return state.areaRecord
 }
@@ -94,7 +111,7 @@ function matchedDeliveryZone(){
 function selectedZone(){return matchedDeliveryZone()}
 function quote(){
   var d=deliverySettings(),zones=activeZones(),matched=selectedZone(),z=matched||{},sub=subtotal(),disc=rewardDiscount();
-  var hasArea=!!($("checkoutArea")&&$("checkoutArea").value.trim()),zoneAvailable=!zones.length||!!matched,deliveryEnabled=d.enabled!==false;
+  var hasArea=!!readArea(),zoneAvailable=!zones.length||!!matched,deliveryEnabled=d.enabled!==false;
   var available=deliveryEnabled&&zoneAvailable,basis=(z.eligibility_basis||d.eligibilityBasis)==="after_discount"?"after_discount":"before_discount";
   var eligible=basis==="after_discount"?Math.max(0,sub-disc):sub;
   var fee=hasArea?Math.max(0,Number(z.fee!=null?z.fee:d.fee)||0):0;
@@ -153,7 +170,7 @@ function renderAreaSuggestions(force){
 }
 function chooseArea(id){
   var a=areaDirectory().find(function(x){return String(x.id)===String(id)});if(!a)return;
-  state.areaRecord=a;$("checkoutArea").value=state.lang==="ar"?(a.ar||a.en):(a.en||a.ar);if($("checkoutStatus"))$("checkoutStatus").textContent="";closeAreaSuggestions();renderAreaMeta();renderSummary()
+  state.areaRecord=a;var value=state.lang==="ar"?(a.ar||a.en):(a.en||a.ar);$("checkoutArea").value=value;rememberArea(value);if($("checkoutStatus"))$("checkoutStatus").textContent="";closeAreaSuggestions();renderAreaMeta();renderSummary()
 }
 function renderZones(){renderAreaMeta()}
 function renderAddresses(){
@@ -198,17 +215,17 @@ function renderGiftFields(){
     $("checkoutRecipientName").required=true;
     if(!$("checkoutRecipientName").value)$("checkoutRecipientName").value=state.giftMeta.recipient||"";
     if(!$("checkoutName").value)$("checkoutName").value=state.giftMeta.sender||"";
-    if(!$("checkoutArea").value)$("checkoutArea").value=state.giftMeta.area||"";
+    if(!$("checkoutArea").value&&state.giftMeta.area){$("checkoutArea").value=state.giftMeta.area;rememberArea(state.giftMeta.area)}
     var intro=document.querySelector(".commerce-intro h1");if(intro)intro.textContent=state.lang==="ar"?"إتمام طلب الهدية":"Gift checkout";
   }
 }
 function renderAll(){if(!$("nativeCheckoutForm")||!state.rows.length)return;renderIdentity();renderGiftFields();renderZones();renderAddresses();renderRewards();renderSummary();phoneSupport()}
 function addressPayload(){
-  var z=selectedZone(),a=currentAreaRecord(),area=$("checkoutArea").value.trim();
+  var z=selectedZone(),a=currentAreaRecord(),area=readArea();if(!area&&a)area=String(a.en||a.ar||"").trim();
   return {zone_id:z?String(z.id||z.area||z.name_en||""):"",area:area,cadastre_id:a?a.id:"",district:a?(a.districtEn||a.districtAr||""):"",governorate:a?(a.governorateEn||a.governorateAr||""):"",street:$("checkoutStreet").value.trim(),building:$("checkoutBuilding").value.trim(),floor_apartment:$("checkoutFloor").value.trim(),landmark:$("checkoutLandmark").value.trim(),instructions:$("checkoutInstructions").value.trim(),latitude:a&&a.lat!=null?a.lat:null,longitude:a&&a.lon!=null?a.lon:null,recipient_name:state.kind==="gift"?$("checkoutRecipientName").value.trim():"",recipient_phone:state.kind==="gift"?$("checkoutRecipientPhone").value.trim():""}
 }
 function fillAddress(a){
-  if(!a)return;$("checkoutArea").value=a.area||"";state.areaRecord=exactArea(a.area||"");$("checkoutStreet").value=a.street||a.address||"";$("checkoutBuilding").value=a.building||"";$("checkoutFloor").value=a.floor_apartment||"";$("checkoutLandmark").value=a.landmark||"";$("checkoutInstructions").value=a.delivery_notes||"";if($("checkoutStatus"))$("checkoutStatus").textContent="";renderAreaMeta();renderSummary()
+  if(!a)return;$("checkoutArea").value=a.area||"";rememberArea(a.area||"");state.areaRecord=exactArea(a.area||"");$("checkoutStreet").value=a.street||a.address||"";$("checkoutBuilding").value=a.building||"";$("checkoutFloor").value=a.floor_apartment||"";$("checkoutLandmark").value=a.landmark||"";$("checkoutInstructions").value=a.delivery_notes||"";if($("checkoutStatus"))$("checkoutStatus").textContent="";renderAreaMeta();renderSummary()
 }
 function cartSignature(){return state.rows.map(function(r){return r.p.id+":"+r.v.id+":"+r.qty}).sort().join("|")}
 function checkoutAttempt(){
@@ -239,7 +256,7 @@ async function submit(e){
     var result;try{result=await rpc("zwm_checkout",{action:"submit",p:payload})}catch(err){if(/fetch|network/i.test(String(err.message||"")))result=await rpc("zwm_checkout",{action:"submit",p:payload});else throw err}
     if(!result||!result.reference)throw new Error(state.lang==="ar"?"تعذّر إنشاء الطلب.":"Could not create the order.");
     if(result.claim_token)saveClaim(result.reference,result.claim_token);
-    remove(state.kind==="gift"?GIFT_KEY:CART_KEY);remove(WALLET_KEY);try{sessionStorage.removeItem(REQUEST_KEY);sessionStorage.removeItem(GIFT_META_KEY)}catch{}
+    remove(state.kind==="gift"?GIFT_KEY:CART_KEY);remove(WALLET_KEY);try{sessionStorage.removeItem(REQUEST_KEY);sessionStorage.removeItem(GIFT_META_KEY);sessionStorage.removeItem(AREA_DRAFT_KEY)}catch{}
     location.replace("/order.html?ref="+encodeURIComponent(result.reference)+"&new=1")
   }catch(err){$("checkoutStatus").textContent=friendlyError(err);state.busy=false;renderSummary();btn.textContent=old}
 }
@@ -256,14 +273,17 @@ async function init(){
     if(state.dashboard){try{state.addresses=await rpc("mouneh_addresses",{action:"list",p:{}})||[]}catch{}}
   }
   state.walletId=String(read(WALLET_KEY,"")||"");
+  var remembered=readArea();if(remembered&&!$("checkoutArea").value)$("checkoutArea").value=remembered;
   renderAll();
   window.ZWM_CMS&&window.ZWM_CMS.track&&window.ZWM_CMS.track("checkout_started",{items:state.rows.length,signed_in:!!state.dashboard});
   document.querySelectorAll("[data-commerce-lang]").forEach(function(b){b.addEventListener("click",function(){setLang(b.dataset.commerceLang)})});
   $("nativeCheckoutForm").addEventListener("submit",submit);
   $("savedAddressSelect").addEventListener("change",function(){var a=state.addresses.find(function(x){return x.id===$("savedAddressSelect").value});fillAddress(a)});
-  $("clearSavedAddress").addEventListener("click",function(){$("savedAddressSelect").value="";state.areaRecord=null;["checkoutArea","checkoutStreet","checkoutBuilding","checkoutFloor","checkoutLandmark","checkoutInstructions"].forEach(function(id){$(id).value=""});renderAreaMeta();renderSummary()});
+  $("clearSavedAddress").addEventListener("click",function(){$("savedAddressSelect").value="";state.areaRecord=null;rememberArea("");["checkoutArea","checkoutStreet","checkoutBuilding","checkoutFloor","checkoutLandmark","checkoutInstructions"].forEach(function(id){$(id).value=""});renderAreaMeta();renderSummary()});
   var areaInput=$("checkoutArea"),areaBox=$("areaSuggestions");
-  areaInput.addEventListener("input",function(){state.areaRecord=null;renderAreaMeta();renderAreaSuggestions(false);renderSummary();$("checkoutStatus").textContent=""});
+  areaInput.addEventListener("input",function(){state.areaRecord=null;rememberArea(areaInput.value);renderAreaMeta();renderAreaSuggestions(false);renderSummary();$("checkoutStatus").textContent=""});
+  areaInput.addEventListener("change",function(){rememberArea(areaInput.value);renderAreaMeta();renderSummary();$("checkoutStatus").textContent=""});
+  areaInput.addEventListener("blur",function(){rememberArea(areaInput.value)});
   areaInput.addEventListener("focus",function(){renderAreaSuggestions(true)});
   areaInput.addEventListener("keydown",function(e){if(e.key==="Escape")closeAreaSuggestions()});
   areaBox.addEventListener("click",function(e){var b=e.target.closest("[data-area-id]");if(b)chooseArea(b.dataset.areaId)});

@@ -530,7 +530,7 @@ function repeatedListingNote(p){
 }
 const TOTAL_VARIANTS=PRODUCTS_DATA.reduce((sum,p)=>sum+p.variants.length,0);
 
-function money(n){return `$${Number(n).toFixed(2)}`}
+function money(n){const value=`${Number(n).toFixed(2)}`;return lang==="ar"?`\u2066${value}\u2069`:value}
 function currentName(p){return lang==="ar"?plainArabic(p.nameAr):p.nameEn}
 function categoryName(cat){return lang==="ar"?(CATEGORY_AR[cat]||cat):cat}
 function originKeyFor(p){

@@ -63,20 +63,25 @@
     const announcementEl=document.getElementById("announcementText");
     if(announcementEl){
       const text=currentLang()==="ar"?(announcement.ar||announcement.en):(announcement.en||announcement.ar);
-      if(text)announcementEl.textContent=text;
+      announcementEl.textContent=text||"";
       const bar=announcementEl.closest(".announcement");
-      if(bar)bar.hidden=announcement.enabled===false;
+      if(bar)bar.hidden=announcement.enabled===false||!text;
     }
 
     const contact=settings.contact||{};
     const number=String(contact.whatsapp||"").replace(/\D/g,"");
     if(number){
+      const displayNumber=number.startsWith("961")&&number.length>=10
+        ?"+961 "+number.slice(3,5)+" "+number.slice(5,8)+" "+number.slice(8)
+        :"+"+number;
       document.querySelectorAll('a[href*="wa.me/"],a[href*="api.whatsapp.com"]').forEach(a=>{
         try{
           const url=new URL(a.href,location.href);
           if(url.hostname.includes("wa.me")) url.pathname="/"+number;
           else if(url.hostname.includes("whatsapp.com")) url.searchParams.set("phone",number);
           a.href=url.toString();
+          const strong=a.querySelector("strong");
+          if(strong&&/\+?\d[\d\s()-]{6,}/.test(strong.textContent||""))strong.textContent=displayNumber;
         }catch{}
       });
     }
@@ -95,7 +100,7 @@
     const body=currentLang()==="ar"?(promo.bodyAr||promo.bodyEn):(promo.bodyEn||promo.bodyAr);
     if(!title&&!body)return;
     const dismissed=sessionStorage.getItem("zwm:promo:dismissed:v1");
-    if(dismissed==="1")return;
+    if(!PREVIEW_MODE&&dismissed==="1")return;
     if(!box){
       box=document.createElement("aside");box.id="zwmCmsPromo";
       Object.assign(box.style,{position:"fixed",left:"16px",right:"16px",bottom:"16px",zIndex:"45",maxWidth:"620px",margin:"0 auto",padding:"14px 48px 14px 16px",borderRadius:"16px",background:"#123d23",color:"#fff",boxShadow:"0 16px 45px rgba(0,0,0,.18)",fontFamily:"DM Sans, sans-serif"});

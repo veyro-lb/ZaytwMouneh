@@ -702,3 +702,5 @@
 .mr-full-account>div{display:grid;gap:2px}.mr-full-account strong{font-size:10px}.mr-full-account small{font-size:8px;line-height:1.4;color:var(--mr-muted)}.mr-full-account>b{font-size:12px}
 @media(max-width:1050px){.mouneh-account-nav{width:44px;min-width:44px;padding:0;justify-content:center}.mr-account-nav-copy{display:none}}
 @media(max-width:760px){.mouneh-account-nav{display:none!important}.mouneh-account-menu-link{display:grid!important}}
+
+.mr-order-status-list span.is-cancelled{background:#f3eeee;color:#8a5350}

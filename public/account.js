@@ -11,7 +11,7 @@
   let active=(location.hash||"#overview").slice(1);
   const allowed=new Set(["overview","points","orders","referrals","profile"]);
   if(!allowed.has(active))active="overview";
-  let syncing=false, lastRenderSig="", lastSyncedAt=Date.now();
+  let syncing=false, lastRenderSig="", lastSyncedAt=Date.now(), previousMemberState=null;
 
   function syncLanguageVisibility(){
     const showArabic=ar();
@@ -97,11 +97,17 @@
   function render(force=false){
     const el=shell();if(!el)return;
     const s=state();
-    if(s.session&&s.member&&landingAfterAuth){
+    const hasMember=!!(s.session&&s.member);
+    if(hasMember&&(landingAfterAuth||previousMemberState===false)){
       active="overview";
       landingAfterAuth=false;
-      try{history.replaceState({},document.title,location.pathname+(location.search||"")+"#overview")}catch{}
+      try{
+        const u=new URL(location.href);
+        u.searchParams.delete("auth");
+        history.replaceState({},document.title,u.pathname+(u.search||"")+"#overview");
+      }catch{}
     }
+    previousMemberState=hasMember;
     syncLanguageVisibility();
     const sig=JSON.stringify([active,ar(),!!s.session,s.member?.balance,s.member?.name,s.dashboard?.orders?.length,s.dashboard?.wallet?.length,s.referralStatus?.joined,s.referralStatus?.qualified,s.authUser?.email,lastSyncedAt]);
     if(!force&&sig===lastRenderSig)return;lastRenderSig=sig;

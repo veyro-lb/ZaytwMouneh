@@ -61,7 +61,7 @@
     render(true);
   }
   function tierLabel(t){return t==="golden"?tr("Golden Pantry","المونة الذهبية"):t==="olive"?tr("Olive Circle","دائرة الزيتون"):tr("Mouneh Member","عضو المونة")}
-  function statusLabel(s){return s==="delivered"?tr("Delivered","تم التسليم"):s==="cancelled"?tr("Cancelled","ملغي"):s==="confirmed"?tr("Confirmed","مؤكد"):tr("Pending","قيد الانتظار")}
+  function statusLabel(s){return s==="delivered"?tr("Delivered","تم التسليم"):s==="cancelled"?tr("Cancelled","ملغي"):s==="out_for_delivery"?tr("Out for delivery","خرج للتوصيل"):s==="preparing"?tr("Preparing","قيد التحضير"):s==="confirmed"?tr("Confirmed","مؤكد"):tr("Order received","تم استلام الطلب")}
   function navTabs(){
     const tabs=[["overview","⌂",tr("Overview","نظرة عامة")],["points","🌿",tr("Points & Wallet","النقاط والمحفظة")],["orders","▤",tr("Orders","الطلبات")],["referrals","↗",tr("Referrals","الإحالات")],["profile","⚙",tr("Profile & Security","الملف والأمان")]];
     return '<div class="account-tabs" role="tablist">'+tabs.map(([id,icon,label])=>'<button type="button" data-account-tab="'+id+'" class="'+(active===id?"is-active":"")+'" role="tab" aria-selected="'+(active===id)+'" aria-current="'+(active===id?"page":"false")+'"><span class="account-tab-icon">'+icon+'</span><span>'+label+'</span></button>').join("")+'</div>';

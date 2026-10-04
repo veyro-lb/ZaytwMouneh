@@ -1,0 +1,67 @@
+
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#174c2a">
+  <meta name="robots" content="noindex,follow,noarchive">
+  <title>Order | Zayt w Mouneh</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=20261003-round1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=20261004-mobileheader1">
+  <link rel="stylesheet" href="/premium.css?v=20261004-uifix1">
+  <link rel="stylesheet" href="/commerce-v1.css?v=20261004-nativecheckout1">
+  <meta name="zwm-release" content="20261004-nativecheckout1">
+  <script src="/storefront-release.js?v=20261004-nativecheckout1" defer></script>
+</head>
+<body data-page="order">
+  <header class="commerce-header">
+    <div class="commerce-shell commerce-header-inner">
+      <a class="commerce-brand" href="/"><img src="/assets/logo.svg?v=20261002-1005" alt=""><span>Zayt w Mouneh</span></a>
+      <div class="commerce-header-actions">
+        <a href="/shop.html">Shop</a>
+        <div class="commerce-lang" aria-label="Language"><button type="button" data-commerce-lang="en">EN</button><button type="button" data-commerce-lang="ar">عربي</button></div>
+        <a class="is-primary" href="/account#orders">My Account</a>
+      </div>
+    </div>
+  </header>
+  <main class="commerce-page">
+    <div class="order-shell">
+      <div id="orderLoading" class="commerce-card order-loading">Loading order…</div>
+      <div id="orderContent" hidden>
+        <section class="order-confirm-hero"><div class="order-confirm-mark">🌿</div><p class="commerce-eyebrow" id="orderEyebrow">Order received</p><h1 id="orderHeading">Thank you — your order is in.</h1><p id="orderIntro">We’ll keep this page updated as your order moves forward.</p><span class="order-number" id="orderNumber"></span></section>
+        <section class="commerce-card">
+          <div class="order-status-banner"><div><small id="statusLabel">Current status</small><strong id="statusTitle">Order received</strong></div><span id="statusUpdated">Updated now</span></div>
+          <div id="orderTimeline" class="order-timeline"></div>
+        </section>
+        <div class="order-detail-grid" style="margin-top:15px">
+          <section class="commerce-card"><div class="commerce-card-head"><div><h2 id="itemsTitle">Order</h2><p id="itemsMeta"></p></div></div><div id="orderItems" class="order-detail-list"></div></section>
+          <section class="commerce-card"><div class="commerce-card-head"><div><h2 id="deliveryTitle">Delivery</h2><p id="deliveryArea"></p></div></div><div id="deliveryAddress"></div><p id="orderNote" class="checkout-help"></p></section>
+        </div>
+        <div class="order-detail-grid" style="margin-top:15px">
+          <section class="commerce-card"><div class="commerce-card-head"><div><h2 id="paymentTitle">Payment & total</h2></div></div><div class="summary-totals"><div class="summary-line"><span id="payMethodLabel">Payment</span><strong id="payMethod"></strong></div><div class="summary-line"><span id="subLabel">Subtotal</span><strong id="orderSubtotal"></strong></div><div class="summary-line" id="orderRewardRow"><span id="rewardLabel">Reward</span><strong id="orderReward"></strong></div><div class="summary-line"><span id="delLabel">Delivery</span><strong id="orderDeliveryFee"></strong></div><div class="summary-line is-total"><span id="totalLabel">Total</span><strong id="orderTotal"></strong></div></div></section>
+          <section class="commerce-card"><div class="commerce-card-head"><div><h2 id="rewardsTitle">Mouneh Points</h2><p id="rewardsCopy"></p></div></div><strong id="orderPoints" style="color:#174c2a;font-size:1.2rem"></strong></section>
+        </div>
+        <section class="commerce-card" style="margin-top:15px">
+          <div class="commerce-card-head"><div><h2 id="actionsTitle">What next?</h2><p id="actionsCopy">You can keep shopping, track this order here, or contact us if you need help.</p></div></div>
+          <div class="order-actions">
+            <a class="is-primary" href="/account#orders" id="viewOrders">View my orders</a>
+            <a href="/shop.html" id="continueShopping">Continue shopping</a>
+            <button type="button" id="reorderButton" hidden>Order again</button>
+            <button type="button" class="is-danger" id="cancelOrderButton" hidden>Cancel order</button>
+            <a id="orderSupport" href="#" target="_blank" rel="noopener">Need help? WhatsApp us</a>
+          </div>
+          <p id="orderActionStatus" class="checkout-status" role="status"></p>
+        </section>
+      </div>
+      <section id="orderError" class="commerce-card checkout-empty" hidden><span>🌿</span><h2>We couldn’t open this order.</h2><p>For privacy, orders are only visible to the signed-in account that owns them or to the browser that placed a guest order.</p><a href="/account?auth=signin">Sign in</a></section>
+    </div>
+  </main>
+  <script src="/admin-config.js?v=20261004-nativecheckout1"></script>
+  <script src="/products-data.js?v=20261004-nativecheckout1"></script>
+  <script src="/order.js?v=20261004-nativecheckout1"></script>
+</body>
+</html>

@@ -843,6 +843,7 @@
     installPrompt:null, productImport:null,
     contentDirty:false,
     session:null, sessionRefreshTimer:null,
+    orderChannel:null, orderSyncTimer:null, orderSyncBusy:false,
     lang:readAdminLanguage()
   };
 
@@ -971,6 +972,8 @@
       clearTimeout(state.sessionRefreshTimer);
       state.sessionRefreshTimer=null;
     }
+    if(state.orderSyncTimer){clearInterval(state.orderSyncTimer);state.orderSyncTimer=null;}
+    if(state.orderChannel&&state.client){try{state.client.removeChannel(state.orderChannel)}catch{} state.orderChannel=null;}
     state.session=null;
   }
 
@@ -1107,6 +1110,30 @@
     if(!restored)showOnly("loginScreen");
   }
 
+  async function refreshOrdersLive(){
+    if(state.orderSyncBusy||!state.client||!state.user||document.hidden)return;
+    state.orderSyncBusy=true;
+    const selected=state.selectedOrderReference;
+    try{
+      state.orders=await loadAllOrders();
+      renderOrders();renderCustomers();renderOverview();renderAnalytics();
+      if(selected&&$("orderModal")&&!$("orderModal").hidden)openOrderDetails(selected);
+      localizeDom($("adminApp"));
+    }catch(err){
+      console.warn("Live order refresh failed:",err);
+    }finally{state.orderSyncBusy=false;}
+  }
+  function startOrderLiveSync(){
+    if(state.orderChannel){try{state.client.removeChannel(state.orderChannel)}catch{} state.orderChannel=null;}
+    if(state.orderSyncTimer){clearInterval(state.orderSyncTimer);state.orderSyncTimer=null;}
+    try{
+      state.orderChannel=state.client.channel("zwm-owner-orders")
+        .on("postgres_changes",{event:"*",schema:"public",table:cfg.tables.orders||"orders"},()=>refreshOrdersLive())
+        .subscribe();
+    }catch(err){console.warn("Order realtime unavailable:",err);}
+    state.orderSyncTimer=setInterval(()=>refreshOrdersLive(),30000);
+  }
+
   async function enterAs(user) {
     state.user = user;
     const { data, error } = await state.client
@@ -1130,6 +1157,7 @@
     $("settingsEmail").textContent = user.email || "—";
     showOnly("adminApp");
     await refreshAll();
+    startOrderLiveSync();
     await ensureDailyCloudBackup();
   }
 
@@ -1580,8 +1608,30 @@
     $("orderTableBody").innerHTML=list.map(orderRowHtml).join("")||'<tr><td colspan="7"><p class="empty-state">No orders match these filters.</p></td></tr>';
     $("orderCardsMobile").innerHTML=list.map(orderCardHtml).join("")||'<p class="empty-state">No orders match these filters.</p>';
   }
+  const ORDER_NEXT_STATUS=Object.freeze({
+    new:["confirmed","cancelled"],
+    confirmed:["preparing","cancelled"],
+    preparing:["out_for_delivery","cancelled"],
+    out_for_delivery:["delivered","cancelled"],
+    delivered:["cancelled"],
+    cancelled:[]
+  });
   function orderStatusSelect(order,extraClass="") {
-    return `<select class="order-status-select status-${esc(order.status)} ${extraClass}" data-order-status="${esc(order.reference)}" aria-label="Status for ${esc(order.reference)}">${Object.entries(ORDER_STATUS_LABELS).map(([value,label])=>`<option value="${value}" ${order.status===value?"selected":""}>${label}</option>`).join("")}</select>`;
+    const allowed=new Set([order.status,...(ORDER_NEXT_STATUS[order.status]||[])]);
+    return `<select class="order-status-select status-${esc(order.status)} ${extraClass}" data-order-status="${esc(order.reference)}" aria-label="Status for ${esc(order.reference)}">${Object.entries(ORDER_STATUS_LABELS).filter(([value])=>allowed.has(value)).map(([value,label])=>`<option value="${value}" ${order.status===value?"selected":""}>${label}</option>`).join("")}</select>`;
+  }
+  function orderSourceLabel(order){
+    const source=order.created_source||order.extra?.source||"other";
+    if(source==="website"||source==="native_checkout")return "Website";
+    if(source==="admin"||source==="manual")return "Owner";
+    if(source==="whatsapp_manual"||source==="cart")return "WhatsApp legacy";
+    if(source==="phone_manual")return "Phone";
+    return "Other";
+  }
+  function orderQuickActionHtml(order){
+    const next=(ORDER_NEXT_STATUS[order.status]||[]).find(s=>s!=="cancelled");
+    if(!next)return "";
+    return `<button type="button" data-order-quick-status="${esc(next)}" data-order-ref="${esc(order.reference)}">${esc(ORDER_STATUS_LABELS[next])}</button>`;
   }
 
   function orderRowHtml(order) {
@@ -1589,7 +1639,7 @@
     const customer=order.kind==="gift"?(extra.recipient||order.customer_name||"Gift order"):(order.customer_name||"Customer");
     const kindLabel=order.kind==="gift"?"Gift":"Pantry";
     return `<tr>
-      <td><div class="order-code-cell"><b>${esc(order.reference)}</b><small>${kindLabel} · WhatsApp code</small></div></td>
+      <td><div class="order-code-cell"><b>${esc(order.reference)}</b><small>${kindLabel} · ${esc(orderSourceLabel(order))}</small></div></td>
       <td><div class="order-customer-cell"><b>${esc(customer)}</b><small>${esc(order.area||"Area not supplied")}</small></div></td>
       <td><div class="order-items-cell"><b>${esc(orderItemSummary(order))}</b><small>${Array.isArray(order.items)?order.items.reduce((n,i)=>n+(Number(i.qty)||0),0):0} total items</small></div></td>
       <td><b>${money(order.total)}</b></td>
@@ -1603,20 +1653,17 @@
     const extra=order.extra||{};
     const customer=order.kind==="gift"?(extra.recipient||order.customer_name||"Gift order"):(order.customer_name||"Customer");
     return `<article class="order-mobile-card">
-      <div class="order-mobile-head"><div><b>${esc(order.reference)}</b><small>${order.kind==="gift"?"Gift":"Pantry order"} · ${esc(when(order.submitted_at))}</small></div><strong>${money(order.total)}</strong></div>
+      <div class="order-mobile-head"><div><b>${esc(order.reference)}</b><small>${order.kind==="gift"?"Gift":"Pantry order"} · ${esc(orderSourceLabel(order))} · ${esc(when(order.submitted_at))}</small></div><strong>${money(order.total)}</strong></div>
       <p><b>${esc(customer)}</b> · ${esc(order.area||"Area not supplied")}</p>
       <p>${esc(orderItemSummary(order))}</p>
       ${orderStatusSelect(order)}
-      <div class="order-card-quick-actions">
-        <button type="button" data-order-quick-status="preparing" data-order-ref="${esc(order.reference)}">Preparing</button>
-        <button type="button" data-order-quick-status="out_for_delivery" data-order-ref="${esc(order.reference)}">On the way</button>
-        <button type="button" data-order-quick-status="delivered" data-order-ref="${esc(order.reference)}">Delivered</button>
-      </div>
+      <div class="order-card-quick-actions">${orderQuickActionHtml(order)}</div>
       <button class="button-secondary order-details-button" type="button" data-view-order="${esc(order.reference)}">View full order & history</button>
     </article>`;
   }
 
   function customerKey(order){
+    if(order.customer_id)return "uid:"+order.customer_id;
     const phone=safeText(order.customer_phone).replace(/\D/g,"");
     if(phone)return "phone:"+phone;
     const name=safeText(order.customer_name||order.extra?.recipient).trim().toLowerCase();
@@ -1701,7 +1748,14 @@
     $("orderDetailPhone").textContent=order.customer_phone||"No phone saved";
     $("orderDetailKind").textContent=order.kind==="gift"?"Gift order":"Pantry order";
     $("orderDetailLanguage").textContent=order.language==="ar"?"Arabic order":"English order";
+    if($("orderDetailSource"))$("orderDetailSource").textContent=orderSourceLabel(order);
     $("orderDetailTotal").textContent=money(order.total);
+    if($("orderDetailBreakdown")){
+      const parts=[`Products ${money(order.subtotal ?? extra.products_subtotal ?? order.total)}`];
+      if(Number(order.reward_discount||extra.mouneh_discount||0)>0)parts.push(`Reward -${money(order.reward_discount||extra.mouneh_discount)}`);
+      parts.push(Number(order.delivery_fee||extra.delivery_fee||0)>0?`Delivery ${money(order.delivery_fee||extra.delivery_fee)}`:"Delivery free");
+      $("orderDetailBreakdown").textContent=parts.join(" · ");
+    }
     $("orderDetailStatus").innerHTML=orderStatusSelect(order,"order-detail-status-select");
     $("orderDetailItemCount").textContent=`${items.reduce((n,i)=>n+(Number(i.qty)||0),0)} item${items.reduce((n,i)=>n+(Number(i.qty)||0),0)===1?"":"s"}`;
     $("orderDetailItems").innerHTML=items.map((item,i)=>`
@@ -1720,8 +1774,8 @@
     $("orderGiftDetails").hidden=order.kind!=="gift";
     if(order.kind==="gift"){
       const fields=[
-        ["Recipient",extra.recipient],["Occasion",extra.occasion],["Packing",extra.packing],
-        ["Theme",extra.theme],["Card language",extra.card_language],
+        ["Recipient",extra.recipient],["Recipient phone",extra.recipient_phone],["Occasion",extra.occasion],["Packing",extra.packing],
+        ["Theme",extra.theme],["Card language",extra.card_language],["Gift message",extra.gift_message],
         ["Hide prices",extra.hide_prices===true?"Yes":extra.hide_prices===false?"No":""]
       ].filter(([,v])=>v!==undefined&&v!==null&&v!=="");
       $("orderDetailGift").innerHTML=fields.map(([k,v])=>`<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("")||'<p class="empty-state">No extra gift details stored.</p>';
@@ -1808,6 +1862,12 @@
     if(!ORDER_STATUS_LABELS[status])return;
     const order=state.orders.find(o=>o.reference===reference);
     if(!order||order.status===status)return;
+    if(!(ORDER_NEXT_STATUS[order.status]||[]).includes(status)){
+      toast("That status change is not allowed. Move the order through the next delivery step.","error");
+      renderOrders();
+      if(state.selectedOrderReference===reference)openOrderDetails(reference);
+      return;
+    }
     if(status==="delivered"){
       const confirmed=window.confirm(
         "Confirm this order was actually delivered?\n\n"+
@@ -1820,14 +1880,7 @@
         return;
       }
     }
-    const now=new Date().toISOString();
-    const history=Array.isArray(order.status_history)?clone(order.status_history):[];
-    history.push({status,previous:order.status,at:now,source:"owner"});
-    const patch={status,updated_at:now,status_history:history};
-    if(status==="confirmed")patch.confirmed_at=now;
-    if(status==="out_for_delivery")patch.out_for_delivery_at=now;
-    if(status==="delivered")patch.delivered_at=now;
-    if(status==="cancelled")patch.cancelled_at=now;
+    const patch={status};
     const {error}=await state.client.from(cfg.tables.orders||"orders").update(patch).eq("reference",reference);
     if(error){toast(error.message||"Could not update order.","error");await refreshAll();return;}
     await logActivity("update_delivery_status","order",reference,{from:order.status,status});
@@ -2103,6 +2156,8 @@
     $("promoStartsAt").value = promo.startsAt ? new Date(promo.startsAt).toISOString().slice(0,16) : "";
     $("promoEndsAt").value = promo.endsAt ? new Date(promo.endsAt).toISOString().slice(0,16) : "";
     const delivery=state.settings.get("delivery")||{};
+    if($("deliveryEnabled"))$("deliveryEnabled").value=delivery.enabled===false?"0":"1";
+    if($("deliveryEligibilityBasis"))$("deliveryEligibilityBasis").value=delivery.eligibilityBasis==="after_discount"?"after_discount":"before_discount";
     $("deliveryFee").value=Number.isFinite(Number(delivery.fee))?delivery.fee:"";
     $("deliveryFreeAbove").value=Number.isFinite(Number(delivery.freeAbove))?delivery.freeAbove:"";
     $("deliveryMinimum").value=Number.isFinite(Number(delivery.minimum))?delivery.minimum:"";
@@ -2131,10 +2186,14 @@
   }
 
   function deliverySettingsFromForm(){
+    const existing=state.settings.get("delivery")||{};
     return {
+      enabled:$("deliveryEnabled")?$("deliveryEnabled").value!=="0":existing.enabled!==false,
       fee:Math.max(0,Number($("deliveryFee").value)||0),
+      freeEnabled:true,
       freeAbove:Math.max(0,Number($("deliveryFreeAbove").value)||0),
       minimum:Math.max(0,Number($("deliveryMinimum").value)||0),
+      eligibilityBasis:$("deliveryEligibilityBasis")?.value==="after_discount"?"after_discount":"before_discount",
       eta:$("deliveryEta").value.trim(),
       zones:collectDeliveryZones()
     };

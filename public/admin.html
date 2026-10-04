@@ -389,6 +389,8 @@
             <article class="panel content-panel content-panel-wide">
               <div class="panel-head"><div><p>Delivery defaults</p><h3>Keep delivery rules in one place</h3></div></div>
               <div class="four-col-fields">
+                <label>Delivery status<select id="deliveryEnabled"><option value="1">Enabled</option><option value="0">Paused</option></select></label>
+                <label>Free-delivery threshold basis<select id="deliveryEligibilityBasis"><option value="before_discount">Before reward discount</option><option value="after_discount">After reward discount</option></select></label>
                 <label>Default fee (USD)<input id="deliveryFee" type="number" min="0" step="0.01" /></label>
                 <label>Free delivery above (USD)<input id="deliveryFreeAbove" type="number" min="0" step="0.01" /></label>
                 <label>Minimum order (USD)<input id="deliveryMinimum" type="number" min="0" step="0.01" /></label>
@@ -734,7 +736,7 @@
       <div class="order-detail-content">
         <div class="order-detail-hero">
           <div>
-            <span class="order-detail-label">WhatsApp order code</span>
+            <span class="order-detail-label">Order code</span>
             <strong id="orderDetailCode">—</strong>
             <small id="orderDetailSent">—</small>
           </div>
@@ -743,8 +745,8 @@
 
         <div class="order-detail-grid">
           <article class="order-detail-card"><span>Customer / recipient</span><strong id="orderDetailCustomer">—</strong><small id="orderDetailArea">—</small><small id="orderDetailPhone">—</small></article>
-          <article class="order-detail-card"><span>Order type</span><strong id="orderDetailKind">—</strong><small id="orderDetailLanguage">—</small></article>
-          <article class="order-detail-card"><span>Total</span><strong id="orderDetailTotal">—</strong><small>USD</small></article>
+          <article class="order-detail-card"><span>Order type</span><strong id="orderDetailKind">—</strong><small id="orderDetailLanguage">—</small><small id="orderDetailSource">—</small></article>
+          <article class="order-detail-card"><span>Total</span><strong id="orderDetailTotal">—</strong><small id="orderDetailBreakdown">USD</small></article>
           <article class="order-detail-card"><span>Current status</span><div id="orderDetailStatus"></div></article>
         </div>
 
@@ -820,8 +822,8 @@
   <script src="products-data.js?v=20261004-cachefix2"></script>
   <script src="product-photos.js?v=20261004-cachefix2"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" onerror="this.onerror=null;this.src='https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js'"></script>
-  <script src="admin.js?v=20261004-referralsec1"></script>
-  <script src="admin-rewards.js?v=20261004-ladder1"></script>
+  <script src="admin.js?v=20261004-nativecheckout1"></script>
+  <script src="admin-rewards.js?v=20261004-nativecheckout1"></script>
   <!-- mobilebottom-fallback -->
   <script>
   (function(){

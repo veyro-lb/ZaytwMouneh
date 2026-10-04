@@ -5,7 +5,7 @@
   const CLAIMS_KEY="zwm:mouneh:claims:v1";
   const WALLET_KEY="zwm:mouneh:selected-wallet:v1";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-rewards6";
+  const VERSION="20261004-rewards7";
   const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null};
 
   const $=(id)=>document.getElementById(id);
@@ -261,8 +261,8 @@
 
   function googleButton(){
     const disabled=state.googleEnabled===false;
-    return '<button class="mr-google" type="button" data-mr-google '+(disabled?"disabled":"")+'><span class="mr-google-g">G</span><strong>'+tr("Continue with Google","المتابعة عبر Google")+'</strong></button>'+
-      (disabled?'<small class="mr-provider-note">'+tr("Google sign-in still needs provider activation.","تسجيل Google يحتاج إلى تفعيل المزود.")+'</small>':"");
+    return '<button class="mr-google '+(disabled?"is-disabled":"")+'" type="button" data-mr-google '+(disabled?'disabled aria-disabled="true"':"")+'><span class="mr-google-g">G</span><strong>'+tr("Continue with Google","المتابعة عبر Google")+'</strong></button>'+
+      (disabled?'<small class="mr-provider-note">'+tr("Google sign-in coming soon.","تسجيل الدخول عبر Google قريباً.")+'</small>':"");
   }
 
   function authView(){
@@ -273,7 +273,7 @@
       '<p>'+(signup?tr("One account for Mouneh Points, your wallet, rewards and future orders.","حساب واحد لنقاط المونة والمحفظة والمكافآت والطلبات القادمة."):tr("Sign in to open your Mouneh Points Wallet and rewards.","سجّل الدخول لفتح محفظة نقاط المونة ومكافآتك."))+'</p>'+
       googleButton()+
       '<div class="mr-or"><span></span><b>'+tr("or","أو")+'</b><span></span></div>'+
-      '<form id="mrAuthForm">'+
+      '<form id="mrAuthForm" class="mr-auth-form '+(signup?"is-signup":"is-signin")+'">'+
       (signup?'<label>'+tr("Full name","الاسم الكامل")+'<input id="mrSignupName" name="name" autocomplete="name" maxlength="120" required></label>':"")+
       '<label>'+tr("Account email","بريد الحساب")+'<input id="mrEmail" type="email" autocomplete="email" required></label>'+
       (signup?'<label>'+tr("Phone / WhatsApp number","رقم الهاتف / واتساب")+'<input id="mrSignupPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="40" required></label>':"")+

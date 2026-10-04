@@ -80,6 +80,11 @@ function paymentLabel(method){
   if(method==="omt")return "OMT";
   return method.replace(/_/g," ").replace(/\b\w/g,function(c){return c.toUpperCase()});
 }
+function paymentStatusLabel(status){
+  var en={pending:"Payment pending",paid:"Payment received",failed:"Payment failed",refunded:"Refunded",partially_refunded:"Partially refunded",not_required:"No payment required"};
+  var ar={pending:"الدفع معلّق",paid:"تم استلام الدفع",failed:"فشل الدفع",refunded:"تم رد المبلغ",partially_refunded:"تم رد جزء من المبلغ",not_required:"لا يتطلب دفعاً"};
+  return (isArabic()?ar:en)[status||"pending"]||status||"";
+}
 
 function setLang(next){
   state.lang=next==="ar"?"ar":"en";
@@ -177,8 +182,11 @@ function render(){
   $("orderNote").hidden=!o.notes;
 
   $("paymentTitle").textContent=isArabic()?"الدفع والمجموع":"Payment & total";
-  $("payMethodLabel").textContent=isArabic()?"الدفع":"Payment";
+  $("payMethodLabel").textContent=isArabic()?"طريقة الدفع":"Payment method";
   $("payMethod").textContent=paymentLabel(o.payment_method);
+  $("payStatusLabel").textContent=isArabic()?"حالة الدفع":"Payment status";
+  $("payStatus").textContent=paymentStatusLabel(o.payment_status);
+  $("payStatus").className="order-payment-status payment-"+String(o.payment_status||"pending");
   $("subLabel").textContent=isArabic()?"المجموع الفرعي":"Subtotal";
   $("rewardLabel").textContent=isArabic()?"المكافأة":"Reward";
   $("delLabel").textContent=isArabic()?"التوصيل":"Delivery";
@@ -190,14 +198,23 @@ function render(){
   $("orderTotal").textContent=money(o.total);
 
   $("rewardsTitle").textContent=isArabic()?"نقاط المونة":"Mouneh Points";
-  $("rewardsCopy").textContent=o.status==="delivered"
-    ?(isArabic()?"تم تثبيت نقاط هذا الطلب بعد التسليم.":"Points from this order are finalized after delivery.")
-    :(o.status==="cancelled"
-      ?(isArabic()?"الطلب الملغي لا يكسب نقاطاً.":"Cancelled orders do not earn points.")
-      :(isArabic()?"تبقى النقاط معلّقة حتى تأكيد التسليم.":"Points stay pending until delivery is confirmed."));
-  $("orderPoints").textContent=o.status==="delivered"
+  var rewardsState=o.rewards_state||(
+    o.status==="cancelled"?"none":
+    (Number(o.points_awarded||0)>0?"earned":
+    (o.status==="delivered"&&o.payment_status!=="paid"?"waiting_payment":
+    (o.status!=="delivered"&&o.payment_status==="paid"?"waiting_delivery":"pending")))
+  );
+  var rewardCopy={
+    earned:isArabic()?"تم تأكيد التسليم واستلام الدفع، وتمت إضافة النقاط.":"Delivery and payment are both confirmed. These points are now earned.",
+    waiting_payment:isArabic()?"تم التسليم، لكن النقاط تنتظر تأكيد استلام الدفع من الإدارة.":"Delivered, but points are waiting for payment to be confirmed received.",
+    waiting_delivery:isArabic()?"تم استلام الدفع. ستُضاف النقاط بعد تأكيد التسليم.":"Payment received. Points will be added after delivery is confirmed.",
+    pending:isArabic()?"تُضاف النقاط فقط بعد تأكيد التسليم واستلام الدفع.":"Points are added only after both delivery and payment are confirmed.",
+    none:isArabic()?"هذا الطلب لا يكسب نقاطاً.":"This order does not earn points."
+  };
+  $("rewardsCopy").textContent=rewardCopy[rewardsState]||rewardCopy.pending;
+  $("orderPoints").textContent=rewardsState==="earned"
     ?("+"+Number(o.points_awarded||0)+" 🌿")
-    :(o.status==="cancelled"
+    :(rewardsState==="none"
       ?"0 🌿"
       :(Number(o.pending_points||0)>0?"~"+Number(o.pending_points)+" 🌿":(isArabic()?"نقاط معلّقة 🌿":"Points pending 🌿")));
 

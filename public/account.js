@@ -46,7 +46,6 @@
       return '<div class="account-auth-layout"><section class="account-card account-auth-card account-verify-card"><div class="account-auth-mark">✉</div><p class="account-eyebrow">'+tr("My Account","حسابي")+'</p><h1>'+tr("Check your email","تحقق من بريدك")+'</h1><p>'+tr("We sent a verification link to ","أرسلنا رابط تأكيد إلى ")+'<strong>'+email+'</strong>. '+tr("Open it to verify your email, then return here. Your dashboard will open automatically after sign-in.","افتحه لتأكيد بريدك ثم عد إلى هنا. ستفتح لوحة حسابك تلقائياً بعد تسجيل الدخول.")+'</p><div class="account-actions"><button type="button" class="is-primary" data-mr-resend>'+tr("Resend verification email","إعادة إرسال رسالة التأكيد")+'</button><button type="button" data-account-auth="signin">'+tr("Back to sign in","العودة لتسجيل الدخول")+'</button></div><p id="mrVerifyStatus" class="account-status"></p></section>'+guestBenefits()+'</div>';
     }
     const signup=guestAuthMode==="signup";
-    api()?.auth?.setMode?.(signup?"signup":"signin");
     const googleDisabled=s.googleEnabled===false;
     return '<div class="account-auth-layout">'+
       '<section class="account-card account-auth-card"><p class="account-eyebrow">'+tr("My Zayt w Mouneh","حساب زيت ومونة")+'</p><div class="account-auth-tabs" role="tablist"><button type="button" data-account-auth="signin" class="'+(!signup?"is-active":"")+'">'+tr("Sign in","تسجيل الدخول")+'</button><button type="button" data-account-auth="signup" class="'+(signup?"is-active":"")+'">'+tr("Create account","إنشاء حساب")+'</button></div>'+
@@ -148,13 +147,15 @@
   }
   document.addEventListener("click",async e=>{
     const tab=e.target.closest("[data-account-tab]"); if(tab){active=tab.dataset.accountTab;history.replaceState({},document.title,"#"+active);render(true);return}
-    const auth=e.target.closest("[data-account-auth]"); if(auth){guestAuthMode=auth.dataset.accountAuth==="signup"?"signup":"signin";api()?.auth?.setMode?.(guestAuthMode);try{history.replaceState({},document.title,location.pathname+(location.search||"")+"#"+guestAuthMode)}catch{}render(true);return}
+    const auth=e.target.closest("[data-account-auth]"); if(auth){guestAuthMode=auth.dataset.accountAuth==="signup"?"signup":"signin";if(state().authMode==="verify")api()?.auth?.setMode?.(guestAuthMode);try{history.replaceState({},document.title,location.pathname+(location.search||"")+"#"+guestAuthMode)}catch{}render(true);return}
     if(e.target.closest("[data-open-points]")){api()?.open?.();return}
     const copy=e.target.closest("[data-copy-ref]"); if(copy){try{await navigator.clipboard.writeText(copy.dataset.copyRef);copy.textContent=tr("Copied","تم النسخ")}catch{}return}
     const signout=e.target.closest("[data-account-signout]"); if(signout){signout.disabled=true;try{await api()?.account?.signOut?.();active="overview";render(true)}finally{signout.disabled=false}return}
     const lang=e.target.closest("[data-lang]"); if(lang)setLang(lang.dataset.lang);
     const toggle=e.target.closest("#navToggle"); if(toggle){const links=$("#navLinks"),open=toggle.getAttribute("aria-expanded")==="true";toggle.setAttribute("aria-expanded",String(!open));links?.classList.toggle("is-open",!open);document.body.classList.toggle("nav-open",!open)}
   });
+  // account-auth-mode-capture: keep authentication inside account.html while reusing the secure rewards auth handler.
+  document.addEventListener("submit",e=>{if(e.target.id==="mrAuthForm")api()?.auth?.setMode?.(guestAuthMode)},true);
   document.addEventListener("submit",async e=>{
     if(e.target.id==="accountProfileForm"){
       e.preventDefault();const f=e.target,status=$("#accountProfileStatus"),btn=f.querySelector('button[type="submit"]');btn.disabled=true;status.textContent=tr("Saving…","جارٍ الحفظ…");
@@ -178,7 +179,6 @@
 
   if(requestedAuthOnLoad){
     guestAuthMode=requestedAuthOnLoad==="signup"?"signup":"signin";
-    api()?.auth?.setMode?.(guestAuthMode);
     try{
       const u=new URL(location.href);u.searchParams.delete("auth");
       history.replaceState({},document.title,u.pathname+(u.search||"")+"#"+guestAuthMode);

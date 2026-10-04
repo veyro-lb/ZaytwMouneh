@@ -324,8 +324,10 @@
     await loadPublic();
     const request_id=uuid();
     const token=claimToken();
+    const allowWallet=payload.allow_wallet!==false;
     const p={...payload,request_id,claim_token:token};
-    if(state.dashboard?.member&&state.selectedWallet)p.wallet_id=state.selectedWallet;
+    delete p.allow_wallet;
+    if(allowWallet&&state.dashboard?.member&&state.selectedWallet)p.wallet_id=state.selectedWallet;
     let result;
     try{result=await rpc("submit",p);}
     catch(err){

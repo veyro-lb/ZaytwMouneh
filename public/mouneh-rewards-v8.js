@@ -44,7 +44,9 @@
   }
   async function copyText(value){\n    const text=String(value||"");\n    if(!text)return false;\n    try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);return true}}catch{}\n    try{\n      const area=document.createElement("textarea");\n      area.value=text;area.setAttribute("readonly","");area.style.position="fixed";area.style.opacity="0";area.style.pointerEvents="none";\n      document.body.appendChild(area);area.select();area.setSelectionRange(0,text.length);\n      const ok=document.execCommand("copy");area.remove();return !!ok;\n    }catch{return false}\n  }\n  function referralShareLink(code){
     const clean=normalizeReferral(code);
-    return clean?location.origin+"/?ref="+encodeURIComponent(clean):location.origin+"/";
+    return clean
+      ?location.origin+"/account?auth=signup&ref="+encodeURIComponent(clean)+"#signup"
+      :location.origin+"/account?auth=signup#signup";
   }
   const accountAuthUrl=()=>location.origin+"/account";
   const authRedirectUrl=()=>accountAuthUrl()+"?mouneh_auth=1";
@@ -464,9 +466,10 @@
     const code=String(rs.code||m.code||"");
     const joined=Number(rs.joined??state.dashboard?.referrals??0)||0;
     const qualified=Number(rs.qualified)||0;
-    const pending=Math.max(0,Number(rs.pending??(joined-qualified))||0);
+    const disqualified=Math.max(0,Number(rs.disqualified)||0);
+    const pending=Math.max(0,Number(rs.pending??(joined-qualified-disqualified))||0);
     const link=referralShareLink(code);
-    return '<section class="mr-referral"><div class="mr-referral-main"><p>'+tr("Invite a friend","ادعُ صديقاً")+'</p><h3>'+tr("Share your pantry code","شارك رمز المونة الخاص بك")+'</h3><span>'+tr("You earn 50 points after your friend’s first qualifying $25+ order is actually delivered. Your friend gets a 20-point welcome bonus.","تحصل على 50 نقطة بعد تسليم أول طلب مؤهل لصديقك بقيمة 25$ أو أكثر، ويحصل صديقك على 20 نقطة ترحيبية.")+'</span><div class="mr-referral-stats"><small>'+tr("Joined","انضموا")+'<b>'+joined+'</b></small><small>'+tr("Waiting","بانتظار التسليم")+'<b>'+pending+'</b></small><small>'+tr("Qualified","تأهلوا")+'<b>'+qualified+'</b></small></div><em>✓ '+tr("Delivery is verified by Zayt w Mouneh in the owner order system before any referral points are issued.","يتم تأكيد التسليم من زيت ومونة في نظام الطلبات الخاص بالمالك قبل إصدار أي نقاط إحالة.")+'</em></div><button type="button" data-mr-copy="'+esc(link)+'"><small>'+tr("Your code","رمزك")+'</small><strong>'+esc(code)+'</strong><em>'+tr("Copy invite link","نسخ رابط الدعوة")+'</em></button></section>';
+    return '<section class="mr-referral"><div class="mr-referral-main"><p>'+tr("Invite a friend","ادعُ صديقاً")+'</p><h3>'+tr("Share your pantry code","شارك رمز المونة الخاص بك")+'</h3><span>'+tr("You earn 50 points only when the referred friend joins before ordering and their first delivered order qualifies at $25+. Your friend gets a 20-point referral bonus.","تحصل على 50 نقطة فقط عندما ينضم الصديق المُحال قبل الطلب ويكون أول طلب مُسلّم له مؤهلاً بقيمة 25$ أو أكثر. ويحصل صديقك على 20 نقطة إحالة.")+'</span><div class="mr-referral-stats"><small>'+tr("Joined","انضموا")+'<b>'+joined+'</b></small><small>'+tr("Waiting","بانتظار التسليم")+'<b>'+pending+'</b></small><small>'+tr("Qualified","تأهلوا")+'<b>'+qualified+'</b></small>'+(disqualified?'<small>'+tr("Not eligible","غير مؤهل")+'<b>'+disqualified+'</b></small>':'')+'</div><em>✓ '+tr("Delivery is verified by Zayt w Mouneh in the owner order system before any referral points are issued.","يتم تأكيد التسليم من زيت ومونة في نظام الطلبات الخاص بالمالك قبل إصدار أي نقاط إحالة.")+'</em></div><button type="button" data-mr-copy="'+esc(link)+'"><small>'+tr("Your code","رمزك")+'</small><strong>'+esc(code)+'</strong><em>'+tr("Copy invite link","نسخ رابط الدعوة")+'</em></button></section>';
   }
 
   function walletView(){

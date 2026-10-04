@@ -407,8 +407,16 @@
       }
       return link;
     };
+    let label=bar.querySelector(".footer-legal-label");
+    if(!label){
+      label=document.createElement("strong");
+      label.className="footer-legal-label";
+      label.innerHTML='<span class="only-en">Legal & Rewards</span><span class="only-ar" lang="ar">القانون والمكافآت</span>';
+      bar.prepend(label);
+    }
     ensureLink("privacy","/privacy.html","Privacy Policy","سياسة الخصوصية");
     ensureLink("terms","/terms.html","Terms of Service","شروط الخدمة");
+    ensureLink("rewards","/terms.html#terms-rewards","Mouneh Points Rules 🌿","قواعد نقاط المونة 🌿");
     bar.removeAttribute("hidden");
     bar.style.setProperty("display","flex","important");
     bar.style.setProperty("visibility","visible","important");

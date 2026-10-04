@@ -317,6 +317,18 @@
     });
   }
 
+  function ensureLegalFooter(){
+    const footer=document.querySelector("footer.footer");
+    if(!footer||footer.querySelector("[data-footer-legal]"))return;
+    const grid=footer.querySelector(".footer-grid,.footer-inner")||footer;
+    const bar=document.createElement("div");
+    bar.className="footer-legal-bar";
+    bar.setAttribute("data-footer-legal","");
+    bar.innerHTML='<a class="footer-legal-button" href="privacy.html"><span class="only-en">Privacy Policy</span><span class="only-ar" lang="ar">سياسة الخصوصية</span></a><a class="footer-legal-button" href="terms.html"><span class="only-en">Terms of Service</span><span class="only-ar" lang="ar">شروط الاستخدام</span></a>';
+    const copyright=grid.querySelector(".copyright");
+    if(copyright)grid.insertBefore(bar,copyright);else grid.appendChild(bar);
+  }
+
   async function init(){
     try{await loadScript(CONFIG_SRC)}catch{return}
     if(!enabled())return;
@@ -328,6 +340,7 @@
       document.head.appendChild(rewardsScript);
     }
     applySettings(readSettings());
+    ensureLegalFooter();
     if(!PREVIEW_MODE)bindAnalytics();
     document.addEventListener("click",e=>{if(e.target.closest("[data-lang],#languageSwitch,.language-switch"))setTimeout(()=>applySettings(previewSettings||readSettings()),80)},{passive:true});
     refreshCms().catch(()=>{});

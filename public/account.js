@@ -67,6 +67,26 @@
     return '<div class="account-tabs" role="tablist">'+tabs.map(([id,icon,label])=>'<button type="button" data-account-tab="'+id+'" class="'+(active===id?"is-active":"")+'" role="tab" aria-selected="'+(active===id)+'" aria-current="'+(active===id?"page":"false")+'"><span class="account-tab-icon">'+icon+'</span><span>'+label+'</span></button>').join("")+'</div>';
   }
   function guestView(s){
+    if(s.session&&s.dashboard?.needsJoin){
+      const meta=s.authUser?.user_metadata||{};
+      const suggestedName=String(meta.full_name||meta.name||"").trim();
+      const email=String(s.authUser?.email||"").trim();
+      return '<div class="account-auth-layout">'+
+        '<section class="account-card account-auth-card account-complete-card">'+
+          '<div class="account-auth-mark">✓</div>'+
+          '<p class="account-eyebrow">'+tr("Google sign-in complete","تم تسجيل الدخول عبر Google")+'</p>'+
+          '<h1>'+tr("One last step.","خطوة أخيرة.")+'</h1>'+
+          '<p>'+tr("You are signed in"+(email?" as ":"")+(email?email:"")+". Add your phone number so orders, Mouneh Points and referrals stay securely linked to this account.","تم تسجيل دخولك"+(email?" بالبريد ":"")+(email?email:"")+". أضف رقم هاتفك لربط الطلبات ونقاط المونة والإحالات بهذا الحساب بشكل آمن.")+'</p>'+
+          '<form id="accountCompleteForm" class="account-auth-form" autocomplete="on">'+
+            '<label>'+tr("Full name","الاسم الكامل")+'<input id="accountCompleteName" name="name" autocomplete="name" maxlength="120" value="'+esc(suggestedName)+'" required></label>'+
+            '<label>'+tr("Phone / WhatsApp number","رقم الهاتف / واتساب")+'<input id="accountCompletePhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></label>'+
+            '<label class="account-complete-referral">'+tr("Referral code (optional)","رمز الإحالة (اختياري)")+'<input id="accountCompleteReferral" name="referral" maxlength="20" autocomplete="off" autocapitalize="characters" value="'+esc(s.pendingReferral||"")+'"></label>'+
+            '<button class="account-primary account-auth-submit" type="submit">'+tr("Finish & open my dashboard","إكمال وفتح لوحة حسابي")+'</button>'+
+            '<p id="accountCompleteStatus" class="account-status"></p>'+
+          '</form>'+
+          '<button type="button" class="account-secondary account-complete-signout" data-account-signout>'+tr("Use a different account","استخدام حساب آخر")+'</button>'+
+        '</section>'+guestBenefits()+'</div>';
+    }
     if(s.authMode==="verify"){
       const email=esc(s.pendingSignupEmail||"");
       return '<div class="account-auth-layout"><section class="account-card account-auth-card account-verify-card"><div class="account-auth-mark">✉</div><p class="account-eyebrow">'+tr("My Account","حسابي")+'</p><h1>'+tr("Check your email","تحقق من بريدك")+'</h1><p>'+tr("We sent a verification link to ","أرسلنا رابط تأكيد إلى ")+'<strong>'+email+'</strong>. '+tr("Open it to verify your email, then return here. Your dashboard will open automatically after sign-in.","افتحه لتأكيد بريدك ثم عد إلى هنا. ستفتح لوحة حسابك تلقائياً بعد تسجيل الدخول.")+'</p><div class="account-actions"><button type="button" class="is-primary" data-mr-resend>'+tr("Resend verification email","إعادة إرسال رسالة التأكيد")+'</button><button type="button" data-account-auth="signin">'+tr("Back to sign in","العودة لتسجيل الدخول")+'</button></div><p id="mrVerifyStatus" class="account-status"></p></section>'+guestBenefits()+'</div>';
@@ -169,6 +189,7 @@
     const sig=JSON.stringify([active,guestAuthMode,ar(),!!s.session,s.member?.balance,s.member?.name,s.dashboard?.orders?.length,s.dashboard?.wallet?.length,s.referralStatus?.joined,s.referralStatus?.qualified,s.authUser?.email,s.authMode,s.authNotice,s.pendingSignupEmail,s.googleEnabled,lastSyncedAt]);
     if(!force&&sig===lastRenderSig)return;lastRenderSig=sig;
     if(!api()){el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Loading your account…","جارٍ تحميل حسابك…")+'</strong></section>';return}
+    if(s.session&&!s.member&&!s.dashboard){el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Finishing sign-in…","جارٍ إكمال تسجيل الدخول…")+'</strong></section>';return}
     if(!s.session||!s.member){el.innerHTML=guestView(s);return}
     el.innerHTML=memberView(s,s.member);
   }
@@ -189,6 +210,27 @@
   // account-auth-mode-capture: keep authentication inside account.html while reusing the secure rewards auth handler.
   document.addEventListener("submit",e=>{if(e.target.id==="mrAuthForm")api()?.auth?.setMode?.(guestAuthMode)},true);
   document.addEventListener("submit",async e=>{
+    if(e.target.id==="accountCompleteForm"){
+      e.preventDefault();
+      const f=e.target,status=$("#accountCompleteStatus"),btn=f.querySelector('button[type="submit"]');
+      if(f.dataset.busy==="1")return;
+      f.dataset.busy="1";if(btn){btn.disabled=true;btn.setAttribute("aria-busy","true")}
+      if(status)status.textContent=tr("Finishing your account…","جارٍ إكمال حسابك…");
+      try{
+        const data=new FormData(f);
+        await api()?.account?.completeSetup?.(data.get("name"),data.get("phone"),data.get("referral")||"");
+        active="overview";
+        try{history.replaceState({},document.title,location.pathname+"#overview")}catch{}
+        if(status)status.textContent=tr("Ready. Opening your dashboard…","تم. جارٍ فتح لوحة حسابك…");
+        render(true);
+      }catch(err){
+        if(status)status.textContent=err?.message||String(err);
+      }finally{
+        delete f.dataset.busy;
+        if(btn&&btn.isConnected){btn.disabled=false;btn.removeAttribute("aria-busy")}
+      }
+      return;
+    }
     if(e.target.id==="accountProfileForm"){
       e.preventDefault();const f=e.target,status=$("#accountProfileStatus"),btn=f.querySelector('button[type="submit"]');btn.disabled=true;status.textContent=tr("Saving…","جارٍ الحفظ…");
       try{const data=new FormData(f);await api()?.account?.updateProfile?.({name:data.get("name"),phone:data.get("phone"),address:data.get("address"),birthday:data.get("birthday")||""});const lang=String(data.get("language")||"en");await api()?.account?.saveLanguage?.(lang);setLang(lang);status.textContent=tr("Saved.","تم الحفظ.");render(true)}catch(err){status.textContent=err.message||String(err)}finally{btn.disabled=false}return;

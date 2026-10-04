@@ -6,10 +6,21 @@
   const tr=(en,arText)=>ar()?arText:en;
   const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const money=v=>"$"+(Number(v)||0).toFixed(2);
+  const requestedAuthOnLoad=(()=>{try{return new URL(location.href).searchParams.get("auth")||""}catch{return ""}})();
+  let landingAfterAuth=!!requestedAuthOnLoad;
   let active=(location.hash||"#overview").slice(1);
   const allowed=new Set(["overview","points","orders","referrals","profile"]);
   if(!allowed.has(active))active="overview";
-  let syncing=false, lastRenderSig="";
+  let syncing=false, lastRenderSig="", lastSyncedAt=Date.now();
+
+  function syncLanguageVisibility(){
+    const showArabic=ar();
+    $(".only-en, .only-ar").forEach(el=>{
+      const hide=showArabic?el.classList.contains("only-en"):el.classList.contains("only-ar");
+      if(hide)el.style.setProperty("display","none","important");
+      else el.style.removeProperty("display");
+    });
+  }
 
   function api(){return window.ZWM_REWARDS||null}
   function state(){try{return api()?.getState?.()||{}}catch{return {}}}
@@ -17,14 +28,15 @@
     const next=lang==="ar"?"ar":"en";
     try{localStorage.setItem("zwm-lang-v2",next)}catch{}
     document.documentElement.lang=next;document.documentElement.dir=next==="ar"?"rtl":"ltr";
-    $$("[data-lang]").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===next));
+    $("[data-lang]").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===next));
+    syncLanguageVisibility();
     render(true);
   }
   function tierLabel(t){return t==="golden"?tr("Golden Pantry","المونة الذهبية"):t==="olive"?tr("Olive Circle","دائرة الزيتون"):tr("Mouneh Member","عضو المونة")}
   function statusLabel(s){return s==="delivered"?tr("Delivered","تم التسليم"):s==="cancelled"?tr("Cancelled","ملغي"):s==="confirmed"?tr("Confirmed","مؤكد"):tr("Pending","قيد الانتظار")}
   function navTabs(){
     const tabs=[["overview","⌂",tr("Overview","نظرة عامة")],["points","🌿",tr("Points & Wallet","النقاط والمحفظة")],["orders","▤",tr("Orders","الطلبات")],["referrals","↗",tr("Referrals","الإحالات")],["profile","⚙",tr("Profile & Security","الملف والأمان")]];
-    return '<div class="account-tabs" role="tablist">'+tabs.map(([id,icon,label])=>'<button type="button" data-account-tab="'+id+'" class="'+(active===id?"is-active":"")+'" role="tab" aria-selected="'+(active===id)+'"><span>'+icon+'</span>'+label+'</button>').join("")+'</div>';
+    return '<div class="account-tabs" role="tablist">'+tabs.map(([id,icon,label])=>'<button type="button" data-account-tab="'+id+'" class="'+(active===id?"is-active":"")+'" role="tab" aria-selected="'+(active===id)+'" aria-current="'+(active===id?"page":"false")+'"><span class="account-tab-icon">'+icon+'</span><span>'+label+'</span></button>').join("")+'</div>';
   }
   function guestView(s){
     return '<div class="account-guest">'+
@@ -79,12 +91,19 @@
   function memberView(s,m){
     const first=String(m.name||"").trim().split(/\s+/)[0]||tr("there","بك");
     const initial=(first||String(s.authUser?.email||"A")).charAt(0).toUpperCase();
-    return '<div class="account-layout"><aside class="account-side account-card"><div class="account-identity"><span class="account-avatar">'+esc(initial)+'</span><div><strong>'+esc(m.name||tr("My Account","حسابي"))+'</strong><small>'+esc(s.authUser?.email||"")+'</small></div></div>'+navTabs()+'<p class="account-side-note">'+tr("This page updates automatically while it is open. No manual refresh is needed for normal account and points changes.","تتحدث هذه الصفحة تلقائياً أثناء فتحها. لا حاجة إلى تحديث يدوي للتغييرات العادية في الحساب والنقاط.")+'</p></aside><div class="account-content"><header class="account-hero"><div><p class="account-eyebrow" style="color:#d8c16f">'+tr("My Zayt w Mouneh","حساب زيت ومونة")+'</p><h1>'+tr("Welcome, ","أهلاً، ")+esc(first)+'.</h1><p>'+esc(tierLabel(m.tier))+' · '+tr("Delivered-order rewards account","حساب مكافآت الطلبات المستلمة")+'</p></div><div class="account-balance"><small>'+tr("Mouneh Points","نقاط المونة")+'</small><strong>'+Number(m.balance||0).toLocaleString()+' 🌿</strong></div></header>'+overviewPanel(s,m)+pointsPanel(s,m)+ordersPanel(s)+referralsPanel(s,m)+profilePanel(s,m)+'</div></div>';
+    const syncTime=new Date(lastSyncedAt).toLocaleTimeString(ar()?"ar-LB":"en-LB",{hour:"2-digit",minute:"2-digit"});
+    return '<div class="account-layout"><aside class="account-side account-card"><div class="account-identity"><span class="account-avatar">'+esc(initial)+'</span><div><strong>'+esc(m.name||tr("My Account","حسابي"))+'</strong><small>'+esc(s.authUser?.email||"")+'</small></div></div>'+navTabs()+'<div class="account-side-note"><span class="account-sync"><i></i>'+tr("Auto-sync on","المزامنة التلقائية مفعّلة")+'</span><small>'+tr("Last checked ","آخر تحقق ")+esc(syncTime)+'</small></div></aside><div class="account-content"><header class="account-hero"><div><p class="account-eyebrow" style="color:#d8c16f">'+tr("My Zayt w Mouneh","حساب زيت ومونة")+'</p><h1>'+tr("Welcome, ","أهلاً، ")+esc(first)+'.</h1><p>'+esc(tierLabel(m.tier))+' · '+tr("Delivered-order rewards account","حساب مكافآت الطلبات المستلمة")+'</p></div><button class="account-balance" type="button" data-account-tab="points" aria-label="'+tr("Open Points & Wallet","فتح النقاط والمحفظة")+'"><small>'+tr("Mouneh Points","نقاط المونة")+'</small><strong>'+Number(m.balance||0).toLocaleString()+' 🌿</strong><em>'+tr("Open wallet","فتح المحفظة")+' →</em></button></header>'+overviewPanel(s,m)+pointsPanel(s,m)+ordersPanel(s)+referralsPanel(s,m)+profilePanel(s,m)+'</div></div>';
   }
   function render(force=false){
     const el=shell();if(!el)return;
     const s=state();
-    const sig=JSON.stringify([active,ar(),!!s.session,s.member?.balance,s.member?.name,s.dashboard?.orders?.length,s.dashboard?.wallet?.length,s.referralStatus?.joined,s.authUser?.email]);
+    if(s.session&&s.member&&landingAfterAuth){
+      active="overview";
+      landingAfterAuth=false;
+      try{history.replaceState({},document.title,location.pathname+(location.search||"")+"#overview")}catch{}
+    }
+    syncLanguageVisibility();
+    const sig=JSON.stringify([active,ar(),!!s.session,s.member?.balance,s.member?.name,s.dashboard?.orders?.length,s.dashboard?.wallet?.length,s.referralStatus?.joined,s.referralStatus?.qualified,s.authUser?.email,lastSyncedAt]);
     if(!force&&sig===lastRenderSig)return;lastRenderSig=sig;
     if(!api()){el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Loading your account…","جارٍ تحميل حسابك…")+'</strong></section>';return}
     if(!s.session||!s.member){el.innerHTML=guestView(s);return}
@@ -93,7 +112,7 @@
   async function sync(){
     if(syncing||document.visibilityState==="hidden")return;
     const a=api(),s=state(); if(!a||!s.session)return render();
-    syncing=true;try{await a.refresh?.()}catch{}finally{syncing=false;render(true)}
+    syncing=true;try{await a.refresh?.();lastSyncedAt=Date.now()}catch{}finally{syncing=false;render(true)}
   }
   document.addEventListener("click",async e=>{
     const tab=e.target.closest("[data-account-tab]"); if(tab){active=tab.dataset.accountTab;history.replaceState({},document.title,"#"+active);render(true);return}
@@ -114,15 +133,18 @@
       try{const data=new FormData(f);await api()?.account?.changePassword?.(data.get("currentPassword"),data.get("newPassword"));f.reset();status.textContent=tr("Password updated.","تم تحديث كلمة المرور.")}catch(err){status.textContent=err.message||String(err)}finally{btn.disabled=false}return;
     }
   });
-  document.addEventListener("zwm:account-updated",()=>render(true));
+  document.addEventListener("zwm:account-updated",()=>{lastSyncedAt=Date.now();render(true)});
   window.addEventListener("focus",sync);
+  window.addEventListener("online",sync);
+  window.addEventListener("pageshow",sync);
+  window.addEventListener("storage",e=>{if(!e.key||String(e.key).startsWith("zwm"))sync()});
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)sync()});
   new MutationObserver(()=>render(true)).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
-  const stored=(()=>{try{return localStorage.getItem("zwm-lang-v2")}catch{return null}})(); if(stored)setLang(stored);
+  const stored=(()=>{try{return localStorage.getItem("zwm-lang-v2")}catch{return null}})(); if(stored)setLang(stored); else syncLanguageVisibility();
   $("#accountYear") && ($("#accountYear").textContent=new Date().getFullYear());
   render(true);
 
-  const requestedAuth=(()=>{try{return new URL(location.href).searchParams.get("auth")||""}catch{return ""}})();
+  const requestedAuth=requestedAuthOnLoad;
   function openRequestedAuth(){
     if(!requestedAuth)return true;
     const a=api();
@@ -139,5 +161,5 @@
     let attempts=0;
     const authWait=setInterval(()=>{attempts+=1;if(openRequestedAuth()||attempts>80)clearInterval(authWait)},100);
   }
-  setInterval(sync,12000);
+  setInterval(sync,10000);
 })();

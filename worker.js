@@ -32,7 +32,7 @@ function productHtml(product,request){
   const imageUrl=origin+imagePath;
   const sizes=(product.variants||[]).map(v=>v.sizeEn).filter(Boolean);
   const minPrice=Math.min(...(product.variants||[]).map(v=>Number(v.price)||0));
-  const description=("Shop "+product.nameEn+(product.nameAr?" ("+product.nameAr+")":"")+" from Zayt w Mouneh. "+product.category+". "+(sizes.length?"Available in "+sizes.join(", ")+". ":"")+"Order through secure website checkout with delivery across Lebanon.").slice(0,220);
+  const description=("Shop "+product.nameEn+(product.nameAr?" ("+product.nameAr+")":"")+" from Zayt w Mouneh. "+product.category+". "+(sizes.length?"Available in "+sizes.join(", ")+". ":"")+"Order through website checkout with delivery across Lebanon.").slice(0,220);
   const offers=(product.variants||[]).map(v=>({
     "@type":"Offer",
     "sku":v.id,
@@ -71,7 +71,7 @@ function productHtml(product,request){
 <meta property="og:url" content="${esc(canonical)}">
 <meta property="og:image" content="${esc(imageUrl)}">
 <meta property="og:locale" content="en_LB">
-<meta property="og:locale:alternate" content="ar_LB">
+<meta property="og:locale:alternate" content="ar_LB">\n<meta property="og:locale:alternate" content="fr_LB">
 <script type="application/ld+json">${jsonForHtml(schema)}</script>
 <style>
 :root{font-family:Arial,"Noto Kufi Arabic",sans-serif;color:#17351f;background:#f4efe5}*{box-sizing:border-box}body{margin:0}.shell{width:min(1120px,calc(100% - 32px));margin:auto}.top{border-bottom:1px solid #d9d0bf;background:#fffdf8}.top .shell{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;font-weight:800}.brand img{width:46px;height:46px}.nav{display:flex;gap:14px;flex-wrap:wrap}.nav a{color:#285538;text-decoration:none;font-weight:700}.crumbs{padding:22px 0 8px;font-size:13px;color:#667266}.crumbs a{color:inherit}.product{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:34px;padding:28px 0 52px}.visual{background:#fff;border:1px solid #ded5c4;border-radius:24px;min-height:480px;display:grid;place-items:center;padding:28px}.visual img{max-width:100%;max-height:520px;object-fit:contain}.copy{background:#fffdf8;border:1px solid #ded5c4;border-radius:24px;padding:30px}.kicker{margin:0 0 8px;text-transform:uppercase;letter-spacing:.12em;font-size:12px;color:#62705f}.copy h1{font:700 clamp(34px,5vw,62px)/.98 Georgia,serif;margin:0 0 8px}.arabic{font-size:21px;margin:0 0 22px;color:#3a5e43}.lede{font-size:16px;line-height:1.65;color:#526153}.price{font-size:25px;font-weight:800;margin:20px 0}.table{width:100%;border-collapse:collapse;margin:18px 0 24px}.table th,.table td{padding:11px 8px;border-bottom:1px solid #e7dfd2;text-align:left}.table th{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#647064}.actions{display:flex;gap:10px;flex-wrap:wrap}.actions a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border-radius:999px;text-decoration:none;font-weight:800}.primary{background:#174d29;color:#fff}.secondary{background:#eee7da;color:#17351f}.note{margin:20px 0 0;padding:14px 16px;border-radius:16px;background:#eef4ea;font-size:13px;line-height:1.55}.foot{border-top:1px solid #d9d0bf;padding:26px 0 40px;color:#657064;font-size:13px}@media(max-width:760px){.top .shell{min-height:68px}.nav a:nth-child(2){display:none}.product{grid-template-columns:1fr;gap:18px;padding-top:18px}.visual{min-height:330px}.copy{padding:22px}.copy h1{font-size:40px}.table th,.table td{padding:10px 5px;font-size:13px}}
@@ -91,7 +91,7 @@ ${product.nameAr?'<p class="arabic" lang="ar" dir="rtl">'+esc(product.nameAr)+'<
 <p class="price">From ${esc(money(minPrice))}</p>
 <table class="table"><thead><tr><th>Size</th><th>الحجم</th><th>Price</th></tr></thead><tbody>${rows}</tbody></table>
 <div class="actions"><a class="primary" href="/shop?product=${encodeURIComponent(product.id)}#shop">Choose size & add to pantry</a><a class="secondary" href="/shop">Browse all products</a></div>
-<p class="note"><strong>Website checkout:</strong> place the order directly on Zayt w Mouneh. WhatsApp is optional for support and transactional status updates.<br><span lang="ar" dir="rtl"><strong>إتمام الطلب عبر الموقع:</strong> أرسل طلبك مباشرة من زيت ومونة، وواتساب متاح للمساعدة أو تحديثات حالة الطلب الاختيارية.</span></p>
+<p class="note"><strong>Website checkout:</strong> place the order directly on Zayt w Mouneh. WhatsApp is optional for support and transactional status updates.<br><span lang="ar" dir="rtl"><strong>إتمام الطلب عبر الموقع:</strong> أرسل طلبك مباشرة من زيت ومونة، وواتساب متاح للمساعدة أو تحديثات حالة الطلب الاختيارية.</span><br><span lang="fr"><strong>Commande sur le site :</strong> passez votre commande directement sur Zayt w Mouneh. WhatsApp reste facultatif pour l’assistance et les mises à jour de statut.</span></p>
 </article>
 </section>
 </main>

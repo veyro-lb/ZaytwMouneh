@@ -813,3 +813,219 @@
   .site-header .mr-account-nav-avatar{width:26px!important;height:26px!important;min-width:26px!important}
   .site-header .cart-button{height:44px!important;min-height:44px!important}
 }
+
+
+/* ===== account6 responsive navigation fit ===== */
+.site-header .nav-actions,
+.site-header .nav-actions a,
+.site-header .nav-actions button,
+.site-header .language-switch button{
+  -webkit-user-select:none!important;
+  user-select:none!important;
+}
+.site-header .brand{
+  min-width:0!important;
+}
+.site-header .brand-wordmark{
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+
+/* Laptop/menu mode: protect the full brand instead of letting utilities overlap it. */
+@media(min-width:1081px) and (max-width:1180px){
+  .site-header .nav{
+    width:min(100% - 28px,1380px)!important;
+    display:grid!important;
+    grid-template-columns:46px minmax(230px,1fr) auto!important;
+    column-gap:12px!important;
+    align-items:center!important;
+  }
+  .site-header .nav>.nav-toggle{
+    grid-column:1!important;
+    grid-row:1!important;
+    display:flex!important;
+    width:44px!important;
+    height:44px!important;
+    justify-self:start!important;
+  }
+  .site-header .nav>.brand{
+    grid-column:2!important;
+    grid-row:1!important;
+    justify-self:start!important;
+    margin:0!important;
+    gap:9px!important;
+    min-width:0!important;
+    max-width:100%!important;
+  }
+  .site-header .nav .brand-logo{
+    width:43px!important;
+    height:43px!important;
+    flex:0 0 43px!important;
+  }
+  .site-header .nav .brand-wordmark{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    max-width:none!important;
+    font-size:1.42rem!important;
+    white-space:nowrap!important;
+  }
+  .site-header .nav>.nav-actions{
+    grid-column:3!important;
+    grid-row:1!important;
+    justify-self:end!important;
+    gap:7px!important;
+    min-width:max-content!important;
+  }
+  .site-header .nav-search{
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    min-height:44px!important;
+    flex-basis:44px!important;
+  }
+  .site-header .language-switch{
+    height:44px!important;
+    min-height:44px!important;
+    padding:3px!important;
+  }
+  .site-header .language-switch button{
+    min-width:40px!important;
+    height:36px!important;
+    min-height:36px!important;
+    padding:0 7px!important;
+    font-size:.67rem!important;
+  }
+  .site-header #mounehRewardsButton.mouneh-points-nav{
+    min-width:58px!important;
+    width:auto!important;
+    height:44px!important;
+    min-height:44px!important;
+    padding:0 10px!important;
+    gap:5px!important;
+  }
+  .site-header #mounehRewardsButton #mounehPointsBadge{
+    font-size:12px!important;
+  }
+  .site-header .mouneh-account-nav{
+    min-width:94px!important;
+    width:auto!important;
+    height:44px!important;
+    min-height:44px!important;
+    padding:0 11px!important;
+    gap:7px!important;
+  }
+  .site-header .mr-account-nav-avatar{
+    width:25px!important;
+    height:25px!important;
+    min-width:25px!important;
+  }
+  .site-header .mr-account-nav-copy{
+    display:inline!important;
+    max-width:62px!important;
+    font-size:11px!important;
+  }
+  .site-header .cart-button{
+    height:44px!important;
+    min-height:44px!important;
+    padding:0 9px 0 12px!important;
+    gap:8px!important;
+    font-size:.82rem!important;
+  }
+}
+
+/* Tablet: keep controls useful, but prioritize the logo and prevent overlap. */
+@media(max-width:1080px){
+  .site-header .nav{
+    width:min(100% - 24px,1380px)!important;
+    grid-template-columns:44px minmax(54px,1fr) auto!important;
+    column-gap:8px!important;
+    align-items:center!important;
+  }
+  .site-header .nav>.nav-toggle{
+    grid-column:1!important;
+    display:flex!important;
+    width:42px!important;
+    height:42px!important;
+    justify-self:start!important;
+  }
+  .site-header .nav>.brand{
+    grid-column:2!important;
+    justify-self:start!important;
+    gap:7px!important;
+    min-width:0!important;
+  }
+  .site-header .nav .brand-logo{
+    width:40px!important;
+    height:40px!important;
+    flex:0 0 40px!important;
+  }
+  .site-header .nav .brand-wordmark{
+    display:none!important;
+  }
+  .site-header .nav>.nav-actions{
+    grid-column:3!important;
+    justify-self:end!important;
+    gap:5px!important;
+    min-width:max-content!important;
+  }
+  .site-header .nav-search{display:none!important}
+  .site-header .language-switch{
+    height:42px!important;
+    min-height:42px!important;
+    padding:3px!important;
+  }
+  .site-header .language-switch button{
+    min-width:34px!important;
+    height:34px!important;
+    min-height:34px!important;
+    padding:0 5px!important;
+    font-size:.61rem!important;
+  }
+  .site-header #mounehRewardsButton.mouneh-points-nav{
+    min-width:54px!important;
+    height:42px!important;
+    min-height:42px!important;
+    padding:0 8px!important;
+    gap:4px!important;
+  }
+  .site-header .mouneh-account-nav{
+    min-width:42px!important;
+    width:42px!important;
+    height:42px!important;
+    min-height:42px!important;
+    padding:0!important;
+  }
+  .site-header .mouneh-account-nav .mr-account-nav-copy{display:none!important}
+  .site-header .mr-account-nav-avatar{
+    width:25px!important;
+    height:25px!important;
+    min-width:25px!important;
+  }
+  .site-header .cart-button{
+    width:42px!important;
+    min-width:42px!important;
+    height:42px!important;
+    min-height:42px!important;
+    padding:0!important;
+    justify-content:center!important;
+  }
+  .site-header .cart-button .cart-label{display:none!important}
+}
+
+/* Phones: no disappearing controls, no squeezed brand. */
+@media(max-width:760px){
+  .site-header .nav{
+    width:min(100% - 16px,1380px)!important;
+    grid-template-columns:40px minmax(38px,1fr) auto!important;
+    column-gap:5px!important;
+  }
+  .site-header .nav>.nav-toggle{width:38px!important;height:38px!important}
+  .site-header .nav .brand-logo{width:36px!important;height:36px!important;flex-basis:36px!important}
+  .site-header .nav>.nav-actions{gap:4px!important}
+  .site-header .language-switch{height:38px!important;min-height:38px!important;padding:2px!important}
+  .site-header .language-switch button{min-width:29px!important;height:32px!important;min-height:32px!important;padding:0 4px!important;font-size:.56rem!important}
+  .site-header #mounehRewardsButton.mouneh-points-nav{min-width:48px!important;height:38px!important;min-height:38px!important;padding:0 7px!important}
+  .site-header .mouneh-account-nav{width:38px!important;min-width:38px!important;height:38px!important;min-height:38px!important}
+  .site-header .cart-button{width:38px!important;min-width:38px!important;height:38px!important;min-height:38px!important}
+}

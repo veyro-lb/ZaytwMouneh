@@ -443,7 +443,9 @@
       if(actions&&document.contains(actions)){
         const ordered=[persistentChromeRefs.search,persistentChromeRefs.instagram,persistentChromeRefs.language,persistentChromeRefs.points,persistentChromeRefs.account,persistentChromeRefs.cart].filter(Boolean);
         ordered.forEach(el=>{if(!document.contains(el))actions.appendChild(el)});
-        ordered.forEach(el=>actions.appendChild(el));
+        const currentKnown=Array.from(actions.children).filter(el=>ordered.includes(el));
+        const orderMatches=currentKnown.length===ordered.length&&ordered.every((el,index)=>currentKnown[index]===el);
+        if(!orderMatches)ordered.forEach(el=>actions.appendChild(el));
       }
     }
   }
@@ -583,6 +585,14 @@
       account.style.setProperty("opacity","1","important");
       account.style.setProperty("pointer-events","auto","important");
       account.style.setProperty("flex-shrink","0","important");
+      const guestAvatar=account.querySelector(".mr-account-nav-avatar.is-guest");
+      if(guestAvatar){
+        const accountCopy=account.querySelector(".mr-account-nav-copy");
+        const guestText=document.documentElement.lang==="ar"?"دخول":"Sign in";
+        if(accountCopy&&accountCopy.textContent!==guestText)accountCopy.textContent=guestText;
+        account.href="account.html?auth=signin";
+        account.setAttribute("aria-label",document.documentElement.lang==="ar"?"تسجيل الدخول أو فتح حسابي":"Sign in or open My Account");
+      }
 
       let points=document.getElementById("mounehRewardsButton")||persistentChromeRefs.points;
       if(!points){

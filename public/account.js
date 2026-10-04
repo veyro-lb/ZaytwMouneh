@@ -189,11 +189,22 @@
     }
     previousMemberState=hasMember;
     syncLanguageVisibility();
-    const sig=JSON.stringify([active,guestAuthMode,ar(),!!s.session,s.member?.balance,s.member?.name,s.dashboard?.orders?.length,s.dashboard?.wallet?.length,s.referralStatus?.joined,s.referralStatus?.qualified,s.authUser?.email,s.authMode,s.authNotice,s.pendingSignupEmail,s.googleEnabled,lastSyncedAt]);
+    const sig=JSON.stringify([active,guestAuthMode,ar(),!!s.session,s.member?.balance,s.member?.name,s.dashboard?.orders?.length,s.dashboard?.wallet?.length,s.referralStatus?.joined,s.referralStatus?.qualified,s.authUser?.email,s.authMode,s.authNotice,s.pendingSignupEmail,s.googleEnabled,hasMember?lastSyncedAt:0]);
     if(!force&&sig===lastRenderSig)return;lastRenderSig=sig;
     if(!api()){el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Loading your account…","جارٍ تحميل حسابك…")+'</strong></section>';return}
     if(s.session&&!s.member&&!s.dashboard){el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Finishing sign-in…","جارٍ إكمال تسجيل الدخول…")+'</strong></section>';return}
-    if(!s.session||!s.member){el.innerHTML=guestView(s);return}
+    if(!s.session||!s.member){
+      // Preserve the form and consent when service readiness/language changes.
+      const existing=$("#accountAuthForm");
+      const keep=existing&&el.dataset.authMode===guestAuthMode;
+      const fields=keep?Array.from(el.querySelectorAll("input")).map(input=>({id:input.id,value:input.value,checked:input.checked})):[];
+      const focused=keep&&el.contains(document.activeElement)?document.activeElement.id:"";
+      el.innerHTML=guestView(s);
+      el.dataset.authMode=guestAuthMode;
+      fields.forEach(saved=>{const input=document.getElementById(saved.id);if(input){input.value=saved.value;input.checked=saved.checked}});
+      if(focused)document.getElementById(focused)?.focus({preventScroll:true});
+      return;
+    }
     el.innerHTML=memberView(s,s.member);
   }
   async function sync(){
@@ -325,7 +336,7 @@
       try{const data=new FormData(f);await api()?.account?.changePassword?.(data.get("currentPassword"),data.get("newPassword"));f.reset();status.textContent=tr("Password updated.","تم تحديث كلمة المرور.")}catch(err){status.textContent=err.message||String(err)}finally{btn.disabled=false}return;
     }
   });
-  document.addEventListener("zwm:account-updated",()=>{lastSyncedAt=Date.now();render(true)});
+  document.addEventListener("zwm:account-updated",()=>{lastSyncedAt=Date.now();render()});
   window.addEventListener("focus",sync);
   window.addEventListener("online",sync);
   window.addEventListener("storage",syncAccountShellChrome);

@@ -1028,3 +1028,10 @@ html[lang="ar"] .footer .brand-wordmark{
     max-width:132px!important;
   }
 }
+
+/* Closed navigation must not leave invisible descendant hit targets on phones.
+   Older styles explicitly make mobile links visible even inside a hidden menu. */
+.site-header .nav>#navLinks:not(.is-open),
+#navLinks.is-mobile-portal:not(.is-open){display:none!important}
+#navLinks:not(.is-open),
+#navLinks:not(.is-open) *{visibility:hidden!important;pointer-events:none!important}

@@ -6,6 +6,7 @@
   const RELEASE_PARAM="__zwm_release";
   const FRESH_PARAM="__zwm_fresh";
   const PROBE_PARAM="__zwm_probe";
+  const arrivedFresh=new URL(location.href).searchParams.has(FRESH_PARAM);
   let checking=false;
   let lastCheck=0;
 
@@ -35,6 +36,8 @@
   }
 
   function forceFresh(release="",reason="fresh"){
+    // Do not interrupt account entry or loop when session storage is unavailable.
+    if(arrivedFresh||document.querySelector("#accountAuthForm,#accountCompleteForm"))return false;
     const marker="zwm:fresh-nav:"+String(release||current||"current")+":"+location.pathname+":"+reason;
     try{
       if(sessionStorage.getItem(marker)==="1")return false;
@@ -121,28 +124,13 @@
   }
 
   window.addEventListener("pageshow",event=>{
-    if(event.persisted){
-      location.replace(freshUrl(location.href,current));
-      return;
-    }
     checkRelease(true);
   });
   window.addEventListener("focus",()=>checkRelease(false));
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)checkRelease(false)});
 
-  document.addEventListener("click",event=>{
-    if(event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
-    const link=event.target.closest?.("a[href]");
-    if(!link||link.hasAttribute("download")||(link.target&&link.target!=="_self"))return;
-    let url;
-    try{url=new URL(link.href,location.href)}catch{return}
-    if(url.origin!==location.origin)return;
-    if(url.protocol!=="http:"&&url.protocol!=="https:")return;
-    const sameDocument=url.pathname===location.pathname&&url.search===location.search;
-    if(sameDocument&&url.hash)return;
-    event.preventDefault();
-    location.assign(freshUrl(url.toString(),current));
-  });
+  // Native links preserve browser history, OAuth fragments and back/forward state.
+  // HTML and scripts already revalidate through the deployment's cache headers.
 
   window.ZWM_CHECK_RELEASE=()=>checkRelease(true);
   queueMicrotask(()=>{cleanTransientParams();checkRelease(true)});

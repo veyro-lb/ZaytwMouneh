@@ -1512,7 +1512,7 @@ var STATIC_FR=Object.freeze({
   "A little taste of Lebanon, chosen for you.": "Un petit goût du Liban, choisi pour vous.",
   "A long-running Lebanese pantry built around mouneh, everyday staples and careful selection.": "Une mouneh libanaise de longue date, fondée sur les traditions, les essentiels du quotidien et une sélection soignée.",
   "A note from our pantry": "Un mot de notre mouneh",
-  "A pantry of": "Une mouneh de",
+  "A pantry of": "Une mouneh chargée de",
   "A pantry worth": "Une mouneh où l’on aime",
   "A thoughtful gift,": "Un cadeau attentionné,",
   "Add products from the catalogue and they’ll appear here.": "Ajoutez des produits du catalogue : ils apparaîtront ici.",
@@ -1891,7 +1891,60 @@ var STATIC_FR=Object.freeze({
   "Choose a pantry family and jump straight to its products.": "Choisissez une famille de la mouneh et accédez directement à ses produits.",
   "Search products": "Rechercher des produits",
   "Quick view ↗": "Aperçu rapide ↗",
-  "Zayt w Mouneh logo": "Logo Zayt w Mouneh"
+  "Zayt w Mouneh logo": "Logo Zayt w Mouneh",
+  "Cart items added to the gift": "Les articles du panier ont été ajoutés au cadeau",
+  "— From": "— De",
+  "Sign in or open My Account": "Se connecter ou ouvrir Mon compte",
+  "Hi, I need help completing my website order.": "Bonjour, j’ai besoin d’aide pour finaliser ma commande sur le site.",
+  "This order will be linked to your account and Mouneh Points.": "Cette commande sera liée à votre compte et à vos Mouneh Points.",
+  "Earn about": "Gagnez environ",
+  "points after delivery": "points après la livraison",
+  "more for FREE delivery 🚚": "de plus pour la livraison GRATUITE 🚚",
+  "Place Order —": "Passer la commande —",
+  "full name": "nom complet",
+  "valid phone": "numéro de téléphone valide",
+  "delivery area": "zone de livraison",
+  "street or neighborhood": "rue ou quartier",
+  "building or residence": "immeuble ou résidence",
+  "no longer available": "n’est plus disponible",
+  "Prices changed": "Les prix ont changé",
+  "Reward unavailable": "Récompense indisponible",
+  "unavailable in this area": "indisponible dans cette zone",
+  "Minimum order is": "La commande minimum est de",
+  "Order unavailable": "Commande indisponible",
+  "Updated recently": "Mis à jour récemment",
+  "Order note:": "Note de commande :",
+  "Delivery and payment are both confirmed. These points are now earned.": "La livraison et le paiement sont confirmés. Ces points sont maintenant acquis.",
+  "Delivered, but points are waiting for payment to be confirmed received.": "Commande livrée, mais les points attendent la confirmation de réception du paiement.",
+  "Payment received. Points will be added after delivery is confirmed.": "Paiement reçu. Les points seront ajoutés après confirmation de la livraison.",
+  "Points are added only after both delivery and payment are confirmed.": "Les points sont ajoutés uniquement après confirmation de la livraison et du paiement.",
+  "This order does not earn points.": "Cette commande ne rapporte pas de points.",
+  "Points pending 🌿": "Points en attente 🌿",
+  "Track this order here, keep shopping, or contact us if you need help.": "Suivez cette commande ici, continuez vos achats ou contactez-nous si vous avez besoin d’aide.",
+  "Hi, I need help with order": "Bonjour, j’ai besoin d’aide avec la commande",
+  "Cancel this order?": "Annuler cette commande ?",
+  "Customer requested": "Demandé par le client",
+  "Order cancelled.": "Commande annulée.",
+  "added to cart": "ajouté au panier",
+  "Delivery details are saved with this order.": "Les informations de livraison sont enregistrées avec cette commande.",
+  "Pulses such as lentils, chickpeas and beans naturally provide plant protein and fiber, making them a strong choice in a balanced meal.": "Les légumineuses comme les lentilles, pois chiches et haricots apportent naturellement des protéines végétales et des fibres, ce qui en fait un excellent choix dans un repas équilibré.",
+  "Whole-grain staples such as bulgur, freekeh, barley, oats, quinoa and brown rice can contribute fiber and useful nutrients as part of a balanced diet.": "Les céréales complètes comme le boulgour, la freekeh, l’orge, l’avoine, le quinoa et le riz brun peuvent apporter des fibres et des nutriments utiles dans le cadre d’une alimentation équilibrée.",
+  "Nuts and seeds are nutrient-dense foods that commonly provide unsaturated fats, plant protein and fiber.": "Les noix et les graines sont riches en nutriments et apportent généralement des graisses insaturées, des protéines végétales et des fibres.",
+  "Extra virgin olive oil is rich in monounsaturated fat and is a classic ingredient in Mediterranean-style eating.": "L’huile d’olive extra vierge est riche en graisses mono-insaturées et constitue un ingrédient classique de l’alimentation méditerranéenne.",
+  "Tahini is sesame-based and naturally provides unsaturated fats, plant protein and minerals.": "Le tahini est à base de sésame et apporte naturellement des graisses insaturées, des protéines végétales et des minéraux.",
+  "This whole-grain or nut-based flour can provide more fiber or protein than standard refined white flour, depending on the type.": "Selon le type, cette farine complète ou à base de fruits à coque peut apporter davantage de fibres ou de protéines qu’une farine blanche raffinée classique.",
+  "Decrease quantity": "Diminuer la quantité",
+  "Increase quantity": "Augmenter la quantité",
+  "Remove from gift": "Retirer du cadeau",
+  "Popular": "Populaire",
+  "Save": "Enregistrer",
+  "My pantry": "Ma mouneh",
+  "Add to pantry": "Ajouter à la mouneh",
+  "Close product details": "Fermer les détails du produit",
+  "Quick actions": "Actions rapides",
+  "Refresh data": "Actualiser les données",
+  "Owner workspace": "Espace propriétaire",
+  "Today at a glance": "Aujourd’hui en un coup d’œil"
 });
 
 var CATEGORY_FR=Object.freeze({
@@ -2078,11 +2131,24 @@ function walk(root){
   }
 }
 
+function fixKnownFrenchHeadings(){
+  var homeHero=document.querySelector('body[data-page="home"] .page-intro-copy-wrap h1.only-en');
+  if(homeHero&&homeHero.dataset.frHeadline!=="1"){
+    homeHero.dataset.frHeadline="1";
+    homeHero.innerHTML='Essentiels de la mouneh,<br><em>prêts à parcourir.</em>';
+  }
+  var homeFav=document.querySelector('body[data-page="home"] #featured h2.only-en');
+  if(homeFav&&homeFav.dataset.frHeadline!=="1"){
+    homeFav.dataset.frHeadline="1";
+    homeFav.innerHTML='Les <em>favoris de la mouneh.</em>';
+  }
+}
 function setDocFrench(){
   document.documentElement.lang="fr";
   document.documentElement.dir="ltr";
   document.documentElement.dataset.zwmFr="1";
   document.body&&document.body.classList.remove("admin-rtl");
+  fixKnownFrenchHeadings();
   if(document.title)document.title=dynamicFr(document.title);
   document.querySelectorAll('meta[name="description"],meta[property="og:title"],meta[property="og:description"],meta[name="twitter:title"],meta[name="twitter:description"]').forEach(function(meta){
     var value=meta.getAttribute("content");
@@ -2093,7 +2159,7 @@ function addStyles(){
   if(document.getElementById("zwmFrenchStyles"))return;
   var st=document.createElement("style");
   st.id="zwmFrenchStyles";
-  st.textContent=".fr-language-ready{position:relative;overflow:visible!important}.fr-language-ready>button:not(.fr-globe-toggle),.fr-language-ready [data-lang]:not(.fr-menu-choice),.fr-language-ready [data-commerce-lang]:not(.fr-menu-choice),.fr-language-ready [data-admin-lang]:not(.fr-menu-choice){display:none!important}.fr-language-ready>.fr-globe-toggle{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;width:auto!important;min-width:0!important;height:36px!important;min-height:36px!important;padding:0 11px!important;border-radius:999px!important;line-height:1!important;cursor:pointer;white-space:nowrap!important}.fr-globe-toggle svg{width:18px;height:18px;display:block;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}.fr-globe-label{font:inherit;font-size:13px;font-weight:700;line-height:1}.fr-globe-menu{display:none!important;position:absolute;top:calc(100% + 8px);right:0;z-index:99999;min-width:142px;padding:6px;border:1px solid rgba(0,0,0,.12);border-radius:12px;background:#fff;color:#1f2b24;box-shadow:0 12px 30px rgba(0,0,0,.14)}.fr-globe-menu.is-open{display:grid!important;gap:3px}.fr-globe-menu button{display:block!important;width:100%!important;min-width:0!important;height:auto!important;min-height:0!important;text-align:left!important;padding:9px 10px!important;border:0!important;border-radius:8px!important;background:transparent!important;color:inherit!important;cursor:pointer!important;font:inherit!important;line-height:1.2!important;white-space:nowrap!important}.fr-globe-menu button[dir=rtl]{text-align:right!important}.fr-globe-menu button:hover,.fr-globe-menu button:focus-visible{background:rgba(0,0,0,.05)!important}.fr-globe-menu button.is-active{font-weight:700!important;background:rgba(0,0,0,.07)!important}html[dir=rtl] .fr-globe-menu{right:auto;left:0}";
+  st.textContent=".fr-language-ready{position:relative;overflow:visible!important}.fr-language-ready>button:not(.fr-globe-toggle),.fr-language-ready [data-lang]:not(.fr-menu-choice),.fr-language-ready [data-commerce-lang]:not(.fr-menu-choice),.fr-language-ready [data-admin-lang]:not(.fr-menu-choice){display:none!important}.fr-language-ready>.fr-globe-toggle{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;width:auto!important;min-width:0!important;height:36px!important;min-height:36px!important;padding:0 11px!important;border-radius:999px!important;line-height:1!important;cursor:pointer;white-space:nowrap!important}.fr-globe-toggle svg{width:18px;height:18px;display:block;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}.fr-globe-label{font:inherit;font-size:13px;font-weight:700;line-height:1}.fr-globe-menu{display:none!important;position:absolute;top:calc(100% + 8px);right:0;z-index:99999;min-width:142px;padding:6px;border:1px solid rgba(0,0,0,.12);border-radius:12px;background:#fff;color:#1f2b24;box-shadow:0 12px 30px rgba(0,0,0,.14)}.fr-globe-menu.is-open{display:grid!important;gap:3px}.fr-globe-menu button{display:block!important;width:100%!important;min-width:0!important;height:auto!important;min-height:0!important;text-align:left!important;padding:9px 10px!important;border:0!important;border-radius:8px!important;background:transparent!important;color:inherit!important;cursor:pointer!important;font:inherit!important;line-height:1.2!important;white-space:nowrap!important}.fr-globe-menu button[dir=rtl]{text-align:right!important}.fr-globe-menu button:hover,.fr-globe-menu button:focus-visible{background:rgba(0,0,0,.05)!important}.fr-globe-menu button.is-active{font-weight:700!important;background:rgba(0,0,0,.07)!important}html[dir=rtl] .fr-globe-menu{right:auto;left:0}.mobile-menu-language-buttons.fr-language-ready{overflow:visible!important}.mobile-menu-language-buttons .fr-globe-menu{top:auto!important;bottom:calc(100% + 8px)!important;right:0!important;left:auto!important}.mobile-menu-language-buttons>.fr-globe-toggle{height:36px!important;min-height:36px!important;padding:0 10px!important}.mobile-menu-language-buttons .fr-globe-label{font-size:12px!important}@media(max-width:390px){.mobile-menu-language-buttons>.fr-globe-toggle{height:34px!important;min-height:34px!important;padding:0 9px!important;gap:6px!important}.mobile-menu-language-buttons .fr-globe-toggle svg{width:17px;height:17px}}html[dir=rtl] .mobile-menu-language-buttons .fr-globe-menu{right:auto!important;left:0!important}";
   document.head.appendChild(st);
 }
 function choiceButton(code,label){
@@ -2116,7 +2182,7 @@ function prepareGroup(group,kind){
   if(isFrench())group.querySelectorAll("[data-lang],[data-commerce-lang],[data-admin-lang]").forEach(function(b){b.classList.remove("is-active")});
 }
 function ensureControls(){
-  document.querySelectorAll(".language-switch,.commerce-lang,.admin-language-switch,.topbar-language-toggle").forEach(function(g){prepareGroup(g)});
+  document.querySelectorAll(".language-switch,.commerce-lang,.admin-language-switch,.topbar-language-toggle,.mobile-menu-language-buttons").forEach(function(g){prepareGroup(g)});
   var wrap=document.querySelector(".welcome-language-options");
   if(wrap&&!wrap.querySelector("[data-fr-welcome]")){
     var b=document.createElement("button");
@@ -2191,7 +2257,7 @@ function boot(){
       setDocFrench();
     });
   });
-  observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["aria-label","title","placeholder"]});
+  observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["aria-label","title","placeholder","alt","content"]});
   setTimeout(function(){ensureControls();if(isFrench()){walk(document.body);setDocFrench()}},80);
   setTimeout(function(){ensureControls();if(isFrench()){walk(document.body);setDocFrench()}},450);
 }

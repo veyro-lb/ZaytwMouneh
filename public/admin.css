@@ -1745,3 +1745,7 @@ html[dir="rtl"] .auth-language-toggle{
   .order-detail-grid{grid-template-columns:1fr}
   .order-mobile-state-row{grid-template-columns:1fr}
 }
+
+
+.order-timeline-row.is-payment .order-timeline-dot{background:#b68724;border-color:#f4ead0}
+.order-timeline-row.is-payment b{color:#72540f}

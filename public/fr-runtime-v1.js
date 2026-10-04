@@ -1851,7 +1851,47 @@ var STATIC_FR=Object.freeze({
   "Whole Kibbeh Spice": "Épices pour kibbeh entières",
   "Ground Kibbeh Spice": "Épices pour kibbeh moulues",
   "Caraway": "Carvi",
-  "Paprika Mdakhane": "Paprika Mdakhane"
+  "Paprika Mdakhane": "Paprika Mdakhane",
+  "Old pantry values. Clear modern service.": "Valeurs traditionnelles de la mouneh. Service moderne et clair.",
+  "Sumac is a deep red spice with a bright, tangy flavour.": "Le sumac est une épice rouge profond au goût vif et acidulé.",
+  "Sprinkle over salads, onions, grilled foods, fattoush and mezze.": "À saupoudrer sur les salades, les oignons, les grillades, le fattouche et le mezzé.",
+  "Za’atar is a Levantine herb-and-spice pantry staple; the blend varies by style.": "Le za’atar est un incontournable levantin à base d’herbes et d’épices ; sa composition varie selon le style.",
+  "Mix with olive oil for manakish, or serve with labneh, eggs, breads and salads.": "À mélanger avec de l’huile d’olive pour les manakish, ou à servir avec du labneh, des œufs, du pain et des salades.",
+  "Lentils are dried pulses valued for quick cooking, protein and earthy flavour.": "Les lentilles sont des légumineuses sèches appréciées pour leur cuisson rapide, leurs protéines et leur saveur terreuse.",
+  "Cook in soups, mujadara-style dishes, stews and salads.": "À cuisiner dans les soupes, les plats de type moujadara, les ragoûts et les salades.",
+  "Chickpeas are dried pulses with a nutty flavour and creamy texture when cooked.": "Les pois chiches sont des légumineuses sèches au goût de noisette et à la texture crémeuse après cuisson.",
+  "Use for hummus, stews, salads, soups and roasted snacks.": "À utiliser pour le houmous, les ragoûts, les salades, les soupes et les snacks grillés.",
+  "Bulgur is parboiled, dried cracked wheat, offered in different grinds.": "Le boulgour est du blé précuit, séché et concassé, proposé en différentes moutures.",
+  "Use for tabbouleh, kibbeh, pilafs, stuffing and grain salads.": "À utiliser pour le taboulé, le kibbeh, les pilafs, les farces et les salades de céréales.",
+  "Extra virgin olive oil is a central ingredient of the Lebanese pantry.": "L’huile d’olive extra vierge est un ingrédient central de la mouneh libanaise.",
+  "Use for dipping, dressings, mezze, marinades and cooking.": "À utiliser pour tremper, assaisonner, accompagner le mezzé, mariner et cuisiner.",
+  "Honey is a naturally sweet bee-made pantry food; flavour varies by floral source and blend.": "Le miel est un produit naturellement sucré de la ruche ; sa saveur varie selon l’origine florale et l’assemblage.",
+  "Use at breakfast, in drinks, dressings, desserts or alongside cheese.": "À utiliser au petit-déjeuner, dans les boissons, les vinaigrettes, les desserts ou avec du fromage.",
+  "Fruit molasses is concentrated fruit juice cooked down to a thick, intense syrup.": "La mélasse de fruits est un jus de fruits concentré, réduit jusqu’à obtenir un sirop épais et intense.",
+  "Use in dressings, marinades, sauces and Lebanese sweet-sour pairings.": "À utiliser dans les vinaigrettes, les marinades, les sauces et les accords aigres-doux libanais.",
+  "A fruit or flower preserve cooked into a spreadable pantry staple.": "Une confiture de fruits ou de fleurs cuite jusqu’à obtenir une préparation à tartiner.",
+  "Serve with bread, labneh, breakfast plates, pastries or desserts.": "À servir avec du pain, du labneh, au petit-déjeuner, avec des pâtisseries ou des desserts.",
+  "Labneh is strained yogurt; these mouneh-style balls are preserved for a rich, tangy bite.": "Le labneh est un yaourt égoutté ; ces boules de mouneh sont conservées pour une bouchée riche et acidulée.",
+  "Serve with olive oil, bread, breakfast, mezze and herbs.": "À servir avec de l’huile d’olive, du pain, au petit-déjeuner, avec le mezzé et des herbes.",
+  "Makdous is a traditional preserved stuffed eggplant preparation.": "Le makdous est une préparation traditionnelle d’aubergines farcies et conservées.",
+  "Serve at breakfast or mezze with bread, vegetables and olive oil.": "À servir au petit-déjeuner ou avec le mezzé, accompagné de pain, de légumes et d’huile d’olive.",
+  "A bright acidic pantry ingredient made from fruit vinegar or unripe grape juice.": "Un ingrédient vif et acidulé de la mouneh, à base de vinaigre de fruits ou de jus de raisin non mûr.",
+  "Use in dressings, marinades, sauces and preserved foods.": "À utiliser dans les vinaigrettes, les marinades, les sauces et les conserves.",
+  "Why Zayt w Mouneh": "Pourquoi Zayt w Mouneh",
+  "Hanging wooden pantry sign": "Enseigne suspendue en bois de la mouneh",
+  "Filter catalogue by category": "Filtrer le catalogue par catégorie",
+  "Catalogue overview": "Aperçu du catalogue",
+  "Shopping benefits": "Avantages d’achat",
+  "Pantry films": "Films de la mouneh",
+  "Choose hero film": "Choisir le film principal",
+  "Show honey film": "Afficher le film sur le miel",
+  "Show lentil film": "Afficher le film sur les lentilles",
+  "Show wheat film": "Afficher le film sur le blé",
+  "View products": "Voir les produits",
+  "Choose a pantry family and jump straight to its products.": "Choisissez une famille de la mouneh et accédez directement à ses produits.",
+  "Search products": "Rechercher des produits",
+  "Quick view ↗": "Aperçu rapide ↗",
+  "Zayt w Mouneh logo": "Logo Zayt w Mouneh"
 });
 
 var CATEGORY_FR=Object.freeze({
@@ -2019,7 +2059,7 @@ function translateTextNode(node){
 }
 function translateAttrs(el){
   if(!el||el.nodeType!==1||shouldSkip(el))return;
-  ["aria-label","title","placeholder"].forEach(function(a){
+  ["aria-label","title","placeholder","alt"].forEach(function(a){
     var v=el.getAttribute(a);
     if(!v)return;
     var n=dynamicFr(v);

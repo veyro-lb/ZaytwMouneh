@@ -564,11 +564,6 @@
     btn.style.setProperty("visibility","visible","important");
     btn.style.setProperty("opacity","1","important");
     btn.style.setProperty("flex-shrink","0","important");
-    btn.style.setProperty("width","auto","important");
-    btn.style.setProperty("min-width","52px","important");
-    btn.style.setProperty("min-height","44px","important");
-    btn.style.setProperty("padding","0 10px","important");
-    btn.style.setProperty("gap","5px","important");
     let leaf=btn.querySelector(".mr-nav-leaf");
     if(!leaf){leaf=document.createElement("span");leaf.className="mr-nav-leaf";leaf.textContent="🌿";btn.prepend(leaf)}
     let copy=btn.querySelector(".mr-nav-copy");

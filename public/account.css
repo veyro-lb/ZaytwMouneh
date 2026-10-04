@@ -130,3 +130,51 @@ html[dir="rtl"] .account-balance{text-align:start}
   .account-section-title{align-items:flex-start;flex-direction:column}
   .account-section-title .account-primary{width:100%}
 }
+
+
+/* ===== account8: stable header + compact dashboard ===== */
+body[data-page="account"] .account-shell{width:min(100%,1360px);margin-inline:auto}
+body[data-page="account"] .account-card{box-shadow:0 12px 32px rgba(18,61,35,.055)}
+body[data-page="account"] .account-side{width:100%}
+body[data-page="account"] .account-content{width:100%}
+body[data-page="account"] .account-hero{min-height:210px;padding:28px 34px;align-items:center}
+body[data-page="account"] .account-hero h1{font-size:clamp(2.7rem,4.2vw,4.35rem)}
+body[data-page="account"] .account-balance{min-width:188px;padding:14px 16px;border:1px solid rgba(255,255,255,.16);border-radius:18px;background:rgba(255,255,255,.055);color:#fff}
+body[data-page="account"] .account-balance em{display:block;margin-top:5px;color:rgba(255,255,255,.72);font-size:.68rem;font-style:normal;font-weight:800}
+body[data-page="account"] .account-tab-icon{width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border-radius:9px;background:rgba(18,61,35,.045)}
+body[data-page="account"] .account-tabs button.is-active .account-tab-icon{background:rgba(18,61,35,.09)}
+body[data-page="account"] .account-stat{min-height:104px}
+body[data-page="account"] .account-section-title h2{font-size:clamp(1.65rem,2vw,2.15rem)}
+
+@media(min-width:1181px){
+  body[data-page="account"] .account-site-header .nav{
+    width:min(calc(100% - 32px),1600px)!important;
+    grid-template-columns:minmax(370px,1fr) auto minmax(430px,1fr)!important;
+    column-gap:14px!important;
+  }
+  body[data-page="account"] .account-site-header .nav>.nav-links{gap:0!important}
+  body[data-page="account"] .account-site-header .nav>.nav-links>a:not(.menu-utility-link){padding-inline:8px!important}
+  body[data-page="account"] .account-site-header .nav>.nav-links>a strong{font-size:.79rem!important}
+  body[data-page="account"] .account-site-header .nav .brand-wordmark{font-size:1.45rem!important}
+  body[data-page="account"] .account-site-header .nav>.nav-actions{gap:8px!important}
+  body[data-page="account"] .account-site-header #mounehRewardsButton.mouneh-points-nav{
+    min-width:62px!important;padding-inline:11px!important;border-radius:999px!important
+  }
+  body[data-page="account"] .account-site-header #mounehRewardsButton .mr-nav-copy{display:none!important}
+  body[data-page="account"] .account-site-header #mounehRewardsButton #mounehPointsBadge{display:inline!important}
+  body[data-page="account"] .account-site-header .mouneh-account-nav{max-width:160px!important}
+  body[data-page="account"] .account-site-header .mr-account-nav-copy{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  body[data-page="account"] .account-layout{grid-template-columns:240px minmax(0,1fr);gap:20px}
+}
+
+@media(max-width:1180px){
+  body[data-page="account"] .account-site-header .nav-links .only-ar,
+  body[data-page="account"] .account-site-header .nav-links .only-en{white-space:nowrap}
+}
+@media(max-width:700px){
+  body[data-page="account"] .account-shell{width:100%}
+  body[data-page="account"] .account-side{border-radius:18px}
+  body[data-page="account"] .account-tabs{margin-inline:-2px;padding-inline:2px}
+  body[data-page="account"] .account-hero{padding:20px;min-height:0}
+  body[data-page="account"] .account-stat{min-height:92px}
+}

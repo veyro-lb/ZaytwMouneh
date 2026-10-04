@@ -5,7 +5,7 @@
   const CLAIMS_KEY="zwm:mouneh:claims:v1";
   const WALLET_KEY="zwm:mouneh:selected-wallet:v1";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-rewards7";
+  const VERSION="20261004-rewards8";
   const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null};
 
   const $=(id)=>document.getElementById(id);
@@ -367,6 +367,9 @@
   function setDrawer(open){
     const drawer=$("mounehRewardsDrawer"),back=$("mounehRewardsBackdrop");
     if(!drawer||!back)return;
+    const isOpen=drawer.classList.contains("is-open");
+    if(Boolean(open)===isOpen)return;
+    if(open)window.ZWM_CLOSE_NAV?.();
     drawer.classList.toggle("is-open",open);
     back.hidden=!open;
     document.body.classList.toggle("mouneh-rewards-open",open);
@@ -418,7 +421,6 @@
       form.insertBefore(box,anchor||null);
     }
 
-    if(!btn.dataset.mrBound){btn.addEventListener("click",()=>setDrawer(true));btn.dataset.mrBound="1";}
     $("mounehRewardsClose").addEventListener("click",()=>setDrawer(false));
     back.addEventListener("click",()=>setDrawer(false));
     document.addEventListener("keydown",(e)=>{if(e.key==="Escape"&&drawer.classList.contains("is-open"))setDrawer(false)});
@@ -515,6 +517,8 @@
   }
 
   function bindActions(){
+    if(window.__ZWM_REWARDS_ACTIONS_BOUND)return;
+    window.__ZWM_REWARDS_ACTIONS_BOUND=true;
     document.addEventListener("click",async(e)=>{
       const auth=e.target.closest("[data-mr-auth]");
       if(auth){
@@ -522,19 +526,27 @@
         render();return;
       }
       if(e.target.closest("[data-mr-back]")){state.authMode="public";state.authNotice="";render();return;}
-      if(e.target.closest("[data-mr-google]")){
+      const google=e.target.closest("[data-mr-google]");
+      if(google){
+        if(google.dataset.mrBusy==="1")return;
+        google.dataset.mrBusy="1";google.disabled=true;google.setAttribute("aria-busy","true");
         const status=$("mrAuthStatus");
-        try{if(status)status.textContent=tr("Opening Google…","جارٍ فتح Google…");await signInWithGoogle()}catch(err){if(status)status.textContent=err.message}
+        try{if(status)status.textContent=tr("Opening Google…","جارٍ فتح Google…");await signInWithGoogle()}catch(err){if(status)status.textContent=err.message;if(google.isConnected){google.disabled=state.googleEnabled===false;google.removeAttribute("aria-busy");delete google.dataset.mrBusy}}
         return;
       }
-      if(e.target.closest("[data-mr-resend]")){
+      const resend=e.target.closest("[data-mr-resend]");
+      if(resend){
+        if(resend.dataset.mrBusy==="1")return;
+        resend.dataset.mrBusy="1";resend.disabled=true;resend.setAttribute("aria-busy","true");
         const status=$("mrVerifyStatus");
-        try{if(status)status.textContent=tr("Sending…","جارٍ الإرسال…");await resendVerification();if(status)status.textContent=tr("Sent. Check your inbox and spam folder.","تم الإرسال. تحقق من الوارد والبريد غير المرغوب.")}catch(err){if(status)status.textContent=err.message}
+        try{if(status)status.textContent=tr("Sending…","جارٍ الإرسال…");await resendVerification();if(status)status.textContent=tr("Sent. Check your inbox and spam folder.","تم الإرسال. تحقق من الوارد والبريد غير المرغوب.")}catch(err){if(status)status.textContent=err.message}finally{if(resend.isConnected){resend.disabled=false;resend.removeAttribute("aria-busy");delete resend.dataset.mrBusy}}
         return;
       }
       if(e.target.closest("[data-mr-open]")){setDrawer(true);return;}
-      if(e.target.closest("[data-mr-signout]")){await signOut();return;}
-      if(e.target.closest("[data-mr-refresh]")){state.loading=true;render();try{await loadDashboard()}finally{state.loading=false;render()}return;}
+      const signout=e.target.closest("[data-mr-signout]");
+      if(signout){if(signout.dataset.mrBusy==="1")return;signout.dataset.mrBusy="1";signout.disabled=true;try{await signOut()}finally{if(signout.isConnected){signout.disabled=false;delete signout.dataset.mrBusy}}return;}
+      const refresh=e.target.closest("[data-mr-refresh]");
+      if(refresh){if(refresh.dataset.mrBusy==="1")return;refresh.dataset.mrBusy="1";refresh.disabled=true;state.loading=true;render();try{await loadDashboard()}finally{state.loading=false;render()}return;}
       const redeemBtn=e.target.closest("[data-mr-redeem]");
       if(redeemBtn){await redeem(redeemBtn.dataset.mrRedeem,redeemBtn);return;}
       const copy=e.target.closest("[data-mr-copy]");
@@ -546,6 +558,11 @@
     document.addEventListener("submit",async(e)=>{
       if(e.target.id==="mrAuthForm"){
         e.preventDefault();
+        const form=e.target;
+        if(form.dataset.mrBusy==="1")return;
+        form.dataset.mrBusy="1";
+        const submit=form.querySelector('button[type="submit"]');
+        if(submit){submit.disabled=true;submit.setAttribute("aria-busy","true")}
         const status=$("mrAuthStatus"),email=$("mrEmail").value.trim(),password=$("mrPassword").value;
         if(status)status.textContent=tr("Working…","جارٍ التنفيذ…");
         try{
@@ -559,14 +576,23 @@
           }else await signIn(email,password);
           state.authMode="public";state.authNotice="";render();
         }catch(err){if(status)status.textContent=err.message;}
+        finally{if(form.isConnected){delete form.dataset.mrBusy;if(submit){submit.disabled=false;submit.removeAttribute("aria-busy")}}}
         return;
       }
-      if(e.target.id==="mrJoinForm"){e.preventDefault();await join(e.target);return;}
-      if(e.target.id==="mrProfileForm"){e.preventDefault();await saveProfile();return;}
+      if(e.target.id==="mrJoinForm"){
+        e.preventDefault();const form=e.target;if(form.dataset.mrBusy==="1")return;form.dataset.mrBusy="1";const submit=form.querySelector('button[type="submit"]');if(submit)submit.disabled=true;
+        try{await join(form)}finally{if(form.isConnected){delete form.dataset.mrBusy;if(submit)submit.disabled=false}}return;
+      }
+      if(e.target.id==="mrProfileForm"){
+        e.preventDefault();const form=e.target;if(form.dataset.mrBusy==="1")return;form.dataset.mrBusy="1";const submit=form.querySelector('button[type="submit"]');if(submit)submit.disabled=true;
+        try{await saveProfile()}finally{if(form.isConnected){delete form.dataset.mrBusy;if(submit)submit.disabled=false}}return;
+      }
     });
   }
 
   async function init(){
+    if(window.__ZWM_REWARDS_INIT_STARTED)return;
+    window.__ZWM_REWARDS_INIT_STARTED=true;
     try{
       if(!window.ZWM_CMS_CONFIG)await loadScript(CONFIG_SRC);
       state.config=window.ZWM_CMS_CONFIG||{};

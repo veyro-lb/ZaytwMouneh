@@ -6,6 +6,32 @@
   const tr=(en,arText)=>ar()?arText:en;
   const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const money=v=>"$"+(Number(v)||0).toFixed(2);
+  async function copyText(value){
+    const text=String(value||"");
+    if(!text)return false;
+    try{
+      if(navigator.clipboard?.writeText){
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    }catch{}
+    try{
+      const area=document.createElement("textarea");
+      area.value=text;
+      area.setAttribute("readonly","");
+      area.style.position="fixed";
+      area.style.opacity="0";
+      area.style.pointerEvents="none";
+      document.body.appendChild(area);
+      area.select();
+      area.setSelectionRange(0,text.length);
+      const ok=document.execCommand("copy");
+      area.remove();
+      return !!ok;
+    }catch{
+      return false;
+    }
+  }
   const requestedAuthOnLoad=(()=>{try{return new URL(location.href).searchParams.get("auth")||""}catch{return ""}})();
   let landingAfterAuth=!!requestedAuthOnLoad;
   const initialHash=(location.hash||"").slice(1);
@@ -100,10 +126,16 @@
   }
   function referralsPanel(s,m){
     const rs=s.referralStatus||{}, code=String(rs.code||m.code||"");
-    const joined=Number(rs.joined??s.dashboard?.referrals??0)||0, qualified=Number(rs.qualified)||0, pending=Math.max(0,Number(rs.pending??(joined-qualified))||0);
-    const link=code?location.origin+"/?ref="+encodeURIComponent(code):location.origin+"/";
-    return '<section class="account-panel" data-account-panel="referrals" '+(active==="referrals"?"":"hidden")+'><article class="account-card"><div class="account-section-title"><div><h2>'+tr("Invite friends, clearly","ادعُ أصدقاءك بوضوح")+'</h2><p>'+tr("You earn 50 points only when your friend joins with your referral before ordering and their first delivered order qualifies at $25+. The friend receives the current referral bonus.","تحصل على 50 نقطة فقط عندما ينضم صديقك بإحالتك قبل الطلب ويكون أول طلب مُسلّم له مؤهلاً بقيمة 25$ أو أكثر. ويحصل الصديق على مكافأة الإحالة الحالية.")+'</p></div></div><div class="account-grid" style="margin-top:16px"><article class="account-stat"><small>'+tr("Joined","انضموا")+'</small><strong>'+joined+'</strong></article><article class="account-stat"><small>'+tr("Waiting for delivery","بانتظار التسليم")+'</small><strong>'+pending+'</strong></article><article class="account-stat"><small>'+tr("Qualified","تأهلوا")+'</small><strong>'+qualified+'</strong></article></div><div class="account-referral-code" style="margin-top:16px"><div><small>'+tr("Your referral code","رمز الإحالة")+'</small><strong>'+esc(code||"—")+'</strong></div><button type="button" class="account-primary" data-copy-ref="'+esc(link)+'">'+tr("Copy invite link","نسخ رابط الدعوة")+'</button></div><p>'+tr("Referral rewards are issued only after delivery is verified in the owner order system, so a code alone cannot create points.","لا تُصدر نقاط الإحالة إلا بعد التحقق من التسليم في نظام طلبات المالك، لذلك لا يمكن للرمز وحده إنشاء نقاط.")+'</p></article></section>';
+    const joined=Number(rs.joined??s.dashboard?.referrals??0)||0;
+    const qualified=Number(rs.qualified)||0;
+    const disqualified=Math.max(0,Number(rs.disqualified)||0);
+    const pending=Math.max(0,Number(rs.pending??(joined-qualified-disqualified))||0);
+    const link=code
+      ?location.origin+"/account?auth=signup&ref="+encodeURIComponent(code)+"#signup"
+      :location.origin+"/account?auth=signup#signup";
+    return '<section class="account-panel" data-account-panel="referrals" '+(active==="referrals"?"":"hidden")+'><article class="account-card"><div class="account-section-title"><div><h2>'+tr("Invite friends, clearly","ادعُ أصدقاءك بوضوح")+'</h2><p>'+tr("You earn 50 points only when your friend joins with your referral before ordering and their first delivered order qualifies at $25+. The friend receives the current referral bonus.","تحصل على 50 نقطة فقط عندما ينضم صديقك بإحالتك قبل الطلب ويكون أول طلب مُسلّم له مؤهلاً بقيمة 25$ أو أكثر. ويحصل الصديق على مكافأة الإحالة الحالية.")+'</p></div></div><div class="account-grid" style="margin-top:16px"><article class="account-stat"><small>'+tr("Joined","انضموا")+'</small><strong>'+joined+'</strong></article><article class="account-stat"><small>'+tr("Waiting for delivery","بانتظار التسليم")+'</small><strong>'+pending+'</strong></article><article class="account-stat"><small>'+tr("Qualified","تأهلوا")+'</small><strong>'+qualified+'</strong></article><article class="account-stat"><small>'+tr("Not eligible","غير مؤهل")+'</small><strong>'+disqualified+'</strong></article></div><div class="account-referral-code" style="margin-top:16px"><div><small>'+tr("Your referral code","رمز الإحالة")+'</small><strong>'+esc(code||"—")+'</strong></div><button type="button" class="account-primary" data-copy-ref="'+esc(link)+'">'+tr("Copy invite link","نسخ رابط الدعوة")+'</button></div><p>'+tr("Referral rewards are issued only after delivery is verified in the owner order system. Same-phone and retroactive referrals do not qualify.","لا تُصدر نقاط الإحالة إلا بعد التحقق من التسليم في نظام طلبات المالك. الإحالات برقم الهاتف نفسه أو المرتبطة بأثر رجعي لا تتأهل.")+'</p></article></section>';
   }
+
   function profilePanel(s,m){
     const email=s.authUser?.email||"", providers=(s.providers||[]).join(", ")||tr("Secure account","حساب آمن");
     return '<section class="account-panel" data-account-panel="profile" '+(active==="profile"?"":"hidden")+'>'+

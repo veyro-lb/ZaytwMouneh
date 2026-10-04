@@ -550,7 +550,7 @@
       tools.setAttribute("aria-label","Quick account and site actions");
       tools.innerHTML=
         '<a class="mobile-menu-tool mobile-menu-search" data-mobile-menu-search href="shop.html#shop"><span class="mobile-menu-tool-icon" aria-hidden="true">⌕</span><span class="mobile-menu-tool-copy"><strong></strong><small></small></span></a>'+
-        '<a class="mobile-menu-tool mobile-menu-account" data-mobile-menu-account href="account.html#signin"><span class="mobile-menu-tool-icon" aria-hidden="true">●</span><span class="mobile-menu-tool-copy"><strong></strong><small></small></span></a>'+
+        '<a class="mobile-menu-tool mobile-menu-account" data-mobile-menu-account href="/account?auth=signin#signin"><span class="mobile-menu-tool-icon" aria-hidden="true">●</span><span class="mobile-menu-tool-copy"><strong></strong><small></small></span></a>'+
         '<button type="button" class="mobile-menu-tool mobile-menu-points" data-mobile-menu-points><span class="mobile-menu-tool-icon" aria-hidden="true">🌿</span><span class="mobile-menu-tool-copy"><strong></strong><small></small></span><b data-mobile-points-balance>—</b></button>'+
         '<div class="mobile-menu-language" data-mobile-menu-language><span class="mobile-menu-language-copy"><strong></strong><small></small></span><div class="mobile-menu-language-buttons"><button type="button" data-mobile-lang="en">EN</button><button type="button" data-mobile-lang="ar">عربي</button></div></div>';
       panel.appendChild(tools);
@@ -569,7 +569,7 @@
     const account=tools.querySelector("[data-mobile-menu-account]");
     if(account){
       const guest=sourceAccount?.querySelector(".mr-account-nav-avatar")?.classList.contains("is-guest")!==false;
-      const href=sourceAccount?.getAttribute("href")||"account.html#signin";
+      const href=sourceAccount?.getAttribute("href")||"/account?auth=signin#signin";
       if(account.getAttribute("href")!==href)account.setAttribute("href",href);
       setText(account.querySelector("strong"),guest?(arabic?"تسجيل الدخول":"Sign in"):(arabic?"حسابي":"My Account"));
       setText(account.querySelector("small"),guest?(arabic?"افتح حسابك ولوحة التحكم":"Open your account dashboard"):(arabic?"النقاط والطلبات والملف":"Points, orders & profile"));
@@ -766,7 +766,7 @@
         account=document.createElement("a");
         account.id="mounehAccountButton";
         account.className="mouneh-account-nav";
-        account.href="account.html#signin";
+        account.href="/account?auth=signin#signin";
         account.setAttribute("aria-label",document.documentElement.lang==="ar"?"تسجيل الدخول إلى حسابي":"Sign in to My Account");
         account.innerHTML='<span class="mr-account-nav-avatar is-guest" aria-hidden="true"></span><span class="mr-account-nav-copy">'+(document.documentElement.lang==="ar"?"دخول":"Sign in")+'</span>';
         nav.insertBefore(account,cart||null);
@@ -786,7 +786,7 @@
         const accountCopy=account.querySelector(".mr-account-nav-copy");
         const guestText=document.documentElement.lang==="ar"?"دخول":"Sign in";
         if(accountCopy&&accountCopy.textContent!==guestText)accountCopy.textContent=guestText;
-        account.href="account.html#signin";
+        account.href="/account?auth=signin#signin";
         account.setAttribute("aria-label",document.documentElement.lang==="ar"?"تسجيل الدخول أو فتح حسابي":"Sign in or open My Account");
       }
 

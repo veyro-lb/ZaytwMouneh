@@ -46,7 +46,16 @@
     const clean=normalizeReferral(code);
     return clean?location.origin+"/?ref="+encodeURIComponent(clean):location.origin+"/";
   }
-  const authRedirectUrl=()=>location.origin+location.pathname+"?mouneh_auth=1";
+  const accountAuthUrl=()=>location.origin+"/account.html";
+  const authRedirectUrl=()=>accountAuthUrl()+"?mouneh_auth=1";
+  function onAccountPage(){
+    return document.body?.dataset?.page==="account"||/\/account(?:\.html)?\/?$/.test(location.pathname);
+  }
+  function goToAccountAfterAuth(){
+    if(onAccountPage())return false;
+    location.replace(accountAuthUrl()+"#overview");
+    return true;
+  }
   function cleanAuthUrl(){
     try{
       const u=new URL(location.href);
@@ -80,6 +89,7 @@
     state.authNotice=tr("Email verified. Welcome to your Mouneh Points Wallet 🌿","تم تأكيد البريد. أهلاً بك في محفظة نقاط المونة 🌿");
     try{sessionStorage.setItem("zwm:mouneh:just-verified","1")}catch{}
     cleanAuthUrl();
+    if(goToAccountAfterAuth())return true;
     return true;
   }
   const config=()=>window.ZWM_CMS_CONFIG||state.config||{};
@@ -930,7 +940,9 @@
             const out=await signUp(email,password,name,phone,referral);
             if(!out.session){render();return;}
           }else await signIn(email,password);
-          state.authMode="public";state.authNotice="";render();
+          state.authMode="public";state.authNotice="";
+          if(goToAccountAfterAuth())return;
+          render();
         }catch(err){if(status)status.textContent=err.message;}
         finally{if(form.isConnected){delete form.dataset.mrBusy;if(submit){submit.disabled=false;submit.removeAttribute("aria-busy")}}}
         return;

@@ -8,7 +8,7 @@
   const LEGAL_PENDING_KEY="zwm:mouneh:legal-consent-pending:v1";
   const LEGAL_CONSENT_VERSION="2026-10-04";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-panel-fit2";
+  const VERSION="20261004-referralsec1";
   const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false,referralStatus:null};
 
   const $=(id)=>document.getElementById(id);
@@ -220,7 +220,9 @@
     location.assign(baseUrl()+"/auth/v1/authorize?provider=google&redirect_to="+redirect+"&scopes="+scopes);
   }
   async function ensureMemberFromAuth(){
-    if(!state.session||!state.dashboard?.needsJoin)return;
+    if(!state.session)return;
+    if(state.dashboard?.member){clearPendingReferral();return;}
+    if(!state.dashboard?.needsJoin)return;
     const user=await getAuthUser();
     const meta=user?.user_metadata||{};
     const name=String(meta.full_name||meta.name||"").trim();
@@ -1042,6 +1044,7 @@
       authMode:state.authMode,
       authNotice:state.authNotice,
       pendingSignupEmail:state.pendingSignupEmail,
+      pendingReferral:pendingReferral(),
       googleEnabled:state.googleEnabled
     }),
     auth:{

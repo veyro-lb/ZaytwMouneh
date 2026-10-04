@@ -5,7 +5,38 @@
   const ar=()=>document.documentElement.lang==="ar"||document.documentElement.dir==="rtl";
   const tr=(en,arText)=>ar()?arText:en;
   const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const money=v=>"$"+(Number(v)||0).toFixed(2);
+  const ltr=v=>ar()?"\u2066"+String(v??"")+"\u2069":String(v??"");
+  const money=v=>ltr("$"+(Number(v)||0).toFixed(2));
+  function voucherStatusLabel(status){
+    const s=String(status||"").toLowerCase();
+    if(s==="available")return tr("Available","متاحة");
+    if(s==="reserved")return tr("Reserved","محجوزة");
+    if(s==="used")return tr("Used","مستخدمة");
+    if(s==="expired")return tr("Expired","منتهية");
+    if(s==="cancelled")return tr("Cancelled","ملغاة");
+    return status||tr("Unknown","غير معروفة");
+  }
+  function providerLabel(provider){
+    const p=String(provider||"").toLowerCase();
+    if(p==="google")return "Google";
+    if(p==="email"||p==="password"||p==="email_password")return tr("Email & password","البريد الإلكتروني وكلمة المرور");
+    return provider||tr("Secure account","حساب آمن");
+  }
+  function ledgerReasonLabel(reason){
+    const raw=String(reason||"").trim();
+    const exact={
+      "Welcome to Mouneh Rewards":tr("Welcome to Mouneh Rewards","مكافأة الانضمام إلى نقاط المونة"),
+      "Delivered and paid order":tr("Delivered and paid order","طلب تم تسليمه واستلام دفعه"),
+      "First delivered and paid order":tr("First delivered and paid order","مكافأة أول طلب تم تسليمه واستلام دفعه"),
+      "Friend completed their first qualifying order":tr("Friend completed their first qualifying order","أكمل صديقك أول طلب مؤهل"),
+      "Friend completed first qualifying delivered and paid order":tr("Friend completed first qualifying delivered and paid order","أكمل صديقك أول طلب مؤهل وتم تسليمه واستلام دفعه"),
+      "Referral welcome bonus":tr("Referral welcome bonus","مكافأة ترحيبية للإحالة"),
+      "Birthday surprise":tr("Birthday surprise","مفاجأة عيد الميلاد")
+    };
+    if(exact[raw])return exact[raw];
+    if(ar()&&raw.startsWith("Owner voucher:"))return raw.replace(/^Owner voucher:\s*/,"قسيمة من المالك: ");
+    return raw;
+  }
   async function copyText(value){
     const text=String(value||"");
     if(!text)return false;
@@ -156,11 +187,11 @@
     const link=code
       ?location.origin+"/account?auth=signup&ref="+encodeURIComponent(code)+"#signup"
       :location.origin+"/account?auth=signup#signup";
-    return '<section class="account-panel" data-account-panel="referrals" '+(active==="referrals"?"":"hidden")+'><article class="account-card"><div class="account-section-title"><div><h2>'+tr("Invite friends, clearly","ادعُ أصدقاءك بوضوح")+'</h2><p>'+tr("You earn 50 points only when your friend joins with your referral before ordering and their first qualifying order is $25+ after discount, delivered, and payment-confirmed. The friend receives the current referral bonus.","تحصل على 50 نقطة فقط عندما ينضم صديقك عبر إحالتك قبل الطلب، ويكون أول طلب مؤهل له بقيمة 25$ أو أكثر بعد الخصم، ويتم تأكيد تسليمه واستلام الدفع. ويحصل الصديق على مكافأة الإحالة الحالية.")+'</p></div></div><div class="account-grid" style="margin-top:16px"><article class="account-stat"><small>'+tr("Joined","انضموا")+'</small><strong>'+joined+'</strong></article><article class="account-stat"><small>'+tr("Waiting for delivery","بانتظار التسليم")+'</small><strong>'+pending+'</strong></article><article class="account-stat"><small>'+tr("Qualified","تأهلوا")+'</small><strong>'+qualified+'</strong></article><article class="account-stat"><small>'+tr("Not eligible","غير مؤهل")+'</small><strong>'+disqualified+'</strong></article></div><div class="account-referral-code" style="margin-top:16px"><div><small>'+tr("Your referral code","رمز الإحالة")+'</small><strong>'+esc(code||"—")+'</strong></div><button type="button" class="account-primary" data-copy-ref="'+esc(link)+'">'+tr("Copy invite link","نسخ رابط الدعوة")+'</button></div><p>'+tr("Referral rewards are issued only after delivery and payment are verified in the owner order system. Same-phone and retroactive referrals do not qualify.","لا تُمنح مكافآت الإحالة إلا بعد التحقق من التسليم واستلام الدفع في نظام طلبات المالك. ولا تتأهل الإحالات برقم الهاتف نفسه أو الإحالات بأثر رجعي.")+'</p></article></section>';
+    return '<section class="account-panel" data-account-panel="referrals" '+(active==="referrals"?"":"hidden")+'><article class="account-card"><div class="account-section-title"><div><h2>'+tr("Invite friends, clearly","ادعُ أصدقاءك بوضوح")+'</h2><p>'+tr("You earn 50 points only when your friend joins with your referral before ordering and their first qualifying order is $25+ after discount, delivered, and payment-confirmed. The friend receives the current referral bonus.","تحصل على 50 نقطة فقط عندما ينضم صديقك عبر إحالتك قبل الطلب، ويكون أول طلب مؤهل له بقيمة 25 دولاراً أو أكثر بعد الخصم، ويتم تأكيد تسليمه واستلام الدفع. ويحصل الصديق على مكافأة الإحالة الحالية.")+'</p></div></div><div class="account-grid" style="margin-top:16px"><article class="account-stat"><small>'+tr("Joined","انضموا")+'</small><strong>'+joined+'</strong></article><article class="account-stat"><small>'+tr("Waiting for delivery","بانتظار التسليم")+'</small><strong>'+pending+'</strong></article><article class="account-stat"><small>'+tr("Qualified","تأهلوا")+'</small><strong>'+qualified+'</strong></article><article class="account-stat"><small>'+tr("Not eligible","غير مؤهل")+'</small><strong>'+disqualified+'</strong></article></div><div class="account-referral-code" style="margin-top:16px"><div><small>'+tr("Your referral code","رمز الإحالة")+'</small><strong>'+esc(code||"—")+'</strong></div><button type="button" class="account-primary" data-copy-ref="'+esc(link)+'">'+tr("Copy invite link","نسخ رابط الدعوة")+'</button></div><p>'+tr("Referral rewards are issued only after delivery and payment are verified in the owner order system. Same-phone and retroactive referrals do not qualify.","لا تُمنح مكافآت الإحالة إلا بعد التحقق من التسليم واستلام الدفع في نظام طلبات المالك. ولا تتأهل الإحالات برقم الهاتف نفسه أو الإحالات بأثر رجعي.")+'</p></article></section>';
   }
 
   function profilePanel(s,m){
-    const email=s.authUser?.email||"", providers=(s.providers||[]).join(", ")||tr("Secure account","حساب آمن");
+    const email=s.authUser?.email||"", providers=(s.providers||[]).map(providerLabel).join("، ")||tr("Secure account","حساب آمن");
     return '<section class="account-panel" data-account-panel="profile" '+(active==="profile"?"":"hidden")+'>'+
       '<article class="account-card"><div class="account-section-title"><div><h2>'+tr("Profile","الملف الشخصي")+'</h2><p>'+tr("Changes save directly to your account and update this page without a manual refresh.","تُحفظ التغييرات مباشرة في حسابك وتتحدث هذه الصفحة من دون تحديث يدوي.")+'</p></div></div><form id="accountProfileForm" class="account-form" style="margin-top:16px"><label>'+tr("Name","الاسم")+'<input name="name" maxlength="120" value="'+esc(m.name||"")+'" required></label><label>'+tr("WhatsApp","واتساب")+'<input name="phone" maxlength="40" value="'+esc(m.phone||"")+'"></label><label class="full">'+tr("Address","العنوان")+'<input name="address" maxlength="500" value="'+esc(m.address||"")+'"></label><label>'+tr("Birthday","تاريخ الميلاد")+'<input name="birthday" type="date" value="'+esc(m.birthday||"")+'" '+(m.birthday?"disabled":"")+'></label><label>'+tr("Preferred language","اللغة المفضلة")+'<select name="language"><option value="en" '+(!ar()?"selected":"")+'>English</option><option value="ar" '+(ar()?"selected":"")+'>العربية</option></select></label><div class="full"><button type="submit" class="account-primary">'+tr("Save profile","حفظ الملف")+'</button></div><p class="account-status full" id="accountProfileStatus"></p></form></article>'+
       '<div class="account-security"><article class="account-card"><p class="account-eyebrow">'+tr("Account identity","هوية الحساب")+'</p><h3>'+esc(email||tr("Verified customer account","حساب عميل موثّق"))+'</h3><p>'+tr("Sign-in method: ","طريقة الدخول: ")+esc(providers)+'. '+tr("Your password is handled by the authentication provider and is never shown here.","تتم إدارة كلمة المرور عبر مزود المصادقة ولا تظهر هنا أبداً.")+'</p></article>'+

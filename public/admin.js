@@ -1313,7 +1313,7 @@
       <td><span class="availability-badge availability-${availability}">${esc(AVAILABILITY_LABELS[availability])}</span></td>
       <td><span class="status-badge status-${status}">${status.replace("-"," ")}</span></td>
       <td>${esc(when(p.__updated))}</td>
-      <td><div class="row-actions"><button class="row-action" data-edit-product="${esc(p.id)}">Edit</button></div></td>
+      <td><div class="row-actions"><button type="button" class="row-action" data-edit-product="${esc(p.id)}">Edit</button></div></td>
     </tr>`;
   }
 
@@ -3445,7 +3445,7 @@
 
   function setupInstallPrompt(){
     window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.installPrompt=e;$("installAdminHint").textContent="Ready to install on this device.";});
-    if("serviceWorker" in navigator)navigator.serviceWorker.register("admin-sw.js?v=20261004-toolkit11").catch(()=>{});
+    if("serviceWorker" in navigator)navigator.serviceWorker.register("admin-sw.js?v=20261004-toolkit12").catch(()=>{});
   }
   async function installAdminApp(){
     if(state.installPrompt){

@@ -1204,7 +1204,7 @@ function renderProducts(){
     }
   }
 
-  $("[data-fav]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,300))return;toggleFavorite(btn.dataset.fav)}));
+  $$("[data-fav]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,300))return;toggleFavorite(btn.dataset.fav)}));
   $$("[data-card-variant]").forEach(sel=>sel.addEventListener("change",e=>{
     e.stopPropagation();
     cardVariant[sel.dataset.cardVariant]=sel.value;
@@ -1216,7 +1216,7 @@ function renderProducts(){
     const display=$(`[data-card-qty="${cssEscape(btn.dataset.id)}"]`);
     if(display)display.textContent=draftQty[key];
   }));
-  $("[data-add]").forEach(btn=>btn.addEventListener("click",e=>{
+  $$("[data-add]").forEach(btn=>btn.addEventListener("click",e=>{
     e.stopPropagation();
     if(!acceptSingleTap(btn,320))return;
     const p=productById(btn.dataset.add);
@@ -1224,7 +1224,7 @@ function renderProducts(){
     addToCart(p,cardVariantFor(p),qtyFor("card:"+p.id));
     animateAddToCart(btn,p);
   }));
-  $("[data-view]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,260))return;openProduct(btn.dataset.view)}));
+  $$("[data-view]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,260))return;openProduct(btn.dataset.view)}));
   $$("[data-product]").forEach(card=>{
     card.addEventListener("click",e=>{if(!e.target.closest("button,select"))openProduct(card.dataset.product)});
     card.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!e.target.closest("button,select")){e.preventDefault();openProduct(card.dataset.product)}});
@@ -1394,7 +1394,7 @@ function renderSearchSuggestions(){
     .slice(0,6);
   box.innerHTML=results.length?results.map(({p})=>`<button type="button" data-suggest="${escapeHtml(p.id)}"><span><strong>${escapeHtml(currentName(p))}</strong><small>${escapeHtml(categoryName(p.category))}</small></span><b>${money(productPriceSummary(p).min)}</b></button>`).join(""):`<p>${escapeHtml(EXTRA_UI[lang].searchNoSuggestions)}</p>`;
   box.hidden=false;
-  $("[data-suggest]").forEach(btn=>btn.addEventListener("pointerdown",e=>{e.preventDefault();if(!acceptSingleTap(btn,260))return;box.hidden=true;openProduct(btn.dataset.suggest)}));
+  $$("[data-suggest]").forEach(btn=>btn.addEventListener("pointerdown",e=>{e.preventDefault();if(!acceptSingleTap(btn,260))return;box.hidden=true;openProduct(btn.dataset.suggest)}));
 }
 
 function renderFeaturedProducts(){
@@ -1415,7 +1415,7 @@ function renderFeaturedProducts(){
     </article>`;
   }).join("");
   $$("[data-featured-view]").forEach(card=>card.addEventListener("click",e=>{if(!e.target.closest("button"))openProduct(card.dataset.featuredView)}));
-  $("[data-featured-add]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,320))return;const p=productById(btn.dataset.featuredAdd);if(p){addToCart(p,defaultVariant(p),1);animateAddToCart(btn,p)}}));
+  $$("[data-featured-add]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,320))return;const p=productById(btn.dataset.featuredAdd);if(p){addToCart(p,defaultVariant(p),1);animateAddToCart(btn,p)}}));
 }
 
 function renderGiftPresets(){
@@ -1431,7 +1431,7 @@ function renderGiftPresets(){
       <div><strong>${money(total)}</strong><button type="button" data-gift-preset="${escapeHtml(preset.id)}">${escapeHtml(lang==="ar"?"اختر هذه الهدية":"Choose this gift")}</button></div>
     </article>`;
   }).join("");
-  $("[data-gift-preset]").forEach(btn=>btn.addEventListener("click",()=>{if(!acceptSingleTap(btn,320))return;applyGiftPreset(btn.dataset.giftPreset)}));
+  $$("[data-gift-preset]").forEach(btn=>btn.addEventListener("click",()=>{if(!acceptSingleTap(btn,320))return;applyGiftPreset(btn.dataset.giftPreset)}));
 }
 function applyGiftPreset(id){
   const preset=GIFT_PRESETS.find(x=>x.id===id);if(!preset)return;

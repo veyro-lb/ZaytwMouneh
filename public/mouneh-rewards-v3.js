@@ -197,7 +197,7 @@
   function legalConsentAccepted(status){
     const consent=$("mrLegalConsent");
     if(consent?.checked)return true;
-    if(status)status.textContent=tr("Please agree to the Terms of Service and confirm that you have read the Privacy Policy to continue.","يرجى الموافقة على شروط الاستخدام والإقرار بأنك قرأت سياسة الخصوصية للمتابعة.");
+    if(status)status.textContent=tr("Please agree to the Terms of Service and confirm that you have read the Privacy Policy to continue.","يرجى الموافقة على شروط الخدمة وتأكيد قراءتك لسياسة الخصوصية للمتابعة.");
     if(consent){consent.focus();try{consent.reportValidity()}catch{}}
     return false;
   }
@@ -357,8 +357,8 @@
       '<div class="mr-auth-tabs"><button type="button" data-mr-auth="signin" class="'+(!signup?"is-active":"")+'">'+tr("Sign in","دخول")+'</button><button type="button" data-mr-auth="signup" class="'+(signup?"is-active":"")+'">'+tr("Create account","إنشاء حساب")+"</button></div>"+
       '<h2>'+(signup?tr("Create your Zayt w Mouneh account","أنشئ حساب زيت ومونة"):tr("Welcome back","أهلاً بعودتك"))+'</h2>'+
       '<p>'+(signup?tr("One account for Mouneh Points, your wallet, rewards and future orders.","حساب واحد لنقاط المونة والمحفظة والمكافآت والطلبات القادمة."):tr("Sign in to open your Mouneh Points Wallet and rewards.","سجّل الدخول لفتح محفظة نقاط المونة ومكافآتك."))+'</p>'+
-      '<label class="mr-legal-consent mr-auth-consent"><input id="mrLegalConsent" type="checkbox" form="mrAuthForm" required aria-required="true"><span>'+tr("I agree to the ","أوافق على ")+'<a href="terms.html" target="_blank" rel="noopener">'+tr("Terms of Service","شروط الاستخدام")+'</a>'+tr(" and confirm that I have read the "," وأقرّ بأنني قرأت ")+'<a href="privacy.html" target="_blank" rel="noopener">'+tr("Privacy Policy","سياسة الخصوصية")+'</a>.</span></label>'+
-      '<p class="mr-auth-legal">'+tr("Required before sign in, account creation, or Google sign-in.","يجب تحديد خانة الموافقة قبل تسجيل الدخول أو إنشاء الحساب أو المتابعة عبر Google.")+'</p>'+
+      '<label class="mr-legal-consent mr-auth-consent"><input id="mrLegalConsent" type="checkbox" form="mrAuthForm" required aria-required="true"><span>'+tr("I agree to the ","أوافق على ")+'<a href="/terms.html" target="_blank" rel="noopener">'+tr("Terms of Service","شروط الخدمة")+'</a>'+tr(" and confirm that I have read the "," وأقرّ بأنني قرأت ")+'<a href="/privacy.html" target="_blank" rel="noopener">'+tr("Privacy Policy","سياسة الخصوصية")+'</a>.</span></label>'+
+      '<p class="mr-auth-legal">'+tr("Required before sign in, account creation, or Google sign-in.","يجب تحديد خانة الموافقة قبل تسجيل الدخول أو إنشاء حساب أو المتابعة عبر Google.")+'</p>'+
       googleButton()+
       '<div class="mr-or"><span></span><b>'+tr("or","أو")+'</b><span></span></div>'+
       '<form id="mrAuthForm" class="mr-auth-form '+(signup?"is-signup":"is-signin")+'">'+

@@ -38,13 +38,13 @@ function updateOrderCopy(){
   var title=document.getElementById("orderTitle"),intro=document.getElementById("orderIntroCopy"),s3=document.getElementById("step3Title"),s3c=document.getElementById("step3Copy");
   if(title)setMarkup(title,tr("From shelf to<br><em>your door.</em>","من الرف إلى<br><em>باب بيتك.</em>"));
   if(intro)setText(intro,tr("Build your pantry, review everything, then place the order directly on the website.","حضّر سلتك وراجعها ثم أرسل الطلب مباشرة عبر الموقع."));
-  if(s3)setText(s3,tr("Checkout","الدفع والطلب"));
+  if(s3)setText(s3,tr("Checkout","إتمام الطلب"));
   if(s3c)setText(s3c,tr("Enter delivery details, review the final total and place your order securely.","أدخل تفاصيل التوصيل وراجع المجموع النهائي ثم أرسل طلبك بأمان."));
   document.querySelectorAll(".footer-delivery").forEach(function(el){setMarkup(el,'<span class="only-en">Website checkout · WhatsApp support available</span><span class="only-ar" lang="ar">طلب مباشر عبر الموقع · واتساب متاح للمساعدة</span>')})
 }
 function updateGift(){
   var form=document.getElementById("giftForm"),btn=document.getElementById("giftSend"),note=document.getElementById("giftNote");if(!form)return;
-  if(btn)setMarkup(btn,'<span class="only-en">Continue to secure checkout</span><span class="only-ar" lang="ar">المتابعة لإتمام الطلب بأمان</span><b>→</b>');
+  if(btn)setMarkup(btn,'<span class="only-en">Continue to secure checkout</span><span class="only-ar" lang="ar">المتابعة لإتمام الطلب بأمان</span><b>'+(lang()==="ar"?"←":"→")+'</b>');
   if(note)setText(note,tr("Gift details, delivery and the final total are confirmed in website checkout. WhatsApp is available only if you need help.","يتم تأكيد تفاصيل الهدية والتوصيل والمجموع النهائي عبر إتمام الطلب في الموقع. واتساب متاح للمساعدة فقط."));
 }
 function updateCart(){

@@ -552,7 +552,7 @@
     const next=nextReward();
     const nextPct=next?Math.min(100,points/Number(next.points)*100):100;
     const code=String(m.code||"");
-    return '<div class="mr-member-head"><div><p>'+tr("Your Mouneh Points","نقاط المونة الخاصة بك")+'</p><strong>'+points.toLocaleString()+' <span>🌿</span></strong><small>'+esc(tierLabel(m.tier))+' · '+tr("annual delivered spend ","إنفاق سنوي مستلم ")+money(m.annual_spend)+'</small></div><span class="mr-tier '+esc(m.tier||"member")+'">'+esc(tierLabel(m.tier))+"</span></div>"+
+    return '<div class="mr-member-head"><div><p>'+tr("Your Mouneh Points","نقاط المونة الخاصة بك")+'</p><strong>'+points.toLocaleString()+' <span>🌿</span></strong><small>'+esc(tierLabel(m.tier))+' · '+tr("annual paid & delivered spend ","إنفاق سنوي مدفوع ومسلّم ")+money(m.annual_spend)+'</small></div><span class="mr-tier '+esc(m.tier||"member")+'">'+esc(tierLabel(m.tier))+"</span></div>"+
       accountIdentityView()+
       '<a class="mr-full-account" href="/account#overview"><span>⌂</span><div><strong>'+tr("Open My Account","فتح حسابي")+'</strong><small>'+tr("Orders, rewards, referrals, addresses & security","الطلبات والمكافآت والإحالات والعناوين والأمان")+'</small></div><b>↗</b></a>'+
       (next?'<div class="mr-progress"><div><span>'+tr("Next reward","المكافأة التالية")+'</span><b>'+esc(next.points-points)+' '+tr("points to ","نقطة للوصول إلى ")+money(next.value)+' '+tr("off","خصم")+'</b></div><i><em style="width:'+nextPct+'%"></em></i></div>':'<div class="mr-progress is-complete"><div><span>'+tr("Top milestone reached","وصلت لأعلى مرحلة")+'</span><b>'+tr("Redeem whenever you are ready.","استبدل نقاطك عندما تريد.")+"</b></div></div>")+

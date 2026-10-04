@@ -266,3 +266,76 @@ $$;
 
 revoke all on function mouneh.referral_status() from public, anon;
 grant execute on function mouneh.referral_status() to authenticated;
+
+
+/* Identity integrity guard.
+   Referral ownership and codes are immutable after join. Phone edits cannot
+   turn an existing referral into a same-phone relationship. */
+create or replace function mouneh.referral_identity_guard()
+returns trigger
+language plpgsql
+security definer
+set search_path=''
+as $
+declare
+  new_key text := mouneh.phone_key(new.phone);
+  parent_key text;
+begin
+  if new.referrer is not null and new.referrer=new.user_id then
+    raise exception 'You cannot refer your own account.';
+  end if;
+
+  if tg_op='UPDATE' then
+    if new.referrer is distinct from old.referrer then
+      raise exception 'Referral attribution cannot be changed after joining.';
+    end if;
+    if new.code is distinct from old.code then
+      raise exception 'Referral code cannot be changed.';
+    end if;
+  end if;
+
+  if new.referrer is not null then
+    select mouneh.phone_key(m.phone)
+      into parent_key
+    from mouneh.members m
+    where m.user_id=new.referrer;
+
+    if length(new_key)>=7 and length(coalesce(parent_key,''))>=7 and new_key=parent_key then
+      raise exception 'This referral relationship cannot use the same phone number.';
+    end if;
+  end if;
+
+  if length(new_key)>=7 and exists(
+    select 1
+    from mouneh.members child
+    where child.referrer=new.user_id
+      and child.user_id<>new.user_id
+      and length(mouneh.phone_key(child.phone))>=7
+      and mouneh.phone_key(child.phone)=new_key
+  ) then
+    raise exception 'This phone number is already used by an account you referred.';
+  end if;
+
+  return new;
+end
+$;
+
+revoke all on function mouneh.referral_identity_guard() from public, anon, authenticated;
+
+drop trigger if exists mouneh_members_referral_identity_guard on mouneh.members;
+create trigger mouneh_members_referral_identity_guard
+before insert or update of phone, referrer, code on mouneh.members
+for each row execute function mouneh.referral_identity_guard();
+
+/* One-time cleanup for legacy data created before the guard existed.
+   Never remove an attribution that has already issued a referral reward. */
+update mouneh.members child
+set referrer=null
+from mouneh.members parent
+where parent.user_id=child.referrer
+  and length(mouneh.phone_key(child.phone))>=7
+  and mouneh.phone_key(child.phone)=mouneh.phone_key(parent.phone)
+  and not exists (
+    select 1 from mouneh.order_links l
+    where l.user_id=child.user_id and l.referral_awarded
+  );

@@ -8,7 +8,7 @@
   const LEGAL_PENDING_KEY="zwm:mouneh:legal-consent-pending:v1";
   const LEGAL_CONSENT_VERSION="2026-10-04";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-shell2";
+  const VERSION="20261004-shell3";
   const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false,referralStatus:null};
 
   const $=(id)=>document.getElementById(id);
@@ -632,7 +632,7 @@
   function injectUI(){
     if($("mounehRewardsDrawer"))return;
     const link=document.createElement("link");
-    link.rel="stylesheet";link.href="mouneh-rewards-v6.css?v="+VERSION;document.head.appendChild(link);
+    link.rel="stylesheet";link.href="mouneh-rewards-v7.css?v="+VERSION;document.head.appendChild(link);
 
     const nav=document.querySelector(".nav-actions");
     let btn=$("mounehRewardsButton");

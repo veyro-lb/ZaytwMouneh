@@ -377,3 +377,37 @@
     align-self:flex-start;
   }
 }
+
+
+/* ===== account-removal-admin-v1 ===== */
+.rewards-member-danger{
+  grid-column:1/-1!important;
+  height:auto!important;
+  border-color:#e7c7c3!important;
+  background:#fff7f6!important;
+}
+.rewards-member-danger h4{color:#8b302b}
+.rewards-member-danger p{max-width:780px}
+.rewards-member-danger .danger-button{
+  width:max-content;
+  min-width:150px;
+  margin-top:4px!important;
+  background:#9d342d!important;
+  color:#fff!important;
+  border:1px solid #9d342d!important;
+}
+.rewards-member-danger .danger-button:hover{background:#7f2924!important}
+.customer-card-actions .customer-account-manage{
+  border:1px solid #d8dfd6;
+  background:#f7f8f4;
+  color:var(--green);
+  border-radius:10px;
+  min-height:38px;
+  padding:8px 10px;
+  font-weight:800;
+  cursor:pointer;
+}
+.customer-card-actions .customer-account-manage:hover{background:#edf3eb}
+@media(max-width:560px){
+  .rewards-member-danger .danger-button{width:100%}
+}

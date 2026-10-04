@@ -60,6 +60,32 @@
     return data;
   }
 
+  async function ownerFunction(name,payload={},retry=true){
+    const s=session();
+    if(!s)throw new Error(tr("Owner session required.","يلزم تسجيل دخول المالك."));
+    const endpoint=String(cfg.supabaseUrl||"").replace(/\/$/,"")+"/functions/v1/"+name;
+    const r=await fetch(endpoint,{
+      method:"POST",
+      headers:{"apikey":cfg.supabasePublishableKey,"Authorization":"Bearer "+s.access_token,"Content-Type":"application/json"},
+      body:JSON.stringify(payload)
+    });
+    const data=await r.json().catch(()=>({}));
+    if(r.status===401&&retry&&s.refresh_token){
+      const refreshed=await fetch(cfg.supabaseUrl+"/auth/v1/token?grant_type=refresh_token",{
+        method:"POST",
+        headers:{apikey:cfg.supabasePublishableKey,"Content-Type":"application/json"},
+        body:JSON.stringify({refresh_token:s.refresh_token})
+      });
+      const next=await refreshed.json().catch(()=>({}));
+      if(refreshed.ok&&next.access_token){
+        sessionStorage.setItem(SESSION_KEY,JSON.stringify({...s,...next,expires_at:Math.floor(Date.now()/1000)+next.expires_in}));
+        return ownerFunction(name,payload,false);
+      }
+    }
+    if(!r.ok)throw new Error(data.error||data.message||tr("Account removal failed.","تعذّرت إزالة الحساب."));
+    return data;
+  }
+
   function toast(message,error=false){
     if(error&&isAr()&&/[a-zA-Z]{3}/.test(message)){
       const errors={"An active reward already uses this points level":"توجد مكافأة مفعّلة بهذا العدد من النقاط.","Owner access required":"يلزم تسجيل دخول المالك.","Reward no longer exists":"لم تعد هذه المكافأة موجودة. حدّث البيانات.","Invalid reward points, discount or minimum order":"تحقّق من النقاط وقيمة الخصم والحد الأدنى للطلب.","Owner session required.":"يلزم تسجيل دخول المالك."};
@@ -225,6 +251,37 @@
     if(message)toast(message);
   }
 
+  async function removeCustomerAccount(userId,label,button){
+    if(!userId||state.busy)return;
+    const display=label||tr("this customer","هذا العميل");
+    const warning=tr(
+      "Remove "+display+"’s account? Their login, points, vouchers, saved addresses and rewards profile will be deleted. Historical orders will stay.",
+      "إزالة حساب "+display+"؟ سيتم حذف تسجيل الدخول والنقاط والقسائم والعناوين المحفوظة وملف المكافآت، بينما ستبقى الطلبات السابقة."
+    );
+    if(!window.confirm(warning))return;
+    const typed=window.prompt(tr("Type DELETE to confirm permanent account removal.","اكتب DELETE لتأكيد إزالة الحساب نهائياً."));
+    if(typed!=="DELETE")return;
+    state.busy=true;
+    if(button)button.disabled=true;
+    try{
+      const result=await ownerFunction("admin-remove-customer",{user_id:userId});
+      if(state.member?.user_id===userId)closeMember();
+      state.data=await rpc("admin_data",{});
+      render();
+      try{localStorage.setItem("zwm:rewards-updated",String(Date.now()));}catch{}
+      $("refreshButton")?.click();
+      toast(tr(
+        "Customer account removed. "+Number(result.preserved_orders||0)+" historical order(s) were kept.",
+        "تمت إزالة حساب العميل. تم الاحتفاظ بـ "+Number(result.preserved_orders||0)+" من الطلبات السابقة."
+      ));
+    }catch(err){
+      toast(err?.message||tr("Could not remove customer account.","تعذّرت إزالة حساب العميل."),true);
+    }finally{
+      state.busy=false;
+      if(button&&document.contains(button))button.disabled=false;
+    }
+  }
+
   async function adjustPoints(){
     if(!state.member)return;
     const points=Number($("rewardsAdjustPoints").value),reason=$("rewardsAdjustReason").value.trim();
@@ -285,19 +342,31 @@
   function enhanceCustomerCards(){
     const grid=$("customerGrid");
     if(!grid||!state.data)return;
-    const byPhone=new Map((state.data.members||[]).map(m=>[phoneKey(m.phone),m]).filter(x=>x[0]));
+    const members=state.data.members||[];
+    const byPhone=new Map(members.map(m=>[phoneKey(m.phone),m]).filter(x=>x[0]));
+    const byId=new Map(members.map(m=>[m.user_id,m]));
     grid.querySelectorAll(".customer-card").forEach(card=>{
-
+      const key=card.dataset.customerKey||"";
       const small=card.querySelector(".customer-card-head small");
-      const member=byPhone.get(phoneKey(small?.textContent||""));
+      const member=key.startsWith("uid:")?byId.get(key.slice(4)):byPhone.get(phoneKey(small?.textContent||""));
       if(!member)return;
-      const existing=card.querySelector(".rewards-customer-badge");
       const label=member.balance+" 🌿 · "+tierName(member.tier);
-      if(existing){if(existing.textContent!==label)existing.textContent=label;return;}
-      const badge=document.createElement("span");
-      badge.className="rewards-customer-badge";
-      badge.textContent=member.balance+" 🌿 · "+tierName(member.tier);
-      card.querySelector(".customer-card-stats")?.appendChild(badge);
+      let badge=card.querySelector(".rewards-customer-badge");
+      if(!badge){
+        badge=document.createElement("span");
+        badge.className="rewards-customer-badge";
+        card.querySelector(".customer-card-stats")?.appendChild(badge);
+      }
+      badge.textContent=label;
+      const actions=card.querySelector(".customer-card-actions");
+      if(actions&&!actions.querySelector("[data-rewards-manage]")){
+        const manage=document.createElement("button");
+        manage.type="button";
+        manage.className="customer-account-manage";
+        manage.dataset.rewardsManage=member.user_id;
+        manage.textContent=tr("Manage account","إدارة الحساب");
+        actions.appendChild(manage);
+      }
     });
   }
 
@@ -355,6 +424,7 @@
       if(button.id==="rewardsAdjustButton")return run(button,adjustPoints);
       if(button.id==="rewardsTierButton")return run(button,saveTier);
       if(button.id==="rewardsGiftButton")return run(button,giftReward);
+      if(button.id==="rewardsRemoveAccountButton"&&state.member)return removeCustomerAccount(state.member.user_id,state.member.name||tr("this customer","هذا العميل"),button);
       if(button.dataset.saveRule)return run(button,()=>saveRule(button.dataset.saveRule));
       if(button.id==="rewardsSaveConfig")return run(button,saveConfig);
       if(button.dataset.disableCampaign)return run(button,()=>disableCampaign(button.dataset.disableCampaign));

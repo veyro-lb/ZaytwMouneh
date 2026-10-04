@@ -3,9 +3,9 @@
 
   const cfg = window.ZWM_CMS_CONFIG || {};
   const $ = (id) => document.getElementById(id);
-  const $ = (sel, root=document) => [...root.querySelectorAll(sel)];
-  // Compatibility alias: keeps the console usable even if an older patch accidentally references $$.
-  const $$ = $;
+  const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
+  // Compatibility alias: older patches occasionally referenced a third-dollar selector helper.
+  const $$$ = $$;
   const clone = (v) => typeof structuredClone === "function" ? structuredClone(v) : JSON.parse(JSON.stringify(v));
   const baseProducts = typeof PRODUCTS_DATA !== "undefined" ? clone(PRODUCTS_DATA) : [];
   const baseById = new Map(baseProducts.map(p => [p.id, p]));

@@ -116,3 +116,23 @@
 html[dir="rtl"] .commerce-page,html[dir="rtl"] .commerce-card{text-align:right}
 @media(max-width:900px){.checkout-grid{grid-template-columns:1fr}.checkout-summary{position:static}.commerce-header-inner{min-height:68px}.order-detail-grid{grid-template-columns:1fr}}
 @media(max-width:620px){.commerce-shell,.order-shell{width:min(100% - 20px,1180px)}.commerce-page{padding-top:20px}.commerce-header-inner{gap:9px}.commerce-brand span{display:none}.commerce-header-actions a:not(.is-primary){display:none}.commerce-card{padding:17px;border-radius:18px}.checkout-fields,.native-address-grid{grid-template-columns:1fr}.checkout-fields .full,.native-address-grid .full{grid-column:auto}.saved-address-row{grid-template-columns:1fr}.account-order-row-native{padding-inline-end:0!important}.account-order-row-native .native-order-open{position:static;transform:none;margin-top:8px;display:inline-flex}.order-timeline{overflow-x:auto;grid-template-columns:repeat(5,105px);padding-bottom:8px}.order-detail-grid{grid-template-columns:1fr}.order-actions{display:grid}.order-actions a,.order-actions button{width:100%}}
+
+
+/* Lebanon area autocomplete */
+.checkout-area-field{position:relative}
+.area-combobox{position:relative}
+.area-combobox>input{padding-inline-end:42px}
+.area-combobox:after{content:"⌄";position:absolute;inset-inline-end:14px;top:50%;transform:translateY(-52%);font-size:18px;color:var(--commerce-green);pointer-events:none}
+.area-suggestions{position:absolute;z-index:80;top:calc(100% + 7px);left:0;right:0;max-height:330px;overflow:auto;padding:7px;background:#fff;border:1px solid rgba(24,76,42,.2);border-radius:14px;box-shadow:0 18px 42px rgba(19,55,31,.16)}
+.area-suggestion{width:100%;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;text-align:start;border:0;background:transparent;border-radius:10px;padding:10px 11px;color:var(--commerce-ink);font:inherit;cursor:pointer}
+.area-suggestion:hover,.area-suggestion:focus{outline:0;background:#f0f6ec}
+.area-suggestion strong{font-size:.82rem;line-height:1.35}
+.area-suggestion small{max-width:48%;text-align:end;color:var(--commerce-muted);font-size:.68rem;line-height:1.4}
+.checkout-help.is-selected{color:var(--commerce-green);font-weight:800}
+html[dir="rtl"] .area-suggestion{text-align:right}
+html[dir="rtl"] .area-suggestion small{text-align:left}
+@media(max-width:620px){
+  .area-suggestions{max-height:280px;border-radius:12px}
+  .area-suggestion{padding:11px 9px}
+  .area-suggestion small{max-width:52%}
+}

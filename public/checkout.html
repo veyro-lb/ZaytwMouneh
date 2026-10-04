@@ -15,9 +15,9 @@
   <link rel="stylesheet" href="/styles.css?v=20261004-mobileheader1">
   <link rel="stylesheet" href="/premium.css?v=20261004-uifix1">
   <link rel="stylesheet" href="/mouneh-rewards-v8.css?v=20261004-panel-fit2">
-  <link rel="stylesheet" href="/commerce-v1.css?v=20261004-nativecheckout1">
-  <meta name="zwm-release" content="20261004-nativecheckout3" />
-  <script src="/storefront-release.js?v=20261004-nativecheckout3" defer></script>
+  <link rel="stylesheet" href="/commerce-v1.css?v=20261004-deliveryarea1">
+  <meta name="zwm-release" content="20261004-deliveryarea1" />
+  <script src="/storefront-release.js?v=20261004-deliveryarea1" defer></script>
 </head>
 <body data-page="checkout">
   <header class="commerce-header">
@@ -55,8 +55,13 @@
             <div class="commerce-card-head"><div><h2 data-i18n="deliveryTitle">Delivery</h2><p data-i18n="deliveryHelp">Use the details a local driver would need in Lebanon.</p></div><span class="commerce-step">2</span></div>
             <div id="giftCheckoutFields" class="checkout-fields" hidden><label><span data-i18n="recipientName">Recipient name</span><input id="checkoutRecipientName" maxlength="120"></label><label><span data-i18n="recipientPhone">Recipient phone</span><input id="checkoutRecipientPhone" type="tel" inputmode="tel" maxlength="40"></label><p class="checkout-help full" data-i18n="giftDeliveryHelp">Use the recipient contact if the driver should call them directly.</p></div><div id="savedAddressWrap" class="saved-address-row" hidden><label class="commerce-field"><span data-i18n="savedAddress">Deliver to a saved address</span><select id="savedAddressSelect"></select></label><button type="button" id="clearSavedAddress" data-i18n="anotherAddress">Use another</button></div>
             <div class="checkout-fields">
-              <label id="zoneSelectWrap" hidden><span data-i18n="area">Area / City</span><select id="checkoutZone"></select></label>
-              <label id="areaInputWrap"><span data-i18n="area">Area / City</span><input id="checkoutArea" maxlength="180" required></label>
+              <label class="full checkout-area-field"><span data-i18n="area">Area / City</span>
+                <div class="area-combobox">
+                  <input id="checkoutArea" maxlength="180" required autocomplete="address-level2" role="combobox" aria-autocomplete="list" aria-controls="areaSuggestions" aria-expanded="false" placeholder="Search town, village or area">
+                  <div id="areaSuggestions" class="area-suggestions" role="listbox" hidden></div>
+                </div>
+                <small id="areaSearchHelp" class="checkout-help">Start typing your town, village or area. If it is not listed, type the exact area yourself.</small>
+              </label>
               <label><span data-i18n="street">Street / Neighborhood</span><input id="checkoutStreet" maxlength="250" required></label>
               <label><span data-i18n="building">Building / Residence</span><input id="checkoutBuilding" maxlength="160" required></label>
               <label><span data-i18n="floor">Floor / Apartment</span><input id="checkoutFloor" maxlength="120"></label>
@@ -104,6 +109,7 @@
   <script src="/product-photos.js?v=20261004-nativecheckout1"></script>
   <script src="/mouneh-rewards-v8.js?v=20261004-nativecheckout1" data-mouneh-rewards="1"></script>
   <script src="/site-runtime-v9.js?v=20261004-nativecheckout1" data-zwm-site-runtime="1"></script>
-  <script src="/checkout.js?v=20261004-nativecheckout3"></script>
+  <script src="/lebanon-areas.js?v=20261004-deliveryarea1"></script>
+  <script src="/checkout.js?v=20261004-deliveryarea1"></script>
 </body>
 </html>

@@ -50,7 +50,7 @@ function available(p){return p&&!p.__hidden&&!["hidden","draft"].includes(p.stat
 
 function label(status){
   var en={new:"Order received",confirmed:"Confirmed",preparing:"Preparing",out_for_delivery:"Out for delivery",delivered:"Delivered",cancelled:"Cancelled"};
-  var ar={new:"تم استلام الطلب",confirmed:"تم التأكيد",preparing:"قيد التحضير",out_for_delivery:"خرج للتوصيل",delivered:"تم التسليم",cancelled:"ملغي"};
+  var ar={new:"تم استلام الطلب",confirmed:"تم التأكيد",preparing:"قيد التحضير",out_for_delivery:"خرج للتوصيل",delivered:"تم التسليم",cancelled:"ملغى"};
   return (isArabic()?ar:en)[status]||status;
 }
 
@@ -150,7 +150,7 @@ function render(){
   $("orderEyebrow").textContent=isArabic()?"طلبك":"Your order";
   $("orderHeading").textContent=new URL(location.href).searchParams.get("new")==="1"
     ?(isArabic()?"شكراً — تم استلام طلبك 🌿":"Thank you — your order is in 🌿")
-    :(isArabic()?"تفاصيل الطلب":"Order details");
+    :(isArabic()?"تفاصيل طلبك":"Order details");
   $("orderIntro").textContent=isArabic()
     ?"تتحدث هذه الصفحة تلقائياً عند انتقال طلبك إلى مرحلة جديدة."
     :"This page updates automatically as your order moves forward.";
@@ -181,16 +181,16 @@ function render(){
   $("orderNote").textContent=o.notes?(isArabic()?"ملاحظة الطلب: ":"Order note: ")+o.notes:"";
   $("orderNote").hidden=!o.notes;
 
-  $("paymentTitle").textContent=isArabic()?"الدفع والمجموع":"Payment & total";
+  $("paymentTitle").textContent=isArabic()?"الدفع والإجمالي":"Payment & total";
   $("payMethodLabel").textContent=isArabic()?"طريقة الدفع":"Payment method";
   $("payMethod").textContent=paymentLabel(o.payment_method);
   $("payStatusLabel").textContent=isArabic()?"حالة الدفع":"Payment status";
   $("payStatus").textContent=paymentStatusLabel(o.payment_status);
   $("payStatus").className="order-payment-status payment-"+String(o.payment_status||"pending");
-  $("subLabel").textContent=isArabic()?"المجموع الفرعي":"Subtotal";
+  $("subLabel").textContent=isArabic()?"الإجمالي الفرعي":"Subtotal";
   $("rewardLabel").textContent=isArabic()?"المكافأة":"Reward";
   $("delLabel").textContent=isArabic()?"التوصيل":"Delivery";
-  $("totalLabel").textContent=isArabic()?"المجموع":"Total";
+  $("totalLabel").textContent=isArabic()?"الإجمالي":"Total";
   $("orderSubtotal").textContent=money(o.subtotal!=null?o.subtotal:Number(o.total)-Number(o.delivery_fee||0)+Number(o.reward_discount||0));
   $("orderReward").textContent="-"+money(o.reward_discount||0);
   $("orderRewardRow").hidden=Number(o.reward_discount||0)<=0;

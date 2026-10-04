@@ -863,6 +863,7 @@
   const state = {
     client: null, user: null, membership: null,
     overrides: new Map(), settings: new Map(), events: [], activity: [], orders: [], notes: new Map(), backups: [], analyticsError:null,
+    loadErrors:{products:null,settings:null,events:null,activity:null,orders:null,notes:null,backups:null},
     products: [], editingId: null, imageFile: null, imageDims: null,
     activeView: "overview", productFilter: { q:"", category:"", status:"", availability:"" },
     selectedProducts:new Set(),
@@ -959,9 +960,21 @@
   }
 
   function showOnly(id) {
+    const ownerVisible=id==="adminApp";
     for (const key of ["setupScreen","loginScreen","adminApp"]) {
       const el = $(key);
       if (el) el.hidden = key !== id;
+    }
+    const mobileNav=$("mobileAdminNav");
+    if(mobileNav)mobileNav.hidden=!ownerVisible;
+    if(!ownerVisible){
+      for(const key of ["mobileMoreSheet","mobileMoreBackdrop","quickActionSheet","quickActionBackdrop"]){
+        const el=$(key);if(el)el.hidden=true;
+      }
+      $("adminSidebar")?.classList.remove("is-open");
+      if($("sidebarBackdrop"))$("sidebarBackdrop").hidden=true;
+      document.body.classList.remove("admin-menu-open","mobile-more-open");
+      document.body.style.overflow="";
     }
   }
 
@@ -1147,10 +1160,13 @@
       const ordersRes=await loadAllOrders();
       if(ordersRes.error)throw ordersRes.error;
       state.orders=ordersRes.data||[];
-      renderOrders();renderCustomers();renderOverview();renderAnalytics();
+      state.loadErrors.orders=null;
+      renderOrders();renderCustomers();renderOverview();renderAnalytics();renderSettings();
       if(selected&&$("orderModal")&&!$("orderModal").hidden)openOrderDetails(selected);
       localizeDom($("adminApp"));
     }catch(err){
+      state.loadErrors.orders=err||new Error("Order refresh failed");
+      renderSettings();
       console.warn("Live order refresh failed:",err);
       toast("Could not refresh incoming orders. Retrying automatically.","error");
     }finally{state.orderSyncBusy=false;}
@@ -1242,9 +1258,19 @@
       state.client.from(cfg.tables.backups || "admin_backups").select("*").order("created_at",{ascending:false}).limit(12)
     ]);
 
+    state.loadErrors={
+      products:overridesRes.error||null,
+      settings:settingsRes.error||null,
+      events:eventsRes.error||null,
+      activity:activityRes.error||null,
+      orders:ordersRes.error||null,
+      notes:notesRes.error||null,
+      backups:backupsRes.error||null
+    };
     if (overridesRes.error) toast("Could not load product changes.", "error");
     if (settingsRes.error) toast("Could not load website settings.", "error");
     if (eventsRes.error) toast("Could not load website analytics.", "error");
+    if (activityRes.error) toast("Could not load owner activity.", "error");
     if (ordersRes.error) toast("Could not load order history.", "error");
     if (notesRes.error) toast("Could not load private notes.", "error");
     if (backupsRes.error) toast("Could not load cloud backups.", "error");
@@ -2508,11 +2534,14 @@
   }
 
   function renderSettings() {
-    $("backendDatabase").textContent = state.overrides instanceof Map ? "Connected" : "Unavailable";
-    $("backendAnalytics").textContent=state.analyticsError?"Error":"Connected";
-    $("backendStorage").textContent="Configured";
+    const errors=state.loadErrors||{};
+    const databaseError=!!(errors.products||errors.settings||errors.orders||errors.activity||errors.notes||errors.backups);
+    const analyticsError=!!(errors.events||state.analyticsError);
+    $("backendDatabase").textContent=databaseError?"Needs attention":"Connected";
+    $("backendAnalytics").textContent=analyticsError?"Needs attention":"Connected";
+    $("backendStorage").textContent=cfg.storageBucket?"Configured":"Missing configuration";
     const badge=$("backendStatusBadge");
-    const ok=!state.analyticsError;
+    const ok=!databaseError&&!analyticsError&&!!cfg.storageBucket;
     badge.textContent=ok?"Connected":"Needs attention";
     badge.className="status-badge "+(ok?"status-live":"status-hidden");
     renderCloudBackups();

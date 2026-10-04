@@ -85,7 +85,10 @@
           </section>
           <section class="commerce-card">
             <div class="commerce-card-head"><div><h2 data-i18n="reviewTitle">Review & place order</h2><p data-i18n="reviewHelp">Your final total is re-calculated securely on the server before the order is created.</p></div><span class="commerce-step">6</span></div>
-            <label class="legal-check"><input id="checkoutTerms" type="checkbox" required><span data-i18n-html="terms">I agree to the <a href="/terms-and-rewards.html" target="_blank" rel="noopener">Terms of Service</a>, <a href="/privacy-and-data.html" target="_blank" rel="noopener">Privacy Policy</a> and applicable order/delivery terms.</span></label>
+            <div class="legal-check">
+              <label class="legal-check-toggle" for="checkoutTerms"><input id="checkoutTerms" type="checkbox" required><span data-i18n="termsConsent">I agree to the Terms of Service, Privacy Policy and applicable order/delivery terms.</span></label>
+              <div class="legal-check-links"><a href="/terms-and-rewards.html" target="_blank" rel="noopener noreferrer" data-i18n="termsLink">Open Terms of Service ↗</a><a href="/privacy-and-data.html" target="_blank" rel="noopener noreferrer" data-i18n="privacyLink">Open Privacy Policy ↗</a></div>
+            </div>
           </section>
         </div>
         <aside class="commerce-card checkout-summary">

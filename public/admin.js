@@ -1531,13 +1531,14 @@
   }
 
   function renderCustomers(){
-    let items=customerGroups();
+    const allCustomers=customerGroups();
+    let items=[...allCustomers];
     const q=state.customerFilter.q.trim().toLowerCase();
     if(q)items=items.filter(c=>[c.name,c.phone,c.area].join(" ").toLowerCase().includes(q));
     if(state.customerFilter.sort==="orders")items.sort((a,b)=>b.orders.length-a.orders.length);
     else if(state.customerFilter.sort==="spend")items.sort((a,b)=>b.total-a.total);
     else items.sort((a,b)=>new Date(b.last)-new Date(a.last));
-    $("navCustomerCount").textContent=items.length;
+    $("navCustomerCount").textContent=allCustomers.length;
     $("customerGrid").innerHTML=items.length?items.map(c=>`
       <article class="customer-card" data-customer-key="${esc(c.key)}">
         <div class="customer-card-head"><div><b>${esc(c.name)}</b><small>${esc(c.phone||c.area||"No phone saved")}</small></div><strong>${money(c.total)}</strong></div>
@@ -2708,25 +2709,30 @@
   }
 
   function orderSpreadsheetRows() {
-    return state.orders.map(order=>({
-      "Order Code":order.reference,
-      "Type":order.kind,
-      "Status":order.status,
-      "Customer":order.customer_name||order.extra?.recipient||"",
-      "Phone / WhatsApp":order.customer_phone||"",
-      "Area":order.area||"",
-      "Items":(Array.isArray(order.items)?order.items:[]).map(i=>`${Number(i.qty)||1}× ${i.name||i.product_id||"Item"}${i.size?` (${i.size})`:""}`).join(" | "),
-      "Items JSON":JSON.stringify(order.items||[]),
-      "Subtotal / Total USD":Number(order.total)||0,
-      "Customer Notes":order.notes||"",
-      "Private Owner Note":order.private_notes||state.notes.get(`order:${order.reference}`)?.note||"",
-      "Language":order.language||"",
-      "Submitted At":order.submitted_at||"",
-      "Confirmed At":order.confirmed_at||"",
-      "Out For Delivery At":order.out_for_delivery_at||"",
-      "Delivered At":order.delivered_at||"",
-      "Cancelled At":order.cancelled_at||""
-    }));
+    return state.orders.map(order=>{
+      const items=Array.isArray(order.items)?order.items:[];
+      return {
+        "Order Code":order.reference,
+        "Type":order.kind,
+        "Status":order.status,
+        "Customer":order.customer_name||order.extra?.recipient||"",
+        "Phone / WhatsApp":order.customer_phone||"",
+        "Area":order.area||"",
+        "Item Lines":items.length,
+        "Total Quantity":items.reduce((sum,i)=>sum+(Number(i.qty)||1),0),
+        "Items":items.map(i=>`${Number(i.qty)||1}× ${i.name||i.product_id||"Item"}${i.size?` (${i.size})`:""}`).join(" | "),
+        "Order Total USD":Number(order.total)||0,
+        "Customer Notes":order.notes||"",
+        "Private Owner Note":order.private_notes||state.notes.get(`order:${order.reference}`)?.note||"",
+        "Language":order.language||"",
+        "Submitted At":order.submitted_at||"",
+        "Confirmed At":order.confirmed_at||"",
+        "Out For Delivery At":order.out_for_delivery_at||"",
+        "Delivered At":order.delivered_at||"",
+        "Cancelled At":order.cancelled_at||"",
+        "Items JSON":JSON.stringify(items)
+      };
+    });
   }
 
   function customerSpreadsheetRows() {
@@ -2824,7 +2830,14 @@
     const safeRows=Array.isArray(rows)&&rows.length?rows:[{"No data":""}];
     const sheet=window.XLSX.utils.json_to_sheet(safeRows);
     const headers=Object.keys(safeRows[0]||{});
-    sheet["!cols"]=headers.map(header=>({wch:Math.min(42,Math.max(12,header.length+2))}));
+    sheet["!cols"]=headers.map(header=>{
+      let width=header.length+2;
+      for(const row of safeRows.slice(0,150)){
+        const text=safeText(row?.[header]).replace(/[\r\n]+/g," ");
+        width=Math.max(width,Math.min(38,text.length+2));
+      }
+      return {wch:Math.max(10,Math.min(38,width))};
+    });
     if(sheet["!ref"])sheet["!autofilter"]={ref:sheet["!ref"]};
     window.XLSX.utils.book_append_sheet(workbook,sheet,name.slice(0,31));
   }

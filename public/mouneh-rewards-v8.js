@@ -423,14 +423,14 @@
       '<div class="mr-hero-mark">🌿</div>'+
       '<p>'+tr("Mouneh Rewards","مكافآت المونة")+'</p>'+
       '<h2>'+tr("Your pantry gives back.","مونتك بتردّلك الجميل.")+'</h2>'+
-      '<span>'+tr("Earn points on delivered orders, unlock rewards, referrals and member-only boosts.","اجمع نقاط على الطلبات المستلمة وافتح مكافآت وإحالات ومضاعفات خاصة بالأعضاء.")+'</span>'+
-      '<div class="mr-rule"><strong>$1 = 1 🌿</strong><small>'+tr("Base earning rate · points confirm after delivery","المعدل الأساسي · تتثبت النقاط بعد الاستلام")+'</small></div>'+
+      '<span>'+tr("Earn points on paid, delivered orders, unlock rewards, referrals and member-only boosts.","اجمع نقاط على الطلبات المدفوعة والمسلّمة وافتح مكافآت وإحالات ومضاعفات خاصة بالأعضاء.")+'</span>'+
+      '<div class="mr-rule"><strong>$1 = 1 🌿</strong><small>'+tr("Base earning rate · points confirm after delivery + payment","المعدل الأساسي · تتثبت النقاط بعد التسليم واستلام الدفع")+'</small></div>'+
       '<div class="mr-wallet-preview"><span>◫</span><div><strong>'+tr("Mouneh Points Wallet","محفظة نقاط المونة")+'</strong><small>'+tr("Your redeemed vouchers stay together here until you use them.","تجتمع قسائمك المستبدلة هنا حتى تستخدمها.")+'</small></div></div>'+
     "</div>"+
     rewardOptionsSummary()+
     rewardCards(true)+
     '<div class="mr-auth-actions"><button class="mr-primary" type="button" data-mr-auth="signup">'+tr("Join Mouneh Rewards","انضم إلى مكافآت المونة")+'</button><button type="button" data-mr-auth="signin">'+tr("I already have an account","لدي حساب")+"</button></div>"+
-    '<div class="mr-benefits"><span>+10 '+tr("welcome points","نقاط ترحيبية")+'</span><span>+20 '+tr("first delivered order","أول طلب مستلم")+'</span><span>+50 '+tr("when a referred friend qualifies","عند تأهل صديق مُحال")+"</span></div>";
+    '<div class="mr-benefits"><span>+10 '+tr("welcome points","نقاط ترحيبية")+'</span><span>+20 '+tr("first paid & delivered order","أول طلب مدفوع ومسلّم")+'</span><span>+50 '+tr("when a referred friend qualifies","عند تأهل صديق مُحال")+"</span></div>";
   }
 
   function googleButton(){
@@ -509,9 +509,10 @@
       const delivered=o.status==="delivered";
       const cancelled=o.status==="cancelled";
       const points=Number(o.awarded)||0;
-      const pointLabel=delivered?("+"+points+" 🌿"):cancelled?tr("No points","بدون نقاط"):tr("Points pending","النقاط معلّقة");
-      return '<article><div><strong>'+esc(o.reference)+'</strong><small>'+esc(orderStatusLabel(o.status))+' · '+money(o.total)+'</small></div><span class="'+(delivered?"is-confirmed":cancelled?"is-cancelled":"is-pending")+'">'+pointLabel+'</span></article>';
-    }).join("")+'</div><small class="mr-order-proof">✓ '+tr("Points become final only after Zayt w Mouneh confirms the order as delivered.","تصبح النقاط نهائية فقط بعد أن تؤكد زيت ومونة أن الطلب تم تسليمه.")+'</small></section>';
+      const earned=points>0;
+      const pointLabel=earned?("+"+points+" 🌿"):cancelled?tr("No points","بدون نقاط"):tr("Points pending","النقاط معلّقة");
+      return '<article><div><strong>'+esc(o.reference)+'</strong><small>'+esc(orderStatusLabel(o.status))+' · '+money(o.total)+'</small></div><span class="'+(earned?"is-confirmed":cancelled?"is-cancelled":"is-pending")+'">'+pointLabel+'</span></article>';
+    }).join("")+'</div><small class="mr-order-proof">✓ '+tr("Points become final only after delivery and payment are both confirmed.","تصبح النقاط نهائية فقط بعد تأكيد التسليم واستلام الدفع.")+'</small></section>';
   }
   function referralView(){
     const m=state.dashboard?.member||{};
@@ -522,7 +523,7 @@
     const disqualified=Math.max(0,Number(rs.disqualified)||0);
     const pending=Math.max(0,Number(rs.pending??(joined-qualified-disqualified))||0);
     const link=referralShareLink(code);
-    return '<section class="mr-referral"><div class="mr-referral-main"><p>'+tr("Invite a friend","ادعُ صديقاً")+'</p><h3>'+tr("Share your pantry code","شارك رمز المونة الخاص بك")+'</h3><span>'+tr("You earn 50 points only when the referred friend joins before ordering and their first delivered order qualifies at $25+. Your friend gets a 20-point referral bonus.","تحصل على 50 نقطة فقط عندما ينضم الصديق المُحال قبل الطلب ويكون أول طلب مُسلّم له مؤهلاً بقيمة 25$ أو أكثر. ويحصل صديقك على 20 نقطة إحالة.")+'</span><div class="mr-referral-stats"><small>'+tr("Joined","انضموا")+'<b>'+joined+'</b></small><small>'+tr("Waiting","بانتظار التسليم")+'<b>'+pending+'</b></small><small>'+tr("Qualified","تأهلوا")+'<b>'+qualified+'</b></small>'+(disqualified?'<small>'+tr("Not eligible","غير مؤهل")+'<b>'+disqualified+'</b></small>':'')+'</div><em>✓ '+tr("Delivery is verified by Zayt w Mouneh in the owner order system before any referral points are issued.","يتم تأكيد التسليم من زيت ومونة في نظام الطلبات الخاص بالمالك قبل إصدار أي نقاط إحالة.")+'</em></div><button type="button" data-mr-copy="'+esc(link)+'"><small>'+tr("Your code","رمزك")+'</small><strong>'+esc(code)+'</strong><em>'+tr("Copy invite link","نسخ رابط الدعوة")+'</em></button></section>';
+    return '<section class="mr-referral"><div class="mr-referral-main"><p>'+tr("Invite a friend","ادعُ صديقاً")+'</p><h3>'+tr("Share your pantry code","شارك رمز المونة الخاص بك")+'</h3><span>'+tr("You earn 50 points only when the referred friend joins before ordering and their first $25+ qualifying order is both delivered and paid. Your friend gets a 20-point referral bonus.","تحصل على 50 نقطة فقط عندما ينضم الصديق المُحال قبل الطلب ويكون أول طلب مؤهل بقيمة 25$ أو أكثر قد تم تسليمه ودفعه. ويحصل صديقك على 20 نقطة إحالة.")+'</span><div class="mr-referral-stats"><small>'+tr("Joined","انضموا")+'<b>'+joined+'</b></small><small>'+tr("Waiting","بانتظار التسليم")+'<b>'+pending+'</b></small><small>'+tr("Qualified","تأهلوا")+'<b>'+qualified+'</b></small>'+(disqualified?'<small>'+tr("Not eligible","غير مؤهل")+'<b>'+disqualified+'</b></small>':'')+'</div><em>✓ '+tr("Delivery and payment are verified in the owner order system before any referral points are issued.","يتم تأكيد التسليم واستلام الدفع في نظام الطلبات الخاص بالمالك قبل إصدار أي نقاط إحالة.")+'</em></div><button type="button" data-mr-copy="'+esc(link)+'"><small>'+tr("Your code","رمزك")+'</small><strong>'+esc(code)+'</strong><em>'+tr("Copy invite link","نسخ رابط الدعوة")+'</em></button></section>';
   }
 
   function walletView(){
@@ -773,7 +774,7 @@
     const subtotal=Number(state.lastSubtotal)||0;
     const m=state.dashboard?.member;
     if(!m){
-      box.innerHTML='<button type="button" class="mr-checkout-join" data-mr-open><span>🌿</span><div><strong>'+tr("Earn Mouneh Points on this order","اجمع نقاط المونة على هذا الطلب")+'</strong><small>'+tr("Sign in or join before ordering. Points are confirmed when delivered.","سجّل الدخول أو انضم قبل الطلب. تتثبت النقاط عند الاستلام.")+"</small></div><b>↗</b></button>";
+      box.innerHTML='<button type="button" class="mr-checkout-join" data-mr-open><span>🌿</span><div><strong>'+tr("Earn Mouneh Points on this order","اجمع نقاط المونة على هذا الطلب")+'</strong><small>'+tr("Sign in or join before ordering. Points are confirmed after delivery and payment are both verified.","سجّل الدخول أو انضم قبل الطلب. تتثبت النقاط بعد تأكيد التسليم واستلام الدفع.")+"</small></div><b>↗</b></button>";
       return;
     }
     const wallet=availableWallet(subtotal);

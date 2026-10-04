@@ -1,3 +1,27 @@
+/terms
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/terms.html
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/privacy
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/privacy.html
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/terms-of-service
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/terms-of-service.html
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/privacy-policy
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/privacy-policy.html
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
 /admin.html
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
   X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex

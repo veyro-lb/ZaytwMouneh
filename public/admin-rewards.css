@@ -96,3 +96,112 @@
 [dir=rtl] .rewards-admin-shell,[dir=rtl] .rewards-member-modal{text-align:right;letter-spacing:normal}
 @media(max-width:900px){.rewards-campaign-form{grid-template-columns:repeat(2,minmax(0,1fr))}.rewards-member-modal-body{grid-template-columns:1fr}.rewards-member-action p{min-height:0}}
 @media(max-width:560px){.rewards-admin-panel{padding:14px}.rewards-new-level,.rewards-campaign-form,.reward-rule-grid{grid-template-columns:1fr}.rewards-member-tools{flex-wrap:wrap}.rewards-member-tools input{width:100%}.rewards-panel-head .field-help{max-width:none}.rewards-mini-metric{padding:12px}.rewards-new-level{padding:14px}.rewards-campaign-row{align-items:start}.rewards-auth-status-grid{grid-template-columns:1fr}}
+
+/* Member management modal responsive sizing v2 */
+.rewards-member-modal-backdrop{
+  padding:clamp(18px,2.5vw,34px);
+  overflow:hidden;
+}
+.rewards-member-modal{
+  width:min(1040px,calc(100vw - 68px));
+  max-width:1040px;
+  max-height:min(840px,calc(100dvh - 68px));
+  overflow:hidden;
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr);
+  border-radius:24px;
+}
+.rewards-member-modal header{
+  gap:18px;
+  padding:20px 22px;
+}
+.rewards-member-modal header>div{min-width:0}
+.rewards-member-modal header strong,
+.rewards-member-modal header span{overflow-wrap:anywhere}
+.rewards-member-modal header button{
+  flex:0 0 44px;
+  width:44px;
+  height:44px;
+  min-height:44px;
+  padding:0;
+  display:grid;
+  place-items:center;
+}
+.rewards-member-modal-body{
+  min-width:0;
+  min-height:0;
+  overflow:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  align-items:stretch;
+  gap:14px;
+  padding:18px;
+}
+.rewards-member-action{
+  min-width:0;
+  height:100%;
+  align-content:start;
+}
+.rewards-member-action button{margin-top:auto}
+.rewards-member-action input,
+.rewards-member-action select{max-width:100%}
+
+@media(max-width:900px){
+  .rewards-member-modal-backdrop{padding:20px}
+  .rewards-member-modal{
+    width:min(680px,calc(100vw - 40px));
+    max-height:calc(100dvh - 40px);
+  }
+  .rewards-member-modal-body{
+    grid-template-columns:1fr;
+    align-items:start;
+    padding:16px;
+  }
+  .rewards-member-action{height:auto}
+  .rewards-member-action button{margin-top:0}
+}
+
+@media(max-width:560px){
+  .rewards-member-modal-backdrop{
+    place-items:end center;
+    padding:10px;
+  }
+  .rewards-member-modal{
+    width:100%;
+    max-width:none;
+    max-height:calc(100dvh - 20px);
+    border-radius:18px;
+  }
+  .rewards-member-modal header{
+    position:relative;
+    padding:14px 14px 13px;
+    gap:12px;
+  }
+  .rewards-member-modal header strong{font-size:1rem}
+  .rewards-member-modal header small,
+  .rewards-member-modal header span{font-size:.75rem}
+  .rewards-member-modal-body{
+    padding:12px;
+    gap:10px;
+  }
+  .rewards-member-action{
+    padding:13px;
+    border-radius:13px;
+  }
+}
+
+@media(max-width:380px){
+  .rewards-member-modal-backdrop{padding:0}
+  .rewards-member-modal{
+    max-height:100dvh;
+    height:100dvh;
+    border-radius:0;
+  }
+  .rewards-member-modal header{
+    padding-top:max(14px,env(safe-area-inset-top));
+  }
+  .rewards-member-modal-body{
+    padding-bottom:max(12px,env(safe-area-inset-bottom));
+  }
+}

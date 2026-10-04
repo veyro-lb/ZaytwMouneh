@@ -5377,3 +5377,44 @@ html[dir="rtl"] body .only-en{
     min-height:54px!important;
   }
 }
+
+
+/* ===== v52 interaction reliability + overlay click-through ===== */
+button,
+a,
+[role="button"],
+input[type="button"],
+input[type="submit"]{
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.cart-backdrop{
+  z-index:3900!important;
+  pointer-events:none!important;
+}
+.cart-backdrop.is-visible{
+  pointer-events:auto!important;
+}
+.cart-drawer{
+  z-index:4000!important;
+}
+.product-modal{
+  z-index:4100!important;
+}
+.toast{
+  z-index:4900!important;
+}
+
+button[aria-busy="true"],
+button:disabled{
+  cursor:wait;
+}
+
+@media (hover:none){
+  .product-card:hover,
+  .nav-search:hover,
+  .cart-button:hover{
+    transform:none!important;
+  }
+}

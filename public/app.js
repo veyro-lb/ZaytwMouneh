@@ -94,7 +94,7 @@ function deliveryQuoteFor(subtotal,area=""){
   if(window.ZWM_CMS?.deliveryQuote)return window.ZWM_CMS.deliveryQuote(subtotal,area);
   const delivery=liveCmsSettings()?.delivery||{};
   const amount=Math.max(0,Number(subtotal)||0);
-  const freeAbove=Math.max(0,Number(delivery.freeAbove)||0);
+  const freeAbove=Math.max(0,Number(delivery.freeAbove)||0)||50;
   const minimum=Math.max(0,Number(delivery.minimum)||0);
   const zones=Array.isArray(delivery.zones)?delivery.zones:[];
   const normalized=String(area||"").trim().toLowerCase();
@@ -1231,7 +1231,14 @@ function addToCart(p,v,qty){
   cart[key]={productId:p.id,variantId:v.id,qty:Math.max(1,Number(qty)||1)};
   saveCart();
   renderCart();
-  toast(`${currentName(p)} · ${lang==="ar"?v.sizeAr:v.sizeEn} — ${UI[lang].added}`);
+  const cartTotal=cartRows().reduce((sum,row)=>sum+row.qty*Number(row.v.price),0);
+  const delivery=deliveryQuoteFor(cartTotal,$("#customerArea")?.value||"");
+  const threshold=delivery.freeAbove||50;
+  const remaining=Math.max(0,threshold-cartTotal);
+  const deliveryCopy=remaining>0
+    ?(lang==="ar"?"باقي "+money(remaining)+" للتوصيل المجاني":money(remaining)+" away from free delivery")
+    :(lang==="ar"?"التوصيل المجاني أصبح متاحاً ✓":"Free delivery unlocked ✓");
+  toast(`${currentName(p)} · ${lang==="ar"?v.sizeAr:v.sizeEn} — ${UI[lang].added} · ${deliveryCopy}`);
 }
 
 function changeCartQty(key,delta){
@@ -1605,7 +1612,7 @@ async function sendGiftOrder(){
       "",
       (lang==="ar"?"مجموع المنتجات":"Products subtotal")+": "+money(subtotal),
       ...(discount>0?[(lang==="ar"?"مكافأة نقاط المونة":"Mouneh Points reward")+": -"+money(discount)]:[]),
-      ...(delivery.fee>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+money(delivery.fee)]:(delivery.freeAbove>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+(lang==="ar"?"مجاني":"Free")]:[])),
+      ...(delivery.fee>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+money(delivery.fee)]:(delivery.freeAbove>0&&subtotal>=delivery.freeAbove?[(lang==="ar"?"التوصيل":"Delivery")+": "+(lang==="ar"?"مجاني":"Free")]:delivery.freeAbove>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+(lang==="ar"?"يُؤكّد عبر واتساب":"Confirmed on WhatsApp")]:[])),
       ...(delivery.eta?[(lang==="ar"?"الوقت المتوقع":"Estimated delivery")+": "+delivery.eta]:[]),
       base.orderTotal+": "+money(total),
       (lang==="ar"?"المستلم":"Recipient")+": "+recipient,
@@ -1894,7 +1901,7 @@ async function order(){
       "",
       (lang==="ar"?"مجموع المنتجات":"Products subtotal")+": "+money(subtotal),
       ...(discount>0?[(lang==="ar"?"مكافأة نقاط المونة":"Mouneh Points reward")+": -"+money(discount)]:[]),
-      ...(delivery.fee>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+money(delivery.fee)]:(delivery.freeAbove>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+(lang==="ar"?"مجاني":"Free")]:[])),
+      ...(delivery.fee>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+money(delivery.fee)]:(delivery.freeAbove>0&&subtotal>=delivery.freeAbove?[(lang==="ar"?"التوصيل":"Delivery")+": "+(lang==="ar"?"مجاني":"Free")]:delivery.freeAbove>0?[(lang==="ar"?"التوصيل":"Delivery")+": "+(lang==="ar"?"يُؤكّد عبر واتساب":"Confirmed on WhatsApp")]:[])),
       ...(delivery.eta?[(lang==="ar"?"الوقت المتوقع":"Estimated delivery")+": "+delivery.eta]:[]),
       t.orderTotal+": "+money(total),
       t.customer+": "+name,
@@ -2262,4 +2269,4 @@ window.applyPageMetadata=applyPageMetadata;
 document.addEventListener("DOMContentLoaded",init);
 
 /* Load the optional owner CMS/analytics bridge without delaying the storefront. */
-(()=>{if(document.querySelector('script[data-zwm-site-runtime]'))return;const s=document.createElement("script");s.src="site-runtime.js?v=20261004-interactions1";s.async=true;s.dataset.zwmSiteRuntime="1";document.head.appendChild(s);})();
+(()=>{if(document.querySelector('script[data-zwm-site-runtime]'))return;const s=document.createElement("script");s.src="site-runtime.js?v=20261004-freedelivery1";s.async=true;s.dataset.zwmSiteRuntime="1";document.head.appendChild(s);})();

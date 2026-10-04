@@ -170,6 +170,9 @@ function mountOrdersPanel(){
 function mountOverview(){
   var panel=qs('[data-account-panel="overview"]');
   if(!panel)return;
+  var stamp=[state.lastLoaded,state.orders.length,ar()].join("|");
+  if(panel.dataset.customerLatestStamp===stamp)return;
+  panel.dataset.customerLatestStamp=stamp;
   qsa(".customer-latest-order",panel).forEach(function(el){el.remove()});
   if(!state.orders.length)return;
   var latest=state.orders[0],grid=qs(".account-grid",panel);

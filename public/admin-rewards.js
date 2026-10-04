@@ -350,22 +350,32 @@
       const small=card.querySelector(".customer-card-head small");
       const member=key.startsWith("uid:")?byId.get(key.slice(4)):byPhone.get(phoneKey(small?.textContent||""));
       if(!member)return;
+
+      const stats=card.querySelector(".customer-card-stats");
       const label=member.balance+" 🌿 · "+tierName(member.tier);
       let badge=card.querySelector(".rewards-customer-badge");
-      if(!badge){
+      if(!badge&&stats){
         badge=document.createElement("span");
         badge.className="rewards-customer-badge";
-        card.querySelector(".customer-card-stats")?.appendChild(badge);
+        badge.textContent=label;
+        stats.appendChild(badge);
+      }else if(badge&&badge.textContent!==label){
+        badge.textContent=label;
       }
-      badge.textContent=label;
+
       const actions=card.querySelector(".customer-card-actions");
-      if(actions&&!actions.querySelector("[data-rewards-manage]")){
-        const manage=document.createElement("button");
+      let manage=actions?.querySelector("[data-rewards-manage]");
+      if(actions&&!manage){
+        manage=document.createElement("button");
         manage.type="button";
         manage.className="customer-account-manage";
         manage.dataset.rewardsManage=member.user_id;
         manage.textContent=tr("Manage account","إدارة الحساب");
         actions.appendChild(manage);
+      }else if(manage){
+        if(manage.dataset.rewardsManage!==member.user_id)manage.dataset.rewardsManage=member.user_id;
+        const manageLabel=tr("Manage account","إدارة الحساب");
+        if(manage.textContent!==manageLabel)manage.textContent=manageLabel;
       }
     });
   }
@@ -447,7 +457,18 @@
         else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
       }
     });
-    const customers=$("customerGrid");if(customers)new MutationObserver(enhanceCustomerCards).observe(customers,{childList:true,subtree:true});
+    const customers=$("customerGrid");
+    if(customers){
+      let customerEnhanceQueued=false;
+      new MutationObserver(()=>{
+        if(customerEnhanceQueued)return;
+        customerEnhanceQueued=true;
+        queueMicrotask(()=>{
+          customerEnhanceQueued=false;
+          enhanceCustomerCards();
+        });
+      }).observe(customers,{childList:true,subtree:true});
+    }
     const panel=document.querySelector('[data-view-panel="rewards"]');
     if(panel)new MutationObserver(()=>{if(panel.classList.contains("is-active")){setRewardsTitle();if(!state.data&&!state.loading)load();}}).observe(panel,{attributes:true,attributeFilter:["class"]});
     window.addEventListener("beforeunload",e=>{if(state.dirty){e.preventDefault();e.returnValue="";}});

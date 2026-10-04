@@ -1,0 +1,35 @@
+.customer-orders-shell{overflow:hidden}
+.customer-order-filters{display:flex;flex-wrap:wrap;gap:8px;margin:17px 0}
+.customer-order-filters button,.customer-orders-refresh{min-height:38px;border:1px solid var(--acc-line);border-radius:999px;background:#fff;color:#405348;padding:0 12px;font:800 .72rem "DM Sans",sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.customer-order-filters button b{display:grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#eef3e9;color:var(--acc-green);font-size:.67rem}
+.customer-order-filters button.is-active{background:var(--acc-green);border-color:var(--acc-green);color:#fff}
+.customer-order-filters button.is-active b{background:rgba(255,255,255,.17);color:#fff}
+.customer-orders-refresh:disabled{opacity:.55;cursor:not-allowed}
+.customer-order-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.customer-order-card{display:grid;gap:14px;padding:17px;border:1px solid var(--acc-line);border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(18,61,35,.035)}
+.customer-order-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.customer-order-card-head strong,.customer-order-card-head small{display:block}
+.customer-order-card-head strong{margin-top:3px;color:var(--acc-green);font-size:.94rem;letter-spacing:.01em}
+.customer-order-card-head small{color:#7b857e;font-size:.7rem}
+.customer-order-preview{margin:0;min-height:38px;color:#647168;font-size:.77rem;line-height:1.55}
+.customer-order-meta{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.customer-order-meta span{padding:10px 11px;border-radius:12px;background:#f7f8f4}
+.customer-order-meta small,.customer-order-meta strong{display:block}
+.customer-order-meta small{color:#7a857d;font-size:.65rem;font-weight:800}
+.customer-order-meta strong{margin-top:3px;color:#2e4b36;font-size:.83rem}
+.customer-order-actions{display:flex;gap:8px;flex-wrap:wrap}
+.customer-order-actions a{min-height:39px;display:inline-flex;align-items:center;justify-content:center;padding:0 12px;border:1px solid var(--acc-line);border-radius:999px;background:#fff;color:var(--acc-green);text-decoration:none;font-size:.72rem;font-weight:900}
+.customer-order-actions .account-primary{background:var(--acc-green);border-color:var(--acc-green);color:#fff}
+.customer-order-empty{grid-column:1/-1;display:grid;place-items:center;gap:8px;padding:34px 18px;border:1px dashed var(--acc-line);border-radius:18px;background:#fbfbf8;text-align:center}
+.customer-order-empty span{font-size:1.7rem}.customer-order-empty strong{color:#466050}.customer-order-empty a{color:var(--acc-green);font-size:.76rem;font-weight:900;text-decoration:none}
+.customer-order-error{padding:10px 12px;border-radius:12px;background:#fff5f3;color:#913d35}
+.customer-latest-order{margin-top:14px}
+.customer-latest-body{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end;margin-top:14px}
+.customer-latest-body>span{padding:11px 12px;border-radius:13px;background:#f7f8f4}
+.customer-latest-body small,.customer-latest-body strong{display:block}
+.customer-latest-body small{color:#78847b;font-size:.66rem;font-weight:800}
+.customer-latest-body strong{margin-top:4px;color:#2b4b35;font-size:.88rem}
+.customer-latest-body .account-primary{min-height:43px;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;border-radius:999px;background:var(--acc-green);color:#fff;text-decoration:none;font-size:.73rem;font-weight:900}
+html[dir="rtl"] .customer-order-card,html[dir="rtl"] .customer-latest-order{text-align:right}
+@media(max-width:820px){.customer-order-grid{grid-template-columns:1fr}.customer-latest-body{grid-template-columns:1fr 1fr}.customer-latest-body .account-primary{grid-column:1/-1}}
+@media(max-width:560px){.customer-order-filters{display:grid;grid-template-columns:1fr 1fr}.customer-order-filters button{justify-content:space-between}.customer-order-card{padding:14px}.customer-order-meta{grid-template-columns:1fr}.customer-order-actions{display:grid}.customer-order-actions a{width:100%}.customer-latest-body{grid-template-columns:1fr}.customer-latest-body .account-primary{grid-column:auto}.customer-orders-refresh{width:100%;justify-content:center}}

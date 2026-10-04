@@ -470,7 +470,17 @@
       if(!points.dataset.zwmPersistentBound){
         points.dataset.zwmPersistentBound="1";
         points.addEventListener("click",()=>{
-          if(!points.dataset.mrBound)window.ZWM_REWARDS?.open?.();
+          if(points.dataset.mrBound)return;
+          if(window.ZWM_REWARDS?.open){window.ZWM_REWARDS.open();return}
+          if(window.__ZWM_REWARDS_RETRY_LOADING)return;
+          window.__ZWM_REWARDS_RETRY_LOADING=true;
+          const retry=document.createElement("script");
+          retry.src="mouneh-rewards-v3.js?v=20261004-rewards14";
+          retry.async=true;
+          retry.dataset.mounehRewardsRetry="1";
+          retry.addEventListener("load",()=>{window.__ZWM_REWARDS_RETRY_LOADING=false;window.ZWM_REWARDS?.open?.()},{once:true});
+          retry.addEventListener("error",()=>{window.__ZWM_REWARDS_RETRY_LOADING=false},{once:true});
+          document.head.appendChild(retry);
         });
       }
     }
@@ -513,6 +523,8 @@
   }
 
   async function init(){
+    ensurePersistentChrome();
+    bindPersistentChrome();
     try{await loadScript(CONFIG_SRC)}catch{return}
     if(!enabled())return;
     if(!PREVIEW_MODE&&!document.querySelector("script[data-mouneh-rewards]")){

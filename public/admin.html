@@ -294,7 +294,7 @@
             </article>
             <article class="panel content-panel">
               <div class="panel-head"><div><p>Orders</p><h3>WhatsApp destination</h3></div></div>
-              <label>WhatsApp number<input id="contentWhatsApp" type="tel" inputmode="tel" placeholder="96181581230" /></label>
+              <label>WhatsApp number<input id="contentWhatsApp" type="tel" inputmode="tel" autocomplete="tel" minlength="8" maxlength="20" required placeholder="96181581230" /></label>
               <p class="field-help">Digits only, including country code. Existing WhatsApp order buttons will use this number.</p>
             </article>
             <article class="panel content-panel content-panel-wide">
@@ -324,9 +324,9 @@
             <div class="form-actions content-save-row">
               <div class="content-preview-actions">
                 <button class="button-secondary" id="previewContentDesktop" type="button">Preview real site · desktop</button>
-                <button class="button-secondary" id="previewContentMobile" type="button">Preview mobile</button>
+                <button class="button-secondary" id="previewContentMobile" type="button">Preview real site · mobile</button>
               </div>
-              <button class="button-primary" type="submit">Save website content</button>
+              <button class="button-primary" id="saveContentButton" type="submit">Save website content</button>
               <span id="contentStatus" class="form-status" role="status"></span>
             </div>
           </form>
@@ -450,7 +450,15 @@
           <button type="button" class="is-active" data-content-preview-mode="desktop">Desktop</button>
           <button type="button" data-content-preview-mode="mobile">Mobile</button>
         </div>
-        <a class="text-button" href="index.html" target="_blank" rel="noopener">Open live website ↗</a>
+        <label class="content-preview-page-picker">Preview page
+          <select id="contentPreviewPage">
+            <option value="index.html">Home</option>
+            <option value="shop.html">Shop</option>
+            <option value="gift.html">Gift</option>
+            <option value="contact.html">Contact</option>
+          </select>
+        </label>
+        <a class="text-button" id="openLivePreviewPage" href="index.html" target="_blank" rel="noopener">Open this live page ↗</a>
       </div>
       <div class="content-preview-stage">
         <div class="content-preview-device is-desktop" id="contentPreviewDevice">
@@ -458,7 +466,7 @@
           <iframe id="contentPreviewFrame" title="Zayt w Mouneh website preview" src="about:blank"></iframe>
         </div>
       </div>
-      <footer class="content-preview-footer"><span>This is the real storefront layout with your current unsaved form values layered into it. Nothing publishes until Save.</span><button class="button-primary" id="closeContentPreviewFooter" type="button">Done</button></footer>
+      <footer class="content-preview-footer"><span>This iframe loads the actual storefront page and layers your current unsaved values over it. Nothing publishes until Save succeeds.</span><button class="button-primary" id="closeContentPreviewFooter" type="button">Done</button></footer>
     </section>
   </div>
 

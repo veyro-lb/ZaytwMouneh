@@ -196,3 +196,110 @@ body[data-page="account"] .account-complete-signout:hover{
     font-size:clamp(2.15rem,10vw,3rem);
   }
 }
+
+
+/* ===== legalcheck1: safe mobile consent control ===== */
+body[data-page="account"] .account-legal-consent{
+  display:grid;
+  gap:10px;
+  margin:20px 0 14px;
+  padding:13px 14px;
+  border:1px solid var(--acc-line);
+  border-radius:14px;
+  background:#fafbf7;
+  color:#526258;
+  font-size:.73rem;
+  line-height:1.55;
+}
+body[data-page="account"] .account-legal-toggle{
+  display:grid;
+  grid-template-columns:22px minmax(0,1fr);
+  gap:10px;
+  align-items:start;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+body[data-page="account"] .account-legal-toggle input{
+  position:absolute;
+  width:1px;
+  height:1px;
+  opacity:0;
+  pointer-events:none;
+}
+body[data-page="account"] .account-legal-check{
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  margin-top:1px;
+  border:1.5px solid #aab6ad;
+  border-radius:7px;
+  background:#fff;
+  color:transparent;
+  font-size:.78rem;
+  font-weight:900;
+  transition:background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease;
+}
+body[data-page="account"] .account-legal-toggle:has(input:checked) .account-legal-check{
+  background:var(--acc-green);
+  border-color:var(--acc-green);
+  color:#fff;
+}
+body[data-page="account"] .account-legal-toggle:has(input:focus-visible) .account-legal-check{
+  box-shadow:0 0 0 3px rgba(18,61,35,.14);
+}
+body[data-page="account"] .account-legal-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  padding-left:32px;
+}
+html[dir="rtl"] body[data-page="account"] .account-legal-links{
+  padding-left:0;
+  padding-right:32px;
+}
+body[data-page="account"] .account-legal-links a{
+  display:inline-flex;
+  align-items:center;
+  min-height:34px;
+  padding:0 10px;
+  border:1px solid #d8e0d6;
+  border-radius:999px;
+  background:#fff;
+  color:var(--acc-green);
+  text-decoration:none;
+  font-size:.66rem;
+  font-weight:900;
+  -webkit-tap-highlight-color:transparent;
+}
+body[data-page="account"] .account-legal-links a:hover,
+body[data-page="account"] .account-legal-links a:focus-visible{
+  border-color:#b8c9b9;
+  background:#f1f6ee;
+}
+@media(max-width:620px){
+  body[data-page="account"] .account-legal-consent{
+    padding:12px;
+  }
+  body[data-page="account"] .account-legal-toggle{
+    grid-template-columns:24px minmax(0,1fr);
+    gap:9px;
+    font-size:.76rem;
+  }
+  body[data-page="account"] .account-legal-check{
+    width:24px;
+    height:24px;
+    border-radius:8px;
+  }
+  body[data-page="account"] .account-legal-links,
+  html[dir="rtl"] body[data-page="account"] .account-legal-links{
+    padding:0;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  body[data-page="account"] .account-legal-links a{
+    justify-content:center;
+    min-height:40px;
+    text-align:center;
+  }
+}

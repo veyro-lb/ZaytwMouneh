@@ -1539,13 +1539,46 @@
   }
 
   const ORDER_STATUS_LABELS = {
-    new:"New",
+    new:"Order received",
     confirmed:"Confirmed",
     preparing:"Preparing",
     out_for_delivery:"Out for delivery",
     delivered:"Delivered",
     cancelled:"Cancelled"
   };
+  const PAYMENT_STATUS_LABELS=Object.freeze({
+    pending:"Payment pending",
+    paid:"Payment received",
+    failed:"Payment failed",
+    refunded:"Refunded",
+    partially_refunded:"Partially refunded",
+    not_required:"No payment required"
+  });
+  function paymentMethodLabel(method){
+    const value=safeText(method||"cash_on_delivery");
+    if(value==="cash_on_delivery")return "Cash on Delivery";
+    if(value==="whish"||value==="wish")return "Whish";
+    if(value==="omt")return "OMT";
+    return value.replace(/_/g," ").replace(/\b\w/g,ch=>ch.toUpperCase());
+  }
+  function paymentStatusLabel(order){return PAYMENT_STATUS_LABELS[order?.payment_status||"pending"]||safeText(order?.payment_status||"pending");}
+  function orderRewardsState(order){
+    if(order.status==="cancelled"||["failed","refunded","partially_refunded"].includes(order.payment_status))return {label:"No points",help:"Cancelled, failed or refunded orders do not earn points.",className:"is-none"};
+    if(order.status==="delivered"&&order.payment_status==="paid")return {label:"Points earned",help:"Delivery and payment are both confirmed.",className:"is-earned"};
+    if(order.status==="delivered")return {label:"Waiting for payment",help:"Delivered, but money has not been confirmed received yet.",className:"is-waiting"};
+    if(order.payment_status==="paid")return {label:"Waiting for delivery",help:"Payment received. Points will settle after delivery.",className:"is-waiting"};
+    return {label:"Pending",help:"Points wait for both delivery and payment confirmation.",className:"is-waiting"};
+  }
+  function paymentBadgeHtml(order){
+    const status=order?.payment_status||"pending";
+    return `<span class="order-payment-badge payment-${esc(status)}">${esc(paymentStatusLabel(order))}</span>`;
+  }
+  function paymentActionHtml(order){
+    if((order?.payment_status||"pending")==="pending"){
+      return `<button type="button" class="order-payment-confirm" data-order-payment-received="${esc(order.reference)}">Confirm payment received</button>`;
+    }
+    return "";
+  }
 
   const PAST_ORDER_STATUSES = new Set(["delivered","cancelled"]);
 
@@ -1603,9 +1636,11 @@
     $$("[data-order-command]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.orderCommand===state.orderCommand));
 
     $("ordersNewCount").textContent=state.orders.filter(o=>o.status==="new").length;
-    $("ordersPreparingCount").textContent=state.orders.filter(o=>["confirmed","preparing"].includes(o.status)).length;
+    if($("ordersConfirmedCount"))$("ordersConfirmedCount").textContent=state.orders.filter(o=>o.status==="confirmed").length;
+    $("ordersPreparingCount").textContent=state.orders.filter(o=>o.status==="preparing").length;
     $("ordersOutCount").textContent=state.orders.filter(o=>o.status==="out_for_delivery").length;
     $("ordersDeliveredCount").textContent=state.orders.filter(o=>o.status==="delivered").length;
+    if($("ordersPaymentPendingCount"))$("ordersPaymentPendingCount").textContent=state.orders.filter(o=>o.status!=="cancelled"&&(o.payment_status||"pending")==="pending").length;
     $("orderResultCount").textContent=`${list.length} order${list.length===1?"":"s"} · ${state.orderCommand||state.orderScope}`;
 
     $("orderTableBody").innerHTML=list.map(orderRowHtml).join("")||'<tr><td colspan="7"><p class="empty-state">No orders match these filters.</p></td></tr>';
@@ -1651,8 +1686,8 @@
       <td><div class="order-code-cell"><b>${esc(order.reference)}</b><small>${kindLabel} · ${esc(orderSourceLabel(order))}</small></div></td>
       <td><div class="order-customer-cell"><b>${esc(customer)}</b><small>${esc(order.area||"Area not supplied")}</small></div></td>
       <td><div class="order-items-cell"><b>${esc(orderItemSummary(order))}</b><small>${Array.isArray(order.items)?order.items.reduce((n,i)=>n+(Number(i.qty)||0),0):0} total items</small></div></td>
-      <td><b>${money(order.total)}</b></td>
-      <td>${orderStatusSelect(order)}</td>
+      <td><div class="order-total-payment"><b>${money(order.total)}</b>${paymentBadgeHtml(order)}</div></td>
+      <td><div class="order-status-stack">${orderStatusSelect(order)}<small>${esc(ORDER_STATUS_LABELS[order.status]||order.status)}</small></div></td>
       <td><div class="order-date-cell"><b>${esc(when(order.submitted_at))}</b><small>${esc(new Date(order.submitted_at).toLocaleString([], {month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}))}</small></div></td>
       <td><button class="row-action" type="button" data-view-order="${esc(order.reference)}">Details</button></td>
     </tr>`;
@@ -1665,8 +1700,8 @@
       <div class="order-mobile-head"><div><b>${esc(order.reference)}</b><small>${order.kind==="gift"?"Gift":"Pantry order"} · ${esc(orderSourceLabel(order))} · ${esc(when(order.submitted_at))}</small></div><strong>${money(order.total)}</strong></div>
       <p><b>${esc(customer)}</b> · ${esc(order.area||"Area not supplied")}</p>
       <p>${esc(orderItemSummary(order))}</p>
-      ${orderStatusSelect(order)}
-      <div class="order-card-quick-actions">${orderQuickActionHtml(order)}</div>
+      <div class="order-mobile-state-row"><div><small>Delivery</small>${orderStatusSelect(order)}</div><div><small>Payment</small>${paymentBadgeHtml(order)}</div></div>
+      <div class="order-card-quick-actions">${orderQuickActionHtml(order)}${paymentActionHtml(order)}</div>
       <button class="button-secondary order-details-button" type="button" data-view-order="${esc(order.reference)}">View full order & history</button>
     </article>`;
   }
@@ -1766,6 +1801,12 @@
       $("orderDetailBreakdown").textContent=parts.join(" · ");
     }
     $("orderDetailStatus").innerHTML=orderStatusSelect(order,"order-detail-status-select");
+    if($("orderDetailPaymentStatus"))$("orderDetailPaymentStatus").innerHTML=paymentBadgeHtml(order)+(order.paid_at?`<small class="payment-paid-at">Confirmed ${esc(new Date(order.paid_at).toLocaleString([], {month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}))}</small>`:"");
+    if($("orderDetailPaymentMethod"))$("orderDetailPaymentMethod").textContent=paymentMethodLabel(order.payment_method);
+    if($("orderDetailPaymentAction"))$("orderDetailPaymentAction").innerHTML=paymentActionHtml(order);
+    const rewardsState=orderRewardsState(order);
+    if($("orderDetailRewardsState")){$("orderDetailRewardsState").textContent=rewardsState.label;$("orderDetailRewardsState").className=rewardsState.className;}
+    if($("orderDetailRewardsHelp"))$("orderDetailRewardsHelp").textContent=rewardsState.help;
     $("orderDetailItemCount").textContent=`${items.reduce((n,i)=>n+(Number(i.qty)||0),0)} item${items.reduce((n,i)=>n+(Number(i.qty)||0),0)===1?"":"s"}`;
     $("orderDetailItems").innerHTML=items.map((item,i)=>`
       <div class="order-detail-item">
@@ -1900,6 +1941,28 @@
     if(!error)state.notes.set(key,row);
   }
 
+  async function confirmOrderPayment(reference){
+    const order=state.orders.find(o=>o.reference===reference);
+    if(!order||order.payment_status==="paid")return;
+    if((order.payment_status||"pending")!=="pending"){
+      toast("This payment is not in a pending state.","error");
+      return;
+    }
+    const confirmed=window.confirm(
+      "Confirm payment was actually received?\n\n"+
+      reference+" · "+money(order.total)+"\n\n"+
+      "Only confirm after the money has been received. Mouneh Points require BOTH payment received and Delivered status."
+    );
+    if(!confirmed)return;
+    const {error}=await state.client.from(cfg.tables.orders||"orders").update({payment_status:"paid"}).eq("reference",reference);
+    if(error){toast(error.message||"Could not confirm payment.","error");await refreshOrdersLive();return;}
+    await logActivity("payment_received","order",reference,{amount:Number(order.total)||0,method:order.payment_method||"cash_on_delivery"});
+    toast(reference+": payment received ✓");
+    await refreshAll();
+    if(state.selectedOrderReference===reference)openOrderDetails(reference);
+    $("rewardsRefresh")?.click();
+  }
+
   async function updateOrderStatus(reference,status) {
     if(!ORDER_STATUS_LABELS[status])return;
     const order=state.orders.find(o=>o.reference===reference);
@@ -1914,7 +1977,10 @@
       const confirmed=window.confirm(
         "Confirm this order was actually delivered?\n\n"+
         reference+"\n\n"+
-        "Only continue after the customer/courier delivery is complete. Marking Delivered finalizes Mouneh Points and can issue a referral reward. This action is recorded in the owner history."
+        (order.payment_status==="paid"
+          ?"Payment is already confirmed received. Marking Delivered can now finalize Mouneh Points and referral rewards."
+          :"Payment is still pending. You can mark the delivery complete, but NO points will be issued until payment is separately confirmed received.")+
+        "\n\nThis action is recorded in owner history."
       );
       if(!confirmed){
         renderOrders();
@@ -1953,6 +2019,7 @@
     const activeOrders=state.orders.filter(o=>!PAST_ORDER_STATUSES.has(o.status));
     const newOrders=activeOrders.filter(o=>o.status==="new");
     const waiting=activeOrders.filter(o=>now-new Date(o.submitted_at).getTime()>=30*60000);
+    const deliveredUnpaid=state.orders.filter(o=>o.status==="delivered"&&(o.payment_status||"pending")==="pending");
     const incomplete=state.products.filter(p=>productQualityScore(p)<100&&!["hidden","draft"].includes(p.__status));
     const missingPhotos=state.products.filter(p=>!photoFor(p)&&!["hidden","draft"].includes(p.__status));
     const outOfStock=state.products.filter(p=>availabilityFor(p)==="out_of_stock"&&!["hidden","draft"].includes(p.__status));
@@ -1960,6 +2027,7 @@
 
     if(newOrders.length)items.push({key:"new_orders",level:"urgent",icon:"◎",title:`${newOrders.length} new order${newOrders.length===1?"":"s"}`,body:"Waiting for owner review.",action:"Review orders"});
     if(waiting.length)items.push({key:"waiting_orders",level:"urgent",icon:"◷",title:`${waiting.length} order${waiting.length===1?"":"s"} waiting 30+ min`,body:"These active orders have been waiting the longest.",action:"Open waiting"});
+    if(deliveredUnpaid.length)items.push({key:"delivered_unpaid",level:"urgent",icon:"$",title:`${deliveredUnpaid.length} delivered order${deliveredUnpaid.length===1?"":"s"} awaiting payment confirmation`,body:"Points are blocked until money received is confirmed.",action:"Review payments"});
     if(incomplete.length)items.push({key:"incomplete_products",level:"attention",icon:"▦",title:`${incomplete.length} incomplete product${incomplete.length===1?"":"s"}`,body:"Missing names, category, price, photo or availability.",action:"Fix products"});
     if(missingPhotos.length)items.push({key:"missing_photos",level:"attention",icon:"◫",title:`${missingPhotos.length} product${missingPhotos.length===1?"":"s"} missing photos`,body:"Clear photos make the catalogue easier to shop.",action:"Review photos"});
     if(outOfStock.length)items.push({key:"out_of_stock",level:"info",icon:"○",title:`${outOfStock.length} out of stock`,body:"Visible to customers but ordering is disabled.",action:"Review stock"});
@@ -3848,6 +3916,10 @@
     $("orderTableBody")?.addEventListener("click",orderDetailsHandler);
     $("orderCardsMobile")?.addEventListener("click",orderDetailsHandler);
     $("orderCardsMobile")?.addEventListener("click",e=>{const b=e.target.closest("[data-order-quick-status]");if(b){e.stopPropagation();updateOrderStatus(b.dataset.orderRef,b.dataset.orderQuickStatus);}});
+    const paymentHandler=e=>{const b=e.target.closest("[data-order-payment-received]");if(b){e.preventDefault();e.stopPropagation();confirmOrderPayment(b.dataset.orderPaymentReceived);}};
+    $("orderTableBody")?.addEventListener("click",paymentHandler);
+    $("orderCardsMobile")?.addEventListener("click",paymentHandler);
+    $("orderDetailPaymentAction")?.addEventListener("click",paymentHandler);
     $("orderCustomerHistory")?.addEventListener("click",orderDetailsHandler);
     $("orderDetailStatus")?.addEventListener("change",orderStatusHandler);
     $("closeOrderModal")?.addEventListener("click",closeOrderDetails);

@@ -44,7 +44,7 @@ function updateOrderCopy(){
 }
 function updateGift(){
   var form=document.getElementById("giftForm"),btn=document.getElementById("giftSend"),note=document.getElementById("giftNote");if(!form)return;
-  if(btn)setMarkup(btn,'<span class="only-en">Continue to secure checkout</span><span class="only-ar" lang="ar">المتابعة لإتمام الطلب بأمان</span><b>'+(lang()==="ar"?"←":"→")+'</b>');
+  if(btn)setMarkup(btn,'<span class="only-en">Continue to website checkout</span><span class="only-ar" lang="ar">المتابعة لإتمام الطلب بأمان</span><b>'+(lang()==="ar"?"←":"→")+'</b>');
   if(note)setText(note,tr("Gift details, delivery and the final total are confirmed in website checkout. WhatsApp is available only if you need help.","يتم تأكيد تفاصيل الهدية والتوصيل والمجموع النهائي عبر إتمام الطلب في الموقع. واتساب متاح للمساعدة فقط."));
 }
 function updateCart(){

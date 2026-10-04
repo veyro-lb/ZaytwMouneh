@@ -148,7 +148,57 @@
       }
     }
   </style>
-  <link rel="stylesheet" href="/ui-copy-polish-v1.css?v=20261005-visual4sual3sual2">
+  <link rel="stylesheet" href="/ui-copy-polish-v1.css?v=20261005-cta-final1sual4sual3sual2">
+
+  <style id="home-cta-final-fix">
+    /* Final homepage CTA geometry. Loaded after every shared stylesheet on purpose. */
+    body[data-page="home"] .home-pantry-hero .page-intro-actions > a.home-hero-cta{
+      box-sizing:border-box!important;
+      height:52px!important;
+      min-height:52px!important;
+      max-height:52px!important;
+      padding:0 20px!important;
+      margin:0!important;
+      display:flex!important;
+      flex-direction:row!important;
+      align-items:center!important;
+      justify-content:center!important;
+      align-content:center!important;
+      gap:6px!important;
+      border-radius:999px!important;
+      line-height:1!important;
+      text-align:center!important;
+      vertical-align:middle!important;
+      white-space:nowrap!important;
+    }
+    body[data-page="home"] .home-pantry-hero .page-intro-actions > a.home-hero-cta > .home-cta-text,
+    body[data-page="home"] .home-pantry-hero .page-intro-actions > a.home-hero-cta > .home-cta-arrow{
+      position:static!important;
+      inset:auto!important;
+      display:inline-flex!important;
+      align-items:center!important;
+      justify-content:center!important;
+      margin:0!important;
+      padding:0!important;
+      height:auto!important;
+      min-height:0!important;
+      line-height:1!important;
+      transform:none!important;
+      vertical-align:middle!important;
+    }
+    body[data-page="home"] .home-pantry-hero .page-intro-actions > a.home-hero-cta > .home-cta-arrow{
+      flex:0 0 auto!important;
+      font-size:.95em!important;
+    }
+    @media(max-width:560px){
+      body[data-page="home"] .home-pantry-hero .page-intro-actions > a.home-hero-cta{
+        height:50px!important;
+        min-height:50px!important;
+        max-height:50px!important;
+        padding:0 16px!important;
+      }
+    }
+  </style>
 </head>
 <body data-page="home" data-release="pantry-icons-2">
   <a class="skip-link" href="shop.html#shop" id="skipLink">Skip to catalogue</a>
@@ -264,10 +314,10 @@
           <p class="page-intro-copy only-en">Search the full catalogue, choose the exact pack size and add it directly to your pantry.</p>
           <p class="page-intro-copy only-ar" lang="ar">ابحث في كامل المنتجات، واختر الحجم المناسب وأضفه مباشرة إلى لائحة المونة.</p>
           <div class="page-intro-actions">
-            <a class="intro-primary only-en" href="shop.html#shop">Browse all products <span>↘</span></a>
-            <a class="intro-primary only-ar" lang="ar" href="shop.html#shop">تصفّح كل المنتجات <span>↙</span></a>
-            <a class="intro-secondary only-en" href="shop.html#categories">Shop by category</a>
-            <a class="intro-secondary only-ar" lang="ar" href="shop.html#categories">تسوّق حسب القسم</a>
+            <a class="intro-primary only-en home-hero-cta" href="shop.html#shop"><span class="home-cta-text">Browse all products</span><span class="home-cta-arrow" aria-hidden="true">↘</span></a>
+            <a class="intro-primary only-ar home-hero-cta" lang="ar" href="shop.html#shop"><span class="home-cta-text">تصفّح كل المنتجات</span><span class="home-cta-arrow" aria-hidden="true">↙</span></a>
+            <a class="intro-secondary only-en home-hero-cta" href="shop.html#categories"><span class="home-cta-text">Shop by category</span></a>
+            <a class="intro-secondary only-ar home-hero-cta" lang="ar" href="shop.html#categories"><span class="home-cta-text">تسوّق حسب القسم</span></a>
           </div>
         </div>
         <div class="page-intro-side shop-intro-board">

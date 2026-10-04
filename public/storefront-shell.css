@@ -1009,3 +1009,22 @@ html[dir="rtl"] .site-header .nav>.nav-actions{direction:rtl!important}
   .mobile-menu-points,
   .mobile-menu-language{grid-column:1!important}
 }
+
+
+/* ===== brandarabic1: Arabic brand wordmark ===== */
+html[dir="rtl"] .site-header .nav .brand-wordmark,
+html[lang="ar"] .site-header .nav .brand-wordmark,
+html[dir="rtl"] .footer .brand-wordmark,
+html[lang="ar"] .footer .brand-wordmark{
+  font-family:"Noto Kufi Arabic","DM Sans",system-ui,sans-serif!important;
+  letter-spacing:0!important;
+}
+@media(max-width:760px){
+  html[dir="rtl"] .site-header .nav>.brand .brand-wordmark,
+  html[lang="ar"] .site-header .nav>.brand .brand-wordmark{
+    font-family:"Noto Kufi Arabic","DM Sans",system-ui,sans-serif!important;
+    font-size:.94rem!important;
+    line-height:1.15!important;
+    max-width:132px!important;
+  }
+}

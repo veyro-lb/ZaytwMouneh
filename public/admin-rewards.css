@@ -342,3 +342,38 @@
     padding-bottom:max(10px,env(safe-area-inset-bottom));
   }
 }
+
+
+/* ===== rewards-control-polish-v1 ===== */
+.rewards-panel-head>button,
+#rewardsRefresh{
+  min-height:44px!important;
+  height:44px;
+  padding:0 14px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px;
+  border-radius:12px!important;
+  font-size:.8125rem!important;
+  font-weight:800!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+.rewards-member-card>button,
+.rewards-ladder-actions button,
+.rewards-new-level button,
+.rewards-campaign-form button{
+  min-height:44px!important;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1.25!important;
+}
+@media(max-width:560px){
+  .rewards-panel-head>button,
+  #rewardsRefresh{
+    width:auto!important;
+    align-self:flex-start;
+  }
+}

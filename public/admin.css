@@ -1695,3 +1695,53 @@ html[dir="rtl"] .auth-language-toggle{
     margin-right:0!important;
   }
 }
+
+
+/* ===== order/payment sync clarity ===== */
+.order-metrics{grid-template-columns:repeat(6,minmax(0,1fr))}
+.order-metrics .metric-card{min-height:116px}
+.order-metrics .payment-metric{background:#fff9ed;border-color:#ead9ad}
+.order-settlement-rule{display:flex;align-items:flex-start;gap:10px;margin:0 0 14px;padding:12px 14px;border:1px solid #cfe0d0;border-radius:14px;background:#eff6ee;color:var(--green)}
+.order-settlement-rule>span{font-size:18px;line-height:1}
+.order-settlement-rule>div{display:grid;gap:3px}
+.order-settlement-rule strong{font-size:11px}
+.order-settlement-rule small{font-size:9px;line-height:1.5;color:#617066}
+.order-settlement-rule b{color:var(--green)}
+
+.order-total-payment{display:grid;gap:6px;justify-items:start}
+.order-status-stack{display:grid;gap:4px}
+.order-status-stack small{font-size:8px;color:var(--muted)}
+.order-payment-badge{display:inline-flex;align-items:center;min-height:24px;width:max-content;max-width:100%;padding:4px 8px;border-radius:999px;font-size:8px;font-weight:900;line-height:1.2}
+.order-payment-badge.payment-pending{background:#fff1cf;color:#7b5a0d;border:1px solid #ead69b}
+.order-payment-badge.payment-paid{background:#e2f2e6;color:#1f6437;border:1px solid #c5dec9}
+.order-payment-badge.payment-failed,.order-payment-badge.payment-refunded{background:#f8e6e3;color:#913d35;border:1px solid #ebcac5}
+.order-payment-badge.payment-partially_refunded{background:#f6eee2;color:#805d2a;border:1px solid #e8d5b8}
+.order-payment-badge.payment-not_required{background:#edf0ec;color:#5f6961;border:1px solid #dce1da}
+.order-payment-confirm{min-height:34px;border:0;border-radius:10px;background:var(--green);color:#fff;padding:7px 10px;font-size:9px;font-weight:900;cursor:pointer}
+.order-payment-confirm:hover{background:var(--green-2)}
+.payment-paid-at{display:block;margin-top:3px;color:var(--muted);font-size:8px!important;font-weight:600}
+.order-payment-card,.order-rewards-card{background:#fbfcf9}
+.order-rewards-card strong.is-earned{color:#1f6437}
+.order-rewards-card strong.is-waiting{color:#7b5a0d}
+.order-rewards-card strong.is-none{color:#913d35}
+.order-detail-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.order-detail-card #orderDetailPaymentAction{margin-top:5px}
+.order-detail-card #orderDetailPaymentAction .order-payment-confirm{width:100%}
+.order-mobile-state-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.order-mobile-state-row>div{display:grid;gap:5px;min-width:0}
+.order-mobile-state-row>div>small{font-size:8px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800}
+.order-mobile-state-row .order-status-select{width:100%;min-width:0}
+.order-mobile-state-row .order-payment-badge{width:100%;justify-content:center;min-height:36px}
+.order-card-quick-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+.order-card-quick-actions .order-payment-confirm{min-height:38px;border-radius:9px}
+@media(max-width:1180px){.order-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){
+  .order-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .order-settlement-rule{margin-bottom:12px}
+  .order-detail-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .order-metrics{grid-template-columns:1fr 1fr}
+  .order-detail-grid{grid-template-columns:1fr}
+  .order-mobile-state-row{grid-template-columns:1fr}
+}

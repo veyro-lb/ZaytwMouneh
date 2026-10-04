@@ -1,3 +1,27 @@
+/release.json
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/storefront-release.js
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/storefront-shell.css
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/mouneh-rewards-v6.css
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/mouneh-rewards-v6.js
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/site-runtime-v6.js
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/app.js
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/account.js
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
 /terms-and-rewards
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
 

@@ -21,25 +21,8 @@
   <link rel="stylesheet" href="styles.css?v=20261004-persistent-ui2" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Privacy Policy | Zayt w Mouneh","isPartOf":{"@type":"WebSite","name":"Zayt w Mouneh","url":"https://zaytwmouneh.veyro-202.workers.dev/"}}</script>
   <link rel="stylesheet" href="premium.css?v=20261004-toolkit4" />
-  <link rel="stylesheet" href="mouneh-rewards-v3.css?v=20261004-account3" />
-  <style id="mounehPointsHeaderFix">
-    .site-header .nav>.nav-actions{overflow:visible!important}
-    .site-header #mounehRewardsButton{
-      display:flex!important;visibility:visible!important;opacity:1!important;
-      flex:0 0 auto!important;flex-shrink:0!important;min-width:112px!important;
-      min-height:46px!important;align-items:center!important;justify-content:center!important;
-      gap:7px!important;padding:0 12px!important;white-space:nowrap!important;
-    }
-    @media (min-width:761px) and (max-width:1500px){
-      .site-header #mounehRewardsButton{width:78px!important;min-width:78px!important;padding:0 8px!important}
-      .site-header #mounehRewardsButton .mr-nav-copy{font-size:0!important}
-      .site-header #mounehRewardsButton .mr-nav-copy::after{content:"Points";font-size:10px!important}
-    }
-    @media (max-width:760px){
-      .site-header #mounehRewardsButton{width:42px!important;min-width:42px!important;height:42px!important;min-height:42px!important;padding:0!important;flex-basis:42px!important}
-      .site-header #mounehRewardsButton .mr-nav-copy{display:none!important}
-    }
-  </style>
+  <link rel="stylesheet" href="mouneh-rewards-v3.css?v=20261004-account4" />
+  
   <link rel="stylesheet" href="legal-v2.css?v=20261004-visiblelegal2" />
   <style id="legalRewardsVisibility">
     .footer-legal-bar{grid-column:1/-1!important;display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;flex-wrap:wrap!important;justify-content:center!important;gap:10px!important;margin-top:12px!important;padding:18px!important;border:1px solid rgba(255,255,255,.16)!important;border-radius:18px!important;background:rgba(255,255,255,.06)!important}
@@ -144,11 +127,15 @@
           <button type="button" data-lang="en" class="is-active">EN</button>
           <button type="button" data-lang="ar">عربي</button>
         </div>
-        <button type="button" id="mounehRewardsButton" class="mouneh-points-nav" style="display:flex;flex:0 0 auto;visibility:visible;opacity:1" data-mr-open aria-label="Open Mouneh Points">
-          <span class="mr-nav-leaf">🌿</span>
+        <button type="button" id="mounehRewardsButton" class="mouneh-points-nav is-compact" data-mr-open aria-label="Open Mouneh Points">
+          <span class="mr-nav-leaf" aria-hidden="true">🌿</span>
           <span class="mr-nav-copy">Mouneh Points</span>
-          <b id="mounehPointsBadge" hidden></b>
+          <b id="mounehPointsBadge">—</b>
         </button>
+        <a id="mounehAccountButton" class="mouneh-account-nav" href="account.html?auth=signin" aria-label="Sign in or open My Account">
+          <span class="mr-account-nav-avatar is-guest" aria-hidden="true"></span>
+          <span class="mr-account-nav-copy">Sign in</span>
+        </a>
         <button class="cart-button" id="cartButton" aria-label="Open cart">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l1.6 10.2a2 2 0 0 0 2 1.7h7.9a2 2 0 0 0 1.9-1.4L21 7H6.1M9 20h.01M17 20h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span class="cart-label" id="cartLabel">My pantry</span>
@@ -402,7 +389,7 @@
 
   <button class="mobile-order-bar" id="mobileOrderBar" type="button" hidden><span id="mobileOrderText">Review order</span><strong id="mobileOrderMeta">0 items · $0.00</strong></button>
   <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastText">Added to cart</span></div>
-  <script src="mouneh-rewards-v3.js?v=20261004-account3" data-mouneh-rewards="1"></script>
+  <script src="mouneh-rewards-v3.js?v=20261004-account4" data-mouneh-rewards="1"></script>
 
   <script src="site-runtime-v3.js?v=20261004-legal5"></script>
   <script src="products-data.js?v=20261002-1005"></script>

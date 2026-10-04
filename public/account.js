@@ -217,6 +217,7 @@
     if(google){
       e.preventDefault();
       const status=$("#accountAuthStatus");
+      if(!state().ready){if(status)status.textContent=tr("Account services are still loading. Try again in a moment.","خدمات الحساب لا تزال قيد التحميل. حاول مرة أخرى بعد لحظة.");return}
       if(!accountConsentAccepted(status))return;
       if(google.dataset.busy==="1")return;
       google.dataset.busy="1";google.disabled=true;google.setAttribute("aria-busy","true");
@@ -255,6 +256,7 @@
       e.preventDefault();
       const form=e.target,status=$("#accountAuthStatus"),submit=form.querySelector('button[type="submit"]');
       if(form.dataset.busy==="1")return;
+      if(!state().ready){if(status)status.textContent=tr("Account services are still loading. Try again in a moment.","خدمات الحساب لا تزال قيد التحميل. حاول مرة أخرى بعد لحظة.");return}
       if(!accountConsentAccepted(status))return;
       if(!form.checkValidity()){try{form.reportValidity()}catch{};return}
       form.dataset.busy="1";
@@ -357,5 +359,20 @@
     }catch{}
     render(true);
   }
+  window.addEventListener("hashchange",()=>{
+    const hash=(location.hash||"").slice(1);
+    if(hash==="signin"||hash==="signup"){
+      guestAuthMode=hash;
+      api()?.auth?.setMode?.(hash);
+      render(true);
+      document.querySelector(".account-auth-card")?.scrollIntoView?.({block:"start",behavior:"smooth"});
+      return;
+    }
+    if(allowed.has(hash)){
+      active=hash;
+      render(true);
+      document.querySelector('[data-account-panel="'+hash+'"]')?.scrollIntoView?.({block:"start",behavior:"smooth"});
+    }
+  });
   setInterval(sync,10000);
 })();

@@ -42,7 +42,7 @@
       }
     }catch{}
   }
-  function referralShareLink(code){
+  async function copyText(value){\n    const text=String(value||"");\n    if(!text)return false;\n    try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);return true}}catch{}\n    try{\n      const area=document.createElement("textarea");\n      area.value=text;area.setAttribute("readonly","");area.style.position="fixed";area.style.opacity="0";area.style.pointerEvents="none";\n      document.body.appendChild(area);area.select();area.setSelectionRange(0,text.length);\n      const ok=document.execCommand("copy");area.remove();return !!ok;\n    }catch{return false}\n  }\n  function referralShareLink(code){
     const clean=normalizeReferral(code);
     return clean?location.origin+"/?ref="+encodeURIComponent(clean):location.origin+"/";
   }
@@ -930,7 +930,7 @@
       if(redeemBtn){await redeem(redeemBtn.dataset.mrRedeem,redeemBtn);return;}
       const copy=e.target.closest("[data-mr-copy]");
       if(copy){
-        try{await navigator.clipboard.writeText(copy.dataset.mrCopy);copy.querySelector("em").textContent=tr("Copied","تم النسخ");}catch{}
+        const ok=await copyText(copy.dataset.mrCopy);const label=copy.querySelector("em");if(label)label.textContent=ok?tr("Copied","تم النسخ"):tr("Could not copy","تعذّر النسخ");
       }
     });
 

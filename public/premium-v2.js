@@ -688,7 +688,7 @@
     qa(".product-card").forEach(function(card){
       if(card.querySelector(".premium-availability"))return;
       var actions=card.querySelector(".product-actions");if(!actions)return;
-      var note=document.createElement("span");note.className="premium-availability";note.textContent=txt("Availability confirmed on WhatsApp","التوفر يُؤكد عبر واتساب");actions.before(note);
+      var note=document.createElement("span");note.className="premium-availability";note.textContent=txt("Availability verified with your order","يتم التحقق من التوفر مع طلبك");actions.before(note);
     });
   }
 

@@ -30,7 +30,7 @@ var EXACT=Object.freeze({
 "Delivery":"Livraison",
 "Delivery info":"Infos de livraison",
 "Delivery across Lebanon":"Livraison partout au Liban",
-"Delivery all over Lebanon · Secure website checkout":"Livraison partout au Liban · paiement sécurisé sur le site",
+"Delivery all over Lebanon · Website checkout":"Livraison partout au Liban · commande via le site",
 "Legal & Rewards":"Mentions légales & récompenses",
 "Legal & privacy":"Mentions légales & confidentialité",
 "Privacy Policy":"Politique de confidentialité",
@@ -101,7 +101,7 @@ var EXACT=Object.freeze({
 "Recipient, occasion, message and presentation.":"Destinataire, occasion, message et présentation.",
 "Write a short note for the recipient…":"Écrivez un petit mot pour le destinataire…",
 "Your gift stays editable until you continue to checkout. Prices shown are product totals; packing, delivery and the final total are confirmed at checkout.":"Votre cadeau reste modifiable jusqu’au passage au paiement. Les prix affichés correspondent aux produits ; l’emballage, la livraison et le total final sont confirmés au paiement.",
-"Choose a ready-made gift or build your own. Pick the products, add the recipient details, then continue to secure website checkout.":"Choisissez un cadeau prêt à offrir ou composez le vôtre. Sélectionnez les produits, ajoutez les informations du destinataire, puis passez au paiement sécurisé sur le site.",
+"Choose a ready-made gift or build your own. Pick the products, add the recipient details, then continue to website checkout.":"Choisissez un cadeau prêt à offrir ou composez le vôtre. Sélectionnez les produits, ajoutez les informations du destinataire, puis passez au commande via le site.",
 "A pantry of Lebanese memory, curated with care.":"Une mouneh chargée de mémoire libanaise, sélectionnée avec soin.",
 "A pantry rooted in place":"Une mouneh ancrée dans son terroir",
 "From our pantry to your table.":"De notre mouneh à votre table.",
@@ -120,8 +120,8 @@ var EXACT=Object.freeze({
 "Shop online":"Acheter en ligne",
 "One cart, ready to checkout":"Un panier, prêt pour le paiement",
 "Checkout-ready order":"Commande prête pour le paiement",
-"Your items and quantities are ready for secure checkout.":"Vos articles et quantités sont prêts pour le paiement sécurisé.",
-"Continue to secure checkout":"Continuer vers le paiement sécurisé",
+"Your items and quantities are ready for website checkout.":"Vos articles et quantités sont prêts pour le commande sur le site.",
+"Continue to website checkout":"Continuer vers le commande sur le site",
 "Confirm on WhatsApp":"Confirmer sur WhatsApp",
 "WhatsApp":"WhatsApp",
 "WhatsApp us ↗":"Nous écrire sur WhatsApp ↗",
@@ -1501,6 +1501,19 @@ var EXACT=Object.freeze({
 "What next?":"Et maintenant ?",
 "You can keep shopping, track this order here, or contact us if you need help.":"Vous pouvez continuer vos achats, suivre cette commande ici ou nous contacter si vous avez besoin d’aide."
 
+
+"Choose a ready-made pantry idea or build your own gift from the full catalogue. Review packing, availability, delivery and the final total in website checkout; WhatsApp is only for help or optional status updates.":"Choisissez une idée de mouneh prête à offrir ou composez votre propre cadeau dans tout le catalogue. Vérifiez l’emballage, la disponibilité, la livraison et le total final lors de la commande sur le site ; WhatsApp reste disponible uniquement pour l’aide ou les mises à jour facultatives.",
+"Review availability, packing, delivery and the final total in checkout.":"Vérifiez la disponibilité, l’emballage, la livraison et le total final lors de la commande.",
+"Add what you know now. Review the remaining delivery details in checkout.":"Ajoutez les informations que vous avez maintenant. Vérifiez les autres détails de livraison lors de la commande.",
+"We deliver across Lebanon. Delivery cost and timing depend on the area and order details; review them in website checkout, and we will contact you only if something needs manual confirmation.":"Nous livrons partout au Liban. Les frais et le délai dépendent de la zone et des détails de la commande ; vérifiez-les lors de la commande sur le site, et nous ne vous contacterons que si une confirmation manuelle est nécessaire.",
+"The delivery fee is calculated from the delivery area and order settings shown in checkout. If an area needs manual review, we will contact you before fulfilment.":"Les frais de livraison sont calculés selon la zone et les paramètres affichés lors de la commande. Si une zone nécessite une vérification manuelle, nous vous contacterons avant la préparation.",
+"Available payment instructions are shown during checkout or on the order confirmation. If anything needs manual confirmation, we will contact you.":"Les instructions de paiement disponibles sont indiquées lors de la commande ou dans sa confirmation. Si une vérification manuelle est nécessaire, nous vous contacterons.",
+"Adding products to the cart does not by itself guarantee acceptance or availability. Submitting website checkout creates an order request; the order becomes final when Zayt w Mouneh confirms it.":"Ajouter des produits au panier ne garantit pas à lui seul l’acceptation ni la disponibilité. La validation de la commande sur le site crée une demande de commande ; elle devient définitive lorsque Zayt w Mouneh la confirme.",
+"Submitting website checkout creates an order request and order reference. A binding sale is not formed until Zayt w Mouneh confirms the order.":"Valider la commande sur le site crée une demande et une référence de commande. La vente n’est définitive qu’après confirmation par Zayt w Mouneh.",
+"Prices are shown from the supplied retail list; final availability is verified when your order is reviewed.":"Les prix proviennent de la liste de vente fournie ; la disponibilité finale est vérifiée lors de l’examen de votre commande.",
+"when you choose to contact support or opt in to transactional order-status updates through WhatsApp.":"lorsque vous choisissez de contacter l’assistance ou de recevoir des mises à jour transactionnelles du statut de la commande via WhatsApp.",
+"When you press a WhatsApp support link or opt in to WhatsApp order-status updates, you interact with WhatsApp/Meta. Information processed there is also subject to their services and privacy practices. Website orders themselves are submitted through Zayt w Mouneh checkout. The same third-party principle applies to Instagram, Google Maps, Google authentication, and other independent services.":"Lorsque vous utilisez un lien d’assistance WhatsApp ou choisissez de recevoir les mises à jour de statut sur WhatsApp, vous interagissez avec WhatsApp/Meta. Les informations traitées dans ce cadre sont également soumises à leurs services et pratiques de confidentialité. Les commandes sont elles-mêmes envoyées via la page de commande Zayt w Mouneh. Le même principe s’applique à Instagram, Google Maps, l’authentification Google et aux autres services indépendants.",
+"Availability verified with your order":"Disponibilité vérifiée avec votre commande",
 });
 
 var CATEGORY_FR=Object.freeze({

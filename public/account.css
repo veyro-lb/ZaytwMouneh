@@ -156,3 +156,43 @@ body[data-page="account"] .account-auth-mark{width:50px;height:50px;display:grid
   body[data-page="account"] .account-auth-form .account-status{grid-column:auto}
   body[data-page="account"] .account-auth-tabs{display:grid;grid-template-columns:1fr 1fr;width:100%}
 }
+
+
+/* ===== mobileauth2: Google/new-account completion ===== */
+body[data-page="account"] .account-complete-card .account-auth-mark{
+  background:#edf6ea;
+  color:#166534;
+  font-weight:900;
+}
+body[data-page="account"] .account-complete-card>p{
+  max-width:680px;
+}
+body[data-page="account"] .account-complete-referral{
+  grid-column:1/-1;
+}
+body[data-page="account"] .account-complete-signout{
+  width:100%;
+  min-height:44px;
+  margin-top:10px;
+  border:1px solid var(--acc-line);
+  border-radius:12px;
+  background:#fff;
+  color:#54645a;
+  font:800 .76rem "DM Sans",sans-serif;
+  cursor:pointer;
+}
+body[data-page="account"] .account-complete-signout:hover{
+  background:#f7f8f4;
+  color:var(--acc-green);
+}
+@media(max-width:620px){
+  body[data-page="account"] .account-complete-referral{
+    grid-column:auto;
+  }
+  body[data-page="account"] .account-complete-card{
+    padding:20px!important;
+  }
+  body[data-page="account"] .account-complete-card h1{
+    font-size:clamp(2.15rem,10vw,3rem);
+  }
+}

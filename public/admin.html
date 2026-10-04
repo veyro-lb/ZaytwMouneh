@@ -15,6 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="admin.css?v=20261004-toolkit15" />
+  <link rel="stylesheet" href="admin-rewards.css?v=20261004-rewards1" />
 </head>
 <body class="admin-body">
   <div class="admin-bg" aria-hidden="true"></div>
@@ -94,6 +95,7 @@
         <button type="button" data-view="products"><span>▦</span><b>Products</b><em id="navProductCount">0</em></button>
         <button type="button" data-view="orders"><span>◎</span><b>Orders & history</b><em id="navOrderCount">0</em></button>
         <button type="button" data-view="customers"><span>♙</span><b>Customers</b><em id="navCustomerCount">0</em></button>
+        <button type="button" data-view="rewards"><span>🌿</span><b>Mouneh Points</b><em id="navRewardsCount"></em></button>
         <button type="button" data-view="content"><span>✎</span><b>Website content</b></button>
         <button type="button" data-view="analytics"><span>↗</span><b>Analytics</b></button>
         <button type="button" data-view="activity"><span>◷</span><b>Activity</b></button>
@@ -284,6 +286,56 @@
           <div class="customer-grid" id="customerGrid"><p class="empty-state">No customer history yet.</p></div>
         </section>
 
+        <section class="dashboard-view" data-view-panel="rewards">
+          <div class="section-intro"><div><p>Mouneh Points</p><h2>Run the rewards club from the same owner console.</h2></div><span>Points settle only when an order is marked delivered. Cancelling a rewards order reverses its order-linked points and releases reserved vouchers.</span></div>
+          <div class="rewards-admin-shell" id="rewardsAdminBody">
+            <div class="rewards-admin-summary">
+              <article class="rewards-mini-metric"><span>Members</span><strong id="rewardsMembersMetric">0</strong><small>Joined rewards accounts</small></article>
+              <article class="rewards-mini-metric"><span>Points outstanding</span><strong id="rewardsPointsMetric">0</strong><small>Positive member balances</small></article>
+              <article class="rewards-mini-metric"><span>Available vouchers</span><strong id="rewardsVoucherMetric">$0.00</strong><small>Wallet value not yet used</small></article>
+              <article class="rewards-mini-metric"><span>Active boosts</span><strong id="rewardsCampaignMetric">0</strong><small>Live multiplier campaigns</small></article>
+              <article class="rewards-mini-metric"><span>Golden members</span><strong id="rewardsGoldenMetric">0</strong><small>Top annual-spend tier</small></article>
+            </div>
+
+            <div class="rewards-admin-grid">
+              <article class="rewards-admin-panel">
+                <div class="rewards-panel-head"><div><p>Members</p><h3>Balances, tiers & rewards</h3></div><button id="rewardsRefresh" type="button">Refresh ↻</button></div>
+                <div class="rewards-member-tools"><input id="rewardsMemberSearch" type="search" placeholder="Search member, phone, code or tier…" /><span id="rewardsMemberCount">0 members</span></div>
+                <div class="rewards-member-grid" id="rewardsMemberGrid"><p class="empty-state">Open this section to load rewards members.</p></div>
+              </article>
+
+              <article class="rewards-admin-panel">
+                <div class="rewards-panel-head"><div><p>Program</p><h3>Core earning settings</h3></div></div>
+                <div class="rewards-settings-form">
+                  <label class="rewards-settings-toggle"><span>Rewards program enabled</span><input id="rewardsEnabled" type="checkbox" /></label>
+                  <label>Base points per $1<input id="rewardsBaseRate" type="number" min="0.1" max="3" step="0.1" value="1" /></label>
+                  <p class="panel-copy">Default is 1 point per $1 of product subtotal. Tier and campaign multipliers are applied automatically.</p>
+                  <button id="rewardsSaveConfig" type="button">Save program settings</button>
+                </div>
+              </article>
+
+              <article class="rewards-admin-panel rewards-admin-panel-wide">
+                <div class="rewards-panel-head"><div><p>Reward ladder</p><h3>Edit point milestones and voucher values</h3></div><span class="field-help">Minimum order protects margin when a voucher is used.</span></div>
+                <div class="reward-rule-grid" id="rewardsRuleGrid"></div>
+              </article>
+
+              <article class="rewards-admin-panel rewards-admin-panel-wide">
+                <div class="rewards-panel-head"><div><p>Point boosts</p><h3>Create a limited-time multiplier</h3></div><span class="field-help">Use a category name for a targeted boost, or leave it blank for the whole pantry.</span></div>
+                <form class="rewards-campaign-form" id="rewardsCampaignForm">
+                  <label>Title<input id="rewardsCampaignTitle" type="text" maxlength="100" required placeholder="Olive Week" /></label>
+                  <label>Arabic title<input id="rewardsCampaignTitleAr" type="text" maxlength="100" dir="rtl" placeholder="أسبوع الزيتون" /></label>
+                  <label>Category<input id="rewardsCampaignCategory" type="text" placeholder="All categories" /></label>
+                  <label>Multiplier<select id="rewardsCampaignMultiplier"><option value="1.5">1.5×</option><option value="2" selected>2×</option><option value="3">3×</option></select></label>
+                  <label>Starts<input id="rewardsCampaignStart" type="datetime-local" required /></label>
+                  <label>Ends<input id="rewardsCampaignEnd" type="datetime-local" required /></label>
+                  <button type="submit">Create boost</button>
+                </form>
+                <div class="rewards-campaign-list" id="rewardsCampaignList"></div>
+              </article>
+            </div>
+          </div>
+        </section>
+
         <section class="dashboard-view" data-view-panel="content">
           <div class="section-intro"><div><p>Website content</p><h2>Edit the customer-facing settings the live website actually uses.</h2></div><span>Save publishes to the storefront; open tabs sync automatically.</span></div>
           <form id="contentForm" class="content-grid">
@@ -424,6 +476,7 @@
     <div class="mobile-more-grid">
       <button type="button" id="mobileGlobalSearchButton"><span>⌕</span><b>Search everything</b><small>Products, orders and customers</small></button><button type="button" id="mobileDataCenterButton"><span>⇅</span><b>Import / Export</b><small>Excel, CSV and backups</small></button>
       <button type="button" data-mobile-view="customers"><span>♙</span><b>Customers</b><small>Repeat orders and spending</small></button>
+      <button type="button" data-mobile-view="rewards"><span>🌿</span><b>Mouneh Points</b><small>Members, balances and reward rules</small></button>
       <button type="button" data-mobile-view="content"><span>✎</span><b>Website content</b><small>Edit customer-facing text</small></button>
       <button type="button" data-mobile-view="analytics"><span>↗</span><b>Analytics</b><small>Traffic and customer actions</small></button>
       <button type="button" data-mobile-view="activity"><span>◷</span><b>Activity</b><small>Recent owner changes</small></button>
@@ -709,6 +762,32 @@
     </section>
   </div>
 
+  <div class="rewards-member-modal-backdrop" id="rewardsMemberModal" hidden>
+    <section class="rewards-member-modal" role="dialog" aria-modal="true" aria-labelledby="rewardsMemberModalName">
+      <header><div><small>Mouneh Points member</small><strong id="rewardsMemberModalName">Member</strong><span id="rewardsMemberModalMeta">—</span></div><button type="button" id="rewardsMemberModalClose" aria-label="Close">×</button></header>
+      <div class="rewards-member-modal-body">
+        <article class="rewards-member-action">
+          <h4>Adjust points</h4><p>Add a bonus or subtract points with an owner reason. Every adjustment is logged.</p>
+          <label>Points (+ / −)<input id="rewardsAdjustPoints" type="number" step="1" min="-10000" max="10000" placeholder="+25" /></label>
+          <label>Reason<input id="rewardsAdjustReason" type="text" maxlength="250" placeholder="Customer care bonus" /></label>
+          <button id="rewardsAdjustButton" type="button">Apply point adjustment</button>
+        </article>
+        <article class="rewards-member-action">
+          <h4>Tier override</h4><p>Leave automatic to use annual delivered spend: Olive at $200, Golden at $500.</p>
+          <label>Tier<select id="rewardsTierOverride"><option value="">Automatic</option><option value="member">Member</option><option value="olive">Olive</option><option value="golden">Golden</option></select></label>
+          <button id="rewardsTierButton" type="button">Save tier</button>
+        </article>
+        <article class="rewards-member-action">
+          <h4>Gift a voucher</h4><p>Add a no-points-cost voucher directly to this member’s wallet.</p>
+          <label>Voucher value ($)<input id="rewardsGiftValue" type="number" min="0.01" max="100" step="0.01" /></label>
+          <label>Minimum order ($)<input id="rewardsGiftMinimum" type="number" min="0" step="0.01" /></label>
+          <label>Reason<input id="rewardsGiftReason" type="text" maxlength="200" placeholder="Thank you" /></label>
+          <button id="rewardsGiftButton" type="button">Add voucher</button>
+        </article>
+      </div>
+    </section>
+  </div>
+
   <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
 
   <script src="admin-config.js?v=20261004-toolkit15"></script>
@@ -717,6 +796,7 @@
   <script src="product-photos.js?v=20261003-zip-originals3"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" onerror="this.onerror=null;this.src='https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js'"></script>
   <script src="admin.js?v=20261004-toolkit15"></script>
+  <script src="admin-rewards.js?v=20261004-rewards1"></script>
   <!-- mobilebottom-fallback -->
   <script>
   (function(){
@@ -732,7 +812,7 @@
       qa(".dashboard-view").forEach(function(p){p.classList.toggle("is-active",p.dataset.viewPanel===view)});
       qa(".admin-nav button[data-view]").forEach(function(b){b.classList.toggle("is-active",b.dataset.view===view)});
       qa("#mobileAdminNav [data-mobile-view]").forEach(function(b){b.classList.toggle("is-active",b.dataset.mobileView===view)});
-      var titles={overview:"Overview",products:"Products",orders:"Orders & history",customers:"Customers",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
+      var titles={overview:"Overview",products:"Products",orders:"Orders & history",customers:"Customers",rewards:"Mouneh Points",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
       var title=q("#viewTitle"); if(title)title.textContent=titles[view]||"Owner Console";
       var side=q("#adminSidebar"); if(side)side.classList.remove("is-open");
       var sideBack=q("#sidebarBackdrop"); if(sideBack)sideBack.hidden=true;

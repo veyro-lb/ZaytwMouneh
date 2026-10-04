@@ -8,7 +8,9 @@
   const money=v=>"$"+(Number(v)||0).toFixed(2);
   const requestedAuthOnLoad=(()=>{try{return new URL(location.href).searchParams.get("auth")||""}catch{return ""}})();
   let landingAfterAuth=!!requestedAuthOnLoad;
-  let active=(location.hash||"#overview").slice(1);
+  const initialHash=(location.hash||"").slice(1);
+  let guestAuthMode=(requestedAuthOnLoad==="signup"||initialHash==="signup")?"signup":"signin";
+  let active=initialHash||"overview";
   const allowed=new Set(["overview","points","orders","referrals","profile"]);
   if(!allowed.has(active))active="overview";
   let syncing=false, lastRenderSig="", lastSyncedAt=Date.now(), previousMemberState=null;
@@ -39,10 +41,34 @@
     return '<div class="account-tabs" role="tablist">'+tabs.map(([id,icon,label])=>'<button type="button" data-account-tab="'+id+'" class="'+(active===id?"is-active":"")+'" role="tab" aria-selected="'+(active===id)+'" aria-current="'+(active===id?"page":"false")+'"><span class="account-tab-icon">'+icon+'</span><span>'+label+'</span></button>').join("")+'</div>';
   }
   function guestView(s){
-    return '<div class="account-guest">'+
-      '<section class="account-card account-guest-main"><p class="account-eyebrow">'+tr("My Account","حسابي")+'</p><h1>'+tr("You are browsing as a guest.","أنت تتصفح كزائر.")+'</h1><p>'+tr("No customer account is active on this device. You can still shop normally, or sign in to keep your Mouneh Points, vouchers, delivered-order history and referral progress together.","لا يوجد حساب عميل مسجّل على هذا الجهاز. يمكنك التسوق بشكل عادي، أو تسجيل الدخول لحفظ نقاط المونة والقسائم وسجل الطلبات المستلمة وتقدم الإحالات في مكان واحد.")+'</p><div class="account-actions"><button type="button" class="is-primary" data-account-auth="signin">'+tr("Sign in","تسجيل الدخول")+'</button><button type="button" data-account-auth="signup">'+tr("Create account","إنشاء حساب")+'</button><a href="shop.html">'+tr("Continue shopping","متابعة التسوق")+'</a></div></section>'+
-      '<aside class="account-card"><p class="account-eyebrow">'+tr("Why create an account?","لماذا تنشئ حساباً؟")+'</p><div class="account-benefits"><span><b>🌿</b>'+tr("See your live points balance and reward vouchers.","شاهد رصيد نقاطك وقسائم المكافآت مباشرة.")+'</span><span><b>✓</b>'+tr("Points are confirmed only after an order is actually delivered.","تتثبت النقاط فقط بعد تسليم الطلب فعلياً.")+'</span><span><b>↗</b>'+tr("Track referral progress without guessing whether it qualified.","تابع حالة الإحالات بوضوح ومعرفة ما إذا تأهلت.")+'</span><span><b>⌂</b>'+tr("Keep profile and account security settings in one place.","احتفظ ببيانات الملف وإعدادات أمان الحساب في مكان واحد.")+'</span></div><p>'+tr("Already ordered before creating an account? Eligible saved orders can be linked when the secure claim information is available on this device.","طلبت سابقاً قبل إنشاء الحساب؟ يمكن ربط الطلبات المؤهلة عند توفر معلومات الربط الآمنة على هذا الجهاز.")+'</p></aside>'+
-    '</div>';
+    if(s.authMode==="verify"){
+      const email=esc(s.pendingSignupEmail||"");
+      return '<div class="account-auth-layout"><section class="account-card account-auth-card account-verify-card"><div class="account-auth-mark">✉</div><p class="account-eyebrow">'+tr("My Account","حسابي")+'</p><h1>'+tr("Check your email","تحقق من بريدك")+'</h1><p>'+tr("We sent a verification link to ","أرسلنا رابط تأكيد إلى ")+'<strong>'+email+'</strong>. '+tr("Open it to verify your email, then return here. Your dashboard will open automatically after sign-in.","افتحه لتأكيد بريدك ثم عد إلى هنا. ستفتح لوحة حسابك تلقائياً بعد تسجيل الدخول.")+'</p><div class="account-actions"><button type="button" class="is-primary" data-mr-resend>'+tr("Resend verification email","إعادة إرسال رسالة التأكيد")+'</button><button type="button" data-account-auth="signin">'+tr("Back to sign in","العودة لتسجيل الدخول")+'</button></div><p id="mrVerifyStatus" class="account-status"></p></section>'+guestBenefits()+'</div>';
+    }
+    const signup=guestAuthMode==="signup";
+    api()?.auth?.setMode?.(signup?"signup":"signin");
+    const googleDisabled=s.googleEnabled===false;
+    return '<div class="account-auth-layout">'+
+      '<section class="account-card account-auth-card"><p class="account-eyebrow">'+tr("My Zayt w Mouneh","حساب زيت ومونة")+'</p><div class="account-auth-tabs" role="tablist"><button type="button" data-account-auth="signin" class="'+(!signup?"is-active":"")+'">'+tr("Sign in","تسجيل الدخول")+'</button><button type="button" data-account-auth="signup" class="'+(signup?"is-active":"")+'">'+tr("Create account","إنشاء حساب")+'</button></div>'+
+      '<h1>'+(signup?tr("Create your account.","أنشئ حسابك."):tr("Welcome back.","أهلاً بعودتك."))+'</h1>'+
+      '<p>'+(signup?tr("One account keeps your Mouneh Points, vouchers, orders and referrals together.","حساب واحد يجمع نقاط المونة والقسائم والطلبات والإحالات في مكان واحد."):tr("Sign in to open your full customer dashboard — not just the points wallet.","سجّل الدخول لفتح لوحة حسابك الكاملة، وليس محفظة النقاط فقط."))+'</p>'+
+      '<label class="account-legal-consent"><input id="mrLegalConsent" type="checkbox" form="mrAuthForm" required aria-required="true"><span>'+tr("I agree to the ","أوافق على ")+'<a href="/terms-and-rewards.html?rev=20261004-legal7" target="_blank" rel="noopener">'+tr("Terms of Service","شروط الخدمة")+'</a>'+tr(" and confirm I have read the "," وأقرّ بأنني قرأت ")+'<a href="/privacy-and-data.html?rev=20261004-legal7" target="_blank" rel="noopener">'+tr("Privacy Policy","سياسة الخصوصية")+'</a>.</span></label>'+
+      '<button class="account-google '+(googleDisabled?"is-disabled":"")+'" type="button" data-mr-google '+(googleDisabled?'disabled aria-disabled="true"':"")+'><span>G</span><strong>'+tr("Continue with Google","المتابعة عبر Google")+'</strong></button>'+
+      '<div class="account-or"><span></span><b>'+tr("or","أو")+'</b><span></span></div>'+
+      '<form id="mrAuthForm" class="account-auth-form">'+
+        (signup?'<label>'+tr("Full name","الاسم الكامل")+'<input id="mrSignupName" name="name" autocomplete="name" maxlength="120" required></label>':"")+
+        '<label>'+tr("Account email","بريد الحساب")+'<input id="mrEmail" type="email" autocomplete="email" required></label>'+
+        (signup?'<label>'+tr("Phone / WhatsApp number","رقم الهاتف / واتساب")+'<input id="mrSignupPhone" type="tel" autocomplete="tel" required></label>':"")+
+        '<label>'+tr("Password","كلمة المرور")+'<input id="mrPassword" type="password" autocomplete="'+(signup?"new-password":"current-password")+'" minlength="8" required></label>'+
+        (signup?'<label>'+tr("Confirm password","تأكيد كلمة المرور")+'<input id="mrPasswordConfirm" type="password" autocomplete="new-password" minlength="8" required></label><label>'+tr("Referral code (optional)","رمز الإحالة (اختياري)")+'<input id="mrSignupReferral" maxlength="20" autocomplete="off"></label>':"")+
+        '<button class="account-primary account-auth-submit" type="submit">'+(signup?tr("Create my account","إنشاء حسابي"):tr("Sign in to dashboard","تسجيل الدخول إلى اللوحة"))+'</button>'+
+        '<p id="mrAuthStatus" class="account-status">'+esc(s.authNotice||"")+'</p>'+
+      '</form>'+
+      '<p class="account-auth-note">'+tr("After sign-in, this page becomes your dashboard with Overview, Points & Wallet, Orders, Referrals, and Profile & Security.","بعد تسجيل الدخول تتحول هذه الصفحة إلى لوحة حسابك وتضم النظرة العامة والنقاط والمحفظة والطلبات والإحالات والملف والأمان.")+'</p>'+
+      '</section>'+guestBenefits()+'</div>';
+  }
+  function guestBenefits(){
+    return '<aside class="account-card account-auth-side"><p class="account-eyebrow">'+tr("Inside your dashboard","داخل لوحة حسابك")+'</p><h2>'+tr("Everything in one place.","كل شيء في مكان واحد.")+'</h2><div class="account-benefits"><span><b>⌂</b>'+tr("Overview with your balance, vouchers, orders and tier.","نظرة عامة على الرصيد والقسائم والطلبات والفئة.")+'</span><span><b>🌿</b>'+tr("Mouneh Points & Wallet with reward progress.","نقاط المونة والمحفظة مع تقدم المكافآت.")+'</span><span><b>▤</b>'+tr("Account-linked order history and delivery status.","سجل الطلبات المرتبطة بالحساب وحالة التسليم.")+'</span><span><b>↗</b>'+tr("Referral progress with delivery-verified qualification.","متابعة الإحالات مع التحقق من التسليم.")+'</span><span><b>⚙</b>'+tr("Profile, language and account security controls.","الملف واللغة وإعدادات أمان الحساب.")+'</span></div><a class="account-auth-shop" href="shop.html">'+tr("Continue shopping instead","متابعة التسوق بدلاً من ذلك")+' →</a></aside>';
   }
   function overviewPanel(s,m){
     const wallet=(s.dashboard?.wallet||[]).filter(w=>w.status!=="used");
@@ -109,7 +135,7 @@
     }
     previousMemberState=hasMember;
     syncLanguageVisibility();
-    const sig=JSON.stringify([active,ar(),!!s.session,s.member?.balance,s.member?.name,s.dashboard?.orders?.length,s.dashboard?.wallet?.length,s.referralStatus?.joined,s.referralStatus?.qualified,s.authUser?.email,lastSyncedAt]);
+    const sig=JSON.stringify([active,guestAuthMode,ar(),!!s.session,s.member?.balance,s.member?.name,s.dashboard?.orders?.length,s.dashboard?.wallet?.length,s.referralStatus?.joined,s.referralStatus?.qualified,s.authUser?.email,s.authMode,s.authNotice,s.pendingSignupEmail,s.googleEnabled,lastSyncedAt]);
     if(!force&&sig===lastRenderSig)return;lastRenderSig=sig;
     if(!api()){el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Loading your account…","جارٍ تحميل حسابك…")+'</strong></section>';return}
     if(!s.session||!s.member){el.innerHTML=guestView(s);return}
@@ -122,7 +148,7 @@
   }
   document.addEventListener("click",async e=>{
     const tab=e.target.closest("[data-account-tab]"); if(tab){active=tab.dataset.accountTab;history.replaceState({},document.title,"#"+active);render(true);return}
-    const auth=e.target.closest("[data-account-auth]"); if(auth){auth.dataset.accountAuth==="signup"?api()?.openSignUp?.():api()?.openSignIn?.();return}
+    const auth=e.target.closest("[data-account-auth]"); if(auth){guestAuthMode=auth.dataset.accountAuth==="signup"?"signup":"signin";api()?.auth?.setMode?.(guestAuthMode);try{history.replaceState({},document.title,location.pathname+(location.search||"")+"#"+guestAuthMode)}catch{}render(true);return}
     if(e.target.closest("[data-open-points]")){api()?.open?.();return}
     const copy=e.target.closest("[data-copy-ref]"); if(copy){try{await navigator.clipboard.writeText(copy.dataset.copyRef);copy.textContent=tr("Copied","تم النسخ")}catch{}return}
     const signout=e.target.closest("[data-account-signout]"); if(signout){signout.disabled=true;try{await api()?.account?.signOut?.();active="overview";render(true)}finally{signout.disabled=false}return}
@@ -150,22 +176,14 @@
   $("#accountYear") && ($("#accountYear").textContent=new Date().getFullYear());
   render(true);
 
-  const requestedAuth=requestedAuthOnLoad;
-  function openRequestedAuth(){
-    if(!requestedAuth)return true;
-    const a=api();
-    const fn=requestedAuth==="signup"?a?.openSignUp:a?.openSignIn;
-    if(typeof fn!=="function")return false;
-    fn.call(a);
+  if(requestedAuthOnLoad){
+    guestAuthMode=requestedAuthOnLoad==="signup"?"signup":"signin";
+    api()?.auth?.setMode?.(guestAuthMode);
     try{
       const u=new URL(location.href);u.searchParams.delete("auth");
-      history.replaceState({},document.title,u.pathname+(u.search||"")+(u.hash||""));
+      history.replaceState({},document.title,u.pathname+(u.search||"")+"#"+guestAuthMode);
     }catch{}
-    return true;
-  }
-  if(!openRequestedAuth()){
-    let attempts=0;
-    const authWait=setInterval(()=>{attempts+=1;if(openRequestedAuth()||attempts>80)clearInterval(authWait)},100);
+    render(true);
   }
   setInterval(sync,10000);
 })();

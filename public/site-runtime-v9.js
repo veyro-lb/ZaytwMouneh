@@ -489,7 +489,7 @@
     if(!label){
       label=document.createElement("strong");
       label.className="footer-legal-label";
-      label.innerHTML='<span class="only-en">Legal & Rewards</span><span class="only-ar" lang="ar">القانون والمكافآت</span>';
+      label.innerHTML='<span class="only-en">Legal & Rewards</span><span class="only-ar" lang="ar">الشروط والمكافآت</span>';
       bar.prepend(label);
     }
     ensureLink("privacy","/privacy-and-data.html?rev=20261004-legal7","Privacy Policy","سياسة الخصوصية");
@@ -572,7 +572,7 @@
       const href=sourceAccount?.getAttribute("href")||"/account?auth=signin#signin";
       if(account.getAttribute("href")!==href)account.setAttribute("href",href);
       setText(account.querySelector("strong"),guest?(arabic?"تسجيل الدخول":"Sign in"):(arabic?"حسابي":"My Account"));
-      setText(account.querySelector("small"),guest?(arabic?"افتح حسابك ولوحة التحكم":"Open your account dashboard"):(arabic?"النقاط والطلبات والملف":"Points, orders & profile"));
+      setText(account.querySelector("small"),guest?(arabic?"سجّل الدخول للوصول إلى لوحة حسابك":"Open your account dashboard"):(arabic?"النقاط والطلبات والملف الشخصي":"Points, orders & profile"));
     }
 
     const points=tools.querySelector("[data-mobile-menu-points]");
@@ -771,7 +771,7 @@
         account.className="mouneh-account-nav";
         account.href="/account?auth=signin#signin";
         account.setAttribute("aria-label",document.documentElement.lang==="ar"?"تسجيل الدخول إلى حسابي":"Sign in to My Account");
-        account.innerHTML='<span class="mr-account-nav-avatar is-guest" aria-hidden="true"></span><span class="mr-account-nav-copy">'+(document.documentElement.lang==="ar"?"دخول":"Sign in")+'</span>';
+        account.innerHTML='<span class="mr-account-nav-avatar is-guest" aria-hidden="true"></span><span class="mr-account-nav-copy">'+(document.documentElement.lang==="ar"?"تسجيل الدخول":"Sign in")+'</span>';
         nav.insertBefore(account,cart||null);
         persistentChromeRefs.account=account;
       }else if(account.parentElement!==nav){
@@ -787,7 +787,7 @@
       const guestAvatar=account.querySelector(".mr-account-nav-avatar.is-guest");
       if(guestAvatar){
         const accountCopy=account.querySelector(".mr-account-nav-copy");
-        const guestText=document.documentElement.lang==="ar"?"دخول":"Sign in";
+        const guestText=document.documentElement.lang==="ar"?"تسجيل الدخول":"Sign in";
         if(accountCopy&&accountCopy.textContent!==guestText)accountCopy.textContent=guestText;
         account.href="/account?auth=signin#signin";
         account.setAttribute("aria-label",document.documentElement.lang==="ar"?"تسجيل الدخول أو فتح حسابي":"Sign in or open My Account");

@@ -2065,55 +2065,59 @@ function setupNav(){
   const t=$("#navToggle"),n=$("#navLinks");
   if(!t||!n)return;
   const compactQuery=window.matchMedia?window.matchMedia("(max-width:1080px)"):null;
-  const phoneQuery=window.matchMedia?window.matchMedia("(max-width:760px)"):null;
   const isCompact=()=>compactQuery?compactQuery.matches:window.innerWidth<=1080;
-  const isPhone=()=>phoneQuery?phoneQuery.matches:window.innerWidth<=760;
-  const originalParent=n.parentNode;
-  const originalNext=n.nextSibling;
-  const mountPhoneMenu=()=>{
-    if(!isPhone()||n.parentNode===document.body)return;
-    document.body.appendChild(n);
-    n.classList.add("is-mobile-portal");
-  };
-  const restorePhoneMenu=()=>{
-    if(!n.classList.contains("is-mobile-portal"))return;
-    n.classList.remove("is-mobile-portal");
-    if(originalNext&&originalNext.parentNode===originalParent)originalParent.insertBefore(n,originalNext);
-    else originalParent.appendChild(n);
+  const runtimeOwnsMenu=()=>document.documentElement.dataset.zwmReliableMenuBound==="1";
+
+  const keepCanonicalParent=()=>{
+    const nav=document.querySelector(".site-header .nav");
+    if(!nav)return;
+    if(n.parentNode!==nav){
+      const actions=nav.querySelector(".nav-actions");
+      n.classList.remove("is-mobile-portal");
+      nav.insertBefore(n,actions||null);
+    }
   };
   const syncA11y=()=>{
     const open=n.classList.contains("is-open");
     if(isCompact())n.setAttribute("aria-hidden",open?"false":"true");
     else n.removeAttribute("aria-hidden");
   };
-  const close=()=>{
-    n.classList.remove("is-open");
-    document.body.classList.remove("menu-open");
-    t.setAttribute("aria-expanded","false");
-    t.setAttribute("aria-label",lang==="ar"?"فتح القائمة":"Open menu");
-    syncA11y();
-    restorePhoneMenu();
-  };
-  const openMenu=()=>{
-    mountPhoneMenu();
-    n.classList.add("is-open");
-    document.body.classList.add("menu-open");
-    t.setAttribute("aria-expanded","true");
-    t.setAttribute("aria-label",lang==="ar"?"إغلاق القائمة":"Close menu");
+  const setOpen=open=>{
+    keepCanonicalParent();
+    n.classList.toggle("is-open",!!open);
+    n.classList.remove("is-mobile-portal");
+    document.body.classList.toggle("menu-open",!!open);
+    t.setAttribute("aria-expanded",open?"true":"false");
+    t.setAttribute("aria-label",open?(lang==="ar"?"إغلاق القائمة":"Close menu"):(lang==="ar"?"فتح القائمة":"Open menu"));
     syncA11y();
   };
+  const close=()=>setOpen(false);
+  const openMenu=()=>setOpen(true);
+
+  // site-runtime-v9 owns the primary handler when it is available.
+  // This direct handler is only a no-portal fallback if the shared runtime fails.
   t.addEventListener("click",e=>{
+    if(runtimeOwnsMenu())return;
     e.preventDefault();
     e.stopPropagation();
     if(!acceptSingleTap(t,220))return;
     n.classList.contains("is-open")?close():openMenu();
   });
-  window.ZWM_CLOSE_NAV=close;
-  n.addEventListener("click",e=>e.stopPropagation());
-  document.querySelectorAll("#navLinks a").forEach(a=>a.addEventListener("click",close));
-  document.addEventListener("click",()=>{if(n.classList.contains("is-open"))close()});
-  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&n.classList.contains("is-open")){close();t.focus({preventScroll:true})}});
+  if(typeof window.ZWM_CLOSE_NAV!=="function")window.ZWM_CLOSE_NAV=close;
+
+  n.addEventListener("click",e=>{if(!runtimeOwnsMenu())e.stopPropagation()});
+  document.querySelectorAll("#navLinks a").forEach(a=>a.addEventListener("click",()=>{if(!runtimeOwnsMenu())close()}));
+  document.addEventListener("click",e=>{
+    if(runtimeOwnsMenu())return;
+    if(n.classList.contains("is-open")&&!e.target.closest("#navLinks,#navToggle"))close();
+  });
+  document.addEventListener("keydown",e=>{
+    if(runtimeOwnsMenu()||e.key!=="Escape"||!n.classList.contains("is-open"))return;
+    close();
+    t.focus({preventScroll:true});
+  });
   const onViewportChange=()=>{
+    keepCanonicalParent();
     if(!isCompact()&&n.classList.contains("is-open"))close();
     else syncA11y();
   };
@@ -2121,6 +2125,7 @@ function setupNav(){
     if(typeof compactQuery.addEventListener==="function")compactQuery.addEventListener("change",onViewportChange);
     else if(typeof compactQuery.addListener==="function")compactQuery.addListener(onViewportChange);
   }
+  keepCanonicalParent();
   syncA11y();
 }
 

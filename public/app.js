@@ -2216,7 +2216,8 @@ function init(){
   if($("#favoritesOnly"))$("#favoritesOnly").addEventListener("click",e=>{if(!acceptSingleTap(e.currentTarget,260))return;favoritesOnly=!favoritesOnly;visibleLimit=catalogPageSize();renderFavoritesCount();renderProducts()});
   if($("#clearRecent"))$("#clearRecent").addEventListener("click",()=>{recentViews=[];saveRecent();renderRecent()});
 
-  document.addEventListener("click",e=>{const btn=e.target.closest("[data-lang]");if(!btn)return;if(btn.dataset.lang===lang)return;if(!acceptSingleTap(btn,220))return;applyLanguage(btn.dataset.lang)});\n  window.__ZWM_LANGUAGE_SWITCH_BOUND=true;
+  document.addEventListener("click",e=>{const btn=e.target.closest("[data-lang]");if(!btn)return;if(btn.dataset.lang===lang)return;if(!acceptSingleTap(btn,220))return;applyLanguage(btn.dataset.lang)});
+  window.__ZWM_LANGUAGE_SWITCH_BOUND=true;
   $$("[data-welcome-lang]").forEach(btn=>btn.addEventListener("click",e=>chooseWelcomeLanguage(btn.dataset.welcomeLang,e)));
 
   const helpSearch=$("[data-help-search]");

@@ -21,3 +21,54 @@
 .rewards-auth-status-grid small{font-size:.65rem;line-height:1.35;color:#8a918a}
 @media(max-width:900px){.rewards-auth-status-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.rewards-auth-status-head{align-items:flex-start;flex-direction:column}.rewards-auth-status-grid{grid-template-columns:1fr}}
+
+
+/* referral delivery verification */
+.rewards-referral-security{
+  display:grid;
+  grid-template-columns:minmax(220px,.65fr) minmax(0,1.35fr);
+  gap:16px;
+  align-items:center;
+  padding:14px 16px;
+  border:1px solid #d9e5d7;
+  border-radius:16px;
+  background:#f5f8f2;
+}
+.rewards-referral-security>div{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.rewards-referral-security>div>span{
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:#dfeedd;
+  color:var(--green);
+  font-weight:900;
+}
+.rewards-referral-security p{
+  margin:0;
+  font-size:9px;
+  line-height:1.55;
+  color:var(--muted);
+}
+.rewards-referral-security>div p{
+  margin:0 0 2px;
+  color:var(--green-2);
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-size:8px;
+  font-weight:900;
+}
+.rewards-referral-security h3{
+  margin:0;
+  font-size:13px;
+  color:var(--ink);
+}
+@media(max-width:760px){
+  .rewards-referral-security{grid-template-columns:1fr;gap:9px}
+}

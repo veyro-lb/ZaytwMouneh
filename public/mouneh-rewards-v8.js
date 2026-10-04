@@ -42,7 +42,33 @@
       }
     }catch{}
   }
-  async function copyText(value){\n    const text=String(value||"");\n    if(!text)return false;\n    try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);return true}}catch{}\n    try{\n      const area=document.createElement("textarea");\n      area.value=text;area.setAttribute("readonly","");area.style.position="fixed";area.style.opacity="0";area.style.pointerEvents="none";\n      document.body.appendChild(area);area.select();area.setSelectionRange(0,text.length);\n      const ok=document.execCommand("copy");area.remove();return !!ok;\n    }catch{return false}\n  }\n  function referralShareLink(code){
+  async function copyText(value){
+    const text=String(value||"");
+    if(!text)return false;
+    try{
+      if(navigator.clipboard?.writeText){
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    }catch{}
+    try{
+      const area=document.createElement("textarea");
+      area.value=text;
+      area.setAttribute("readonly","");
+      area.style.position="fixed";
+      area.style.opacity="0";
+      area.style.pointerEvents="none";
+      document.body.appendChild(area);
+      area.select();
+      area.setSelectionRange(0,text.length);
+      const ok=document.execCommand("copy");
+      area.remove();
+      return !!ok;
+    }catch{
+      return false;
+    }
+  }
+  function referralShareLink(code){
     const clean=normalizeReferral(code);
     return clean
       ?location.origin+"/account?auth=signup&ref="+encodeURIComponent(clean)+"#signup"

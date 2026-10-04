@@ -43,13 +43,31 @@
     return tier==="golden"?tr("Golden","ذهبي"):tier==="olive"?tr("Olive","زيتون"):tr("Member","عضو");
   }
 
+  async function loadAuthStatus(){
+    const email=$("rewardsAuthEmailStatus"),confirm=$("rewardsAuthConfirmStatus"),google=$("rewardsAuthGoogleStatus");
+    if(!cfg.supabaseUrl||!cfg.supabasePublishableKey)return;
+    try{
+      const r=await fetch(String(cfg.supabaseUrl).replace(/\/$/,"")+"/auth/v1/settings",{headers:{"apikey":cfg.supabasePublishableKey}});
+      const d=await r.json();
+      const emailOn=!!d?.external?.email;
+      const googleOn=!!d?.external?.google;
+      const confirmRequired=d?.mailer_autoconfirm===false;
+      if(email){email.textContent=emailOn?tr("Active","مفعّل"):tr("Off","متوقف");email.dataset.status=emailOn?"ok":"warn";}
+      if(confirm){confirm.textContent=confirmRequired?tr("Required","مطلوب"):tr("Automatic","تلقائي");confirm.dataset.status=confirmRequired?"ok":"warn";}
+      if(google){google.textContent=googleOn?tr("Connected","متصل"):tr("Needs setup","يحتاج إعداد");google.dataset.status=googleOn?"ok":"warn";}
+    }catch{
+      [email,confirm,google].forEach(el=>{if(el){el.textContent=tr("Could not check","تعذّر الفحص");el.dataset.status="warn";}});
+    }
+  }
+
   async function load(){
     if(state.loading)return;
     state.loading=true;
     const root=$("rewardsAdminBody");
     if(root)root.classList.add("is-loading");
     try{
-      state.data=await rpc("admin_data",{});
+      const [data]=await Promise.all([rpc("admin_data",{}),loadAuthStatus()]);
+      state.data=data;
       render();
     }catch(err){
       if(root)root.innerHTML='<p class="empty-state">'+esc(err.message)+'</p>';

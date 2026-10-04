@@ -135,8 +135,8 @@ body[data-page="account"] .account-or span{height:1px;background:var(--acc-line)
 body[data-page="account"] .account-auth-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
 body[data-page="account"] .account-auth-form label{display:grid;gap:6px;color:#516056;font-size:.72rem;font-weight:800}
 body[data-page="account"] .account-auth-form input{width:100%;min-height:48px;border:1px solid var(--acc-line);border-radius:12px;background:#fff;padding:0 12px;color:#243c2c;font:600 .84rem "DM Sans",sans-serif}
-body[data-page="account"] .account-auth-form label:has(#mrEmail),
-body[data-page="account"] .account-auth-form label:has(#mrPassword){grid-column:auto}
+body[data-page="account"] .account-auth-form label:has(#accountEmail),
+body[data-page="account"] .account-auth-form label:has(#accountPassword){grid-column:auto}
 body[data-page="account"] .account-auth-submit{grid-column:1/-1;width:100%;min-height:48px}
 body[data-page="account"] .account-auth-form .account-status{grid-column:1/-1;margin:0}
 body[data-page="account"] .account-auth-note{margin:14px 0 0!important;padding-top:14px;border-top:1px solid var(--acc-line);font-size:.75rem!important;line-height:1.6!important}
@@ -302,4 +302,143 @@ body[data-page="account"] .account-legal-links a:focus-visible{
     min-height:40px;
     text-align:center;
   }
+}
+
+
+/* ===== mobileauth3: isolated, reliable account authentication ===== */
+body[data-page="account"] #accountAuthForm,
+body[data-page="account"] #accountAuthForm *{box-sizing:border-box}
+body[data-page="account"] #accountAuthStatus,
+body[data-page="account"] #accountVerifyStatus{min-height:1.25em;overflow-wrap:anywhere}
+body[data-page="account"] .account-google[aria-busy="true"],
+body[data-page="account"] .account-auth-submit[aria-busy="true"]{opacity:.65;cursor:wait}
+body[data-page="account"] .account-legal-toggle input#accountLegalConsent{
+  position:static;
+  width:22px;
+  height:22px;
+  margin:1px 0 0;
+  opacity:1;
+  pointer-events:auto;
+  appearance:auto;
+  accent-color:var(--acc-green);
+  flex:0 0 22px;
+}
+body[data-page="account"] .account-legal-toggle:has(#accountLegalConsent) .account-legal-check{display:none}
+body[data-page="account"] .account-legal-toggle:has(#accountLegalConsent){
+  grid-template-columns:22px minmax(0,1fr);
+}
+body[data-page="account"] .account-legal-toggle:has(#accountLegalConsent)>span:last-child{
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+
+@media(max-width:760px){
+  body[data-page="account"] .account-main{padding:18px 0 46px}
+  body[data-page="account"] .account-main>.shell{width:min(100% - 20px,720px)}
+  body[data-page="account"] .account-auth-layout{grid-template-columns:minmax(0,1fr);gap:12px}
+  body[data-page="account"] .account-auth-card,
+  body[data-page="account"] .account-auth-side{width:100%;min-width:0;border-radius:18px}
+  body[data-page="account"] .account-auth-card{padding:18px}
+  body[data-page="account"] .account-auth-card h1{font-size:clamp(2rem,10vw,2.75rem);line-height:1.02}
+  body[data-page="account"] .account-auth-card>p{font-size:.84rem;line-height:1.58}
+  body[data-page="account"] .account-auth-tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    width:100%;
+    gap:5px;
+    margin-bottom:15px;
+    padding:4px;
+    border-radius:14px;
+  }
+  body[data-page="account"] .account-auth-tabs button{
+    width:100%;
+    min-width:0;
+    min-height:46px;
+    padding:0 10px;
+    border-radius:11px;
+    font-size:.78rem;
+    white-space:normal;
+    line-height:1.25;
+  }
+  body[data-page="account"] .account-legal-consent{
+    margin:16px 0 13px;
+    padding:13px;
+    border-radius:14px;
+    font-size:.79rem;
+    line-height:1.55;
+  }
+  body[data-page="account"] .account-legal-toggle{
+    grid-template-columns:24px minmax(0,1fr)!important;
+    gap:10px;
+    align-items:start;
+  }
+  body[data-page="account"] .account-legal-toggle input#accountLegalConsent{
+    width:24px;
+    height:24px;
+    min-width:24px;
+    margin-top:0;
+  }
+  body[data-page="account"] .account-legal-links,
+  html[dir="rtl"] body[data-page="account"] .account-legal-links{
+    padding:0;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  body[data-page="account"] .account-legal-links a{
+    width:100%;
+    min-width:0;
+    min-height:44px;
+    padding:8px 10px;
+    border-radius:11px;
+    line-height:1.25;
+    text-align:center;
+    overflow-wrap:anywhere;
+  }
+  body[data-page="account"] .account-google{
+    min-height:50px;
+    border-radius:13px;
+    font-size:.84rem;
+  }
+  body[data-page="account"] .account-auth-form{
+    grid-template-columns:minmax(0,1fr);
+    gap:12px;
+  }
+  body[data-page="account"] .account-auth-form label,
+  body[data-page="account"] .account-auth-form label:has(#accountEmail),
+  body[data-page="account"] .account-auth-form label:has(#accountPassword){
+    grid-column:auto;
+    min-width:0;
+  }
+  body[data-page="account"] .account-auth-form input{
+    width:100%;
+    min-width:0;
+    min-height:50px;
+    padding:0 13px;
+    border-radius:12px;
+    font-size:16px;
+    line-height:1.2;
+  }
+  body[data-page="account"] .account-auth-submit{
+    grid-column:auto;
+    min-height:50px;
+    border-radius:13px;
+    font-size:.82rem;
+  }
+  body[data-page="account"] .account-auth-note{font-size:.77rem!important}
+  body[data-page="account"] .account-auth-side{position:static;padding:18px}
+  body[data-page="account"] .account-auth-side h2{font-size:1.75rem}
+  body[data-page="account"] .account-benefits{gap:9px}
+  body[data-page="account"] .account-benefits span{align-items:flex-start;line-height:1.45}
+  body[data-page="account"] .account-complete-card{padding:18px!important}
+  body[data-page="account"] .account-complete-signout{min-height:48px}
+}
+
+@media(max-width:430px){
+  body[data-page="account"] .account-main>.shell{width:min(100% - 14px,720px)}
+  body[data-page="account"] .account-auth-card{padding:15px}
+  body[data-page="account"] .account-auth-card h1{font-size:clamp(1.9rem,11vw,2.45rem)}
+  body[data-page="account"] .account-legal-links,
+  html[dir="rtl"] body[data-page="account"] .account-legal-links{grid-template-columns:1fr}
+  body[data-page="account"] .account-google strong{min-width:0;overflow-wrap:anywhere}
 }

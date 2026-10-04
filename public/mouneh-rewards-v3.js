@@ -8,7 +8,7 @@
   const LEGAL_PENDING_KEY="zwm:mouneh:legal-consent-pending:v1";
   const LEGAL_CONSENT_VERSION="2026-10-04";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-rewards11";
+  const VERSION="20261004-rewards12";
   const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false,referralStatus:null};
 
   const $=(id)=>document.getElementById(id);
@@ -150,6 +150,11 @@
     if(!s?.access_token)throw new Error(tr("Could not start your session.","تعذّر بدء الجلسة."));
     writeSession(s);
     state.authUser=data.user||null;
+    const acceptedAt=new Date().toISOString();
+    try{
+      const user=await authRequest("user",{data:{terms_accepted_at:acceptedAt,privacy_acknowledged_at:acceptedAt,legal_consent_version:LEGAL_CONSENT_VERSION}},s.access_token,"PUT");
+      if(user)state.authUser=user;
+    }catch{}
     await loadDashboard();
     await ensureMemberFromAuth();
   }

@@ -88,21 +88,27 @@
         freshDocumentSignature(now)
       ]);
 
-      if(manifestResponse?.ok){
-        const data=await manifestResponse.json().catch(()=>null);
-        const latest=String(data?.release||"").trim();
-        if(latest&&current&&latest!==current){
-          forceFresh(latest,"release-"+latest);
-          return;
-        }
-      }
-
+      // The freshly fetched HTML is the authority. Deployment manifests can lag a page
+      // by a few seconds, so never "downgrade" a current page because release.json is stale.
       if(freshDoc){
         const liveAssets=new Set(localAssets(document,location.href));
         const missing=freshDoc.assets.filter(asset=>!liveAssets.has(asset));
         const releaseMismatch=freshDoc.release&&current&&freshDoc.release!==current;
         if(releaseMismatch||missing.length){
           forceFresh(freshDoc.release||current,"assets-"+freshDoc.key);
+          return;
+        }
+        if(freshDoc.release===current&&!missing.length){
+          cleanTransientParams();
+          return;
+        }
+      }
+
+      if(manifestResponse?.ok){
+        const data=await manifestResponse.json().catch(()=>null);
+        const latest=String(data?.release||"").trim();
+        if(latest&&current&&latest!==current){
+          forceFresh(latest,"release-"+latest);
           return;
         }
       }

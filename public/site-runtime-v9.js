@@ -700,6 +700,9 @@
     const brandName=arabic?"زيت ومونة":"Zayt w Mouneh";
     const homeLabel=arabic?"زيت ومونة — الرئيسية":"Zayt w Mouneh home";
     const logoAlt=arabic?"شعار زيت ومونة":"Zayt w Mouneh logo";
+    document.title=document.title
+      .replace(/Zayt w Mouneh/g,brandName)
+      .replace(/زيت ومونة/g,brandName);
 
     document.querySelectorAll(".brand-wordmark,#brandWordmark,#footerBrand,#copyrightBrand,[data-brand-name]").forEach(el=>{
       if(el.textContent!==brandName)el.textContent=brandName;

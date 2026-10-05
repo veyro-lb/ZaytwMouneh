@@ -46,3 +46,15 @@
 .c6-corporate-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;padding-top:16px;border-top:1px solid var(--c6-line)}
 .c6-field-wide{grid-column:1/-1}
 @media(max-width:650px){.c6-corporate summary{align-items:flex-start;flex-direction:column}.c6-corporate-form{grid-template-columns:1fr}.c6-field-wide{grid-column:auto}}
+
+/* ===== mobile-audit-20261006: prevent mobile form zoom ===== */
+@media(max-width:650px){
+  .c6-field input,
+  .c6-field select,
+  .c6-field textarea,
+  .c6-purchase-box select,
+  .c6-purchase-box input,
+  .c6-estimator input,
+  .c6-alert select,
+  .c6-alert input{font-size:16px}
+}

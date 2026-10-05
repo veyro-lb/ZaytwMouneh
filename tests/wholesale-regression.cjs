@@ -23,7 +23,9 @@ assert(js.includes("slice(0,24)"),"catalogue search rendering must stay bounded"
 assert(js.includes("submission_key:ensureSubmissionKey()"),"client idempotency key missing");
 assert(sql.includes("wholesale_leads_submission_key_idx"),"server idempotency unique index missing");
 assert(sql.includes("private.submit_wholesale_enquiry_idempotent"),"idempotent submission routine missing");
-assert(sql.includes("revoke all on function private.submit_wholesale_enquiry_core(jsonb) from public,anon,authenticated"),"private core submission routine must not be browser-callable");\nassert(sql.includes("revoke all on function private.submit_wholesale_enquiry_idempotent(jsonb) from public,anon,authenticated"),"private idempotency routine must not be browser-callable");\nassert(/create or replace function public\\.submit_wholesale_enquiry\\(p jsonb\\)[\\s\\S]*security definer/i.test(sql),"public controlled submission wrapper must own the private call boundary");
+assert(sql.includes("revoke all on function private.submit_wholesale_enquiry_core(jsonb) from public,anon,authenticated"),"private core submission routine must not be browser-callable");
+assert(sql.includes("revoke all on function private.submit_wholesale_enquiry_idempotent(jsonb) from public,anon,authenticated"),"private idempotency routine must not be browser-callable");
+assert(/create or replace function public\\.submit_wholesale_enquiry\\(p jsonb\\)[\\s\\S]*security definer/i.test(sql),"public controlled submission wrapper must own the private call boundary");
 assert(sql.includes("regexp_replace(phone,'[^0-9]','','g')"),"international phone normalization fix missing");
 assert(admin.includes("wholesale_lead_items(*)"),"admin lead items relationship missing");
 assert(admin.includes("next_follow_up_at"),"admin follow-up workflow missing");

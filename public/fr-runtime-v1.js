@@ -1677,7 +1677,27 @@ var EXACT=Object.freeze({
 "Food that feels":"Une cuisine qui semble",
 "familiar.":"familière.",
 "Follow the pantry for seasonal ideas, shop updates and everyday ways to bring Lebanese staples to the table.":"Suivez la mouneh pour des idées de saison, les nouveautés de la boutique et des façons simples d’apporter les essentiels libanais à table.",
-"Availability confirmed on WhatsApp":"Disponibilité confirmée sur WhatsApp"
+"Availability confirmed on WhatsApp":"Disponibilité confirmée sur WhatsApp",
+"Autumn pantry · olive season, warm spices and mouneh for the table.":"Mouneh d’automne · saison des olives, épices chaleureuses et essentiels pour la table.",
+"Seasonal pantry":"Mouneh de saison",
+"Winter pantry · grains, legumes, honey and warming Lebanese staples.":"Mouneh d’hiver · céréales, légumineuses, miel et essentiels libanais réconfortants.",
+"Winter pantry":"Mouneh d’hiver",
+"Spring pantry · bright herbs, olive oil and lighter table essentials.":"Mouneh de printemps · herbes fraîches, huile d’olive et essentiels plus légers pour la table.",
+"Spring pantry":"Mouneh de printemps",
+"Summer pantry · zaatar, olive oil, syrups and easy mezze essentials.":"Mouneh d’été · zaatar, huile d’olive, sirops et essentiels faciles pour le mezzé.",
+"Summer pantry":"Mouneh d’été",
+"Breakfast in Lebanon":"Petit-déjeuner au Liban",
+"Zaatar, olive oil, honey and pantry staples for an easy, natural morning table.":"Zaatar, huile d’olive, miel et essentiels de la mouneh pour un petit-déjeuner simple et naturel.",
+"Natural Pantry":"Mouneh naturelle",
+"Wholesome grains, pulses and pantry staples chosen for a simple, natural kitchen.":"Céréales, légumineuses et essentiels de la mouneh choisis pour une cuisine simple et naturelle.",
+"Sweet Lebanon":"Douceurs du Liban",
+"Honey, molasses and pantry sweets for gifting, sharing and everyday moments.":"Miel, mélasses et douceurs de la mouneh à offrir, partager ou savourer au quotidien.",
+"Sunday Table":"Table du dimanche",
+"Olive oil, grains, spices and pantry essentials for a generous family table.":"Huile d’olive, céréales, épices et essentiels de la mouneh pour une généreuse table familiale.",
+"Most of the pantry comes from the Bekaa: grains, pulses, herbs and everyday mouneh staples.":"Une grande partie de la mouneh vient de la Bekaa : céréales, légumineuses, herbes et essentiels du quotidien.",
+"Koura is highlighted for olive oil, with the specific product name taking precedence whenever a more precise origin is listed.":"La Koura est mise en avant pour l’huile d’olive ; lorsqu’une origine plus précise est indiquée sur un produit, celle-ci prévaut.",
+"Honey is associated with Mount Lebanon in the brand provenance information.":"Le miel est associé au Mont-Liban dans les informations de provenance de la marque.",
+"Debes and molasses are associated with the Chouf in the brand provenance information.":"Le debes et les mélasses sont associés au Chouf dans les informations de provenance de la marque."
 });
 
 var STATIC_FR=Object.freeze({

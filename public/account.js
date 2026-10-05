@@ -393,7 +393,14 @@
   window.addEventListener("pageshow",sync);
   window.addEventListener("storage",e=>{if(!e.key||String(e.key).startsWith("zwm"))sync()});
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)sync()});
-  new MutationObserver(()=>render(true)).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+  new MutationObserver(()=>{
+    // French is translated by fr-runtime after each account render. Do not render
+    // again just because that runtime normalizes <html lang="fr" dir="ltr">.
+    let french=false;
+    try{french=localStorage.getItem("zwm:french:v1")==="1"}catch{}
+    if(french&&document.documentElement.lang==="fr")return;
+    render(true);
+  }).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
   function syncAccountShellChrome(){
     document.querySelectorAll("[data-footer-year]").forEach(el=>{el.textContent=new Date().getFullYear()});
     const count=$("#cartCount");

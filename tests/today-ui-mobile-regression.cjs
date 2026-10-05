@@ -55,8 +55,9 @@ assert(read("admin-config.js").includes("/notifications-v1.css?v=20261006-mobile
 for(const file of ["account.html","product.html","gift.html","shop.html","recipes.html"]){
   assert(read(file).includes("/conversion-v1.css?v=20261006-mobileaudit1"),file+" conversion CSS cache token stale");
 }
-for(const file of ["index.html","shop.html","gift.html","recipes.html","about.html","contact.html","account.html","checkout.html","product.html","wholesale.html"]){
+for(const file of ["index.html","shop.html","gift.html","recipes.html","about.html","contact.html","account.html","checkout.html","product.html"]){
   assert(read(file).includes("site-runtime-v9.js?v=20261006-mobileaudit1"),file+" runtime cache token stale");
 }
+assert(read("wholesale.html").includes("/notifications-v1.css?v=20261006-mobileaudit1"),"Wholesale must load audited notification styles directly");
 
 console.log("Today UI/mobile regression passed: Wholesale, notification bells, owner modal and conversion forms.");

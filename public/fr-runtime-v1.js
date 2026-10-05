@@ -267,8 +267,10 @@ var EXACT=Object.freeze({
 "Create your Zayt w Mouneh account":"Créer votre compte Zayt w Mouneh",
 "Welcome back":"Bon retour",
 "Welcome back.":"Bon retour.",
+"Latest order":"Dernière commande",
+"View order":"Voir la commande",
 "Overview":"Aperçu",
-"Points & Wallet":"Points & portefeuille",
+"Points & Wallet":"Points et portefeuille",
 "Mouneh Points & Wallet":"Mouneh Points & portefeuille",
 "Orders":"Commandes",
 "Orders & points":"Commandes & points",
@@ -276,7 +278,7 @@ var EXACT=Object.freeze({
 "Orders & deliveries":"Commandes & livraisons",
 "Referrals":"Parrainages",
 "Profile":"Profil",
-"Profile & Security":"Profil & sécurité",
+"Profile & Security":"Profil et sécurité",
 "Profile & birthday":"Profil & anniversaire",
 "Password & security":"Mot de passe & sécurité",
 "Overview with your balance, vouchers, orders and tier.":"Aperçu de votre solde, vos bons, vos commandes et votre niveau.",
@@ -989,7 +991,7 @@ var EXACT=Object.freeze({
 "View details":"Voir les détails",
 "Waiting for delivery":"En attente de livraison",
 "We sent a Zayt w Mouneh verification link to":"Nous avons envoyé un lien de vérification Zayt w Mouneh à",
-"Welcome to Mouneh Rewards":"Bienvenue dans les récompenses Mouneh",
+"Welcome to Mouneh Rewards":"Bonus de bienvenue Mouneh Rewards",
 "Welcome,":"Bienvenue,",
 "What is confirmed and what is pending":"Ce qui est confirmé et ce qui est en attente",
 "Working…":"Traitement…",
@@ -2228,6 +2230,18 @@ function dynamicFr(raw){
   if(t==="Coming soon")return s.replace(t,"Bientôt disponible");
   if(t==="Size not listed")return s.replace(t,"Format non indiqué");
   if((m=t.match(/^(\\d+(?:[.,]\\d+)?) \\(unit not listed\\)$/i)))return s.replace(t,m[1]+" (unité non indiquée)");
+  if((m=t.match(/^Last checked\\s+(\\d{1,2}):(\\d{2})\\s*(AM|PM)$/i))){
+    var hh=Number(m[1])%12+(String(m[3]).toUpperCase()==="PM"?12:0);
+    return s.replace(t,"Dernière vérification : "+String(hh).padStart(2,"0")+":"+m[2]);
+  }
+  if((m=t.match(/^(.+?)\\s+·\\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\s+(\\d{1,2}),\\s+(\\d{4})$/i))){
+    var mois={jan:"janv.",feb:"févr.",mar:"mars",apr:"avr.",may:"mai",jun:"juin",jul:"juil.",aug:"août",sep:"sept.",oct:"oct.",nov:"nov.",dec:"déc."};
+    return s.replace(t,m[1]+" · "+m[3]+" "+mois[m[2].toLowerCase()]+" "+m[4]);
+  }
+  if((m=t.match(/^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\s+(\\d{1,2}),\\s+(\\d{4})$/i))){
+    var mois2={jan:"janv.",feb:"févr.",mar:"mars",apr:"avr.",may:"mai",jun:"juin",jul:"juil.",aug:"août",sep:"sept.",oct:"oct.",nov:"nov.",dec:"déc."};
+    return s.replace(t,m[2]+" "+mois2[m[1].toLowerCase()]+" "+m[3]);
+  }
   return s;
 }
 

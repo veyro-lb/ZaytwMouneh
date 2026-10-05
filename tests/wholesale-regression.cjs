@@ -59,3 +59,4 @@ assert(admin.includes("next_follow_up_at"),"admin follow-up workflow missing");
 console.log("Wholesale static regression passed: localized RFQ, bounded catalogue picker, CRM and RLS guards.");
 
 assert(!html.includes('href="#wholesale-request" data-t="requestPricing"'),"fragment-only Wholesale CTA must not be used with <base href=\"/\"> because it resolves to the homepage");
+assert(!/href="#[^"]+"/.test(html),"Wholesale must not use fragment-only links while <base href=\"/\"> is present");

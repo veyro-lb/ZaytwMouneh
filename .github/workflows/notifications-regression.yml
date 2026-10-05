@@ -1,0 +1,33 @@
+name: Notification production regression
+on:
+  push:
+    branches:
+      - notifications-production
+  pull_request:
+    paths:
+      - "public/notification-*.js"
+      - "public/notification-*.css"
+      - "public/admin-sw.js"
+      - "public/account.html"
+      - "public/admin.js"
+      - "supabase/functions/notification-push/**"
+      - "supabase/migrations/*notification*.sql"
+      - "tests/notification-regression.cjs"
+      - ".github/workflows/notifications-regression.yml"
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Syntax check notification runtimes
+        run: |
+          node --check public/notification-admin.js
+          node --check public/notification-customer.js
+          node --check public/admin-sw.js
+          node --check public/admin.js
+      - name: Notification static regression
+        run: node tests/notification-regression.cjs

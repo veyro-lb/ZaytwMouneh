@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - hotfix-quick-view-lifecycle
+concurrency:
+  group: quick-view-hotfix
+  cancel-in-progress: true
 jobs:
   quick-view:
     runs-on: ubuntu-latest

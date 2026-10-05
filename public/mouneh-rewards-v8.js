@@ -8,7 +8,7 @@
   const LEGAL_PENDING_KEY="zwm:mouneh:legal-consent-pending:v1";
   const LEGAL_CONSENT_VERSION="2026-10-04";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261005-account-reliability1";
+  const VERSION="20261005-account-reliability2";
   const REQUEST_TIMEOUT_MS=12000;
   const CONFIG_TIMEOUT_MS=8000;
   const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false,referralStatus:null,bonusStatus:null,accountBusy:false,accountError:"",lastAccountLoadAt:0};
@@ -428,7 +428,7 @@
     catch{state.bonusStatus=null;return null}
   }
   async function claimBirthdayBonus(){
-    await rpc("birthday",{});
+    await namedRpc("mouneh_claim_birthday_bonus",{});
     state.dashboard=await rpc("dashboard",{});
     await loadBonusStatus();
     notifyAccount();render();renderCheckout();

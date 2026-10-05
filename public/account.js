@@ -83,6 +83,17 @@
 
   function api(){return window.ZWM_REWARDS||null}
   function state(){try{return api()?.getState?.()||{}}catch{return {}}}
+  function requestFrenchTranslation(root){
+    let french=false;
+    try{french=localStorage.getItem("zwm:french:v1")==="1"}catch{}
+    if(!french)return;
+    requestAnimationFrame(()=>{
+      try{
+        if(typeof window.ZWM_APPLY_FRENCH==="function")window.ZWM_APPLY_FRENCH(root||shell());
+        else document.dispatchEvent(new CustomEvent("zwm:translate-french",{detail:{root:root||shell()}}));
+      }catch{}
+    });
+  }
   function setLang(lang){
     const next=lang==="ar"?"ar":"en";
     try{localStorage.setItem("zwm-lang-v2",next)}catch{}
@@ -236,8 +247,8 @@
     syncLanguageVisibility();
     const sig=JSON.stringify([active,guestAuthMode,ar(),!!s.session,s.member?.balance,s.member?.name,s.dashboard?.orders?.length,s.dashboard?.wallet?.length,s.referralStatus?.joined,s.referralStatus?.qualified,s.authUser?.email,s.authMode,s.authNotice,s.pendingSignupEmail,s.googleEnabled,hasMember?lastSyncedAt:0]);
     if(!force&&sig===lastRenderSig)return;lastRenderSig=sig;
-    if(!api()){el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Loading your account…","جارٍ تحميل حسابك…")+'</strong></section>';return}
-    if(s.session&&!s.member&&!s.dashboard){el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Finishing sign-in…","جارٍ إكمال تسجيل الدخول…")+'</strong></section>';return}
+    if(!api()){el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Loading your account…","جارٍ تحميل حسابك…")+'</strong></section>';requestFrenchTranslation(el);return}
+    if(s.session&&!s.member&&!s.dashboard){el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Finishing sign-in…","جارٍ إكمال تسجيل الدخول…")+'</strong></section>';requestFrenchTranslation(el);return}
     if(!s.session||!s.member){
       // Preserve the form and consent when service readiness/language changes.
       const existing=$("#accountAuthForm");
@@ -248,9 +259,11 @@
       el.dataset.authMode=guestAuthMode;
       fields.forEach(saved=>{const input=document.getElementById(saved.id);if(input){input.value=saved.value;input.checked=saved.checked}});
       if(focused)document.getElementById(focused)?.focus({preventScroll:true});
+      requestFrenchTranslation(el);
       return;
     }
     el.innerHTML=memberView(s,s.member);
+    requestFrenchTranslation(el);
   }
   async function sync(){
     if(syncing||document.visibilityState==="hidden")return;

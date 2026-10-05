@@ -1769,7 +1769,13 @@ var EXACT=Object.freeze({
 "Card language:":"Langue de la carte :",
 "Hide prices from recipient:":"Masquer les prix pour le destinataire :",
 "To":"À",
-"Feedback about":"Avis sur"
+"Feedback about":"Avis sur",
+"Categories":"Catégories",
+"About":"À propos",
+"Remove":"Retirer",
+"Qty":"Qté",
+"Unit":"Unité",
+"Removed":"Retiré"
 });
 
 var STATIC_FR=Object.freeze({

@@ -97,136 +97,40 @@
 @media(max-width:900px){.rewards-campaign-form{grid-template-columns:repeat(2,minmax(0,1fr))}.rewards-member-modal-body{grid-template-columns:1fr}.rewards-member-action p{min-height:0}}
 @media(max-width:560px){.rewards-admin-panel{padding:14px}.rewards-new-level,.rewards-campaign-form,.reward-rule-grid{grid-template-columns:1fr}.rewards-member-tools{flex-wrap:wrap}.rewards-member-tools input{width:100%}.rewards-panel-head .field-help{max-width:none}.rewards-mini-metric{padding:12px}.rewards-new-level{padding:14px}.rewards-campaign-row{align-items:start}.rewards-auth-status-grid{grid-template-columns:1fr}}
 
-/* Member management modal responsive sizing v2 */
+/* Member management modal — Batch 5 definitive responsive layout */
 .rewards-member-modal-backdrop{
-  padding:clamp(18px,2.5vw,34px);
-  overflow:hidden;
-}
-.rewards-member-modal{
-  width:min(1040px,calc(100vw - 68px));
-  max-width:1040px;
-  max-height:min(840px,calc(100dvh - 68px));
-  overflow:hidden;
-  display:grid;
-  grid-template-rows:auto minmax(0,1fr);
-  border-radius:24px;
-}
-.rewards-member-modal header{
-  gap:18px;
-  padding:20px 22px;
-}
-.rewards-member-modal header>div{min-width:0}
-.rewards-member-modal header strong,
-.rewards-member-modal header span{overflow-wrap:anywhere}
-.rewards-member-modal header button{
-  flex:0 0 44px;
-  width:44px;
-  height:44px;
-  min-height:44px;
-  padding:0;
+  position:fixed;
+  inset:0;
+  z-index:360;
   display:grid;
   place-items:center;
-}
-.rewards-member-modal-body{
-  min-width:0;
-  min-height:0;
-  overflow:auto;
-  overscroll-behavior:contain;
-  -webkit-overflow-scrolling:touch;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  align-items:stretch;
-  gap:14px;
-  padding:18px;
-}
-.rewards-member-action{
-  min-width:0;
-  height:100%;
-  align-content:start;
-}
-.rewards-member-action button{margin-top:auto}
-.rewards-member-action input,
-.rewards-member-action select{max-width:100%}
-
-@media(max-width:900px){
-  .rewards-member-modal-backdrop{padding:20px}
-  .rewards-member-modal{
-    width:min(680px,calc(100vw - 40px));
-    max-height:calc(100dvh - 40px);
-  }
-  .rewards-member-modal-body{
-    grid-template-columns:1fr;
-    align-items:start;
-    padding:16px;
-  }
-  .rewards-member-action{height:auto}
-  .rewards-member-action button{margin-top:0}
-}
-
-@media(max-width:560px){
-  .rewards-member-modal-backdrop{
-    place-items:end center;
-    padding:10px;
-  }
-  .rewards-member-modal{
-    width:100%;
-    max-width:none;
-    max-height:calc(100dvh - 20px);
-    border-radius:18px;
-  }
-  .rewards-member-modal header{
-    position:relative;
-    padding:14px 14px 13px;
-    gap:12px;
-  }
-  .rewards-member-modal header strong{font-size:1rem}
-  .rewards-member-modal header small,
-  .rewards-member-modal header span{font-size:.75rem}
-  .rewards-member-modal-body{
-    padding:12px;
-    gap:10px;
-  }
-  .rewards-member-action{
-    padding:13px;
-    border-radius:13px;
-  }
-}
-
-@media(max-width:380px){
-  .rewards-member-modal-backdrop{padding:0}
-  .rewards-member-modal{
-    max-height:100dvh;
-    height:100dvh;
-    border-radius:0;
-  }
-  .rewards-member-modal header{
-    padding-top:max(14px,env(safe-area-inset-top));
-  }
-  .rewards-member-modal-body{
-    padding-bottom:max(12px,env(safe-area-inset-bottom));
-  }
-}
-
-/* Member management modal proportion + stacking v3 */
-.rewards-member-modal-backdrop{
-  z-index:360;
   box-sizing:border-box;
-  padding:clamp(20px,3vw,40px);
+  padding:clamp(18px,3vw,34px);
   overflow:hidden;
+  overscroll-behavior:contain;
+  background:rgba(5,18,10,.55);
 }
+.rewards-member-modal-backdrop[hidden]{display:none!important}
 .rewards-member-modal{
   box-sizing:border-box;
-  width:min(900px,calc(100vw - 80px));
-  max-width:900px;
-  max-height:min(760px,calc(100dvh - 80px));
+  width:min(920px,calc(100vw - 68px));
+  max-width:920px;
+  max-height:min(780px,calc(100dvh - 68px));
   overflow:hidden;
   display:grid;
   grid-template-rows:auto minmax(0,1fr);
+  background:var(--paper);
   border-radius:22px;
+  box-shadow:0 30px 90px rgba(0,0,0,.25);
 }
 .rewards-member-modal header{
   box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   gap:18px;
   padding:18px 20px;
+  border-bottom:1px solid var(--line);
 }
 .rewards-member-modal header>div{min-width:0}
 .rewards-member-modal header strong,
@@ -247,6 +151,7 @@
   overflow:auto;
   overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch;
+  display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   align-items:stretch;
   gap:12px;
@@ -268,9 +173,7 @@
 .rewards-member-action:nth-child(3)>h4,
 .rewards-member-action:nth-child(3)>p,
 .rewards-member-action:nth-child(3)>button,
-.rewards-member-action:nth-child(3)>label:nth-of-type(3){
-  grid-column:1/-1;
-}
+.rewards-member-action:nth-child(3)>label:nth-of-type(3){grid-column:1/-1}
 
 @media(max-width:900px){
   .rewards-member-modal-backdrop{padding:18px}
@@ -293,12 +196,9 @@
   .rewards-member-action:nth-child(3)>h4,
   .rewards-member-action:nth-child(3)>p,
   .rewards-member-action:nth-child(3)>button,
-  .rewards-member-action:nth-child(3)>label:nth-of-type(3){
-    grid-column:auto;
-  }
+  .rewards-member-action:nth-child(3)>label:nth-of-type(3){grid-column:auto}
   .rewards-member-action button{margin-top:0}
 }
-
 @media(max-width:560px){
   .rewards-member-modal-backdrop{
     place-items:end center;
@@ -326,7 +226,6 @@
     border-radius:13px;
   }
 }
-
 @media(max-width:380px){
   .rewards-member-modal-backdrop{padding:0}
   .rewards-member-modal{
@@ -335,14 +234,9 @@
     max-height:100dvh;
     border-radius:0;
   }
-  .rewards-member-modal header{
-    padding-top:max(13px,env(safe-area-inset-top));
-  }
-  .rewards-member-modal-body{
-    padding-bottom:max(10px,env(safe-area-inset-bottom));
-  }
+  .rewards-member-modal header{padding-top:max(13px,env(safe-area-inset-top))}
+  .rewards-member-modal-body{padding-bottom:max(10px,env(safe-area-inset-bottom))}
 }
-
 
 /* ===== rewards-control-polish-v1 ===== */
 .rewards-panel-head>button,

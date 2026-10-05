@@ -12,7 +12,7 @@ var RECIPES=[
 ];
 var COPY={
  en:{
-  language:"Language",shop:"Shop",gifts:"Gifts",recipes:"Recipes",account:"Account",back:"Shop",pantry:"My pantry",
+  language:"Language",shop:"Shop",gifts:"Gifts",recipes:"Recipes",about:"About",account:"Account",terms:"Terms",privacy:"Privacy",back:"Shop",pantry:"My pantry",
   category:"Pantry product",size:"Choose size",qty:"Quantity",add:"Add to pantry",unavailable:"Not currently orderable",
   verified:"Verified purchase reviews",verifiedCopy:"Only reviews tied to delivered purchases are shown here.",noReviews:"No verified reviews yet.",
   facts:"Product details",factsNote:"Product facts are shown only where Zayt w Mouneh has supplied or configured them. Missing facts are not guessed.",
@@ -28,7 +28,7 @@ var COPY={
   paymentCod:"Cash on Delivery",paymentNote:"Pay when your order arrives.",from:"From"
  },
  ar:{
-  language:"اللغة",shop:"المتجر",gifts:"الهدايا",recipes:"الوصفات",account:"الحساب",back:"المتجر",pantry:"سلّتي",
+  language:"اللغة",shop:"المتجر",gifts:"الهدايا",recipes:"الوصفات",about:"من نحن",account:"الحساب",terms:"الشروط",privacy:"الخصوصية",back:"المتجر",pantry:"سلّتي",
   category:"منتج من المونة",size:"اختر الحجم",qty:"الكمية",add:"أضف إلى السلة",unavailable:"غير متاح للطلب حالياً",
   verified:"مراجعات شراء موثّقة",verifiedCopy:"تظهر هنا فقط المراجعات المرتبطة بطلبات تم تسليمها.",noReviews:"لا توجد مراجعات موثّقة بعد.",
   facts:"تفاصيل المنتج",factsNote:"لا نعرض إلا معلومات المنتج التي وفّرتها أو أعدّتها زيت ومونة. لا يتم تخمين المعلومات الناقصة.",
@@ -44,7 +44,7 @@ var COPY={
   paymentCod:"الدفع عند الاستلام",paymentNote:"ادفع عند وصول طلبك.",from:"ابتداءً من"
  },
  fr:{
-  language:"Langue",shop:"Boutique",gifts:"Cadeaux",recipes:"Recettes",account:"Compte",back:"Boutique",pantry:"Mon panier",
+  language:"Langue",shop:"Boutique",gifts:"Cadeaux",recipes:"Recettes",about:"À propos",account:"Compte",terms:"Conditions",privacy:"Confidentialité",back:"Boutique",pantry:"Mon panier",
   category:"Produit de la mouneh",size:"Choisir le format",qty:"Quantité",add:"Ajouter au panier",unavailable:"Non commandable actuellement",
   verified:"Avis d’achat vérifié",verifiedCopy:"Seuls les avis liés à des commandes livrées sont affichés ici.",noReviews:"Aucun avis vérifié pour le moment.",
   facts:"Détails du produit",factsNote:"Les informations produit ne sont affichées que lorsqu’elles ont été fournies ou configurées par Zayt w Mouneh. Rien n’est inventé.",
@@ -143,16 +143,17 @@ async function loadData(){
  state.locale=locale();document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==="ar"?"rtl":"ltr";
  state.products=typeof PRODUCTS_DATA!=="undefined"?JSON.parse(JSON.stringify(PRODUCTS_DATA)):[];
  var id=slug();
+ try{
+  var overrides=await rest("product_overrides?select=product_id,action,payload");
+  var byOverride=new Map((overrides||[]).map(function(row){return [row.product_id,row]}));
+  state.products=state.products.map(function(p){
+   var row=byOverride.get(p.id);if(!row)return p;
+   if(row.action==="hide")return null;
+   return Object.assign({},p,row.payload||{}, {id:p.id});
+  }).filter(Boolean);
+ }catch(e){}
  var base=state.products.find(function(p){return p.id===id});
  if(!base){renderNotFound();return}
- try{
-  var rows=await rest("product_overrides?select=product_id,action,payload&product_id=eq."+encodeURIComponent(id)+"&limit=1");
-  if(rows&&rows[0]){
-   if(rows[0].action==="hide"){renderNotFound();return}
-   base=Object.assign({},base,rows[0].payload||{}, {id:id});
-   var idx=state.products.findIndex(function(p){return p.id===id});if(idx>=0)state.products[idx]=base;
-  }
- }catch(e){}
  state.product=base;
  state.selectedVariant=(base.variants||[])[0]||null;
  try{
@@ -168,7 +169,7 @@ function canonical(){
 function updateSeo(){
  var p=state.product,name=productName(p),variants=p.variants||[],min=variants.length?Math.min.apply(null,variants.map(function(v){return Number(v.price)||0})):0;
  var title=name+" | Zayt w Mouneh";
- var desc=(state.locale==="ar"?"تسوّق ":"Shop ")+name+(state.locale==="fr"?" chez Zayt w Mouneh. Formats et prix actuels du catalogue.":state.locale==="ar"?" من زيت ومونة. الأحجام والأسعار الحالية من الكتالوج.":" at Zayt w Mouneh. Current catalogue sizes and prices.");
+ var desc=state.locale==="ar"?"تسوّق "+name+" من زيت ومونة. الأحجام والأسعار الحالية من الكتالوج.":state.locale==="fr"?"Achetez "+name+" chez Zayt w Mouneh. Formats et prix actuels du catalogue.":"Shop "+name+" at Zayt w Mouneh. Current catalogue sizes and prices.";
  document.title=title;
  var md=qs('meta[name="description"]');if(md)md.content=desc;
  var can=qs('link[rel="canonical"]');if(can)can.href=canonical();
@@ -176,7 +177,14 @@ function updateSeo(){
  var ld={"@context":"https://schema.org","@type":"Product","name":name,"sku":p.id,"category":p.category||undefined,"url":canonical()};
  var photo=window.ZWM_PRODUCT_PHOTOS&&window.ZWM_PRODUCT_PHOTOS.sourceFor?window.ZWM_PRODUCT_PHOTOS.sourceFor(p.id):null;if(photo&&photo.url)ld.image=[new URL(photo.url,location.origin).href];
  if(variants.length){
-  ld.offers=variants.map(function(v){return {"@type":"Offer","priceCurrency":"USD","price":Number(v.price).toFixed(2),"url":canonical(),"availability":availability(p)==="out_of_stock"?"https://schema.org/OutOfStock":"https://schema.org/InStock"}});
+  var av=availability(p);
+  ld.offers=variants.map(function(v){
+   var offer={"@type":"Offer","priceCurrency":"USD","price":Number(v.price).toFixed(2),"url":canonical()};
+   if(av==="in_stock")offer.availability="https://schema.org/InStock";
+   else if(av==="low_stock")offer.availability="https://schema.org/LimitedAvailability";
+   else if(av==="out_of_stock")offer.availability="https://schema.org/OutOfStock";
+   return offer;
+  });
  }
  if(state.reviews.length){
   var avg=state.reviews.reduce(function(s,r){return s+Number(r.rating||0)},0)/state.reviews.length;
@@ -226,11 +234,12 @@ function recipeMarkup(){
 function bundleData(){
  var rec=recipeRows()[0];
  if(rec){
-  var products=rec.productIds.map(function(id){return state.products.find(function(p){return p.id===id})}).filter(Boolean);
+  var products=rec.productIds.map(function(id){return state.products.find(function(p){return p.id===id})}).filter(function(p){return !!p&&isOrderable(p)&&cheapest(p)});
   return {type:"recipe",products:products,title:(state.locale==="ar"?rec.ar:state.locale==="fr"?rec.fr:rec.en)};
  }
- var same=state.products.filter(function(x){return x.category===state.product.category&&x.id!==state.product.id}).slice(0,2);
- return {type:"category",products:[state.product].concat(same),title:state.product.category||t("bundle")};
+ var same=state.products.filter(function(x){return x.category===state.product.category&&x.id!==state.product.id&&isOrderable(x)&&cheapest(x)}).slice(0,2);
+ var lead=isOrderable(state.product)&&cheapest(state.product)?[state.product]:[];
+ return {type:"category",products:lead.concat(same),title:state.product.category||t("bundle")};
 }
 function bundleMarkup(){
  var b=bundleData();if(b.products.length<2)return "";
@@ -244,7 +253,7 @@ function reviewsMarkup(){
  return '<section class="c6-section is-soft"><div class="c6-shell"><div class="c6-section-head"><div><p class="c6-eyebrow">'+esc(t("verified"))+'</p><h2>'+esc(t("verified"))+'</h2><p>'+esc(t("verifiedCopy"))+'</p></div><div class="c6-reviews-summary"><span class="c6-rating-number">'+avg.toFixed(1)+'</span><div><div class="c6-stars">★★★★★</div><small>'+rows.length+' '+esc(t("verified"))+'</small></div></div></div><div class="c6-review-list">'+rows.map(function(r){var date="";try{date=new Date(r.created_at).toLocaleDateString(state.locale==="ar"?"ar-LB":state.locale==="fr"?"fr-LB":"en-LB")}catch(e){};return '<article class="c6-review"><div class="c6-review-top"><strong>'+esc(t("verifiedCustomer"))+' · '+esc(String(r.rating))+'/5</strong><small>'+esc(date)+'</small></div><p>'+esc(r.body)+'</p></article>'}).join("")+'</div></div></section>';
 }
 function alertMarkup(p){
- var a=availability(p);if(a==="in_stock"||a==="low_stock")return "";
+ var a=availability(p);if(a!=="out_of_stock"&&a!=="coming_soon")return "";
  if(state.settings.commerce&&state.settings.commerce.back_in_stock_enabled===false)return "";
  return '<div class="c6-alert"><strong>'+esc(t("alertTitle"))+'</strong><p>'+esc(t("alertCopy"))+'</p><form id="c6AlertForm"><select name="channel" aria-label="'+esc(t("contact"))+'"><option value="email">'+esc(t("email"))+'</option><option value="whatsapp">'+esc(t("whatsapp"))+'</option></select><input name="contact" required placeholder="'+esc(t("contact"))+'" maxlength="254"><button class="c6-button" type="submit">'+esc(t("notify"))+'</button></form><span id="c6AlertStatus" class="c6-status" role="status"></span></div>';
 }
@@ -307,7 +316,9 @@ function bind(){
 }
 function bindHeader(){
  var btn=qs("#c6LanguageButton"),menu=qs("#c6LanguageMenu");if(btn&&menu){btn.addEventListener("click",function(){menu.hidden=!menu.hidden;btn.setAttribute("aria-expanded",String(!menu.hidden))});qsa("[data-c6-lang]",menu).forEach(function(b){b.addEventListener("click",function(){setLocale(b.dataset.c6Lang)})});document.addEventListener("click",function(e){if(!e.target.closest(".c6-lang"))menu.hidden=true})}
- var labels={en:"Language",ar:"اللغة",fr:"Langue"};var l=qs("#c6LanguageLabel");if(l)l.textContent=labels[locale()]||labels.en;updateCartCount();
+ var labels={en:"Language",ar:"اللغة",fr:"Langue"};var l=qs("#c6LanguageLabel");if(l)l.textContent=labels[locale()]||labels.en;
+ qsa("[data-c6-copy]").forEach(function(el){var key=el.dataset.c6Copy;if(key)el.textContent=t(key)});
+ updateCartCount();
 }
 function init(){bindHeader();loadData()}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();

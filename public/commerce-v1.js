@@ -130,7 +130,9 @@ document.addEventListener("submit",function(e){
       sender:(document.getElementById("giftSender")||{}).value||"",
       theme:(document.getElementById("giftTheme")||{}).value||"",
       card_language:(document.getElementById("giftCardLanguage")||{}).value||"",
-      hide_prices:(document.getElementById("giftHidePrices")||{}).checked!==false
+      hide_prices:(document.getElementById("giftHidePrices")||{}).checked!==false,
+      requested_delivery_date:(document.getElementById("c6GiftDeliveryDate")||{}).value||"",
+      requested_delivery_note:(document.getElementById("c6GiftDeliveryNote")||{}).value||""
     };
     try{sessionStorage.setItem("zwm:native-gift:meta:v1",JSON.stringify(meta))}catch{}
     window.ZWM_CMS&&window.ZWM_CMS.track&&window.ZWM_CMS.track("checkout_started",{source:"gift_builder"});

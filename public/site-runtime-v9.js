@@ -1,6 +1,7 @@
 (() => {
   "use strict";
   const CONFIG_SRC = "admin-config.js?v=20261004-toolkit10";
+  const CUSTOMER_NOTIFICATIONS_VERSION = "20261006-navbell1";
   const PRODUCT_CACHE = "zwm:cms:product-overrides:v1";
   const SETTINGS_CACHE = "zwm:cms:settings:v1";
   const SESSION_KEY = "zwm:analytics:session:v1";
@@ -17,6 +18,25 @@
       const s=document.createElement("script");s.src=src;s.async=true;
       s.onload=resolve;s.onerror=reject;document.head.appendChild(s);
     });
+  }
+
+  function ensureCustomerNotificationAssets(){
+    if(PREVIEW_MODE||document.body?.classList.contains("admin-body"))return;
+    if(!document.querySelector('link[href*="notifications-v1.css"]')){
+      const link=document.createElement("link");
+      link.rel="stylesheet";
+      link.href="/notifications-v1.css?v="+CUSTOMER_NOTIFICATIONS_VERSION;
+      link.dataset.zwmCustomerNotifications="style";
+      document.head.appendChild(link);
+    }
+    if(document.body?.dataset?.page==="account")return;
+    if(!document.querySelector('script[src*="customer-notifications-v1.js"]')){
+      const script=document.createElement("script");
+      script.src="/customer-notifications-v1.js?v="+CUSTOMER_NOTIFICATIONS_VERSION;
+      script.async=true;
+      script.dataset.zwmCustomerNotifications="script";
+      document.head.appendChild(script);
+    }
   }
   function safeParse(raw,fallback){try{return JSON.parse(raw)||fallback}catch{return fallback}}
   function config(){return window.ZWM_CMS_CONFIG||{}}
@@ -898,6 +918,7 @@
     bindPersistentChrome();
     try{await loadScript(CONFIG_SRC)}catch{return}
     if(!enabled())return;
+    if(!PREVIEW_MODE)ensureCustomerNotificationAssets();
     if(!PREVIEW_MODE&&!document.querySelector("script[data-mouneh-rewards]")){
       const rewardsScript=document.createElement("script");
       rewardsScript.src="mouneh-rewards-v8.js?v=20261004-mobileauth3";

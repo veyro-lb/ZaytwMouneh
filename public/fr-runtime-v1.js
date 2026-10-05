@@ -1697,7 +1697,14 @@ var EXACT=Object.freeze({
 "Most of the pantry comes from the Bekaa: grains, pulses, herbs and everyday mouneh staples.":"Une grande partie de la mouneh vient de la Bekaa : céréales, légumineuses, herbes et essentiels du quotidien.",
 "Koura is highlighted for olive oil, with the specific product name taking precedence whenever a more precise origin is listed.":"La Koura est mise en avant pour l’huile d’olive ; lorsqu’une origine plus précise est indiquée sur un produit, celle-ci prévaut.",
 "Honey is associated with Mount Lebanon in the brand provenance information.":"Le miel est associé au Mont-Liban dans les informations de provenance de la marque.",
-"Debes and molasses are associated with the Chouf in the brand provenance information.":"Le debes et les mélasses sont associés au Chouf dans les informations de provenance de la marque."
+"Debes and molasses are associated with the Chouf in the brand provenance information.":"Le debes et les mélasses sont associés au Chouf dans les informations de provenance de la marque.",
+"Street / neighborhood":"Rue / quartier",
+"Building / residence":"Immeuble / résidence",
+"Floor / apartment":"Étage / appartement",
+"Your order":"Votre commande",
+"Thank you — your order is in 🌿":"Merci — votre commande a bien été reçue 🌿",
+"This page updates automatically as your order moves forward.":"Cette page se met à jour automatiquement au fur et à mesure de l’avancement de votre commande.",
+"Qty ":"Qté "
 });
 
 var STATIC_FR=Object.freeze({

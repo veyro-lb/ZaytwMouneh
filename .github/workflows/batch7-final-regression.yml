@@ -27,6 +27,8 @@ jobs:
           node --check public/account.js
       - name: Batch 7 static production gate
         run: node tests/batch7-static-regression.cjs
+      - name: Wholesale business orders regression
+        run: node tests/wholesale-regression.cjs
       - name: Quick View regression matrix
         run: node tests/quick-view-regression.cjs
       - name: Mobile stability and auth

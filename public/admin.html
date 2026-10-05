@@ -16,6 +16,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="admin.css?v=20261005-admin-batch5-1" />
   <link rel="stylesheet" href="admin-rewards.css?v=20261005-admin-batch5-1" />
+  <link rel="stylesheet" href="admin-wholesale.css?v=20261005-wholesale1" />
 <link rel="stylesheet" href="/ui-copy-polish-v1.css?v=20261005-arabic3">
 </head>
 <body class="admin-body">
@@ -75,6 +76,7 @@
         <button type="button" class="is-active" data-view="overview"><span>⌂</span><b>Overview</b><em id="navInboxCount">0</em></button>
         <button type="button" data-view="products"><span>▦</span><b>Products</b><em id="navProductCount">0</em></button>
         <button type="button" data-view="orders"><span>◎</span><b>Orders & history</b><em id="navOrderCount">0</em></button>
+        <button type="button" data-view="wholesale"><span>▦</span><b>Wholesale Leads</b><em id="navWholesaleCount">0</em></button>
         <button type="button" data-view="customers"><span>♙</span><b>Customers</b><em id="navCustomerCount">0</em></button>
         <button type="button" data-view="rewards"><span>🌿</span><b>Mouneh Points</b><em id="navRewardsCount"></em></button>
         <button type="button" data-view="content"><span>✎</span><b>Website content</b></button>
@@ -261,6 +263,38 @@
             </div>
             <div id="orderCardsMobile" class="product-cards-mobile order-cards-mobile"></div>
           </div>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="wholesale">
+          <div class="section-intro">
+            <div><p>Wholesale & business</p><h2>Qualify and follow up on business enquiries without mixing them into retail orders.</h2></div>
+            <span>Requests are enquiries for quotation. Availability, pricing, packaging, delivery and payment arrangements remain subject to owner review.</span>
+          </div>
+          <div class="wholesale-admin-summary">
+            <article><small>All leads</small><strong id="wholesaleMetricAll">0</strong></article>
+            <article><small>New</small><strong id="wholesaleMetricNew">0</strong></article>
+            <article><small>Quote activity</small><strong id="wholesaleMetricQuotes">0</strong></article>
+            <article><small>Converted</small><strong id="wholesaleMetricConverted">0</strong></article>
+          </div>
+          <div class="wholesale-admin-toolbar">
+            <div class="search-field"><span>⌕</span><input id="wholesaleLeadSearch" type="search" placeholder="Business, contact, location…" autocomplete="off" /></div>
+            <select id="wholesaleLeadStatus" aria-label="Filter wholesale leads by status">
+              <option value="">All statuses</option><option value="new">New</option><option value="contacted">Contacted</option>
+              <option value="needs_information">Needs information</option><option value="quote_preparing">Quote preparing</option>
+              <option value="quote_sent">Quote sent</option><option value="negotiating">Negotiating</option>
+              <option value="approved">Approved</option><option value="converted">Converted</option>
+              <option value="lost">Lost</option><option value="archived">Archived</option>
+            </select>
+            <button class="button-secondary button-small" id="refreshWholesaleLeads" type="button">Refresh</button>
+            <span id="wholesaleLeadResultCount">0 leads</span>
+          </div>
+          <div class="table-card wholesale-leads-table-wrap">
+            <table class="wholesale-leads-table">
+              <thead><tr><th>Business</th><th>Contact</th><th>Location</th><th>Products</th><th>Frequency</th><th>Status</th><th>Created</th><th></th></tr></thead>
+              <tbody id="wholesaleLeadTableBody"><tr><td colspan="8" class="wholesale-admin-empty">Open Wholesale Leads to load enquiries.</td></tr></tbody>
+            </table>
+          </div>
+          <div id="wholesaleLeadCards" class="wholesale-mobile-cards"></div>
         </section>
 
         <section class="dashboard-view" data-view-panel="customers">
@@ -479,6 +513,7 @@
     <button type="button" data-mobile-view="overview" class="is-active"><span>⌂</span><b>Overview</b><em id="mobileInboxCount">0</em></button>
     <button type="button" data-mobile-view="products"><span>▦</span><b>Products</b></button>
     <button type="button" data-mobile-view="orders"><span>◎</span><b>Orders</b><em id="mobileOrderCount">0</em></button>
+    <button type="button" data-mobile-view="wholesale"><span>▦</span><b>Wholesale</b><em></em></button>
     <button type="button" data-mobile-more><span>•••</span><b>More</b></button>
   </nav>
 
@@ -816,6 +851,7 @@
 
   <script src="admin.js?v=20261005-admin-batch5-2"></script>
   <script src="admin-rewards.js?v=20261005-account-deletefix2"></script>
+  <script src="admin-wholesale.js?v=20261005-wholesale1"></script>
   <!-- mobilebottom-fallback -->
   <script>
   (function(){
@@ -831,7 +867,7 @@
       qa(".dashboard-view").forEach(function(p){p.classList.toggle("is-active",p.dataset.viewPanel===view)});
       qa(".admin-nav button[data-view]").forEach(function(b){b.classList.toggle("is-active",b.dataset.view===view)});
       qa("#mobileAdminNav [data-mobile-view]").forEach(function(b){b.classList.toggle("is-active",b.dataset.mobileView===view)});
-      var titles={overview:"Overview",products:"Products",orders:"Orders & history",customers:"Customers",rewards:"Mouneh Points",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
+      var titles={overview:"Overview",products:"Products",orders:"Orders & history",wholesale:"Wholesale Leads",customers:"Customers",rewards:"Mouneh Points",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
       var title=q("#viewTitle"); if(title)title.textContent=titles[view]||"Owner Console";
       var side=q("#adminSidebar"); if(side)side.classList.remove("is-open");
       var sideBack=q("#sidebarBackdrop"); if(sideBack)sideBack.hidden=true;

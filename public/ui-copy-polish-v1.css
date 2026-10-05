@@ -958,3 +958,179 @@ body[data-page="account"] #accountVerifyStatus{
     flex-wrap:wrap!important;
   }
 }
+
+
+/* ===== home-hero-regression-fix-20261005 ===== */
+/* The homepage localization markup now keeps EN/AR inside one semantic H1.
+   Older hero selectors targeted h1.only-en / h1.only-ar, so they stopped matching.
+   These rules target the current nested spans and remove the accidental third grid
+   track that squeezed the quick-navigation board off-screen. */
+body[data-page="home"] .home-pantry-hero{
+  overflow:hidden!important;
+}
+body[data-page="home"] .home-pantry-hero .page-intro-grid,
+body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap,
+body[data-page="home"] .home-pantry-hero .shop-intro-board{
+  min-width:0!important;
+}
+body[data-page="home"] .home-pantry-hero h1{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  overflow:visible!important;
+}
+body[data-page="home"] .home-pantry-hero h1>.only-en,
+body[data-page="home"] .home-pantry-hero h1>.only-ar{
+  max-width:none!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+  hyphens:none!important;
+}
+html:not([lang="fr"]) body[data-page="home"] .home-pantry-hero h1>.only-en{
+  white-space:nowrap!important;
+}
+html[lang="ar"] body[data-page="home"] .home-pantry-hero h1,
+html[dir="rtl"] body[data-page="home"] .home-pantry-hero h1{
+  text-align:right!important;
+}
+html[lang="ar"] body[data-page="home"] .home-pantry-hero h1>.only-ar,
+html[dir="rtl"] body[data-page="home"] .home-pantry-hero h1>.only-ar{
+  white-space:normal!important;
+}
+
+@media (min-width:1181px){
+  body[data-page="home"] .home-pantry-hero{
+    min-height:650px!important;
+    padding:52px 0 56px!important;
+  }
+  body[data-page="home"] .home-pantry-hero .page-intro-grid{
+    width:min(calc(100% - 64px),1380px)!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(360px,450px)!important;
+    gap:clamp(28px,3vw,46px)!important;
+    align-items:center!important;
+  }
+  body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap{
+    grid-column:1!important;
+    width:100%!important;
+    max-width:700px!important;
+    justify-self:start!important;
+  }
+  body[data-page="home"] .home-pantry-hero h1{
+    margin:0!important;
+    font-size:clamp(4.35rem,6vw,5.85rem)!important;
+    line-height:.92!important;
+    letter-spacing:-.04em!important;
+    text-align:left!important;
+  }
+  body[data-page="home"] .home-pantry-hero .shop-intro-board{
+    grid-column:2!important;
+    width:100%!important;
+    max-width:450px!important;
+    margin:0!important;
+    justify-self:end!important;
+    align-self:center!important;
+  }
+  html[lang="ar"] body[data-page="home"] .home-pantry-hero h1,
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero h1{
+    text-align:right!important;
+  }
+}
+
+@media (min-width:981px) and (max-width:1180px){
+  body[data-page="home"] .home-pantry-hero .page-intro-grid{
+    width:min(calc(100% - 48px),1120px)!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(330px,400px)!important;
+    gap:24px!important;
+    align-items:center!important;
+  }
+  body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap{
+    grid-column:1!important;
+    width:100%!important;
+    max-width:560px!important;
+  }
+  body[data-page="home"] .home-pantry-hero h1{
+    margin:0!important;
+    font-size:clamp(3.75rem,6.25vw,4.8rem)!important;
+    line-height:.93!important;
+    text-align:left!important;
+  }
+  body[data-page="home"] .home-pantry-hero .shop-intro-board{
+    grid-column:2!important;
+    width:100%!important;
+    max-width:400px!important;
+    margin:0!important;
+    justify-self:end!important;
+  }
+  html[lang="ar"] body[data-page="home"] .home-pantry-hero h1,
+  html[dir="rtl"] body[data-page="home"] .home-pantry-hero h1{
+    text-align:right!important;
+  }
+}
+
+@media (min-width:761px) and (max-width:980px){
+  body[data-page="home"] .home-pantry-hero .page-intro-grid{
+    width:min(calc(100% - 36px),760px)!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:28px!important;
+  }
+  body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap{
+    width:100%!important;
+    max-width:680px!important;
+    margin-inline:auto!important;
+  }
+  body[data-page="home"] .home-pantry-hero h1{
+    font-size:clamp(3.55rem,7.2vw,4.45rem)!important;
+    line-height:.94!important;
+    text-align:center!important;
+  }
+  body[data-page="home"] .home-pantry-hero .shop-intro-board{
+    grid-column:1!important;
+    width:min(100%,620px)!important;
+    max-width:620px!important;
+    margin:0 auto!important;
+    justify-self:center!important;
+  }
+}
+
+@media (max-width:760px){
+  body[data-page="home"] .home-pantry-hero .page-intro-grid{
+    width:min(calc(100% - 24px),620px)!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:24px!important;
+  }
+  body[data-page="home"] .home-pantry-hero .page-intro-copy-wrap{
+    width:100%!important;
+    max-width:560px!important;
+    margin-inline:auto!important;
+  }
+  body[data-page="home"] .home-pantry-hero h1{
+    font-size:clamp(2.8rem,11.6vw,3.85rem)!important;
+    line-height:.94!important;
+    text-align:center!important;
+  }
+  body[data-page="home"] .home-pantry-hero .shop-intro-board{
+    grid-column:1!important;
+    width:min(100%,560px)!important;
+    max-width:560px!important;
+    margin:4px auto 0!important;
+    justify-self:center!important;
+  }
+}
+
+@media (max-width:420px){
+  body[data-page="home"] .home-pantry-hero h1{
+    font-size:clamp(2.5rem,12vw,3.15rem)!important;
+  }
+  body[data-page="home"] .home-pantry-hero .page-intro-actions{
+    width:100%!important;
+    grid-template-columns:1fr!important;
+  }
+  body[data-page="home"] .home-pantry-hero .shop-intro-board{
+    padding:16px!important;
+    border-radius:20px!important;
+  }
+}

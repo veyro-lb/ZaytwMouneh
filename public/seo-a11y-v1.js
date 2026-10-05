@@ -8,11 +8,11 @@ var LOCALE_KEY="zwm-locale-v3";
 var LANG_KEY="zwm-lang-v2";
 var FR_KEY="zwm:french:v1";
 var DEFAULT_IMAGE=ORIGIN+"/assets/products/originals/extra-virgin-olive-oil.jpg";
-var INDEXABLE={"/":1,"/shop":1,"/gift":1,"/recipes":1,"/about":1,"/contact":1,"/privacy":1,"/terms":1};
+var INDEXABLE={"/":1,"/shop":1,"/gift":1,"/recipes":1,"/about":1,"/contact":1,"/wholesale":1,"/privacy":1,"/terms":1};
 var CLEAN_ALIASES={
   "/index.html":"/","/index":"/",
   "/shop.html":"/shop","/gift.html":"/gift","/recipes.html":"/recipes",
-  "/about.html":"/about","/contact.html":"/contact",
+  "/about.html":"/about","/contact.html":"/contact","/wholesale.html":"/wholesale",
   "/privacy.html":"/privacy","/privacy-policy.html":"/privacy","/privacy-and-data.html":"/privacy",
   "/terms.html":"/terms","/terms-of-service.html":"/terms","/terms-and-rewards.html":"/terms",
   "/account.html":"/account","/checkout.html":"/checkout","/order.html":"/order"
@@ -124,6 +124,38 @@ function normalizeInternalLinks(root){
     a.setAttribute("href",u.pathname+u.search+u.hash);
   });
 }
+function wholesaleLabel(locale,shortLabel){
+  if(locale==="ar")return shortLabel?"الجملة":"طلبات الجملة والأعمال";
+  if(locale==="fr")return shortLabel?"Grossiste":"Commandes en gros & professionnelles";
+  return shortLabel?"Wholesale":"Wholesale & Business Orders";
+}
+function ensureWholesaleLinks(){
+  if(cleanPath(location.pathname)==="/wholesale")return;
+  var locale=activeLocale();
+  var nav=document.getElementById("navLinks");
+  if(nav){
+    var navLink=nav.querySelector("[data-wholesale-link]");
+    if(!navLink){
+      navLink=document.createElement("a");
+      navLink.setAttribute("data-wholesale-link","nav");
+      navLink.className="nav-wholesale-link";
+      nav.appendChild(navLink);
+    }
+    navLink.href=localizedPath("/wholesale",locale);
+    navLink.textContent=wholesaleLabel(locale,true);
+  }
+  var footer=document.querySelector(".footer-column");
+  if(footer){
+    var foot=footer.querySelector("[data-wholesale-footer]");
+    if(!foot){
+      foot=document.createElement("a");
+      foot.setAttribute("data-wholesale-footer","1");
+      footer.appendChild(foot);
+    }
+    foot.href=localizedPath("/wholesale",locale);
+    foot.textContent=wholesaleLabel(locale,false);
+  }
+}
 function ensureSkipLink(){
   var main=document.querySelector("main");
   if(!main)return;
@@ -207,7 +239,7 @@ function syncUrlToLocale(code){
   var path=cleanPath(location.pathname);
   var next=localizedPath(path,code);
   if(next!==location.pathname)history.replaceState(history.state,"",next+location.search+location.hash);
-  updateSeo();normalizeInternalLinks(document);
+  updateSeo();ensureWholesaleLinks();normalizeInternalLinks(document);
 }
 document.addEventListener("click",function(e){
   var b=e.target.closest&&e.target.closest("[data-lang],[data-commerce-lang],[data-c6-lang]");
@@ -215,9 +247,9 @@ document.addEventListener("click",function(e){
   var code=b.getAttribute("data-lang")||b.getAttribute("data-commerce-lang")||b.getAttribute("data-c6-lang");
   setTimeout(function(){syncUrlToLocale(code)},80);
 },true);
-document.addEventListener("zwm:seo-refresh",function(){updateSeo();normalizeInternalLinks(document)});
+document.addEventListener("zwm:seo-refresh",function(){updateSeo();ensureWholesaleLinks();normalizeInternalLinks(document)});
 document.addEventListener("DOMContentLoaded",function(){
-  ensureSkipLink();normalizeInternalLinks(document);tuneMedia();updateSeo();installDialogFocus();
+  ensureSkipLink();ensureWholesaleLinks();normalizeInternalLinks(document);tuneMedia();updateSeo();installDialogFocus();
   var mo=new MutationObserver(function(list){
     var relevant=list.some(function(m){return m.type==="childList"||m.type==="attributes"});
     if(relevant){clearTimeout(mo._t);mo._t=setTimeout(function(){normalizeInternalLinks(document);updateSeo()},120)}

@@ -70,12 +70,36 @@ async function openCorporate(){
  );
  window.open("https://wa.me/"+number+"?text="+encodeURIComponent(text),"_blank","noopener");
 }
+function rewardsState(){try{return window.ZWM_REWARDS&&window.ZWM_REWARDS.getState?window.ZWM_REWARDS.getState():{}}catch(e){return {}}}
+function injectAccountReorder(){
+ if(document.body.dataset.page!=="account")return;
+ var panel=q('[data-account-panel="orders"]'),orders=(rewardsState().dashboard||{}).orders||[];if(!panel||!orders.length)return;
+ var rows=qa(".account-row",panel);
+ rows.forEach(function(row,index){
+  var order=orders[index];if(!order||order.status!=="delivered"||!Array.isArray(order.items)||!order.items.length)return;
+  if(q("[data-c6-reorder]",row))return;
+  var b=document.createElement("button");b.type="button";b.className="c6-button is-secondary c6-reorder";b.dataset.c6Reorder=String(index);b.textContent=tr("Buy again","أعد الطلب","Acheter à nouveau");row.appendChild(b);
+ });
+}
+function reorderAccountOrder(index){
+ var orders=(rewardsState().dashboard||{}).orders||[],order=orders[Number(index)];if(!order||!Array.isArray(order.items))return;
+ var cart={};try{cart=JSON.parse(localStorage.getItem("zwm-cart-v5")||"{}")||{}}catch(e){}
+ var added=0;
+ order.items.forEach(function(item){
+  var pid=String(item.product_id||"").trim(),vid=String(item.variant_id||"").trim(),qty=Math.max(1,Number(item.qty)||1);if(!pid||!vid)return;
+  var key=pid+"::"+vid,old=cart[key]&&Number(cart[key].qty)||0;cart[key]={productId:pid,variantId:vid,qty:Math.min(99,old+qty)};added++;
+ });
+ if(!added)return;
+ try{localStorage.setItem("zwm-cart-v5",JSON.stringify(cart))}catch(e){}
+ location.href="/shop.html?open=cart&source=buy-again";
+}
 function refreshFrench(){
  if(locale()==="fr"&&window.ZWM_APPLY_FRENCH)try{window.ZWM_APPLY_FRENCH(document)}catch(e){}
 }
 function init(){
- bindProductLinks();injectShopTrust();injectGiftTools();refreshFrench();
- var observer=new MutationObserver(function(){injectShopTrust();injectGiftTools();modalLink()});
+ bindProductLinks();injectShopTrust();injectGiftTools();injectAccountReorder();refreshFrench();
+ document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-c6-reorder]");if(b){e.preventDefault();reorderAccountOrder(b.dataset.c6Reorder)}});
+ var observer=new MutationObserver(function(){injectShopTrust();injectGiftTools();injectAccountReorder();modalLink()});
  observer.observe(document.body,{childList:true,subtree:true});
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();

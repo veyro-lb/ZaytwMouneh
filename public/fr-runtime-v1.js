@@ -2220,6 +2220,7 @@ function dynamicFr(raw){
   if((m=t.match(/^(\$[\d,.]+)\s+off$/i)))return s.replace(t,m[1]+" de réduction");
   if((m=t.match(/^(\$[\d,.]+)\s+minimum$/i)))return s.replace(t,"minimum "+m[1]);
   if((m=t.match(/^(\d+)\s+points to go$/i)))return s.replace(t,"Encore "+m[1]+" points");
+  if((m=t.match(/^(\d+)\s+points until\s+(\$[\d,.]+)\s+off$/i)))return s.replace(t,"Plus que "+m[1]+" points pour obtenir "+m[2]+" de réduction");
   if((m=t.match(/^(\d+)\s+points until\s+(.+)$/i)))return s.replace(t,m[1]+" points avant "+m[2]);
   if((m=t.match(/^from\s+(\$[\d,.]+)$/i)))return s.replace(t,"à partir de "+m[1]);
   if(t==="Featured")return s.replace(t,"À la une");

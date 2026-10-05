@@ -85,7 +85,7 @@
   function state(){try{return api()?.getState?.()||{}}catch{return {}}}
   function requestFrenchTranslation(root){
     let french=false;
-    try{french=localStorage.getItem("zwm:french:v1")==="1"}catch{}
+    try{french=window.ZWM_LOCALE?.get?.()==="fr"||localStorage.getItem("zwm:french:v1")==="1"}catch{}
     if(!french)return;
     requestAnimationFrame(()=>{
       try{

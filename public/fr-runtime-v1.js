@@ -1555,7 +1555,54 @@ var EXACT=Object.freeze({
 "We’ll keep this page updated as your order moves forward.":"Cette page sera mise à jour au fur et à mesure de l’avancement de votre commande.",
 "What next?":"Et maintenant ?",
 "You can keep shopping, track this order here, or contact us if you need help.":"Vous pouvez continuer vos achats, suivre cette commande ici ou nous contacter si vous avez besoin d’aide."
-
+,
+"Verified":"Vérifié",
+"Waiting":"En attente",
+"Milestone":"Palier",
+"Owner session required.":"Session propriétaire requise.",
+"Rewards request failed.":"Échec de la requête de récompenses.",
+"Account removal failed.":"Échec de la suppression du compte.",
+"Off":"Réduction",
+"Required":"Requis",
+"Needs setup":"Configuration requise",
+"Could not check":"Vérification impossible",
+"Unnamed member":"Membre sans nom",
+"Balance":"Solde",
+"Annual spend":"Dépenses annuelles",
+"Member code":"Code membre",
+"Manage points & rewards":"Gérer les points et récompenses",
+"No matching members.":"Aucun membre correspondant.",
+"No rewards members yet.":"Aucun membre du programme de récompenses pour le moment.",
+"Discount $":"Réduction $",
+"Minimum $":"Minimum $",
+"Save reward":"Enregistrer la récompense",
+"Stop":"Arrêter",
+"Ended":"Terminée",
+"No point-boost campaigns yet.":"Aucune campagne de points bonifiés pour le moment.",
+"Owner account — protected":"Compte propriétaire — protégé",
+"The signed-in owner account cannot be removed here.":"Le compte propriétaire connecté ne peut pas être supprimé ici.",
+"this customer":"ce client",
+"Type DELETE to confirm permanent account removal.":"Saisissez DELETE pour confirmer la suppression définitive du compte.",
+"Type DELETE to confirm account removal.":"Saisissez DELETE pour confirmer la suppression du compte.",
+"Removing…":"Suppression…",
+"Could not remove customer account.":"Impossible de supprimer le compte client.",
+"Enter a whole point adjustment between -10,000 and 10,000.":"Saisissez un ajustement en points entiers entre -10 000 et 10 000.",
+"Add a clear reason.":"Ajoutez un motif clair.",
+"Points updated.":"Points mis à jour.",
+"Tier updated.":"Niveau mis à jour.",
+"Voucher value must be $0–$100 and minimum order must be at least the voucher value.":"La valeur du bon doit être comprise entre 0 $ et 100 $, et le minimum de commande doit être au moins égal à sa valeur.",
+"Voucher added to member wallet.":"Bon ajouté au portefeuille du membre.",
+"Reward rule saved.":"Règle de récompense enregistrée.",
+"Base rate must be between 0.1 and 3 points per $1.":"Le taux de base doit être compris entre 0,1 et 3 points par dollar.",
+"Mouneh Points settings saved.":"Paramètres Mouneh Points enregistrés.",
+"Complete the campaign and use a valid start/end window.":"Complétez la campagne et utilisez une période de début et de fin valide.",
+"Point-boost campaign created.":"Campagne de points bonifiés créée.",
+"Campaign stopped.":"Campagne arrêtée.",
+"Manage account":"Gérer le compte",
+"Use whole points (1–1,000,000), a discount up to $1,000, and a minimum order at least equal to the discount.":"Utilisez des points entiers (1 à 1 000 000), une réduction allant jusqu’à 1 000 $, et un minimum de commande au moins égal à la réduction.",
+"An active reward already uses this points level.":"Une récompense active utilise déjà ce palier de points.",
+"Reward level added and published.":"Palier de récompense ajouté et publié.",
+"Could not save. Refresh to check the latest data before trying again.":"Enregistrement impossible. Actualisez les données avant de réessayer."
 });
 
 var STATIC_FR=Object.freeze({
@@ -2236,6 +2283,20 @@ function dynamicFr(raw){
     }
   }catch(e){}
   var m;
+  if((m=t.match(/^A verification email was requested for\s+(.+)$/i)))return s.replace(t,"Un e-mail de vérification a été demandé pour "+m[1]);
+  if((m=t.match(/^We sent a Zayt w Mouneh verification link to\s+(.+)$/i)))return s.replace(t,"Nous avons envoyé un lien de vérification Zayt w Mouneh à "+m[1]);
+  if((m=t.match(/^First reward at\s+(\d+)\s+points$/i)))return s.replace(t,"Première récompense à "+m[1]+" points");
+  if((m=t.match(/^Eligible orders\s+(\$[\d,.]+)$/i)))return s.replace(t,"Commandes éligibles : "+m[1]);
+  if((m=t.match(/^(\d+)\s+points to\s+(\$[\d,.]+)$/i)))return s.replace(t,m[1]+" points avant "+m[2]);
+  if((m=t.match(/^(\d+)\s+points until\s+(\$[\d,.]+)$/i)))return s.replace(t,"Plus que "+m[1]+" points pour atteindre "+m[2]);
+  if((m=t.match(/^Open Mouneh Points for\s+(.+)$/i)))return s.replace(t,"Ouvrir Mouneh Points pour "+m[1]);
+  if((m=t.match(/^Open My Account for\s+(.+)$/i)))return s.replace(t,"Ouvrir Mon compte pour "+m[1]);
+  if((m=t.match(/^Open Mouneh Points\s*·\s*(.+)$/i)))return s.replace(t,"Ouvrir Mouneh Points · "+m[1]);
+  if((m=t.match(/^(\$[\d,.]+)\s+off\s*·\s*minimum order\s+(\$[\d,.]+)$/i)))return s.replace(t,m[1]+" de réduction · commande minimum "+m[2]);
+  if((m=t.match(/^(\$[\d,.]+)\s+off\s*·\s*min\s+(\$[\d,.]+)$/i)))return s.replace(t,m[1]+" de réduction · minimum "+m[2]);
+  if((m=t.match(/^about\s+(\d+)\s+points$/i)))return s.replace(t,"environ "+m[1]+" points");
+  if((m=t.match(/^Earning for\s+(.+)$/i)))return s.replace(t,"Gain de points pour "+m[1]);
+  if((m=t.match(/^(.+?)\s+annual paid & delivered spend$/i)))return s.replace(t,"Dépenses annuelles payées et livrées : "+m[1]);
   if(/^Welcome,\s+there\.$/i.test(t))return s.replace(t,"Bienvenue.");
   if((m=t.match(/^Welcome,\s+(.+)\.$/i)))return s.replace(t,"Bienvenue, "+m[1]+".");
   if((m=t.match(/^Sign-in method:\s*(.+?)\.\s*Your password is handled by the authentication provider and is never shown here\.$/i)))return s.replace(t,"Méthode de connexion : "+m[1]+". Votre mot de passe est géré par le fournisseur d’authentification et n’est jamais affiché ici.");

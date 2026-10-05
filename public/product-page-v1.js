@@ -187,6 +187,7 @@ function updateSeo(){
  var desc=state.locale==="ar"?"تسوّق "+name+" من زيت ومونة. الأحجام والأسعار الحالية من الكتالوج.":state.locale==="fr"?"Achetez "+name+" chez Zayt w Mouneh. Formats et prix actuels du catalogue.":"Shop "+name+" at Zayt w Mouneh. Current catalogue sizes and prices.";
  document.title=title;
  var md=qs('meta[name="description"]');if(md)md.content=desc;
+ var robots=qs('meta[name="robots"]');if(robots)robots.content="index,follow,max-image-preview:large";
  var can=qs('link[rel="canonical"]');if(can)can.href=canonical();
  else{can=document.createElement("link");can.rel="canonical";can.href=canonical();document.head.appendChild(can)}
  history.replaceState({},title,productPath(p.id,state.locale)+(location.hash||""));

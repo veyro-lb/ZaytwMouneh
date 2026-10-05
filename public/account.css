@@ -1086,3 +1086,60 @@ html[dir="rtl"] body[data-page="account"] .account-tabs button.is-active{
     font-size:.8rem;
   }
 }
+
+
+/* ===== account13: auth recovery + bonus/retry states ===== */
+body[data-page="account"] .account-recovery-actions{
+  margin-top:10px;
+}
+body[data-page="account"] .account-sync-warning{
+  margin-bottom:16px;
+}
+body[data-page="account"] .account-bonus-grid{
+  display:grid;
+  grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  gap:14px;
+  margin-top:16px;
+}
+body[data-page="account"] .account-bonus-grid>section{
+  min-width:0;
+  padding:18px;
+  border:1px solid var(--acc-line);
+  border-radius:16px;
+  background:var(--acc-soft-surface,#f7f8f4);
+}
+body[data-page="account"] .account-bonus-grid>section>strong{
+  display:block;
+  color:var(--acc-green);
+  font-size:.92rem;
+  line-height:1.4;
+}
+body[data-page="account"] .account-review-form{
+  margin-top:14px;
+}
+body[data-page="account"] .account-form textarea,
+body[data-page="account"] .account-auth-form textarea{
+  width:100%;
+  min-height:112px;
+  resize:vertical;
+  border:1px solid var(--acc-line);
+  border-radius:12px;
+  background:#fff;
+  padding:11px 12px;
+  color:#243c2c;
+  font:600 .84rem/1.5 "DM Sans",sans-serif;
+}
+@media(max-width:760px){
+  body[data-page="account"] .account-bonus-grid{
+    grid-template-columns:minmax(0,1fr);
+    gap:10px;
+  }
+  body[data-page="account"] .account-bonus-grid>section{
+    padding:14px;
+  }
+  body[data-page="account"] .account-form textarea,
+  body[data-page="account"] .account-auth-form textarea{
+    min-height:120px;
+    font-size:16px;
+  }
+}

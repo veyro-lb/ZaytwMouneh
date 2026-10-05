@@ -26,7 +26,8 @@
 @media(max-width:430px){.zwm-notification-popover{border-radius:12px}.zwm-notification-actions>*{flex-basis:100%}.zwm-notification-item{padding:10px 12px}}
 /* Customer account notification controls */
 .zwm-customer-notification-bell{
-  position:relative;display:inline-grid;place-items:center;width:44px;height:44px;flex:0 0 44px;
+  position:relative;display:inline-grid!important;place-items:center;width:44px;height:44px;flex:0 0 44px;
+  visibility:visible!important;opacity:1!important;pointer-events:auto!important;
   border:1px solid rgba(15,74,32,.13);border-radius:50%;background:#fff;color:#164c2c;
   cursor:pointer;transition:background .18s ease,border-color .18s ease,transform .18s ease
 }
@@ -83,6 +84,8 @@
 }
 @media(max-width:700px){
  .zwm-customer-notification-bell{width:42px;height:42px;flex-basis:42px}
+ .site-header .zwm-customer-notification-bell,.c6-nav-actions .zwm-customer-notification-bell,.commerce-header-actions .zwm-customer-notification-bell{width:38px;height:38px;flex-basis:38px}
+
  .zwm-customer-notification-popover{top:70px;left:10px;right:10px;width:auto}
  .zwm-account-notifications{padding:18px!important;border-radius:18px!important}
  .zwm-customer-notification-head{grid-template-columns:1fr;gap:12px}

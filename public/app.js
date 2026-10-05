@@ -1844,12 +1844,14 @@ function closeCart(){
 }
 function backdropOn(){
   const b=$("#cartBackdrop");
+  if(!b)return;
   b.hidden=false;
   requestAnimationFrame(()=>b.classList.add("is-visible"));
 }
 function backdropMaybeOff(){
   if(document.body.classList.contains("cart-open")||document.body.classList.contains("modal-open"))return;
   const b=$("#cartBackdrop");
+  if(!b)return;
   b.classList.remove("is-visible");
   setTimeout(()=>{if(!document.body.classList.contains("cart-open")&&!document.body.classList.contains("modal-open"))b.hidden=true},310);
 }

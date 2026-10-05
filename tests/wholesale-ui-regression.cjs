@@ -4,7 +4,7 @@ const assert=require("node:assert/strict");
 const read=p=>fs.readFileSync("public/"+p,"utf8");
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 
-function page(locale="en"){
+function page(locale="en",options={}){
   let html=read("wholesale.html").replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,"");
   const prefix=locale==="en"?"":"/"+locale;
   const dom=new JSDOM(html,{url:"https://store.example"+prefix+"/wholesale",runScripts:"outside-only",pretendToBeVisual:true});
@@ -15,11 +15,18 @@ function page(locale="en"){
   w.ZWM_CMS_CONFIG={supabaseUrl:"https://service.example",supabasePublishableKey:"publishable-test"};
   w.ZWM_CMS={track:(name,meta)=>events.push({name,meta})};
   w.ZWM_FR_TRANSLATE=s=>"FR "+s;
+  if(options.session)w.localStorage.setItem("zwm:mouneh:session:v1",JSON.stringify(options.session));
   let mode="success";
+  const statusRow={found:true,reference:"ZW-B2B-00000000",status:"new",created_at:"2026-10-05T20:00:00Z",updated_at:"2026-10-05T20:00:00Z",business_name:"Cedar Kitchen",preferred_contact_method:"whatsapp",items:[{product_name:"Test Product",variant:"1 kg",quantity:2,unit:"units"}]};
   w.fetch=async(url,opts={})=>{
-    requests.push({url:String(url),opts});
-    if(mode==="failure")return {ok:false,status:503,json:async()=>({message:"offline"})};
-    return {ok:true,status:200,json:async()=>"00000000-0000-0000-0000-000000000001"};
+    const u=String(url);requests.push({url:u,opts});
+    if(u.includes("/rpc/get_wholesale_enquiry_status"))return {ok:true,status:200,json:async()=>statusRow};
+    if(u.includes("/rpc/get_my_wholesale_enquiries"))return {ok:true,status:200,json:async()=>options.accountRows||[]};
+    if(u.includes("/rpc/submit_wholesale_enquiry")){
+      if(mode==="failure")return {ok:false,status:503,json:async()=>({message:"offline"})};
+      return {ok:true,status:200,json:async()=>"00000000-0000-0000-0000-000000000001"};
+    }
+    return {ok:true,status:200,json:async()=>null};
   };
   w.eval(read("products-data.js")+"\n;\n"+read("wholesale-v1.js"));
   d.dispatchEvent(new w.Event("DOMContentLoaded",{bubbles:true}));
@@ -99,6 +106,11 @@ async function submit(ctx){
       await submit(ctx);
       assert(ctx.d.getElementById("wholesaleForm").hidden,"successful form not hidden");
       assert(!ctx.d.getElementById("wholesaleSuccess").hidden,"success state not shown");
+      assert.equal(ctx.d.getElementById("successReference").textContent,"ZW-B2B-00000000","success reference missing");
+      assert.equal(ctx.d.getElementById("successStatus").textContent,"Received","customer status label missing");
+      const receipts=JSON.parse(ctx.w.localStorage.getItem("zwm:wholesale:history:v1")||"[]");
+      assert.equal(receipts.length,1,"successful request receipt was not saved");
+      assert(ctx.d.getElementById("wholesaleHistoryList").textContent.includes("Cedar Kitchen"),"submitted request missing from customer history");
       const rpc=ctx.requests.find(r=>r.url.includes("/rest/v1/rpc/submit_wholesale_enquiry")&&r.opts.body);
       assert(rpc,"controlled wholesale RPC was not called");
       const payload=JSON.parse(rpc.opts.body).p;
@@ -107,6 +119,21 @@ async function submit(ctx){
       assert.equal(payload.locale,"en");
       assert(!JSON.stringify(payload).includes("card"),"unexpected payment data in payload");
       assert(ctx.events.some(e=>e.name==="wholesale_request_submitted"),"submit analytics event missing");
+    }finally{ctx.dom.window.close()}
+  }
+
+  // Signed-in customers can see account-linked history and its owner-managed status.
+  {
+    const row={reference:"ZW-B2B-ABC12345",status:"quote_preparing",created_at:"2026-10-05T19:00:00Z",updated_at:"2026-10-05T20:00:00Z",business_name:"Account Cafe",preferred_contact_method:"email",items:[{product_name:"Olive Oil",variant:"1 L",quantity:6,unit:"bottles"}]};
+    const ctx=page("en",{session:{access_token:"signed-in-test-token"},accountRows:[row]});
+    try{
+      await wait(40);
+      const history=ctx.d.getElementById("wholesaleHistoryList").textContent;
+      assert(history.includes("Account Cafe"),"signed-in Wholesale history missing");
+      assert(history.includes("Reviewing & preparing quote"),"owner-managed status not translated for customer");
+      assert(ctx.d.getElementById("wholesaleHistorySignIn").hidden,"sign-in prompt should hide for authenticated customer");
+      const rpc=ctx.requests.find(r=>r.url.includes("/rpc/get_my_wholesale_enquiries"));
+      assert(rpc&&rpc.opts.headers.Authorization==="Bearer signed-in-test-token","account history RPC missing customer auth token");
     }finally{ctx.dom.window.close()}
   }
 
@@ -135,5 +162,5 @@ async function submit(ctx){
     dom.window.close();
   }
 
-  console.log("Wholesale UI regression passed: EN/AR/FR, accessible validation, catalogue RFQ, failure retry, success and draft restore.");
+  console.log("Wholesale UI regression passed: EN/AR/FR, validation, RFQ retry, receipt history, account history/status and draft restore.");
 })().catch(err=>{console.error(err);process.exitCode=1});

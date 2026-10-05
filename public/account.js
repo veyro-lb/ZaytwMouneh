@@ -176,6 +176,9 @@
     return '<article class="account-card"><div class="account-section-title"><div><h2>'+tr("Member bonuses","مكافآت العضوية")+'</h2><p>'+tr("These bonuses follow the existing Mouneh Points rules; their values are not changed here.","تتبع هذه المكافآت قواعد نقاط المونة الحالية، ولم يتم تغيير قيمها هنا.")+'</p></div></div><div class="account-bonus-grid"><section><strong>'+tr("Birthday surprise","مفاجأة عيد الميلاد")+' · 25 🌿</strong><p>'+birthdayCopy+'</p>'+birthdayAction+'<p class="account-status" id="accountBirthdayStatus"></p></section><section><strong>'+tr("Verified purchase review","مراجعة شراء موثّقة")+' · +'+reviewPoints+' 🌿</strong>'+reviewForm+'</section></div></article>';
   }
   function guestView(s){
+    if(s.authMode==="recovery"){
+      return '<div class="account-auth-layout"><section class="account-card account-auth-card account-verify-card"><div class="account-auth-mark">🔒</div><p class="account-eyebrow">'+tr("Password recovery","استعادة كلمة المرور")+'</p><h1>'+tr("Choose a new password.","اختر كلمة مرور جديدة.")+'</h1><p>'+tr("Use at least 8 characters. After the update, this browser stays signed in to your account.","استخدم 8 أحرف على الأقل. بعد التحديث سيبقى هذا المتصفح مسجلاً في حسابك.")+'</p><form id="accountRecoveryResetForm" class="account-auth-form"><label>'+tr("New password","كلمة المرور الجديدة")+'<input name="password" type="password" minlength="8" autocomplete="new-password" required></label><label>'+tr("Confirm new password","تأكيد كلمة المرور الجديدة")+'<input name="passwordConfirm" type="password" minlength="8" autocomplete="new-password" required></label><button class="account-primary account-auth-submit" type="submit">'+tr("Update password","تحديث كلمة المرور")+'</button><p id="accountRecoveryResetStatus" class="account-status" role="status">'+esc(s.authNotice||"")+'</p></form></section>'+guestBenefits()+'</div>';
+    }
     if(s.session&&s.dashboard?.needsJoin){
       const meta=s.authUser?.user_metadata||{};
       const suggestedName=String(meta.full_name||meta.name||"").trim();
@@ -199,9 +202,6 @@
     if(s.authMode==="verify"){
       const email=esc(s.pendingSignupEmail||"");
       return '<div class="account-auth-layout"><section class="account-card account-auth-card account-verify-card"><div class="account-auth-mark">✉</div><p class="account-eyebrow">'+tr("My Account","حسابي")+'</p><h1>'+tr("Check your email","تحقق من بريدك")+'</h1><p>'+tr("A verification email was requested for ","أرسلنا رابط تأكيد إلى ")+'<strong>'+email+'</strong>. '+tr("Open it to verify your email, then return here. If this email already belongs to an account, use Sign in instead. Your dashboard will open automatically after sign-in.","افتحه لتأكيد بريدك ثم عد إلى هنا. ستفتح لوحة حسابك تلقائياً بعد تسجيل الدخول.")+'</p><div class="account-actions"><button type="button" class="is-primary" data-account-resend>'+tr("Resend verification email","إعادة إرسال رسالة التأكيد")+'</button><button type="button" data-account-auth="signin">'+tr("Back to sign in","العودة لتسجيل الدخول")+'</button></div><p id="accountVerifyStatus" class="account-status" role="status"></p></section>'+guestBenefits()+'</div>';
-    }
-    if(s.authMode==="recovery"){
-      return '<div class="account-auth-layout"><section class="account-card account-auth-card account-verify-card"><div class="account-auth-mark">🔒</div><p class="account-eyebrow">'+tr("Password recovery","استعادة كلمة المرور")+'</p><h1>'+tr("Choose a new password.","اختر كلمة مرور جديدة.")+'</h1><p>'+tr("Use at least 8 characters. After the update, this browser stays signed in to your account.","استخدم 8 أحرف على الأقل. بعد التحديث سيبقى هذا المتصفح مسجلاً في حسابك.")+'</p><form id="accountRecoveryResetForm" class="account-auth-form"><label>'+tr("New password","كلمة المرور الجديدة")+'<input name="password" type="password" minlength="8" autocomplete="new-password" required></label><label>'+tr("Confirm new password","تأكيد كلمة المرور الجديدة")+'<input name="passwordConfirm" type="password" minlength="8" autocomplete="new-password" required></label><button class="account-primary account-auth-submit" type="submit">'+tr("Update password","تحديث كلمة المرور")+'</button><p id="accountRecoveryResetStatus" class="account-status" role="status">'+esc(s.authNotice||"")+'</p></form></section>'+guestBenefits()+'</div>';
     }
     if(guestAuthMode==="recover"){
       return '<div class="account-auth-layout"><section class="account-card account-auth-card account-verify-card"><div class="account-auth-mark">✉</div><p class="account-eyebrow">'+tr("Password recovery","استعادة كلمة المرور")+'</p><h1>'+tr("Reset your password.","إعادة تعيين كلمة المرور.")+'</h1><p>'+tr("Enter your account email. If it matches an account, we will send a secure recovery link.","أدخل بريد حسابك. إذا كان مطابقاً لحساب فسنرسل رابط استعادة آمن.")+'</p><form id="accountRecoveryForm" class="account-auth-form"><label>'+tr("Account email","بريد الحساب")+'<input name="email" type="email" autocomplete="email" required></label><button class="account-primary account-auth-submit" type="submit">'+tr("Send recovery email","إرسال رسالة الاستعادة")+'</button><p id="accountRecoveryStatus" class="account-status" role="status"></p></form><div class="account-actions"><button type="button" data-account-auth="signin">'+tr("Back to sign in","العودة لتسجيل الدخول")+'</button></div></section>'+guestBenefits()+'</div>';
@@ -319,6 +319,11 @@
       if(s.accountError||s.authNotice||accountBootTimedOut)el.innerHTML=serviceProblemView(s.accountError||s.authNotice||tr("Account services are temporarily unavailable. Please retry.","خدمات الحساب غير متاحة مؤقتاً. يرجى إعادة المحاولة."));
       else el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Connecting to your account…","جارٍ الاتصال بحسابك…")+'</strong></section>';
       requestFrenchTranslation(el);return
+    }
+    if(s.authMode==="recovery"){
+      el.innerHTML=guestView(s);
+      requestFrenchTranslation(el);
+      return;
     }
     if(s.session&&!s.member&&!s.dashboard){
       if(s.accountError)el.innerHTML=serviceProblemView(s.accountError,true);

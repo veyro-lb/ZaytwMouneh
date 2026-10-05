@@ -2317,10 +2317,13 @@ function fixKnownFrenchHeadings(){
   }
 }
 function setDocFrench(){
-  document.documentElement.lang="fr";
-  document.documentElement.dir="ltr";
-  document.documentElement.dataset.zwmFr="1";
-  document.body&&document.body.classList.remove("admin-rtl");
+  // Only mutate document locale state when it actually changes. Re-writing lang/dir
+  // on every translated DOM mutation can trigger page-specific locale observers and
+  // cause a render/translate loop that makes interactive controls appear frozen.
+  if(document.documentElement.lang!=="fr")document.documentElement.lang="fr";
+  if(document.documentElement.dir!=="ltr")document.documentElement.dir="ltr";
+  if(document.documentElement.dataset.zwmFr!=="1")document.documentElement.dataset.zwmFr="1";
+  if(document.body&&document.body.classList.contains("admin-rtl"))document.body.classList.remove("admin-rtl");
   fixKnownFrenchHeadings();
   if(document.title)document.title=dynamicFr(document.title);
   document.querySelectorAll('meta[name="description"],meta[property="og:title"],meta[property="og:description"],meta[name="twitter:title"],meta[name="twitter:description"]').forEach(function(meta){

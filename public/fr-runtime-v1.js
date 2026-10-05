@@ -2448,26 +2448,57 @@ document.addEventListener("keydown",function(e){
   });
 });
 
+function applyFrench(root){
+  if(!isFrench())return;
+  setDocFrench();
+  walk(root||document.body);
+  ensureControls();
+}
+window.ZWM_APPLY_FRENCH=applyFrench;
+window.ZWM_FR_TRANSLATE=dynamicFr;
+
+document.addEventListener("zwm:translate-french",function(e){
+  applyFrench(e&&e.detail&&e.detail.root?e.detail.root:document.body);
+});
+
 function boot(){
   addStyles();ensureControls();
-  if(isFrench()){setDocFrench();walk(document.body)}
-  var queued=false;
+  if(isFrench())applyFrench(document.body);
+
+  // Do not drop mutations while a translation frame is already queued.
+  // The account dashboard renders asynchronously after auth/data loads, so losing
+  // one childList batch can leave the whole dashboard in English.
+  var queued=false,pending=[];
   var observer=new MutationObserver(function(list){
-    if(queued)return;queued=true;
+    list.forEach(function(m){
+      if(m.addedNodes&&m.addedNodes.length)m.addedNodes.forEach(function(n){pending.push(n)});
+      if(m.type==="characterData"||m.type==="attributes")pending.push(m.target);
+    });
+    if(queued)return;
+    queued=true;
     requestAnimationFrame(function(){
-      queued=false;ensureControls();
-      if(!isFrench())return;
-      list.forEach(function(m){
-        m.addedNodes&&m.addedNodes.forEach(function(n){walk(n)});
-        if(m.type==="characterData")translateTextNode(m.target);
-        if(m.type==="attributes")translateAttrs(m.target);
+      queued=false;
+      ensureControls();
+      if(!isFrench()){pending.length=0;return}
+      var batch=pending.splice(0,pending.length);
+      batch.forEach(function(n){
+        if(n&&n.nodeType===3)translateTextNode(n);
+        else if(n)walk(n);
       });
       setDocFrench();
+      // If mutations arrived during this frame, translate the full page once so
+      // late account/commerce renders cannot remain untranslated.
+      if(pending.length){
+        var late=pending.splice(0,pending.length);
+        late.forEach(function(n){if(n&&n.nodeType===3)translateTextNode(n);else if(n)walk(n)});
+        setDocFrench();
+      }
     });
   });
   observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["aria-label","title","placeholder","alt","content","style","hidden","class"]});
-  setTimeout(function(){ensureControls();if(isFrench()){walk(document.body);setDocFrench()}},80);
-  setTimeout(function(){ensureControls();if(isFrench()){walk(document.body);setDocFrench()}},450);
+  setTimeout(function(){ensureControls();if(isFrench())applyFrench(document.body)},80);
+  setTimeout(function(){ensureControls();if(isFrench())applyFrench(document.body)},450);
+  setTimeout(function(){ensureControls();if(isFrench())applyFrench(document.body)},1200);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
 })();

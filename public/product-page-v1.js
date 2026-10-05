@@ -73,6 +73,9 @@ function locale(){
  }catch(e){return "en"}
 }
 function t(k){return (COPY[state.locale]&&COPY[state.locale][k])||COPY.en[k]||k}
+function localePrefix(code){return code==="ar"?"/ar":code==="fr"?"/fr":""}
+function productPath(id,code){return localePrefix(code||state.locale||locale())+"/product/"+encodeURIComponent(id)}
+function productUrl(id,code){return location.origin+productPath(id,code)}
 function setLocale(code){
  code=code==="ar"?"ar":code==="fr"?"fr":"en";
  try{
@@ -82,6 +85,7 @@ function setLocale(code){
    if(code==="fr")localStorage.setItem("zwm:french:v1","1");else localStorage.removeItem("zwm:french:v1");
   }
  }catch(e){}
+ if(state.product){location.assign(productPath(state.product.id,code)+(location.hash||""));return}
  location.reload();
 }
 function productName(p){
@@ -164,7 +168,18 @@ async function loadData(){
  render();
 }
 function canonical(){
- return location.origin+"/product/"+encodeURIComponent(state.product.id);
+ return productUrl(state.product.id,state.locale);
+}
+function setMeta(selector,attrs){
+ var el=qs(selector);
+ if(!el){el=document.createElement("meta");document.head.appendChild(el)}
+ Object.keys(attrs).forEach(function(k){el.setAttribute(k,attrs[k])});
+ return el;
+}
+function setAlternate(hreflang,href){
+ var el=qs('link[rel="alternate"][hreflang="'+hreflang+'"]');
+ if(!el){el=document.createElement("link");el.rel="alternate";el.hreflang=hreflang;document.head.appendChild(el)}
+ el.href=href;
 }
 function updateSeo(){
  var p=state.product,name=productName(p),variants=p.variants||[],min=variants.length?Math.min.apply(null,variants.map(function(v){return Number(v.price)||0})):0;
@@ -172,10 +187,32 @@ function updateSeo(){
  var desc=state.locale==="ar"?"تسوّق "+name+" من زيت ومونة. الأحجام والأسعار الحالية من الكتالوج.":state.locale==="fr"?"Achetez "+name+" chez Zayt w Mouneh. Formats et prix actuels du catalogue.":"Shop "+name+" at Zayt w Mouneh. Current catalogue sizes and prices.";
  document.title=title;
  var md=qs('meta[name="description"]');if(md)md.content=desc;
+ var robots=qs('meta[name="robots"]');if(robots)robots.content="index,follow,max-image-preview:large";
  var can=qs('link[rel="canonical"]');if(can)can.href=canonical();
- history.replaceState({},title,"/product/"+encodeURIComponent(p.id)+(location.hash||""));
+ else{can=document.createElement("link");can.rel="canonical";can.href=canonical();document.head.appendChild(can)}
+ history.replaceState({},title,productPath(p.id,state.locale)+(location.hash||""));
+ setAlternate("en-LB",productUrl(p.id,"en"));
+ setAlternate("ar-LB",productUrl(p.id,"ar"));
+ setAlternate("fr-LB",productUrl(p.id,"fr"));
+ setAlternate("x-default",productUrl(p.id,"en"));
+ setMeta('meta[property="og:title"]',{property:"og:title",content:title});
+ setMeta('meta[property="og:description"]',{property:"og:description",content:desc});
+ setMeta('meta[property="og:type"]',{property:"og:type",content:"product"});
+ setMeta('meta[property="og:url"]',{property:"og:url",content:canonical()});
+ setMeta('meta[property="og:locale"]',{property:"og:locale",content:state.locale==="ar"?"ar_LB":state.locale==="fr"?"fr_LB":"en_LB"});
+ setMeta('meta[name="twitter:card"]',{name:"twitter:card",content:"summary_large_image"});
+ setMeta('meta[name="twitter:title"]',{name:"twitter:title",content:title});
+ setMeta('meta[name="twitter:description"]',{name:"twitter:description",content:desc});
  var ld={"@context":"https://schema.org","@type":"Product","name":name,"sku":p.id,"category":p.category||undefined,"url":canonical()};
- var photo=window.ZWM_PRODUCT_PHOTOS&&window.ZWM_PRODUCT_PHOTOS.sourceFor?window.ZWM_PRODUCT_PHOTOS.sourceFor(p.id):null;if(photo&&photo.url)ld.image=[new URL(photo.url,location.origin).href];
+ var photo=window.ZWM_PRODUCT_PHOTOS&&window.ZWM_PRODUCT_PHOTOS.sourceFor?window.ZWM_PRODUCT_PHOTOS.sourceFor(p.id):null;
+ if(photo&&photo.url){
+  var photoUrl=new URL(photo.url,location.origin).href;ld.image=[photoUrl];
+  var ogImage=setMeta('meta[property="og:image"]',{property:"og:image",content:photoUrl});ogImage.setAttribute("data-zwm-product-image","1");
+  if(photo.width)setMeta('meta[property="og:image:width"]',{property:"og:image:width",content:String(photo.width)});
+  if(photo.height)setMeta('meta[property="og:image:height"]',{property:"og:image:height",content:String(photo.height)});
+  setMeta('meta[property="og:image:alt"]',{property:"og:image:alt",content:name});
+  setMeta('meta[name="twitter:image"]',{name:"twitter:image",content:photoUrl});
+ }
  if(variants.length){
   var av=availability(p);
   ld.offers=variants.map(function(v){
@@ -192,6 +229,7 @@ function updateSeo(){
   ld.review=state.reviews.slice(0,10).map(function(r){return {"@type":"Review","author":{"@type":"Person","name":t("verifiedCustomer")},"reviewRating":{"@type":"Rating","ratingValue":r.rating,"bestRating":5},"reviewBody":r.body,"datePublished":String(r.created_at||"").slice(0,10)}});
  }
  var script=qs("#c6ProductSchema");if(!script){script=document.createElement("script");script.type="application/ld+json";script.id="c6ProductSchema";document.head.appendChild(script)}script.textContent=JSON.stringify(ld);
+ document.dispatchEvent(new CustomEvent("zwm:seo-refresh"));
 }
 function photoMarkup(p){
  var source=window.ZWM_PRODUCT_PHOTOS&&window.ZWM_PRODUCT_PHOTOS.sourceFor?window.ZWM_PRODUCT_PHOTOS.sourceFor(p.id):null;
@@ -212,7 +250,7 @@ function paymentMarkup(){
 }
 function deliveryMarkup(){
  var d=state.settings.delivery||{},freeAbove=Number(d.freeAbove)||0;
- return '<div class="c6-service-card"><strong>'+esc(t("delivery"))+'</strong><p id="c6DeliveryResult">'+esc(t("deliveryUnknown"))+'</p><div class="c6-estimator"><input id="c6Area" type="text" placeholder="'+esc(t("deliveryPlaceholder"))+'" autocomplete="address-level2"><button class="c6-button is-secondary" type="button" id="c6Estimate">'+esc(t("estimate"))+'</button></div>'+(freeAbove>0?'<p>'+esc(t("freeAbove"))+': <b>'+money(freeAbove)+'</b></p>':"")+'</div>';
+ return '<div class="c6-service-card"><strong>'+esc(t("delivery"))+'</strong><p id="c6DeliveryResult">'+esc(t("deliveryUnknown"))+'</p><div class="c6-estimator"><input id="c6Area" type="text" aria-label="'+esc(t("deliveryPlaceholder"))+'" placeholder="'+esc(t("deliveryPlaceholder"))+'" autocomplete="address-level2"><button class="c6-button is-secondary" type="button" id="c6Estimate">'+esc(t("estimate"))+'</button></div>'+(freeAbove>0?'<p>'+esc(t("freeAbove"))+': <b>'+money(freeAbove)+'</b></p>':"")+'</div>';
 }
 function variantsMarkup(p){
  var vars=p.variants||[];
@@ -222,14 +260,14 @@ function variantsMarkup(p){
 function relatedProducts(){
  var p=state.product,rows=state.products.filter(function(x){return x.id!==p.id&&x.category===p.category}).slice(0,4);
  if(!rows.length)return "";
- return '<section class="c6-section is-soft"><div class="c6-shell"><div class="c6-section-head"><div><p class="c6-eyebrow">'+esc(t("related"))+'</p><h2>'+esc(t("related"))+'</h2><p>'+esc(t("relatedCopy"))+'</p></div></div><div class="c6-related-grid">'+rows.map(function(x){var min=(x.variants||[]).length?Math.min.apply(null,x.variants.map(function(v){return Number(v.price)||0})):0;return '<a class="c6-related-card" href="/product/'+encodeURIComponent(x.id)+'">'+photoMarkup(x)+'<strong>'+esc(productName(x))+'</strong><small>'+esc(t("from"))+' '+money(min)+'</small></a>'}).join("")+'</div></div></section>';
+ return '<section class="c6-section is-soft"><div class="c6-shell"><div class="c6-section-head"><div><p class="c6-eyebrow">'+esc(t("related"))+'</p><h2>'+esc(t("related"))+'</h2><p>'+esc(t("relatedCopy"))+'</p></div></div><div class="c6-related-grid">'+rows.map(function(x){var min=(x.variants||[]).length?Math.min.apply(null,x.variants.map(function(v){return Number(v.price)||0})):0;return '<a class="c6-related-card" href="'+productPath(x.id,state.locale)+'">'+photoMarkup(x)+'<strong>'+esc(productName(x))+'</strong><small>'+esc(t("from"))+' '+money(min)+'</small></a>'}).join("")+'</div></div></section>';
 }
 function recipeRows(){
  var id=state.product.id;return RECIPES.filter(function(r){return r.productIds.indexOf(id)>=0});
 }
 function recipeMarkup(){
  var rows=recipeRows();if(!rows.length)return "";
- return '<section class="c6-section"><div class="c6-shell"><div class="c6-section-head"><div><p class="c6-eyebrow">'+esc(t("recipe"))+'</p><h2>'+esc(t("recipe"))+'</h2><p>'+esc(t("recipeCopy"))+'</p></div></div><div class="c6-recipe-grid">'+rows.map(function(r){var name=state.locale==="ar"?r.ar:state.locale==="fr"?r.fr:r.en;var copy=state.locale==="ar"?r.copyAr:state.locale==="fr"?r.copyFr:r.copyEn;return '<article class="c6-recipe-card"><h3>'+esc(name)+'</h3><p>'+esc(copy)+'</p><a href="/recipes.html#recipes">'+esc(t("viewRecipe"))+' →</a></article>'}).join("")+'</div></div></section>';
+ return '<section class="c6-section"><div class="c6-shell"><div class="c6-section-head"><div><p class="c6-eyebrow">'+esc(t("recipe"))+'</p><h2>'+esc(t("recipe"))+'</h2><p>'+esc(t("recipeCopy"))+'</p></div></div><div class="c6-recipe-grid">'+rows.map(function(r){var name=state.locale==="ar"?r.ar:state.locale==="fr"?r.fr:r.en;var copy=state.locale==="ar"?r.copyAr:state.locale==="fr"?r.copyFr:r.copyEn;return '<article class="c6-recipe-card"><h3>'+esc(name)+'</h3><p>'+esc(copy)+'</p><a href="'+localePrefix(state.locale)+'/recipes#recipes">'+esc(t("viewRecipe"))+' →</a></article>'}).join("")+'</div></div></section>';
 }
 function bundleData(){
  var rec=recipeRows()[0];
@@ -255,7 +293,7 @@ function reviewsMarkup(){
 function alertMarkup(p){
  var a=availability(p);if(a!=="out_of_stock"&&a!=="coming_soon")return "";
  if(state.settings.commerce&&state.settings.commerce.back_in_stock_enabled===false)return "";
- return '<div class="c6-alert"><strong>'+esc(t("alertTitle"))+'</strong><p>'+esc(t("alertCopy"))+'</p><form id="c6AlertForm"><select name="channel" aria-label="'+esc(t("contact"))+'"><option value="email">'+esc(t("email"))+'</option><option value="whatsapp">'+esc(t("whatsapp"))+'</option></select><input name="contact" required placeholder="'+esc(t("contact"))+'" maxlength="254"><button class="c6-button" type="submit">'+esc(t("notify"))+'</button></form><span id="c6AlertStatus" class="c6-status" role="status"></span></div>';
+ return '<div class="c6-alert"><strong>'+esc(t("alertTitle"))+'</strong><p>'+esc(t("alertCopy"))+'</p><form id="c6AlertForm"><select name="channel" aria-label="'+esc(t("contact"))+'"><option value="email">'+esc(t("email"))+'</option><option value="whatsapp">'+esc(t("whatsapp"))+'</option></select><input name="contact" required aria-label="'+esc(t("contact"))+'" placeholder="'+esc(t("contact"))+'" maxlength="254"><button class="c6-button" type="submit">'+esc(t("notify"))+'</button></form><span id="c6AlertStatus" class="c6-status" role="status"></span></div>';
 }
 function render(){
  var p=state.product;if(!p)return;
@@ -263,14 +301,14 @@ function render(){
  var min=(p.variants||[]).length?Math.min.apply(null,p.variants.map(function(v){return Number(v.price)||0})):0;
  var av=availability(p),badgeClass=av==="out_of_stock"||av==="coming_soon"?" is-unavailable":av==="low_stock"?" is-low":"";
  qs("#c6ProductRoot").innerHTML=
- '<main class="c6-product-main"><div class="c6-shell"><nav class="c6-breadcrumb"><a href="/shop.html">'+esc(t("back"))+'</a><span>›</span><span>'+esc(productName(p))+'</span></nav><div class="c6-product-grid"><div class="c6-product-visual">'+photoMarkup(p)+'</div><div class="c6-product-copy"><p class="c6-eyebrow">'+esc(p.category||t("category"))+'</p><h1 class="c6-product-title">'+esc(productName(p))+'</h1>'+(p.original?'<p class="c6-original">'+esc(p.original)+'</p>':"")+'<div class="c6-badges"><span class="c6-badge'+badgeClass+'">'+esc(t(av))+'</span></div><div class="c6-price">'+esc(t("from"))+' '+money(min)+'</div><div class="c6-purchase-box"><div class="c6-purchase-row"><label class="c6-field"><span>'+esc(t("size"))+'</span><select id="c6Variant">'+variantsMarkup(p)+'</select></label><label class="c6-field"><span>'+esc(t("qty"))+'</span><input id="c6Qty" type="number" min="1" max="99" value="1"></label></div><div class="c6-purchase-actions"><button class="c6-button" id="c6Add" type="button"'+(isOrderable(p)?"":" disabled")+'>'+esc(isOrderable(p)?t("add"):t("unavailable"))+'</button><button class="c6-button is-secondary" id="c6Share" type="button">'+esc(t("share"))+'</button></div>'+alertMarkup(p)+'</div><div style="margin-top:25px"><p class="c6-eyebrow">'+esc(t("facts"))+'</p>'+factsMarkup(p)+'</div><div class="c6-service-grid"><div class="c6-service-card"><strong>'+esc(t("payment"))+'</strong><div style="margin-top:7px">'+paymentMarkup()+'</div><p>'+esc(t("paymentNote"))+'</p></div>'+deliveryMarkup()+'</div></div></div></div></main>'+
+ '<main class="c6-product-main"><div class="c6-shell"><nav class="c6-breadcrumb"><a href="'+localePrefix(state.locale)+'/shop">'+esc(t("back"))+'</a><span>›</span><span>'+esc(productName(p))+'</span></nav><div class="c6-product-grid"><div class="c6-product-visual">'+photoMarkup(p)+'</div><div class="c6-product-copy"><p class="c6-eyebrow">'+esc(p.category||t("category"))+'</p><h1 class="c6-product-title">'+esc(productName(p))+'</h1>'+(p.original?'<p class="c6-original">'+esc(p.original)+'</p>':"")+'<div class="c6-badges"><span class="c6-badge'+badgeClass+'">'+esc(t(av))+'</span></div><div class="c6-price">'+esc(t("from"))+' '+money(min)+'</div><div class="c6-purchase-box"><div class="c6-purchase-row"><label class="c6-field"><span>'+esc(t("size"))+'</span><select id="c6Variant">'+variantsMarkup(p)+'</select></label><label class="c6-field"><span>'+esc(t("qty"))+'</span><input id="c6Qty" type="number" min="1" max="99" value="1"></label></div><div class="c6-purchase-actions"><button class="c6-button" id="c6Add" type="button"'+(isOrderable(p)?"":" disabled")+'>'+esc(isOrderable(p)?t("add"):t("unavailable"))+'</button><button class="c6-button is-secondary" id="c6Share" type="button">'+esc(t("share"))+'</button></div>'+alertMarkup(p)+'</div><div style="margin-top:25px"><p class="c6-eyebrow">'+esc(t("facts"))+'</p>'+factsMarkup(p)+'</div><div class="c6-service-grid"><div class="c6-service-card"><strong>'+esc(t("payment"))+'</strong><div style="margin-top:7px">'+paymentMarkup()+'</div><p>'+esc(t("paymentNote"))+'</p></div>'+deliveryMarkup()+'</div></div></div></div></main>'+
  bundleMarkup()+recipeMarkup()+relatedProducts()+reviewsMarkup();
  bind();
  updateCartCount();
 }
 function renderNotFound(){
  state.locale=locale();document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==="ar"?"rtl":"ltr";
- qs("#c6ProductRoot").innerHTML='<main class="c6-product-main"><div class="c6-shell"><div class="c6-purchase-box" style="max-width:720px;margin:70px auto;text-align:center"><h1 class="c6-product-title">'+esc(t("notFound"))+'</h1><p>'+esc(t("notFoundCopy"))+'</p><a class="c6-button" href="/shop.html">'+esc(t("allProducts"))+'</a></div></div></main>';
+ qs("#c6ProductRoot").innerHTML='<main class="c6-product-main"><div class="c6-shell"><div class="c6-purchase-box" style="max-width:720px;margin:70px auto;text-align:center"><h1 class="c6-product-title">'+esc(t("notFound"))+'</h1><p>'+esc(t("notFoundCopy"))+'</p><a class="c6-button" href="'+localePrefix(state.locale)+'/shop">'+esc(t("allProducts"))+'</a></div></div></main>';
 }
 function readCart(){try{return JSON.parse(localStorage.getItem(CART_KEY)||"{}")||{}}catch(e){return {}}}
 function writeCart(cart){try{localStorage.setItem(CART_KEY,JSON.stringify(cart));window.dispatchEvent(new Event("zwm:cart-updated"))}catch(e){}}

@@ -191,3 +191,44 @@
  .zwm-admin-notification-toolbar .zwm-notification-actions button{flex-basis:100%}
  .zwm-admin-device-actions button{flex:1 1 100%}
 }
+
+/* ===== mobile-audit-20261006: notification chrome on small phones ===== */
+.zwm-customer-switch,
+.zwm-admin-switch{min-width:46px;min-height:44px;justify-content:center}
+.zwm-customer-notification-control>div,
+.zwm-admin-pref-copy{min-width:0}
+.zwm-customer-notification-control strong,
+.zwm-customer-notification-control small,
+.zwm-admin-pref-copy strong,
+.zwm-admin-pref-copy small{overflow-wrap:anywhere}
+@media(max-width:760px){
+  .zwm-notification-popover,
+  .zwm-customer-notification-popover{
+    max-height:calc(100dvh - 82px);
+    overscroll-behavior:contain
+  }
+  body[data-page="account"] .site-header .nav>.nav-actions:has(#zwmCustomerNotificationBell){
+    width:88px!important;min-width:88px!important;
+    display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:4px!important
+  }
+  body[data-page="account"] .site-header .nav>.nav-actions:has(#zwmCustomerNotificationBell) #zwmCustomerNotificationBell{
+    position:relative!important;inset:auto!important;transform:none!important;
+    display:grid!important;width:42px!important;min-width:42px!important;height:42px!important;min-height:42px!important
+  }
+  body[data-page="account"] .site-header .nav:has(#zwmCustomerNotificationBell)>.brand{
+    max-width:calc(100% - 200px)!important
+  }
+}
+@media(max-width:430px){
+  .zwm-customer-notification-state,
+  .zwm-admin-notification-state{max-width:100%;white-space:normal;text-align:start}
+  body[data-page="account"] .site-header .nav:has(#zwmCustomerNotificationBell)>.brand{
+    max-width:40px!important
+  }
+  body[data-page="account"] .site-header .nav:has(#zwmCustomerNotificationBell)>.brand .brand-wordmark{
+    display:none!important
+  }
+  .topbar-right #zwmNotificationBell{
+    display:grid!important;width:40px!important;min-width:40px!important;height:40px!important;min-height:40px!important
+  }
+}

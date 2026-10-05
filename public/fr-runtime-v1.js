@@ -1652,7 +1652,32 @@ var EXACT=Object.freeze({
 "Gift basket prepared near your budget. Edit anything you like.":"Panier cadeau préparé au plus près de votre budget. Modifiez-le comme vous le souhaitez.",
 "Someone special":"Une personne spéciale",
 "With care":"Avec soin",
-"To ":"À "
+"To ":"À ",
+"Keep sealed in a cool, dark place away from direct heat and light.":"Conserver fermé dans un endroit frais et sombre, à l’abri de la chaleur directe et de la lumière.",
+"Keep sealed in a cool, dry place. Follow the label after opening when present.":"Conserver fermé dans un endroit frais et sec. Après ouverture, suivre les indications de l’étiquette lorsqu’elles sont précisées.",
+"Keep tightly sealed in a cool, dry pantry away from moisture and strong heat.":"Conserver bien fermé dans un endroit frais et sec, à l’abri de l’humidité et des fortes chaleurs.",
+"Store according to the package label and keep the product sealed between uses.":"Conserver selon les indications de l’emballage et garder le produit bien fermé entre les utilisations.",
+"Pairs naturally with olive oil, labneh, eggs and warm bread.":"S’accorde naturellement avec l’huile d’olive, le labneh, les œufs et le pain chaud.",
+"Pair with zaatar, olives, labneh, salads and mezze.":"À associer au zaatar, aux olives, au labneh, aux salades et au mezzé.",
+"Try with tahini, yogurt, nuts, toast or warm herbal tea.":"À essayer avec du tahini, du yaourt, des noix, du pain grillé ou une tisane chaude.",
+"Use with fattoush, onions, grilled foods, salads and mezze.":"À utiliser avec le fattouche, les oignons, les grillades, les salades et le mezzé.",
+"Build a meal with rice or bulgur, cumin and olive oil.":"Composez un repas avec du riz ou du boulgour, du cumin et de l’huile d’olive.",
+"Explore related pantry products below to build a complete table.":"Découvrez ci-dessous des produits complémentaires de la mouneh pour composer une table complète.",
+"Feedback about ":"Avis sur ",
+"Storage guidance":"Conseils de conservation",
+"Pairs well with":"S’accorde avec",
+"Final availability is confirmed directly on WhatsApp before the order is final.":"La disponibilité finale est confirmée directement sur WhatsApp avant validation de la commande.",
+"Share product":"Partager le produit",
+"Send feedback":"Envoyer un avis",
+"sizes and prices from the current Zayt w Mouneh catalogue.":"formats et prix du catalogue Zayt w Mouneh actuel.",
+"Olive oil & the table":"L’huile d’olive à table",
+"Zaatar mornings":"Matins au zaatar",
+"Something sweet":"Une touche sucrée",
+"Pantry moments":"Moments de mouneh",
+"Food that feels":"Une cuisine qui semble",
+"familiar.":"familière.",
+"Follow the pantry for seasonal ideas, shop updates and everyday ways to bring Lebanese staples to the table.":"Suivez la mouneh pour des idées de saison, les nouveautés de la boutique et des façons simples d’apporter les essentiels libanais à table.",
+"Availability confirmed on WhatsApp":"Disponibilité confirmée sur WhatsApp"
 });
 
 var STATIC_FR=Object.freeze({

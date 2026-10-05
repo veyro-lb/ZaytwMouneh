@@ -977,3 +977,112 @@ body[data-page="account"] .account-panel[data-account-panel="overview"]>.account
     grid-template-columns:minmax(0,1fr);
   }
 }
+
+
+/* ===== account12: single-column sidebar navigation + touch reliability ===== */
+body[data-page="account"] .account-layout{
+  grid-template-columns:280px minmax(0,1fr);
+  gap:24px;
+}
+body[data-page="account"] .account-side{
+  min-width:0;
+  padding:20px 18px;
+}
+body[data-page="account"] .account-tabs{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:8px!important;
+  overflow:visible!important;
+}
+body[data-page="account"] .account-tabs button,
+body[data-page="account"] .account-tabs button:last-child{
+  grid-column:auto!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:54px;
+  padding:9px 12px;
+  gap:11px;
+  justify-content:flex-start;
+  border:1px solid transparent;
+  border-radius:14px;
+  font-size:.84rem;
+  line-height:1.25;
+  text-align:start;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+body[data-page="account"] .account-tabs button>span:last-child{
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+body[data-page="account"] .account-tab-icon{
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+}
+body[data-page="account"] .account-tabs button:focus-visible{
+  outline:3px solid rgba(18,61,35,.16);
+  outline-offset:2px;
+}
+body[data-page="account"] .account-tabs button.is-active{
+  background:#edf4e9;
+  border-color:rgba(18,61,35,.14);
+  box-shadow:inset 3px 0 0 var(--acc-green);
+}
+html[dir="rtl"] body[data-page="account"] .account-tabs button{
+  justify-content:flex-start;
+  text-align:start;
+}
+html[dir="rtl"] body[data-page="account"] .account-tabs button.is-active{
+  box-shadow:inset -3px 0 0 var(--acc-green);
+}
+@media(max-width:980px){
+  body[data-page="account"] .account-layout{
+    grid-template-columns:minmax(0,1fr);
+    gap:14px;
+  }
+  body[data-page="account"] .account-side{
+    position:static;
+    padding:14px;
+    border-radius:20px;
+  }
+  body[data-page="account"] .account-tabs{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:7px!important;
+  }
+  body[data-page="account"] .account-tabs button,
+  body[data-page="account"] .account-tabs button:last-child{
+    min-height:52px;
+    padding:8px 11px;
+    border-color:var(--acc-line);
+    background:#fff;
+  }
+  body[data-page="account"] .account-tabs button.is-active{
+    background:#edf4e9;
+  }
+}
+@media(max-width:700px){
+  body[data-page="account"] .account-side{
+    padding:10px;
+    border-radius:17px;
+  }
+  body[data-page="account"] .account-tabs{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:6px!important;
+  }
+  body[data-page="account"] .account-tabs button,
+  body[data-page="account"] .account-tabs button:last-child{
+    min-height:50px;
+    padding:8px 10px;
+    gap:9px;
+    border-radius:12px;
+    font-size:.82rem;
+  }
+  body[data-page="account"] .account-tab-icon{
+    width:30px;
+    height:30px;
+    flex:0 0 30px;
+    border-radius:9px;
+    font-size:.8rem;
+  }
+}

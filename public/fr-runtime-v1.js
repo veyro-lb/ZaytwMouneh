@@ -267,6 +267,28 @@ var EXACT=Object.freeze({
 "Create your Zayt w Mouneh account":"Créer votre compte Zayt w Mouneh",
 "Welcome back":"Bon retour",
 "Welcome back.":"Bon retour.",
+"Available":"Disponible",
+"Reserved":"Réservé",
+"Used":"Utilisé",
+"Expired":"Expiré",
+"Unknown":"Inconnu",
+"or":"ou",
+"off":"de réduction",
+"Joined":"Inscrit",
+"Qualified":"Éligible",
+"Copied":"Copié",
+"Order services are temporarily unavailable.":"Le service des commandes est temporairement indisponible.",
+"Could not load your orders.":"Impossible de charger vos commandes.",
+"waiting for payment":"en attente de paiement",
+"waiting for delivery":"en attente de livraison",
+"pending":"en attente",
+"Shop again":"Commander à nouveau",
+"My Orders":"Mes commandes",
+"Orders placed on the website appear here automatically. Guest orders from this browser are securely added after sign-in.":"Les commandes passées sur le site apparaissent ici automatiquement. Les commandes invitées de ce navigateur sont ajoutées en toute sécurité après connexion.",
+"No orders in this view yet.":"Aucune commande dans cette vue pour le moment.",
+"Label":"Libellé",
+"Landmark:":"Point de repère :",
+"Instructions:":"Instructions :",
 "Latest order":"Dernière commande",
 "View order":"Voir la commande",
 "Overview":"Aperçu",
@@ -2188,6 +2210,9 @@ function dynamicFr(raw){
     }
   }catch(e){}
   var m;
+  if(/^Welcome,\s+there\.$/i.test(t))return s.replace(t,"Bienvenue.");
+  if((m=t.match(/^Welcome,\s+(.+)\.$/i)))return s.replace(t,"Bienvenue, "+m[1]+".");
+  if((m=t.match(/^Sign-in method:\s*(.+?)\.\s*Your password is handled by the authentication provider and is never shown here\.$/i)))return s.replace(t,"Méthode de connexion : "+m[1]+". Votre mot de passe est géré par le fournisseur d’authentification et n’est jamais affiché ici.");
   if((m=t.match(/^View\s+(.+)$/i))){
     var viewed=m[1],viewedFr=productFr(viewed);
     return s.replace(t,"Voir "+viewedFr);

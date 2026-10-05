@@ -20,6 +20,11 @@ var EXACT=Object.freeze({
 "Catalogue":"Catalogue",
 "Products":"Produits",
 "Product":"Produit",
+"Use":"Utilisation",
+"From":"À partir de",
+"View":"Voir",
+"Source":"Origine",
+"Debes source":"Origine du debes",
 "Recipes":"Recettes",
 "Our story":"Notre histoire",
 "Our Story":"Notre histoire",
@@ -1927,7 +1932,8 @@ var STATIC_FR=Object.freeze({
   "Order cancelled.": "Commande annulée.",
   "added to cart": "ajouté au panier",
   "Delivery details are saved with this order.": "Les informations de livraison sont enregistrées avec cette commande.",
-  "Pulses such as lentils, chickpeas and beans naturally provide plant protein and fiber, making them a strong choice in a balanced meal.": "Les légumineuses comme les lentilles, pois chiches et haricots apportent naturellement des protéines végétales et des fibres, ce qui en fait un excellent choix dans un repas équilibré.",
+  "Pantry basics for seasoning, baking and everyday kitchen preparation.":"Les essentiels du garde-manger pour assaisonner, pâtisser et cuisiner au quotidien.",
+"Pulses such as lentils, chickpeas and beans naturally provide plant protein and fiber, making them a strong choice in a balanced meal.": "Les légumineuses comme les lentilles, pois chiches et haricots apportent naturellement des protéines végétales et des fibres, ce qui en fait un excellent choix dans un repas équilibré.",
   "Whole-grain staples such as bulgur, freekeh, barley, oats, quinoa and brown rice can contribute fiber and useful nutrients as part of a balanced diet.": "Les céréales complètes comme le boulgour, la freekeh, l’orge, l’avoine, le quinoa et le riz brun peuvent apporter des fibres et des nutriments utiles dans le cadre d’une alimentation équilibrée.",
   "Nuts and seeds are nutrient-dense foods that commonly provide unsaturated fats, plant protein and fiber.": "Les noix et les graines sont riches en nutriments et apportent généralement des graisses insaturées, des protéines végétales et des fibres.",
   "Extra virgin olive oil is rich in monounsaturated fat and is a classic ingredient in Mediterranean-style eating.": "L’huile d’olive extra vierge est riche en graisses mono-insaturées et constitue un ingrédient classique de l’alimentation méditerranéenne.",
@@ -2169,14 +2175,29 @@ function dynamicFr(raw){
   if(STATIC_FR[t])return s.replace(t,STATIC_FR[t]);
   if(CATEGORY_FR[t])return s.replace(t,CATEGORY_FR[t]);
   try{
-    if(Array.isArray(window.PRODUCTS_DATA)){
-      for(var i=0;i<window.PRODUCTS_DATA.length;i++){
-        var p=window.PRODUCTS_DATA[i];
+    var catalogue=(typeof PRODUCTS_DATA!=="undefined"&&Array.isArray(PRODUCTS_DATA))
+      ?PRODUCTS_DATA
+      :(Array.isArray(window.PRODUCTS_DATA)?window.PRODUCTS_DATA:null);
+    if(catalogue){
+      for(var i=0;i<catalogue.length;i++){
+        var p=catalogue[i];
         if(p&&p.nameEn===t)return s.replace(t,productFr(t));
       }
     }
   }catch(e){}
   var m;
+  if((m=t.match(/^View\s+(.+)$/i))){
+    var viewed=m[1],viewedFr=productFr(viewed);
+    return s.replace(t,"Voir "+viewedFr);
+  }
+  if((m=t.match(/^Source\s*·\s*(Bekaa|Koura|Mount Lebanon|Chouf),\s*Lebanon$/i))){
+    var place={"bekaa":"Bekaa","koura":"Koura","mount lebanon":"Mont-Liban","chouf":"Chouf"}[m[1].toLowerCase()]||m[1];
+    return s.replace(t,"Origine · "+place+", Liban");
+  }
+  if((m=t.match(/^Debes source\s*·\s*(Bekaa|Koura|Mount Lebanon|Chouf),\s*Lebanon$/i))){
+    var dplace={"bekaa":"Bekaa","koura":"Koura","mount lebanon":"Mont-Liban","chouf":"Chouf"}[m[1].toLowerCase()]||m[1];
+    return s.replace(t,"Origine du debes · "+dplace+", Liban");
+  }
   if((m=t.match(/^Add (\$[\d,.]+) more for FREE delivery 🚚$/i)))return s.replace(t,"Ajoutez encore "+m[1]+" pour bénéficier de la livraison gratuite 🚚");
   if((m=t.match(/^Place Order — (\$[\d,.]+)$/i)))return s.replace(t,"Passer la commande — "+m[1]);
   if((m=t.match(/^Earn about (\d+) 🌿 Mouneh Points$/i)))return s.replace(t,"Gagnez environ "+m[1]+" 🌿 Mouneh Points");

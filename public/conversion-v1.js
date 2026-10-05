@@ -42,7 +42,8 @@ function injectGiftTools(){
  box.innerHTML=
   '<div class="c6-gift-tools-head"><div><h3>'+esc(tr("Schedule the gift","حدّد موعد الهدية","Planifier le cadeau"))+'</h3><p>'+esc(tr("Choose a requested delivery date. The final delivery time is confirmed after the order, so no delivery window is invented here.","اختر تاريخ التوصيل المطلوب. يتم تأكيد وقت التوصيل النهائي بعد الطلب، لذلك لا نعرض موعداً غير مؤكّد.","Choisissez une date de livraison souhaitée. L’heure finale est confirmée après la commande; aucun créneau n’est inventé."))+'</p></div></div>'+
   '<div class="c6-gift-grid"><label class="c6-field"><span>'+esc(tr("Requested delivery date","تاريخ التوصيل المطلوب","Date de livraison souhaitée"))+'</span><input id="c6GiftDeliveryDate" type="date" min="'+tomorrow()+'"></label><label class="c6-field"><span>'+esc(tr("Delivery timing note","ملاحظة حول وقت التوصيل","Note sur l’horaire"))+'</span><input id="c6GiftDeliveryNote" type="text" maxlength="180" placeholder="'+esc(tr("Optional — e.g. morning preferred","اختياري — مثلاً يفضّل صباحاً","Facultatif — ex. matin de préférence"))+'"></label></div>'+
-  '<div class="c6-corporate"><div><strong>'+esc(tr("Corporate & bulk gifting","هدايا الشركات والكميات","Cadeaux d’entreprise et commandes en volume"))+'</strong><small>'+esc(tr("For teams, clients or events, start a structured WhatsApp inquiry with quantity, budget and target date.","للفِرق والعملاء والمناسبات، ابدأ طلباً منظماً عبر واتساب مع الكمية والميزانية والتاريخ.","Pour équipes, clients ou événements, lancez une demande structurée sur WhatsApp avec quantité, budget et date."))+'</small></div><button type="button" class="c6-button is-secondary" id="c6CorporateGift">'+esc(tr("Corporate inquiry","استفسار للشركات","Demande entreprise"))+'</button></div>';
+  '<details class="c6-corporate" id="c6CorporatePanel"><summary><span><strong>'+esc(tr("Corporate & bulk gifting","هدايا الشركات والكميات","Cadeaux d’entreprise et commandes en volume"))+'</strong><small>'+esc(tr("For teams, clients or events, send quantity, budget and target date in one structured inquiry.","للفِرق والعملاء والمناسبات، أرسل الكمية والميزانية والتاريخ ضمن استفسار منظم.","Pour équipes, clients ou événements, envoyez quantité, budget et date dans une demande structurée."))+'</small></span><b>'+esc(tr("Open inquiry","افتح الاستفسار","Ouvrir la demande"))+'</b></summary>'+
+  '<div class="c6-corporate-form"><label class="c6-field"><span>'+esc(tr("Organization / name","الشركة / الاسم","Entreprise / nom"))+'</span><input id="c6CorporateName" type="text" maxlength="120" autocomplete="organization"></label><label class="c6-field"><span>'+esc(tr("Approximate gift count","العدد التقريبي للهدايا","Nombre approximatif de cadeaux"))+'</span><input id="c6CorporateCount" type="number" min="1" max="10000" inputmode="numeric"></label><label class="c6-field"><span>'+esc(tr("Budget per gift or total budget","ميزانية الهدية أو الميزانية الإجمالية","Budget par cadeau ou budget total"))+'</span><input id="c6CorporateBudget" type="text" maxlength="120" placeholder="'+esc(tr("Example: $30 per gift","مثال: 30$ للهدية","Ex. : 30 $ par cadeau"))+'"></label><label class="c6-field"><span>'+esc(tr("Target date","التاريخ المستهدف","Date visée"))+'</span><input id="c6CorporateDate" type="date" min="'+tomorrow()+'"></label><label class="c6-field c6-field-wide"><span>'+esc(tr("What do you need?","ما الذي تحتاجه؟","Votre besoin"))+'</span><textarea id="c6CorporateNote" maxlength="600" placeholder="'+esc(tr("Optional details: recipients, branding, cards, delivery locations…","تفاصيل اختيارية: المستلمون، الهوية، البطاقات، أماكن التوصيل…","Détails facultatifs : destinataires, branding, cartes, lieux de livraison…"))+'"></textarea></label><div class="c6-field-wide"><button type="button" class="c6-button" id="c6CorporateGift">'+esc(tr("Send inquiry on WhatsApp","أرسل الاستفسار عبر واتساب","Envoyer la demande sur WhatsApp"))+'</button><span class="c6-status" id="c6CorporateStatus"></span></div></div></details>';
  send.parentNode.insertBefore(box,send);
  q("#c6CorporateGift").addEventListener("click",openCorporate);
 }
@@ -56,19 +57,20 @@ async function contactNumber(){
  return "96181581230";
 }
 async function openCorporate(){
- var count=prompt(tr("Approximate number of gifts","العدد التقريبي للهدايا","Nombre approximatif de cadeaux"),"");
- if(count===null)return;
- var budget=prompt(tr("Budget per gift or total budget","ميزانية الهدية أو الميزانية الإجمالية","Budget par cadeau ou budget total"),"");
- if(budget===null)return;
- var date=prompt(tr("Target delivery date (optional)","تاريخ التوصيل المستهدف (اختياري)","Date de livraison visée (facultatif)"),"");
- if(date===null)return;
+ var name=(q("#c6CorporateName")||{}).value||"",count=(q("#c6CorporateCount")||{}).value||"",budget=(q("#c6CorporateBudget")||{}).value||"",date=(q("#c6CorporateDate")||{}).value||"",note=(q("#c6CorporateNote")||{}).value||"",status=q("#c6CorporateStatus");
+ if(!String(count).trim()&&!String(budget).trim()&&!String(note).trim()){
+  if(status)status.textContent=tr("Add a gift count, budget or note so we know what to prepare.","أضف العدد أو الميزانية أو ملاحظة حتى نعرف ما المطلوب.","Ajoutez un nombre de cadeaux, un budget ou une note pour préciser votre besoin.");
+  return;
+ }
+ if(status)status.textContent=tr("Opening WhatsApp…","جارٍ فتح واتساب…","Ouverture de WhatsApp…");
  var number=await contactNumber();
  var text=tr(
-  "Corporate gifting inquiry\nApprox. gift count: "+count+"\nBudget: "+budget+"\nTarget date: "+date+"\nPlease help me plan a bulk gift order.",
-  "استفسار هدايا شركات\nالعدد التقريبي: "+count+"\nالميزانية: "+budget+"\nالتاريخ المستهدف: "+date+"\nأرغب بالمساعدة لتجهيز طلب هدايا بالكميات.",
-  "Demande cadeaux d’entreprise\nNombre approximatif : "+count+"\nBudget : "+budget+"\nDate visée : "+date+"\nJe souhaite préparer une commande de cadeaux en volume."
+  "Corporate gifting inquiry\nOrganization / name: "+name+"\nApprox. gift count: "+count+"\nBudget: "+budget+"\nTarget date: "+date+"\nNotes: "+note,
+  "استفسار هدايا شركات\nالشركة / الاسم: "+name+"\nالعدد التقريبي: "+count+"\nالميزانية: "+budget+"\nالتاريخ المستهدف: "+date+"\nملاحظات: "+note,
+  "Demande cadeaux d’entreprise\nEntreprise / nom : "+name+"\nNombre approximatif : "+count+"\nBudget : "+budget+"\nDate visée : "+date+"\nNotes : "+note
  );
- window.open("https://wa.me/"+number+"?text="+encodeURIComponent(text),"_blank","noopener");
+ var w=window.open("https://wa.me/"+number+"?text="+encodeURIComponent(text),"_blank","noopener");
+ if(status)status.textContent=w?tr("WhatsApp inquiry ready.","الاستفسار جاهز على واتساب.","Demande prête dans WhatsApp."):tr("Your browser blocked the new tab. Allow pop-ups and try again.","المتصفح منع فتح النافذة. اسمح بالنوافذ المنبثقة وحاول مجدداً.","Le navigateur a bloqué le nouvel onglet. Autorisez-le puis réessayez.");
 }
 function rewardsState(){try{return window.ZWM_REWARDS&&window.ZWM_REWARDS.getState?window.ZWM_REWARDS.getState():{}}catch(e){return {}}}
 function injectAccountReorder(){

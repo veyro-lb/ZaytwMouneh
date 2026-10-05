@@ -1,8 +1,8 @@
 (function(){
 "use strict";
 const KEY="zwm:mouneh:session:v1";
-const CFG="/admin-config.js?v=20261005-notifications10";
-const VERSION="20261005-notifications10";
+const CFG="/admin-config.js?v=20261005-notifications11";
+const VERSION="20261005-notifications11";
 let cfg=null,user=null,rows=[];
 const $=(s,r=document)=>r.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -181,7 +181,7 @@ async function cardAction(e){
  }catch(err){help.textContent=err?.message||"Notification setup failed"}
 }
 function cardShell(){
- const host=$(".account-content");if(!host||$("#zwmCustomerNotifications"))return;
+ const host=$('[data-account-panel="profile"]');if(!host||$("#zwmCustomerNotifications"))return;
  const card=document.createElement("section");card.id="zwmCustomerNotifications";card.className="account-card zwm-account-notifications";
  card.innerHTML='<div class="zwm-customer-notification-head"><div><p class="account-eyebrow">'+esc(tr("notifications"))+'</p><h2>'+esc(tr("title"))+'</h2><p>'+esc(tr("copy"))+'</p></div><span class="zwm-customer-notification-state" data-state></span></div><div class="zwm-customer-notification-control"><div><strong>'+esc(tr("order"))+'</strong><small>'+esc(tr("orderHelp"))+'</small></div><label class="zwm-customer-switch"><input type="checkbox" data-pref="order_updates"><span aria-hidden="true"></span></label></div><div class="zwm-customer-notification-footer"><div class="zwm-notification-actions"><button class="account-primary" type="button" data-enable>'+esc(tr("enable"))+'</button><button type="button" data-test>'+esc(tr("test"))+'</button></div><p class="account-status" data-help></p></div><p class="zwm-customer-notification-note">'+esc(tr("note"))+'</p>';
  host.appendChild(card);card.addEventListener("click",cardAction);renderCard(card);

@@ -157,5 +157,5 @@ drop policy if exists "site can insert analytics events" on public.site_events;
 create policy "site can insert analytics events" on public.site_events for insert to anon,authenticated
 with check (
  event_name=any(array['page_view','product_view','add_to_cart','whatsapp_click','search','cart_opened','checkout_started','checkout_completed','order_delivered','wholesale_page_view','wholesale_request_started','wholesale_product_added','wholesale_request_submitted','wholesale_request_failed'])
- and char_length(page_path)<=300 and coalesce(char_length(session_id),0)<=80 and coalesce(char_length(referrer_host),0)<=180 and pg_column_size(meta)<=4096
+ and char_length(page_path)<=300 and coalesce(char_length(session_id),0)<=80 and coalesce(char_length(referrer_host),0)<=180
 );

@@ -16,6 +16,40 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css?v=20261004-mobileheader1"><link rel="stylesheet" href="/premium.css?v=20261004-uifix5"><link rel="stylesheet" href="/storefront-shell.css?v=20261004-mobile-stability4"><link rel="stylesheet" href="/seo-a11y-v1.css?v=20261005-batch7"><link rel="stylesheet" href="/ui-copy-polish-v1.css?v=20261005-arabic3"><link rel="stylesheet" href="/wholesale-v1.css?v=20261005-gradientcards3">
+<style id="wholesale-business-card-hotfix">
+/* Photo-free business cards: keep this after linked styles so stale photo rules cannot win. */
+.wholesale-page{max-width:100%;overflow-x:clip!important}
+.wholesale-page .wholesale-section.shell{width:min(1200px,calc(100% - 32px));margin-inline:auto}
+.wholesale-page .business-type-grid article{
+  min-height:92px!important;
+  height:92px;
+  padding:15px 16px!important;
+  border-radius:17px!important;
+  background-image:linear-gradient(135deg,var(--tile-a,#123d23),var(--tile-b,#1f5a35))!important;
+  background-size:auto!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+  color:#fff!important;
+  box-shadow:0 9px 22px rgba(27,52,35,.10)!important;
+}
+.wholesale-page .business-type-grid article::before{
+  background:radial-gradient(circle at 84% 18%,rgba(235,205,126,.20) 0 12%,transparent 13%),linear-gradient(180deg,rgba(255,255,255,.05),transparent 54%)!important;
+}
+.wholesale-page .business-type-grid article:nth-child(1){--tile-a:#103d22;--tile-b:#285f38}
+.wholesale-page .business-type-grid article:nth-child(2){--tile-a:#4b3b2c;--tile-b:#755f42}
+.wholesale-page .business-type-grid article:nth-child(3){--tile-a:#6b4827;--tile-b:#9a713d}
+.wholesale-page .business-type-grid article:nth-child(4){--tile-a:#1d4b35;--tile-b:#3d7454}
+.wholesale-page .business-type-grid article:nth-child(5){--tile-a:#29482f;--tile-b:#667948}
+.wholesale-page .business-type-grid article:nth-child(6){--tile-a:#493d2c;--tile-b:#78633e}
+.wholesale-page .business-type-grid article:nth-child(7){--tile-a:#143b2b;--tile-b:#3b644c}
+.wholesale-page .business-type-grid article:nth-child(8){--tile-a:#304854;--tile-b:#627985}
+.wholesale-page .business-type-grid article:nth-child(9){--tile-a:#293a31;--tile-b:#58665b}
+.wholesale-page .business-type-grid article:nth-child(10){--tile-a:#573c28;--tile-b:#856243}
+@media(max-width:560px){
+  .wholesale-page .wholesale-section.shell{width:min(1200px,calc(100% - 24px))}
+  .wholesale-page .business-type-grid article{min-height:78px!important;height:78px;padding:12px 13px!important}
+}
+</style>
 <script src="/seo-a11y-v1.js?v=20261005-wholesale-nav2" defer></script>
 </head>
 <body class="wholesale-page" data-page="wholesale">

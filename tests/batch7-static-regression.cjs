@@ -8,13 +8,13 @@ const count=(s,re)=>(s.match(re)||[]).length;
 
 const customerPages=[
  "index.html","shop.html","gift.html","recipes.html","about.html","contact.html",
- "account.html","checkout.html","order.html","product.html",
+ "account.html","checkout.html","order.html","product.html","wholesale.html",
  "privacy.html","privacy-policy.html","privacy-and-data.html",
  "terms.html","terms-of-service.html","terms-and-rewards.html"
 ];
 const indexed=[
  ["index.html","/"],["shop.html","/shop"],["gift.html","/gift"],["recipes.html","/recipes"],
- ["about.html","/about"],["contact.html","/contact"],["privacy.html","/privacy"],["terms.html","/terms"]
+ ["about.html","/about"],["contact.html","/contact"],["wholesale.html","/wholesale"],["privacy.html","/privacy"],["terms.html","/terms"]
 ];
 
 for(const file of customerPages){
@@ -80,10 +80,10 @@ assert(robots.includes(origin+"/sitemap.xml"),"robots sitemap URL missing");
 
 const sitemap=read("sitemap.xml");
 assert(sitemap.includes('xmlns:xhtml="http://www.w3.org/1999/xhtml"'),"sitemap hreflang namespace missing");
-assert.equal(count(sitemap,/<url>/g),1020,"sitemap URL count must cover 332 products + 8 public pages across 3 locales");
-assert.equal(count(sitemap,/hreflang="en-LB"/g),1020,"sitemap English alternates incomplete");
-assert.equal(count(sitemap,/hreflang="ar-LB"/g),1020,"sitemap Arabic alternates incomplete");
-assert.equal(count(sitemap,/hreflang="fr-LB"/g),1020,"sitemap French alternates incomplete");
+assert.equal(count(sitemap,/<url>/g),1023,"sitemap URL count must cover 332 products + 9 public pages across 3 locales");
+assert.equal(count(sitemap,/hreflang="en-LB"/g),1023,"sitemap English alternates incomplete");
+assert.equal(count(sitemap,/hreflang="ar-LB"/g),1023,"sitemap Arabic alternates incomplete");
+assert.equal(count(sitemap,/hreflang="fr-LB"/g),1023,"sitemap French alternates incomplete");
 for(const id of ["baking-powder","secar-nabat","extra-virgin-olive-oil"]){
  for(const prefix of ["","/ar","/fr"])assert(sitemap.includes(origin+prefix+"/product/"+id),"sitemap missing "+prefix+"/product/"+id);
 }
@@ -96,4 +96,4 @@ assert(headers.includes("Cache-Control: public, max-age=86400, stale-while-reval
 assert(headers.includes("Cache-Control: public, max-age=2592000, immutable"),"asset immutable cache policy missing");
 assert(headers.includes("X-Content-Type-Options: nosniff"),"security headers missing");
 
-console.log("Batch 7 static production regression passed:",customerPages.length,"customer shells, 1020 sitemap URLs, Quick View guards, SEO/a11y/cache rules.");
+console.log("Batch 7 static production regression passed:",customerPages.length,"customer shells, 1023 sitemap URLs, Quick View guards, SEO/a11y/cache rules.");

@@ -4,6 +4,9 @@ on:
     branches:
       - batch7-final-seo-a11y
       - batch7-production-release
+  pull_request:
+    branches:
+      - main
 concurrency:
   group: batch7-final-regression
   cancel-in-progress: true
@@ -25,8 +28,16 @@ jobs:
           node --check public/seo-a11y-v1.js
           node --check public/checkout.js
           node --check public/account.js
+          node --check public/wholesale-v1.js
+          node --check public/admin-wholesale.js
       - name: Batch 7 static production gate
         run: node tests/batch7-static-regression.cjs
+      - name: Wholesale business orders regression
+        run: node tests/wholesale-regression.cjs
+      - name: Wholesale form behavior regression
+        run: node tests/wholesale-ui-regression.cjs
+        env:
+          NODE_PATH: ${{ github.workspace }}/node_modules
       - name: Quick View regression matrix
         run: node tests/quick-view-regression.cjs
       - name: Mobile stability and auth

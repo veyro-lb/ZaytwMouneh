@@ -2,7 +2,7 @@
    Only PUBLIC Supabase values belong here. Never put a secret/service-role key in browser code. */
 window.ZWM_CMS_CONFIG = Object.freeze({
   enabled: true,
-  version: "2026-10-05-admin-batch5",
+  version: "2026-10-05-wholesale1",
   supabaseUrl: "https://mraobsbgrtmgpdjqjrzr.supabase.co",
   supabasePublishableKey: "sb_publishable_6vBP0VO4UaoULK05ry0bvw_GGuPtVwb",
   tables: Object.freeze({
@@ -14,7 +14,9 @@ window.ZWM_CMS_CONFIG = Object.freeze({
     orders: "orders",
     notes: "admin_notes",
     revisions: "product_revisions",
-    backups: "admin_backups"
+    backups: "admin_backups",
+    wholesaleLeads: "wholesale_leads",
+    wholesaleItems: "wholesale_lead_items"
   }),
   storageBucket: "product-images",
   analytics: Object.freeze({

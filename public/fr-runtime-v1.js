@@ -1627,7 +1627,32 @@ var EXACT=Object.freeze({
 "Collection pick":"Choix de la sélection",
 "View product":"Voir le produit",
 "Selected collection":"Sélection choisie",
-"Browse full catalogue":"Parcourir tout le catalogue"
+"Browse full catalogue":"Parcourir tout le catalogue",
+"A pantry within budget":"Une mouneh adaptée à votre budget",
+"Give me a good mix.":"Proposez-moi un bel assortiment.",
+"We will build a varied pantry bundle from current catalogue prices. You can still edit everything in your cart.":"Nous composerons un assortiment varié à partir des prix actuels du catalogue. Vous pourrez ensuite tout modifier dans votre panier.",
+"A varied pantry bundle was added. Edit anything you like in the cart.":"Un assortiment varié a été ajouté. Modifiez ce que vous souhaitez dans le panier.",
+"Link copied":"Lien copié",
+"Copy this link":"Copier ce lien",
+"Add something to the basket first.":"Ajoutez d’abord quelque chose au panier.",
+"Zayt w Mouneh pantry basket":"Panier mouneh Zayt w Mouneh",
+"Someone shared a pantry basket with you.":"Quelqu’un a partagé avec vous un panier de mouneh.",
+"Load basket":"Charger le panier",
+"Shared basket loaded.":"Panier partagé chargé.",
+"Last basket added again.":"Dernier panier ajouté à nouveau.",
+"Shape the gift":"Personnalisez le cadeau",
+"Choose a budget, presentation theme and card language. Every detail stays editable before you send the request.":"Choisissez un budget, un style de présentation et la langue de la carte. Chaque détail reste modifiable avant l’envoi de la demande.",
+"Quick gift budgets":"Budgets cadeaux rapides",
+"English":"Anglais",
+"Bilingual":"Bilingue",
+"Gift presentation preferences:":"Préférences de présentation du cadeau :",
+"Theme: ":"Thème : ",
+"Card language: ":"Langue de la carte : ",
+"Hide prices from recipient: ":"Masquer les prix pour le destinataire : ",
+"Gift basket prepared near your budget. Edit anything you like.":"Panier cadeau préparé au plus près de votre budget. Modifiez-le comme vous le souhaitez.",
+"Someone special":"Une personne spéciale",
+"With care":"Avec soin",
+"To ":"À "
 });
 
 var STATIC_FR=Object.freeze({

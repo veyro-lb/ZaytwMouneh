@@ -53,9 +53,10 @@ async function assertOpen(ctx,button,label){
   assert.equal(errors.length,0,label+" console errors: "+errors.join(" | "));
 }
 async function closeByButton(ctx,label){
-  const {d}=ctx; d.getElementById("productModalClose").click(); await wait(340);
+  const {d}=ctx; d.getElementById("productModalClose").click(); await wait(20);
   assert(!d.body.classList.contains("modal-open"),label+" body still locked");
   assert(!d.getElementById("productModal").classList.contains("is-open"),label+" modal still open");
+  assert(!d.getElementById("cartBackdrop").classList.contains("is-visible"),label+" backdrop still interactive");
   assert.equal(d.getElementById("productModal").getAttribute("aria-hidden"),"true",label+" modal aria not reset");
   assert(!new URL(ctx.w.location.href).searchParams.get("product"),label+" product URL state not cleared");
 }
@@ -79,11 +80,11 @@ async function exercise(width,locale){
     // Escape.
     views=Array.from(d.querySelectorAll("[data-view]"));
     await assertOpen(ctx,views[0],width+" "+locale+" escape");
-    d.dispatchEvent(new w.KeyboardEvent("keydown",{key:"Escape",bubbles:true}));await wait(340);
+    d.dispatchEvent(new w.KeyboardEvent("keydown",{key:"Escape",bubbles:true}));await wait(20);
     assert(!d.body.classList.contains("modal-open"),"Escape left body locked");
     // Backdrop click.
     await assertOpen(ctx,Array.from(d.querySelectorAll("[data-view]"))[1],width+" "+locale+" backdrop");
-    d.getElementById("cartBackdrop").click();await wait(340);
+    d.getElementById("cartBackdrop").click();await wait(20);
     assert(!d.body.classList.contains("modal-open"),"backdrop left body locked");
     // Search then Quick View.
     const search=d.getElementById("productSearch");search.value="sugar";search.dispatchEvent(new w.Event("input",{bubbles:true}));await wait(30);
@@ -108,7 +109,7 @@ async function exercise(width,locale){
       b.click();await wait(20);
       const opts=d.querySelectorAll("[data-modal-variant]");
       if(opts.length>1){multi={b,opts:Array.from(opts)};break}
-      d.getElementById("productModalClose").click();await wait(340);
+      d.getElementById("productModalClose").click();await wait(20);
     }
     assert(multi,"multi-variant Quick View not found");
     multi.opts[1].click();await wait(15);

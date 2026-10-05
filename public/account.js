@@ -63,10 +63,13 @@
       return false;
     }
   }
+  const ACCOUNT_BOOT_TIMEOUT_MS=12000;
+  const accountBootStarted=Date.now();
+  let accountBootTimedOut=false;
   const requestedAuthOnLoad=(()=>{try{return new URL(location.href).searchParams.get("auth")||""}catch{return ""}})();
   let landingAfterAuth=!!requestedAuthOnLoad;
   const initialHash=(location.hash||"").slice(1);
-  let guestAuthMode=(requestedAuthOnLoad==="signup"||initialHash==="signup")?"signup":"signin";
+  let guestAuthMode=(requestedAuthOnLoad==="signup"||initialHash==="signup")?"signup":initialHash==="recover"?"recover":"signin";
   let active=initialHash||"overview";
   const allowed=new Set(["overview","points","orders","referrals","profile"]);
   if(!allowed.has(active))active="overview";
@@ -129,6 +132,49 @@
     const tabs=[["overview","⌂",tr("Overview","نظرة عامة")],["points","🌿",tr("Points & Wallet","النقاط والمحفظة")],["orders","▤",tr("Orders","الطلبات")],["referrals","↗",tr("Referrals","الإحالات")],["profile","⚙",tr("Profile & Security","الملف والأمان")]];
     return '<div class="account-tabs" role="tablist">'+tabs.map(([id,icon,label])=>'<button type="button" data-account-tab="'+id+'" class="'+(active===id?"is-active":"")+'" role="tab" aria-selected="'+(active===id)+'" aria-current="'+(active===id?"page":"false")+'"><span class="account-tab-icon">'+icon+'</span><span>'+label+'</span></button>').join("")+'</div>';
   }
+  function serviceProblemView(message,signedIn=false){
+    return '<div class="account-auth-layout"><section class="account-card account-auth-card account-verify-card"><div class="account-auth-mark">!</div><p class="account-eyebrow">'+tr("My Account","حسابي")+'</p><h1>'+tr("We could not finish loading your account.","تعذّر إكمال تحميل حسابك.")+'</h1><p>'+esc(message||tr("Account services are temporarily unavailable. Please retry.","خدمات الحساب غير متاحة مؤقتاً. يرجى إعادة المحاولة."))+'</p><div class="account-actions"><button type="button" class="is-primary" data-account-retry>'+tr("Retry account","إعادة محاولة الحساب")+'</button>'+(signedIn?'<button type="button" data-account-signout>'+tr("Sign in again","تسجيل الدخول مجدداً")+'</button>':'')+'</div></section>'+guestBenefits()+'</div>';
+  }
+  function deliveredReviewProducts(s){
+    const reviewed=new Set((s.bonusStatus?.reviewed_product_ids||[]).map(v=>String(v)));
+    const found=new Map();
+    (s.dashboard?.orders||[]).forEach(order=>{
+      if(order?.status!=="delivered"||!Array.isArray(order?.items))return;
+      order.items.forEach(item=>{
+        const id=String(item?.product_id||item?.id||"").trim();
+        if(!id||reviewed.has(id)||found.has(id))return;
+        const name=String(item?.name||item?.name_en||item?.title||id).trim()||id;
+        found.set(id,{id,name});
+      });
+    });
+    return Array.from(found.values()).slice(0,100);
+  }
+  function memberBonusesCard(s){
+    const bonus=s.bonusStatus||null;
+    const birthday=bonus?.birthday||null;
+    const reviewPoints=Number(bonus?.review_points)||5;
+    const products=deliveredReviewProducts(s);
+    let birthdayCopy=tr("Save your birthday in Profile to see eligibility.","احفظ تاريخ ميلادك في الملف الشخصي لمعرفة الأهلية.");
+    let birthdayAction="";
+    if(birthday){
+      if(birthday.eligible_today){
+        birthdayCopy=tr("Your birthday bonus is available today.","مكافأة عيد ميلادك متاحة اليوم.");
+        birthdayAction='<button type="button" class="account-primary" data-account-birthday-claim>'+esc(Number(birthday.points)||25)+' 🌿 · '+tr("Claim birthday bonus","استلام مكافأة عيد الميلاد")+'</button>';
+      }else if(birthday.claimed_this_year){
+        birthdayCopy=tr("Birthday bonus already claimed this year.","تم استلام مكافأة عيد الميلاد لهذا العام.");
+      }else if(!birthday.saved){
+        birthdayCopy=tr("Add your birthday in Profile. It can be saved once.","أضف تاريخ ميلادك في الملف الشخصي. يمكن حفظه مرة واحدة.");
+      }else if(!birthday.membership_eligible){
+        birthdayCopy=tr("Birthday bonus becomes eligible after 30 days of membership.","تصبح مكافأة عيد الميلاد مؤهلة بعد 30 يوماً من العضوية.");
+      }else{
+        birthdayCopy=tr("Your 25-point birthday bonus becomes available on your saved birthday.","تتوفر مكافأة عيد الميلاد بقيمة 25 نقطة في تاريخ ميلادك المحفوظ.");
+      }
+    }
+    const reviewForm=products.length
+      ?'<form id="accountReviewForm" class="account-form account-review-form"><label class="full">'+tr("Delivered product","منتج تم تسليمه")+'<select name="product_id" required><option value="">'+tr("Choose a product","اختر منتجاً")+'</option>'+products.map(p=>'<option value="'+esc(p.id)+'">'+esc(p.name)+'</option>').join("")+'</select></label><label>'+tr("Rating","التقييم")+'<select name="rating" required><option value="5">5 / 5</option><option value="4">4 / 5</option><option value="3">3 / 5</option><option value="2">2 / 5</option><option value="1">1 / 5</option></select></label><label class="full">'+tr("Review","المراجعة")+'<textarea name="body" minlength="3" maxlength="1000" required placeholder="'+tr("Write a short review of the product you received.","اكتب مراجعة قصيرة للمنتج الذي استلمته.")+'"></textarea></label><div class="full"><button type="submit" class="account-primary">'+tr("Submit verified review","إرسال مراجعة شراء موثّقة")+' · +'+reviewPoints+' 🌿</button></div><p class="account-status full" id="accountReviewStatus"></p></form>'
+      :'<p>'+tr("Eligible products appear here after a delivered purchase. Each product can receive the verified-review bonus once per member.","تظهر المنتجات المؤهلة هنا بعد تسليم الطلب. يمكن لكل منتج الحصول على مكافأة المراجعة الموثّقة مرة واحدة لكل عضو.")+'</p>';
+    return '<article class="account-card"><div class="account-section-title"><div><h2>'+tr("Member bonuses","مكافآت العضوية")+'</h2><p>'+tr("These bonuses follow the existing Mouneh Points rules; their values are not changed here.","تتبع هذه المكافآت قواعد نقاط المونة الحالية، ولم يتم تغيير قيمها هنا.")+'</p></div></div><div class="account-bonus-grid"><section><strong>'+tr("Birthday surprise","مفاجأة عيد الميلاد")+' · 25 🌿</strong><p>'+birthdayCopy+'</p>'+birthdayAction+'<p class="account-status" id="accountBirthdayStatus"></p></section><section><strong>'+tr("Verified purchase review","مراجعة شراء موثّقة")+' · +'+reviewPoints+' 🌿</strong>'+reviewForm+'</section></div></article>';
+  }
   function guestView(s){
     if(s.session&&s.dashboard?.needsJoin){
       const meta=s.authUser?.user_metadata||{};
@@ -154,6 +200,12 @@
       const email=esc(s.pendingSignupEmail||"");
       return '<div class="account-auth-layout"><section class="account-card account-auth-card account-verify-card"><div class="account-auth-mark">✉</div><p class="account-eyebrow">'+tr("My Account","حسابي")+'</p><h1>'+tr("Check your email","تحقق من بريدك")+'</h1><p>'+tr("A verification email was requested for ","أرسلنا رابط تأكيد إلى ")+'<strong>'+email+'</strong>. '+tr("Open it to verify your email, then return here. If this email already belongs to an account, use Sign in instead. Your dashboard will open automatically after sign-in.","افتحه لتأكيد بريدك ثم عد إلى هنا. ستفتح لوحة حسابك تلقائياً بعد تسجيل الدخول.")+'</p><div class="account-actions"><button type="button" class="is-primary" data-account-resend>'+tr("Resend verification email","إعادة إرسال رسالة التأكيد")+'</button><button type="button" data-account-auth="signin">'+tr("Back to sign in","العودة لتسجيل الدخول")+'</button></div><p id="accountVerifyStatus" class="account-status" role="status"></p></section>'+guestBenefits()+'</div>';
     }
+    if(s.authMode==="recovery"){
+      return '<div class="account-auth-layout"><section class="account-card account-auth-card account-verify-card"><div class="account-auth-mark">🔒</div><p class="account-eyebrow">'+tr("Password recovery","استعادة كلمة المرور")+'</p><h1>'+tr("Choose a new password.","اختر كلمة مرور جديدة.")+'</h1><p>'+tr("Use at least 8 characters. After the update, this browser stays signed in to your account.","استخدم 8 أحرف على الأقل. بعد التحديث سيبقى هذا المتصفح مسجلاً في حسابك.")+'</p><form id="accountRecoveryResetForm" class="account-auth-form"><label>'+tr("New password","كلمة المرور الجديدة")+'<input name="password" type="password" minlength="8" autocomplete="new-password" required></label><label>'+tr("Confirm new password","تأكيد كلمة المرور الجديدة")+'<input name="passwordConfirm" type="password" minlength="8" autocomplete="new-password" required></label><button class="account-primary account-auth-submit" type="submit">'+tr("Update password","تحديث كلمة المرور")+'</button><p id="accountRecoveryResetStatus" class="account-status" role="status">'+esc(s.authNotice||"")+'</p></form></section>'+guestBenefits()+'</div>';
+    }
+    if(guestAuthMode==="recover"){
+      return '<div class="account-auth-layout"><section class="account-card account-auth-card account-verify-card"><div class="account-auth-mark">✉</div><p class="account-eyebrow">'+tr("Password recovery","استعادة كلمة المرور")+'</p><h1>'+tr("Reset your password.","إعادة تعيين كلمة المرور.")+'</h1><p>'+tr("Enter your account email. If it matches an account, we will send a secure recovery link.","أدخل بريد حسابك. إذا كان مطابقاً لحساب فسنرسل رابط استعادة آمن.")+'</p><form id="accountRecoveryForm" class="account-auth-form"><label>'+tr("Account email","بريد الحساب")+'<input name="email" type="email" autocomplete="email" required></label><button class="account-primary account-auth-submit" type="submit">'+tr("Send recovery email","إرسال رسالة الاستعادة")+'</button><p id="accountRecoveryStatus" class="account-status" role="status"></p></form><div class="account-actions"><button type="button" data-account-auth="signin">'+tr("Back to sign in","العودة لتسجيل الدخول")+'</button></div></section>'+guestBenefits()+'</div>';
+    }
     const signup=guestAuthMode==="signup";
     const googleDisabled=s.googleEnabled===false;
     return '<div class="account-auth-layout">'+
@@ -175,6 +227,7 @@
         '<button class="account-primary account-auth-submit" type="submit">'+(signup?tr("Create my account","إنشاء حسابي"):tr("Sign in to dashboard","تسجيل الدخول إلى اللوحة"))+'</button>'+
         '<p id="accountAuthStatus" class="account-status" role="status">'+esc(s.authNotice||"")+'</p>'+
       '</form>'+
+      (!signup?'<div class="account-actions account-recovery-actions"><button type="button" data-account-recover>'+tr("Forgot password?","هل نسيت كلمة المرور؟")+'</button></div>':"")+
       '<p class="account-auth-note">'+tr("After sign-in, this page becomes your dashboard with Overview, Points & Wallet, Orders, Referrals, and Profile & Security.","بعد تسجيل الدخول تتحول هذه الصفحة إلى لوحة حسابك وتضم النظرة العامة والنقاط والمحفظة والطلبات والإحالات والملف والأمان.")+'</p>'+
       '</section>'+guestBenefits()+'</div>';
   }
@@ -204,11 +257,12 @@
       '<article class="account-card"><div class="account-section-title"><div><h2>'+tr("Mouneh Points & Wallet","نقاط المونة والمحفظة")+'</h2><p>'+tr("Paid & delivered orders earn points. Redeem them into vouchers when you reach a reward level.","الطلبات المدفوعة والمسلّمة تكسب نقاطاً. استبدلها بقسائم عند بلوغ مستوى المكافأة.")+'</p></div><button type="button" class="account-primary" data-open-points>'+tr("Manage rewards","إدارة المكافآت")+'</button></div><div class="account-grid" style="margin-top:16px"><article class="account-stat"><small>'+tr("Current balance","الرصيد الحالي")+'</small><strong>'+points.toLocaleString()+' 🌿</strong></article><article class="account-stat"><small>'+tr("Annual paid & delivered spend","الإنفاق السنوي المدفوع والمسلّم")+'</small><strong>'+money(m.annual_spend)+'</strong></article></div></article>'+
       '<article class="account-card"><div class="account-section-title"><div><h2>'+tr("Reward ladder","سلم المكافآت")+'</h2></div></div><div class="account-reward-grid">'+(rewards.length?rewards.map(r=>'<div class="account-reward"><strong>'+esc(r.points)+' 🌿 · '+money(r.value)+' '+tr("off","خصم")+'</strong><small>'+tr("Minimum order ","حد أدنى للطلب ")+money(r.minimum)+'</small><span class="account-pill">'+(points>=Number(r.points)?tr("Ready","جاهزة"):tr("Keep collecting","تابع التجميع"))+'</span></div>').join(""):'<p>'+tr("Rewards are being prepared.","يتم تجهيز المكافآت.")+'</p>')+'</div></article>'+
       '<article class="account-card"><div class="account-section-title"><div><h2>'+tr("Your vouchers","قسائمك")+'</h2></div></div><div class="account-list">'+(wallet.length?wallet.map(w=>'<div class="account-row"><div><strong>'+money(w.value)+' '+tr("off","خصم")+'</strong><small>'+tr("Minimum order ","حد أدنى للطلب ")+money(w.minimum)+'</small></div><span class="account-pill">'+esc(w.status)+'</span></div>').join(""):'<p>'+tr("No vouchers yet. Open rewards when you are ready to redeem points.","لا توجد قسائم بعد. افتح المكافآت عندما تصبح جاهزاً لاستبدال النقاط.")+'</p>')+'</div></article>'+
+      memberBonusesCard(s)+
     '</section>';
   }
   function ordersPanel(s){
     const rows=s.dashboard?.orders||[];
-    return '<section class="account-panel" data-account-panel="orders" '+(active==="orders"?"":"hidden")+'><article class="account-card"><div class="account-section-title"><div><h2>'+tr("Orders & points status","حالة الطلبات والنقاط")+'</h2><p>'+tr("Points become final only after delivery and payment are both confirmed.","تصبح النقاط نهائية فقط بعد تأكيد التسليم واستلام الدفع.")+'</p></div></div><div class="account-list">'+(rows.length?rows.map(o=>{const delivered=o.status==="delivered",cancelled=o.status==="cancelled";return '<div class="account-row"><div><strong>'+esc(o.reference||tr("Order","طلب"))+'</strong><small>'+statusLabel(o.status)+' · '+money(o.total)+'</small></div><span class="account-pill '+(!delivered&&!cancelled?"is-pending":cancelled?"is-cancelled":"")+'">'+(delivered?("+"+(Number(o.awarded)||0)+" 🌿"):cancelled?tr("No points","بدون نقاط"):tr("Points pending","النقاط معلّقة"))+'</span></div>'}).join(""):'<p>'+tr("No account-linked orders yet.","لا توجد طلبات مرتبطة بالحساب بعد.")+'</p>')+'</div></article></section>';
+    return '<section class="account-panel" data-account-panel="orders" '+(active==="orders"?"":"hidden")+'><article class="account-card"><div class="account-section-title"><div><h2>'+tr("Orders & points status","حالة الطلبات والنقاط")+'</h2><p>'+tr("Points become final only after delivery and payment are both confirmed.","تصبح النقاط نهائية فقط بعد تأكيد التسليم واستلام الدفع.")+'</p></div></div><div class="account-list">'+(rows.length?rows.map(o=>{const delivered=o.status==="delivered",cancelled=o.status==="cancelled",awarded=Number(o.awarded)||0;const pointsText=cancelled?tr("No points","بدون نقاط"):awarded>0?("+"+awarded+" 🌿"):delivered?tr("Waiting for payment","بانتظار الدفع"):tr("Points pending","النقاط معلّقة");return '<div class="account-row"><div><strong>'+esc(o.reference||tr("Order","طلب"))+'</strong><small>'+statusLabel(o.status)+' · '+money(o.total)+'</small></div><span class="account-pill '+(awarded<=0&&!cancelled?"is-pending":cancelled?"is-cancelled":"")+'">'+pointsText+'</span></div>'}).join(""):'<p>'+tr("No account-linked orders yet.","لا توجد طلبات مرتبطة بالحساب بعد.")+'</p>')+'</div></article></section>';
   }
   function referralsPanel(s,m){
     const rs=s.referralStatus||{}, code=String(rs.code||m.code||"");
@@ -236,7 +290,8 @@
     const first=String(m.name||"").trim().split(/\s+/)[0]||tr("there","بك");
     const initial=(first||String(s.authUser?.email||"A")).charAt(0).toUpperCase();
     const syncTime=new Date(lastSyncedAt).toLocaleTimeString(ar()?"ar-LB":"en-LB",{hour:"2-digit",minute:"2-digit"});
-    return '<div class="account-layout"><aside class="account-side account-card"><div class="account-identity"><span class="account-avatar">'+esc(initial)+'</span><div><strong>'+esc(m.name||tr("My Account","حسابي"))+'</strong><small>'+esc(s.authUser?.email||"")+'</small></div></div>'+navTabs()+'<div class="account-side-note"><span class="account-sync"><i></i>'+tr("Auto-sync on","المزامنة التلقائية مفعّلة")+'</span><small>'+tr("Last checked ","آخر تحقق ")+esc(syncTime)+'</small></div></aside><div class="account-content"><header class="account-hero"><div><p class="account-eyebrow" style="color:#d8c16f">'+tr("My Zayt w Mouneh","حساب زيت ومونة")+'</p><h1>'+tr("Welcome, ","أهلاً، ")+esc(first)+'.</h1><p>'+esc(tierLabel(m.tier))+' · '+tr("Paid & delivered rewards account","حساب مكافآت الطلبات المدفوعة والمسلّمة")+'</p></div><button class="account-balance" type="button" data-account-tab="points" aria-label="'+tr("Open Points & Wallet","فتح النقاط والمحفظة")+'"><small>'+tr("Mouneh Points","نقاط المونة")+'</small><strong>'+Number(m.balance||0).toLocaleString()+' 🌿</strong><em>'+tr("Open wallet","فتح المحفظة")+' →</em></button></header>'+overviewPanel(s,m)+pointsPanel(s,m)+ordersPanel(s)+referralsPanel(s,m)+profilePanel(s,m)+'</div></div>';
+    const syncWarning=s.accountError?'<article class="account-card account-danger account-sync-warning"><div class="account-section-title"><div><h2>'+tr("Account sync needs attention","مزامنة الحساب تحتاج إلى انتباه")+'</h2><p>'+esc(s.accountError)+'</p></div><button type="button" class="account-primary" data-account-retry>'+tr("Retry","إعادة المحاولة")+'</button></div></article>':"";
+    return '<div class="account-layout"><aside class="account-side account-card"><div class="account-identity"><span class="account-avatar">'+esc(initial)+'</span><div><strong>'+esc(m.name||tr("My Account","حسابي"))+'</strong><small>'+esc(s.authUser?.email||"")+'</small></div></div>'+navTabs()+'<div class="account-side-note"><span class="account-sync"><i></i>'+tr("Auto-sync on","المزامنة التلقائية مفعّلة")+'</span><small>'+tr("Last checked ","آخر تحقق ")+esc(syncTime)+'</small></div></aside><div class="account-content">'+syncWarning+'<header class="account-hero"><div><p class="account-eyebrow" style="color:#d8c16f">'+tr("My Zayt w Mouneh","حساب زيت ومونة")+'</p><h1>'+tr("Welcome, ","أهلاً، ")+esc(first)+'.</h1><p>'+esc(tierLabel(m.tier))+' · '+tr("Paid & delivered rewards account","حساب مكافآت الطلبات المدفوعة والمسلّمة")+'</p></div><button class="account-balance" type="button" data-account-tab="points" aria-label="'+tr("Open Points & Wallet","فتح النقاط والمحفظة")+'"><small>'+tr("Mouneh Points","نقاط المونة")+'</small><strong>'+Number(m.balance||0).toLocaleString()+' 🌿</strong><em>'+tr("Open wallet","فتح المحفظة")+' →</em></button></header>'+overviewPanel(s,m)+pointsPanel(s,m)+ordersPanel(s)+referralsPanel(s,m)+profilePanel(s,m)+'</div></div>';
   }
   function render(force=false){
     const el=shell();if(!el)return;
@@ -253,10 +308,24 @@
     }
     previousMemberState=hasMember;
     syncLanguageVisibility();
-    const sig=JSON.stringify([active,guestAuthMode,ar(),!!s.session,s.member?.balance,s.member?.name,s.dashboard?.orders?.length,s.dashboard?.wallet?.length,s.referralStatus?.joined,s.referralStatus?.qualified,s.authUser?.email,s.authMode,s.authNotice,s.pendingSignupEmail,s.googleEnabled,hasMember?lastSyncedAt:0]);
+    const sig=JSON.stringify([active,guestAuthMode,ar(),!!s.session,s.member?.balance,s.member?.name,s.dashboard?.orders?.length,s.dashboard?.wallet?.length,s.referralStatus?.joined,s.referralStatus?.qualified,s.authUser?.email,s.authMode,s.authNotice,s.pendingSignupEmail,s.googleEnabled,s.accountBusy,s.accountError,s.bonusStatus?.birthday?.eligible_today,s.bonusStatus?.birthday?.claimed_this_year,(s.bonusStatus?.reviewed_product_ids||[]).length,hasMember?lastSyncedAt:0]);
     if(!force&&sig===lastRenderSig)return;lastRenderSig=sig;
-    if(!api()){el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Loading your account…","جارٍ تحميل حسابك…")+'</strong></section>';requestFrenchTranslation(el);return}
-    if(s.session&&!s.member&&!s.dashboard){el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Finishing sign-in…","جارٍ إكمال تسجيل الدخول…")+'</strong></section>';requestFrenchTranslation(el);return}
+    if(!api()){
+      if(accountBootTimedOut||Date.now()-accountBootStarted>=ACCOUNT_BOOT_TIMEOUT_MS)el.innerHTML=serviceProblemView(tr("Account services did not finish loading. Check your connection and retry.","لم يكتمل تحميل خدمات الحساب. تحقق من الاتصال وأعد المحاولة."));
+      else el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Loading your account…","جارٍ تحميل حسابك…")+'</strong></section>';
+      requestFrenchTranslation(el);return
+    }
+    if(!s.ready){
+      if(s.accountError||s.authNotice||accountBootTimedOut)el.innerHTML=serviceProblemView(s.accountError||s.authNotice||tr("Account services are temporarily unavailable. Please retry.","خدمات الحساب غير متاحة مؤقتاً. يرجى إعادة المحاولة."));
+      else el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Connecting to your account…","جارٍ الاتصال بحسابك…")+'</strong></section>';
+      requestFrenchTranslation(el);return
+    }
+    if(s.session&&!s.member&&!s.dashboard){
+      if(s.accountError)el.innerHTML=serviceProblemView(s.accountError,true);
+      else if(s.accountBusy||!accountBootTimedOut)el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Finishing sign-in…","جارٍ إكمال تسجيل الدخول…")+'</strong></section>';
+      else el.innerHTML=serviceProblemView(tr("We could not restore this account session. Retry or sign in again.","تعذّرت استعادة جلسة الحساب. أعد المحاولة أو سجّل الدخول مجدداً."),true);
+      requestFrenchTranslation(el);return
+    }
     if(!s.session||!s.member){
       // Preserve the form and consent when service readiness/language changes.
       const existing=$("#accountAuthForm");
@@ -278,6 +347,20 @@
     const a=api(),s=state(); if(!a||!s.session)return render();
     syncing=true;try{await a.refresh?.();lastSyncedAt=Date.now()}catch{}finally{syncing=false;render(true)}
   }
+  async function retryAccount(button){
+    if(button){button.disabled=true;button.setAttribute("aria-busy","true")}
+    try{
+      const a=api(),s=state();
+      if(!a||!s.ready){location.reload();return}
+      await a.refresh?.();
+      lastSyncedAt=Date.now();
+      render(true);
+    }catch{
+      render(true);
+    }finally{
+      if(button?.isConnected){button.disabled=false;button.removeAttribute("aria-busy")}
+    }
+  }
   function accountConsentAccepted(status){
     const consent=$("#accountLegalConsent");
     if(consent?.checked)return true;
@@ -289,7 +372,24 @@
     const legalLink=e.target.closest("[data-auth-legal-link]");
     if(legalLink){e.stopPropagation();return}
     const tab=e.target.closest("[data-account-tab]"); if(tab){e.preventDefault();activateAccountTab(tab.dataset.accountTab);return}
+    const retry=e.target.closest("[data-account-retry]"); if(retry){e.preventDefault();await retryAccount(retry);return}
+    const recover=e.target.closest("[data-account-recover]"); if(recover){e.preventDefault();guestAuthMode="recover";try{history.replaceState({},document.title,location.pathname+(location.search||"")+"#recover")}catch{}render(true);return}
     const auth=e.target.closest("[data-account-auth]"); if(auth){e.preventDefault();guestAuthMode=auth.dataset.accountAuth==="signup"?"signup":"signin";api()?.auth?.setMode?.(guestAuthMode);try{history.replaceState({},document.title,location.pathname+(location.search||"")+"#"+guestAuthMode)}catch{}render(true);return}
+    const birthday=e.target.closest("[data-account-birthday-claim]");
+    if(birthday){
+      e.preventDefault();
+      const status=$("#accountBirthdayStatus");
+      birthday.disabled=true;birthday.setAttribute("aria-busy","true");
+      try{
+        if(status)status.textContent=tr("Claiming…","جارٍ الاستلام…");
+        await api()?.account?.claimBirthdayBonus?.();
+        lastSyncedAt=Date.now();
+        if(status)status.textContent=tr("Birthday bonus added to your balance.","تمت إضافة مكافأة عيد الميلاد إلى رصيدك.");
+        render(true);
+      }catch(err){if(status)status.textContent=err?.message||String(err)}
+      finally{if(birthday.isConnected){birthday.disabled=false;birthday.removeAttribute("aria-busy")}}
+      return;
+    }
     const google=e.target.closest("[data-account-google]");
     if(google){
       e.preventDefault();
@@ -329,6 +429,56 @@
     const toggle=e.target.closest("#navToggle"); if(toggle&&document.documentElement.dataset.zwmReliableMenuBound!=="1"){const links=$("#navLinks"),open=toggle.getAttribute("aria-expanded")==="true";toggle.setAttribute("aria-expanded",String(!open));links?.classList.toggle("is-open",!open);document.body.classList.toggle("menu-open",!open);document.body.classList.remove("nav-open")}
   });
   document.addEventListener("submit",async e=>{
+    if(e.target.id==="accountRecoveryForm"){
+      e.preventDefault();
+      const f=e.target,status=$("#accountRecoveryStatus"),btn=f.querySelector('button[type="submit"]');
+      if(f.dataset.busy==="1")return;
+      if(!f.checkValidity()){try{f.reportValidity()}catch{};return}
+      f.dataset.busy="1";if(btn){btn.disabled=true;btn.setAttribute("aria-busy","true")}
+      if(status)status.textContent=tr("Sending recovery email…","جارٍ إرسال رسالة الاستعادة…");
+      try{
+        const data=new FormData(f);
+        await api()?.auth?.requestPasswordRecovery?.(data.get("email"));
+        if(status)status.textContent=tr("If that email belongs to an account, a recovery link has been sent. Check your inbox and spam folder.","إذا كان البريد مرتبطاً بحساب فقد تم إرسال رابط الاستعادة. تحقق من الوارد والبريد غير المرغوب.");
+      }catch(err){if(status)status.textContent=err?.message||String(err)}
+      finally{delete f.dataset.busy;if(btn?.isConnected){btn.disabled=false;btn.removeAttribute("aria-busy")}}
+      return;
+    }
+    if(e.target.id==="accountRecoveryResetForm"){
+      e.preventDefault();
+      const f=e.target,status=$("#accountRecoveryResetStatus"),btn=f.querySelector('button[type="submit"]');
+      if(f.dataset.busy==="1")return;
+      if(!f.checkValidity()){try{f.reportValidity()}catch{};return}
+      const data=new FormData(f),password=String(data.get("password")||""),confirm=String(data.get("passwordConfirm")||"");
+      if(password!==confirm){if(status)status.textContent=tr("Passwords do not match.","كلمتا المرور غير متطابقتين.");return}
+      f.dataset.busy="1";if(btn){btn.disabled=true;btn.setAttribute("aria-busy","true")}
+      if(status)status.textContent=tr("Updating password…","جارٍ تحديث كلمة المرور…");
+      try{
+        await api()?.auth?.finishPasswordRecovery?.(password);
+        landingAfterAuth=true;active="overview";lastSyncedAt=Date.now();
+        try{history.replaceState({},document.title,location.pathname+"#overview")}catch{}
+        render(true);
+      }catch(err){if(status)status.textContent=err?.message||String(err)}
+      finally{delete f.dataset.busy;if(btn?.isConnected){btn.disabled=false;btn.removeAttribute("aria-busy")}}
+      return;
+    }
+    if(e.target.id==="accountReviewForm"){
+      e.preventDefault();
+      const f=e.target,status=$("#accountReviewStatus"),btn=f.querySelector('button[type="submit"]');
+      if(f.dataset.busy==="1")return;
+      if(!f.checkValidity()){try{f.reportValidity()}catch{};return}
+      f.dataset.busy="1";if(btn){btn.disabled=true;btn.setAttribute("aria-busy","true")}
+      if(status)status.textContent=tr("Submitting review…","جارٍ إرسال المراجعة…");
+      try{
+        const data=new FormData(f);
+        await api()?.account?.submitVerifiedReview?.({product_id:data.get("product_id"),rating:Number(data.get("rating")),body:data.get("body")});
+        lastSyncedAt=Date.now();
+        if(status)status.textContent=tr("Review submitted and the eligible bonus was added.","تم إرسال المراجعة وإضافة المكافأة المؤهلة.");
+        render(true);
+      }catch(err){if(status)status.textContent=err?.message||String(err)}
+      finally{delete f.dataset.busy;if(btn?.isConnected){btn.disabled=false;btn.removeAttribute("aria-busy")}}
+      return;
+    }
     if(e.target.id==="accountAuthForm"){
       e.preventDefault();
       const form=e.target,status=$("#accountAuthStatus"),submit=form.querySelector('button[type="submit"]');
@@ -449,9 +599,9 @@
   }
   window.addEventListener("hashchange",()=>{
     const hash=(location.hash||"").slice(1);
-    if(hash==="signin"||hash==="signup"){
+    if(hash==="signin"||hash==="signup"||hash==="recover"){
       guestAuthMode=hash;
-      api()?.auth?.setMode?.(hash);
+      if(hash!=="recover")api()?.auth?.setMode?.(hash);
       render(true);
       document.querySelector(".account-auth-card")?.scrollIntoView?.({block:"start",behavior:"smooth"});
       return;
@@ -462,5 +612,6 @@
       document.querySelector('[data-account-panel="'+hash+'"]')?.scrollIntoView?.({block:"start",behavior:"smooth"});
     }
   });
+  setTimeout(()=>{accountBootTimedOut=true;render(true)},ACCOUNT_BOOT_TIMEOUT_MS);
   setInterval(sync,30000);
 })();

@@ -225,7 +225,13 @@
       if(s?.access_token)writeSession(s);
       return state.session;
     }catch{
-      writeSession(null);state.dashboard=null;return null;
+      writeSession(null);
+      state.dashboard=null;
+      state.referralStatus=null;
+      state.bonusStatus=null;
+      state.accountError="";
+      state.authNotice=tr("Your session expired. Please sign in again.","انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً.");
+      return null;
     }
   }
   async function validSession(){
@@ -1222,7 +1228,7 @@
     openSignUp,
     refresh:()=>loadDashboard(),
     getState:()=>({
-      ready:!!state.config,
+      ready:!!(state.config?.enabled&&state.config?.supabaseUrl&&state.config?.supabasePublishableKey),
       session:!!state.session,
       member:state.dashboard?.member||null,
       dashboard:state.dashboard||null,

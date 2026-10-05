@@ -98,3 +98,96 @@
  .zwm-customer-notification-control small{font-size:.76rem}
  .zwm-customer-notification-footer .zwm-notification-actions button{flex-basis:100%}
 }
+
+/* Admin notification settings */
+.zwm-admin-notification-card{
+  padding:28px!important;border:1px solid #e1e5df!important;border-radius:24px!important;
+  background:linear-gradient(180deg,#fff 0%,#fbfcf8 100%)!important;
+  box-shadow:0 10px 30px rgba(22,61,35,.055)!important
+}
+.zwm-admin-notification-head{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:24px;margin-bottom:20px
+}
+.zwm-admin-notification-kicker{
+  margin:0 0 6px!important;color:#276440!important;font-size:.72rem!important;font-weight:900!important;
+  letter-spacing:.14em;text-transform:uppercase
+}
+.zwm-admin-notification-head h3{margin:0!important;color:#1c2c20;font-size:1.55rem!important;line-height:1.15}
+.zwm-admin-notification-head>div>p:last-child{max-width:720px;margin:7px 0 0;color:#727b74;line-height:1.5}
+.zwm-admin-notification-state{
+  display:inline-flex;align-items:center;justify-content:center;min-height:34px;max-width:220px;padding:7px 12px;
+  border:1px solid #dce3d9;border-radius:999px;background:#f4f5f2;color:#657066;font-size:.76rem;font-weight:800;white-space:nowrap
+}
+.zwm-admin-notification-state.is-on{background:#edf6e9;border-color:#d4e5cf;color:#1d5b31}
+.zwm-admin-notification-state.is-off{background:#f7f7f4;color:#747a73}
+.zwm-admin-notification-toolbar{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:20px
+}
+.zwm-admin-notification-toolbar .zwm-notification-actions{margin:0}
+.zwm-admin-notification-toolbar button{min-height:42px!important;padding:0 16px!important;border-radius:12px!important}
+.zwm-admin-notification-toolbar button[disabled]{opacity:.45;cursor:not-allowed}
+.zwm-admin-notification-toolbar .field-help{margin:0!important;flex:1 1 320px;text-align:end}
+.zwm-admin-pref-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.zwm-admin-pref{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:18px;min-height:82px;
+  padding:15px 16px;border:1px solid #e1e6df;border-radius:16px;background:#fff
+}
+.zwm-admin-pref-copy{display:grid;gap:4px;min-width:0}
+.zwm-admin-pref-copy strong{color:#203426;font-size:.96rem}
+.zwm-admin-pref-copy small{color:#778079;font-size:.76rem;line-height:1.4}
+.zwm-admin-switch{position:relative;display:inline-flex;align-items:center;cursor:pointer}
+.zwm-admin-switch input{position:absolute;opacity:0;pointer-events:none}
+.zwm-admin-switch>span{position:relative;display:block;width:46px;height:26px;border-radius:999px;background:#d8ddd7;transition:.2s ease}
+.zwm-admin-switch>span:after{
+  content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.16);transition:.2s ease
+}
+.zwm-admin-switch input:checked+span{background:#164c2c}
+.zwm-admin-switch input:checked+span:after{transform:translateX(20px)}
+[dir="rtl"] .zwm-admin-switch>span:after{left:auto;right:3px}
+[dir="rtl"] .zwm-admin-switch input:checked+span:after{transform:translateX(-20px)}
+.zwm-admin-device-section{
+  margin-top:22px;padding-top:20px;border-top:1px solid #e6e9e3
+}
+.zwm-admin-device-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:10px}
+.zwm-admin-device-heading h4{margin:0;color:#203426;font-size:1rem}
+.zwm-admin-device-heading p{margin:4px 0 0;color:#7b837d;font-size:.75rem}
+.zwm-admin-device-card{
+  display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:11px;padding:12px 13px;
+  border:1px solid #e1e6df;border-radius:14px;background:#fff
+}
+.zwm-admin-device-card+.zwm-admin-device-card{margin-top:8px}
+.zwm-admin-device-icon{
+  display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:#eef4ec;color:#164c2c;font-size:17px;font-weight:900
+}
+.zwm-admin-device-copy{display:grid;gap:3px;min-width:0}
+.zwm-admin-device-copy strong{color:#203426;font-size:.9rem}
+.zwm-admin-device-copy small{color:#747d76;font-size:.74rem;line-height:1.35}
+.zwm-admin-device-current{
+  display:inline-flex;align-items:center;justify-content:center;padding:6px 9px;border-radius:999px;
+  background:#edf6e9;color:#215c33;font-size:.68rem;font-weight:850;white-space:nowrap
+}
+.zwm-admin-device-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.zwm-admin-device-actions button{min-height:38px!important;padding:0 13px!important;border-radius:10px!important;font-size:.76rem!important}
+.zwm-admin-no-devices{padding:12px 0!important;margin:0!important}
+.zwm-admin-notification-note{margin:14px 0 0!important;color:#7d857f!important}
+@media(max-width:900px){
+ .zwm-admin-notification-card{padding:22px!important}
+ .zwm-admin-pref-grid{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+ .zwm-admin-notification-card{padding:18px!important;border-radius:18px!important}
+ .zwm-admin-notification-head{grid-template-columns:1fr;gap:12px}
+ .zwm-admin-notification-state{justify-self:start}
+ .zwm-admin-notification-toolbar{align-items:stretch}
+ .zwm-admin-notification-toolbar .zwm-notification-actions{width:100%}
+ .zwm-admin-notification-toolbar .zwm-notification-actions button{flex:1 1 150px}
+ .zwm-admin-notification-toolbar .field-help{text-align:start}
+ .zwm-admin-pref{min-height:74px;padding:13px 14px}
+ .zwm-admin-device-card{grid-template-columns:36px minmax(0,1fr)}
+ .zwm-admin-device-current{grid-column:2;justify-self:start}
+}
+@media(max-width:430px){
+ .zwm-admin-notification-toolbar .zwm-notification-actions button{flex-basis:100%}
+ .zwm-admin-device-actions button{flex:1 1 100%}
+}

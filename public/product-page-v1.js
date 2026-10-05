@@ -249,7 +249,7 @@ function paymentMarkup(){
 }
 function deliveryMarkup(){
  var d=state.settings.delivery||{},freeAbove=Number(d.freeAbove)||0;
- return '<div class="c6-service-card"><strong>'+esc(t("delivery"))+'</strong><p id="c6DeliveryResult">'+esc(t("deliveryUnknown"))+'</p><div class="c6-estimator"><input id="c6Area" type="text" placeholder="'+esc(t("deliveryPlaceholder"))+'" autocomplete="address-level2"><button class="c6-button is-secondary" type="button" id="c6Estimate">'+esc(t("estimate"))+'</button></div>'+(freeAbove>0?'<p>'+esc(t("freeAbove"))+': <b>'+money(freeAbove)+'</b></p>':"")+'</div>';
+ return '<div class="c6-service-card"><strong>'+esc(t("delivery"))+'</strong><p id="c6DeliveryResult">'+esc(t("deliveryUnknown"))+'</p><div class="c6-estimator"><input id="c6Area" type="text" aria-label="'+esc(t("deliveryPlaceholder"))+'" placeholder="'+esc(t("deliveryPlaceholder"))+'" autocomplete="address-level2"><button class="c6-button is-secondary" type="button" id="c6Estimate">'+esc(t("estimate"))+'</button></div>'+(freeAbove>0?'<p>'+esc(t("freeAbove"))+': <b>'+money(freeAbove)+'</b></p>':"")+'</div>';
 }
 function variantsMarkup(p){
  var vars=p.variants||[];
@@ -266,7 +266,7 @@ function recipeRows(){
 }
 function recipeMarkup(){
  var rows=recipeRows();if(!rows.length)return "";
- return '<section class="c6-section"><div class="c6-shell"><div class="c6-section-head"><div><p class="c6-eyebrow">'+esc(t("recipe"))+'</p><h2>'+esc(t("recipe"))+'</h2><p>'+esc(t("recipeCopy"))+'</p></div></div><div class="c6-recipe-grid">'+rows.map(function(r){var name=state.locale==="ar"?r.ar:state.locale==="fr"?r.fr:r.en;var copy=state.locale==="ar"?r.copyAr:state.locale==="fr"?r.copyFr:r.copyEn;return '<article class="c6-recipe-card"><h3>'+esc(name)+'</h3><p>'+esc(copy)+'</p><a href="/recipes.html#recipes">'+esc(t("viewRecipe"))+' →</a></article>'}).join("")+'</div></div></section>';
+ return '<section class="c6-section"><div class="c6-shell"><div class="c6-section-head"><div><p class="c6-eyebrow">'+esc(t("recipe"))+'</p><h2>'+esc(t("recipe"))+'</h2><p>'+esc(t("recipeCopy"))+'</p></div></div><div class="c6-recipe-grid">'+rows.map(function(r){var name=state.locale==="ar"?r.ar:state.locale==="fr"?r.fr:r.en;var copy=state.locale==="ar"?r.copyAr:state.locale==="fr"?r.copyFr:r.copyEn;return '<article class="c6-recipe-card"><h3>'+esc(name)+'</h3><p>'+esc(copy)+'</p><a href="'+localePrefix(state.locale)+'/recipes#recipes">'+esc(t("viewRecipe"))+' →</a></article>'}).join("")+'</div></div></section>';
 }
 function bundleData(){
  var rec=recipeRows()[0];
@@ -292,7 +292,7 @@ function reviewsMarkup(){
 function alertMarkup(p){
  var a=availability(p);if(a!=="out_of_stock"&&a!=="coming_soon")return "";
  if(state.settings.commerce&&state.settings.commerce.back_in_stock_enabled===false)return "";
- return '<div class="c6-alert"><strong>'+esc(t("alertTitle"))+'</strong><p>'+esc(t("alertCopy"))+'</p><form id="c6AlertForm"><select name="channel" aria-label="'+esc(t("contact"))+'"><option value="email">'+esc(t("email"))+'</option><option value="whatsapp">'+esc(t("whatsapp"))+'</option></select><input name="contact" required placeholder="'+esc(t("contact"))+'" maxlength="254"><button class="c6-button" type="submit">'+esc(t("notify"))+'</button></form><span id="c6AlertStatus" class="c6-status" role="status"></span></div>';
+ return '<div class="c6-alert"><strong>'+esc(t("alertTitle"))+'</strong><p>'+esc(t("alertCopy"))+'</p><form id="c6AlertForm"><select name="channel" aria-label="'+esc(t("contact"))+'"><option value="email">'+esc(t("email"))+'</option><option value="whatsapp">'+esc(t("whatsapp"))+'</option></select><input name="contact" required aria-label="'+esc(t("contact"))+'" placeholder="'+esc(t("contact"))+'" maxlength="254"><button class="c6-button" type="submit">'+esc(t("notify"))+'</button></form><span id="c6AlertStatus" class="c6-status" role="status"></span></div>';
 }
 function render(){
  var p=state.product;if(!p)return;
@@ -300,14 +300,14 @@ function render(){
  var min=(p.variants||[]).length?Math.min.apply(null,p.variants.map(function(v){return Number(v.price)||0})):0;
  var av=availability(p),badgeClass=av==="out_of_stock"||av==="coming_soon"?" is-unavailable":av==="low_stock"?" is-low":"";
  qs("#c6ProductRoot").innerHTML=
- '<main class="c6-product-main"><div class="c6-shell"><nav class="c6-breadcrumb"><a href="/shop.html">'+esc(t("back"))+'</a><span>›</span><span>'+esc(productName(p))+'</span></nav><div class="c6-product-grid"><div class="c6-product-visual">'+photoMarkup(p)+'</div><div class="c6-product-copy"><p class="c6-eyebrow">'+esc(p.category||t("category"))+'</p><h1 class="c6-product-title">'+esc(productName(p))+'</h1>'+(p.original?'<p class="c6-original">'+esc(p.original)+'</p>':"")+'<div class="c6-badges"><span class="c6-badge'+badgeClass+'">'+esc(t(av))+'</span></div><div class="c6-price">'+esc(t("from"))+' '+money(min)+'</div><div class="c6-purchase-box"><div class="c6-purchase-row"><label class="c6-field"><span>'+esc(t("size"))+'</span><select id="c6Variant">'+variantsMarkup(p)+'</select></label><label class="c6-field"><span>'+esc(t("qty"))+'</span><input id="c6Qty" type="number" min="1" max="99" value="1"></label></div><div class="c6-purchase-actions"><button class="c6-button" id="c6Add" type="button"'+(isOrderable(p)?"":" disabled")+'>'+esc(isOrderable(p)?t("add"):t("unavailable"))+'</button><button class="c6-button is-secondary" id="c6Share" type="button">'+esc(t("share"))+'</button></div>'+alertMarkup(p)+'</div><div style="margin-top:25px"><p class="c6-eyebrow">'+esc(t("facts"))+'</p>'+factsMarkup(p)+'</div><div class="c6-service-grid"><div class="c6-service-card"><strong>'+esc(t("payment"))+'</strong><div style="margin-top:7px">'+paymentMarkup()+'</div><p>'+esc(t("paymentNote"))+'</p></div>'+deliveryMarkup()+'</div></div></div></div></main>'+
+ '<main class="c6-product-main"><div class="c6-shell"><nav class="c6-breadcrumb"><a href="'+localePrefix(state.locale)+'/shop">'+esc(t("back"))+'</a><span>›</span><span>'+esc(productName(p))+'</span></nav><div class="c6-product-grid"><div class="c6-product-visual">'+photoMarkup(p)+'</div><div class="c6-product-copy"><p class="c6-eyebrow">'+esc(p.category||t("category"))+'</p><h1 class="c6-product-title">'+esc(productName(p))+'</h1>'+(p.original?'<p class="c6-original">'+esc(p.original)+'</p>':"")+'<div class="c6-badges"><span class="c6-badge'+badgeClass+'">'+esc(t(av))+'</span></div><div class="c6-price">'+esc(t("from"))+' '+money(min)+'</div><div class="c6-purchase-box"><div class="c6-purchase-row"><label class="c6-field"><span>'+esc(t("size"))+'</span><select id="c6Variant">'+variantsMarkup(p)+'</select></label><label class="c6-field"><span>'+esc(t("qty"))+'</span><input id="c6Qty" type="number" min="1" max="99" value="1"></label></div><div class="c6-purchase-actions"><button class="c6-button" id="c6Add" type="button"'+(isOrderable(p)?"":" disabled")+'>'+esc(isOrderable(p)?t("add"):t("unavailable"))+'</button><button class="c6-button is-secondary" id="c6Share" type="button">'+esc(t("share"))+'</button></div>'+alertMarkup(p)+'</div><div style="margin-top:25px"><p class="c6-eyebrow">'+esc(t("facts"))+'</p>'+factsMarkup(p)+'</div><div class="c6-service-grid"><div class="c6-service-card"><strong>'+esc(t("payment"))+'</strong><div style="margin-top:7px">'+paymentMarkup()+'</div><p>'+esc(t("paymentNote"))+'</p></div>'+deliveryMarkup()+'</div></div></div></div></main>'+
  bundleMarkup()+recipeMarkup()+relatedProducts()+reviewsMarkup();
  bind();
  updateCartCount();
 }
 function renderNotFound(){
  state.locale=locale();document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==="ar"?"rtl":"ltr";
- qs("#c6ProductRoot").innerHTML='<main class="c6-product-main"><div class="c6-shell"><div class="c6-purchase-box" style="max-width:720px;margin:70px auto;text-align:center"><h1 class="c6-product-title">'+esc(t("notFound"))+'</h1><p>'+esc(t("notFoundCopy"))+'</p><a class="c6-button" href="/shop.html">'+esc(t("allProducts"))+'</a></div></div></main>';
+ qs("#c6ProductRoot").innerHTML='<main class="c6-product-main"><div class="c6-shell"><div class="c6-purchase-box" style="max-width:720px;margin:70px auto;text-align:center"><h1 class="c6-product-title">'+esc(t("notFound"))+'</h1><p>'+esc(t("notFoundCopy"))+'</p><a class="c6-button" href="'+localePrefix(state.locale)+'/shop">'+esc(t("allProducts"))+'</a></div></div></main>';
 }
 function readCart(){try{return JSON.parse(localStorage.getItem(CART_KEY)||"{}")||{}}catch(e){return {}}}
 function writeCart(cart){try{localStorage.setItem(CART_KEY,JSON.stringify(cart));window.dispatchEvent(new Event("zwm:cart-updated"))}catch(e){}}

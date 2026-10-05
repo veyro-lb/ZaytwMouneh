@@ -6,11 +6,12 @@ function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAl
 function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function locale(){try{if(window.ZWM_LOCALE&&window.ZWM_LOCALE.get)return window.ZWM_LOCALE.get();if(localStorage.getItem("zwm:french:v1")==="1")return "fr";return localStorage.getItem("zwm-lang-v2")==="ar"?"ar":"en"}catch(e){return "en"}}
 function tr(en,ar,fr){var l=locale();return l==="ar"?ar:l==="fr"?fr:en}
+function productPath(id){var l=locale();return (l==="ar"?"/ar":l==="fr"?"/fr":"")+"/product/"+encodeURIComponent(id)}
 function modalLink(){
  var modal=q("#productModal"),actions=modal&&q(".product-modal-actions",modal);if(!actions||!currentProduct)return;
  var a=q("[data-c6-full-product]",modal);
  if(!a){a=document.createElement("a");a.className="c6-button is-secondary c6-modal-link";a.dataset.c6FullProduct="1";actions.insertAdjacentElement("afterend",a)}
- a.href="/product/"+encodeURIComponent(currentProduct);
+ a.href=productPath(currentProduct);
  a.textContent=tr("View full product page","عرض صفحة المنتج الكاملة","Voir la fiche produit");
 }
 function bindProductLinks(){

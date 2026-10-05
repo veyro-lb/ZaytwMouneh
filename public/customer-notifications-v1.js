@@ -1,8 +1,10 @@
 (function(){
 "use strict";
+if(window.__ZWM_CUSTOMER_NOTIFICATIONS_V1__)return;
+window.__ZWM_CUSTOMER_NOTIFICATIONS_V1__=true;
 const KEY="zwm:mouneh:session:v1";
-const CFG="/admin-config.js?v=20261005-notifications11";
-const VERSION="20261005-notifications11";
+const CFG="/admin-config.js?v=20261006-navbell1";
+const VERSION="20261006-navbell1";
 let cfg=null,user=null,rows=[];
 const $=(s,r=document)=>r.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -124,17 +126,28 @@ async function refreshBell(){
  }catch{}
 }
 function bellShell(){
- const actions=$(".nav-actions");if(!actions||$("#zwmCustomerNotificationBell"))return;
- const bell=document.createElement("button");
+ const actions=$(".site-header .nav-actions")||$(".c6-nav-actions")||$(".commerce-header-actions")||$(".nav-actions");
+ if(!actions)return;
+ let bell=$("#zwmCustomerNotificationBell");
+ if(bell&&bell.parentElement!==actions)actions.insertBefore(bell,actions.querySelector("#mounehRewardsButton,#mounehAccountButton,a[href^='/account'],a[href*='/account']")||null);
+ if(bell)return;
+ bell=document.createElement("button");
  bell.id="zwmCustomerNotificationBell";bell.className="zwm-customer-notification-bell";bell.type="button";bell.setAttribute("aria-label",tr("notifications"));
  bell.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span id="zwmCustomerNotificationBadge" hidden>0</span>';
- const anchor=$("#mounehRewardsButton")||$("#mounehAccountButton");actions.insertBefore(bell,anchor);
- const pop=document.createElement("section");pop.id="zwmCustomerNotificationPopover";pop.className="zwm-notification-popover zwm-customer-notification-popover";pop.hidden=true;
- pop.innerHTML='<header><strong>'+esc(tr("notifications"))+'</strong><button type="button" class="zwm-mark-all" data-customer-mark-all>'+esc(tr("markAll"))+'</button></header><div id="zwmCustomerNotificationList"></div>';
- document.body.appendChild(pop);
+ const anchor=actions.querySelector("#mounehRewardsButton,#mounehAccountButton,a[href^='/account'],a[href*='/account']");
+ actions.insertBefore(bell,anchor||null);
+ let pop=$("#zwmCustomerNotificationPopover");
+ if(!pop){
+  pop=document.createElement("section");pop.id="zwmCustomerNotificationPopover";pop.className="zwm-notification-popover zwm-customer-notification-popover";pop.hidden=true;
+  pop.innerHTML='<header><strong>'+esc(tr("notifications"))+'</strong><button type="button" class="zwm-mark-all" data-customer-mark-all>'+esc(tr("markAll"))+'</button></header><div id="zwmCustomerNotificationList"></div>';
+  document.body.appendChild(pop);
+  pop.addEventListener("click",e=>{if(e.target.closest("[data-customer-mark-all]")){markAll();return}const item=e.target.closest("[data-customer-notification]");if(!item)return;const n=rows.find(x=>x.id===item.dataset.customerNotification);if(n){markRead(n.id).catch(()=>{});location.href=safeRoute(n.route)}});
+ }
  bell.addEventListener("click",e=>{e.stopPropagation();pop.hidden=!pop.hidden;if(!pop.hidden)refreshBell()});
- pop.addEventListener("click",e=>{if(e.target.closest("[data-customer-mark-all]")){markAll();return}const item=e.target.closest("[data-customer-notification]");if(!item)return;const n=rows.find(x=>x.id===item.dataset.customerNotification);if(n){markRead(n.id).catch(()=>{});location.href=safeRoute(n.route)}});
- document.addEventListener("click",e=>{if(!pop.hidden&&!e.target.closest("#zwmCustomerNotificationPopover")&&!e.target.closest("#zwmCustomerNotificationBell"))pop.hidden=true});
+ if(!document.documentElement.dataset.zwmCustomerNotificationDismissBound){
+  document.documentElement.dataset.zwmCustomerNotificationDismissBound="1";
+  document.addEventListener("click",e=>{const p=$("#zwmCustomerNotificationPopover");if(p&&!p.hidden&&!e.target.closest("#zwmCustomerNotificationPopover")&&!e.target.closest("#zwmCustomerNotificationBell"))p.hidden=true});
+ }
  refreshBell();
 }
 async function testProduction(root){
@@ -187,12 +200,12 @@ function cardShell(){
  host.appendChild(card);card.addEventListener("click",cardAction);renderCard(card);
 }
 async function boot(){
- if(document.body.dataset.page!=="account")return;
+ const accountPage=document.body.dataset.page==="account";
  await setup();if(!cfg)return;
  user=await me();if(!user)return;
- await bootstrapPrefs();
- bellShell();cardShell();
- const obs=new MutationObserver(()=>{bellShell();cardShell()});obs.observe(document.body,{subtree:true,childList:true});
+ if(accountPage)await bootstrapPrefs();
+ bellShell();if(accountPage)cardShell();
+ const obs=new MutationObserver(()=>{bellShell();if(accountPage)cardShell()});obs.observe(document.body,{subtree:true,childList:true});
  window.addEventListener("focus",()=>{refreshBell();const card=$("#zwmCustomerNotifications");if(card)renderCard(card)});
  document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshBell()});
  setInterval(()=>{if(!document.hidden)refreshBell()},30000);

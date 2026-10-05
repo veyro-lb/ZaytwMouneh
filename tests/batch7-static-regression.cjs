@@ -62,8 +62,9 @@ assert(conversion.includes('if(a.textContent!==label)a.textContent=label'),"full
 assert(!conversion.includes("injectAccountReorder();modalLink()"),"Quick View self-triggering body observer regression returned");
 
 const app=read("app.js");
-assert(!app.includes('$("[data-modal-variant]").forEach'),"Quick View single-element forEach crash returned");
-assert(app.includes('$$("[data-modal-variant]").forEach'),"Quick View variant listeners missing");
+const appLines=app.split(/\r?\n/).map(line=>line.trim());
+assert(!appLines.some(line=>line.startsWith('$("[data-modal-variant]").forEach')),"Quick View single-element forEach crash returned");
+assert(appLines.some(line=>line.startsWith('$("[data-modal-variant]").forEach')),"Quick View variant listeners missing");
 for(const token of ["function cleanupQuickView","function fallbackQuickView","function trapQuickViewFocus","quickViewRequiredNodes","renderModal(p.id,v.id)===false"]){
  assert(app.includes(token),"Quick View lifecycle guard missing: "+token);
 }

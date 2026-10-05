@@ -62,6 +62,10 @@ assert(sql.includes("regexp_replace(phone,'[^0-9]','','g')"),"international phon
 assert(admin.includes("wholesale_lead_items(*)"),"admin lead items relationship missing");
 assert(admin.includes("next_follow_up_at"),"admin follow-up workflow missing");
 assert(admin.includes("openDeepLinkedLead"),"owner Wholesale notification deep link missing");
+assert(admin.includes("admin_delete_wholesale_enquiry"),"protected admin Wholesale delete RPC missing");
+assert(admin.includes("deleteWholesaleLead"),"admin Wholesale delete control missing");
+assert(js.includes("hide_my_wholesale_enquiry"),"customer Wholesale history hide RPC missing");
+assert(js.includes("data-history-delete"),"customer Wholesale history delete control missing");
 assert(sql.includes("customer_user_id"),"Wholesale account ownership link missing");
 assert(sql.includes("private.get_wholesale_enquiry_status_core"),"private customer status reader missing");
 assert(sql.includes("public.get_wholesale_enquiry_status"),"public receipt status wrapper missing");

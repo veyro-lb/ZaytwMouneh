@@ -26,6 +26,11 @@ for(const expected of [
 ])assert(html.includes(expected),"wholesale navigation/button route missing: "+expected);
 assert(js.includes('function syncSiteShell()'),"wholesale shell synchronization missing");
 assert(js.includes('localStorage.getItem("zwm-cart-v5")'),"wholesale shell cart count must reflect the saved pantry");
+for(const id of ["wholesale-history","wholesaleHistoryList","refreshWholesaleHistory","successReference","successStatus"])assert(html.includes(`id="${id}"`),"customer Wholesale history UI missing "+id);
+assert(js.includes('HISTORY_KEY="zwm:wholesale:history:v1"'),"private browser Wholesale receipt history missing");
+assert(js.includes('get_wholesale_enquiry_status'),"customer status lookup RPC missing");
+assert(js.includes('get_my_wholesale_enquiries'),"signed-in Wholesale history RPC missing");
+assert(js.includes('STATUS_COPY'),"customer-friendly Wholesale status copy missing");
 for(const x of ["en-LB","ar-LB","fr-LB","x-default"])assert(html.includes(`hreflang="${x}"`),"missing hreflang "+x);
 for(const x of ["businessName","contactName","businessType","phone","location","productSearch","consent","submitWholesale"])assert(html.includes(`id="${x}"`),"missing field "+x);
 assert(js.includes('D.documentElement.dir=locale==="ar"?"rtl":"ltr"'),"true Arabic RTL missing");
@@ -56,6 +61,14 @@ assert(/create or replace function public\.submit_wholesale_enquiry\(p jsonb\)[\
 assert(sql.includes("regexp_replace(phone,'[^0-9]','','g')"),"international phone normalization fix missing");
 assert(admin.includes("wholesale_lead_items(*)"),"admin lead items relationship missing");
 assert(admin.includes("next_follow_up_at"),"admin follow-up workflow missing");
+assert(admin.includes("openDeepLinkedLead"),"owner Wholesale notification deep link missing");
+assert(sql.includes("customer_user_id"),"Wholesale account ownership link missing");
+assert(sql.includes("private.get_wholesale_enquiry_status_core"),"private customer status reader missing");
+assert(sql.includes("public.get_wholesale_enquiry_status"),"public receipt status wrapper missing");
+assert(sql.includes("private.get_my_wholesale_enquiries_core"),"account-linked Wholesale history core missing");
+assert(sql.includes("public.get_my_wholesale_enquiries"),"account-linked Wholesale history wrapper missing");
+assert(sql.includes("WHOLESALE_INQUIRY_CREATED"),"owner notification event missing");
+assert(sql.includes("wholesale_inquiries"),"owner Wholesale notification preference integration missing");
 console.log("Wholesale static regression passed: localized RFQ, bounded catalogue picker, CRM and RLS guards.");
 
 assert(!html.includes('href="#wholesale-request" data-t="requestPricing"'),"fragment-only Wholesale CTA must not be used with <base href=\"/\"> because it resolves to the homepage");

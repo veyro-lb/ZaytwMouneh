@@ -6956,3 +6956,25 @@ body[data-page="home"] .home-pantry-hero .page-intro-actions>a{
     font-size:.76rem!important;
   }
 }
+
+
+/* Quick View lifecycle hotfix: keep the genuine modal layer above the sticky header
+   while leaving the cart's normal stacking untouched. */
+body.modal-open .cart-backdrop{
+  z-index:6300!important;
+}
+body.modal-open .product-modal{
+  z-index:6400!important;
+  overflow:auto!important;
+  overscroll-behavior:contain!important;
+}
+body.modal-open .product-modal-card{
+  max-width:calc(100vw - max(20px,env(safe-area-inset-left)) - max(20px,env(safe-area-inset-right)))!important;
+  max-height:calc(100dvh - max(20px,env(safe-area-inset-top)) - max(20px,env(safe-area-inset-bottom)))!important;
+}
+@media(max-width:900px){
+  body.modal-open .product-modal-card{
+    width:100%!important;
+    height:100%!important;
+  }
+}

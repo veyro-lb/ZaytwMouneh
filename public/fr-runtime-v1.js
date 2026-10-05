@@ -1856,7 +1856,7 @@ var STATIC_FR=Object.freeze({
   "Whole Kibbeh Spice": "Épices pour kibbeh entières",
   "Ground Kibbeh Spice": "Épices pour kibbeh moulues",
   "Caraway": "Carvi",
-  "Paprika Mdakhane": "Paprika Mdakhane",
+  "Paprika Mdakhane": "Paprika fumé",
   "Old pantry values. Clear modern service.": "Valeurs traditionnelles de la mouneh. Service moderne et clair.",
   "Sumac is a deep red spice with a bright, tangy flavour.": "Le sumac est une épice rouge profond au goût vif et acidulé.",
   "Sprinkle over salads, onions, grilled foods, fattoush and mezze.": "À saupoudrer sur les salades, les oignons, les grillades, le fattouche et le mezzé.",

@@ -2,6 +2,8 @@
 -- Dedicated B2B lead capture and lightweight CRM. Retail orders remain separate.
 
 create schema if not exists private;
+revoke all on schema private from public;
+grant usage on schema private to anon,authenticated;
 
 create table if not exists public.wholesale_leads (
   id uuid primary key default gen_random_uuid(),

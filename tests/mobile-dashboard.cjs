@@ -29,9 +29,9 @@ for(const width of [320,375,390,430,700,768,980,1280])for(const language of ['en
   w.eval(fs.readFileSync('public/account.js','utf8'));
   const columns=w.getComputedStyle(d.querySelector('.account-layout')).gridTemplateColumns;
   if(baseline){if(width===390&&language==='en')console.log('Baseline at 390px:',columns);continue}
-  assert.equal(columns,width<=980?'minmax(0,1fr)':'240px minmax(0,1fr)',width+' '+language);
+  assert.equal(columns,width<=980?'minmax(0,1fr)':'280px minmax(0,1fr)',width+' '+language);
   if(width<=700){
-   assert.equal(w.getComputedStyle(d.querySelector('.account-tabs')).gridTemplateColumns,'repeat(2,minmax(0,1fr))');
+   assert.equal(w.getComputedStyle(d.querySelector('.account-tabs')).gridTemplateColumns,'minmax(0,1fr)');
    assert.equal(w.getComputedStyle(d.querySelector('.account-side')).position,'static');
    assert.equal(w.getComputedStyle(d.querySelector('.account-identity')).display,'flex');
    assert.equal(w.getComputedStyle(d.querySelector('.account-hero')).flexDirection,'column');

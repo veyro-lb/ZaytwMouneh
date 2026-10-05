@@ -1602,7 +1602,32 @@ var EXACT=Object.freeze({
 "Use whole points (1–1,000,000), a discount up to $1,000, and a minimum order at least equal to the discount.":"Utilisez des points entiers (1 à 1 000 000), une réduction allant jusqu’à 1 000 $, et un minimum de commande au moins égal à la réduction.",
 "An active reward already uses this points level.":"Une récompense active utilise déjà ce palier de points.",
 "Reward level added and published.":"Palier de récompense ajouté et publié.",
-"Could not save. Refresh to check the latest data before trying again.":"Enregistrement impossible. Actualisez les données avant de réessayer."
+"Could not save. Refresh to check the latest data before trying again.":"Enregistrement impossible. Actualisez les données avant de réessayer.",
+"Source · Lebanon":"Origine · Liban",
+"Recipes & table ideas":"Recettes & idées pour la table",
+"Shop the season":"Découvrir la sélection de saison",
+"A pantry pick":"Un choix de la mouneh",
+"Curated collection":"Sélection choisie",
+"Shop by mood":"Choisir selon l’envie",
+"Collections with a":"Des sélections avec une",
+"reason.":"intention.",
+"Categories are useful. Collections make the pantry easier to imagine on a real table, for a real meal or as a gift.":"Les catégories sont pratiques. Les sélections permettent d’imaginer plus facilement la mouneh sur une vraie table, pour un repas ou pour offrir.",
+"Origin focus":"Zoom sur l’origine",
+"Follow the pantry":"Suivez la mouneh",
+"across Lebanon.":"partout au Liban.",
+"Explore the origin information used across the catalogue. We keep it precise and avoid claims that are not verified.":"Découvrez les informations d’origine utilisées dans le catalogue. Nous restons précis et évitons toute affirmation que nous ne pouvons pas vérifier.",
+"Pantry ingredients added. Add the fresh ingredients at home.":"Les ingrédients de la mouneh ont été ajoutés. Ajoutez les ingrédients frais à la maison.",
+"Pantry items from ":"Articles de la mouneh pour ",
+"Shop by recipe":"Choisir par recette",
+"Start with the":"Commencez par la",
+"table.":"table.",
+"Choose from six familiar Lebanese dishes. Add the exact pantry ingredients in one click, then pick up the fresh ingredients yourself.":"Choisissez parmi six plats libanais familiers. Ajoutez en un clic les ingrédients exacts de la mouneh, puis complétez vous-même avec les produits frais.",
+"See recipe notes":"Voir les notes de la recette",
+"Collection favourite":"Favori de la sélection",
+"Collection pick":"Choix de la sélection",
+"View product":"Voir le produit",
+"Selected collection":"Sélection choisie",
+"Browse full catalogue":"Parcourir tout le catalogue"
 });
 
 var STATIC_FR=Object.freeze({

@@ -28,10 +28,10 @@ window.ZWM_CMS_CONFIG = Object.freeze({
   function loadAdminNotifications(){
     if(!document.body||!document.body.classList.contains("admin-body"))return;
     if(!document.querySelector('link[href*="notifications-v1.css"]')){
-      const l=document.createElement("link");l.rel="stylesheet";l.href="/notifications-v1.css?v=20261005-notifications5";document.head.appendChild(l);
+      const l=document.createElement("link");l.rel="stylesheet";l.href="/notifications-v1.css?v=20261005-notifications6";document.head.appendChild(l);
     }
     if(!document.querySelector('script[src*="admin-notifications-v1.js"]')){
-      const s=document.createElement("script");s.src="/admin-notifications-v1.js?v=20261005-notifications5";s.async=false;document.head.appendChild(s);
+      const s=document.createElement("script");s.src="/admin-notifications-v1.js?v=20261005-notifications6";s.async=false;document.head.appendChild(s);
     }
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",loadAdminNotifications,{once:true});

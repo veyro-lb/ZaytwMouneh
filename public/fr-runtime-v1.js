@@ -2292,16 +2292,31 @@ function hideNativeLanguageButtons(root){
     if(b.style.getPropertyValue("pointer-events")!=="none"||b.style.getPropertyPriority("pointer-events")!=="important")b.style.setProperty("pointer-events","none","important");
   });
 }
+function currentLanguageControlCopy(){
+  if(isFrench())return {label:"Langue",aria:"Changer de langue",title:"Changer de langue"};
+  if(get(LANG_KEY)==="ar")return {label:"لغة",aria:"تغيير اللغة",title:"تغيير اللغة"};
+  return {label:"Lang",aria:"Change language",title:"Change language"};
+}
+function syncLanguageControlCopy(root){
+  var copy=currentLanguageControlCopy();
+  (root||document).querySelectorAll(".fr-globe-toggle").forEach(function(globe){
+    var label=globe.querySelector(".fr-globe-label");
+    if(label&&label.textContent!==copy.label)label.textContent=copy.label;
+    globe.setAttribute("aria-label",copy.aria);
+    globe.setAttribute("title",copy.title);
+  });
+}
 function prepareGroup(group,kind){
   if(!group)return;
   var already=group.dataset.frReady==="1"&&group.querySelector(":scope > .fr-globe-toggle")&&group.querySelector(":scope > .fr-globe-menu");
   group.dataset.frReady="1";group.classList.add("fr-language-ready");
-  if(already){hideNativeLanguageButtons(group);return}
+  if(already){hideNativeLanguageButtons(group);syncLanguageControlCopy(group);return}
   group.querySelectorAll(":scope > .fr-globe-toggle,:scope > .fr-globe-menu").forEach(function(n){n.remove()});
+  var copy=currentLanguageControlCopy();
   var globe=document.createElement("button");
   globe.type="button";globe.className="fr-globe-toggle";globe.dataset.frMenuToggle="1";
-  globe.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path></svg><span class="fr-globe-label" aria-hidden="true">Lang</span>';
-  globe.setAttribute("aria-label","Changer de langue");globe.setAttribute("title","Changer de langue");globe.setAttribute("aria-expanded","false");
+  globe.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path></svg><span class="fr-globe-label" aria-hidden="true">'+copy.label+'</span>';
+  globe.setAttribute("aria-label",copy.aria);globe.setAttribute("title",copy.title);globe.setAttribute("aria-expanded","false");
   group.appendChild(globe);
   var menu=document.createElement("div");menu.className="fr-globe-menu";menu.setAttribute("role","menu");
   menu.appendChild(choiceButton("en","English"));menu.appendChild(choiceButton("ar","العربية"));menu.appendChild(choiceButton("fr","Français"));
@@ -2311,6 +2326,7 @@ function prepareGroup(group,kind){
 function ensureControls(){
   document.querySelectorAll(".language-switch,.commerce-lang,.admin-language-switch,.topbar-language-toggle,.mobile-menu-language-buttons").forEach(function(g){prepareGroup(g)});
   hideNativeLanguageButtons(document);
+  syncLanguageControlCopy(document);
   var wrap=document.querySelector(".welcome-language-options");
   if(wrap&&!wrap.querySelector("[data-fr-welcome]")){
     var b=document.createElement("button");

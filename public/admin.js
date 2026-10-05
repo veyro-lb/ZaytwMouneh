@@ -2645,7 +2645,7 @@
     $$(".dashboard-view").forEach(p=>p.classList.toggle("is-active",p.dataset.viewPanel===view));
     $$(".admin-nav button").forEach(b=>b.classList.toggle("is-active",b.dataset.view===view));
     $$("#mobileAdminNav [data-mobile-view]").forEach(b=>b.classList.toggle("is-active",b.dataset.mobileView===view));
-    const titles={overview:"Overview",products:"Products",orders:"Orders & history",customers:"Customers",rewards:"Mouneh Points",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
+    const titles={overview:"Overview",products:"Products",orders:"Orders & history",wholesale:"Wholesale Leads",customers:"Customers",rewards:"Mouneh Points",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
     $("viewTitle").textContent=titles[view]||"Owner Console";
     localizeDom($("viewTitle"));
     closeSidebar();

@@ -30,11 +30,13 @@ function setup(width,locale){
   else if(locale==="fr"){w.localStorage.setItem("zwm-lang-v2","en");w.localStorage.setItem("zwm:french:v1","1");w.localStorage.setItem("zwm-locale-v3","fr")}
   else{w.localStorage.setItem("zwm-lang-v2","en");w.localStorage.setItem("zwm-locale-v3","en")}
   const errors=[];w.console.error=(...a)=>errors.push(a.map(String).join(" "));
-  w.eval(read("products-data.js"));
-  w.eval(read("product-photos.js"));
-  w.eval(read("app.js"));
-  w.eval(read("fr-runtime-v1.js"));
-  w.eval(read("conversion-v1.js"));
+  w.eval([
+    read("products-data.js"),
+    read("product-photos.js"),
+    read("app.js"),
+    read("fr-runtime-v1.js"),
+    read("conversion-v1.js")
+  ].join("\n;\n"));
   d.dispatchEvent(new w.Event("DOMContentLoaded",{bubbles:true}));
   return {dom,w,d,errors};
 }

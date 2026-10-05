@@ -615,3 +615,365 @@ body[data-page="account"] .account-layout :is(h1,h2,h3,p,strong,small,label){ove
     grid-template-columns:minmax(0,1fr)
   }
 }
+
+
+/* ===== account11: dashboard visual pass ===== */
+body[data-page="account"]{
+  --acc-card-radius:22px;
+  --acc-card-shadow:0 12px 30px rgba(18,61,35,.05);
+  --acc-soft-surface:#f7f8f4;
+}
+body[data-page="account"] .account-main>.shell{
+  width:min(100% - 32px,1400px);
+}
+body[data-page="account"] .account-layout{
+  grid-template-columns:260px minmax(0,1fr);
+  gap:24px;
+  align-items:start;
+}
+body[data-page="account"] .account-side{
+  padding:20px 18px 18px;
+  border-radius:24px;
+  background:rgba(255,255,255,.96);
+  box-shadow:0 18px 42px rgba(18,61,35,.065);
+}
+body[data-page="account"] .account-identity{
+  gap:12px;
+  margin:0 0 12px;
+  padding:0 2px 18px;
+  border-bottom:1px solid var(--acc-line);
+}
+body[data-page="account"] .account-avatar{
+  width:50px;
+  height:50px;
+  flex:0 0 50px;
+  font-size:1.05rem;
+  box-shadow:0 6px 18px rgba(18,61,35,.13);
+}
+body[data-page="account"] .account-identity>div{min-width:0}
+body[data-page="account"] .account-identity strong{
+  font-size:.98rem;
+  line-height:1.25;
+}
+body[data-page="account"] .account-identity small{
+  max-width:168px;
+  margin-top:4px;
+  font-size:.75rem;
+  line-height:1.35;
+  color:#77837b;
+}
+body[data-page="account"] .account-tabs{gap:6px}
+body[data-page="account"] .account-tabs button{
+  min-height:52px;
+  padding:8px 10px;
+  gap:11px;
+  border:1px solid transparent;
+  border-radius:14px;
+  font-size:.82rem;
+  line-height:1.25;
+  transition:background .16s ease,border-color .16s ease,box-shadow .16s ease,transform .16s ease;
+}
+body[data-page="account"] .account-tabs button:hover{
+  background:#f5f7f2;
+  border-color:rgba(18,61,35,.09);
+  transform:translateY(-1px);
+}
+body[data-page="account"] .account-tabs button.is-active{
+  background:#edf4e9;
+  border-color:rgba(18,61,35,.12);
+  box-shadow:inset 3px 0 0 var(--acc-green);
+}
+html[dir="rtl"] body[data-page="account"] .account-tabs button.is-active{
+  box-shadow:inset -3px 0 0 var(--acc-green);
+}
+body[data-page="account"] .account-tab-icon{
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  border-radius:10px;
+  background:#f4f6f2;
+  font-size:.88rem;
+}
+body[data-page="account"] .account-tabs button.is-active .account-tab-icon{
+  background:#dfeadc;
+}
+body[data-page="account"] .account-side-note{
+  gap:6px;
+  margin-top:16px;
+  padding:15px 3px 1px;
+}
+body[data-page="account"] .account-sync{
+  width:max-content;
+  max-width:100%;
+  padding:5px 8px;
+  border-radius:999px;
+  background:#f1f7ee;
+  color:#3e6047;
+  font-size:.69rem;
+}
+body[data-page="account"] .account-side-note small{
+  padding-inline:5px;
+  font-size:.66rem;
+  color:#7a867e;
+}
+
+body[data-page="account"] .account-content{min-width:0}
+body[data-page="account"] .account-panel{gap:16px}
+body[data-page="account"] .account-card{
+  padding:26px;
+  border-radius:var(--acc-card-radius);
+  border-color:rgba(18,61,35,.11);
+  background:rgba(255,255,255,.96);
+  box-shadow:var(--acc-card-shadow);
+}
+body[data-page="account"] .account-section-title{
+  align-items:flex-start;
+  gap:16px;
+}
+body[data-page="account"] .account-section-title>div{min-width:0}
+body[data-page="account"] .account-section-title h2{
+  font-size:clamp(1.72rem,2vw,2.05rem);
+  line-height:1.04;
+  letter-spacing:-.015em;
+}
+body[data-page="account"] .account-section-title p{
+  max-width:72ch;
+  margin-top:7px;
+  font-size:.82rem;
+  line-height:1.55;
+  color:#77837b;
+}
+body[data-page="account"] .account-grid{gap:12px}
+body[data-page="account"] .account-stat{
+  min-height:106px;
+  padding:18px;
+  border-radius:17px;
+  background:linear-gradient(180deg,#fff 0%,#fafbf8 100%);
+  box-shadow:0 7px 20px rgba(18,61,35,.025);
+}
+body[data-page="account"] .account-stat small{
+  font-size:.74rem;
+  line-height:1.35;
+}
+body[data-page="account"] .account-stat strong{
+  margin-top:8px;
+  font-size:1.35rem;
+  line-height:1.22;
+}
+body[data-page="account"] .account-progress{
+  height:10px;
+  margin-top:16px;
+  background:#e7ece2;
+}
+body[data-page="account"] .account-row{
+  min-height:66px;
+  padding:15px 16px;
+  border-radius:15px;
+  background:#fdfdfb;
+}
+body[data-page="account"] .account-row strong{line-height:1.25}
+body[data-page="account"] .account-row small{
+  margin-top:5px;
+  line-height:1.45;
+}
+body[data-page="account"] .account-primary{
+  min-height:42px;
+  padding-inline:16px;
+}
+
+body[data-page="account"] .customer-latest-order{
+  margin-top:0!important;
+}
+body[data-page="account"] .customer-latest-body{
+  gap:10px;
+  margin-top:16px;
+}
+body[data-page="account"] .customer-latest-body>span{
+  min-width:0;
+  padding:13px 14px;
+  border-radius:14px;
+  background:var(--acc-soft-surface);
+}
+body[data-page="account"] .customer-latest-body small{
+  font-size:.69rem;
+  line-height:1.3;
+}
+body[data-page="account"] .customer-latest-body strong{
+  margin-top:5px;
+  font-size:.93rem;
+  line-height:1.3;
+}
+body[data-page="account"] .customer-latest-body .account-primary{
+  min-height:44px;
+  white-space:nowrap;
+}
+body[data-page="account"] .account-panel[data-account-panel="overview"]>.account-card{
+  overflow:hidden;
+}
+
+@media(min-width:981px){
+  body[data-page="account"] .account-side{
+    position:sticky;
+    top:108px;
+  }
+}
+
+@media(max-width:980px){
+  body[data-page="account"] .account-main>.shell{
+    width:min(100% - 24px,900px);
+  }
+  body[data-page="account"] .account-layout{
+    grid-template-columns:minmax(0,1fr);
+    gap:14px;
+  }
+  body[data-page="account"] .account-side{
+    position:static;
+    padding:14px;
+    border-radius:20px;
+  }
+  body[data-page="account"] .account-side .account-identity{
+    display:flex;
+    margin:0 0 12px;
+    padding:0 0 12px;
+  }
+  body[data-page="account"] .account-identity small{
+    max-width:min(66vw,480px);
+    white-space:nowrap;
+  }
+  body[data-page="account"] .account-side-note{display:none}
+  body[data-page="account"] .account-tabs{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:8px;
+    overflow:visible;
+  }
+  body[data-page="account"] .account-tabs button{
+    width:100%;
+    min-width:0;
+    min-height:48px;
+    padding:8px 9px;
+    white-space:normal;
+  }
+  body[data-page="account"] .account-tab-icon{
+    width:29px;
+    height:29px;
+    flex-basis:29px;
+  }
+}
+
+@media(max-width:700px){
+  body[data-page="account"] .account-main{
+    padding:12px 0 38px;
+  }
+  body[data-page="account"] .account-main>.shell{
+    width:min(100% - 14px,720px);
+  }
+  body[data-page="account"] .account-side{
+    padding:10px;
+    border-radius:17px;
+  }
+  body[data-page="account"] .account-side .account-identity{
+    gap:10px;
+    margin-bottom:9px;
+    padding:1px 2px 10px;
+  }
+  body[data-page="account"] .account-side .account-avatar{
+    width:40px;
+    height:40px;
+    flex-basis:40px;
+  }
+  body[data-page="account"] .account-side .account-identity strong{
+    font-size:.86rem;
+  }
+  body[data-page="account"] .account-side .account-identity small{
+    max-width:100%;
+    font-size:.71rem;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
+  }
+  body[data-page="account"] .account-tabs{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:7px;
+  }
+  body[data-page="account"] .account-tabs button,
+  body[data-page="account"] .account-tabs button:last-child{
+    grid-column:auto;
+    min-height:47px;
+    padding:7px 8px;
+    gap:7px;
+    border:1px solid var(--acc-line);
+    border-radius:12px;
+    background:#fff;
+    font-size:.77rem;
+    line-height:1.22;
+  }
+  body[data-page="account"] .account-tabs button.is-active{
+    background:#edf4e9;
+    border-color:rgba(18,61,35,.14);
+    box-shadow:none;
+  }
+  html[dir="rtl"] body[data-page="account"] .account-tabs button.is-active{
+    box-shadow:none;
+  }
+  body[data-page="account"] .account-tab-icon{
+    width:27px;
+    height:27px;
+    flex-basis:27px;
+    font-size:.76rem;
+  }
+  body[data-page="account"] .account-panel{gap:10px}
+  body[data-page="account"] .account-panel>.account-card{
+    padding:16px;
+    border-radius:17px;
+  }
+  body[data-page="account"] .account-grid,
+  body[data-page="account"] .account-panel[data-account-panel="referrals"] .account-grid,
+  body[data-page="account"] .account-panel[data-account-panel="points"] .account-card:first-child .account-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+  body[data-page="account"] .account-stat{
+    min-height:86px;
+    padding:12px;
+    border-radius:14px;
+  }
+  body[data-page="account"] .account-stat small{
+    font-size:.72rem;
+  }
+  body[data-page="account"] .account-stat strong{
+    margin-top:6px;
+    font-size:1.1rem;
+  }
+  body[data-page="account"] .account-section-title{
+    align-items:stretch;
+    gap:10px;
+  }
+  body[data-page="account"] .account-section-title h2{
+    font-size:1.48rem;
+    line-height:1.1;
+  }
+  body[data-page="account"] .account-section-title p{
+    margin-top:5px;
+    font-size:.78rem;
+    line-height:1.48;
+  }
+  body[data-page="account"] .account-row{
+    padding:12px;
+    border-radius:13px;
+  }
+  body[data-page="account"] .customer-latest-body{
+    margin-top:12px;
+  }
+}
+
+@media(max-width:420px){
+  body[data-page="account"] .account-main>.shell{
+    width:min(100% - 10px,720px);
+  }
+  body[data-page="account"] .account-grid,
+  body[data-page="account"] .account-panel[data-account-panel="referrals"] .account-grid,
+  body[data-page="account"] .account-panel[data-account-panel="points"] .account-card:first-child .account-grid{
+    grid-template-columns:minmax(0,1fr);
+  }
+}

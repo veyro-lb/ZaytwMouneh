@@ -550,7 +550,7 @@
         '<a class="mobile-menu-tool mobile-menu-search" data-mobile-menu-search href="shop.html#shop"><span class="mobile-menu-tool-icon" aria-hidden="true">⌕</span><span class="mobile-menu-tool-copy"><strong></strong><small></small></span></a>'+
         '<a class="mobile-menu-tool mobile-menu-account" data-mobile-menu-account href="/account?auth=signin#signin"><span class="mobile-menu-tool-icon" aria-hidden="true">●</span><span class="mobile-menu-tool-copy"><strong></strong><small></small></span></a>'+
         '<button type="button" class="mobile-menu-tool mobile-menu-points" data-mobile-menu-points><span class="mobile-menu-tool-icon" aria-hidden="true">🌿</span><span class="mobile-menu-tool-copy"><strong></strong><small></small></span><b data-mobile-points-balance>—</b></button>'+
-        '<div class="mobile-menu-language" data-mobile-menu-language><span class="mobile-menu-language-copy"><strong></strong><small></small></span><div class="mobile-menu-language-buttons"><button type="button" data-mobile-lang="en">EN</button><button type="button" data-mobile-lang="ar">عربي</button></div></div>';
+        '<div class="mobile-menu-language" data-mobile-menu-language><span class="mobile-menu-language-copy"><strong></strong><small></small></span><div class="mobile-menu-language-buttons"><button type="button" data-mobile-lang="en" hidden aria-hidden="true" tabindex="-1">EN</button><button type="button" data-mobile-lang="ar" hidden aria-hidden="true" tabindex="-1">عربي</button></div></div>';
       panel.appendChild(tools);
     }
 
@@ -745,7 +745,7 @@
         switcher.id="languageSwitch";
         switcher.className="language-switch";
         switcher.setAttribute("aria-label","Language");
-        switcher.innerHTML='<button type="button" data-lang="en">EN</button><button type="button" data-lang="ar">عربي</button>';
+        switcher.innerHTML='<button type="button" data-lang="en" hidden aria-hidden="true" tabindex="-1">EN</button><button type="button" data-lang="ar" hidden aria-hidden="true" tabindex="-1">عربي</button>';
         nav.insertBefore(switcher,cart||null);
       }else if(switcher.parentElement!==nav){
         nav.insertBefore(switcher,cart||null);
@@ -755,11 +755,13 @@
       switcher.style.setProperty("visibility","visible","important");
       switcher.style.setProperty("opacity","1","important");
       switcher.querySelectorAll("[data-lang]").forEach(btn=>{
-        btn.removeAttribute("hidden");
-        btn.style.setProperty("display","flex","important");
-        btn.style.setProperty("visibility","visible","important");
-        btn.style.setProperty("opacity","1","important");
-        btn.style.setProperty("pointer-events","auto","important");
+        btn.hidden=true;
+        btn.setAttribute("aria-hidden","true");
+        btn.setAttribute("tabindex","-1");
+        btn.style.setProperty("display","none","important");
+        btn.style.setProperty("visibility","hidden","important");
+        btn.style.setProperty("opacity","0","important");
+        btn.style.setProperty("pointer-events","none","important");
       });
 
       let account=document.getElementById("mounehAccountButton")||persistentChromeRefs.account;

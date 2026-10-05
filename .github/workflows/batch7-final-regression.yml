@@ -30,8 +30,13 @@ jobs:
           node --check public/account.js
           node --check public/wholesale-v1.js
           node --check public/admin-wholesale.js
+          node --check public/customer-notifications-v1.js
+          node --check public/admin-notifications-v1.js
+          node --check public/admin-config.js
       - name: Batch 7 static production gate
         run: node tests/batch7-static-regression.cjs
+      - name: Today mobile UI regression
+        run: node tests/today-ui-mobile-regression.cjs
       - name: Wholesale business orders regression
         run: node tests/wholesale-regression.cjs
       - name: Wholesale form behavior regression

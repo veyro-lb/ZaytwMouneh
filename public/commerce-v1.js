@@ -103,8 +103,8 @@ function enhanceAddresses(){
   if(document.body.dataset.page!=="account"||!window.ZWM_REWARDS||!window.ZWM_REWARDS.getState().member)return;
   var tabs=document.querySelector(".account-tabs"),content=document.querySelector(".account-content");if(!tabs||!content)return;
   var button=tabs.querySelector("[data-native-address-tab]");
-  if(!button){button=document.createElement("button");button.type="button";button.dataset.nativeAddressTab="1";button.innerHTML='<span class="account-tab-icon">⌖</span><span>'+tr("Addresses","العناوين")+'</span>';tabs.insertBefore(button,tabs.querySelector('[data-account-tab="referrals"]')||null)}
-  button.classList.toggle("is-active",addressMode);button.setAttribute("aria-selected",String(addressMode));
+  if(!button){button=document.createElement("button");button.type="button";button.dataset.nativeAddressTab="1";button.setAttribute("role","tab");button.innerHTML='<span class="account-tab-icon">⌖</span><span>'+tr("Addresses","العناوين")+'</span>';tabs.insertBefore(button,tabs.querySelector('[data-account-tab="referrals"]')||null)}
+  button.classList.toggle("is-active",addressMode);button.setAttribute("aria-selected",String(addressMode));button.setAttribute("aria-current",addressMode?"page":"false");
   if(addressMode){
     tabs.querySelectorAll("[data-account-tab]").forEach(function(b){b.classList.remove("is-active");b.setAttribute("aria-selected","false")});
     content.querySelectorAll("[data-account-panel]").forEach(function(p){p.hidden=true});
@@ -139,7 +139,7 @@ document.addEventListener("submit",function(e){
 },true);
 document.addEventListener("click",async function(e){
   var cart=e.target.closest&&e.target.closest("#cartButton,[data-open-cart]");if(cart)window.ZWM_CMS&&window.ZWM_CMS.track&&window.ZWM_CMS.track("cart_opened",{source:"navigation"});
-  var addrTab=e.target.closest&&e.target.closest("[data-native-address-tab]");if(addrTab){e.preventDefault();e.stopPropagation();addressMode=true;location.hash="addresses";enhanceAddresses();await loadAddresses();return}
+  var addrTab=e.target.closest&&e.target.closest("[data-native-address-tab]");if(addrTab){e.preventDefault();e.stopPropagation();addressMode=true;try{var u=new URL(location.href);u.hash="addresses";history.replaceState({},document.title,u.pathname+(u.search||"")+u.hash)}catch{}enhanceAddresses();await loadAddresses();if(window.matchMedia&&window.matchMedia("(max-width: 980px)").matches){requestAnimationFrame(function(){document.querySelector(".account-content")?.scrollIntoView({block:"start",behavior:"smooth"})})}return}
   var nativeTab=e.target.closest&&e.target.closest("[data-account-tab]");if(nativeTab){addressMode=false;document.getElementById("nativeAddressesPanel")&&document.getElementById("nativeAddressesPanel").remove()}
   var cancel=e.target.closest&&e.target.closest("[data-address-cancel]");if(cancel){editingAddress="";renderAddressPanel();return}
   var edit=e.target.closest&&e.target.closest("[data-address-edit]");if(edit){editingAddress=edit.dataset.addressEdit;renderAddressPanel();return}

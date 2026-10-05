@@ -57,4 +57,22 @@ async function account(){
   console.log('account: consent, field preservation, Google dispatch, tabs, legal links, Arabic passed');
  }finally{await wait(80);dom.window.close()}
 }
-(async()=>{for(const page of ['account','index','shop','gift','recipes','about','contact'])await stability(page);await account()})().catch(e=>{console.error(e);process.exitCode=1});
+function sourceGuards(){
+ const app=read('app.js');
+ const runtime=read('site-runtime-v9.js');
+ const shell=read('storefront-shell.css');
+ for(const page of ['index','shop','gift','recipes','about','contact','account','checkout']){
+  assert.match(read(page+'.html'),/<meta[^>]+name=["']viewport["']/i,page+' must keep a mobile viewport');
+  assert.match(read(page+'.html'),/site-runtime-v9\.js\?v=20261005-stability1/,page+' must load the stability runtime');
+ }
+ assert.match(app,/addEventListener\("popstate",syncProductFromHistory\)/);
+ assert.match(app,/history\.pushState\(state/);
+ assert.match(app,/__ZWM_STOREFRONT_READY=true/);
+ assert.match(app,/site-runtime-v9\.js\?v=20261005-stability1/);
+ assert.match(runtime,/--zwm-viewport-height/);
+ assert.match(runtime,/visualViewport/);
+ assert.match(runtime,/zwmClientRecovery/);
+ assert.match(shell,/min-width:44px!important;\s*height:44px!important;\s*min-height:44px!important;/);
+ console.log('source guards: routes, history, viewport, recovery, touch targets and runtime fallback passed');
+}
+(async()=>{sourceGuards();for(const page of ['account','index','shop','gift','recipes','about','contact'])await stability(page);await account()})().catch(e=>{console.error(e);process.exitCode=1});

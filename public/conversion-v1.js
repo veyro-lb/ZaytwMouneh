@@ -10,8 +10,10 @@ function modalLink(){
  var modal=q("#productModal"),actions=modal&&q(".product-modal-actions",modal);if(!actions||!currentProduct)return;
  var a=q("[data-c6-full-product]",modal);
  if(!a){a=document.createElement("a");a.className="c6-button is-secondary c6-modal-link";a.dataset.c6FullProduct="1";actions.insertAdjacentElement("afterend",a)}
- a.href="/product/"+encodeURIComponent(currentProduct);
- a.textContent=tr("View full product page","عرض صفحة المنتج الكاملة","Voir la fiche produit");
+ var href="/product/"+encodeURIComponent(currentProduct);
+ var label=tr("View full product page","عرض صفحة المنتج الكاملة","Voir la fiche produit");
+ if(a.getAttribute("href")!==href)a.setAttribute("href",href);
+ if(a.textContent!==label)a.textContent=label;
 }
 function bindProductLinks(){
  document.addEventListener("click",function(e){
@@ -101,7 +103,7 @@ function refreshFrench(){
 function init(){
  bindProductLinks();injectShopTrust();injectGiftTools();injectAccountReorder();refreshFrench();
  document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-c6-reorder]");if(b){e.preventDefault();reorderAccountOrder(b.dataset.c6Reorder)}});
- var observer=new MutationObserver(function(){injectShopTrust();injectGiftTools();injectAccountReorder();modalLink()});
+ var observer=new MutationObserver(function(){injectShopTrust();injectGiftTools();injectAccountReorder()});
  observer.observe(document.body,{childList:true,subtree:true});
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();

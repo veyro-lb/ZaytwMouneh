@@ -63,7 +63,7 @@ function productAvailability(p){
   return ["in_stock","low_stock","seasonal","available_on_request","out_of_stock","coming_soon"].includes(value)?value:"in_stock";
 }
 function productCanOrder(p){
-  return productCanOrder(p);
+  return productAvailability(p)==="in_stock";
 }
 function availabilityLabel(p){
   const value=productAvailability(p);

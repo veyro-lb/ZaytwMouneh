@@ -73,6 +73,9 @@ function locale(){
  }catch(e){return "en"}
 }
 function t(k){return (COPY[state.locale]&&COPY[state.locale][k])||COPY.en[k]||k}
+function localePrefix(code){return code==="ar"?"/ar":code==="fr"?"/fr":""}
+function productPath(id,code){return localePrefix(code||state.locale||locale())+"/product/"+encodeURIComponent(id)}
+function productUrl(id,code){return location.origin+productPath(id,code)}
 function setLocale(code){
  code=code==="ar"?"ar":code==="fr"?"fr":"en";
  try{
@@ -82,6 +85,7 @@ function setLocale(code){
    if(code==="fr")localStorage.setItem("zwm:french:v1","1");else localStorage.removeItem("zwm:french:v1");
   }
  }catch(e){}
+ if(state.product){location.assign(productPath(state.product.id,code)+(location.hash||""));return}
  location.reload();
 }
 function productName(p){
@@ -164,7 +168,18 @@ async function loadData(){
  render();
 }
 function canonical(){
- return location.origin+"/product/"+encodeURIComponent(state.product.id);
+ return productUrl(state.product.id,state.locale);
+}
+function setMeta(selector,attrs){
+ var el=qs(selector);
+ if(!el){el=document.createElement("meta");document.head.appendChild(el)}
+ Object.keys(attrs).forEach(function(k){el.setAttribute(k,attrs[k])});
+ return el;
+}
+function setAlternate(hreflang,href){
+ var el=qs('link[rel="alternate"][hreflang="'+hreflang+'"]');
+ if(!el){el=document.createElement("link");el.rel="alternate";el.hreflang=hreflang;document.head.appendChild(el)}
+ el.href=href;
 }
 function updateSeo(){
  var p=state.product,name=productName(p),variants=p.variants||[],min=variants.length?Math.min.apply(null,variants.map(function(v){return Number(v.price)||0})):0;
@@ -173,9 +188,30 @@ function updateSeo(){
  document.title=title;
  var md=qs('meta[name="description"]');if(md)md.content=desc;
  var can=qs('link[rel="canonical"]');if(can)can.href=canonical();
- history.replaceState({},title,"/product/"+encodeURIComponent(p.id)+(location.hash||""));
+ else{can=document.createElement("link");can.rel="canonical";can.href=canonical();document.head.appendChild(can)}
+ history.replaceState({},title,productPath(p.id,state.locale)+(location.hash||""));
+ setAlternate("en-LB",productUrl(p.id,"en"));
+ setAlternate("ar-LB",productUrl(p.id,"ar"));
+ setAlternate("fr-LB",productUrl(p.id,"fr"));
+ setAlternate("x-default",productUrl(p.id,"en"));
+ setMeta('meta[property="og:title"]',{property:"og:title",content:title});
+ setMeta('meta[property="og:description"]',{property:"og:description",content:desc});
+ setMeta('meta[property="og:type"]',{property:"og:type",content:"product"});
+ setMeta('meta[property="og:url"]',{property:"og:url",content:canonical()});
+ setMeta('meta[property="og:locale"]',{property:"og:locale",content:state.locale==="ar"?"ar_LB":state.locale==="fr"?"fr_LB":"en_LB"});
+ setMeta('meta[name="twitter:card"]',{name:"twitter:card",content:"summary_large_image"});
+ setMeta('meta[name="twitter:title"]',{name:"twitter:title",content:title});
+ setMeta('meta[name="twitter:description"]',{name:"twitter:description",content:desc});
  var ld={"@context":"https://schema.org","@type":"Product","name":name,"sku":p.id,"category":p.category||undefined,"url":canonical()};
- var photo=window.ZWM_PRODUCT_PHOTOS&&window.ZWM_PRODUCT_PHOTOS.sourceFor?window.ZWM_PRODUCT_PHOTOS.sourceFor(p.id):null;if(photo&&photo.url)ld.image=[new URL(photo.url,location.origin).href];
+ var photo=window.ZWM_PRODUCT_PHOTOS&&window.ZWM_PRODUCT_PHOTOS.sourceFor?window.ZWM_PRODUCT_PHOTOS.sourceFor(p.id):null;
+ if(photo&&photo.url){
+  var photoUrl=new URL(photo.url,location.origin).href;ld.image=[photoUrl];
+  var ogImage=setMeta('meta[property="og:image"]',{property:"og:image",content:photoUrl});ogImage.setAttribute("data-zwm-product-image","1");
+  if(photo.width)setMeta('meta[property="og:image:width"]',{property:"og:image:width",content:String(photo.width)});
+  if(photo.height)setMeta('meta[property="og:image:height"]',{property:"og:image:height",content:String(photo.height)});
+  setMeta('meta[property="og:image:alt"]',{property:"og:image:alt",content:name});
+  setMeta('meta[name="twitter:image"]',{name:"twitter:image",content:photoUrl});
+ }
  if(variants.length){
   var av=availability(p);
   ld.offers=variants.map(function(v){
@@ -192,6 +228,7 @@ function updateSeo(){
   ld.review=state.reviews.slice(0,10).map(function(r){return {"@type":"Review","author":{"@type":"Person","name":t("verifiedCustomer")},"reviewRating":{"@type":"Rating","ratingValue":r.rating,"bestRating":5},"reviewBody":r.body,"datePublished":String(r.created_at||"").slice(0,10)}});
  }
  var script=qs("#c6ProductSchema");if(!script){script=document.createElement("script");script.type="application/ld+json";script.id="c6ProductSchema";document.head.appendChild(script)}script.textContent=JSON.stringify(ld);
+ document.dispatchEvent(new CustomEvent("zwm:seo-refresh"));
 }
 function photoMarkup(p){
  var source=window.ZWM_PRODUCT_PHOTOS&&window.ZWM_PRODUCT_PHOTOS.sourceFor?window.ZWM_PRODUCT_PHOTOS.sourceFor(p.id):null;
@@ -222,7 +259,7 @@ function variantsMarkup(p){
 function relatedProducts(){
  var p=state.product,rows=state.products.filter(function(x){return x.id!==p.id&&x.category===p.category}).slice(0,4);
  if(!rows.length)return "";
- return '<section class="c6-section is-soft"><div class="c6-shell"><div class="c6-section-head"><div><p class="c6-eyebrow">'+esc(t("related"))+'</p><h2>'+esc(t("related"))+'</h2><p>'+esc(t("relatedCopy"))+'</p></div></div><div class="c6-related-grid">'+rows.map(function(x){var min=(x.variants||[]).length?Math.min.apply(null,x.variants.map(function(v){return Number(v.price)||0})):0;return '<a class="c6-related-card" href="/product/'+encodeURIComponent(x.id)+'">'+photoMarkup(x)+'<strong>'+esc(productName(x))+'</strong><small>'+esc(t("from"))+' '+money(min)+'</small></a>'}).join("")+'</div></div></section>';
+ return '<section class="c6-section is-soft"><div class="c6-shell"><div class="c6-section-head"><div><p class="c6-eyebrow">'+esc(t("related"))+'</p><h2>'+esc(t("related"))+'</h2><p>'+esc(t("relatedCopy"))+'</p></div></div><div class="c6-related-grid">'+rows.map(function(x){var min=(x.variants||[]).length?Math.min.apply(null,x.variants.map(function(v){return Number(v.price)||0})):0;return '<a class="c6-related-card" href="'+productPath(x.id,state.locale)+'">'+photoMarkup(x)+'<strong>'+esc(productName(x))+'</strong><small>'+esc(t("from"))+' '+money(min)+'</small></a>'}).join("")+'</div></div></section>';
 }
 function recipeRows(){
  var id=state.product.id;return RECIPES.filter(function(r){return r.productIds.indexOf(id)>=0});

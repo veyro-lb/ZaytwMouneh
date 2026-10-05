@@ -39,16 +39,15 @@ begin
 end
 $$;
 
-revoke all on function private.submit_wholesale_enquiry_idempotent(jsonb) from public;
-revoke execute on function private.submit_wholesale_enquiry_core(jsonb) from anon,authenticated;
-grant execute on function private.submit_wholesale_enquiry_idempotent(jsonb) to anon,authenticated;
+revoke all on function private.submit_wholesale_enquiry_core(jsonb) from public,anon,authenticated;
+revoke all on function private.submit_wholesale_enquiry_idempotent(jsonb) from public,anon,authenticated;
 
 create or replace function public.submit_wholesale_enquiry(p jsonb)
 returns uuid
 language sql
-security invoker
+security definer
 set search_path=''
-as $$ select private.submit_wholesale_enquiry_idempotent(p) $$;
+as $ select private.submit_wholesale_enquiry_idempotent(p) $;
 
 revoke all on function public.submit_wholesale_enquiry(jsonb) from public;
 grant execute on function public.submit_wholesale_enquiry(jsonb) to anon,authenticated;

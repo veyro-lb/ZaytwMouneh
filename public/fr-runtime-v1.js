@@ -689,8 +689,8 @@ var EXACT=Object.freeze({
 "Base earning":"Gain de base",
 "When points become yours":"Quand les points deviennent acquis",
 "After delivery + payment":"Après livraison + paiement",
-"Olive Circle":"Olive Circle",
-"Golden Pantry":"Golden Pantry",
+"Olive Circle":"Cercle de l’olivier",
+"Golden Pantry":"Mouneh d’or",
 "Start earning quickly":"Commencez à gagner rapidement",
 "Points":"Points",
 "Voucher value":"Valeur du bon",
@@ -1763,7 +1763,13 @@ var EXACT=Object.freeze({
 "Review text must be between 3 and 1000 characters.":"Le texte de l’avis doit contenir entre 3 et 1 000 caractères.",
 "about":"environ",
 "From shelf to<br><em>your door.</em>":"De nos étagères<br><em>jusqu’à votre porte.</em>",
-"Checkout <span>→</span>":"Paiement <span>→</span>"
+"Checkout <span>→</span>":"Paiement <span>→</span>",
+"Pantry items from":"Produits de la mouneh dès",
+"Theme:":"Thème :",
+"Card language:":"Langue de la carte :",
+"Hide prices from recipient:":"Masquer les prix pour le destinataire :",
+"To":"À",
+"Feedback about":"Avis sur"
 });
 
 var STATIC_FR=Object.freeze({

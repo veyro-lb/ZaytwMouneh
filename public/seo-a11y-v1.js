@@ -98,7 +98,7 @@ function updateSeo(){
   upsertMeta('meta[property="og:type"]',{property:"og:type",content:/^\/product\//.test(basePath)?"product":"website"});
   upsertMeta('meta[property="og:url"]',{property:"og:url",content:canonical});
   upsertMeta('meta[property="og:locale"]',{property:"og:locale",content:locale==="ar"?"ar_LB":locale==="fr"?"fr_LB":"en_LB"});
-  if(!/^\\/product\\//.test(basePath)){
+  if(basePath.indexOf("/product/")!==0){
   upsertMeta('meta[property="og:image"]',{property:"og:image",content:DEFAULT_IMAGE});
   upsertMeta('meta[property="og:image:width"]',{property:"og:image:width",content:"1024"});
   upsertMeta('meta[property="og:image:height"]',{property:"og:image:height",content:"1536"});

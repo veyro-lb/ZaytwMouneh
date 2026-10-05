@@ -95,12 +95,19 @@
     });
   }
   function setLang(lang){
-    const next=lang==="ar"?"ar":"en";
-    try{localStorage.setItem("zwm-lang-v2",next)}catch{}
+    const next=lang==="ar"?"ar":lang==="fr"?"fr":"en";
+    try{
+      if(window.ZWM_LOCALE?.set)window.ZWM_LOCALE.set(next);
+      else{
+        localStorage.setItem("zwm-lang-v2",next==="ar"?"ar":"en");
+        if(next==="fr")localStorage.setItem("zwm:french:v1","1");else localStorage.removeItem("zwm:french:v1");
+      }
+    }catch{}
     document.documentElement.lang=next;document.documentElement.dir=next==="ar"?"rtl":"ltr";
-    $$("[data-lang]").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===next));
+    $("[data-lang]").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===next));
     syncLanguageVisibility();
     render(true);
+    if(next==="fr")requestFrenchTranslation(shell());
   }
   function tierLabel(t){return t==="golden"?tr("Golden Pantry","المونة الذهبية"):t==="olive"?tr("Olive Circle","دائرة الزيتون"):tr("Mouneh Member","عضو المونة")}
   function statusLabel(s){return s==="delivered"?tr("Delivered","تم التسليم"):s==="cancelled"?tr("Cancelled","ملغى"):s==="out_for_delivery"?tr("Out for delivery","خرج للتوصيل"):s==="preparing"?tr("Preparing","قيد التحضير"):s==="confirmed"?tr("Confirmed","مؤكد"):tr("Order received","تم استلام الطلب")}
@@ -217,8 +224,9 @@
 
   function profilePanel(s,m){
     const email=s.authUser?.email||"", providers=(s.providers||[]).map(providerLabel).join("، ")||tr("Secure account","حساب آمن");
+    const locale=window.ZWM_LOCALE?.get?.()||(ar()?"ar":"en");
     return '<section class="account-panel" data-account-panel="profile" '+(active==="profile"?"":"hidden")+'>'+
-      '<article class="account-card"><div class="account-section-title"><div><h2>'+tr("Profile","الملف الشخصي")+'</h2><p>'+tr("Changes save directly to your account and update this page without a manual refresh.","تُحفظ التغييرات مباشرة في حسابك وتتحدث هذه الصفحة من دون تحديث يدوي.")+'</p></div></div><form id="accountProfileForm" class="account-form" style="margin-top:16px"><label>'+tr("Name","الاسم")+'<input name="name" maxlength="120" value="'+esc(m.name||"")+'" required></label><label>'+tr("WhatsApp","واتساب")+'<input name="phone" maxlength="40" value="'+esc(m.phone||"")+'"></label><label class="full">'+tr("Address","العنوان")+'<input name="address" maxlength="500" value="'+esc(m.address||"")+'"></label><label>'+tr("Birthday","تاريخ الميلاد")+'<input name="birthday" type="date" value="'+esc(m.birthday||"")+'" '+(m.birthday?"disabled":"")+'></label><label>'+tr("Preferred language","اللغة المفضلة")+'<select name="language"><option value="en" '+(!ar()?"selected":"")+'>English</option><option value="ar" '+(ar()?"selected":"")+'>العربية</option></select></label><div class="full"><button type="submit" class="account-primary">'+tr("Save profile","حفظ الملف")+'</button></div><p class="account-status full" id="accountProfileStatus"></p></form></article>'+
+      '<article class="account-card"><div class="account-section-title"><div><h2>'+tr("Profile","الملف الشخصي")+'</h2><p>'+tr("Changes save directly to your account and update this page without a manual refresh.","تُحفظ التغييرات مباشرة في حسابك وتتحدث هذه الصفحة من دون تحديث يدوي.")+'</p></div></div><form id="accountProfileForm" class="account-form" style="margin-top:16px"><label>'+tr("Name","الاسم")+'<input name="name" maxlength="120" value="'+esc(m.name||"")+'" required></label><label>'+tr("WhatsApp","واتساب")+'<input name="phone" maxlength="40" value="'+esc(m.phone||"")+'"></label><label class="full">'+tr("Address","العنوان")+'<input name="address" maxlength="500" value="'+esc(m.address||"")+'"></label><label>'+tr("Birthday","تاريخ الميلاد")+'<input name="birthday" type="date" value="'+esc(m.birthday||"")+'" '+(m.birthday?"disabled":"")+'></label><label>'+tr("Preferred language","اللغة المفضلة")+'<select name="language"><option value="en" '+(locale==="en"?"selected":"")+'>English</option><option value="ar" '+(locale==="ar"?"selected":"")+'>العربية</option><option value="fr" '+(locale==="fr"?"selected":"")+'>Français</option></select></label><div class="full"><button type="submit" class="account-primary">'+tr("Save profile","حفظ الملف")+'</button></div><p class="account-status full" id="accountProfileStatus"></p></form></article>'+
       '<div class="account-security"><article class="account-card"><p class="account-eyebrow">'+tr("Account identity","هوية الحساب")+'</p><h3>'+esc(email||tr("Verified customer account","حساب عميل موثّق"))+'</h3><p>'+tr("Sign-in method: ","طريقة الدخول: ")+esc(providers)+'. '+tr("Your password is handled by the authentication provider and is never shown here.","تتم إدارة كلمة المرور عبر مزود المصادقة ولا تظهر هنا أبداً.")+'</p></article>'+
       '<article class="account-card"><p class="account-eyebrow">'+tr("Password & security","كلمة المرور والأمان")+'</p><form id="accountPasswordForm" class="account-form"><label class="full">'+tr("Current password","كلمة المرور الحالية")+'<input name="currentPassword" type="password" autocomplete="current-password"></label><label class="full">'+tr("New password","كلمة المرور الجديدة")+'<input name="newPassword" type="password" minlength="8" autocomplete="new-password"></label><div class="full"><button type="submit" class="account-primary">'+tr("Change password","تغيير كلمة المرور")+'</button></div><p class="account-status full" id="accountPasswordStatus"></p></form></article></div>'+
       '<article class="account-card account-danger"><div class="account-section-title"><div><h2>'+tr("Session & legal","الجلسة والقانون")+'</h2><p>'+tr("Use sign out on shared devices. Privacy and program rules are always available below.","استخدم تسجيل الخروج على الأجهزة المشتركة. سياسة الخصوصية وقواعد البرنامج متاحة دائماً أدناه.")+'</p></div></div><div class="account-actions"><button type="button" data-account-signout>'+tr("Sign out","تسجيل الخروج")+'</button><a href="/privacy-and-data.html?rev=20261004-legal7">'+tr("Privacy Policy","سياسة الخصوصية")+'</a><a href="/terms-and-rewards.html?rev=20261004-legal7">'+tr("Terms of Service","شروط الخدمة")+'</a><a href="/terms-and-rewards.html?rev=20261004-legal7#terms-rewards">'+tr("Mouneh Points Rules","قواعد نقاط المونة")+'</a></div></article>'+
@@ -387,7 +395,7 @@
     }
     if(e.target.id==="accountProfileForm"){
       e.preventDefault();const f=e.target,status=$("#accountProfileStatus"),btn=f.querySelector('button[type="submit"]');btn.disabled=true;status.textContent=tr("Saving…","جارٍ الحفظ…");
-      try{const data=new FormData(f);await api()?.account?.updateProfile?.({name:data.get("name"),phone:data.get("phone"),address:data.get("address"),birthday:data.get("birthday")||""});const lang=String(data.get("language")||"en");await api()?.account?.saveLanguage?.(lang);setLang(lang);status.textContent=tr("Saved.","تم الحفظ.");render(true)}catch(err){status.textContent=err.message||String(err)}finally{btn.disabled=false}return;
+      try{const data=new FormData(f);await api()?.account?.updateProfile?.({name:data.get("name"),phone:data.get("phone"),address:data.get("address"),birthday:data.get("birthday")||""});const lang=String(data.get("language")||"en");if(lang!=="fr")await api()?.account?.saveLanguage?.(lang);setLang(lang);status.textContent=tr("Saved.","تم الحفظ.");render(true)}catch(err){status.textContent=err.message||String(err)}finally{btn.disabled=false}return;
     }
     if(e.target.id==="accountPasswordForm"){
       e.preventDefault();const f=e.target,status=$("#accountPasswordStatus"),btn=f.querySelector('button[type="submit"]');btn.disabled=true;status.textContent=tr("Updating…","جارٍ التحديث…");
@@ -426,7 +434,7 @@
       count.textContent=String(total);
     }
   }
-  const stored=(()=>{try{return localStorage.getItem("zwm-lang-v2")}catch{return null}})(); if(stored)setLang(stored); else syncLanguageVisibility();
+  const stored=(()=>{try{return window.ZWM_LOCALE?.get?.()||localStorage.getItem("zwm-lang-v2")}catch{return null}})(); if(stored)setLang(stored); else syncLanguageVisibility();
   $("#accountYear") && ($("#accountYear").textContent=new Date().getFullYear());
   syncAccountShellChrome();
   render(true);

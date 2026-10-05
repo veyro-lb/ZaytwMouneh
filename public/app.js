@@ -1455,7 +1455,7 @@ function renderModal(productId,variantId){
   $("#productModalAdd").textContent=modalCanOrder?t.add:availabilityLabel(p);
   $("#productModalAdd").disabled=!modalCanOrder;
   $("#variantOptions").innerHTML=p.variants.map(option=>`<button type="button" class="variant-option ${option.id===v.id?"is-active":""}" data-modal-variant="${escapeHtml(option.id)}">${escapeHtml(lang==="ar"?option.sizeAr:option.sizeEn)} · ${money(option.price)}</button>`).join("");
-  $("[data-modal-variant]").forEach(btn=>btn.addEventListener("click",()=>{
+  $$("[data-modal-variant]").forEach(btn=>btn.addEventListener("click",()=>{
     const next=variantById(p,btn.dataset.modalVariant);
     if(!next)return;
     currentModalVariant=next;

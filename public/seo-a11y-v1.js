@@ -125,9 +125,9 @@ function normalizeInternalLinks(root){
   });
 }
 function wholesaleLabel(locale,shortLabel){
-  if(locale==="ar")return shortLabel?"الجملة":"طلبات الجملة والأعمال";
-  if(locale==="fr")return shortLabel?"Grossiste":"Commandes en gros & professionnelles";
-  return shortLabel?"Wholesale":"Wholesale & Business Orders";
+  if(locale==="ar")return shortLabel?"الجملة والأعمال":"طلبات الجملة والأعمال";
+  if(locale==="fr")return shortLabel?"Grossiste & Pro":"Commandes en gros & professionnelles";
+  return shortLabel?"Wholesale & Business":"Wholesale & Business Orders";
 }
 function ensureWholesaleLinks(){
   if(cleanPath(location.pathname)==="/wholesale")return;
@@ -139,10 +139,14 @@ function ensureWholesaleLinks(){
       navLink=document.createElement("a");
       navLink.setAttribute("data-wholesale-link","nav");
       navLink.className="nav-wholesale-link";
-      nav.appendChild(navLink);
+      navLink.innerHTML='<span>07</span><strong data-wholesale-label></strong><b>↗</b>';
+      var utility=nav.querySelector(".menu-utility");
+      if(utility)nav.insertBefore(navLink,utility);else nav.appendChild(navLink);
     }
     navLink.href=localizedPath("/wholesale",locale);
-    navLink.textContent=wholesaleLabel(locale,true);
+    var navLabel=navLink.querySelector("[data-wholesale-label]");
+    if(navLabel)navLabel.textContent=wholesaleLabel(locale,true);
+    else navLink.textContent=wholesaleLabel(locale,true);
   }
   var footer=document.querySelector(".footer-column");
   if(footer){

@@ -1,8 +1,8 @@
 (function(){
 "use strict";
 const KEY="zwm:mouneh:session:v1";
-const CFG="/admin-config.js?v=20261005-notifications9";
-const VERSION="20261005-notifications9";
+const CFG="/admin-config.js?v=20261005-notifications10";
+const VERSION="20261005-notifications10";
 let cfg=null,user=null,rows=[];
 const $=(s,r=document)=>r.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));

@@ -93,6 +93,20 @@
   }
   function tierLabel(t){return t==="golden"?tr("Golden Pantry","المونة الذهبية"):t==="olive"?tr("Olive Circle","دائرة الزيتون"):tr("Mouneh Member","عضو المونة")}
   function statusLabel(s){return s==="delivered"?tr("Delivered","تم التسليم"):s==="cancelled"?tr("Cancelled","ملغى"):s==="out_for_delivery"?tr("Out for delivery","خرج للتوصيل"):s==="preparing"?tr("Preparing","قيد التحضير"):s==="confirmed"?tr("Confirmed","مؤكد"):tr("Order received","تم استلام الطلب")}
+  function activateAccountTab(next,{scrollOnMobile=true}={}){
+    if(!allowed.has(next))return false;
+    active=next;
+    try{
+      const u=new URL(location.href);
+      u.hash=next;
+      history.replaceState({},document.title,u.pathname+(u.search||"")+u.hash);
+    }catch{}
+    render(true);
+    if(scrollOnMobile&&window.matchMedia?.("(max-width: 980px)")?.matches){
+      requestAnimationFrame(()=>document.querySelector(".account-content")?.scrollIntoView({block:"start",behavior:"smooth"}));
+    }
+    return true;
+  }
   function navTabs(){
     const tabs=[["overview","⌂",tr("Overview","نظرة عامة")],["points","🌿",tr("Points & Wallet","النقاط والمحفظة")],["orders","▤",tr("Orders","الطلبات")],["referrals","↗",tr("Referrals","الإحالات")],["profile","⚙",tr("Profile & Security","الملف والأمان")]];
     return '<div class="account-tabs" role="tablist">'+tabs.map(([id,icon,label])=>'<button type="button" data-account-tab="'+id+'" class="'+(active===id?"is-active":"")+'" role="tab" aria-selected="'+(active===id)+'" aria-current="'+(active===id?"page":"false")+'"><span class="account-tab-icon">'+icon+'</span><span>'+label+'</span></button>').join("")+'</div>';
@@ -253,7 +267,7 @@
   document.addEventListener("click",async e=>{
     const legalLink=e.target.closest("[data-auth-legal-link]");
     if(legalLink){e.stopPropagation();return}
-    const tab=e.target.closest("[data-account-tab]"); if(tab){active=tab.dataset.accountTab;history.replaceState({},document.title,"#"+active);render(true);return}
+    const tab=e.target.closest("[data-account-tab]"); if(tab){e.preventDefault();activateAccountTab(tab.dataset.accountTab);return}
     const auth=e.target.closest("[data-account-auth]"); if(auth){e.preventDefault();guestAuthMode=auth.dataset.accountAuth==="signup"?"signup":"signin";api()?.auth?.setMode?.(guestAuthMode);try{history.replaceState({},document.title,location.pathname+(location.search||"")+"#"+guestAuthMode)}catch{}render(true);return}
     const google=e.target.closest("[data-account-google]");
     if(google){
@@ -368,6 +382,10 @@
     }
   });
   document.addEventListener("zwm:account-updated",()=>{lastSyncedAt=Date.now();render()});
+  window.addEventListener("hashchange",()=>{
+    const next=(location.hash||"").slice(1);
+    if(allowed.has(next)&&next!==active){active=next;render(true)}
+  });
   window.addEventListener("focus",sync);
   window.addEventListener("online",sync);
   window.addEventListener("storage",syncAccountShellChrome);

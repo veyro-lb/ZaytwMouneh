@@ -12,6 +12,7 @@ function setup(page,hash='signup'){
  const w=dom.window;let frames=0;
  w.requestAnimationFrame=fn=>w.setTimeout(()=>{if(w.document){frames++;fn(Date.now())}},16);
  w.matchMedia=()=>({matches:true,addEventListener(){},removeEventListener(){}});
+ w.visualViewport={height:640,offsetTop:0,addEventListener(){},removeEventListener(){}};
  w.fetch=async()=>({ok:true,json:async()=>[],text:async()=>''});
  return {dom,w,frames:()=>frames};
 }
@@ -29,6 +30,12 @@ async function stability(page){
    assert.equal(menu.inert,true);
    w.document.getElementById('navToggle').click();assert.equal(menu.inert,false);assert(menu.classList.contains('is-open'));
    w.document.getElementById('navToggle').click();assert.equal(menu.inert,true);assert(!menu.classList.contains('is-open'));
+   assert.equal(w.document.documentElement.style.getPropertyValue('--zwm-viewport-height'),'640px');
+   w.document.body.classList.add('menu-open','cart-open','modal-open');
+   w.dispatchEvent(new w.PageTransitionEvent('pageshow',{persisted:true}));await wait(30);
+   assert(!w.document.body.classList.contains('menu-open'),'pageshow must clear stale menu lock');
+   assert(!w.document.body.classList.contains('cart-open'),'pageshow must clear stale cart lock');
+   assert(!w.document.body.classList.contains('modal-open'),'pageshow must clear stale modal lock');
   }
  }finally{await wait(80);dom.window.close()}
 }

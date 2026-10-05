@@ -893,7 +893,62 @@
     check();
   }
 
+  function installCoreViewportStability(){
+    if(window.__ZWM_CORE_VIEWPORT_STABILITY)return;
+    window.__ZWM_CORE_VIEWPORT_STABILITY=true;
+
+    let viewportFrame=0;
+    const syncViewport=()=>{
+      if(viewportFrame)return;
+      viewportFrame=requestAnimationFrame(()=>{
+        viewportFrame=0;
+        const vv=window.visualViewport;
+        const height=Math.max(1,Math.round(vv?.height||window.innerHeight||document.documentElement.clientHeight||1));
+        const offsetTop=Math.max(0,Math.round(vv?.offsetTop||0));
+        const layoutHeight=Math.max(height,Math.round(window.innerHeight||height));
+        const keyboardInset=Math.max(0,layoutHeight-height-offsetTop);
+        const root=document.documentElement;
+        root.style.setProperty("--zwm-viewport-height",height+"px");
+        root.style.setProperty("--zwm-viewport-offset-top",offsetTop+"px");
+        root.style.setProperty("--zwm-keyboard-inset",keyboardInset+"px");
+        root.classList.toggle("zwm-keyboard-open",keyboardInset>96);
+      });
+    };
+
+    const repairTransientState=()=>{
+      const body=document.body;
+      if(!body)return;
+      const menu=document.getElementById("navLinks");
+      const cart=document.getElementById("cartDrawer");
+      const modal=document.getElementById("productModal");
+      if(!menu?.classList.contains("is-open")){
+        body.classList.remove("menu-open");
+        const toggle=document.getElementById("navToggle");
+        if(toggle)toggle.setAttribute("aria-expanded","false");
+        if(menu){menu.inert=true;menu.setAttribute("aria-hidden","true")}
+      }
+      if(!cart?.classList.contains("is-open"))body.classList.remove("cart-open");
+      if(!modal?.classList.contains("is-open"))body.classList.remove("modal-open");
+    };
+
+    const vv=window.visualViewport;
+    vv?.addEventListener?.("resize",syncViewport,{passive:true});
+    vv?.addEventListener?.("scroll",syncViewport,{passive:true});
+    window.addEventListener("resize",syncViewport,{passive:true});
+    window.addEventListener("orientationchange",syncViewport,{passive:true});
+    window.addEventListener("pageshow",()=>{repairTransientState();syncViewport()});
+    document.addEventListener("focusin",event=>{
+      if(!event.target?.matches?.("input,textarea,select,[contenteditable=true]"))return;
+      setTimeout(syncViewport,0);
+    },{passive:true});
+    document.addEventListener("focusout",()=>setTimeout(syncViewport,0),{passive:true});
+
+    repairTransientState();
+    syncViewport();
+  }
+
   async function init(){
+    installCoreViewportStability();
     ensurePersistentChrome();
     bindPersistentChrome();
     try{await loadScript(CONFIG_SRC)}catch{return}

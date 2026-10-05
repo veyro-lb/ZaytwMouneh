@@ -1805,7 +1805,24 @@ var EXACT=Object.freeze({
 "fine bulgur":"boulgour fin",
 "sea salt":"sel marin",
 "kibbeh spice":"épices pour kebbé",
-"seven spice":"sept-épices"
+"seven spice":"sept-épices",
+"Please accept the Terms of Service and Privacy Policy.":"Veuillez accepter les Conditions d’utilisation et la Politique de confidentialité.",
+"Please enter a valid phone number.":"Veuillez saisir un numéro de téléphone valide.",
+"This payment method is not available yet.":"Ce mode de paiement n’est pas encore disponible.",
+"Please enter your delivery area.":"Veuillez saisir votre zone de livraison.",
+"Please enter your street or neighborhood.":"Veuillez saisir votre rue ou votre quartier.",
+"Please enter your building or residence.":"Veuillez saisir votre immeuble ou votre résidence.",
+"Missing order request token.":"Impossible de préparer la commande. Actualisez la page et réessayez.",
+"Delivery is currently unavailable in this area.":"La livraison n’est actuellement pas disponible dans cette zone.",
+"Delivery is currently unavailable.":"La livraison est actuellement indisponible.",
+"Prices changed. Refresh your basket before ordering.":"Les prix ont changé. Actualisez votre panier avant de commander.",
+"Sign in to use a reward":"Connectez-vous pour utiliser une récompense.",
+"Reward unavailable or basket below minimum":"Récompense indisponible ou panier inférieur au minimum requis.",
+"An item is no longer available. Refresh your basket.":"Un article n’est plus disponible. Actualisez votre panier.",
+"A size has changed. Refresh your basket.":"Un format a changé. Actualisez votre panier.",
+"This order can no longer be cancelled online. Please contact us for help.":"Cette commande ne peut plus être annulée en ligne. Contactez-nous pour obtenir de l’aide.",
+"Couldn’t check the latest update right now. We’ll retry automatically.":"Impossible de vérifier la dernière mise à jour pour le moment. Nous réessaierons automatiquement.",
+"Address not found":"Adresse introuvable"
 });
 
 var STATIC_FR=Object.freeze({
@@ -2523,6 +2540,11 @@ function dynamicFr(raw){
   if((m=t.match(/^Only \$(\d+(?:\.\d+)?) away from free delivery$/i)))return s.replace(t,"Encore "+m[1]+" $ pour bénéficier de la livraison gratuite");
   if((m=t.match(/^Free delivery on orders of \$(\d+(?:\.\d+)?) or more$/i)))return s.replace(t,"Livraison gratuite dès "+m[1]+" $ d’achat");
   if((m=t.match(/^Minimum order: \$(\d+(?:\.\d+)?)$/i)))return s.replace(t,"Commande minimum : "+m[1]+" $");
+  if((m=t.match(/^Minimum order is \$([\d,.]+)\.$/i)))return s.replace(t,"Le montant minimum de commande est de "+m[1]+" $.");
+  if((m=t.match(/^Order status updated to (.+)\.$/i)))return s.replace(t,"Statut de la commande mis à jour : "+dynamicFr(m[1])+".");
+  if((m=t.match(/^You are signed in(?: as (.+?))?\. Add your phone number so orders, Mouneh Points and referrals stay securely linked to this account\.$/i))){
+    return s.replace(t,"Votre session est ouverte"+(m[1]?" avec "+m[1]:"")+". Ajoutez votre numéro de téléphone afin que vos commandes, Mouneh Points et parrainages restent liés en toute sécurité à ce compte.");
+  }
   if((m=t.match(/^Delivery: \$(\d+(?:\.\d+)?)$/i)))return s.replace(t,"Livraison : "+m[1]+" $");
   if((m=t.match(/^(\d+)\s+members?$/i)))return s.replace(t,m[1]+" membres");
   if((m=t.match(/^(\d+)\s+products?$/i)))return s.replace(t,m[1]+" produits");

@@ -1,0 +1,19 @@
+name: Quick View hotfix regression
+on:
+  push:
+    branches:
+      - hotfix-quick-view-lifecycle
+jobs:
+  quick-view:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save jsdom@26.1.0
+      - run: node tests/quick-view-regression.cjs
+      - run: node tests/mobile-stability.cjs
+        env:
+          NODE_PATH: ${{ github.workspace }}/node_modules

@@ -8,8 +8,10 @@
   const LEGAL_PENDING_KEY="zwm:mouneh:legal-consent-pending:v1";
   const LEGAL_CONSENT_VERSION="2026-10-04";
   const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261004-mobileauth4";
-  const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false,referralStatus:null};
+  const VERSION="20261005-account-reliability1";
+  const REQUEST_TIMEOUT_MS=12000;
+  const CONFIG_TIMEOUT_MS=8000;
+  const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false,referralStatus:null,bonusStatus:null,accountBusy:false,accountError:"",lastAccountLoadAt:0};
 
   const $=(id)=>document.getElementById(id);
   const esc=(v)=>String(v??"").replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -17,6 +19,24 @@
   const tr=(en,arText)=>ar()?arText:en;
   const ltr=(v)=>ar()?"\u2066"+String(v??"")+"\u2069":String(v??"");
   const money=(v)=>ltr("$"+(Number(v)||0).toFixed(2));
+  function serviceErrorMessage(err){
+    if(err?.name==="AbortError")return tr("The account service took too long to respond. Please retry.","استغرقت خدمة الحساب وقتاً طويلاً للرد. يرجى إعادة المحاولة.");
+    if(typeof navigator!=="undefined"&&navigator.onLine===false)return tr("You appear to be offline. Reconnect and retry.","يبدو أنك غير متصل بالإنترنت. أعد الاتصال ثم حاول مجدداً.");
+    return String(err?.message||err||tr("Account services are temporarily unavailable.","خدمات الحساب غير متاحة مؤقتاً."));
+  }
+  async function fetchJson(url,options={},timeoutMs=REQUEST_TIMEOUT_MS){
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),timeoutMs);
+    try{
+      const response=await fetch(url,{...options,signal:controller.signal});
+      const data=await response.json().catch(()=>({}));
+      return {response,data};
+    }catch(err){
+      throw new Error(serviceErrorMessage(err));
+    }finally{
+      clearTimeout(timer);
+    }
+  }
   const voucherStatusLabel=(status)=>{
     const s=String(status||"").toLowerCase();
     return s==="reserved"?tr("Reserved","محجوزة"):s==="available"?tr("Available","متاحة"):s==="used"?tr("Used","مستخدمة"):s==="expired"?tr("Expired","منتهية"):status||tr("Unknown","غير معروفة");
@@ -122,6 +142,7 @@
       cleanAuthUrl();
       return false;
     }
+    const callbackType=String(hash.get("type")||url.searchParams.get("type")||"").toLowerCase();
     const access=hash.get("access_token"),refresh=hash.get("refresh_token");
     if(!access)return false;
     const expiresIn=Number(hash.get("expires_in")||3600);
@@ -133,9 +154,14 @@
       expires_at:Number(hash.get("expires_at")||Math.floor(Date.now()/1000)+expiresIn)
     });
     await persistPendingLegalConsent();
-    state.authMode="public";
-    state.authNotice=tr("Signed in successfully. Finishing your account…","تم تسجيل الدخول بنجاح. جارٍ تجهيز حسابك…");
-    try{sessionStorage.setItem("zwm:mouneh:just-verified","1")}catch{}
+    if(callbackType==="recovery"){
+      state.authMode="recovery";
+      state.authNotice=tr("Choose a new password to finish recovery.","اختر كلمة مرور جديدة لإكمال الاستعادة.");
+    }else{
+      state.authMode="public";
+      state.authNotice=tr("Signed in successfully. Finishing your account…","تم تسجيل الدخول بنجاح. جارٍ تجهيز حسابك…");
+      try{sessionStorage.setItem("zwm:mouneh:just-verified","1")}catch{}
+    }
     cleanAuthUrl();
     if(goToAccountAfterAuth())return true;
     return true;
@@ -147,7 +173,13 @@
   function loadScript(src){
     return new Promise((resolve,reject)=>{
       const s=document.createElement("script");
-      s.src=src;s.async=true;s.onload=resolve;s.onerror=reject;document.head.appendChild(s);
+      let done=false;
+      const finish=(fn,value)=>{if(done)return;done=true;clearTimeout(timer);s.onload=null;s.onerror=null;fn(value)};
+      const timer=setTimeout(()=>finish(reject,new Error(tr("Account configuration took too long to load. Please retry.","استغرق تحميل إعدادات الحساب وقتاً طويلاً. يرجى إعادة المحاولة."))),CONFIG_TIMEOUT_MS);
+      s.src=src;s.async=true;
+      s.onload=()=>finish(resolve);
+      s.onerror=()=>finish(reject,new Error(tr("Account configuration could not be loaded.","تعذّر تحميل إعدادات الحساب.")));
+      document.head.appendChild(s);
     });
   }
 
@@ -169,8 +201,7 @@
   async function authRequest(path,body,token,method="POST"){
     const headers={"apikey":key(),"Content-Type":"application/json"};
     if(token)headers.Authorization="Bearer "+token;
-    const r=await fetch(baseUrl()+"/auth/v1/"+path,{method,headers,body:method==="GET"||body===undefined?undefined:JSON.stringify(body)});
-    const data=await r.json().catch(()=>({}));
+    const {response:r,data}=await fetchJson(baseUrl()+"/auth/v1/"+path,{method,headers,body:method==="GET"||body===undefined?undefined:JSON.stringify(body)});
     if(!r.ok){const err=new Error(data.msg||data.message||data.error_description||data.error||tr("Authentication failed.","تعذّر تسجيل الدخول."));err.code=data.error_code||data.code||"";err.status=r.status;err.data=data;throw err;}
     return data;
   }
@@ -253,6 +284,25 @@
     if(!email)throw new Error(tr("Enter your email again to resend verification.","أدخل بريدك مجدداً لإعادة إرسال التأكيد."));
     await authRequest("resend?redirect_to="+encodeURIComponent(authRedirectUrl()),{type:"signup",email});
   }
+  async function requestPasswordRecovery(email){
+    const cleanEmail=String(email||"").trim();
+    if(!cleanEmail||!cleanEmail.includes("@"))throw new Error(tr("Enter the email address for your account.","أدخل البريد الإلكتروني المرتبط بحسابك."));
+    await authRequest("recover?redirect_to="+encodeURIComponent(authRedirectUrl()),{email:cleanEmail});
+    return true;
+  }
+  async function finishPasswordRecovery(newPassword){
+    const password=String(newPassword||"");
+    if(password.length<8)throw new Error(tr("New password must be at least 8 characters.","يجب أن تكون كلمة المرور الجديدة 8 أحرف على الأقل."));
+    const s=await validSession();
+    if(!s?.access_token)throw new Error(tr("This recovery link has expired. Request a new password reset email.","انتهت صلاحية رابط الاستعادة. اطلب رسالة جديدة لإعادة تعيين كلمة المرور."));
+    const updated=await authRequest("user",{password},s.access_token,"PUT");
+    if(updated)state.authUser=updated;
+    state.authMode="public";
+    state.authNotice=tr("Password updated. Your account is ready.","تم تحديث كلمة المرور. حسابك جاهز.");
+    await loadDashboard();
+    notifyAccount();
+    return true;
+  }
   function rememberPendingLegalConsent(){
     try{sessionStorage.setItem(LEGAL_PENDING_KEY,new Date().toISOString())}catch{}
   }
@@ -326,7 +376,7 @@
     if(s?.access_token){
       try{await authRequest("logout",undefined,s.access_token)}catch{}
     }
-    writeSession(null);state.dashboard=null;state.referralStatus=null;state.selectedWallet="";try{localStorage.removeItem(WALLET_KEY)}catch{}
+    writeSession(null);state.dashboard=null;state.referralStatus=null;state.bonusStatus=null;state.selectedWallet="";state.accountError="";state.accountBusy=false;try{localStorage.removeItem(WALLET_KEY)}catch{}
     render();renderCheckout();
   }
 
@@ -334,13 +384,24 @@
     const s=await validSession();
     const headers={"apikey":key(),"Content-Type":"application/json","Prefer":"return=representation"};
     if(s?.access_token)headers.Authorization="Bearer "+s.access_token;
-    const r=await fetch(baseUrl()+"/rest/v1/rpc/mouneh_api",{method:"POST",headers,body:JSON.stringify({action,p})});
-    const data=await r.json().catch(()=>({}));
+    const {response:r,data}=await fetchJson(baseUrl()+"/rest/v1/rpc/mouneh_api",{method:"POST",headers,body:JSON.stringify({action,p})});
     if(r.status===401&&s?.refresh_token&&retry){
       await refreshSession();
       return rpc(action,p,false);
     }
     if(!r.ok)throw new Error(data.message||data.hint||data.details||tr("Mouneh Points request failed.","تعذّر طلب نقاط المونة."));
+    return data;
+  }
+  async function namedRpc(name,p={},retry=true){
+    const s=await validSession();
+    const headers={"apikey":key(),"Content-Type":"application/json","Prefer":"return=representation"};
+    if(s?.access_token)headers.Authorization="Bearer "+s.access_token;
+    const {response:r,data}=await fetchJson(baseUrl()+"/rest/v1/rpc/"+encodeURIComponent(name),{method:"POST",headers,body:JSON.stringify(p||{})});
+    if(r.status===401&&s?.refresh_token&&retry){
+      await refreshSession();
+      return namedRpc(name,p,false);
+    }
+    if(!r.ok)throw new Error(data.message||data.hint||data.details||tr("Account request failed.","تعذّر طلب الحساب."));
     return data;
   }
 
@@ -354,6 +415,31 @@
     if(!state.session||!state.dashboard?.member){state.referralStatus=null;return null;}
     try{state.referralStatus=await rpc("referral_status",{});return state.referralStatus}
     catch{state.referralStatus=null;return null}
+  }
+  async function loadBonusStatus(){
+    if(!state.session||!state.dashboard?.member){state.bonusStatus=null;return null;}
+    try{state.bonusStatus=await namedRpc("mouneh_bonus_status",{});return state.bonusStatus}
+    catch{state.bonusStatus=null;return null}
+  }
+  async function claimBirthdayBonus(){
+    await rpc("birthday",{});
+    state.dashboard=await rpc("dashboard",{});
+    await loadBonusStatus();
+    notifyAccount();render();renderCheckout();
+    return state.dashboard;
+  }
+  async function submitVerifiedReview(payload={}){
+    const productId=String(payload.product_id||"").trim();
+    const rating=Number(payload.rating);
+    const body=String(payload.body||"").trim();
+    if(!productId)throw new Error(tr("Choose a delivered product to review.","اختر منتجاً تم تسليمه لكتابة مراجعة."));
+    if(!Number.isInteger(rating)||rating<1||rating>5)throw new Error(tr("Choose a rating from 1 to 5.","اختر تقييماً من 1 إلى 5."));
+    if(body.length<3||body.length>1000)throw new Error(tr("Review text must be between 3 and 1000 characters.","يجب أن يكون نص المراجعة بين 3 و1000 حرف."));
+    await rpc("review",{product_id:productId,rating,body});
+    state.dashboard=await rpc("dashboard",{});
+    await loadBonusStatus();
+    notifyAccount();render();renderCheckout();
+    return true;
   }
 
   async function loadPublic(){
@@ -379,19 +465,29 @@
   }
 
   async function loadDashboard(){
-    const s=await validSession();
-    if(!s){state.dashboard=null;render();return null;}
+    state.accountBusy=true;
+    state.accountError="";
     try{
-      state.dashboard=await rpc("dashboard",{});
-      await claimSavedOrders();
-      await loadReferralStatus();
+      const s=await validSession();
+      if(!s){state.dashboard=null;state.referralStatus=null;state.bonusStatus=null;return null;}
+      try{
+        state.dashboard=await rpc("dashboard",{});
+        await claimSavedOrders();
+        await Promise.all([loadReferralStatus(),loadBonusStatus()]);
+      }catch(err){
+        if(/Join Mouneh Rewards first/i.test(String(err.message||"")))state.dashboard={needsJoin:true};
+        else if(/verified email/i.test(String(err.message||"")))state.dashboard={needsVerification:true};
+        else throw err;
+      }
+      return state.dashboard;
     }catch(err){
-      if(/Join Mouneh Rewards first/i.test(String(err.message||"")))state.dashboard={needsJoin:true};
-      else if(/verified email/i.test(String(err.message||"")))state.dashboard={needsVerification:true};
-      else throw err;
+      state.accountError=serviceErrorMessage(err);
+      throw err;
+    }finally{
+      state.accountBusy=false;
+      state.lastAccountLoadAt=Date.now();
+      render();renderCheckout();notifyAccount();
     }
-    render();renderCheckout();
-    return state.dashboard;
   }
 
   const DEFAULT_REWARD_LADDER=[
@@ -1091,7 +1187,10 @@
           await loadDashboard();
           await ensureMemberFromAuth();
           await processPendingAccountDeletion();
-        }catch{}
+        }catch(err){
+          state.accountError=serviceErrorMessage(err);
+          state.accountBusy=false;
+        }
       }
       render();renderCheckout();
       if(state.pendingOpen){state.pendingOpen=false;setDrawer(true);}
@@ -1106,13 +1205,13 @@
         if(e.key===AUTH_KEY){state.session=readSession();loadDashboard().catch(()=>{})}
       });
       let syncing=false;
-      const liveSync=async()=>{if(document.visibilityState==="hidden"||syncing)return;syncing=true;try{await loadPublic();if(state.session)await loadDashboard();else{render();renderCheckout();}}finally{syncing=false;}};
+      const liveSync=async()=>{if(document.visibilityState==="hidden"||syncing)return;syncing=true;try{await loadPublic();if(state.session)await loadDashboard();else{state.accountError="";render();renderCheckout();}}catch(err){state.accountError=serviceErrorMessage(err);render();notifyAccount();}finally{syncing=false;}};
       window.addEventListener("storage",e=>{if(e.key==="zwm:rewards-updated")liveSync();});
       window.addEventListener("focus",liveSync);
       document.addEventListener("visibilitychange",()=>{if(!document.hidden)liveSync()});
       setInterval(liveSync,60000);
       new MutationObserver(()=>{const newAr=ar();const drawer=$("mounehRewardsDrawer");if(drawer&&drawer.dataset.mrAr!==String(newAr)){drawer.dataset.mrAr=String(newAr);render();renderCheckout();}}).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
-    }catch(err){console.warn("Mouneh Rewards unavailable:",err);}
+    }catch(err){state.accountBusy=false;state.accountError=serviceErrorMessage(err);state.authNotice=state.accountError;render();notifyAccount();console.warn("Mouneh Rewards unavailable:",err);}
   }
 
   window.ZWM_REWARDS={
@@ -1136,7 +1235,11 @@
       authNotice:state.authNotice,
       pendingSignupEmail:state.pendingSignupEmail,
       pendingReferral:pendingReferral(),
-      googleEnabled:state.googleEnabled
+      googleEnabled:state.googleEnabled,
+      bonusStatus:state.bonusStatus||null,
+      accountBusy:!!state.accountBusy,
+      accountError:state.accountError||"",
+      lastAccountLoadAt:Number(state.lastAccountLoadAt)||0
     }),
     auth:{
       setMode:(mode)=>{state.authMode=mode==="signup"||mode==="signup-form"?"signup-form":"signin-form";},
@@ -1144,6 +1247,8 @@
       signIn,
       signUp,
       resendVerification,
+      requestPasswordRecovery,
+      finishPasswordRecovery,
       signInWithGoogle,
       rememberLegalConsent:rememberPendingLegalConsent
     },
@@ -1156,7 +1261,10 @@
       deleteWithGoogle:deleteAccountWithGoogle,
       signOut,
       refresh:loadDashboard,
-      completeSetup:completeAccountSetup
+      completeSetup:completeAccountSetup,
+      claimBirthdayBonus,
+      submitVerifiedReview,
+      refreshBonusStatus:loadBonusStatus
     }
   };
   if(window.__ZWM_PENDING_SIGNIN){

@@ -11,6 +11,95 @@
   let previewSettings=null;
   let refreshInFlight=null;
   const persistentChromeRefs={};
+  const CORE_RELIABILITY_STYLE_ID="zwmCoreReliabilityStyles";
+  let viewportSyncFrame=0;
+
+  function syncVisualViewport(){
+    if(viewportSyncFrame)return;
+    viewportSyncFrame=requestAnimationFrame(()=>{
+      viewportSyncFrame=0;
+      const vv=window.visualViewport;
+      const rawHeight=Number(vv?.height)||Number(window.innerHeight)||Number(document.documentElement.clientHeight)||0;
+      if(rawHeight>0)document.documentElement.style.setProperty("--zwm-viewport-height",Math.round(rawHeight)+"px");
+    });
+  }
+
+  function ensureCoreReliability(){
+    if(!document.getElementById(CORE_RELIABILITY_STYLE_ID)){
+      const style=document.createElement("style");
+      style.id=CORE_RELIABILITY_STYLE_ID;
+      style.textContent=`
+        html,body{max-width:100%;overflow-x:clip}
+        @supports not (overflow:clip){html,body{overflow-x:hidden}}
+        img,svg,video,canvas{max-width:100%}
+        .cart-drawer{height:var(--zwm-viewport-height,100dvh)!important;max-height:var(--zwm-viewport-height,100dvh)!important}
+        .product-modal{max-height:var(--zwm-viewport-height,100dvh)!important}
+        .product-modal-card{max-height:calc(var(--zwm-viewport-height,100dvh) - 16px)!important}
+        @media(max-width:760px){
+          input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),select,textarea{font-size:16px!important}
+          button,a,[role="button"],input,select,textarea{touch-action:manipulation}
+          .qty-control button,.card-qty button,.product-view,.cart-remove,.variant-option{min-height:44px}
+          .cart-drawer{width:min(100%,100vw)!important}
+        }
+      `;
+      document.head.appendChild(style);
+    }
+    syncVisualViewport();
+    if(window.__ZWM_VISUAL_VIEWPORT_BOUND)return;
+    window.__ZWM_VISUAL_VIEWPORT_BOUND=true;
+    window.addEventListener("resize",syncVisualViewport,{passive:true});
+    window.addEventListener("orientationchange",syncVisualViewport,{passive:true});
+    window.addEventListener("pageshow",syncVisualViewport,{passive:true});
+    window.visualViewport?.addEventListener("resize",syncVisualViewport,{passive:true});
+    window.visualViewport?.addEventListener("scroll",syncVisualViewport,{passive:true});
+  }
+
+  function recoveryCopy(){
+    const french=document.documentElement.lang==="fr";
+    const arabic=document.documentElement.lang==="ar"||document.documentElement.dir==="rtl";
+    if(french)return {title:"Une partie de la page n’a pas pu démarrer.",action:"Réessayer"};
+    if(arabic)return {title:"تعذّر تشغيل بعض عناصر الصفحة.",action:"إعادة المحاولة"};
+    return {title:"Some page controls could not start.",action:"Retry"};
+  }
+
+  function showClientRecovery(){
+    if(document.getElementById("zwmClientRecovery"))return;
+    const copy=recoveryCopy();
+    const box=document.createElement("aside");
+    box.id="zwmClientRecovery";
+    box.setAttribute("role","alert");
+    box.style.cssText="position:fixed;left:12px;right:12px;bottom:max(72px,calc(env(safe-area-inset-bottom) + 14px));z-index:10000;display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:620px;margin:auto;padding:12px 14px;border:1px solid rgba(15,74,32,.18);border-radius:14px;background:#fffaf0;color:#173820;box-shadow:0 14px 38px rgba(8,45,19,.2);font:700 13px/1.35 'DM Sans',system-ui,sans-serif";
+    const message=document.createElement("span");
+    message.textContent=copy.title;
+    const retry=document.createElement("button");
+    retry.type="button";
+    retry.textContent=copy.action;
+    retry.style.cssText="flex:0 0 auto;min-height:44px;padding:0 14px;border:0;border-radius:999px;background:#174526;color:#fff;font:800 12px/1 'DM Sans',system-ui,sans-serif;cursor:pointer";
+    retry.addEventListener("click",()=>location.reload());
+    box.append(message,retry);
+    document.body?.appendChild(box);
+    document.documentElement.dataset.zwmClientRecovery="1";
+  }
+
+  function bindClientErrorRecovery(){
+    if(window.__ZWM_CLIENT_RECOVERY_BOUND)return;
+    window.__ZWM_CLIENT_RECOVERY_BOUND=true;
+    window.addEventListener("error",event=>{
+      const target=event.target;
+      if(target&&target!==window&&target.tagName==="SCRIPT"){showClientRecovery();return}
+      if(event.error)showClientRecovery();
+    },true);
+    window.addEventListener("unhandledrejection",event=>{
+      const reason=event.reason;
+      if(reason instanceof SyntaxError||reason instanceof ReferenceError)showClientRecovery();
+    });
+    const verifyStorefront=()=>{
+      const page=document.body?.dataset?.page||"";
+      if(["home","index","shop","gift","recipes","about","contact"].includes(page)&&!window.__ZWM_STOREFRONT_READY)showClientRecovery();
+    };
+    if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(verifyStorefront,250),{once:true});
+    else setTimeout(verifyStorefront,250);
+  }
 
   function loadScript(src){
     return new Promise((resolve,reject)=>{
@@ -921,5 +1010,8 @@
     window.addEventListener("storage",event=>{if(event.key===ADMIN_SYNC_KEY)requestSync()});
     setInterval(requestSync,60000);
   }
+  ensureCoreReliability();
+  bindClientErrorRecovery();
+  document.documentElement.dataset.zwmRuntimeReady="1";
   init();
 })();

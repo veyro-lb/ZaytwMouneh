@@ -1,6 +1,6 @@
 const fs=require("node:fs"),assert=require("node:assert/strict"),path=require("node:path");
 const pub=path.join(process.cwd(),"public"),read=n=>fs.readFileSync(path.join(pub,n),"utf8");
-const html=read("wholesale.html"),js=read("wholesale-v1.js"),css=read("wholesale-v1.css"),admin=read("admin-wholesale.js"),sql=fs.readFileSync(path.join(process.cwd(),"supabase/migrations/20261005211000_wholesale_business_orders.sql"),"utf8");
+const migrationDir=path.join(process.cwd(),"supabase/migrations");\nconst sql=fs.readdirSync(migrationDir).filter(n=>n.includes("wholesale")).sort().map(n=>fs.readFileSync(path.join(migrationDir,n),"utf8")).join("\\n");\nconst html=read("wholesale.html"),js=read("wholesale-v1.js"),css=read("wholesale-v1.css"),admin=read("admin-wholesale.js");
 assert.equal((html.match(/<h1\b/gi)||[]).length,1,"wholesale must have one H1");
 for(const x of ["en-LB","ar-LB","fr-LB","x-default"])assert(html.includes(`hreflang="${x}"`),"missing hreflang "+x);
 for(const x of ["businessName","contactName","businessType","phone","location","productSearch","consent","submitWholesale"])assert(html.includes(`id="${x}"`),"missing field "+x);
@@ -18,6 +18,11 @@ for(const bad of ["best wholesale prices","guaranteed lowest","guaranteed supply
 assert(css.includes("@media(max-width:360px)")&&css.includes("@media(max-width:560px)"),"small-phone CSS coverage missing");
 assert(js.includes('DRAFT_MAX=48*60*60*1000'),"bounded draft persistence missing");
 assert(js.includes("slice(0,24)"),"catalogue search rendering must stay bounded");
+assert(js.includes("submission_key:ensureSubmissionKey()"),"client idempotency key missing");
+assert(sql.includes("wholesale_leads_submission_key_idx"),"server idempotency unique index missing");
+assert(sql.includes("private.submit_wholesale_enquiry_idempotent"),"idempotent submission routine missing");
+assert(sql.includes("revoke execute on function private.submit_wholesale_enquiry_core(jsonb) from anon,authenticated"),"anonymous callers can bypass idempotency");
+assert(sql.includes("regexp_replace(phone,'[^0-9]','','g')"),"international phone normalization fix missing");
 assert(admin.includes("wholesale_lead_items(*)"),"admin lead items relationship missing");
 assert(admin.includes("next_follow_up_at"),"admin follow-up workflow missing");
 console.log("Wholesale static regression passed: localized RFQ, bounded catalogue picker, CRM and RLS guards.");

@@ -4160,3 +4160,19 @@
     } else showOnly("setupScreen");
   });
 })();
+
+
+/* ZWM_NOTIFICATION_BOOTSTRAP_V1 */
+(()=>{
+  "use strict";
+  if(window.__ZWM_NOTIFICATION_ADMIN_BOOTSTRAP)return;
+  window.__ZWM_NOTIFICATION_ADMIN_BOOTSTRAP=true;
+  const css=document.createElement("link");
+  css.rel="stylesheet";
+  css.href="/notification-admin.css?v=20261005-notify1";
+  document.head.appendChild(css);
+  const script=document.createElement("script");
+  script.src="/notification-admin.js?v=20261005-notify1";
+  script.defer=true;
+  document.head.appendChild(script);
+})();

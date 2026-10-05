@@ -21,7 +21,7 @@ function setup(width,locale){
   w.IntersectionObserver=class{constructor(cb){this.cb=cb}observe(el){this.cb([{target:el,isIntersecting:true}],this)}unobserve(){}disconnect(){}};
   w.ResizeObserver=class{observe(){}unobserve(){}disconnect(){}};
   w.HTMLElement.prototype.scrollIntoView=function(){};
-  if(w.HTMLMediaElement){w.HTMLMediaElement.prototype.play=function(){return Promise.resolve()};w.HTMLMediaElement.prototype.pause=function(){}}
+  if(w.HTMLMediaElement){w.HTMLMediaElement.prototype.play=function(){return Promise.resolve()};w.HTMLMediaElement.prototype.pause=function(){};w.HTMLMediaElement.prototype.load=function(){}}
   if(!w.CSS)w.CSS={}; if(!w.CSS.escape)w.CSS.escape=s=>String(s).replace(/[^a-zA-Z0-9_-]/g,"\\$&");
   w.fetch=async()=>({ok:true,status:200,json:async()=>[],text:async()=>""});
   w.navigator.share=undefined;
@@ -44,7 +44,7 @@ async function assertOpen(ctx,button,label){
   const {w,d,errors}=ctx;
   button.click(); await wait(35);
   const modal=d.getElementById("productModal"),backdrop=d.getElementById("cartBackdrop");
-  assert(modal.classList.contains("is-open"),label+" modal not visible");
+  assert(modal.classList.contains("is-open"),label+" modal not visible; errors="+errors.join(" | "));
   assert.equal(modal.getAttribute("aria-hidden"),"false",label+" aria-hidden");
   assert(d.body.classList.contains("modal-open"),label+" body not locked");
   assert(!backdrop.hidden&&backdrop.classList.contains("is-visible"),label+" backdrop not visible");

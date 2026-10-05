@@ -1,1 +1,22 @@
+# Canonical duplicate legal routes
+/privacy-and-data.html /privacy 301
+/privacy-and-data /privacy 301
+/privacy-policy.html /privacy 301
+/privacy-policy /privacy 301
+/terms-and-rewards.html /terms 301
+/terms-and-rewards /terms 301
+/terms-of-service.html /terms 301
+/terms-of-service /terms 301
+
+# Localized storefront routes (same application shell; locale is selected from URL)
+/ar /index.html 200
+/ar/ /index.html 200
+/fr /index.html 200
+/fr/ /index.html 200
+/ar/product/* /product.html?slug=:splat 200
+/fr/product/* /product.html?slug=:splat 200
+/ar/:page /:page.html 200
+/fr/:page /:page.html 200
+
+# Permanent product pages
 /product/* /product.html?slug=:splat 200

@@ -1,0 +1,19 @@
+/* Batch 7: final accessibility and regression layer */
+.zwm-skip-link{
+  position:fixed;inset-inline-start:12px;top:10px;z-index:20000;
+  transform:translateY(-150%);padding:10px 14px;border-radius:10px;
+  background:#123f22;color:#fff;font-weight:800;text-decoration:none;
+  box-shadow:0 8px 24px rgba(0,0,0,.2)
+}
+.zwm-skip-link:focus{transform:none}
+:where(a,button,input,select,textarea,summary,[role="button"],[tabindex]):focus-visible{
+  outline:3px solid #b88723!important;outline-offset:3px!important
+}
+main[id],section[id]{scroll-margin-top:110px}
+@media (forced-colors:active){
+  :where(a,button,input,select,textarea,summary,[role="button"],[tabindex]):focus-visible{outline:3px solid CanvasText!important}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  video[autoplay]{visibility:visible}
+}

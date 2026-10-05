@@ -18,7 +18,7 @@ for(const expected of [
   'href="/about"><span>05</span>',
   'href="/contact"><span>06</span>',
   'href="/wholesale" data-wholesale-link="nav" aria-current="page"',
-  'href="#wholesale-request" data-t="requestPricing"',
+  'href="/wholesale#wholesale-request" data-t="requestPricing"',
   'href="/shop" data-t="browsePantry"',
   'href="/privacy" target="_blank"',
   'href="/shop" data-t="backShop"',
@@ -57,3 +57,5 @@ assert(sql.includes("regexp_replace(phone,'[^0-9]','','g')"),"international phon
 assert(admin.includes("wholesale_lead_items(*)"),"admin lead items relationship missing");
 assert(admin.includes("next_follow_up_at"),"admin follow-up workflow missing");
 console.log("Wholesale static regression passed: localized RFQ, bounded catalogue picker, CRM and RLS guards.");
+
+assert(!html.includes('href="#wholesale-request" data-t="requestPricing"'),"fragment-only Wholesale CTA must not be used with <base href=\"/\"> because it resolves to the homepage");

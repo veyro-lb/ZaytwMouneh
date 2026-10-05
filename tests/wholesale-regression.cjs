@@ -5,6 +5,27 @@ const sql=fs.readdirSync(migrationDir).filter(n=>n.includes("wholesale")).sort()
 const html=read("wholesale.html"),js=read("wholesale-v1.js"),css=read("wholesale-v1.css"),admin=read("admin-wholesale.js");
 const menuPages=["index.html","shop.html","gift.html","recipes.html","about.html","contact.html","account.html","privacy.html","terms.html","privacy-policy.html","privacy-and-data.html","terms-of-service.html","terms-and-rewards.html"];
 assert.equal((html.match(/<h1\b/gi)||[]).length,1,"wholesale must have one H1");
+assert(html.includes('<header class="site-header"'),"wholesale must use the canonical storefront header");
+assert(!html.includes('<header class="wholesale-header"'),"standalone wholesale header must not return");
+assert(html.includes('<footer class="footer"'),"wholesale must use the canonical storefront footer");
+assert(!html.includes('<footer class="wholesale-footer"'),"standalone wholesale footer must not return");
+assert(html.includes('<a class="cart-button" id="cartButton" href="/shop"'),"wholesale header pantry control must be a reliable Shop link");
+for(const expected of [
+  'href="/" aria-label="Zayt w Mouneh home"',
+  'href="/shop"><span>02</span>',
+  'href="/gift"><span>03</span>',
+  'href="/recipes"><span>04</span>',
+  'href="/about"><span>05</span>',
+  'href="/contact"><span>06</span>',
+  'href="/wholesale" data-wholesale-link="nav" aria-current="page"',
+  'href="#wholesale-request" data-t="requestPricing"',
+  'href="/shop" data-t="browsePantry"',
+  'href="/privacy" target="_blank"',
+  'href="/shop" data-t="backShop"',
+  'href="https://wa.me/96181581230"'
+])assert(html.includes(expected),"wholesale navigation/button route missing: "+expected);
+assert(js.includes('function syncSiteShell()'),"wholesale shell synchronization missing");
+assert(js.includes('localStorage.getItem("zwm-cart-v5")'),"wholesale shell cart count must reflect the saved pantry");
 for(const x of ["en-LB","ar-LB","fr-LB","x-default"])assert(html.includes(`hreflang="${x}"`),"missing hreflang "+x);
 for(const x of ["businessName","contactName","businessType","phone","location","productSearch","consent","submitWholesale"])assert(html.includes(`id="${x}"`),"missing field "+x);
 assert(js.includes('D.documentElement.dir=locale==="ar"?"rtl":"ltr"'),"true Arabic RTL missing");

@@ -3,6 +3,7 @@ const pub=path.join(process.cwd(),"public"),read=n=>fs.readFileSync(path.join(pu
 const migrationDir=path.join(process.cwd(),"supabase/migrations");
 const sql=fs.readdirSync(migrationDir).filter(n=>n.includes("wholesale")).sort().map(n=>fs.readFileSync(path.join(migrationDir,n),"utf8")).join("\\n");
 const html=read("wholesale.html"),js=read("wholesale-v1.js"),css=read("wholesale-v1.css"),admin=read("admin-wholesale.js");
+const menuPages=["index.html","shop.html","gift.html","recipes.html","about.html","contact.html","account.html","privacy.html","terms.html","privacy-policy.html","privacy-and-data.html","terms-of-service.html","terms-and-rewards.html"];
 assert.equal((html.match(/<h1\b/gi)||[]).length,1,"wholesale must have one H1");
 for(const x of ["en-LB","ar-LB","fr-LB","x-default"])assert(html.includes(`hreflang="${x}"`),"missing hreflang "+x);
 for(const x of ["businessName","contactName","businessType","phone","location","productSearch","consent","submitWholesale"])assert(html.includes(`id="${x}"`),"missing field "+x);
@@ -17,6 +18,11 @@ assert(!/grant\s+(?:delete|all)[^;]*wholesale_leads\s+to\s+authenticated/i.test(
 assert(sql.includes("private.submit_wholesale_enquiry_core"),"controlled private submission routine missing");
 assert(sql.includes("exists(select 1 from public.admin_users"),"owner allowlist policy missing");
 for(const bad of ["best wholesale prices","guaranteed lowest","guaranteed supply"])assert(!html.toLowerCase().includes(bad),"unsupported wholesale claim: "+bad);
+for(const page of menuPages){
+  const menuHtml=read(page);
+  assert(menuHtml.includes('data-wholesale-link="nav"'),page+" missing permanent wholesale menu entry");
+  assert(menuHtml.includes('href="/wholesale"'),page+" wholesale menu href missing");
+}
 assert(css.includes("@media(max-width:360px)")&&css.includes("@media(max-width:560px)"),"small-phone CSS coverage missing");
 assert(js.includes('DRAFT_MAX=48*60*60*1000'),"bounded draft persistence missing");
 assert(js.includes("slice(0,24)"),"catalogue search rendering must stay bounded");

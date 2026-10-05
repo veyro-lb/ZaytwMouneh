@@ -7,11 +7,33 @@ var FR_KEY="zwm:french:v1";
 var LANG_KEY="zwm-lang-v2";
 var ADMIN_LANG_KEY="zwm:admin-lang:v1";
 var WELCOME_KEY="zwm-welcome-seen-v3";
+var LOCALE_KEY="zwm-locale-v3";
 
 function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
 function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 function del(k){try{localStorage.removeItem(k)}catch(e){}}
-function isFrench(){return get(FR_KEY)==="1"}
+function normalizeLocale(code){return code==="ar"||code==="fr"?code:"en"}
+function currentLocale(){
+  var canonical=get(LOCALE_KEY);
+  if(canonical==="en"||canonical==="ar"||canonical==="fr")return canonical;
+  if(get(FR_KEY)==="1")return "fr";
+  return get(LANG_KEY)==="ar"||get(ADMIN_LANG_KEY)==="ar"?"ar":"en";
+}
+function syncLocaleState(code){
+  var next=normalizeLocale(code);
+  set(LOCALE_KEY,next);
+  if(next==="fr"){
+    set(FR_KEY,"1");
+    // Legacy storefront modules still render their English source before the
+    // French dictionary is applied. Keep their compatibility key on English,
+    // while LOCALE_KEY remains the single authoritative locale.
+    set(LANG_KEY,"en");set(ADMIN_LANG_KEY,"en");
+  }else{
+    del(FR_KEY);set(LANG_KEY,next);set(ADMIN_LANG_KEY,next);
+  }
+  return next;
+}
+function isFrench(){return currentLocale()==="fr"}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 
 var EXACT=Object.freeze({
@@ -1503,7 +1525,11 @@ var EXACT=Object.freeze({
 "Driver note, follow-up, customer preference…":"Note du livreur, suivi, préférence client…",
 "Remove customer account":"Supprimer le compte client",
 "Deletes this customer’s sign-in, Mouneh Points profile, points, vouchers, reviews and saved addresses. Historical orders stay in Orders & history for business records.":"Supprime la connexion de ce client, son profil Mouneh Points, ses points, bons, avis et adresses enregistrées. Les commandes historiques restent dans Commandes & historique pour les dossiers de l’entreprise.",
-"Remove account":"Supprimer le compte"
+"Remove account":"Supprimer le compte",
+"Natural · Authentic · Lebanese":"Naturel · Authentique · Libanais",
+"Sign-in & verification setup":"Configuration de connexion et de vérification",
+"Track every order sent from the website by its WhatsApp code.":"Suivez chaque commande envoyée depuis le site grâce à son code WhatsApp.",
+"“Sent” means the customer opened WhatsApp with the prepared order. Mark delivery progress here.":"« Envoyée » signifie que le client a ouvert WhatsApp avec la commande préparée. Mettez ici à jour l’avancement de la livraison."
 ,
 "My Account | Zayt w Mouneh":"Mon compte | Zayt w Mouneh",
 "Zayt w Mouneh home":"Accueil Zayt w Mouneh",
@@ -2341,7 +2367,7 @@ function addStyles(){
 function choiceButton(code,label){
   var b=document.createElement("button");
   b.type="button";b.dataset.frSet=code;b.textContent=label;b.className="fr-menu-choice";b.setAttribute("lang",code);b.setAttribute("dir",code==="ar"?"rtl":"ltr");
-  if((code==="fr"&&isFrench())||(code!=="fr"&&!isFrench()&&get(LANG_KEY)===code))b.classList.add("is-active");
+  if(currentLocale()===code)b.classList.add("is-active");
   return b;
 }
 function hideNativeLanguageButtons(root){
@@ -2357,8 +2383,9 @@ function hideNativeLanguageButtons(root){
   });
 }
 function currentLanguageControlCopy(){
-  if(isFrench())return {label:"Langue",aria:"Changer de langue",title:"Changer de langue"};
-  if(get(LANG_KEY)==="ar")return {label:"لغة",aria:"تغيير اللغة",title:"تغيير اللغة"};
+  var locale=currentLocale();
+  if(locale==="fr")return {label:"Langue",aria:"Changer de langue",title:"Changer de langue"};
+  if(locale==="ar")return {label:"لغة",aria:"تغيير اللغة",title:"تغيير اللغة"};
   return {label:"Lang",aria:"Change language",title:"Change language"};
 }
 function syncLanguageControlCopy(root){
@@ -2401,11 +2428,7 @@ function ensureControls(){
 }
 function switchLocale(code,welcome){
   if(welcome)set(WELCOME_KEY,"1");
-  if(code==="fr"){
-    set(FR_KEY,"1");set(LANG_KEY,"en");set(ADMIN_LANG_KEY,"en");
-  }else{
-    del(FR_KEY);set(LANG_KEY,code==="ar"?"ar":"en");set(ADMIN_LANG_KEY,code==="ar"?"ar":"en");
-  }
+  syncLocaleState(code);
   location.reload();
 }
 
@@ -2425,12 +2448,10 @@ document.addEventListener("click",function(e){
   if(welcomeFr){
     e.preventDefault();e.stopImmediatePropagation();switchLocale("fr",true);return;
   }
-  if(isFrench()){
-    var native=e.target.closest("[data-lang],[data-commerce-lang],[data-admin-lang],[data-welcome-lang]");
-    if(native){
-      var code=native.dataset.lang||native.dataset.commerceLang||native.dataset.adminLang||native.dataset.welcomeLang;
-      if(code==="en"||code==="ar"){e.preventDefault();e.stopImmediatePropagation();switchLocale(code,!!native.dataset.welcomeLang);return}
-    }
+  var native=e.target.closest("[data-lang],[data-commerce-lang],[data-admin-lang],[data-welcome-lang]");
+  if(native){
+    var code=native.dataset.lang||native.dataset.commerceLang||native.dataset.adminLang||native.dataset.welcomeLang;
+    if(code==="en"||code==="ar"||code==="fr"){e.preventDefault();e.stopImmediatePropagation();switchLocale(code,!!native.dataset.welcomeLang);return}
   }
   document.querySelectorAll(".fr-globe-menu.is-open").forEach(function(menu){
     menu.classList.remove("is-open");
@@ -2456,12 +2477,33 @@ function applyFrench(root){
 }
 window.ZWM_APPLY_FRENCH=applyFrench;
 window.ZWM_FR_TRANSLATE=dynamicFr;
+window.ZWM_LOCALE=Object.freeze({
+  get:currentLocale,
+  set:syncLocaleState,
+  is:function(code){return currentLocale()===normalizeLocale(code)},
+  t:function(en,ar,fr){
+    var locale=currentLocale();
+    if(locale==="ar")return ar==null?en:ar;
+    if(locale==="fr")return fr==null?en:fr;
+    return en;
+  },
+  translate:function(value){return currentLocale()==="fr"?dynamicFr(value):String(value==null?"":value)}
+});
+if(!window.__ZWM_LOCALE_DIALOGS__){
+  window.__ZWM_LOCALE_DIALOGS__=true;
+  var nativeAlert=window.alert&&window.alert.bind(window);
+  var nativeConfirm=window.confirm&&window.confirm.bind(window);
+  if(nativeAlert)window.alert=function(message){return nativeAlert(currentLocale()==="fr"?dynamicFr(message):message)};
+  if(nativeConfirm)window.confirm=function(message){return nativeConfirm(currentLocale()==="fr"?dynamicFr(message):message)};
+}
 
 document.addEventListener("zwm:translate-french",function(e){
   applyFrench(e&&e.detail&&e.detail.root?e.detail.root:document.body);
 });
 
 function boot(){
+  // Migrate old zwm:french / zwm-lang keys once and keep one canonical locale.
+  syncLocaleState(currentLocale());
   addStyles();ensureControls();
   if(isFrench())applyFrench(document.body);
 
@@ -2495,7 +2537,7 @@ function boot(){
       }
     });
   });
-  observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["aria-label","title","placeholder","alt","content","style","hidden","class"]});
+  observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["aria-label","title","placeholder","alt","content"]});
   setTimeout(function(){ensureControls();if(isFrench())applyFrench(document.body)},80);
   setTimeout(function(){ensureControls();if(isFrench())applyFrench(document.body)},450);
   setTimeout(function(){ensureControls();if(isFrench())applyFrench(document.body)},1200);

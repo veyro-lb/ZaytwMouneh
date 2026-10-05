@@ -1,6 +1,8 @@
 const fs=require("node:fs"),assert=require("node:assert/strict"),path=require("node:path");
 const pub=path.join(process.cwd(),"public"),read=n=>fs.readFileSync(path.join(pub,n),"utf8");
-const migrationDir=path.join(process.cwd(),"supabase/migrations");\nconst sql=fs.readdirSync(migrationDir).filter(n=>n.includes("wholesale")).sort().map(n=>fs.readFileSync(path.join(migrationDir,n),"utf8")).join("\\n");\nconst html=read("wholesale.html"),js=read("wholesale-v1.js"),css=read("wholesale-v1.css"),admin=read("admin-wholesale.js");
+const migrationDir=path.join(process.cwd(),"supabase/migrations");
+const sql=fs.readdirSync(migrationDir).filter(n=>n.includes("wholesale")).sort().map(n=>fs.readFileSync(path.join(migrationDir,n),"utf8")).join("\\n");
+const html=read("wholesale.html"),js=read("wholesale-v1.js"),css=read("wholesale-v1.css"),admin=read("admin-wholesale.js");
 assert.equal((html.match(/<h1\b/gi)||[]).length,1,"wholesale must have one H1");
 for(const x of ["en-LB","ar-LB","fr-LB","x-default"])assert(html.includes(`hreflang="${x}"`),"missing hreflang "+x);
 for(const x of ["businessName","contactName","businessType","phone","location","productSearch","consent","submitWholesale"])assert(html.includes(`id="${x}"`),"missing field "+x);

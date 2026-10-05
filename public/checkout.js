@@ -2,7 +2,7 @@
 (function(){
 "use strict";
 var CART_KEY="zwm-cart-v5",GIFT_KEY="zwm-gift-items-v1",GIFT_META_KEY="zwm:native-gift:meta:v1",LANG_KEY="zwm-lang-v2",AUTH_KEY="zwm:mouneh:session:v1",CLAIMS_KEY="zwm:mouneh:claims:v1",WALLET_KEY="zwm:mouneh:selected-wallet:v1",REQUEST_KEY="zwm:native-checkout:request:v1",AREA_DRAFT_KEY="zwm:native-checkout:area:v1";
-var state={lang:"en",kind:"order",giftMeta:{},config:null,products:[],cart:{},rows:[],dashboard:null,addresses:[],authUser:null,walletId:"",busy:false,areaRecord:null,areaText:""};
+var state={lang:"en",kind:"order",giftMeta:{},config:null,products:[],cart:{},rows:[],dashboard:null,addresses:[],authUser:null,walletId:"",busy:false,areaRecord:null,areaText:"",catalogVerified:false};
 var T={
 en:{backCart:"← Back to cart",account:"My Account",eyebrow:"Secure website order",title:"Checkout",intro:"Confirm your details once, see the complete total, and place your Zayt w Mouneh order directly on the website.",emptyTitle:"Your pantry is empty.",emptyCopy:"Add products before starting checkout.",startShopping:"Start shopping",customerTitle:"Customer",customerHelp:"We only collect what is needed to fulfil your order.",name:"Full name",phone:"Phone / WhatsApp",email:"Email (optional for guests)",whatsappUpdates:"Send me order status updates on WhatsApp",whatsappUpdatesHelp:"Order updates only — confirmation, preparation, delivery and completion.",recipientName:"Recipient name",recipientPhone:"Recipient phone",giftDeliveryHelp:"Use the recipient contact if the driver should call them directly.",deliveryTitle:"Delivery",deliveryHelp:"Use the details a local driver would need in Lebanon.",savedAddress:"Deliver to a saved address",anotherAddress:"Use another",area:"Area / City",street:"Street / Neighborhood",building:"Building / Residence",floor:"Floor / Apartment",landmark:"Nearby landmark",instructions:"Delivery instructions",saveAddress:"Save this address to my account",rewardsTitle:"Rewards",rewardsHelp:"Mouneh Points are finalized only after delivery and payment are confirmed.",paymentTitle:"Payment",paymentHelp:"More payment methods can be added later without changing your order history.",cod:"Cash on Delivery",codHelp:"Pay when your order arrives.",notesTitle:"Order note",notesHelp:"Optional — tell us anything useful for this delivery.",notes:"Anything we should know?",reviewTitle:"Review & place order",reviewHelp:"Your final total is re-calculated securely on the server before the order is created.",summaryTitle:"Order summary",subtotal:"Subtotal",reward:"Reward",delivery:"Delivery",total:"Total",placeOrder:"Place Order",needHelp:"Need help?",whatsappSupport:"Chat with us on WhatsApp",termsConsent:"I agree to the Terms of Service, Privacy Policy and applicable order/delivery terms.",termsLink:"Open Terms of Service ↗",privacyLink:"Open Privacy Policy ↗",terms:'I agree to the <a href="/terms-and-rewards.html" target="_blank" rel="noopener">Terms of Service</a>, <a href="/privacy-and-data.html" target="_blank" rel="noopener">Privacy Policy</a> and applicable order/delivery terms.'},
 ar:{backCart:"العودة للسلة →",account:"حسابي",eyebrow:"طلب آمن عبر الموقع",title:"إتمام الطلب",intro:"أكّد بياناتك مرة واحدة، شاهد المجموع الكامل، وأرسل طلب زيت ومونة مباشرة عبر الموقع.",emptyTitle:"سلتك فارغة.",emptyCopy:"أضف منتجات قبل بدء إتمام الطلب.",startShopping:"ابدأ التسوق",customerTitle:"العميل",customerHelp:"نجمع فقط البيانات اللازمة لتنفيذ الطلب.",name:"الاسم الكامل",phone:"رقم الهاتف / واتساب",email:"البريد الإلكتروني (اختياري للضيف)",whatsappUpdates:"أرسل لي تحديثات حالة الطلب عبر واتساب",whatsappUpdatesHelp:"تحديثات خاصة بالطلب فقط — التأكيد والتحضير والتوصيل والإكمال.",recipientName:"اسم المستلم",recipientPhone:"هاتف المستلم",giftDeliveryHelp:"استخدم رقم المستلم إذا كان على السائق الاتصال به مباشرة.",deliveryTitle:"التوصيل",deliveryHelp:"استخدم التفاصيل التي يحتاجها سائق التوصيل في لبنان.",savedAddress:"التوصيل إلى عنوان محفوظ",anotherAddress:"استخدام عنوان آخر",area:"المنطقة / المدينة",street:"الشارع / الحي",building:"المبنى / السكن",floor:"الطابق / الشقة",landmark:"معلم قريب",instructions:"تعليمات التوصيل",saveAddress:"حفظ هذا العنوان في حسابي",rewardsTitle:"المكافآت",rewardsHelp:"تُعتمد نقاط المونة فقط بعد تأكيد التسليم واستلام الدفع.",paymentTitle:"الدفع",paymentHelp:"يمكن إضافة طرق دفع أخرى لاحقاً من دون تغيير سجل طلباتك.",cod:"الدفع عند الاستلام",codHelp:"ادفع عند وصول طلبك.",notesTitle:"ملاحظة الطلب",notesHelp:"اختياري — أخبرنا بما يفيد في هذا التوصيل.",notes:"هل هناك شيء يجب أن نعرفه؟",reviewTitle:"المراجعة وإرسال الطلب",reviewHelp:"يُعاد احتساب المجموع النهائي بأمان على الخادم قبل إنشاء الطلب.",summaryTitle:"ملخص الطلب",subtotal:"المجموع الفرعي",reward:"المكافأة",delivery:"التوصيل",total:"المجموع",placeOrder:"إرسال الطلب",needHelp:"تحتاج مساعدة؟",whatsappSupport:"تواصل معنا عبر واتساب",termsConsent:"أوافق على شروط الخدمة وسياسة الخصوصية وشروط الطلب والتوصيل المطبقة.",termsLink:"فتح شروط الخدمة ↗",privacyLink:"فتح سياسة الخصوصية ↗",terms:'أوافق على <a href="/terms-and-rewards.html" target="_blank" rel="noopener">شروط الخدمة</a> و<a href="/privacy-and-data.html" target="_blank" rel="noopener">سياسة الخصوصية</a> وشروط الطلب والتوصيل المطبقة.'}
@@ -34,11 +34,16 @@ async function authUser(){
 }
 async function loadOverrides(){
   var c=config(),base=productBase(),map=new Map(base.map(function(p){return [p.id,p]}));
+  state.catalogVerified=false;
   try{
     var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/rest/v1/product_overrides?select=product_id,action,payload",{headers:{"apikey":c.supabasePublishableKey}});
-    if(r.ok){var rows=await r.json();rows.forEach(function(o){var p=map.get(o.product_id)||{id:o.product_id};if(o.action==="hide"){p.__hidden=true}else if(o.payload&&typeof o.payload==="object"){p=Object.assign({},p,o.payload);p.__hidden=o.action==="hide"}map.set(o.product_id,p)})}
+    if(!r.ok)throw new Error("Catalogue verification failed");
+    var rows=await r.json();
+    rows.forEach(function(o){var p=map.get(o.product_id)||{id:o.product_id};if(o.action==="hide"){p.__hidden=true}else if(o.payload&&typeof o.payload==="object"){p=Object.assign({},p,o.payload);p.__hidden=o.action==="hide"}map.set(o.product_id,p)});
+    state.catalogVerified=true
   }catch{}
-  state.products=Array.from(map.values())
+  state.products=Array.from(map.values());
+  return state.catalogVerified
 }
 function product(id){return state.products.find(function(p){return p.id===id})}
 function variant(p,id){return p&&Array.isArray(p.variants)?p.variants.find(function(v){return v.id===id}):null}
@@ -221,7 +226,7 @@ function renderSummary(){
   $("freeDeliveryBox").innerHTML='<strong>'+esc(msg)+'</strong><div class="free-delivery-track"><span style="width:'+pct+'%"></span></div>'+(q.minimum>0?'<small>'+esc((state.lang==="ar"?"الحد الأدنى للطلب ":"Minimum order ")+money(q.minimum))+'</small>':'');
   var btn=$("placeOrderButton");
   btn.textContent=(state.lang==="ar"?"إرسال الطلب — ":"Place Order — ")+money(total);
-  btn.disabled=state.busy||!q.available||!q.hasArea||!state.rows.length||state.rows.some(function(r){return !r.available})
+  btn.disabled=state.busy||!state.catalogVerified||!q.available||!q.hasArea||!state.rows.length||state.rows.some(function(r){return !r.available})
 }
 function renderGiftFields(){
   var box=$("giftCheckoutFields");if(!box)return;
@@ -290,6 +295,12 @@ async function init(){
   state.walletId=String(read(WALLET_KEY,"")||"");
   var remembered=readArea();if(remembered&&!$("checkoutArea").value)$("checkoutArea").value=remembered;
   renderAll();
+  if(!state.catalogVerified){
+    $("checkoutStatus").textContent=state.lang==="ar"?"تعذّر التحقق من أحدث الأسعار والتوفر. أعد المحاولة قبل إرسال الطلب.":"We couldn't verify the latest prices and availability. Retry before placing the order.";
+    var retry=document.createElement("button");retry.type="button";retry.className="checkout-retry";retry.textContent=state.lang==="ar"?"إعادة المحاولة":"Retry";
+    retry.addEventListener("click",async function(){retry.disabled=true;$("checkoutStatus").textContent=state.lang==="ar"?"جارٍ التحقق…":"Checking…";await loadOverrides();rebuildRows();renderAll();if(state.catalogVerified){retry.remove();$("checkoutStatus").textContent=""}else{retry.disabled=false;$("checkoutStatus").textContent=state.lang==="ar"?"ما زال التحقق غير متاح. تحقق من الاتصال وحاول مجدداً.":"Verification is still unavailable. Check your connection and try again."}});
+    $("checkoutStatus").insertAdjacentElement("afterend",retry)
+  }
   window.ZWM_CMS&&window.ZWM_CMS.track&&window.ZWM_CMS.track("checkout_started",{items:state.rows.length,signed_in:!!state.dashboard});
   document.querySelectorAll("[data-commerce-lang]").forEach(function(b){b.addEventListener("click",function(){setLang(b.dataset.commerceLang)})});
   $("nativeCheckoutForm").addEventListener("submit",submit);
@@ -311,5 +322,18 @@ async function init(){
   document.addEventListener("click",function(e){if(!e.target.closest(".checkout-area-field"))closeAreaSuggestions()});
   ["checkoutStreet","checkoutBuilding"].forEach(function(id){var el=$(id);if(el)el.addEventListener("input",function(){renderSummary();$("checkoutStatus").textContent=""})});
 }
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init()
+function showCheckoutLoadError(err){
+  var form=$("nativeCheckoutForm"),empty=$("checkoutEmpty");
+  if(form)form.hidden=true;
+  if(empty){
+    empty.hidden=false;
+    var h=empty.querySelector("h2"),p=empty.querySelector("p"),a=empty.querySelector("a");
+    if(h)h.textContent=state.lang==="ar"?"تعذّر تحميل إتمام الطلب.":"Checkout couldn't load.";
+    if(p)p.textContent=state.lang==="ar"?"لم يتم إنشاء أي طلب. تحقق من الاتصال ثم حاول مجدداً.":"No order was created. Check your connection and try again.";
+    if(a){a.href=location.pathname+location.search;a.textContent=state.lang==="ar"?"إعادة المحاولة":"Retry checkout"}
+  }
+  console.error("Checkout initialization failed",err)
+}
+function start(){init().catch(showCheckoutLoadError)}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});else start()
 })();

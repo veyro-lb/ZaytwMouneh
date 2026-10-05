@@ -6584,6 +6584,9 @@ html[dir="rtl"] body[data-page="home"] .home-pantry-hero .intro-board-note.only-
 /* Owner-controlled product availability */
 .availability-chip{display:inline-flex;align-items:center;min-height:24px;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800}
 .availability-chip.availability-in_stock{background:#e5f2e8;color:#206139}
+.availability-chip.availability-low_stock{background:#fff2cf;color:#7a5911}
+.availability-chip.availability-seasonal{background:#edf0df;color:#58622d}
+.availability-chip.availability-available_on_request{background:#e8eef5;color:#3f5873}
 .availability-chip.availability-out_of_stock{background:#f6e7e4;color:#963d35}
 .availability-chip.availability-coming_soon{background:#eee9f5;color:#665079}
 .add-button:disabled,.card-qty button:disabled,#productModalAdd:disabled{opacity:.55;cursor:not-allowed;filter:saturate(.55)}

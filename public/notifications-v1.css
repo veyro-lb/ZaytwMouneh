@@ -24,3 +24,77 @@
 .zwm-device-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line,#eee)}
 @media(max-width:760px){.zwm-notification-popover{top:64px;right:10px;left:10px;width:auto;max-height:60vh}.zwm-notification-actions>*{flex:1 1 180px;min-height:44px}}
 @media(max-width:430px){.zwm-notification-popover{border-radius:12px}.zwm-notification-actions>*{flex-basis:100%}.zwm-notification-item{padding:10px 12px}}
+/* Customer account notification controls */
+.zwm-customer-notification-bell{
+  position:relative;display:inline-grid;place-items:center;width:44px;height:44px;flex:0 0 44px;
+  border:1px solid rgba(15,74,32,.13);border-radius:50%;background:#fff;color:#164c2c;
+  cursor:pointer;transition:background .18s ease,border-color .18s ease,transform .18s ease
+}
+.zwm-customer-notification-bell:hover{background:#f4f8f1;border-color:rgba(15,74,32,.24);transform:translateY(-1px)}
+.zwm-customer-notification-bell svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.zwm-customer-notification-bell span{
+  position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;padding:0 4px;border-radius:999px;
+  background:#9b2c2c;color:#fff;font:800 10px/18px "DM Sans",sans-serif;text-align:center
+}
+.zwm-customer-notification-popover{top:86px;right:max(18px,calc((100vw - 1240px)/2 + 18px))}
+.zwm-account-notifications{
+  margin-top:18px;padding:26px!important;border:1px solid #e4e8e0!important;border-radius:24px!important;
+  background:linear-gradient(180deg,#fff 0%,#fcfdf9 100%)!important;box-shadow:0 8px 24px rgba(26,52,32,.055)!important
+}
+.zwm-customer-notification-head{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:24px;margin-bottom:22px
+}
+.zwm-customer-notification-head h2{margin:3px 0 7px!important;font-size:clamp(1.8rem,2.8vw,2.45rem)!important;line-height:1!important}
+.zwm-customer-notification-head p:not(.account-eyebrow){max-width:620px;margin:0;color:#6a746c;line-height:1.55}
+.zwm-customer-notification-state{
+  display:inline-flex;align-items:center;justify-content:center;min-height:34px;max-width:220px;padding:7px 12px;border-radius:999px;
+  border:1px solid #dce4d8;background:#f3f6f0;color:#526256;font-size:.76rem;font-weight:800;white-space:nowrap
+}
+.zwm-customer-notification-state.is-on{background:#edf6e9;border-color:#d7e8d0;color:#1f5b31}
+.zwm-customer-notification-state.is-off{background:#f7f7f3;color:#72786f}
+.zwm-customer-notification-control{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:20px;padding:17px 18px;
+  border:1px solid #e2e7df;border-radius:16px;background:#fff
+}
+.zwm-customer-notification-control>div{display:grid;gap:4px}
+.zwm-customer-notification-control strong{font-size:1rem;color:#183c25}
+.zwm-customer-notification-control small{max-width:720px;color:#768079;font-size:.82rem;line-height:1.45}
+.zwm-customer-switch{position:relative;display:inline-flex;align-items:center;cursor:pointer}
+.zwm-customer-switch input{position:absolute;opacity:0;pointer-events:none}
+.zwm-customer-switch span{position:relative;display:block;width:46px;height:26px;border-radius:999px;background:#d8ddd7;transition:.2s ease}
+.zwm-customer-switch span:after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.16);transition:.2s ease}
+.zwm-customer-switch input:checked+span{background:#164c2c}
+.zwm-customer-switch input:checked+span:after{transform:translateX(20px)}
+[dir="rtl"] .zwm-customer-switch input:checked+span:after{transform:translateX(-20px)}
+[dir="rtl"] .zwm-customer-switch span:after{left:auto;right:3px}
+.zwm-customer-notification-footer{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:16px
+}
+.zwm-customer-notification-footer .zwm-notification-actions{margin:0}
+.zwm-customer-notification-footer button{min-height:42px!important;padding:0 16px!important;border-radius:12px!important}
+.zwm-customer-notification-footer button[disabled]{opacity:.45;cursor:not-allowed}
+.zwm-customer-notification-footer [data-test]{background:#fff;border:1px solid #d8dfd6;color:#20452c}
+.zwm-customer-notification-footer .account-status{margin:0!important;flex:1 1 260px;text-align:end}
+.zwm-customer-notification-note{margin:14px 0 0;color:#7a837c;font-size:.78rem;line-height:1.45}
+@media(max-width:900px){
+ .zwm-customer-notification-popover{right:12px}
+ .zwm-account-notifications{padding:22px!important}
+ .zwm-customer-notification-head{gap:16px}
+}
+@media(max-width:700px){
+ .zwm-customer-notification-bell{width:42px;height:42px;flex-basis:42px}
+ .zwm-customer-notification-popover{top:70px;left:10px;right:10px;width:auto}
+ .zwm-account-notifications{padding:18px!important;border-radius:18px!important}
+ .zwm-customer-notification-head{grid-template-columns:1fr;gap:12px}
+ .zwm-customer-notification-state{justify-self:start}
+ .zwm-customer-notification-control{padding:14px}
+ .zwm-customer-notification-footer{align-items:stretch}
+ .zwm-customer-notification-footer .zwm-notification-actions{width:100%}
+ .zwm-customer-notification-footer .zwm-notification-actions button{flex:1 1 140px}
+ .zwm-customer-notification-footer .account-status{text-align:start}
+}
+@media(max-width:430px){
+ .zwm-customer-notification-control{gap:12px}
+ .zwm-customer-notification-control small{font-size:.76rem}
+ .zwm-customer-notification-footer .zwm-notification-actions button{flex-basis:100%}
+}

@@ -550,7 +550,7 @@ function repeatedListingNote(p){
   return DISPLAY_NAME_COUNTS[key]>1?(p.original||""):"";
 }
 
-function money(n){const value=`${Number(n).toFixed(2)}`;return lang==="ar"?`\u2066${value}\u2069`:value}
+function money(n){const value=`$${Number(n).toFixed(2)}`;return lang==="ar"?`\u2066${value}\u2069`:value}
 function currentName(p){return lang==="ar"?plainArabic(p.nameAr):p.nameEn}
 function categoryName(cat){return lang==="ar"?(CATEGORY_AR[cat]||cat):cat}
 function originKeyFor(p){

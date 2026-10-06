@@ -8,13 +8,8 @@ function locale(){try{if(window.ZWM_LOCALE&&window.ZWM_LOCALE.get)return window.
 function tr(en,ar,fr){var l=locale();return l==="ar"?ar:l==="fr"?fr:en}
 function productPath(id){var l=locale();return (l==="ar"?"/ar":l==="fr"?"/fr":"")+"/product/"+encodeURIComponent(id)}
 function modalLink(){
- var modal=q("#productModal"),actions=modal&&q(".product-modal-actions",modal);if(!actions||!currentProduct)return;
- var a=q("[data-c6-full-product]",modal);
- if(!a){a=document.createElement("a");a.className="c6-button is-secondary c6-modal-link";a.dataset.c6FullProduct="1";actions.insertAdjacentElement("afterend",a)}
- var href=productPath(currentProduct);
- var label=tr("View full product page","عرض صفحة المنتج الكاملة","Voir la fiche produit");
- if(a.getAttribute("href")!==href)a.setAttribute("href",href);
- if(a.textContent!==label)a.textContent=label;
+ var modal=q("#productModal");if(!modal)return;
+ var a=q("[data-c6-full-product]",modal);if(a)a.remove();
 }
 function bindProductLinks(){
  document.addEventListener("click",function(e){

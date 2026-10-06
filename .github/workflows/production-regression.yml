@@ -26,5 +26,7 @@ jobs:
           cache: npm
       - name: Install locked test dependencies
         run: npm ci --ignore-scripts
+      - name: Verify generated storefront is committed
+        run: npm run check:generated
       - name: Syntax and production regression checks
-        run: npm run check
+        run: npm run check:syntax && npm run test:regression

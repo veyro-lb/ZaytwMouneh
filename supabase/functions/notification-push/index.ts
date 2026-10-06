@@ -21,6 +21,7 @@ const categoryFor=(type:string)=>({
   PRODUCT_OUT_OF_STOCK:"out_of_stock",
   REVIEW_CREATED:"reviews",
   ORDER_STATUS_CHANGED:"order_updates",
+  ORDER_ITEM_ATTENTION:"order_updates",
   PRODUCT_BACK_IN_STOCK:"back_in_stock",
   MOUNEH_POINTS:"mouneh_points",
   MARKETING:"marketing"
@@ -101,6 +102,11 @@ function content(n:any){
   }
   if(n.notification_type==="REVIEW_CREATED"){
     return {title:c["review.created.title"],body:l==="ar"?"هناك تقييم جديد يحتاج إلى المراجعة.":l==="fr"?"Un nouvel avis est disponible pour modération.":"A new review is ready for moderation."};
+  }
+  if(n.notification_type==="ORDER_ITEM_ATTENTION"){
+    const ref=m.reference||n.entity_id,item=String(m.item||"").trim();
+    if(n.audience==="admin")return {title:l==="ar"?"صنف يحتاج إلى متابعة ⚠️":l==="fr"?"Article nécessitant une attention ⚠️":"Item needs attention ⚠️",body:(l==="ar"?`الطلب ${ref}`:l==="fr"?`Commande ${ref}`:`Order ${ref}`)+(item?" · "+item:"")};
+    return {title:l==="ar"?"هناك صنف في طلبك يحتاج إلى متابعة":l==="fr"?"Un article de votre commande nécessite votre attention":"An item in your order needs attention",body:l==="ar"?`سنراجع الطلب ${ref} ونتواصل معك قريباً.`:l==="fr"?`Nous vérifierons la commande ${ref} et vous contacterons rapidement.`:`We’ll review order ${ref} and contact you shortly.`};
   }
   if(n.notification_type==="ORDER_STATUS_CHANGED"){
     const status=String(m.status||"new");

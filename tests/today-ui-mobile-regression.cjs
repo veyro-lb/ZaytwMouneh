@@ -63,7 +63,10 @@ assert(read("account.html").includes("/customer-notifications-v1.js?v=20261006-t
 for(const file of ["account.html","product.html","gift.html","shop.html","recipes.html"]){
   assert(read(file).includes("/conversion-v1.css?v=20261006-mobileaudit1"),file+" conversion CSS cache token stale");
 }
-assert(read("index.html").includes("site-runtime-v9.js?v=20261007-mobileblank1"),"index.html synchronized mobile release token stale");\nfor(const file of ["shop.html","gift.html","recipes.html","about.html","contact.html","account.html","checkout.html","product.html"]){\n  assert(read(file).includes("site-runtime-v9.js?v=20261006-notificationhardening1"),file+" runtime cache token stale");\n}
+assert(read("index.html").includes("site-runtime-v9.js?v=20261007-mobileblank1"),"index.html synchronized mobile release token stale");
+for(const file of ["shop.html","gift.html","recipes.html","about.html","contact.html","account.html","checkout.html","product.html"]){
+  assert(read(file).includes("site-runtime-v9.js?v=20261006-notificationhardening1"),file+" runtime cache token stale");
+}
 assert(read("wholesale.html").includes("/notifications-v1.css?v=20261006-mobileaudit1"),"Wholesale must load audited notification styles directly");
 assert(read("wholesale.html").includes("/site-runtime-v9.js?v=20261006-notificationhardening1"),"Wholesale storefront runtime cache token stale");
 assert(read("wholesale.html").includes("/wholesale-v1.js?v=20261006-notificationhardening1"),"Wholesale behavior JS cache token stale");

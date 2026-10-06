@@ -209,5 +209,40 @@ async function submit(ctx){
     }finally{ctx.dom.window.close()}
   }
 
-  console.log("Wholesale UI regression passed: EN/AR/FR, validation, RFQ retry, receipt history, account history/status, draft restore and customer button audit.");
+  // Owner/admin Wholesale interaction matrix: desktop/mobile open, refresh, contact links, save/contact/delete.
+  {
+    const html=\`<!doctype html><html><body>
+      <button data-view="wholesale" type="button">Wholesale</button><h1 id="viewTitle"></h1>
+      <section data-view-panel="wholesale" class="is-active">
+        <div class="wholesale-admin-toolbar"><label class="search-field"><input id="wholesaleLeadSearch" type="search"></label>
+        <select id="wholesaleLeadStatus"><option value="">All</option><option value="new">New</option><option value="contacted">Contacted</option><option value="quote_preparing">Quote preparing</option></select>
+        <button id="refreshWholesaleLeads" type="button">Refresh</button></div>
+        <strong id="wholesaleLeadResultCount"></strong><strong id="wholesaleMetricAll"></strong><strong id="wholesaleMetricNew"></strong><strong id="wholesaleMetricQuotes"></strong><strong id="wholesaleMetricConverted"></strong><strong id="navWholesaleCount"></strong>
+        <table><tbody id="wholesaleLeadTableBody"></tbody></table><div id="wholesaleLeadCards"></div>
+      </section></body></html>\`;
+    const dom=new JSDOM(html,{url:"https://store.example/admin",runScripts:"outside-only",pretendToBeVisual:true});
+    const w=dom.window,d=w.document,requests=[];
+    w.ZWM_CMS_CONFIG={supabaseUrl:"https://service.example",supabasePublishableKey:"publishable-test",tables:{wholesaleLeads:"wholesale_leads"}};
+    w.sessionStorage.setItem("zwm:owner-session:v3",JSON.stringify({access_token:"owner-test-token"}));w.confirm=()=>true;
+    let row={id:"11111111-1111-1111-1111-111111111111",business_name:"Cedar Kitchen",contact_name:"Maya Haddad",business_type:"restaurant",location:"Beirut",phone:"03 123 456",email:"maya@example.com",website_or_instagram:"",purchase_frequency:"weekly",approximate_volume:null,first_order_timing:"asap",preferred_contact_method:"whatsapp",locale:"en",status:"new",created_at:"2026-10-05T20:00:00Z",updated_at:"2026-10-05T20:00:00Z",next_follow_up_at:null,internal_notes:null,priorities:["price"],current_supplier_status:"yes",supplier_switch_reason:"",notes:"",unlisted_products:"",wholesale_lead_items:[{product_name_snapshot:"Olive Oil",selected_variant:"1 L",requested_quantity:6,requested_unit:"bottles"}]};
+    w.fetch=async(url,opts={})=>{const u=String(url);requests.push({url:u,opts});
+      if(u.includes("/rest/v1/wholesale_leads?select="))return {ok:true,status:200,json:async()=>[row]};
+      if(u.includes("/rest/v1/wholesale_leads?id=eq.")&&opts.method==="PATCH"){row={...row,...JSON.parse(opts.body||"{}")};return {ok:true,status:200,json:async()=>[row]};}
+      if(u.includes("/rest/v1/rpc/admin_delete_wholesale_enquiry"))return {ok:true,status:200,json:async()=>true};
+      return {ok:false,status:404,json:async()=>({message:"unexpected request"})};
+    };
+    w.eval(read("admin-wholesale.js"));d.dispatchEvent(new w.Event("DOMContentLoaded",{bubbles:true}));await wait(35);
+    assert(d.getElementById("wholesaleLeadTableBody").textContent.includes("Cedar Kitchen"),"desktop admin Wholesale table did not load");
+    let open=d.querySelector("#wholesaleLeadCards .wholesale-lead-open");assert(open,"mobile admin Open lead button missing audited class");assert.equal(open.getAttribute("type"),"button","mobile Open lead must be an explicit button");
+    const before=requests.filter(r=>r.url.includes("?select=")).length,refresh=d.getElementById("refreshWholesaleLeads");refresh.click();assert.equal(refresh.disabled,true,"admin refresh must disable while loading");await wait(20);assert(requests.filter(r=>r.url.includes("?select=")).length>before,"admin refresh did not reload leads");assert.equal(refresh.disabled,false,"admin refresh did not re-enable");
+    open=d.querySelector("#wholesaleLeadCards .wholesale-lead-open");open.click();const modal=d.getElementById("wholesaleLeadModal");assert(modal&&!modal.hidden,"Open lead did not show CRM modal");
+    assert(d.querySelector('.wholesale-lead-actions a[href="tel:+9613123456"]'),"local Lebanese phone did not normalize for Call");assert(d.querySelector('.wholesale-lead-actions a[href="https://wa.me/9613123456"]'),"local Lebanese phone did not normalize for WhatsApp");
+    d.dispatchEvent(new w.KeyboardEvent("keydown",{key:"Escape",bubbles:true}));assert(modal.hidden,"Escape did not close CRM modal");d.querySelector("#wholesaleLeadCards .wholesale-lead-open").click();
+    let mark=d.getElementById("markWholesaleContacted");mark.click();assert.equal(mark.disabled,true,"Mark contacted must disable during save");await wait(20);assert(requests.some(r=>r.opts.method==="PATCH"&&JSON.parse(r.opts.body||"{}").last_contacted_at),"Mark contacted did not persist contact time");assert.equal(row.status,"contacted","new lead did not transition to contacted");
+    d.getElementById("wholesaleDetailStatus").value="quote_preparing";d.getElementById("wholesaleDetailNotes").value="Prepare a quote.";let save=d.getElementById("saveWholesaleLead");save.click();assert.equal(save.disabled,true,"Save CRM changes must disable during save");await wait(20);assert.equal(row.status,"quote_preparing","CRM status did not persist");assert.equal(row.internal_notes,"Prepare a quote.","internal notes did not persist");
+    d.getElementById("deleteWholesaleLead").click();await wait(20);assert(requests.some(r=>r.url.includes("/rpc/admin_delete_wholesale_enquiry")),"Delete enquiry did not call protected RPC");assert(!d.getElementById("wholesaleLeadCards").textContent.includes("Cedar Kitchen"),"deleted lead remained visible");
+    dom.window.close();
+  }
+
+  console.log("Wholesale UI regression passed: customer and admin desktop/mobile buttons, RFQ flow, history/status, draft restore, contact/save/delete actions.");
 })().catch(err=>{console.error(err);process.exitCode=1});

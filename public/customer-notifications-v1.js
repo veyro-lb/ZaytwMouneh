@@ -90,11 +90,24 @@ async function subscribe(){
  return registeredDevice();
 }
 async function bootstrapPrefs(){
- const now=new Date().toISOString(),defaults=["order_updates","wholesale"].map(category=>({user_id:user.id,category,in_app_enabled:true,push_enabled:true,updated_at:now}));
+ const now=new Date().toISOString(),defaults=["order_updates","wholesale","customer_requests"].map(category=>({user_id:user.id,category,in_app_enabled:true,push_enabled:true,updated_at:now}));
  await api("notification_preferences?on_conflict=user_id,category",{method:"POST",headers:{"Prefer":"resolution=ignore-duplicates,return=minimal"},body:JSON.stringify(defaults)}).catch(()=>{});
 }
 function statusTitle(n){
  const m=n.metadata||{},ref=m.reference||n.entity_id||"";
+ if(String(n.notification_type||"").startsWith("RETURN_")){
+  const status=String(m.status||"");
+  const map={
+   submitted:lang()==="ar"?"تم استلام طلب المشكلة":lang()==="fr"?"Demande reçue":"Request received",
+   under_review:lang()==="ar"?"الطلب قيد المراجعة":lang()==="fr"?"Demande en cours d’examen":"Request under review",
+   awaiting_customer:lang()==="ar"?"معلومات إضافية مطلوبة":lang()==="fr"?"Informations requises":"More information needed",
+   return_authorized:lang()==="ar"?"تمت الموافقة على الإرجاع":lang()==="fr"?"Retour autorisé":"Return authorized",
+   resolution_in_progress:lang()==="ar"?"الحل قيد التنفيذ":lang()==="fr"?"Solution en cours":"Resolution in progress",
+   completed:lang()==="ar"?"اكتمل الطلب":lang()==="fr"?"Demande terminée":"Request completed",
+   rejected:lang()==="ar"?"تمت مراجعة الطلب":lang()==="fr"?"Demande examinée":"Request reviewed"
+  };
+  return (map[status]||(lang()==="ar"?"تحديث على طلب الإرجاع":lang()==="fr"?"Mise à jour de votre demande":"Return / product issue update"))+(ref?" · "+ref:"");
+ }
  if(n.notification_type==="ORDER_CREATED")return (lang()==="ar"?"تم استلام الطلب":lang()==="fr"?"Commande reçue":"Order received")+(ref?" · "+ref:"");
  if(n.notification_type==="ORDER_ITEM_ATTENTION")return (lang()==="ar"?"هناك صنف في طلبك يحتاج إلى متابعة":lang()==="fr"?"Un article de votre commande nécessite votre attention":"An item in your order needs attention")+(ref?" · "+ref:"");
  if(n.notification_type==="ORDER_STATUS_CHANGED"){
@@ -115,7 +128,7 @@ function statusTitle(n){
  }
  return tr("notifications");
 }
-function iconFor(n){if(n.notification_type==="WHOLESALE_STATUS_CHANGED")return"📦";if(n.notification_type==="ORDER_CREATED")return"🧺";if(n.notification_type==="ORDER_ITEM_ATTENTION")return"⚠️";if(n.notification_type==="ORDER_STATUS_CHANGED"){const s=n.metadata?.status;return s==="out_for_delivery"?"🚚":s==="delivered"?"✓":s==="cancelled"?"×":"📦"}return"🔔"}
+function iconFor(n){if(String(n.notification_type||"").startsWith("RETURN_"))return"↩";if(n.notification_type==="WHOLESALE_STATUS_CHANGED")return"📦";if(n.notification_type==="ORDER_CREATED")return"🧺";if(n.notification_type==="ORDER_ITEM_ATTENTION")return"⚠️";if(n.notification_type==="ORDER_STATUS_CHANGED"){const s=n.metadata?.status;return s==="out_for_delivery"?"🚚":s==="delivered"?"✓":s==="cancelled"?"×":"📦"}return"🔔"}
 function timeLabel(v){const t=new Date(v),s=Math.max(0,Math.floor((Date.now()-t.getTime())/1000));if(s<60)return tr("now");if(s<3600)return Math.floor(s/60)+(lang()==="ar"?" د":lang()==="fr"?" min":" min");if(s<86400)return Math.floor(s/3600)+(lang()==="ar"?" س":lang()==="fr"?" h":" h");return t.toLocaleDateString(lang()==="ar"?"ar-LB":lang()==="fr"?"fr-LB":"en-LB",{month:"short",day:"numeric"})}
 function safeRoute(route){try{const u=new URL(route||"/account",location.origin);return u.origin===location.origin?u.pathname+u.search+u.hash:"/account"}catch{return"/account"}}
 async function fetchNotifications(){

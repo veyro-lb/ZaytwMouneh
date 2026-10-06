@@ -40,3 +40,16 @@ window.ZWM_CMS_CONFIG = Object.freeze({
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",loadAdminNotifications,{once:true});
   else loadAdminNotifications();
 })();
+
+/* zwm-admin-returns-loader */
+(function(){
+  function load(){
+    if(!document.body||!document.body.classList.contains("admin-body")||document.querySelector('script[data-admin-returns-script]'))return;
+    var s=document.createElement("script");
+    s.src="/admin-returns-v1.js?v=20261007-returns1";
+    s.defer=true;
+    s.dataset.adminReturnsScript="1";
+    document.body.appendChild(s);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",load,{once:true});else load();
+})();

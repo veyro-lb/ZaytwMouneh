@@ -12,6 +12,12 @@ const cors=(origin:string|null)=>({
 const json=(origin:string|null,body:unknown,status=200)=>new Response(JSON.stringify(body),{status,headers:{...cors(origin),"Content-Type":"application/json"}});
 const categoryFor=(type:string)=>({
   ORDER_CREATED:"new_order",
+  RETURN_REQUEST_CREATED:"customer_requests",
+  RETURN_MORE_INFO_NEEDED:"customer_requests",
+  RETURN_STATUS_CHANGED:"customer_requests",
+  RETURN_SAFETY_ISSUE:"customer_requests",
+  RETURN_CUSTOMER_UPDATE:"customer_requests",
+  RETURN_REFUND_FAILED:"customer_requests",
   WHOLESALE_INQUIRY_CREATED:"wholesale",
   WHOLESALE_STATUS_CHANGED:"wholesale",
   PAYMENT_ISSUE:"payment_issue",
@@ -76,6 +82,26 @@ function content(n:any){
   const l=["en","ar","fr"].includes(n.locale)?n.locale:"en";
   const c=copy[l],m=n.metadata||{};
   if(n.notification_type==="TEST_PUSH"){return {title:l==="ar"?"الإشعارات تعمل ✅":l==="fr"?"Les notifications fonctionnent ✅":"Notifications are working ✅",body:l==="ar"?"هذا إشعار تجريبي من زيت ومونة.":l==="fr"?"Ceci est une notification test de Zayt w Mouneh.":"This is a test notification from Zayt w Mouneh."};}
+  const returnType=String(n.notification_type||"").startsWith("RETURN_");
+  if(returnType){
+    const ref=String(m.reference||"").trim(),status=String(m.status||"").trim(),note=String(m.note||"").trim();
+    const suffix=ref?" · "+ref:"";
+    if(n.notification_type==="RETURN_SAFETY_ISSUE")return {title:(l==="ar"?"مشكلة جودة أو سلامة تحتاج مراجعة":l==="fr"?"Problème qualité / sécurité à examiner":"Quality / safety issue needs review")+suffix,body:l==="ar"?"تم إرسال بلاغ سلامة أو جودة جديد.":l==="fr"?"Une nouvelle demande qualité ou sécurité a été envoyée.":"A new quality or safety request was submitted."};
+    if(n.notification_type==="RETURN_CUSTOMER_UPDATE")return {title:(l==="ar"?"أضاف العميل معلومات جديدة":l==="fr"?"Le client a ajouté des informations":"Customer added information")+suffix,body:l==="ar"?"راجع طلب الإرجاع أو مشكلة المنتج.":l==="fr"?"Consultez la demande retour / produit.":"Review the return or product-issue request."};
+    if(n.notification_type==="RETURN_REFUND_FAILED")return {title:(l==="ar"?"تعذرت معالجة استرداد":l==="fr"?"Échec du traitement d’un remboursement":"Refund processing needs attention")+suffix,body:l==="ar"?"راجع معاملة الاسترداد المعلقة.":l==="fr"?"Vérifiez la transaction de remboursement en attente.":"Review the pending refund transaction."};
+    if(n.notification_type==="RETURN_MORE_INFO_NEEDED")return {title:(l==="ar"?"نحتاج معلومات إضافية":l==="fr"?"Informations supplémentaires requises":"More information needed")+suffix,body:note||(l==="ar"?"افتح طلبك وأرسل التفاصيل المطلوبة.":l==="fr"?"Ouvrez votre demande et envoyez les informations demandées.":"Open your request and send the requested details.")};
+    const statusMap:any={
+      submitted:[ "Request received","تم استلام الطلب","Demande reçue"],
+      under_review:["Request under review","الطلب قيد المراجعة","Demande en cours d’examen"],
+      awaiting_customer:["More information needed","معلومات إضافية مطلوبة","Informations requises"],
+      return_authorized:["Return authorized","تمت الموافقة على الإرجاع","Retour autorisé"],
+      resolution_in_progress:["Resolution in progress","الحل قيد التنفيذ","Solution en cours"],
+      completed:["Request completed","اكتمل الطلب","Demande terminée"],
+      rejected:["Request reviewed","تمت مراجعة الطلب","Demande examinée"]
+    };
+    const labels=statusMap[status]||["Return / product issue update","تحديث على طلب الإرجاع","Mise à jour retour / produit"];
+    return {title:(l==="ar"?labels[1]:l==="fr"?labels[2]:labels[0])+suffix,body:note||(l==="ar"?"افتح حسابك لمراجعة آخر تحديث.":l==="fr"?"Ouvrez votre compte pour consulter la mise à jour.":"Open your account to review the latest update.")};
+  }
   if(n.notification_type==="ORDER_CREATED"){
     const ref=m.reference||n.entity_id;
     if(n.audience==="customer"){

@@ -99,7 +99,7 @@ archived:["Archivée","Cette demande est archivée. Contactez-nous si vous souha
 };
 let locale="en",products=[],selected=new Map(),started=false,saveTimer=0,busy=false,submissionKey="",historyRows=[];
 function localeFromPath(){const m=location.pathname.match(/^\/(ar|fr)(?:\/|$)/);return m?m[1]:null}
-function getLocale(){const p=localeFromPath();if(p)return p;try{const v=localStorage.getItem("zwm-locale-v3");if(["en","ar","fr"].includes(v))return v;if(localStorage.getItem("zwm:french:v1")==="1")return"fr";if(localStorage.getItem("zwm-lang-v2")==="ar")return"ar"}catch{}return"en"}
+function getLocale(){const p=localeFromPath();if(p)return p;try{const central=window.ZWM_LOCALE?.get?.();if(["en","ar","fr"].includes(central))return central;const v=localStorage.getItem("zwm-locale-v3");if(["en","ar","fr"].includes(v))return v}catch{}return"en"}
 function t(k){return C[locale][k]||C.en[k]||k}function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function translateOpt(s){return locale==="ar"?(OAR[s]||s):locale==="fr"?(OFR[s]||s):s}function optionHtml(rows){return rows.map(([v,s])=>`<option value="${esc(v)}">${esc(s==="—"?"—":translateOpt(s))}</option>`).join("")}
 function productName(p){if(locale==="ar")return p.nameAr||p.nameEn||p.id;if(locale==="fr"){try{return window.ZWM_FR_TRANSLATE?window.ZWM_FR_TRANSLATE(p.nameEn||p.id):(p.nameEn||p.id)}catch{}}return p.nameEn||p.nameAr||p.id}
@@ -119,7 +119,7 @@ function syncSiteShell(){
     count.textContent=String(total);
   }
 }
-function setLanguage(code){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(draftObject()));localStorage.setItem("zwm-locale-v3",code);localStorage.setItem("zwm-lang-v2",code==="ar"?"ar":"en");if(code==="fr")localStorage.setItem("zwm:french:v1","1");else localStorage.removeItem("zwm:french:v1")}catch{}location.assign(localized("/wholesale",code))}
+function setLanguage(code){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(draftObject()));if(window.ZWM_LOCALE?.set){window.ZWM_LOCALE.set(code);return}localStorage.setItem("zwm-locale-v3",code)}catch{}location.assign(localized("/wholesale",code))}
 function loadProducts(){const list=typeof PRODUCTS_DATA!=="undefined"&&Array.isArray(PRODUCTS_DATA)?PRODUCTS_DATA:[];products=list.filter(p=>p&&p.id&&p.nameEn);$("productSearchState").textContent=list.length?"":t("loadFail");renderResults()}
 function norm(v){return String(v||"").normalize("NFKD").replace(/[\u064B-\u065F]/g,"").toLowerCase().trim()}
 function renderResults(){const host=$("productResults"),state=$("productSearchState");if(!host)return;if(!products.length){host.innerHTML="";state.textContent=t("loadFail");return}const q=norm($("productSearch")?.value),matches=products.filter(p=>!selected.has(p.id)&&(!q||norm([p.nameEn,p.nameAr,p.original,p.category].join(" ")).includes(q))).slice(0,24);if(!matches.length){host.innerHTML="";state.textContent=t("noMatch");return}state.textContent="";host.innerHTML=matches.map(p=>`<button type="button" class="product-result" data-add-product="${esc(p.id)}"><span><strong>${esc(productName(p))}</strong><small>${esc(p.category||"")}</small></span><b aria-hidden="true">+</b></button>`).join("")}

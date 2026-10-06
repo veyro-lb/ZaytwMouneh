@@ -505,8 +505,8 @@
       label.innerHTML='<span class="only-en">Legal & Rewards</span><span class="only-ar" lang="ar">الشروط والمكافآت</span>';
       bar.prepend(label);
     }
-    ensureLink("privacy","/privacy-and-data.html?rev=20261004-legal7","Privacy Policy","سياسة الخصوصية");
-    ensureLink("terms","/terms-and-rewards.html?rev=20261004-legal7","Terms of Service","شروط الخدمة");
+    ensureLink("privacy","/privacy?rev=20261004-legal7","Privacy Policy","سياسة الخصوصية");
+    ensureLink("terms","/terms?rev=20261004-legal7","Terms of Service","شروط الخدمة");
     ensureLink("rewards","/terms-and-rewards.html?rev=20261004-legal7#terms-rewards","Mouneh Points Rules 🌿","قواعد نقاط المونة 🌿");
     bar.removeAttribute("hidden");
     bar.style.setProperty("display","flex","important");

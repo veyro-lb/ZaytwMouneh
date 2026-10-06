@@ -919,12 +919,21 @@
     try{await loadScript(CONFIG_SRC)}catch{return}
     if(!enabled())return;
     if(!PREVIEW_MODE)ensureCustomerNotificationAssets();
-    if(!PREVIEW_MODE&&!document.querySelector("script[data-mouneh-rewards]")){
-      const rewardsScript=document.createElement("script");
-      rewardsScript.src="mouneh-rewards-v8.js?v=20261004-mobileauth3";
-      rewardsScript.async=true;
-      rewardsScript.dataset.mounehRewards="1";
-      document.head.appendChild(rewardsScript);
+    if(!PREVIEW_MODE&&!document.querySelector('script[data-mouneh-rewards],script[src*="mouneh-rewards-v8.js"]')){
+      const loadRewards=()=>{
+        if(window.ZWM_REWARDS||document.querySelector('script[data-mouneh-rewards],script[src*="mouneh-rewards-v8.js"]'))return;
+        const rewardsScript=document.createElement("script");
+        rewardsScript.src="mouneh-rewards-v8.js?v=20261006-perf1";
+        rewardsScript.async=true;
+        rewardsScript.dataset.mounehRewards="1";
+        document.head.appendChild(rewardsScript);
+      };
+      const scheduleRewards=()=>{
+        if("requestIdleCallback" in window)window.requestIdleCallback(loadRewards,{timeout:1800});
+        else setTimeout(loadRewards,800);
+      };
+      if(document.readyState==="complete")scheduleRewards();
+      else window.addEventListener("load",scheduleRewards,{once:true});
     }
     applySettings(readSettings());
     ensurePersistentChrome();

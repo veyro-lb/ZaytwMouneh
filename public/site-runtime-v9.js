@@ -939,3 +939,20 @@
   }
   init();
 })();
+
+/* zwm-returns-policy-footer-link */
+(function(){
+  function add(){
+    document.querySelectorAll(".footer-legal-bar").forEach(function(bar){
+      if(bar.querySelector('[data-returns-policy-link]'))return;
+      var a=document.createElement("a");
+      a.href="/returns-policy.html";
+      a.dataset.returnsPolicyLink="1";
+      a.textContent="Returns & Product Issues Policy";
+      bar.appendChild(document.createTextNode(" · "));
+      bar.appendChild(a);
+    });
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",add,{once:true});else add();
+  new MutationObserver(add).observe(document.documentElement,{childList:true,subtree:true});
+})();

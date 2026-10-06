@@ -3,8 +3,8 @@
 if(window.__ZWM_CUSTOMER_NOTIFICATIONS_V1__)return;
 window.__ZWM_CUSTOMER_NOTIFICATIONS_V1__=true;
 const KEY="zwm:mouneh:session:v1";
-const CFG="/admin-config.js?v=20261006-navbell1";
-const VERSION="20261006-navbell1";
+const CFG="/admin-config.js?v=20261006-notificationhardening1";
+const VERSION="20261006-notificationhardening1";
 let cfg=null,user=null,rows=[];
 const $=(s,r=document)=>r.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));

@@ -11,34 +11,34 @@ const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const lang=()=>{try{if(localStorage.getItem("zwm:french:v1")==="1")return"fr";return localStorage.getItem("zwm-lang-v2")==="ar"?"ar":"en"}catch{return"en"}};
 const C={
  en:{
-  notifications:"Notifications",title:"Order alerts",copy:"Get a notification when an order linked to this account changes status.",
+  notifications:"Notifications",title:"Account alerts",copy:"Get important updates about orders and wholesale requests linked to this account.",
   enable:"Enable on this device",enabled:"On for this device",off:"Not enabled on this device",blocked:"Blocked by browser",
   unsupported:"Push notifications unavailable",test:"Send test",testing:"Sending test notification…",
   delivered:"Test notification delivered to this device.",retry:"Temporary delivery issue. It will retry automatically.",
-  order:"Order status updates",orderHelp:"Order received, confirmed, preparing, out for delivery, delivered or cancelled.",
+  order:"Order status updates",orderHelp:"Order received, confirmed, preparing, out for delivery, delivered or cancelled.",wholesale:"Wholesale request updates",wholesaleHelp:"Status changes such as review, follow-up, approval or more information needed.",
   note:"Your phone or computer controls notification sounds, vibration, Focus and Do Not Disturb.",
   ios:"On iPhone, add Zayt w Mouneh to your Home Screen, open it there, then enable notifications.",
-  empty:"No order notifications yet.",markAll:"Mark all as read",now:"Now"
+  empty:"No notifications yet.",markAll:"Mark all as read",now:"Now"
  },
  ar:{
-  notifications:"الإشعارات",title:"تنبيهات الطلب",copy:"احصل على إشعار عندما تتغير حالة طلب مرتبط بهذا الحساب.",
+  notifications:"الإشعارات",title:"تنبيهات الحساب",copy:"احصل على تحديثات مهمة حول الطلبات وطلبات الجملة المرتبطة بهذا الحساب.",
   enable:"تفعيل على هذا الجهاز",enabled:"مفعّلة على هذا الجهاز",off:"غير مفعّلة على هذا الجهاز",blocked:"محظورة من المتصفح",
   unsupported:"الإشعارات غير متاحة",test:"إرسال اختبار",testing:"جارٍ إرسال الإشعار التجريبي…",
   delivered:"تم تسليم الإشعار التجريبي إلى هذا الجهاز.",retry:"تعذّر التسليم مؤقتاً وسيتم إعادة المحاولة تلقائياً.",
-  order:"تحديثات حالة الطلب",orderHelp:"تم الاستلام، التأكيد، التحضير، خرج للتوصيل، تم التسليم أو الإلغاء.",
+  order:"تحديثات حالة الطلب",orderHelp:"تم الاستلام، التأكيد، التحضير، خرج للتوصيل، تم التسليم أو الإلغاء.",wholesale:"تحديثات طلبات الجملة",wholesaleHelp:"تغييرات الحالة مثل المراجعة أو المتابعة أو الموافقة أو الحاجة إلى معلومات إضافية.",
   note:"الهاتف أو الكمبيوتر هو الذي يتحكم بالصوت والاهتزاز ووضع التركيز وعدم الإزعاج.",
   ios:"على iPhone، أضف زيت ومونة إلى الشاشة الرئيسية وافتحه منها ثم فعّل الإشعارات.",
-  empty:"لا توجد إشعارات طلبات بعد.",markAll:"تحديد الكل كمقروء",now:"الآن"
+  empty:"لا توجد إشعارات بعد.",markAll:"تحديد الكل كمقروء",now:"الآن"
  },
  fr:{
-  notifications:"Notifications",title:"Alertes de commande",copy:"Recevez une notification lorsque le statut d’une commande liée à ce compte change.",
+  notifications:"Notifications",title:"Alertes du compte",copy:"Recevez les mises à jour importantes des commandes et demandes de gros liées à ce compte.",
   enable:"Activer sur cet appareil",enabled:"Activées sur cet appareil",off:"Non activées sur cet appareil",blocked:"Bloquées par le navigateur",
   unsupported:"Notifications push indisponibles",test:"Envoyer un test",testing:"Envoi de la notification test…",
   delivered:"Notification test livrée à cet appareil.",retry:"Échec temporaire. Une nouvelle tentative sera faite automatiquement.",
-  order:"Mises à jour de commande",orderHelp:"Commande reçue, confirmée, en préparation, en livraison, livrée ou annulée.",
+  order:"Mises à jour de commande",orderHelp:"Commande reçue, confirmée, en préparation, en livraison, livrée ou annulée.",wholesale:"Mises à jour des demandes de gros",wholesaleHelp:"Changements de statut : examen, suivi, approbation ou informations complémentaires.",
   note:"Votre téléphone ou ordinateur contrôle les sons, vibrations, Concentration et Ne pas déranger.",
   ios:"Sur iPhone, ajoutez Zayt w Mouneh à l’écran d’accueil, ouvrez-la depuis cet écran, puis activez les notifications.",
-  empty:"Aucune notification de commande.",markAll:"Tout marquer comme lu",now:"À l’instant"
+  empty:"Aucune notification.",markAll:"Tout marquer comme lu",now:"À l’instant"
  }
 };
 const tr=k=>(C[lang()]||C.en)[k]||k;
@@ -90,7 +90,7 @@ async function subscribe(){
  return registeredDevice();
 }
 async function bootstrapPrefs(){
- const defaults=[{user_id:user.id,category:"order_updates",in_app_enabled:true,push_enabled:true,updated_at:new Date().toISOString()}];
+ const now=new Date().toISOString(),defaults=["order_updates","wholesale"].map(category=>({user_id:user.id,category,in_app_enabled:true,push_enabled:true,updated_at:now}));
  await api("notification_preferences?on_conflict=user_id,category",{method:"POST",headers:{"Prefer":"resolution=ignore-duplicates,return=minimal"},body:JSON.stringify(defaults)}).catch(()=>{});
 }
 function statusTitle(n){
@@ -104,9 +104,17 @@ function statusTitle(n){
   };
   return ((map[lang()]||map.en)[m.status]||tr("notifications"))+(ref?" · "+ref:"");
  }
+ if(n.notification_type==="WHOLESALE_STATUS_CHANGED"){
+  const map={
+   en:{new:"Wholesale request received",contacted:"Wholesale request contacted",needs_information:"Wholesale request needs information",quote_preparing:"Wholesale quote in preparation",quote_sent:"Wholesale quote sent",negotiating:"Wholesale request in discussion",approved:"Wholesale request approved",converted:"Wholesale request completed",lost:"Wholesale request closed",archived:"Wholesale request archived"},
+   ar:{new:"تم استلام طلب الجملة",contacted:"تم التواصل بشأن طلب الجملة",needs_information:"طلب الجملة يحتاج معلومات إضافية",quote_preparing:"يتم تحضير عرض الجملة",quote_sent:"تم إرسال عرض الجملة",negotiating:"طلب الجملة قيد المناقشة",approved:"تمت الموافقة على طلب الجملة",converted:"اكتمل طلب الجملة",lost:"تم إغلاق طلب الجملة",archived:"تمت أرشفة طلب الجملة"},
+   fr:{new:"Demande de gros reçue",contacted:"Contact effectué pour la demande de gros",needs_information:"Informations requises pour la demande de gros",quote_preparing:"Devis de gros en préparation",quote_sent:"Devis de gros envoyé",negotiating:"Demande de gros en discussion",approved:"Demande de gros approuvée",converted:"Demande de gros finalisée",lost:"Demande de gros clôturée",archived:"Demande de gros archivée"}
+  };
+  return ((map[lang()]||map.en)[m.status]||tr("wholesale"))+(ref?" · "+ref:"");
+ }
  return tr("notifications");
 }
-function iconFor(n){if(n.notification_type==="ORDER_CREATED")return"🧺";if(n.notification_type==="ORDER_STATUS_CHANGED"){const s=n.metadata?.status;return s==="out_for_delivery"?"🚚":s==="delivered"?"✓":s==="cancelled"?"×":"📦"}return"🔔"}
+function iconFor(n){if(n.notification_type==="WHOLESALE_STATUS_CHANGED")return"📦";if(n.notification_type==="ORDER_CREATED")return"🧺";if(n.notification_type==="ORDER_STATUS_CHANGED"){const s=n.metadata?.status;return s==="out_for_delivery"?"🚚":s==="delivered"?"✓":s==="cancelled"?"×":"📦"}return"🔔"}
 function timeLabel(v){const t=new Date(v),s=Math.max(0,Math.floor((Date.now()-t.getTime())/1000));if(s<60)return tr("now");if(s<3600)return Math.floor(s/60)+(lang()==="ar"?" د":lang()==="fr"?" min":" min");if(s<86400)return Math.floor(s/3600)+(lang()==="ar"?" س":lang()==="fr"?" h":" h");return t.toLocaleDateString(lang()==="ar"?"ar-LB":lang()==="fr"?"fr-LB":"en-LB",{month:"short",day:"numeric"})}
 function safeRoute(route){try{const u=new URL(route||"/account",location.origin);return u.origin===location.origin?u.pathname+u.search+u.hash:"/account"}catch{return"/account"}}
 async function fetchNotifications(){
@@ -182,21 +190,21 @@ async function renderCard(root){
  test.setAttribute("aria-disabled",String(!device));
  if(/iPhone|iPad/i.test(navigator.userAgent)&&!matchMedia("(display-mode: standalone)").matches&&!device)help.textContent=tr("ios");
  const prefs=await api("notification_preferences?select=*&user_id=eq."+encodeURIComponent(user.id));
- const pref=(prefs||[]).find(x=>x.category==="order_updates");
- const input=$("[data-pref]",root);if(input)input.checked=pref?pref.push_enabled!==false:true;
+ const prefMap=new Map((prefs||[]).map(x=>[x.category,x]));
+ root.querySelectorAll("[data-pref]").forEach(input=>{const pref=prefMap.get(input.dataset.pref);input.checked=pref?pref.push_enabled!==false:true});
 }
 async function cardAction(e){
  const root=e.currentTarget,help=$("[data-help]",root);
  try{
   if(e.target.closest("[data-enable]")){help.textContent="";await subscribe();help.textContent=tr("enabled");await renderCard(root);await refreshBell()}
   if(e.target.closest("[data-test]"))await testProduction(root);
-  const t=e.target.closest("[data-pref]");if(t)await api("notification_preferences?user_id=eq."+encodeURIComponent(user.id)+"&category=eq.order_updates",{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({push_enabled:t.checked,updated_at:new Date().toISOString()})});
+  const t=e.target.closest("[data-pref]");if(t)await api("notification_preferences?user_id=eq."+encodeURIComponent(user.id)+"&category=eq."+encodeURIComponent(t.dataset.pref),{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({push_enabled:t.checked,updated_at:new Date().toISOString()})});
  }catch(err){help.textContent=err?.message||"Notification setup failed"}
 }
 function cardShell(){
  const host=$('[data-account-panel="profile"]');if(!host||$("#zwmCustomerNotifications"))return;
  const card=document.createElement("section");card.id="zwmCustomerNotifications";card.className="account-card zwm-account-notifications";
- card.innerHTML='<div class="zwm-customer-notification-head"><div><p class="account-eyebrow">'+esc(tr("notifications"))+'</p><h2>'+esc(tr("title"))+'</h2><p>'+esc(tr("copy"))+'</p></div><span class="zwm-customer-notification-state" data-state></span></div><div class="zwm-customer-notification-control"><div><strong>'+esc(tr("order"))+'</strong><small>'+esc(tr("orderHelp"))+'</small></div><label class="zwm-customer-switch"><input type="checkbox" data-pref="order_updates"><span aria-hidden="true"></span></label></div><div class="zwm-customer-notification-footer"><div class="zwm-notification-actions"><button class="account-primary" type="button" data-enable>'+esc(tr("enable"))+'</button><button type="button" data-test>'+esc(tr("test"))+'</button></div><p class="account-status" data-help></p></div><p class="zwm-customer-notification-note">'+esc(tr("note"))+'</p>';
+ card.innerHTML='<div class="zwm-customer-notification-head"><div><p class="account-eyebrow">'+esc(tr("notifications"))+'</p><h2>'+esc(tr("title"))+'</h2><p>'+esc(tr("copy"))+'</p></div><span class="zwm-customer-notification-state" data-state></span></div><div class="zwm-customer-notification-control"><div><strong>'+esc(tr("order"))+'</strong><small>'+esc(tr("orderHelp"))+'</small></div><label class="zwm-customer-switch"><input type="checkbox" data-pref="order_updates"><span aria-hidden="true"></span></label></div><div class="zwm-customer-notification-control"><div><strong>'+esc(tr("wholesale"))+'</strong><small>'+esc(tr("wholesaleHelp"))+'</small></div><label class="zwm-customer-switch"><input type="checkbox" data-pref="wholesale"><span aria-hidden="true"></span></label></div><div class="zwm-customer-notification-footer"><div class="zwm-notification-actions"><button class="account-primary" type="button" data-enable>'+esc(tr("enable"))+'</button><button type="button" data-test>'+esc(tr("test"))+'</button></div><p class="account-status" data-help></p></div><p class="zwm-customer-notification-note">'+esc(tr("note"))+'</p>';
  host.appendChild(card);card.addEventListener("click",cardAction);renderCard(card);
 }
 async function boot(){

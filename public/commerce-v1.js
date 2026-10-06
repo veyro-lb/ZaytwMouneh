@@ -34,7 +34,7 @@ function setMarkup(el,html){
 }
 function updateOrderCopy(){
   var announcement=document.getElementById("announcementOrder");
-  if(announcement){setText(announcement,tr("Shop online","تسوّق أونلاين"));announcement.href="/shop.html#shop";announcement.removeAttribute("target")}
+  if(announcement){setText(announcement,tr("Shop online","تسوّق أونلاين"));announcement.href="/shop#shop";announcement.removeAttribute("target")}
   var title=document.getElementById("orderTitle"),intro=document.getElementById("orderIntroCopy"),s3=document.getElementById("step3Title"),s3c=document.getElementById("step3Copy");
   if(title)setMarkup(title,tr("From shelf to<br><em>your door.</em>","من الرف إلى<br><em>باب بيتك.</em>"));
   if(intro)setText(intro,tr("Build your pantry, review everything, then place the order directly on the website.","حضّر سلتك وراجعها ثم أرسل الطلب مباشرة عبر الموقع."));
@@ -63,7 +63,7 @@ function decorateOrders(){
     var strong=row.querySelector("strong"),ref=strong&&String(strong.textContent||"").trim();
     if(!ref||ref.indexOf("ZW")!==0)return;
     row.dataset.nativeOrder="1";row.classList.add("account-order-row-native");
-    var a=document.createElement("a");a.className="native-order-open";a.href="/order.html?ref="+encodeURIComponent(ref);a.textContent=tr("View details","عرض التفاصيل");row.appendChild(a)
+    var a=document.createElement("a");a.className="native-order-open";a.href="/order?ref="+encodeURIComponent(ref);a.textContent=tr("View details","عرض التفاصيل");row.appendChild(a)
   })
 }
 async function loadAddresses(){

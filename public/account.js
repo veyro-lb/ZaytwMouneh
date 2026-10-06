@@ -554,6 +554,14 @@
   window.addEventListener("storage",e=>{if(!e.key||String(e.key).startsWith("zwm"))sync()});
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)sync()});
   document.addEventListener("zwm:localechange",()=>{syncLanguageVisibility();render(true)});
+  // Compatibility for code/tests that still update <html lang/dir> directly.
+  // This observes only two root attributes; it does not scan or translate the DOM.
+  new MutationObserver(()=>{
+    const next=document.documentElement.lang==="ar"?"ar":document.documentElement.lang==="fr"?"fr":"en";
+    try{if(window.ZWM_LOCALE?.get?.()===next)return}catch{}
+    syncLanguageVisibility();
+    render(true);
+  }).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
   function syncAccountShellChrome(){
     document.querySelectorAll("[data-footer-year]").forEach(el=>{el.textContent=new Date().getFullYear()});
     const count=$("#cartCount");

@@ -58,10 +58,12 @@ assert(!recipes.includes('"name":"about | Zayt w Mouneh"'),"recipe structured da
 
 const conversion=read("conversion-v1.js");
 assert(conversion.includes("function productPath(id)"),"locale-aware product link missing");
-assert(conversion.includes('if(a.textContent!==label)a.textContent=label'),"full-product link must be idempotent");
+assert(!conversion.includes("View full product page"),"Quick View full-product CTA must stay removed");
+assert(conversion.includes('if(a)a.remove()'),"Quick View legacy full-product CTA cleanup missing");
 assert(!conversion.includes("injectAccountReorder();modalLink()"),"Quick View self-triggering body observer regression returned");
 
 const app=read("app.js");
+assert(app.includes('function money(n){const value=`$${Number(n).toFixed(2)}`'),"Storefront prices must keep the dollar symbol");
 const appLines=app.split(/\r?\n/).map(line=>line.trim());
 assert(!appLines.some(line=>/^\$\("\[data-modal-variant\]"\)\.forEach/.test(line)),"Quick View single-element forEach crash returned");
 assert(appLines.some(line=>/^\$\$\("\[data-modal-variant\]"\)\.forEach/.test(line)),"Quick View variant listeners missing");

@@ -235,7 +235,7 @@ function render(){
   $("reorderButton").hidden=o.status!=="delivered";
 
   var phone=String(o.support_phone||"96181581230").replace(/\D/g,"");
-  var msg=isArabic()?"مرحباً، أحتاج مساعدة بخصوص الطلب "+o.reference+".":"Hi, I need help with order "+o.reference+".";
+  var msg=tx("Hi, I need help with order ","مرحباً، أحتاج مساعدة بخصوص الطلب ")+o.reference+".";
   $("orderSupport").href="https://wa.me/"+phone+"?text="+encodeURIComponent(msg);
   $("orderSupport").textContent=tx("Need help? WhatsApp us","تحتاج مساعدة؟ تواصل عبر واتساب");
 

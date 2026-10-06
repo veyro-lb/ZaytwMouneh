@@ -9,7 +9,8 @@ var mountQueued=false;
 function qs(s,r){return (r||document).querySelector(s)}
 function qsa(s,r){return Array.from((r||document).querySelectorAll(s))}
 function ar(){return document.documentElement.lang==="ar"||document.documentElement.dir==="rtl"}
-function tr(en,arText){return ar()?arText:en}
+function fr(){return document.documentElement.lang==="fr"}
+function tr(en,arText){return ar()?arText:fr()?(window.ZWM_FR_TRANSLATE?window.ZWM_FR_TRANSLATE(en):en):en}
 function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function money(v){return "$"+(Number(v)||0).toFixed(2)}
 function read(key,fallback){try{var raw=localStorage.getItem(key);return raw==null?fallback:JSON.parse(raw)}catch{return fallback}}
@@ -19,10 +20,11 @@ function rewardsState(){try{return window.ZWM_REWARDS&&window.ZWM_REWARDS.getSta
 function statusLabel(s){
   var en={new:"Order received",confirmed:"Confirmed",preparing:"Preparing",out_for_delivery:"Out for delivery",delivered:"Delivered",cancelled:"Cancelled"};
   var aa={new:"تم استلام الطلب",confirmed:"تم التأكيد",preparing:"قيد التحضير",out_for_delivery:"خرج للتوصيل",delivered:"تم التسليم",cancelled:"ملغي"};
-  return (ar()?aa:en)[s]||s||"";
+  var ff={new:"Commande reçue",confirmed:"Confirmée",preparing:"En préparation",out_for_delivery:"En cours de livraison",delivered:"Livrée",cancelled:"Annulée"};
+  return (ar()?aa:fr()?ff:en)[s]||s||"";
 }
 function statusClass(s){return s==="cancelled"?"is-cancelled":s==="delivered"?"":"is-pending"}
-function formatDate(v){try{return new Date(v).toLocaleDateString(ar()?"ar-LB":"en-LB",{year:"numeric",month:"short",day:"numeric"})}catch{return ""}}
+function formatDate(v){try{return new Date(v).toLocaleDateString(ar()?"ar-LB":fr()?"fr-LB":"en-LB",{year:"numeric",month:"short",day:"numeric"})}catch{return ""}}
 
 async function ensureConfig(){
   if(window.ZWM_CMS_CONFIG&&window.ZWM_CMS_CONFIG.supabaseUrl&&window.ZWM_CMS_CONFIG.supabasePublishableKey)return window.ZWM_CMS_CONFIG;
@@ -145,7 +147,7 @@ function orderCard(o){
     '<div class="customer-order-card-head"><div><small>'+esc(formatDate(o.submitted_at))+'</small><strong>'+esc(o.reference||tr("Order","طلب"))+'</strong></div><span class="account-pill '+statusClass(o.status)+'">'+esc(statusLabel(o.status))+'</span></div>'+
     '<p class="customer-order-preview">'+esc(previewText(o))+'</p>'+
     '<div class="customer-order-meta"><span><small>'+tr("Total","المجموع")+'</small><strong>'+money(o.total)+'</strong></span><span><small>'+tr("Mouneh Points","نقاط المونة")+'</small><strong>'+pointsText(o)+'</strong></span></div>'+
-    '<div class="customer-order-actions"><a class="account-primary" href="/order.html?ref='+encodeURIComponent(o.reference)+'">'+tr("View details","عرض التفاصيل")+'</a><a href="/shop.html">'+tr("Shop again","التسوق مجدداً")+'</a></div>'+
+    '<div class="customer-order-actions"><a class="account-primary" href="/order?ref='+encodeURIComponent(o.reference)+'">'+tr("View details","عرض التفاصيل")+'</a><a href="/shop">'+tr("Shop again","التسوق مجدداً")+'</a></div>'+
   '</article>';
 }
 
@@ -164,7 +166,7 @@ function mountOrdersPanel(){
     '</div>'+
     (state.error?'<p class="account-status customer-order-error">'+esc(state.error)+'</p>':"")+
     '<div class="customer-order-grid">'+
-      (rows.length?rows.map(orderCard).join(""):'<div class="customer-order-empty"><span>🧺</span><strong>'+tr("No orders in this view yet.","لا توجد طلبات في هذا القسم بعد.")+'</strong><a href="/shop.html">'+tr("Start shopping","ابدأ التسوق")+' →</a></div>')+
+      (rows.length?rows.map(orderCard).join(""):'<div class="customer-order-empty"><span>🧺</span><strong>'+tr("No orders in this view yet.","لا توجد طلبات في هذا القسم بعد.")+'</strong><a href="/shop">'+tr("Start shopping","ابدأ التسوق")+' →</a></div>')+
     '</div>'+
   '</article>';
 }
@@ -182,7 +184,7 @@ function mountOverview(){
   var card=document.createElement("article");
   card.className="account-card customer-latest-order";
   card.innerHTML='<div class="account-section-title"><div><h2>'+tr("Latest order","آخر طلب")+'</h2><p>'+esc(latest.reference)+' · '+esc(formatDate(latest.submitted_at))+'</p></div><span class="account-pill '+statusClass(latest.status)+'">'+esc(statusLabel(latest.status))+'</span></div>'+
-    '<div class="customer-latest-body"><span><small>'+tr("Total","المجموع")+'</small><strong>'+money(latest.total)+'</strong></span><span><small>'+tr("Mouneh Points","نقاط المونة")+'</small><strong>'+pointsText(latest)+'</strong></span><a class="account-primary" href="/order.html?ref='+encodeURIComponent(latest.reference)+'">'+tr("View order","عرض الطلب")+'</a></div>';
+    '<div class="customer-latest-body"><span><small>'+tr("Total","المجموع")+'</small><strong>'+money(latest.total)+'</strong></span><span><small>'+tr("Mouneh Points","نقاط المونة")+'</small><strong>'+pointsText(latest)+'</strong></span><a class="account-primary" href="/order?ref='+encodeURIComponent(latest.reference)+'">'+tr("View order","عرض الطلب")+'</a></div>';
   grid.insertAdjacentElement("afterend",card);
 }
 

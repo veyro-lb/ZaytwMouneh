@@ -4,7 +4,7 @@ Premium responsive static storefront for Zayt w Mouneh.
 
 ## Current experience
 
-- 328 shopper-facing products with 423 priced size/pack variants from the supplied retail price list
+- 332 source catalogue records with 423 priced size/pack variants from the supplied retail price list; live visibility can be reduced by owner overrides
 - 21 pantry categories
 - Full English and Arabic storefront modes, with RTL layout in Arabic
 - Language switch positioned beside the cart
@@ -68,4 +68,4 @@ Intentionally left for a later phase:
 
 261 product IDs now use 247 original, name-matched photographs supplied in the seven WhatsApp ZIPs. Files retain their original bytes and dimensions. Cards display one complete image with `object-fit: contain`; products without exact artwork use a neutral placeholder. See `docs/product-photo-migration.md` and `docs/product-photo-audit.json` for coverage and provenance.
 
-Photo follow-up (2026-10-03): root and `public/` mappings now agree. 287 of 328 current products have photos: 258 use unchanged uploaded ZIP originals and 29 use existing official Debsy images. 41 need exact source photography. See `docs/product-photo-followup.md`.
+Photo coverage revalidated in Batch 6 (2026-10-06): the production `public/` map has exact mappings for 290 of 332 source catalogue records; 42 intentionally remain without an exact mapping. No similar, generated or stock image is substituted. See `docs/product-photo-followup.md` and `docs/catalogue-audit-2026-10-06.md`.

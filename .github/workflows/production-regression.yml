@@ -23,7 +23,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
       - name: Generate pinned lockfile for Batch 1 bootstrap
         run: npm install --package-lock-only --ignore-scripts
       - name: Install test dependencies

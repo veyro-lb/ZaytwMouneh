@@ -7,8 +7,8 @@
   const REFERRAL_KEY="zwm:mouneh:pending-referral:v1";
   const LEGAL_PENDING_KEY="zwm:mouneh:legal-consent-pending:v1";
   const LEGAL_CONSENT_VERSION="2026-10-04";
-  const CONFIG_SRC="admin-config.js?v=20261004-rewards4";
-  const VERSION="20261005-account-reliability2";
+  const assetUrl=path=>window.ZWM_ASSET_URL?window.ZWM_ASSET_URL(path):path;
+  const CONFIG_SRC=assetUrl("/admin-config.js");
   const REQUEST_TIMEOUT_MS=12000;
   const CONFIG_TIMEOUT_MS=8000;
   const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false,referralStatus:null,bonusStatus:null,accountBusy:false,accountError:"",lastAccountLoadAt:0};
@@ -860,7 +860,7 @@
     if(!document.querySelector('link[href*="mouneh-rewards-v8.css"]')){
       const link=document.createElement("link");
       link.rel="stylesheet";
-      link.href="mouneh-rewards-v8.css?v="+VERSION;
+      link.href=assetUrl("/mouneh-rewards-v8.css");
       document.head.appendChild(link);
     }
 

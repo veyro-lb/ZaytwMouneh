@@ -3920,7 +3920,7 @@
   function setupInstallPrompt(){
     window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.installPrompt=e;$("installAdminHint").textContent="Ready to install on this device.";});
     if("serviceWorker" in navigator){
-      navigator.serviceWorker.register("admin-sw.js?v=20261004-mobile-stability5",{updateViaCache:"none"})
+      navigator.serviceWorker.register(window.ZWM_ASSET_URL?window.ZWM_ASSET_URL("/admin-sw.js"):"/admin-sw.js",{updateViaCache:"none"})
         .then(reg=>reg.update().catch(()=>{}))
         .catch(()=>{});
       navigator.serviceWorker.addEventListener("controllerchange",()=>{

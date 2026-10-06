@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 var CART_KEY="zwm-cart-v5";
-var CONFIG_SRC="/admin-config.js?v=20261005-batch6";
+var CONFIG_SRC=window.ZWM_ASSET_URL?window.ZWM_ASSET_URL("/admin-config.js"):"/admin-config.js";
 var RECIPES=[
  {id:"mujadara",en:"Mujadara",ar:"مجدّرة",fr:"Moujadara",copyEn:"Lentils and rice pantry bundle.",copyAr:"حزمة مونة للعدس والأرز.",copyFr:"Assortiment de mouneh pour lentilles et riz.",productIds:["aadas-aarid","american-rice","kamoun-neeme","extra-virgin-olive-oil"]},
  {id:"manoushe",en:"Za’atar manoushe",ar:"منقوشة زعتر",fr:"Man’ouché au zaatar",copyEn:"Za’atar, olive oil, flour and yeast pantry bundle.",copyAr:"حزمة الزعتر وزيت الزيتون والطحين والخميرة.",copyFr:"Zaatar, huile d’olive, farine et levure.",productIds:["zaatar-manakish","extra-virgin-olive-oil","all-use-flour","yeast"]},

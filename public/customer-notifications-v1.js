@@ -3,8 +3,8 @@
 if(window.__ZWM_CUSTOMER_NOTIFICATIONS_V1__)return;
 window.__ZWM_CUSTOMER_NOTIFICATIONS_V1__=true;
 const KEY="zwm:mouneh:session:v1";
-const CFG="/admin-config.js?v=20261006-notificationhardening1";
-const VERSION="20261006-notificationhardening1";
+const assetUrl=path=>window.ZWM_ASSET_URL?window.ZWM_ASSET_URL(path):path;
+const CFG=assetUrl("/admin-config.js");
 let cfg=null,user=null,rows=[];
 const $=(s,r=document)=>r.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -64,7 +64,7 @@ async function me(){
  return r.ok?r.json():null;
 }
 function b64(s){const p="=".repeat((4-s.length%4)%4),raw=atob((s+p).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
-async function reg(){if(!("serviceWorker"in navigator))throw Error(tr("unsupported"));return navigator.serviceWorker.register("/admin-sw.js?v="+VERSION,{scope:"/",updateViaCache:"none"})}
+async function reg(){if(!("serviceWorker"in navigator))throw Error(tr("unsupported"));return navigator.serviceWorker.register(assetUrl("/admin-sw.js"),{scope:"/",updateViaCache:"none"})}
 async function currentSub(){try{return(await reg()).pushManager.getSubscription()}catch{return null}}
 async function registeredDevice(){
  const s=await currentSub();if(!s)return null;

@@ -246,3 +246,5 @@ async function submit(ctx){
 
   console.log("Wholesale UI regression passed: customer and admin desktop/mobile buttons, RFQ flow, history/status, draft restore, contact/save/delete actions.");
 })().catch(err=>{console.error(err);process.exitCode=1});
+
+// QA trigger: wholesale desktop/mobile interaction matrix

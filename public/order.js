@@ -24,7 +24,7 @@ async function rpc(action,p){
     body:JSON.stringify({action:action,p:p||{}})
   });
   var data=await r.json().catch(function(){return {}});
-  if(!r.ok)throw new Error(data.message||data.hint||data.details||(isArabic()?"تعذّر فتح الطلب.":"Order unavailable"));
+  if(!r.ok)throw new Error(data.message||data.hint||data.details||tr("Order unavailable","تعذّر فتح الطلب.","Commande indisponible"));
   return data;
 }
 
@@ -59,7 +59,7 @@ function label(status){
 
 function formatUpdated(value){
   var d=new Date(value||Date.now());
-  if(!Number.isFinite(d.getTime()))return isArabic()?"تم التحديث مؤخراً":"Updated recently";
+  if(!Number.isFinite(d.getTime()))return tr("Updated recently","تم التحديث مؤخراً","Mis à jour récemment");
   try{
     var text=new Intl.DateTimeFormat(isArabic()?"ar-LB":isFrench()?"fr-LB":"en-LB",{
       year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"
@@ -160,7 +160,7 @@ function render(){
   $("statusTitle").textContent=label(o.status);
   $("statusLabel").textContent=tr("Current status","الحالة الحالية","Statut actuel");
   $("statusUpdated").textContent=formatUpdated(o.updated_at||o.submitted_at);
-  $("statusUpdated").title=new Date(o.updated_at||o.submitted_at).toLocaleString(isArabic()?"ar-LB":"en-LB");
+  $("statusUpdated").title=new Date(o.updated_at||o.submitted_at).toLocaleString(isArabic()?"ar-LB":isFrench()?"fr-LB":"en-LB");
   renderTimeline(o);
 
   $("itemsTitle").textContent=tr("Order","الطلب","Commande");
@@ -190,7 +190,7 @@ function render(){
   $("payStatus").className="order-payment-status payment-"+String(o.payment_status||"pending");
   $("subLabel").textContent=tr("Subtotal","الإجمالي الفرعي","Sous-total");
   $("rewardLabel").textContent=tr("Reward","المكافأة","Récompense");
-  $("delLabel").textContent=isArabic()?"التوصيل":"Delivery";
+  $("delLabel").textContent=tr("Delivery","التوصيل","Livraison");
   $("totalLabel").textContent=tr("Total","الإجمالي","Total");
   $("orderSubtotal").textContent=money(o.subtotal!=null?o.subtotal:Number(o.total)-Number(o.delivery_fee||0)+Number(o.reward_discount||0));
   $("orderReward").textContent="-"+money(o.reward_discount||0);
@@ -217,7 +217,7 @@ function render(){
     ?("+"+Number(o.points_awarded||0)+" 🌿")
     :(rewardsState==="none"
       ?"0 🌿"
-      :(Number(o.pending_points||0)>0?"~"+Number(o.pending_points)+" 🌿":(isArabic()?"نقاط معلّقة 🌿":"Points pending 🌿")));
+      :(Number(o.pending_points||0)>0?"~"+Number(o.pending_points)+" 🌿":tr("Points pending 🌿","نقاط معلّقة 🌿","Points en attente 🌿")));
 
   $("actionsTitle").textContent=tr("What next?","ماذا بعد؟","Et ensuite ?");
   $("actionsCopy").textContent=tr("Track this order here, keep shopping, or contact us if you need help.","تابع الطلب هنا، تسوّق من جديد، أو تواصل معنا إذا احتجت مساعدة.","Suivez cette commande ici, continuez vos achats ou contactez-nous si vous avez besoin d’aide.");
@@ -229,7 +229,7 @@ function render(){
   $("reorderButton").hidden=o.status!=="delivered";
 
   var phone=String(o.support_phone||"96181581230").replace(/\D/g,"");
-  var msg=isArabic()?"مرحباً، أحتاج مساعدة بخصوص الطلب "+o.reference+".":"Hi, I need help with order "+o.reference+".";
+  var msg=tr("Hi, I need help with order ","مرحباً، أحتاج مساعدة بخصوص الطلب ","Bonjour, j’ai besoin d’aide concernant la commande ")+o.reference+".";
   $("orderSupport").href="https://wa.me/"+phone+"?text="+encodeURIComponent(msg);
   $("orderSupport").textContent=tr("Need help? WhatsApp us","تحتاج مساعدة؟ تواصل عبر واتساب","Besoin d’aide ? Contactez-nous sur WhatsApp");
 
@@ -239,16 +239,16 @@ function render(){
 }
 
 function renderErrorCopy(){
-  var box=$("orderError");
-  if(!box)return;
+  var box=$("orderError");if(!box)return;
   var h=box.querySelector("h2"),p=box.querySelector("p"),a=box.querySelector("a");
-  if(h)h.textContent=isArabic()?"تعذّر فتح هذا الطلب.":"We couldn’t open this order.";
-  if(p)p.textContent=isArabic()
-    ?"لحماية الخصوصية، يظهر الطلب فقط للحساب الذي يملكه أو للمتصفح الذي أجرى طلب الضيف."
-    :"For privacy, orders are only visible to the signed-in account that owns them or to the browser that placed a guest order.";
-  if(a)a.textContent=isArabic()?"تسجيل الدخول":"Sign in";
+  if(h)h.textContent=tr("We couldn’t open this order.","تعذّر فتح هذا الطلب.","Impossible d’ouvrir cette commande.");
+  if(p)p.textContent=tr(
+    "For privacy, orders are only visible to the signed-in account that owns them or to the browser that placed a guest order.",
+    "لحماية الخصوصية، يظهر الطلب فقط للحساب الذي يملكه أو للمتصفح الذي أجرى طلب الضيف.",
+    "Pour protéger votre vie privée, la commande n’est visible que par le compte qui la possède ou par le navigateur ayant passé la commande en invité."
+  );
+  if(a)a.textContent=tr("Sign in","تسجيل الدخول","Se connecter");
 }
-
 async function refresh(){
   if(state.refreshing)return;
   state.refreshing=true;
@@ -260,9 +260,7 @@ async function refresh(){
     state.loaded=true;
     render();
     if(previous&&state.lastStatus&&previous!==state.lastStatus){
-      $("orderActionStatus").textContent=isArabic()
-        ?"تم تحديث حالة طلبك إلى: "+label(state.lastStatus)
-        :"Order status updated to "+label(state.lastStatus)+".";
+      $("orderActionStatus").textContent=tr("Order status updated to ","تم تحديث حالة طلبك إلى: ","Statut de la commande mis à jour : ")+label(state.lastStatus)+(isArabic()?"":".");
     }
   }catch(err){
     if(!state.loaded&&!state.order){
@@ -271,9 +269,7 @@ async function refresh(){
       $("orderError").hidden=false;
       renderErrorCopy();
     }else{
-      $("orderActionStatus").textContent=isArabic()
-        ?"تعذّر التحقق من آخر تحديث حالياً. سنحاول تلقائياً مرة أخرى."
-        :"Couldn’t check the latest update right now. We’ll retry automatically.";
+      $("orderActionStatus").textContent=tr("Couldn’t check the latest update right now. We’ll retry automatically.","تعذّر التحقق من آخر تحديث حالياً. سنحاول تلقائياً مرة أخرى.","Impossible de vérifier la dernière mise à jour pour le moment. Une nouvelle tentative sera effectuée automatiquement.");
     }
   }finally{
     state.refreshing=false;
@@ -282,16 +278,17 @@ async function refresh(){
 
 async function cancel(){
   if(!state.order||!state.order.can_cancel)return;
-  if(!confirm(isArabic()?"هل تريد إلغاء هذا الطلب؟":"Cancel this order?"))return;
+  if(!confirm(tr("Cancel this order?","هل تريد إلغاء هذا الطلب؟","Annuler cette commande ?")))return;
   $("cancelOrderButton").disabled=true;
-  $("orderActionStatus").textContent=isArabic()?"جارٍ الإلغاء…":"Cancelling…";
+  $("orderActionStatus").textContent=tr("Cancelling…","جارٍ الإلغاء…","Annulation…");
   try{
     state.order=await rpc("cancel",{reference:state.ref,claim_token:state.claim,reason:"Customer requested"});
     state.lastStatus=state.order.status||"";
-    $("orderActionStatus").textContent=isArabic()?"تم إلغاء الطلب.":"Order cancelled.";
+    $("orderActionStatus").textContent=tr("Order cancelled.","تم إلغاء الطلب.","Commande annulée.");
     render();
   }catch(e){
-    $("orderActionStatus").textContent=e.message||String(e);
+    console.warn("Order cancellation failed",e);
+    $("orderActionStatus").textContent=tr("We couldn’t cancel the order right now. Please try again.","تعذّر إلغاء الطلب حالياً. حاول مجدداً.","Impossible d’annuler la commande pour le moment. Réessayez.");
     await refresh();
   }finally{
     $("cancelOrderButton").disabled=false;
@@ -311,7 +308,9 @@ async function reorder(){
   write(CART_KEY,cart);
   $("orderActionStatus").textContent=isArabic()
     ?(added+" منتج أضيف إلى السلة"+(missing?" · "+missing+" لم يعد متوفراً":"")+".")
-    :(added+" item"+(added===1?"":"s")+" added to cart"+(missing?" · "+missing+" no longer available":"")+".");
+    :isFrench()
+      ?(added+" article"+(added===1?"":"s")+" ajouté"+(added===1?"":"s")+" au panier"+(missing?" · "+missing+" indisponible"+(missing===1?"":"s"):"")+".")
+      :(added+" item"+(added===1?"":"s")+" added to cart"+(missing?" · "+missing+" no longer available":"")+".");
   if(added)setTimeout(function(){location.href="/shop?open=cart"},550);
 }
 

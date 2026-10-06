@@ -5,7 +5,7 @@
   "description": "Production regression tooling for the static Zayt w Mouneh storefront.",
   "scripts": {
     "check:syntax": "node --check public/app.js && node --check public/conversion-v1.js && node --check public/product-page-v1.js && node --check public/seo-a11y-v1.js && node --check public/checkout.js && node --check public/account.js && node --check public/mouneh-rewards-v8.js && node --check public/wholesale-v1.js && node --check public/admin-wholesale.js && node --check public/customer-notifications-v1.js && node --check public/admin-notifications-v1.js && node --check public/admin-config.js",
-    "test:regression": "node tests/batch7-static-regression.cjs && node tests/today-ui-mobile-regression.cjs && node tests/wholesale-regression.cjs && node tests/wholesale-ui-regression.cjs && node tests/quick-view-regression.cjs && node tests/mobile-stability.cjs && node tests/mobile-dashboard.cjs",
+    "test:regression": "node tests/batch7-static-regression.cjs && node tests/today-ui-mobile-regression.cjs && node tests/wholesale-regression.cjs && node tests/wholesale-ui-regression.cjs && node tests/quick-view-regression.cjs && node tests/mobile-stability.cjs && node tests/mobile-dashboard.cjs && node tests/notification-security-regression.cjs",
     "test": "npm run test:regression",
     "check": "npm run check:syntax && npm run test:regression"
   },

@@ -11,7 +11,7 @@
   <script src="/seo-a11y-v1.js?v=20261005-batch7" defer></script>
 <meta name="theme-color" content="#174c2a">
   <meta name="robots" content="noindex,follow">
-  <meta name="description" content="Secure Zayt w Mouneh website checkout.">
+  <meta name="description" content="Zayt w Mouneh checkout for Cash on Delivery orders in Lebanon.">
   <title>Checkout | Zayt w Mouneh</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=20261003-round1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="/styles.css?v=20261004-mobileheader1">
   <link rel="stylesheet" href="/premium.css?v=20261004-uifix1">
   <link rel="stylesheet" href="/mouneh-rewards-v8.css?v=20261004-ordernotify1">
-  <link rel="stylesheet" href="/commerce-v1.css?v=20261004-ordernotify1">
+  <link rel="stylesheet" href="/commerce-v1.css?v=20261006-batch7commerce1">
   <meta name="zwm-release" content="20261004-mobile-noflash1" />
   <script src="/storefront-release.js?v=20261004-mobile-noflash1" defer></script>
   <link rel="stylesheet" href="/ui-copy-polish-v1.css?v=20261005-arabic3">
@@ -39,9 +39,9 @@
   <main class="commerce-page">
     <div class="commerce-shell">
       <section class="commerce-intro">
-        <p class="commerce-eyebrow" data-i18n="eyebrow">Secure website order</p>
+        <p class="commerce-eyebrow" data-i18n="eyebrow">Website order</p>
         <h1 data-i18n="title">Checkout</h1>
-        <p data-i18n="intro">Confirm your details once, see the complete total, and place your Zayt w Mouneh order directly on the website.</p>
+        <p data-i18n="intro">Review your items, delivery details and Cash on Delivery total before placing your order.</p>
       </section>
       <div id="checkoutEmpty" class="commerce-card checkout-empty" hidden>
         <span>🧺</span><h2 data-i18n="emptyTitle">Your pantry is empty.</h2><p data-i18n="emptyCopy">Add products before starting checkout.</p><a href="/shop" data-i18n="startShopping">Start shopping</a>
@@ -60,7 +60,7 @@
           </section>
           <section class="commerce-card">
             <div class="commerce-card-head"><div><h2 data-i18n="deliveryTitle">Delivery</h2><p data-i18n="deliveryHelp">Use the details a local driver would need in Lebanon.</p></div><span class="commerce-step">2</span></div>
-            <div id="giftCheckoutFields" class="checkout-fields" hidden><label><span data-i18n="recipientName">Recipient name</span><input id="checkoutRecipientName" maxlength="120"></label><label><span data-i18n="recipientPhone">Recipient phone</span><input id="checkoutRecipientPhone" type="tel" inputmode="tel" maxlength="40"></label><p class="checkout-help full" data-i18n="giftDeliveryHelp">Use the recipient contact if the driver should call them directly.</p></div><div id="savedAddressWrap" class="saved-address-row" hidden><label class="commerce-field"><span data-i18n="savedAddress">Deliver to a saved address</span><select id="savedAddressSelect"></select></label><button type="button" id="clearSavedAddress" data-i18n="anotherAddress">Use another</button></div>
+            <div id="giftCheckoutFields" class="checkout-fields" hidden><label><span data-i18n="recipientName">Recipient name</span><input id="checkoutRecipientName" maxlength="120"></label><label><span data-i18n="recipientPhone">Recipient phone</span><input id="checkoutRecipientPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="40"></label><p class="checkout-help full" data-i18n="giftDeliveryHelp">Use the recipient contact if the driver should call them directly.</p></div><div id="savedAddressWrap" class="saved-address-row" hidden><label class="commerce-field"><span data-i18n="savedAddress">Deliver to a saved address</span><select id="savedAddressSelect"></select></label><button type="button" id="clearSavedAddress" data-i18n="anotherAddress">Use another</button></div>
             <div class="checkout-fields">
               <label class="full checkout-area-field"><span data-i18n="area">Area / City</span>
                 <div class="area-combobox">
@@ -69,9 +69,9 @@
                 </div>
                 <small id="areaSearchHelp" class="checkout-help">Start typing your town, village or area. If it is not listed, type the exact area yourself.</small>
               </label>
-              <label><span data-i18n="street">Street / Neighborhood</span><input id="checkoutStreet" maxlength="250" required></label>
-              <label><span data-i18n="building">Building / Residence</span><input id="checkoutBuilding" maxlength="160" required></label>
-              <label><span data-i18n="floor">Floor / Apartment</span><input id="checkoutFloor" maxlength="120"></label>
+              <label><span data-i18n="street">Street / Neighborhood</span><input id="checkoutStreet" maxlength="250" autocomplete="address-line1" required></label>
+              <label><span data-i18n="building">Building / Residence</span><input id="checkoutBuilding" maxlength="160" autocomplete="address-line2" required></label>
+              <label><span data-i18n="floor">Floor / Apartment</span><input id="checkoutFloor" maxlength="120" autocomplete="address-line3"></label>
               <label><span data-i18n="landmark">Nearby landmark</span><input id="checkoutLandmark" maxlength="220"></label>
               <label class="full"><span data-i18n="instructions">Delivery instructions</span><textarea id="checkoutInstructions" rows="2" maxlength="500" placeholder="Call when downstairs, blue gate…"></textarea></label>
               <label class="full" id="saveAddressWrap" hidden><span><input id="saveAddress" type="checkbox"> <span data-i18n="saveAddress">Save this address to my account</span></span></label>
@@ -82,8 +82,8 @@
             <div id="checkoutRewards" class="reward-box"></div>
           </section>
           <section class="commerce-card">
-            <div class="commerce-card-head"><div><h2 data-i18n="paymentTitle">Payment</h2><p data-i18n="paymentHelp">More payment methods can be added later without changing your order history.</p></div><span class="commerce-step">4</span></div>
-            <label class="payment-choice"><input type="radio" name="payment" value="cash_on_delivery" checked><span><strong data-i18n="cod">Cash on Delivery</strong><small data-i18n="codHelp">Pay when your order arrives.</small></span></label>
+            <div class="commerce-card-head"><div><h2 data-i18n="paymentTitle">Payment</h2><p data-i18n="paymentHelp">Payment is made in cash when your order is delivered.</p></div><span class="commerce-step">4</span></div>
+            <div class="payment-choice is-static" aria-label="Cash on Delivery"><span aria-hidden="true">💵</span><span><strong data-i18n="cod">Cash on Delivery</strong><small data-i18n="codHelp">Pay the final order total when your delivery arrives.</small></span></div>
           </section>
           <section class="commerce-card">
             <div class="commerce-card-head"><div><h2 data-i18n="notesTitle">Order note</h2><p data-i18n="notesHelp">Optional — tell us anything useful for this delivery.</p></div><span class="commerce-step">5</span></div>
@@ -100,13 +100,17 @@
         <aside class="commerce-card checkout-summary">
           <div class="commerce-card-head"><div><h2 data-i18n="summaryTitle">Order summary</h2><p id="summaryCount"></p></div></div>
           <div id="summaryItems" class="summary-items"></div>
+          <div id="cartIssueBox" class="checkout-cart-issue" role="alert" hidden></div>
+          <div id="summaryGift" class="summary-gift" hidden></div>
           <div id="freeDeliveryBox" class="free-delivery-box"></div>
           <div class="summary-totals">
             <div class="summary-line"><span data-i18n="subtotal">Subtotal</span><strong id="summarySubtotal">$0.00</strong></div>
             <div class="summary-line" id="summaryRewardRow" hidden><span data-i18n="reward">Reward</span><strong id="summaryReward">-$0.00</strong></div>
             <div class="summary-line"><span data-i18n="delivery">Delivery</span><strong id="summaryDelivery">$0.00</strong></div>
-            <div class="summary-line is-total"><span data-i18n="total">Total</span><strong id="summaryTotal">$0.00</strong></div>
+            <div class="summary-line summary-payment"><span data-i18n="paymentSummary">Payment</span><strong data-i18n="cod">Cash on Delivery</strong></div>
+            <div class="summary-line is-total"><span data-i18n="total">Total payable</span><strong id="summaryTotal" aria-live="polite">$0.00</strong></div>
           </div>
+          <p class="checkout-pay-note" data-i18n="codDue">You’ll pay this total in cash when your order is delivered.</p>
           <button id="placeOrderButton" class="place-order" type="submit" data-i18n="placeOrder">Place Order</button>
           <p id="checkoutStatus" class="checkout-status" role="status" aria-live="polite"></p>
           <p class="support-note"><span data-i18n="needHelp">Need help?</span> <a id="checkoutSupport" href="https://wa.me/96181581230" target="_blank" rel="noopener" data-i18n="whatsappSupport">Chat with us on WhatsApp</a></p>
@@ -120,6 +124,6 @@
   <script src="/mouneh-rewards-v8.js?v=20261005-account-reliability2" data-mouneh-rewards="1"></script>
   <script src="site-runtime-v9.js?v=20261006-notificationhardening1" data-zwm-site-runtime="1"></script>
 
-  <script src="/checkout.js?v=20261005-arabic3"></script>
+  <script src="/checkout.js?v=20261006-batch7commerce1"></script>
 </body>
 </html>

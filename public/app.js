@@ -2233,5 +2233,5 @@ window.applyPageMetadata=applyPageMetadata;
 document.addEventListener("DOMContentLoaded",init);
 
 /* Load exactly one owner CMS/analytics bridge without delaying the storefront.
-   Current pages ship site-runtime-v7 directly; this is only a safe fallback. */
-(()=>{if(document.querySelector('script[data-zwm-site-runtime],script[src*="site-runtime-v7.js"]'))return;const s=document.createElement("script");s.src="site-runtime-v7.js?v=20261004-shell3";s.async=true;s.dataset.zwmSiteRuntime="1";document.head.appendChild(s);})();
+   Current pages ship site-runtime-v9 directly; this is only a safe fallback. */
+(()=>{if(document.querySelector('script[data-zwm-site-runtime],script[src*="site-runtime-v9.js"]'))return;const s=document.createElement("script");s.src=window.ZWM_ASSET_URL?window.ZWM_ASSET_URL("/site-runtime-v9.js"):"/site-runtime-v9.js";s.async=true;s.dataset.zwmSiteRuntime="1";document.head.appendChild(s);})();

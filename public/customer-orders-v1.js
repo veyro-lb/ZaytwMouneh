@@ -36,7 +36,7 @@ async function ensureConfig(){
       return;
     }
     var script=document.createElement("script");
-    script.src="/admin-config.js?v=20261004-customerorders1";
+    script.src=window.ZWM_ASSET_URL?window.ZWM_ASSET_URL("/admin-config.js"):"/admin-config.js";
     script.dataset.customerOrdersConfig="1";
     script.onload=resolve;
     script.onerror=resolve;
@@ -203,7 +203,7 @@ function injectCss(){
   if(qs('link[data-customer-orders-css]'))return;
   var link=document.createElement("link");
   link.rel="stylesheet";
-  link.href="/customer-orders-v1.css?v=20261004-customerorders1";
+  link.href=window.ZWM_ASSET_URL?window.ZWM_ASSET_URL("/customer-orders-v1.css"):"/customer-orders-v1.css";
   link.dataset.customerOrdersCss="1";
   document.head.appendChild(link);
 }

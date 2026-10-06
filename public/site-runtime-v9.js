@@ -1,7 +1,7 @@
 (() => {
   "use strict";
-  const CONFIG_SRC = "admin-config.js?v=20261004-toolkit10";
-  const CUSTOMER_NOTIFICATIONS_VERSION = "20261006-notificationhardening1";
+  const assetUrl=path=>window.ZWM_ASSET_URL?window.ZWM_ASSET_URL(path):path;
+  const CONFIG_SRC = assetUrl("/admin-config.js");
   const PRODUCT_CACHE = "zwm:cms:product-overrides:v1";
   const SETTINGS_CACHE = "zwm:cms:settings:v1";
   const SESSION_KEY = "zwm:analytics:session:v1";
@@ -25,14 +25,14 @@
     if(!document.querySelector('link[href*="notifications-v1.css"]')){
       const link=document.createElement("link");
       link.rel="stylesheet";
-      link.href="/notifications-v1.css?v="+CUSTOMER_NOTIFICATIONS_VERSION;
+      link.href=assetUrl("/notifications-v1.css");
       link.dataset.zwmCustomerNotifications="style";
       document.head.appendChild(link);
     }
     if(document.body?.dataset?.page==="account")return;
     if(!document.querySelector('script[src*="customer-notifications-v1.js"]')){
       const script=document.createElement("script");
-      script.src="/customer-notifications-v1.js?v="+CUSTOMER_NOTIFICATIONS_VERSION;
+      script.src=assetUrl("/customer-notifications-v1.js");
       script.async=true;
       script.dataset.zwmCustomerNotifications="script";
       document.head.appendChild(script);
@@ -854,7 +854,7 @@
           if(window.__ZWM_REWARDS_RETRY_LOADING)return;
           window.__ZWM_REWARDS_RETRY_LOADING=true;
           const retry=document.createElement("script");
-          retry.src="mouneh-rewards-v8.js?v=20261004-mobileauth3";
+          retry.src=assetUrl("/mouneh-rewards-v8.js");
           retry.async=true;
           retry.dataset.mounehRewardsRetry="1";
           retry.addEventListener("load",()=>{window.__ZWM_REWARDS_RETRY_LOADING=false;window.ZWM_REWARDS?.open?.()},{once:true});
@@ -916,7 +916,7 @@
     if(!PREVIEW_MODE)ensureCustomerNotificationAssets();
     if(!PREVIEW_MODE&&!document.querySelector('script[data-mouneh-rewards],script[src*="mouneh-rewards-v8.js"]')){
       const rewardsScript=document.createElement("script");
-      rewardsScript.src="mouneh-rewards-v8.js?v=20261004-mobileauth3";
+      rewardsScript.src=assetUrl("/mouneh-rewards-v8.js");
       rewardsScript.async=true;
       rewardsScript.dataset.mounehRewards="1";
       document.head.appendChild(rewardsScript);

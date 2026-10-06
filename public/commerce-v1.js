@@ -1,8 +1,8 @@
 
 (function(){
 "use strict";
-var VERSION="20261004-nativecheckout1";
-var CONFIG="/admin-config.js?v="+VERSION;
+var assetUrl=function(path){return window.ZWM_ASSET_URL?window.ZWM_ASSET_URL(path):path};
+var CONFIG=assetUrl("/admin-config.js");
 var AUTH_KEY="zwm:mouneh:session:v1";
 var lang=function(){try{return window.ZWM_LOCALE?.get?.()||"en"}catch{return document.documentElement.lang||"en"}};
 var tr=function(en,ar,fr){var l=lang();if(l==="ar")return ar;if(l==="fr")return fr!=null?fr:(window.ZWM_FR_TRANSLATE?window.ZWM_FR_TRANSLATE(en):en);return en};
@@ -21,7 +21,7 @@ async function rpc(name,body){
 }
 function injectStyle(){
   if(document.querySelector('link[href*="commerce-v1.css"]'))return;
-  var l=document.createElement("link");l.rel="stylesheet";l.href="/commerce-v1.css?v="+VERSION;document.head.appendChild(l)
+  var l=document.createElement("link");l.rel="stylesheet";l.href=assetUrl("/commerce-v1.css");document.head.appendChild(l)
 }
 // DOM observers must settle; do not replace unchanged text on every frame.
 var markupCache=new WeakMap();

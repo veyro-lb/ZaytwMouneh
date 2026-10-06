@@ -162,15 +162,17 @@ function renderHistory(){
 }
 async function deleteHistoryRow(reference,button){const row=historyRows.find(x=>x.reference===reference);if(!row||!window.confirm(t("historyDeleteConfirm")))return;if(button)button.disabled=true;try{if(row.lead_id&&authSession()?.access_token){const hidden=await rpc("hide_my_wholesale_enquiry",{p_lead_id:row.lead_id});if(hidden!==true)throw new Error("history_remove_failed")}removeReceipt(row);historyRows=historyRows.filter(x=>x.reference!==reference);renderHistory()}catch(e){console.warn("Wholesale history removal failed",e);window.alert(t("historyDeleteFail"));if(button)button.disabled=false}}
 async function loadHistory(){
-  const state=$("wholesaleHistoryState");if(state){state.hidden=false;state.textContent=t("historyLoading")}
-  const localRows=(await Promise.all(readReceipts().map(async receipt=>{try{const row=await rpc("get_wholesale_enquiry_status",{p_submission_key:receipt.submissionKey});return row&&row.found!==false?{...row,_submissionKey:receipt.submissionKey}:null}catch{return null}}))).filter(Boolean);
-  let accountRows=[];
-  if(authSession()?.access_token){try{const rows=await rpc("get_my_wholesale_enquiries",{});if(Array.isArray(rows))accountRows=rows}catch{}}
-  const map=new Map();
-  [...localRows,...accountRows].forEach(row=>{if(row?.reference){const prior=map.get(row.reference)||{};map.set(row.reference,{...prior,...row,_submissionKey:prior._submissionKey||row._submissionKey||""})}});
-  historyRows=[...map.values()].sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
-  renderHistory();
-  return historyRows;
+  const state=$("wholesaleHistoryState"),refresh=$("refreshWholesaleHistory");if(refresh)refresh.disabled=true;if(state){state.hidden=false;state.textContent=t("historyLoading")}
+  try{
+    const localRows=(await Promise.all(readReceipts().map(async receipt=>{try{const row=await rpc("get_wholesale_enquiry_status",{p_submission_key:receipt.submissionKey});return row&&row.found!==false?{...row,_submissionKey:receipt.submissionKey}:null}catch{return null}}))).filter(Boolean);
+    let accountRows=[];
+    if(authSession()?.access_token){try{const rows=await rpc("get_my_wholesale_enquiries",{});if(Array.isArray(rows))accountRows=rows}catch{}}
+    const map=new Map();
+    [...localRows,...accountRows].forEach(row=>{if(row?.reference){const prior=map.get(row.reference)||{};map.set(row.reference,{...prior,...row,_submissionKey:prior._submissionKey||row._submissionKey||""})}});
+    historyRows=[...map.values()].sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
+    renderHistory();
+    return historyRows;
+  }finally{if(refresh)refresh.disabled=false}
 }
 function renderSuccessStatus(row,reference){
   if($("successReference"))$("successReference").textContent=row?.reference||reference||"—";

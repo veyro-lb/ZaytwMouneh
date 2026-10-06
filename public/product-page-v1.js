@@ -68,8 +68,8 @@ function money(v){return "$"+Number(v||0).toFixed(2)}
 function locale(){
  try{
   if(window.ZWM_LOCALE&&window.ZWM_LOCALE.get)return window.ZWM_LOCALE.get();
-  if(localStorage.getItem("zwm:french:v1")==="1")return "fr";
-  return localStorage.getItem("zwm-lang-v2")==="ar"?"ar":"en";
+  var saved=localStorage.getItem("zwm-locale-v3");
+  return saved==="ar"||saved==="fr"?saved:"en";
  }catch(e){return "en"}
 }
 function t(k){return (COPY[state.locale]&&COPY[state.locale][k])||COPY.en[k]||k}
@@ -79,11 +79,8 @@ function productUrl(id,code){return location.origin+productPath(id,code)}
 function setLocale(code){
  code=code==="ar"?"ar":code==="fr"?"fr":"en";
  try{
-  if(window.ZWM_LOCALE&&window.ZWM_LOCALE.set)window.ZWM_LOCALE.set(code);
-  else{
-   localStorage.setItem("zwm-lang-v2",code==="ar"?"ar":"en");
-   if(code==="fr")localStorage.setItem("zwm:french:v1","1");else localStorage.removeItem("zwm:french:v1");
-  }
+  if(window.ZWM_LOCALE&&window.ZWM_LOCALE.set){window.ZWM_LOCALE.set(code);return}
+  localStorage.setItem("zwm-locale-v3",code);
  }catch(e){}
  if(state.product){location.assign(productPath(state.product.id,code)+(location.hash||""));return}
  location.reload();

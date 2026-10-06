@@ -1802,12 +1802,34 @@ function setupPerformance(){
     new IntersectionObserver(entries=>{
       heroVisible=entries[0]?.isIntersecting??true;
       if(heroVisible)showScene(sceneIndex);
-      else $$("[data-scene] video").forEach(v=>v.pause());
+      else $("[data-scene] video").forEach(v=>v.pause());
     },{threshold:.12}).observe(hero);
   }
+  const homeVideo=$("#shopHeroVideo");
+  if(homeVideo){
+    const limited=shouldLimitHeroMedia();
+    if(limited){
+      homeVideo.autoplay=false;
+      homeVideo.removeAttribute("autoplay");
+      homeVideo.preload="none";
+      homeVideo.pause();
+    }
+    if("IntersectionObserver" in window){
+      new IntersectionObserver(entries=>{
+        const visible=entries[0]?.isIntersecting??true;
+        if(!visible||limited)homeVideo.pause();
+        else if(!document.hidden){const play=homeVideo.play();if(play&&play.catch)play.catch(()=>{})}
+      },{threshold:.08}).observe(homeVideo);
+    }
+  }
   document.addEventListener("visibilitychange",()=>{
-    if(document.hidden)$$("[data-scene] video").forEach(v=>v.pause());
-    else if(heroVisible)showScene(sceneIndex);
+    if(document.hidden){
+      $("[data-scene] video").forEach(v=>v.pause());
+      if(homeVideo)homeVideo.pause();
+    }else{
+      if(heroVisible)showScene(sceneIndex);
+      if(homeVideo&&!shouldLimitHeroMedia()){const play=homeVideo.play();if(play&&play.catch)play.catch(()=>{})}
+    }
   });
 }
 

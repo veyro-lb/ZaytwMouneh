@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 
-var AUTH_KEY="zwm:mouneh:session:v1",CLAIMS_KEY="zwm:mouneh:claims:v1",CART_KEY="zwm-cart-v5",LANG_KEY="zwm-lang-v2";
+var AUTH_KEY="zwm:mouneh:session:v1",CLAIMS_KEY="zwm:mouneh:claims:v1",CART_KEY="zwm-cart-v5";
 var state={lang:"en",order:null,ref:"",claim:"",products:[],lastStatus:"",refreshing:false,loaded:false};
 var $=function(id){return document.getElementById(id)};
 var money=function(v){var value="$"+(Number(v)||0).toFixed(2);return isArabic()?"\u2066"+value+"\u2069":value};
@@ -11,7 +11,10 @@ function read(k,f){try{var v=localStorage.getItem(k);return v==null?f:JSON.parse
 function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
 function session(){return read(AUTH_KEY,null)}
 function config(){return window.ZWM_CMS_CONFIG||{}}
+function activeLocale(){try{var code=window.ZWM_LOCALE&&window.ZWM_LOCALE.get?window.ZWM_LOCALE.get():localStorage.getItem("zwm-locale-v3");return code==="ar"||code==="fr"?code:"en"}catch{return"en"}}
 function isArabic(){return state.lang==="ar"}
+function frText(value){var text=String(value==null?"":value);try{return window.ZWM_LOCALE&&window.ZWM_LOCALE.translate?window.ZWM_LOCALE.translate(text,"fr"):window.ZWM_FR_TRANSLATE?window.ZWM_FR_TRANSLATE(text):text}catch{return text}}
+function tx(en,ar,fr){if(state.lang==="ar")return ar;if(state.lang==="fr")return fr!=null?fr:frText(en);return en}
 
 async function rpc(action,p){
   var c=config(),s=session(),headers={"apikey":c.supabasePublishableKey,"Content-Type":"application/json","Prefer":"return=representation"};
@@ -22,7 +25,7 @@ async function rpc(action,p){
     body:JSON.stringify({action:action,p:p||{}})
   });
   var data=await r.json().catch(function(){return {}});
-  if(!r.ok)throw new Error(data.message||data.hint||data.details||(isArabic()?"تعذّر فتح الطلب.":"Order unavailable"));
+  if(!r.ok)throw new Error(data.message||data.hint||data.details||(tx("Order unavailable","تعذّر فتح الطلب.")));
   return data;
 }
 
@@ -51,31 +54,33 @@ function available(p){return p&&!p.__hidden&&!["hidden","draft"].includes(p.stat
 function label(status){
   var en={new:"Order received",confirmed:"Confirmed",preparing:"Preparing",out_for_delivery:"Out for delivery",delivered:"Delivered",cancelled:"Cancelled"};
   var ar={new:"تم استلام الطلب",confirmed:"تم التأكيد",preparing:"قيد التحضير",out_for_delivery:"خرج للتوصيل",delivered:"تم التسليم",cancelled:"ملغى"};
-  return (isArabic()?ar:en)[status]||status;
+  var fr={new:"Commande reçue",confirmed:"Confirmée",preparing:"En préparation",out_for_delivery:"En livraison",delivered:"Livrée",cancelled:"Annulée"};
+  return (state.lang==="ar"?ar:state.lang==="fr"?fr:en)[status]||status;
 }
 
 function formatUpdated(value){
   var d=new Date(value||Date.now());
-  if(!Number.isFinite(d.getTime()))return isArabic()?"تم التحديث مؤخراً":"Updated recently";
+  if(!Number.isFinite(d.getTime()))return tx("Updated recently","تم التحديث مؤخراً");
   try{
-    var text=new Intl.DateTimeFormat(isArabic()?"ar-LB":"en-LB",{
+    var text=new Intl.DateTimeFormat(tx("en-LB","ar-LB"),{
       year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"
     }).format(d);
-    return (isArabic()?"آخر تحديث ":"Updated ")+text.replace(/,\s*(?=\d{1,2}:)/," · ");
+    return (tx("Updated ","آخر تحديث "))+text.replace(/,\s*(?=\d{1,2}:)/," · ");
   }catch{
-    return (isArabic()?"آخر تحديث ":"Updated ")+d.toLocaleString(isArabic()?"ar-LB":"en-LB");
+    return (tx("Updated ","آخر تحديث "))+d.toLocaleString(tx("en-LB","ar-LB"));
   }
 }
 
 function itemCountLabel(count){
   count=Number(count)||0;
   if(isArabic())return count+" "+(count===1?"قطعة":"قطع");
+  if(state.lang==="fr")return count+" "+(count===1?"article":"articles");
   return count+" "+(count===1?"item":"items");
 }
 
 function paymentLabel(method){
   method=String(method||"cash_on_delivery");
-  if(method==="cash_on_delivery")return isArabic()?"الدفع عند الاستلام":"Cash on Delivery";
+  if(method==="cash_on_delivery")return tx("Cash on Delivery","الدفع عند الاستلام");
   if(method==="whish"||method==="wish")return "Whish";
   if(method==="omt")return "OMT";
   return method.replace(/_/g," ").replace(/\b\w/g,function(c){return c.toUpperCase()});
@@ -83,23 +88,23 @@ function paymentLabel(method){
 function paymentStatusLabel(status){
   var en={pending:"Payment pending",paid:"Payment received",failed:"Payment failed",refunded:"Refunded",partially_refunded:"Partially refunded",not_required:"No payment required"};
   var ar={pending:"الدفع معلّق",paid:"تم استلام الدفع",failed:"فشل الدفع",refunded:"تم رد المبلغ",partially_refunded:"تم رد جزء من المبلغ",not_required:"لا يتطلب دفعاً"};
-  return (isArabic()?ar:en)[status||"pending"]||status||"";
+  var fr={pending:"Paiement en attente",paid:"Paiement reçu",failed:"Échec du paiement",refunded:"Remboursé",partially_refunded:"Partiellement remboursé",not_required:"Aucun paiement requis"};
+  return (state.lang==="ar"?ar:state.lang==="fr"?fr:en)[status||"pending"]||status||"";
 }
 
 function setLang(next){
-  state.lang=next==="ar"?"ar":"en";
-  try{localStorage.setItem(LANG_KEY,state.lang)}catch{}
+  state.lang=next==="ar"?"ar":next==="fr"?"fr":"en";
+  try{if(window.ZWM_LOCALE&&window.ZWM_LOCALE.set)window.ZWM_LOCALE.set(state.lang,{navigate:false});else localStorage.setItem("zwm-locale-v3",state.lang)}catch{}
   document.documentElement.lang=state.lang;
   document.documentElement.dir=isArabic()?"rtl":"ltr";
   document.querySelectorAll("[data-commerce-lang]").forEach(function(b){b.classList.toggle("is-active",b.dataset.commerceLang===state.lang)});
   var shopLink=document.querySelector(".commerce-header-actions>a[href='/shop.html']");
   var accountLink=document.querySelector(".commerce-header-actions>a[href='/account#orders']");
-  if(shopLink)shopLink.textContent=isArabic()?"المتجر":"Shop";
-  if(accountLink)accountLink.textContent=isArabic()?"حسابي":"My Account";
+  if(shopLink)shopLink.textContent=tx("Shop","المتجر");
+  if(accountLink)accountLink.textContent=tx("My Account","حسابي");
   if(state.order)render();
   renderErrorCopy();
 }
-
 function claimFor(ref){
   var claims=read(CLAIMS_KEY,[])||[],x=claims.find(function(i){return i.reference===ref});
   return x&&x.claim_token||"";
@@ -127,17 +132,17 @@ function renderDelivery(o){
   var addr=o.delivery_address||{},gift=o.gift||o.extra||{};
   var html="";
   if(o.kind==="gift"&&gift.recipient){
-    html+='<div class="order-recipient"><small>'+esc(isArabic()?"المستلم":"Recipient")+'</small><strong>'+esc(gift.recipient)+'</strong>'+(gift.recipient_phone?'<span>'+esc(gift.recipient_phone)+'</span>':"")+'</div>';
+    html+='<div class="order-recipient"><small>'+esc(tx("Recipient","المستلم"))+'</small><strong>'+esc(gift.recipient)+'</strong>'+(gift.recipient_phone?'<span>'+esc(gift.recipient_phone)+'</span>':"")+'</div>';
   }
   html+='<div class="order-address-lines">';
-  html+=detailRow(isArabic()?"الشارع / الحي":"Street / neighborhood",addr.street);
-  html+=detailRow(isArabic()?"المبنى / السكن":"Building / residence",addr.building);
-  html+=detailRow(isArabic()?"الطابق / الشقة":"Floor / apartment",addr.floor_apartment);
-  html+=detailRow(isArabic()?"معلم قريب":"Nearby landmark",addr.landmark);
-  html+=detailRow(isArabic()?"تعليمات التوصيل":"Delivery instructions",addr.instructions);
+  html+=detailRow(tx("Street / neighborhood","الشارع / الحي"),addr.street);
+  html+=detailRow(tx("Building / residence","المبنى / السكن"),addr.building);
+  html+=detailRow(tx("Floor / apartment","الطابق / الشقة"),addr.floor_apartment);
+  html+=detailRow(tx("Nearby landmark","معلم قريب"),addr.landmark);
+  html+=detailRow(tx("Delivery instructions","تعليمات التوصيل"),addr.instructions);
   html+='</div>';
   if(!Object.values(addr).some(Boolean)&&!gift.recipient){
-    html='<p class="order-muted">'+esc(isArabic()?"تفاصيل التوصيل محفوظة مع الطلب.":"Delivery details are saved with this order.")+'</p>';
+    html='<p class="order-muted">'+esc(tx("Delivery details are saved with this order.","تفاصيل التوصيل محفوظة مع الطلب."))+'</p>';
   }
   $("deliveryAddress").innerHTML=html;
 }
@@ -147,57 +152,57 @@ function render(){
   var count=Number(o.item_count)||items.reduce(function(n,i){return n+(Number(i.qty)||1)},0);
 
   document.body.dataset.orderStatus=o.status||"";
-  $("orderEyebrow").textContent=isArabic()?"طلبك":"Your order";
+  $("orderEyebrow").textContent=tx("Your order","طلبك");
   $("orderHeading").textContent=new URL(location.href).searchParams.get("new")==="1"
-    ?(isArabic()?"شكراً — تم استلام طلبك 🌿":"Thank you — your order is in 🌿")
-    :(isArabic()?"تفاصيل طلبك":"Order details");
+    ?(tx("Thank you — your order is in 🌿","شكراً — تم استلام طلبك 🌿"))
+    :(tx("Order details","تفاصيل طلبك"));
   $("orderIntro").textContent=isArabic()
     ?"تتحدث هذه الصفحة تلقائياً عند انتقال طلبك إلى مرحلة جديدة."
     :"This page updates automatically as your order moves forward.";
   $("orderNumber").textContent=o.reference||"";
 
   $("statusTitle").textContent=label(o.status);
-  $("statusLabel").textContent=isArabic()?"الحالة الحالية":"Current status";
+  $("statusLabel").textContent=tx("Current status","الحالة الحالية");
   $("statusUpdated").textContent=formatUpdated(o.updated_at||o.submitted_at);
-  $("statusUpdated").title=new Date(o.updated_at||o.submitted_at).toLocaleString(isArabic()?"ar-LB":"en-LB");
+  $("statusUpdated").title=new Date(o.updated_at||o.submitted_at).toLocaleString(tx("en-LB","ar-LB"));
   renderTimeline(o);
 
-  $("itemsTitle").textContent=isArabic()?"الطلب":"Order";
+  $("itemsTitle").textContent=tx("Order","الطلب");
   $("itemsMeta").textContent=itemCountLabel(count);
   $("orderItems").innerHTML=items.map(function(i){
     var qty=Math.max(1,Number(i.qty)||1);
-    var name=isArabic()?(i.name_ar||i.name):(i.name||i.name_en||i.product_id||"");
-    var size=isArabic()?(i.size_ar||i.size):(i.size||i.size_en||i.variant_name||"");
+    var name=isArabic()?(i.name_ar||i.name):state.lang==="fr"?frText(i.name_fr||i.name||i.name_en||i.product_id||""):(i.name||i.name_en||i.product_id||"");
+    var size=isArabic()?(i.size_ar||i.size):state.lang==="fr"?frText(i.size_fr||i.size||i.size_en||i.variant_name||""):(i.size||i.size_en||i.variant_name||"");
     var meta=[];
     if(size)meta.push(size);
-    meta.push((isArabic()?"الكمية ":"Qty ")+qty);
+    meta.push((tx("Qty ","الكمية "))+qty);
     var rowTotal=i.subtotal!=null?i.subtotal:(Number(i.unit_price)||0)*qty;
     return '<div class="order-detail-item"><div class="order-item-copy"><strong>'+esc(name)+'</strong><small>'+esc(meta.join(" · "))+'</small></div><strong class="order-item-price">'+money(rowTotal)+'</strong></div>';
   }).join("");
 
-  $("deliveryTitle").textContent=isArabic()?"التوصيل":"Delivery";
+  $("deliveryTitle").textContent=tx("Delivery","التوصيل");
   $("deliveryArea").textContent=addr.area||o.delivery_area||o.area||"";
   renderDelivery(o);
-  $("orderNote").textContent=o.notes?(isArabic()?"ملاحظة الطلب: ":"Order note: ")+o.notes:"";
+  $("orderNote").textContent=o.notes?(tx("Order note: ","ملاحظة الطلب: "))+o.notes:"";
   $("orderNote").hidden=!o.notes;
 
-  $("paymentTitle").textContent=isArabic()?"الدفع والإجمالي":"Payment & total";
-  $("payMethodLabel").textContent=isArabic()?"طريقة الدفع":"Payment method";
+  $("paymentTitle").textContent=tx("Payment & total","الدفع والإجمالي");
+  $("payMethodLabel").textContent=tx("Payment method","طريقة الدفع");
   $("payMethod").textContent=paymentLabel(o.payment_method);
-  $("payStatusLabel").textContent=isArabic()?"حالة الدفع":"Payment status";
+  $("payStatusLabel").textContent=tx("Payment status","حالة الدفع");
   $("payStatus").textContent=paymentStatusLabel(o.payment_status);
   $("payStatus").className="order-payment-status payment-"+String(o.payment_status||"pending");
-  $("subLabel").textContent=isArabic()?"الإجمالي الفرعي":"Subtotal";
-  $("rewardLabel").textContent=isArabic()?"المكافأة":"Reward";
-  $("delLabel").textContent=isArabic()?"التوصيل":"Delivery";
-  $("totalLabel").textContent=isArabic()?"الإجمالي":"Total";
+  $("subLabel").textContent=tx("Subtotal","الإجمالي الفرعي");
+  $("rewardLabel").textContent=tx("Reward","المكافأة");
+  $("delLabel").textContent=tx("Delivery","التوصيل");
+  $("totalLabel").textContent=tx("Total","الإجمالي");
   $("orderSubtotal").textContent=money(o.subtotal!=null?o.subtotal:Number(o.total)-Number(o.delivery_fee||0)+Number(o.reward_discount||0));
   $("orderReward").textContent="-"+money(o.reward_discount||0);
   $("orderRewardRow").hidden=Number(o.reward_discount||0)<=0;
-  $("orderDeliveryFee").textContent=Number(o.delivery_fee||0)===0?(isArabic()?"مجاني":"Free"):money(o.delivery_fee);
+  $("orderDeliveryFee").textContent=Number(o.delivery_fee||0)===0?(tx("Free","مجاني")):money(o.delivery_fee);
   $("orderTotal").textContent=money(o.total);
 
-  $("rewardsTitle").textContent=isArabic()?"نقاط المونة":"Mouneh Points";
+  $("rewardsTitle").textContent=tx("Mouneh Points","نقاط المونة");
   var rewardsState=o.rewards_state||(
     o.status==="cancelled"?"none":
     (Number(o.points_awarded||0)>0?"earned":
@@ -205,34 +210,34 @@ function render(){
     (o.status!=="delivered"&&o.payment_status==="paid"?"waiting_delivery":"pending")))
   );
   var rewardCopy={
-    earned:isArabic()?"تم تأكيد التسليم واستلام الدفع، وتمت إضافة النقاط.":"Delivery and payment are both confirmed. These points are now earned.",
-    waiting_payment:isArabic()?"تم التسليم، لكن النقاط تنتظر تأكيد استلام الدفع من الإدارة.":"Delivered, but points are waiting for payment to be confirmed received.",
-    waiting_delivery:isArabic()?"تم استلام الدفع. ستُضاف النقاط بعد تأكيد التسليم.":"Payment received. Points will be added after delivery is confirmed.",
-    pending:isArabic()?"تُضاف النقاط فقط بعد تأكيد التسليم واستلام الدفع.":"Points are added only after both delivery and payment are confirmed.",
-    none:isArabic()?"هذا الطلب لا يكسب نقاطاً.":"This order does not earn points."
+    earned:tx("Delivery and payment are both confirmed. These points are now earned.","تم تأكيد التسليم واستلام الدفع، وتمت إضافة النقاط."),
+    waiting_payment:tx("Delivered, but points are waiting for payment to be confirmed received.","تم التسليم، لكن النقاط تنتظر تأكيد استلام الدفع من الإدارة."),
+    waiting_delivery:tx("Payment received. Points will be added after delivery is confirmed.","تم استلام الدفع. ستُضاف النقاط بعد تأكيد التسليم."),
+    pending:tx("Points are added only after both delivery and payment are confirmed.","تُضاف النقاط فقط بعد تأكيد التسليم واستلام الدفع."),
+    none:tx("This order does not earn points.","هذا الطلب لا يكسب نقاطاً.")
   };
   $("rewardsCopy").textContent=rewardCopy[rewardsState]||rewardCopy.pending;
   $("orderPoints").textContent=rewardsState==="earned"
     ?("+"+Number(o.points_awarded||0)+" 🌿")
     :(rewardsState==="none"
       ?"0 🌿"
-      :(Number(o.pending_points||0)>0?"~"+Number(o.pending_points)+" 🌿":(isArabic()?"نقاط معلّقة 🌿":"Points pending 🌿")));
+      :(Number(o.pending_points||0)>0?"~"+Number(o.pending_points)+" 🌿":(tx("Points pending 🌿","نقاط معلّقة 🌿"))));
 
-  $("actionsTitle").textContent=isArabic()?"ماذا بعد؟":"What next?";
+  $("actionsTitle").textContent=tx("What next?","ماذا بعد؟");
   $("actionsCopy").textContent=isArabic()
     ?"تابع الطلب هنا، تسوّق من جديد، أو تواصل معنا إذا احتجت مساعدة."
     :"Track this order here, keep shopping, or contact us if you need help.";
-  $("viewOrders").textContent=isArabic()?"عرض طلباتي":"View my orders";
-  $("continueShopping").textContent=isArabic()?"متابعة التسوق":"Continue shopping";
-  $("cancelOrderButton").textContent=isArabic()?"إلغاء الطلب":"Cancel order";
-  $("reorderButton").textContent=isArabic()?"اطلبه مرة أخرى":"Order again";
+  $("viewOrders").textContent=tx("View my orders","عرض طلباتي");
+  $("continueShopping").textContent=tx("Continue shopping","متابعة التسوق");
+  $("cancelOrderButton").textContent=tx("Cancel order","إلغاء الطلب");
+  $("reorderButton").textContent=tx("Order again","اطلبه مرة أخرى");
   $("cancelOrderButton").hidden=!o.can_cancel;
   $("reorderButton").hidden=o.status!=="delivered";
 
   var phone=String(o.support_phone||"96181581230").replace(/\D/g,"");
   var msg=isArabic()?"مرحباً، أحتاج مساعدة بخصوص الطلب "+o.reference+".":"Hi, I need help with order "+o.reference+".";
   $("orderSupport").href="https://wa.me/"+phone+"?text="+encodeURIComponent(msg);
-  $("orderSupport").textContent=isArabic()?"تحتاج مساعدة؟ تواصل عبر واتساب":"Need help? WhatsApp us";
+  $("orderSupport").textContent=tx("Need help? WhatsApp us","تحتاج مساعدة؟ تواصل عبر واتساب");
 
   $("orderLoading").hidden=true;
   $("orderError").hidden=true;
@@ -243,11 +248,11 @@ function renderErrorCopy(){
   var box=$("orderError");
   if(!box)return;
   var h=box.querySelector("h2"),p=box.querySelector("p"),a=box.querySelector("a");
-  if(h)h.textContent=isArabic()?"تعذّر فتح هذا الطلب.":"We couldn’t open this order.";
+  if(h)h.textContent=tx("We couldn’t open this order.","تعذّر فتح هذا الطلب.");
   if(p)p.textContent=isArabic()
     ?"لحماية الخصوصية، يظهر الطلب فقط للحساب الذي يملكه أو للمتصفح الذي أجرى طلب الضيف."
     :"For privacy, orders are only visible to the signed-in account that owns them or to the browser that placed a guest order.";
-  if(a)a.textContent=isArabic()?"تسجيل الدخول":"Sign in";
+  if(a)a.textContent=tx("Sign in","تسجيل الدخول");
 }
 
 async function refresh(){
@@ -283,13 +288,13 @@ async function refresh(){
 
 async function cancel(){
   if(!state.order||!state.order.can_cancel)return;
-  if(!confirm(isArabic()?"هل تريد إلغاء هذا الطلب؟":"Cancel this order?"))return;
+  if(!confirm(tx("Cancel this order?","هل تريد إلغاء هذا الطلب؟")))return;
   $("cancelOrderButton").disabled=true;
-  $("orderActionStatus").textContent=isArabic()?"جارٍ الإلغاء…":"Cancelling…";
+  $("orderActionStatus").textContent=tx("Cancelling…","جارٍ الإلغاء…");
   try{
     state.order=await rpc("cancel",{reference:state.ref,claim_token:state.claim,reason:"Customer requested"});
     state.lastStatus=state.order.status||"";
-    $("orderActionStatus").textContent=isArabic()?"تم إلغاء الطلب.":"Order cancelled.";
+    $("orderActionStatus").textContent=tx("Order cancelled.","تم إلغاء الطلب.");
     render();
   }catch(e){
     $("orderActionStatus").textContent=e.message||String(e);
@@ -320,10 +325,10 @@ async function init(){
   var u=new URL(location.href);
   state.ref=u.searchParams.get("ref")||"";
   state.claim=claimFor(state.ref);
-  state.lang=(function(){try{return localStorage.getItem(LANG_KEY)==="ar"?"ar":"en"}catch{return "en"}})();
+  state.lang=activeLocale();
 
   document.querySelectorAll("[data-commerce-lang]").forEach(function(b){
-    b.addEventListener("click",function(){setLang(b.dataset.commerceLang)});
+    b.addEventListener("click",function(){if(window.ZWM_LOCALE&&window.ZWM_LOCALE.set)window.ZWM_LOCALE.set(b.dataset.commerceLang);else setLang(b.dataset.commerceLang)});
   });
   setLang(state.lang);
 

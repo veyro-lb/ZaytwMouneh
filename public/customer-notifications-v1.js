@@ -8,7 +8,7 @@ const VERSION="20261006-notificationhardening1";
 let cfg=null,user=null,rows=[];
 const $=(s,r=document)=>r.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const lang=()=>{try{if(localStorage.getItem("zwm:french:v1")==="1")return"fr";return localStorage.getItem("zwm-lang-v2")==="ar"?"ar":"en"}catch{return"en"}};
+const lang=()=>{try{const code=window.ZWM_LOCALE?.get?.()||localStorage.getItem("zwm-locale-v3");return code==="ar"||code==="fr"?code:"en"}catch{return"en"}};
 const C={
  en:{
   notifications:"Notifications",title:"Account alerts",copy:"Get important updates about orders and wholesale requests linked to this account.",
@@ -68,7 +68,7 @@ async function reg(){if(!("serviceWorker"in navigator))throw Error(tr("unsupport
 async function currentSub(){try{return(await reg()).pushManager.getSubscription()}catch{return null}}
 async function registeredDevice(){
  const s=await currentSub();if(!s)return null;
- const d=await api("push_subscriptions?select=id,endpoint,enabled,revoked_at,last_success_at&user_id=eq."+encodeURIComponent(user.id)+"&audience=eq.customer&endpoint=eq."+encodeURIComponent(s.endpoint)+"&enabled=eq.true&revoked_at=is.null&limit=1").catch(()=>[]);
+ const d=await api("push_subscriptions?select=id,endpoint,enabled,revoked_at,last_success_at,locale&user_id=eq."+encodeURIComponent(user.id)+"&audience=eq.customer&endpoint=eq."+encodeURIComponent(s.endpoint)+"&enabled=eq.true&revoked_at=is.null&limit=1").catch(()=>[]);
  return d?.[0]||null;
 }
 async function subscribe(){
@@ -88,6 +88,12 @@ async function subscribe(){
   browser_label:(navigator.userAgent||"").slice(0,100),locale:lang(),enabled:true,revoked_at:null,last_used_at:new Date().toISOString()
  })});
  return registeredDevice();
+}
+async function syncRegisteredLocale(){
+ const device=await registeredDevice();
+ if(!device||device.locale===lang())return device;
+ await api("push_subscriptions?id=eq."+encodeURIComponent(device.id),{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({locale:lang(),last_used_at:new Date().toISOString()})}).catch(()=>{});
+ return {...device,locale:lang()};
 }
 async function bootstrapPrefs(){
  const now=new Date().toISOString(),defaults=["order_updates","wholesale"].map(category=>({user_id:user.id,category,in_app_enabled:true,push_enabled:true,updated_at:now}));
@@ -212,9 +218,10 @@ async function boot(){
  await setup();if(!cfg)return;
  user=await me();if(!user)return;
  if(accountPage)await bootstrapPrefs();
+ await syncRegisteredLocale().catch(()=>{});
  bellShell();if(accountPage)cardShell();
  const obs=new MutationObserver(()=>{bellShell();if(accountPage)cardShell()});obs.observe(document.body,{subtree:true,childList:true});
- window.addEventListener("focus",()=>{refreshBell();const card=$("#zwmCustomerNotifications");if(card)renderCard(card)});
+ window.addEventListener("focus",()=>{syncRegisteredLocale().catch(()=>{});refreshBell();const card=$("#zwmCustomerNotifications");if(card)renderCard(card)});
  document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshBell()});
  setInterval(()=>{if(!document.hidden)refreshBell()},30000);
 }

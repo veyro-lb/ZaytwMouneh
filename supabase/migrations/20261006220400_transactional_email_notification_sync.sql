@@ -325,7 +325,11 @@ begin
   end if;
   return v_email;
 end;
-$$;
+$;
+
+revoke all on function private.transactional_email_order_recipient(uuid,text) from public, anon, authenticated;
+revoke all on function private.transactional_email_locale(text) from public, anon, authenticated;
+revoke all on function private.transactional_email_valid_recipient(text) from public, anon, authenticated;
 
 create or replace function private.notification_order_finalized()
 returns trigger

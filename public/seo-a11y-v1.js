@@ -5,8 +5,6 @@ window.__ZWM_SEO_A11Y_V1__=true;
 
 var ORIGIN="https://zaytwmouneh.veyro-202.workers.dev";
 var LOCALE_KEY="zwm-locale-v3";
-var LANG_KEY="zwm-lang-v2";
-var FR_KEY="zwm:french:v1";
 var DEFAULT_IMAGE=ORIGIN+"/assets/products/originals/extra-virgin-olive-oil.jpg";
 var INDEXABLE={"/":1,"/shop":1,"/gift":1,"/recipes":1,"/about":1,"/contact":1,"/wholesale":1,"/privacy":1,"/terms":1};
 var CLEAN_ALIASES={
@@ -26,9 +24,8 @@ function localeFromPath(){
 }
 function syncLocale(code){
   if(code!=="ar"&&code!=="fr"&&code!=="en")return;
-  set(LOCALE_KEY,code);
-  if(code==="fr"){set(FR_KEY,"1");set(LANG_KEY,"en")}
-  else{del(FR_KEY);set(LANG_KEY,code)}
+  if(window.ZWM_LOCALE&&typeof window.ZWM_LOCALE.set==="function")window.ZWM_LOCALE.set(code,{navigate:false});
+  else set(LOCALE_KEY,code);
   document.documentElement.lang=code;
   document.documentElement.dir=code==="ar"?"rtl":"ltr";
 }
@@ -37,7 +34,7 @@ if(routeLocale)syncLocale(routeLocale);
 
 function activeLocale(){
   if(window.ZWM_LOCALE&&typeof window.ZWM_LOCALE.get==="function"){
-    var z=window.ZWM_LOCALE.get(); if(z==="ar"||z==="fr")return z;
+    var z=window.ZWM_LOCALE.get(); if(z==="en"||z==="ar"||z==="fr")return z;
   }
   var p=localeFromPath(); if(p)return p;
   var stored=get(LOCALE_KEY); if(stored==="ar"||stored==="fr")return stored;

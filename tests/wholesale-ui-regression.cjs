@@ -22,6 +22,7 @@ function page(locale="en",options={}){
     const u=String(url);requests.push({url:u,opts});
     if(u.includes("/rpc/get_wholesale_enquiry_status"))return {ok:true,status:200,json:async()=>statusRow};
     if(u.includes("/rpc/get_my_wholesale_enquiries"))return {ok:true,status:200,json:async()=>options.accountRows||[]};
+    if(u.includes("/rpc/hide_my_wholesale_enquiry"))return {ok:true,status:200,json:async()=>true};
     if(u.includes("/rpc/submit_wholesale_enquiry")){
       if(mode==="failure")return {ok:false,status:503,json:async()=>({message:"offline"})};
       return {ok:true,status:200,json:async()=>"00000000-0000-0000-0000-000000000001"};
@@ -162,5 +163,51 @@ async function submit(ctx){
     dom.window.close();
   }
 
-  console.log("Wholesale UI regression passed: EN/AR/FR, validation, RFQ retry, receipt history, account history/status and draft restore.");
+  // Customer-facing button/link audit: destination integrity, clear draft, refresh guard and history removal.
+  {
+    const ctx=page("en");
+    try{
+      const requestLink=ctx.d.querySelector('.wholesale-hero-actions a[data-t="requestPricing"]');
+      const historyLink=ctx.d.querySelector('.wholesale-hero-actions a[data-t="trackRequests"]');
+      assert.equal(requestLink.getAttribute("href"),"/wholesale#wholesale-request","request-pricing CTA destination regressed");
+      assert.equal(historyLink.getAttribute("href"),"/wholesale#wholesale-history","track-requests CTA destination regressed");
+
+      input(ctx,"businessName","Draft To Clear");addFirstProduct(ctx);
+      await wait(320);
+      assert(ctx.w.localStorage.getItem("zwm:wholesale:draft:v1"),"draft missing before clear button test");
+      ctx.d.getElementById("clearDraft").click();
+      assert.equal(ctx.d.getElementById("businessName").value,"","clear draft did not reset customer fields");
+      assert.equal(ctx.d.getElementById("selectedCount").textContent,"0","clear draft did not remove selected products");
+      assert.equal(ctx.w.localStorage.getItem("zwm:wholesale:draft:v1"),null,"clear draft left persisted data behind");
+
+      addFirstProduct(ctx);fillRequired(ctx);await submit(ctx);
+      const before=ctx.requests.filter(r=>r.url.includes("/rpc/get_wholesale_enquiry_status")).length;
+      const refresh=ctx.d.getElementById("refreshWholesaleHistory");
+      refresh.click();
+      assert.equal(refresh.disabled,true,"refresh button must disable while statuses are loading");
+      await wait(20);
+      const after=ctx.requests.filter(r=>r.url.includes("/rpc/get_wholesale_enquiry_status")).length;
+      assert(after>before,"refresh status button did not reload saved request status");
+      assert.equal(refresh.disabled,false,"refresh button did not re-enable after loading");
+    }finally{ctx.dom.window.close()}
+  }
+
+  {
+    const row={lead_id:"11111111-1111-1111-1111-111111111111",reference:"ZW-B2B-DELETE01",status:"new",created_at:"2026-10-05T19:00:00Z",updated_at:"2026-10-05T20:00:00Z",business_name:"Delete Me Cafe",preferred_contact_method:"whatsapp",items:[]};
+    const ctx=page("en",{session:{access_token:"signed-in-test-token"},accountRows:[row]});
+    try{
+      ctx.w.confirm=()=>true;ctx.w.alert=()=>{};
+      await wait(40);
+      const del=ctx.d.querySelector('[data-history-delete="ZW-B2B-DELETE01"]');
+      assert(del,"history delete button missing");
+      del.click();
+      assert.equal(del.disabled,true,"history delete button must disable during removal");
+      await wait(20);
+      assert(!ctx.d.getElementById("wholesaleHistoryList").textContent.includes("Delete Me Cafe"),"history delete did not remove the customer card");
+      const rpc=ctx.requests.find(r=>r.url.includes("/rpc/hide_my_wholesale_enquiry"));
+      assert(rpc&&rpc.opts.headers.Authorization==="Bearer signed-in-test-token","history delete did not use the authenticated protected RPC");
+    }finally{ctx.dom.window.close()}
+  }
+
+  console.log("Wholesale UI regression passed: EN/AR/FR, validation, RFQ retry, receipt history, account history/status, draft restore and customer button audit.");
 })().catch(err=>{console.error(err);process.exitCode=1});

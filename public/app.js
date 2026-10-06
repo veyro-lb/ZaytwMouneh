@@ -443,7 +443,33 @@ const PAGE_I18N={
   }
 };
 
-let lang=safeStorageGet(LANG_KEY)==="ar"?"ar":"en";
+function preferredLocale(){
+  try{
+    const code=window.ZWM_LOCALE?.get?.()||safeStorageGet("zwm-locale-v3");
+    return code==="ar"||code==="fr"?code:"en";
+  }catch{return "en"}
+}
+function frTranslate(value){
+  const text=String(value??"");
+  try{
+    if(window.ZWM_LOCALE?.translate)return window.ZWM_LOCALE.translate(text,"fr");
+    if(window.ZWM_FR_TRANSLATE)return window.ZWM_FR_TRANSLATE(text);
+  }catch{}
+  return text;
+}
+function frenchView(source){
+  return new Proxy(source,{get(target,prop){
+    const value=target[prop];
+    if(typeof value==="string")return frTranslate(value);
+    if(Array.isArray(value))return value.map(item=>typeof item==="string"?frTranslate(item):item);
+    return value;
+  }});
+}
+UI.fr=frenchView(UI.en);
+EXTRA_UI.fr=frenchView(EXTRA_UI.en);
+Object.keys(PAGE_I18N).forEach(page=>{PAGE_I18N[page].fr=frenchView(PAGE_I18N[page].en)});
+
+let lang=preferredLocale();
 let activeCategory="All";
 let query="";
 let visibleLimit=catalogPageSize();
@@ -551,8 +577,16 @@ function repeatedListingNote(p){
 }
 
 function money(n){const value=`${Number(n).toFixed(2)}`;return lang==="ar"?`\u2066${value}\u2069`:value}
-function currentName(p){return lang==="ar"?plainArabic(p.nameAr):p.nameEn}
-function categoryName(cat){return lang==="ar"?(CATEGORY_AR[cat]||cat):cat}
+function currentName(p){
+  if(lang==="ar")return plainArabic(p.nameAr);
+  if(lang==="fr")return p.nameFr||frTranslate(p.nameEn);
+  return p.nameEn;
+}
+function categoryName(cat){
+  if(lang==="ar")return CATEGORY_AR[cat]||cat;
+  if(lang==="fr")return frTranslate(cat);
+  return cat;
+}
 function originKeyFor(p){
   const source=normalize([p.nameEn,p.original].join(" "));
   if(source.includes("chouf"))return "Chouf";
@@ -570,7 +604,8 @@ function originFor(p){
     const labels={"Bekaa":"البقاع","Koura":"الكورة","Mount Lebanon":"جبل لبنان","Chouf":"الشوف"};
     return `${isDebes?"مصدر الدبس":"المصدر"} · ${labels[key]||key}`;
   }
-  return `${isDebes?"Debes source":"Source"} · ${key}, Lebanon`;
+  const english=`${isDebes?"Debes source":"Source"} · ${key}, Lebanon`;
+  return lang==="fr"?frTranslate(english):english;
 }
 function plainArabic(s){
   return String(s||"")
@@ -756,7 +791,7 @@ function renderFavoritesCount(){
 }
 function badgesFor(p){
   const t=EXTRA_UI[lang],n=p.nameEn.toLowerCase(),badges=[];
-  if(FEATURED_IDS.includes(p.id))badges.push(lang==="ar"?"شائع":"Popular");
+  if(FEATURED_IDS.includes(p.id))badges.push(lang==="ar"?"شائع":lang==="fr"?frTranslate("Popular"):"Popular");
   if(p.variants.length>1)badges.push(t.badgeMulti);
   if(["Mouneh","Pickles","Olives"].includes(p.category))badges.push(t.badgeTraditional);
   if(/zaatar|sumac|olive oil|labneh|makdous|molasses/.test(n))badges.push(t.badgeClassic);
@@ -973,8 +1008,11 @@ function syncLanguageVisibility(){
 }
 
 function applyLanguage(next,{immediate=false}={}){
-  lang=next==="ar"?"ar":"en";
-  safeStorageSet(LANG_KEY,lang);
+  lang=next==="ar"?"ar":next==="fr"?"fr":"en";
+  try{
+    if(window.ZWM_LOCALE?.set)window.ZWM_LOCALE.set(lang,{navigate:false});
+    else safeStorageSet("zwm-locale-v3",lang);
+  }catch{}
   const t=UI[lang];
   $$("[data-lang]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.lang===lang));
 
@@ -1433,7 +1471,9 @@ function renderModal(productId,variantId){
   if(!v)return false;
   currentModalProduct=p;
   currentModalVariant=v;
-  const t=UI[lang],info=infoFor(p),health=healthNoteFor(p),badges=badgesFor(p);
+  const t=UI[lang],rawInfo=infoFor(p),rawHealth=healthNoteFor(p),badges=badgesFor(p);
+  const info=lang==="fr"?{what:frTranslate(rawInfo.what),use:frTranslate(rawInfo.use)}:rawInfo;
+  const health=lang==="fr"&&rawHealth?{badge:frTranslate(rawHealth.badge),text:frTranslate(rawHealth.text)}:rawHealth;
   $("#productModalMark").innerHTML=productVisualMarkup(p,"product-modal-image");
   $("#productModalCategory").textContent=categoryName(p.category);
   $("#productModalTitle").textContent=currentName(p);
@@ -1454,7 +1494,7 @@ function renderModal(productId,variantId){
   const modalCanOrder=productCanOrder(p);
   $("#productModalAdd").textContent=modalCanOrder?t.add:availabilityLabel(p);
   $("#productModalAdd").disabled=!modalCanOrder;
-  $("#variantOptions").innerHTML=p.variants.map(option=>`<button type="button" class="variant-option ${option.id===v.id?"is-active":""}" data-modal-variant="${escapeHtml(option.id)}">${escapeHtml(lang==="ar"?option.sizeAr:option.sizeEn)} · ${money(option.price)}</button>`).join("");
+  $("#variantOptions").innerHTML=p.variants.map(option=>`<button type="button" class="variant-option ${option.id===v.id?"is-active":""}" data-modal-variant="${escapeHtml(option.id)}">${escapeHtml(lang==="ar"?option.sizeAr:lang==="fr"?frTranslate(option.sizeFr||option.sizeEn):option.sizeEn)} · ${money(option.price)}</button>`).join("");
   $$("[data-modal-variant]").forEach(btn=>btn.addEventListener("click",()=>{
     const next=variantById(p,btn.dataset.modalVariant);
     if(!next)return;
@@ -1942,8 +1982,8 @@ function chooseWelcomeLanguage(next,event){
     applyLanguage(next,{immediate:true});
   }catch(error){
     console.error("Language switch failed:",error);
-    lang=next==="ar"?"ar":"en";
-    safeStorageSet(LANG_KEY,lang);
+    lang=next==="ar"?"ar":next==="fr"?"fr":"en";
+    safeStorageSet("zwm-locale-v3",lang);
     document.documentElement.lang=lang;
     document.documentElement.dir=lang==="ar"?"rtl":"ltr";
   }finally{
@@ -2119,7 +2159,7 @@ function init(){
   if($("#favoritesOnly"))$("#favoritesOnly").addEventListener("click",e=>{if(!acceptSingleTap(e.currentTarget,260))return;favoritesOnly=!favoritesOnly;visibleLimit=catalogPageSize();renderFavoritesCount();renderProducts()});
   if($("#clearRecent"))$("#clearRecent").addEventListener("click",()=>{recentViews=[];saveRecent();renderRecent()});
 
-  document.addEventListener("click",e=>{const btn=e.target.closest("[data-lang]");if(!btn)return;if(btn.dataset.lang===lang)return;if(!acceptSingleTap(btn,220))return;applyLanguage(btn.dataset.lang)});
+  document.addEventListener("click",e=>{const btn=e.target.closest("[data-lang]");if(!btn)return;if(btn.dataset.lang===lang)return;if(!acceptSingleTap(btn,220))return;if(window.ZWM_LOCALE?.set)window.ZWM_LOCALE.set(btn.dataset.lang);else applyLanguage(btn.dataset.lang)});
   window.__ZWM_LANGUAGE_SWITCH_BOUND=true;
   $$("[data-welcome-lang]").forEach(btn=>btn.addEventListener("click",e=>chooseWelcomeLanguage(btn.dataset.welcomeLang,e)));
 
@@ -2165,7 +2205,7 @@ function init(){
 
   addEventListener("storage",e=>{
     if(e.key===CART_KEY){cart=loadCart();renderCart()}
-    if(e.key===LANG_KEY){applyLanguage(e.newValue==="ar"?"ar":"en",{immediate:true})}
+    if(e.key==="zwm-locale-v3"){applyLanguage(e.newValue==="ar"?"ar":e.newValue==="fr"?"fr":"en",{immediate:true})}
     if(e.key===FAV_KEY){favorites=loadFavorites();renderProducts();renderRecent();renderFavoritesCount()}
     if(e.key===GIFT_KEY){giftItems=loadGiftItems();renderGiftSummary();renderGiftPickerResults()}
   });

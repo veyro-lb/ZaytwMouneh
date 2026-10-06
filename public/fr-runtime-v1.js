@@ -13,8 +13,8 @@ function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
 function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 function del(k){try{localStorage.removeItem(k)}catch(e){}}
 function normalizeLocale(code){return code==="ar"||code==="fr"?code:"en"}
-function currentLocale(){if(window.ZWM_LOCALE&&window.ZWM_LOCALE.get)return window.ZWM_LOCALE.get();var canonical=get(LOCALE_KEY);if(canonical==="en"||canonical==="ar"||canonical==="fr")return canonical;if(get(FR_KEY)==="1")return "fr";return get(LANG_KEY)==="ar"||get(ADMIN_LANG_KEY)==="ar"?"ar":"en"}
-function syncLocaleState(code){var next=normalizeLocale(code);if(window.ZWM_LOCALE&&window.ZWM_LOCALE.set)return window.ZWM_LOCALE.set(next);set(LOCALE_KEY,next);set(LANG_KEY,next==="ar"?"ar":"en");if(next==="fr")set(FR_KEY,"1");else del(FR_KEY);return next}
+function currentLocale(){if(window.ZWM_LOCALE&&window.ZWM_LOCALE.get&&window.ZWM_LOCALE.get!==currentLocale)return window.ZWM_LOCALE.get();var canonical=get(LOCALE_KEY);if(canonical==="en"||canonical==="ar"||canonical==="fr")return canonical;if(get(FR_KEY)==="1")return "fr";return get(LANG_KEY)==="ar"||get(ADMIN_LANG_KEY)==="ar"?"ar":"en"}
+function syncLocaleState(code){var next=normalizeLocale(code);if(window.ZWM_LOCALE&&window.ZWM_LOCALE.set&&window.ZWM_LOCALE.set!==syncLocaleState)return window.ZWM_LOCALE.set(next);set(LOCALE_KEY,next);set(LANG_KEY,next==="ar"?"ar":"en");if(next==="fr")set(FR_KEY,"1");else del(FR_KEY);return next}
 function isFrench(){return currentLocale()==="fr"}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 

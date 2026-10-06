@@ -211,7 +211,7 @@ async function submit(ctx){
 
   // Owner/admin Wholesale interaction matrix: desktop/mobile open, refresh, contact links, save/contact/delete.
   {
-    const html=\`<!doctype html><html><body>
+    const html=`<!doctype html><html><body>
       <button data-view="wholesale" type="button">Wholesale</button><h1 id="viewTitle"></h1>
       <section data-view-panel="wholesale" class="is-active">
         <div class="wholesale-admin-toolbar"><label class="search-field"><input id="wholesaleLeadSearch" type="search"></label>
@@ -219,7 +219,7 @@ async function submit(ctx){
         <button id="refreshWholesaleLeads" type="button">Refresh</button></div>
         <strong id="wholesaleLeadResultCount"></strong><strong id="wholesaleMetricAll"></strong><strong id="wholesaleMetricNew"></strong><strong id="wholesaleMetricQuotes"></strong><strong id="wholesaleMetricConverted"></strong><strong id="navWholesaleCount"></strong>
         <table><tbody id="wholesaleLeadTableBody"></tbody></table><div id="wholesaleLeadCards"></div>
-      </section></body></html>\`;
+      </section></body></html>`;
     const dom=new JSDOM(html,{url:"https://store.example/admin",runScripts:"outside-only",pretendToBeVisual:true});
     const w=dom.window,d=w.document,requests=[];
     w.ZWM_CMS_CONFIG={supabaseUrl:"https://service.example",supabasePublishableKey:"publishable-test",tables:{wholesaleLeads:"wholesale_leads"}};

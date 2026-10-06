@@ -1797,16 +1797,40 @@ function animateAddToCart(source,p){
 }
 
 function setupPerformance(){
+  const standalone=$("#shopHeroVideo");
+  if(standalone){
+    const limited=shouldLimitHeroMedia();
+    standalone.autoplay=false;
+    standalone.preload=limited?"none":"metadata";
+    if(limited)standalone.pause();
+    else{
+      const playStandalone=()=>{
+        if(document.hidden)return;
+        const play=standalone.play();
+        if(play&&play.catch)play.catch(()=>{});
+      };
+      if("IntersectionObserver" in window){
+        new IntersectionObserver(entries=>{
+          if(entries[0]?.isIntersecting)playStandalone();
+          else standalone.pause();
+        },{threshold:.1}).observe(standalone);
+      }else playStandalone();
+      document.addEventListener("visibilitychange",()=>{
+        if(document.hidden)standalone.pause();
+        else playStandalone();
+      });
+    }
+  }
   const hero=$("#heroShowcase");
   if(hero&&"IntersectionObserver" in window){
     new IntersectionObserver(entries=>{
       heroVisible=entries[0]?.isIntersecting??true;
       if(heroVisible)showScene(sceneIndex);
-      else $$("[data-scene] video").forEach(v=>v.pause());
+      else $("[data-scene] video").forEach(v=>v.pause());
     },{threshold:.12}).observe(hero);
   }
   document.addEventListener("visibilitychange",()=>{
-    if(document.hidden)$$("[data-scene] video").forEach(v=>v.pause());
+    if(document.hidden)$("[data-scene] video").forEach(v=>v.pause());
     else if(heroVisible)showScene(sceneIndex);
   });
 }
@@ -1857,7 +1881,9 @@ function backdropMaybeOff(){
 }
 
 function shouldLimitHeroMedia(){
-  return Boolean(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const reduced=Boolean(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const saveData=Boolean(navigator.connection&&navigator.connection.saveData);
+  return reduced||saveData;
 }
 let heroManualPlayback=false;
 function showScene(i,manual=false){
@@ -1876,8 +1902,8 @@ function showScene(i,manual=false){
     video.muted=true;
     video.defaultMuted=true;
     video.playsInline=true;
-    video.preload=activeNow?"auto":"metadata";
-    if(activeNow&&video.readyState===0){try{video.load()}catch{}}
+    video.preload=activeNow?((shouldLimitHeroMedia()&&!manual&&!heroManualPlayback)?"none":"metadata"):"none";
+    if(activeNow&&video.readyState===0&&(manual||heroManualPlayback||!shouldLimitHeroMedia())){try{video.load()}catch{}}
     if(activeNow&&heroVisible&&!document.hidden&&(manual||heroManualPlayback||!shouldLimitHeroMedia())){
       if(changed||video.ended){try{video.currentTime=0}catch{}}
       const play=video.play();
@@ -1897,7 +1923,7 @@ function startScenes(){
     if(!video||video.dataset.sequenceBound==="1")return;
     video.dataset.sequenceBound="1";
     video.loop=false;
-    video.preload=index===0?"auto":"metadata";
+    video.preload=index===0?(shouldLimitHeroMedia()?"none":"metadata"):"none";
     video.addEventListener("playing",()=>{if(index===sceneIndex&&button)button.hidden=true;});
     video.addEventListener("pause",()=>{if(index===sceneIndex&&button)button.hidden=false;});
     video.addEventListener("error",()=>{if(index===sceneIndex&&button)button.hidden=false;});

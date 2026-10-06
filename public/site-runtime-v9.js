@@ -74,16 +74,26 @@
   function readSettings(){return safeParse(localStorage.getItem(SETTINGS_CACHE),{})}
 
   function currentLang(){
-    const stored=localStorage.getItem("zwm-lang-v2")||localStorage.getItem("zwm-language")||localStorage.getItem("zwm:lang");
-    if(stored==="ar")return "ar";
-    if(stored==="en")return "en";
-    return document.documentElement.lang==="ar"||document.documentElement.dir==="rtl"?"ar":"en";
+    try{
+      const code=window.ZWM_LOCALE?.get?.()||localStorage.getItem("zwm-locale-v3")||document.documentElement.lang;
+      return code==="ar"||code==="fr"?code:"en";
+    }catch{return document.documentElement.lang==="ar"?"ar":document.documentElement.lang==="fr"?"fr":"en"}
+  }
+  function frText(value){
+    const text=String(value??"");
+    try{return window.ZWM_LOCALE?.translate?.(text,"fr")||window.ZWM_FR_TRANSLATE?.(text)||text}catch{return text}
+  }
+  function tr(en,ar,fr){
+    const code=currentLang();
+    if(code==="ar")return ar;
+    if(code==="fr")return fr??frText(en);
+    return en;
   }
   function applySettings(settings=readSettings()){
     const announcement=settings.announcement||{};
     const announcementEl=document.getElementById("announcementText");
     if(announcementEl){
-      const text=currentLang()==="ar"?(announcement.ar||announcement.en):(announcement.en||announcement.ar);
+      const text=tr(announcement.en||announcement.ar,announcement.ar||announcement.en,announcement.fr||frText(announcement.en||announcement.ar));
       announcementEl.textContent=text||"";
       const bar=announcementEl.closest(".announcement");
       if(bar)bar.hidden=announcement.enabled===false||!text;
@@ -333,7 +343,7 @@
       })),
       total:Math.max(0,Number(order.total)||0),
       currency:"USD",
-      language:order.language==="ar"?"ar":"en",
+      language:["en","ar","fr"].includes(order.language)?order.language:currentLang(),
       extra:order.extra&&typeof order.extra==="object"?order.extra:{},
       submitted_at:new Date().toISOString(),
       updated_at:new Date().toISOString()
@@ -373,8 +383,8 @@
   }
 
   function applyPreviewLanguage(lang){
-    const next=lang==="ar"?"ar":"en";
-    const key="zwm-lang-v2";
+    const next=lang==="ar"?"ar":lang==="fr"?"fr":"en";
+    const key="zwm-locale-v3";
     const previous=localStorage.getItem(key);
     if(typeof window.applyLanguage==="function"){
       window.applyLanguage(next,{immediate:true});
@@ -765,7 +775,7 @@
         switcher.id="languageSwitch";
         switcher.className="language-switch";
         switcher.setAttribute("aria-label","Language");
-        switcher.innerHTML='<button type="button" data-lang="en" hidden aria-hidden="true" tabindex="-1">EN</button><button type="button" data-lang="ar" hidden aria-hidden="true" tabindex="-1">عربي</button>';
+        switcher.innerHTML='<button type="button" data-lang="en" hidden aria-hidden="true" tabindex="-1">EN</button><button type="button" data-lang="ar" hidden aria-hidden="true" tabindex="-1">عربي</button><button type="button" data-lang="fr" hidden aria-hidden="true" tabindex="-1">FR</button>';
         nav.insertBefore(switcher,cart||null);
       }else if(switcher.parentElement!==nav){
         nav.insertBefore(switcher,cart||null);
@@ -790,8 +800,8 @@
         account.id="mounehAccountButton";
         account.className="mouneh-account-nav";
         account.href="/account?auth=signin#signin";
-        account.setAttribute("aria-label",document.documentElement.lang==="ar"?"تسجيل الدخول إلى حسابي":"Sign in to My Account");
-        account.innerHTML='<span class="mr-account-nav-avatar is-guest" aria-hidden="true"></span><span class="mr-account-nav-copy">'+(document.documentElement.lang==="ar"?"تسجيل الدخول":"Sign in")+'</span>';
+        account.setAttribute("aria-label",tr("Sign in to My Account","تسجيل الدخول إلى حسابي","Se connecter à mon compte"));
+        account.innerHTML='<span class="mr-account-nav-avatar is-guest" aria-hidden="true"></span><span class="mr-account-nav-copy">'+(tr("Sign in","تسجيل الدخول","Se connecter"))+'</span>';
         nav.insertBefore(account,cart||null);
         persistentChromeRefs.account=account;
       }else if(account.parentElement!==nav){
@@ -807,10 +817,10 @@
       const guestAvatar=account.querySelector(".mr-account-nav-avatar.is-guest");
       if(guestAvatar){
         const accountCopy=account.querySelector(".mr-account-nav-copy");
-        const guestText=document.documentElement.lang==="ar"?"تسجيل الدخول":"Sign in";
+        const guestText=tr("Sign in","تسجيل الدخول","Se connecter");
         if(accountCopy&&accountCopy.textContent!==guestText)accountCopy.textContent=guestText;
         account.href="/account?auth=signin#signin";
-        account.setAttribute("aria-label",document.documentElement.lang==="ar"?"تسجيل الدخول أو فتح حسابي":"Sign in or open My Account");
+        account.setAttribute("aria-label",tr("Sign in or open My Account","تسجيل الدخول أو فتح حسابي","Se connecter ou ouvrir mon compte"));
       }
 
       let points=document.getElementById("mounehRewardsButton")||persistentChromeRefs.points;
@@ -829,14 +839,14 @@
       points.classList.add("mouneh-points-nav","is-compact");
       points.removeAttribute("hidden");
       points.setAttribute("data-mr-open","");
-      points.setAttribute("aria-label",document.documentElement.lang==="ar"?"فتح نقاط المونة":"Open Mouneh Points");
+      points.setAttribute("aria-label",tr("Open Mouneh Points","فتح نقاط المونة","Ouvrir les Mouneh Points"));
       points.style.setProperty("display","inline-flex","important");
       points.style.setProperty("visibility","visible","important");
       points.style.setProperty("opacity","1","important");
       points.style.setProperty("pointer-events","auto","important");
       points.style.setProperty("flex-shrink","0","important");
       const copy=points.querySelector(".mr-nav-copy");
-      if(copy){const text=document.documentElement.lang==="ar"?"نقاط المونة":"Mouneh Points";if(copy.textContent!==text)copy.textContent=text;copy.style.setProperty("display","none","important");}
+      if(copy){const text=tr("Mouneh Points","نقاط المونة","Mouneh Points");if(copy.textContent!==text)copy.textContent=text;copy.style.setProperty("display","none","important");}
       let badge=points.querySelector("#mounehPointsBadge");
       if(!badge){badge=document.createElement("b");badge.id="mounehPointsBadge";badge.textContent="—";points.appendChild(badge)}
       badge.hidden=false;
@@ -892,23 +902,16 @@
     document.addEventListener("visibilitychange",()=>{if(!document.hidden)check()});
     document.addEventListener("click",event=>{
       const btn=event.target.closest("#languageSwitch [data-lang]");
-      if(!btn)return;
-      const next=btn.dataset.lang==="ar"?"ar":"en";
-      setTimeout(()=>{
-        if(document.documentElement.lang!==next){
-          if(typeof window.applyLanguage==="function")window.applyLanguage(next,{immediate:true});
-          else{
-            try{localStorage.setItem("zwm-lang-v2",next)}catch{}
-            document.documentElement.lang=next;
-            document.documentElement.dir=next==="ar"?"rtl":"ltr";
-            document.querySelectorAll(".only-en").forEach(el=>el.style.setProperty("display",next==="ar"?"none":"revert","important"));
-            document.querySelectorAll(".only-ar").forEach(el=>el.style.setProperty("display",next==="ar"?"revert":"none","important"));
-            document.querySelectorAll("[data-lang]").forEach(el=>el.classList.toggle("is-active",el.dataset.lang===next));
-          }
-        }
-        syncBrandLanguage();
-        ensurePersistentChrome();
-      },60);
+      if(!btn||window.__ZWM_LANGUAGE_SWITCH_BOUND)return;
+      const next=btn.dataset.lang==="ar"?"ar":btn.dataset.lang==="fr"?"fr":"en";
+      if(window.ZWM_LOCALE?.set){window.ZWM_LOCALE.set(next);return}
+      if(typeof window.applyLanguage==="function")window.applyLanguage(next,{immediate:true});
+      else{
+        try{localStorage.setItem("zwm-locale-v3",next)}catch{}
+        document.documentElement.lang=next;
+        document.documentElement.dir=next==="ar"?"rtl":"ltr";
+        document.querySelectorAll("[data-lang]").forEach(el=>el.classList.toggle("is-active",el.dataset.lang===next));
+      }
     });
     check();
   }

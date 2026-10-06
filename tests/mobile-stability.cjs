@@ -37,7 +37,7 @@ async function account(){
  const state={ready:true,session:false,googleEnabled:true};
  w.ZWM_REWARDS={getState:()=>state,auth:{setMode(){},rememberLegalConsent(){},signInWithGoogle:async()=>{googleCalls++}}};
  try{
-  w.eval(read('account.js'));const d=w.document;
+  w.eval(read('locale-loader-v1.js'));\n  w.eval(read('account.js'));const d=w.document;
   const email=d.getElementById('accountEmail');email.value='test@example.invalid';
   const consent=d.getElementById('accountLegalConsent');consent.click();assert.equal(consent.checked,true);
   d.dispatchEvent(new w.CustomEvent('zwm:account-updated'));
@@ -52,7 +52,7 @@ async function account(){
   // A checkbox toggles locally; legal documents are separate links.
   d.getElementById('accountLegalConsent').click();assert.equal(w.location.pathname,'/account');
   assert.equal(d.querySelector('[data-auth-legal-link="terms"]').target,'_blank');
-  w.document.documentElement.lang='ar';w.document.documentElement.dir='rtl';await wait(0);
+  w.ZWM_LOCALE.set('ar');await wait(0);
   assert(d.querySelector('.account-auth-card h1').textContent.includes('حسابك'));
   console.log('account: consent, field preservation, Google dispatch, tabs, legal links, Arabic passed');
  }finally{await wait(80);dom.window.close()}

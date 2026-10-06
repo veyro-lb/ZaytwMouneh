@@ -97,7 +97,7 @@
       }
     }catch{}
     document.documentElement.lang=next;document.documentElement.dir=next==="ar"?"rtl":"ltr";
-    $("[data-lang]").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===next));
+    $$("[data-lang]").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===next));
     syncLanguageVisibility();
     render(true);
     if(navigate&&window.ZWM_LOCALE?.navigate)window.ZWM_LOCALE.navigate(next);

@@ -2,8 +2,19 @@
   "use strict";
   const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
   const shell=()=>$("#accountShell");
-  const ar=()=>document.documentElement.lang==="ar"||document.documentElement.dir==="rtl";
-  const tr=(en,arText)=>ar()?arText:en;
+  const locale=()=>{
+    try{return window.ZWM_LOCALE?.get?.()||document.documentElement.lang||"en"}catch{return "en"}
+  };
+  const ar=()=>locale()==="ar";
+  const tr=(en,arText,frText)=>{
+    const code=locale();
+    if(code==="ar")return arText;
+    if(code==="fr"){
+      if(frText!=null)return frText;
+      try{return window.ZWM_LOCALE?.translate?.(en,"fr")||window.ZWM_FR_TRANSLATE?.(en)||en}catch{return en}
+    }
+    return en;
+  };
   const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const ltr=v=>ar()?"\u2066"+String(v??"")+"\u2069":String(v??"");
   const money=v=>ltr("$"+(Number(v)||0).toFixed(2));
@@ -86,31 +97,16 @@
 
   function api(){return window.ZWM_REWARDS||null}
   function state(){try{return api()?.getState?.()||{}}catch{return {}}}
-  function requestFrenchTranslation(root){
-    let french=false;
-    try{french=window.ZWM_LOCALE?.get?.()==="fr"||localStorage.getItem("zwm:french:v1")==="1"}catch{}
-    if(!french)return;
-    requestAnimationFrame(()=>{
-      try{
-        if(typeof window.ZWM_APPLY_FRENCH==="function")window.ZWM_APPLY_FRENCH(root||shell());
-        else document.dispatchEvent(new CustomEvent("zwm:translate-french",{detail:{root:root||shell()}}));
-      }catch{}
-    });
-  }
   function setLang(lang){
     const next=lang==="ar"?"ar":lang==="fr"?"fr":"en";
     try{
-      if(window.ZWM_LOCALE?.set)window.ZWM_LOCALE.set(next);
-      else{
-        localStorage.setItem("zwm-lang-v2",next==="ar"?"ar":"en");
-        if(next==="fr")localStorage.setItem("zwm:french:v1","1");else localStorage.removeItem("zwm:french:v1");
-      }
+      if(window.ZWM_LOCALE?.set)window.ZWM_LOCALE.set(next,{navigate:false});
+      else localStorage.setItem("zwm-locale-v3",next);
     }catch{}
     document.documentElement.lang=next;document.documentElement.dir=next==="ar"?"rtl":"ltr";
     $("[data-lang]").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===next));
     syncLanguageVisibility();
     render(true);
-    if(next==="fr")requestFrenchTranslation(shell());
   }
   function tierLabel(t){return t==="golden"?tr("Golden Pantry","المونة الذهبية"):t==="olive"?tr("Olive Circle","دائرة الزيتون"):tr("Mouneh Member","عضو المونة")}
   function statusLabel(s){return s==="delivered"?tr("Delivered","تم التسليم"):s==="cancelled"?tr("Cancelled","ملغى"):s==="out_for_delivery"?tr("Out for delivery","خرج للتوصيل"):s==="preparing"?tr("Preparing","قيد التحضير"):s==="confirmed"?tr("Confirmed","مؤكد"):tr("Order received","تم استلام الطلب")}
@@ -312,24 +308,20 @@
     if(!force&&sig===lastRenderSig)return;lastRenderSig=sig;
     if(!api()){
       if(accountBootTimedOut||Date.now()-accountBootStarted>=ACCOUNT_BOOT_TIMEOUT_MS)el.innerHTML=serviceProblemView(tr("Account services did not finish loading. Check your connection and retry.","لم يكتمل تحميل خدمات الحساب. تحقق من الاتصال وأعد المحاولة."));
-      else el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Loading your account…","جارٍ تحميل حسابك…")+'</strong></section>';
-      requestFrenchTranslation(el);return
+      else el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Loading your account…","جارٍ تحميل حسابك…")+'</strong></section>';return
     }
     if(!s.ready){
       if(s.accountError||s.authNotice||accountBootTimedOut)el.innerHTML=serviceProblemView(s.accountError||s.authNotice||tr("Account services are temporarily unavailable. Please retry.","خدمات الحساب غير متاحة مؤقتاً. يرجى إعادة المحاولة."));
-      else el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Connecting to your account…","جارٍ الاتصال بحسابك…")+'</strong></section>';
-      requestFrenchTranslation(el);return
+      else el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Connecting to your account…","جارٍ الاتصال بحسابك…")+'</strong></section>';return
     }
     if(s.authMode==="recovery"){
       el.innerHTML=guestView(s);
-      requestFrenchTranslation(el);
       return;
     }
     if(s.session&&!s.member&&!s.dashboard){
       if(s.accountError)el.innerHTML=serviceProblemView(s.accountError,true);
       else if(s.accountBusy||!accountBootTimedOut)el.innerHTML='<section class="account-loading"><span>🌿</span><strong>'+tr("Finishing sign-in…","جارٍ إكمال تسجيل الدخول…")+'</strong></section>';
-      else el.innerHTML=serviceProblemView(tr("We could not restore this account session. Retry or sign in again.","تعذّرت استعادة جلسة الحساب. أعد المحاولة أو سجّل الدخول مجدداً."),true);
-      requestFrenchTranslation(el);return
+      else el.innerHTML=serviceProblemView(tr("We could not restore this account session. Retry or sign in again.","تعذّرت استعادة جلسة الحساب. أعد المحاولة أو سجّل الدخول مجدداً."),true);return
     }
     if(!s.session||!s.member){
       // Preserve the form and consent when service readiness/language changes.
@@ -341,11 +333,9 @@
       el.dataset.authMode=guestAuthMode;
       fields.forEach(saved=>{const input=document.getElementById(saved.id);if(input){input.value=saved.value;input.checked=saved.checked}});
       if(focused)document.getElementById(focused)?.focus({preventScroll:true});
-      requestFrenchTranslation(el);
       return;
     }
     el.innerHTML=memberView(s,s.member);
-    requestFrenchTranslation(el);
   }
   async function sync(){
     if(syncing||document.visibilityState==="hidden")return;
@@ -430,7 +420,7 @@
     if(e.target.closest("[data-open-points]")){api()?.open?.();return}
     const copy=e.target.closest("[data-copy-ref]"); if(copy){const ok=await copyText(copy.dataset.copyRef);copy.textContent=ok?tr("Copied","تم النسخ"):tr("Copy failed","فشل النسخ");return}
     const signout=e.target.closest("[data-account-signout]"); if(signout){signout.disabled=true;try{await api()?.account?.signOut?.();active="overview";render(true)}finally{signout.disabled=false}return}
-    const lang=e.target.closest("[data-lang]"); if(lang)setLang(lang.dataset.lang);
+    const lang=e.target.closest("[data-lang]"); if(lang){if(window.ZWM_LOCALE?.set)window.ZWM_LOCALE.set(lang.dataset.lang);else setLang(lang.dataset.lang);return}
     const toggle=e.target.closest("#navToggle"); if(toggle&&document.documentElement.dataset.zwmReliableMenuBound!=="1"){const links=$("#navLinks"),open=toggle.getAttribute("aria-expanded")==="true";toggle.setAttribute("aria-expanded",String(!open));links?.classList.toggle("is-open",!open);document.body.classList.toggle("menu-open",!open);document.body.classList.remove("nav-open")}
   });
   document.addEventListener("submit",async e=>{
@@ -569,14 +559,9 @@
   window.addEventListener("pageshow",sync);
   window.addEventListener("storage",e=>{if(!e.key||String(e.key).startsWith("zwm"))sync()});
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)sync()});
-  new MutationObserver(()=>{
-    // French is translated by fr-runtime after each account render. Do not render
-    // again just because that runtime normalizes <html lang="fr" dir="ltr">.
-    let french=false;
-    try{french=localStorage.getItem("zwm:french:v1")==="1"}catch{}
-    if(french&&document.documentElement.lang==="fr")return;
-    render(true);
-  }).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+  if(window.ZWM_LOCALE?.onLocaleChange){
+    window.ZWM_LOCALE.onLocaleChange(()=>{syncLanguageVisibility();render(true)});
+  }
   function syncAccountShellChrome(){
     document.querySelectorAll("[data-footer-year]").forEach(el=>{el.textContent=new Date().getFullYear()});
     const count=$("#cartCount");
@@ -589,7 +574,7 @@
       count.textContent=String(total);
     }
   }
-  const stored=(()=>{try{return window.ZWM_LOCALE?.get?.()||localStorage.getItem("zwm-lang-v2")}catch{return null}})(); if(stored)setLang(stored); else syncLanguageVisibility();
+  const stored=(()=>{try{return window.ZWM_LOCALE?.get?.()||localStorage.getItem("zwm-locale-v3")}catch{return null}})(); if(stored)setLang(stored); else syncLanguageVisibility();
   $("#accountYear") && ($("#accountYear").textContent=new Date().getFullYear());
   syncAccountShellChrome();
   render(true);

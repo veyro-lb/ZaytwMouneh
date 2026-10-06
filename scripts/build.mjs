@@ -8,6 +8,7 @@ const PAGES=path.join(ROOT,"src","pages");
 const PARTIALS=path.join(ROOT,"src","partials");
 const CHECK=process.argv.includes("--check");
 const VERSIONABLE=/\.(?:js|css|mjs|json|webmanifest|svg|png|jpe?g|webp|gif|avif|ico|mp4|webm)$/i;
+const DYNAMIC_KEYS=["/fr-runtime-v1.js","/admin-config.js","/notifications-v1.css","/customer-notifications-v1.js","/mouneh-rewards-v8.js","/customer-orders-v1.css","/commerce-v1.css","/admin-notifications-v1.js","/mouneh-rewards-v8.css","/admin-sw.js","/site-runtime-v9.js"];
 
 function walk(dir){
   if(!fs.existsSync(dir))return [];
@@ -93,9 +94,11 @@ function output(file,content){
 }
 const versions=collectVersions();
 const sources=collectSources();
-const manifest=manifestText(versions,sources);
+const dynamicVersions=sorted(Object.fromEntries(DYNAMIC_KEYS.filter(function(key){return versions[key]}).map(function(key){return [key,versions[key]]})));
+const releaseSeed=JSON.stringify(versions)+"\\n"+JSON.stringify(sources)+"\\n";
+const release=gitBlobHash(Buffer.from(releaseSeed)).slice(0,12);
+const manifest=manifestText(dynamicVersions,sources);
 const manifestVersion=gitBlobHash(Buffer.from(manifest)).slice(0,12);
-const release=manifestVersion;
 output(path.join(PUBLIC,"asset-versions.js"),manifest);
 output(path.join(PUBLIC,"release.json"),JSON.stringify({release:release,versioning:"git-blob-content-hash"})+"\n");
 for(const file of walk(PAGES).filter(function(f){return f.endsWith(".html")})){

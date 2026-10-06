@@ -1,0 +1,126 @@
+
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  
+  <base href="/">
+  <script src="/asset-versions.js"></script>
+    <script src="/locale-loader-v1.js"></script>
+<link rel="stylesheet" href="/seo-a11y-v1.css">
+  <script src="/seo-a11y-v1.js" defer></script>
+<meta name="theme-color" content="#174c2a">
+  <meta name="robots" content="noindex,follow">
+  <meta name="description" content="Secure Zayt w Mouneh website checkout.">
+  <title>Checkout | Zayt w Mouneh</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/premium.css">
+  <link rel="stylesheet" href="/mouneh-rewards-v8.css">
+  <link rel="stylesheet" href="/commerce-v1.css">
+  <meta name="zwm-release" content="__ZWM_RELEASE__" />
+  <script src="/storefront-release.js" defer></script>
+  <link rel="stylesheet" href="/ui-copy-polish-v1.css">
+</head>
+<body data-page="checkout">
+  <header class="commerce-header">
+    <div class="commerce-shell commerce-header-inner">
+      <a class="commerce-brand" href="/"><img src="/assets/logo.svg" alt=""><span>Zayt w Mouneh</span></a>
+      <div class="commerce-header-actions">
+        <a href="/shop?open=cart" data-i18n="backCart">← Back to cart</a>
+        <div class="commerce-lang" aria-label="Language"><button type="button" data-commerce-lang="en" hidden aria-hidden="true" tabindex="-1">EN</button><button type="button" data-commerce-lang="ar" hidden aria-hidden="true" tabindex="-1">عربي</button></div>
+        <a class="is-primary" href="/account" id="mounehAccountButton" data-i18n="account">My Account</a>
+      </div>
+    </div>
+  </header>
+  <main class="commerce-page">
+    <div class="commerce-shell">
+      <section class="commerce-intro">
+        <p class="commerce-eyebrow" data-i18n="eyebrow">Secure website order</p>
+        <h1 data-i18n="title">Checkout</h1>
+        <p data-i18n="intro">Confirm your details once, see the complete total, and place your Zayt w Mouneh order directly on the website.</p>
+      </section>
+      <div id="checkoutEmpty" class="commerce-card checkout-empty" hidden>
+        <span>🧺</span><h2 data-i18n="emptyTitle">Your pantry is empty.</h2><p data-i18n="emptyCopy">Add products before starting checkout.</p><a href="/shop" data-i18n="startShopping">Start shopping</a>
+      </div>
+      <form id="nativeCheckoutForm" class="checkout-grid" novalidate>
+        <div class="checkout-stack">
+          <section class="commerce-card">
+            <div class="commerce-card-head"><div><h2 data-i18n="customerTitle">Customer</h2><p data-i18n="customerHelp">We only collect what is needed to fulfil your order.</p></div><span class="commerce-step">1</span></div>
+            <div id="checkoutIdentity"></div>
+            <div class="checkout-fields">
+              <label><span data-i18n="name">Full name</span><input id="checkoutName" name="name" autocomplete="name" maxlength="120" required></label>
+              <label><span data-i18n="phone">Phone / WhatsApp</span><input id="checkoutPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="40" required></label>
+              <label class="full"><span data-i18n="email">Email (optional for guests)</span><input id="checkoutEmail" name="email" type="email" autocomplete="email" maxlength="240"></label>
+              <label class="full checkout-whatsapp-optin"><span><input id="checkoutWhatsAppUpdates" type="checkbox"> <span data-i18n="whatsappUpdates">Send me order status updates on WhatsApp</span></span><small class="checkout-help" data-i18n="whatsappUpdatesHelp">Transactional updates only — confirmation, preparation, delivery and completion.</small></label>
+            </div>
+          </section>
+          <section class="commerce-card">
+            <div class="commerce-card-head"><div><h2 data-i18n="deliveryTitle">Delivery</h2><p data-i18n="deliveryHelp">Use the details a local driver would need in Lebanon.</p></div><span class="commerce-step">2</span></div>
+            <div id="giftCheckoutFields" class="checkout-fields" hidden><label><span data-i18n="recipientName">Recipient name</span><input id="checkoutRecipientName" maxlength="120"></label><label><span data-i18n="recipientPhone">Recipient phone</span><input id="checkoutRecipientPhone" type="tel" inputmode="tel" maxlength="40"></label><p class="checkout-help full" data-i18n="giftDeliveryHelp">Use the recipient contact if the driver should call them directly.</p></div><div id="savedAddressWrap" class="saved-address-row" hidden><label class="commerce-field"><span data-i18n="savedAddress">Deliver to a saved address</span><select id="savedAddressSelect"></select></label><button type="button" id="clearSavedAddress" data-i18n="anotherAddress">Use another</button></div>
+            <div class="checkout-fields">
+              <label class="full checkout-area-field"><span data-i18n="area">Area / City</span>
+                <div class="area-combobox">
+                  <input id="checkoutArea" maxlength="180" required autocomplete="address-level2" role="combobox" aria-autocomplete="list" aria-controls="areaSuggestions" aria-expanded="false" placeholder="Search town, village or area">
+                  <div id="areaSuggestions" class="area-suggestions" role="listbox" hidden></div>
+                </div>
+                <small id="areaSearchHelp" class="checkout-help">Start typing your town, village or area. If it is not listed, type the exact area yourself.</small>
+              </label>
+              <label><span data-i18n="street">Street / Neighborhood</span><input id="checkoutStreet" maxlength="250" required></label>
+              <label><span data-i18n="building">Building / Residence</span><input id="checkoutBuilding" maxlength="160" required></label>
+              <label><span data-i18n="floor">Floor / Apartment</span><input id="checkoutFloor" maxlength="120"></label>
+              <label><span data-i18n="landmark">Nearby landmark</span><input id="checkoutLandmark" maxlength="220"></label>
+              <label class="full"><span data-i18n="instructions">Delivery instructions</span><textarea id="checkoutInstructions" rows="2" maxlength="500" placeholder="Call when downstairs, blue gate…"></textarea></label>
+              <label class="full" id="saveAddressWrap" hidden><span><input id="saveAddress" type="checkbox"> <span data-i18n="saveAddress">Save this address to my account</span></span></label>
+            </div>
+          </section>
+          <section class="commerce-card">
+            <div class="commerce-card-head"><div><h2 data-i18n="rewardsTitle">Rewards</h2><p data-i18n="rewardsHelp">Mouneh Points are finalized only after successful delivery.</p></div><span class="commerce-step">3</span></div>
+            <div id="checkoutRewards" class="reward-box"></div>
+          </section>
+          <section class="commerce-card">
+            <div class="commerce-card-head"><div><h2 data-i18n="paymentTitle">Payment</h2><p data-i18n="paymentHelp">More payment methods can be added later without changing your order history.</p></div><span class="commerce-step">4</span></div>
+            <label class="payment-choice"><input type="radio" name="payment" value="cash_on_delivery" checked><span><strong data-i18n="cod">Cash on Delivery</strong><small data-i18n="codHelp">Pay when your order arrives.</small></span></label>
+          </section>
+          <section class="commerce-card">
+            <div class="commerce-card-head"><div><h2 data-i18n="notesTitle">Order note</h2><p data-i18n="notesHelp">Optional — tell us anything useful for this delivery.</p></div><span class="commerce-step">5</span></div>
+            <div class="checkout-fields"><label class="full"><span data-i18n="notes">Anything we should know?</span><textarea id="checkoutNotes" rows="3" maxlength="800"></textarea></label></div>
+          </section>
+          <section class="commerce-card">
+            <div class="commerce-card-head"><div><h2 data-i18n="reviewTitle">Review & place order</h2><p data-i18n="reviewHelp">Your final total is re-calculated securely on the server before the order is created.</p></div><span class="commerce-step">6</span></div>
+            <div class="legal-check">
+              <label class="legal-check-toggle" for="checkoutTerms"><input id="checkoutTerms" type="checkbox" required><span data-i18n="termsConsent">I agree to the Terms of Service, Privacy Policy and applicable order/delivery terms.</span></label>
+              <div class="legal-check-links"><a href="/terms" target="_blank" rel="noopener noreferrer" data-i18n="termsLink">Open Terms of Service ↗</a><a href="/privacy" target="_blank" rel="noopener noreferrer" data-i18n="privacyLink">Open Privacy Policy ↗</a></div>
+            </div>
+          </section>
+        </div>
+        <aside class="commerce-card checkout-summary">
+          <div class="commerce-card-head"><div><h2 data-i18n="summaryTitle">Order summary</h2><p id="summaryCount"></p></div></div>
+          <div id="summaryItems" class="summary-items"></div>
+          <div id="freeDeliveryBox" class="free-delivery-box"></div>
+          <div class="summary-totals">
+            <div class="summary-line"><span data-i18n="subtotal">Subtotal</span><strong id="summarySubtotal">$0.00</strong></div>
+            <div class="summary-line" id="summaryRewardRow" hidden><span data-i18n="reward">Reward</span><strong id="summaryReward">-$0.00</strong></div>
+            <div class="summary-line"><span data-i18n="delivery">Delivery</span><strong id="summaryDelivery">$0.00</strong></div>
+            <div class="summary-line is-total"><span data-i18n="total">Total</span><strong id="summaryTotal">$0.00</strong></div>
+          </div>
+          <button id="placeOrderButton" class="place-order" type="submit" data-i18n="placeOrder">Place Order</button>
+          <p id="checkoutStatus" class="checkout-status" role="status" aria-live="polite"></p>
+          <p class="support-note"><span data-i18n="needHelp">Need help?</span> <a id="checkoutSupport" href="https://wa.me/96181581230" target="_blank" rel="noopener" data-i18n="whatsappSupport">Chat with us on WhatsApp</a></p>
+        </aside>
+      </form>
+    </div>
+  </main>
+  <script src="/admin-config.js"></script>
+  <script src="/products-data.js"></script>
+  <script src="/product-photos.js"></script>
+  <script src="/mouneh-rewards-v8.js" data-mouneh-rewards="1"></script>
+  <script src="site-runtime-v9.js" data-zwm-site-runtime="1"></script>
+
+  <script src="/checkout.js"></script>
+</body>
+</html>

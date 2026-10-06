@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <script src="/asset-versions.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  
+  <script src="/locale-loader-v1.js"></script>
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex" />
+  <meta name="theme-color" content="#0f3d22" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ZWM Owner" />
+  <link rel="manifest" href="admin-manifest.webmanifest" />
+  <title>Zayt w Mouneh — Owner Console</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="admin-rewards.css" />
+  <link rel="stylesheet" href="admin-wholesale.css" />
+<link rel="stylesheet" href="/ui-copy-polish-v1.css">
+</head>
+<body class="admin-body">
+  <div class="admin-bg" aria-hidden="true"></div>
+
+  <main id="setupScreen" class="auth-shell" hidden>
+    <section class="auth-card">
+      <div class="admin-language-switch auth-language-toggle" data-no-i18n role="group" aria-label="Admin language">
+        <button type="button" data-admin-lang="en" hidden aria-hidden="true" tabindex="-1">EN</button>
+        <button type="button" data-admin-lang="ar" hidden aria-hidden="true" tabindex="-1">عربي</button>
+      </div>
+      <div class="auth-brand">
+        <span class="auth-logo"><img src="assets/logo.svg" alt="" /></span>
+        <div><strong>Zayt w Mouneh</strong><span>Private owner access</span></div>
+      </div>
+      <p class="auth-kicker">Access unavailable</p>
+      <h1>Owner access<br><em>is temporarily unavailable.</em></h1>
+      <p class="auth-copy">This private console is restricted to approved owner accounts. If you are an approved owner and cannot sign in, contact the site administrator.</p>
+      <a class="button-secondary" href="index.html">Back to website</a>
+    </section>
+  </main>
+
+  <main id="loginScreen" class="auth-shell" hidden>
+    <section class="auth-card">
+      <div class="admin-language-switch auth-language-toggle" data-no-i18n role="group" aria-label="Admin language">
+        <button type="button" data-admin-lang="en" hidden aria-hidden="true" tabindex="-1">EN</button>
+        <button type="button" data-admin-lang="ar" hidden aria-hidden="true" tabindex="-1">عربي</button>
+      </div>
+      <div class="auth-brand">
+        <span class="auth-logo"><img src="assets/logo.svg" alt="" /></span>
+        <div><strong>Zayt w Mouneh</strong><span>Private owner access</span></div>
+      </div>
+      <p class="auth-kicker">Owner sign in</p>
+      <h1>Run the pantry<br><em>from one place.</em></h1>
+      <p class="auth-copy">This area is not part of the customer website. Only approved owner accounts can continue.</p>
+      <form id="loginForm" class="auth-form" autocomplete="on">
+        <label>Email<input id="loginEmail" type="email" autocomplete="username" required /></label>
+        <label>Password<input id="loginPassword" type="password" autocomplete="current-password" minlength="12" required /></label>
+        <button class="button-primary" id="loginButton" type="submit">Sign in securely</button>
+        <p class="form-status" id="loginStatus" role="status" aria-live="polite"></p>
+      </form>
+
+      <small class="auth-security">Protected by authenticated sessions, an owner allowlist and database row-level security.</small>
+    </section>
+  </main>
+
+  <div id="adminApp" class="admin-app" hidden>
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-head">
+        <a class="sidebar-brand" href="index.html" aria-label="Back to Zayt w Mouneh website">
+          <img src="assets/logo.svg" alt="" />
+          <span><strong>Zayt w Mouneh</strong><small>Owner Console</small></span>
+        </a>
+      </div>
+
+      <nav class="admin-nav" id="adminNav" aria-label="Owner dashboard">
+        <button type="button" class="is-active" data-view="overview"><span>⌂</span><b>Overview</b><em id="navInboxCount">0</em></button>
+        <button type="button" data-view="products"><span>▦</span><b>Products</b><em id="navProductCount">0</em></button>
+        <button type="button" data-view="orders"><span>◎</span><b>Orders & history</b><em id="navOrderCount">0</em></button>
+        <button type="button" data-view="wholesale"><span>▦</span><b>Wholesale Leads</b><em id="navWholesaleCount">0</em></button>
+        <button type="button" data-view="customers"><span>♙</span><b>Customers</b><em id="navCustomerCount">0</em></button>
+        <button type="button" data-view="rewards"><span>🌿</span><b>Mouneh Points</b><em id="navRewardsCount"></em></button>
+        <button type="button" data-view="content"><span>✎</span><b>Website content</b></button>
+        <button type="button" data-view="analytics"><span>↗</span><b>Analytics</b></button>
+        <button type="button" data-view="activity"><span>◷</span><b>Activity</b></button>
+        <button type="button" data-view="settings"><span>⚙</span><b>Settings</b></button>
+      </nav>
+
+      <div class="sidebar-foot">
+        <a href="index.html" target="_blank" rel="noopener">View live site <span>↗</span></a>
+        <button id="signOutButton" type="button">Sign out</button>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <div><p id="viewEyebrow">Owner workspace</p><h1 id="viewTitle">Overview</h1></div>
+        </div>
+        <div class="topbar-right">
+          <div class="admin-language-switch topbar-language-toggle" data-no-i18n role="group" aria-label="Admin language">
+            <button type="button" data-admin-lang="en" hidden aria-hidden="true" tabindex="-1">EN</button>
+            <button type="button" data-admin-lang="ar" hidden aria-hidden="true" tabindex="-1">عربي</button>
+          </div>
+          <button class="icon-button topbar-search-button" id="globalSearchButton" type="button" title="Search everything" aria-label="Search everything">⌕</button>
+          <button class="icon-button" id="refreshButton" type="button" title="Refresh data">↻</button>
+          <button class="button-primary button-small" id="quickAddProduct" type="button" aria-label="Quick actions">+ Add</button>
+          <div class="owner-pill"><span id="ownerInitial">O</span><div><strong id="ownerName">Owner</strong><small id="ownerEmail">—</small></div></div>
+        </div>
+      </header>
+
+      <div class="admin-content">
+        <section class="dashboard-view is-active" data-view-panel="overview">
+          <div class="welcome-panel">
+            <div><p>Today at a glance</p><h2>Keep the pantry accurate, clear and easy to order.</h2><span id="lastUpdated">Loading dashboard…</span></div>
+            <button class="button-secondary" type="button" data-jump-view="products">Manage products <span>→</span></button>
+          </div>
+
+          <section class="owner-inbox panel" data-overview-widget="inbox">
+            <div class="panel-head owner-inbox-head">
+              <div><p>Owner inbox</p><h3>What needs your attention</h3></div>
+              <span class="owner-inbox-count" id="ownerInboxCount">0</span>
+            </div>
+            <div class="owner-inbox-list" id="ownerInboxList">
+              <p class="empty-state">Everything looks good.</p>
+            </div>
+          </section>
+
+          <div class="metric-grid">
+            <article class="metric-card"><span class="metric-icon">◉</span><div><small>Page views · 7 days</small><strong id="metricViews">—</strong><em id="metricViewsHint">Loading</em></div></article>
+            <article class="metric-card"><span class="metric-icon">⌁</span><div><small>Unique sessions · 7 days</small><strong id="metricSessions">—</strong><em id="metricSessionsHint">Loading</em></div></article>
+            <article class="metric-card"><span class="metric-icon">↗</span><div><small>WhatsApp clicks · 7 days</small><strong id="metricWhatsApp">—</strong><em>High-intent customer action</em></div></article>
+            <article class="metric-card"><span class="metric-icon">▦</span><div><small>Live catalogue</small><strong id="metricProducts">328</strong><em id="metricProductsHint">Products visible</em></div></article>
+          </div>
+
+          <section class="today-command panel" data-overview-widget="orders">
+            <div class="panel-head">
+              <div><p>Order command center</p><h3>Today</h3></div>
+              <button class="text-button" type="button" data-jump-view="orders">Open orders →</button>
+            </div>
+            <div class="today-command-grid">
+              <button type="button" data-overview-order-filter="new"><small>New orders</small><strong id="todayNewOrders">0</strong><span>Needs attention</span></button>
+              <button type="button" data-overview-order-filter="preparing"><small>Preparing</small><strong id="todayPreparingOrders">0</strong><span>Being handled</span></button>
+              <button type="button" data-overview-order-filter="out_for_delivery"><small>Out for delivery</small><strong id="todayOutOrders">0</strong><span>On the way</span></button>
+              <button type="button" data-overview-order-filter="delivered_today"><small>Sales today</small><strong id="todaySales">$0.00</strong><span id="todayDeliveredOrders">0 delivered</span></button>
+            </div>
+          </section>
+
+          <div class="overview-grid">
+            <article class="panel panel-wide" data-overview-widget="traffic">
+              <div class="panel-head"><div><p>Traffic</p><h3>Page views & sessions · 7 days</h3></div><button class="text-button" type="button" data-jump-view="analytics">Full analytics →</button></div>
+              <div class="mini-chart" id="overviewChart" aria-label="Seven day page views chart"></div>
+            </article>
+            <article class="panel" data-overview-widget="health">
+              <div class="panel-head"><div><p>Catalogue health</p><h3>Needs attention</h3></div></div>
+              <div class="health-list">
+                <button type="button" id="healthIncompleteProducts" data-health-filter="needs-attention"><span><b id="incompleteProductsCount">—</b> Incomplete products</span><em>Review →</em></button>
+                <button type="button" id="healthMissingPhotos" data-health-filter="missing-photo"><span><b id="missingPhotosCount">—</b> Missing photos</span><em>Review →</em></button>
+                <button type="button" id="healthHiddenProducts" data-health-filter="hidden"><span><b id="hiddenProductsCount">—</b> Hidden products</span><em>Review →</em></button>
+                <button type="button" id="healthDraftProducts" data-health-filter="draft"><span><b id="draftProductsCount">—</b> Draft products</span><em>Review →</em></button>
+              </div>
+            </article>
+          </div>
+
+          <div class="overview-grid">
+            <article class="panel" data-overview-widget="pages">
+              <div class="panel-head"><div><p>Top pages</p><h3>Where customers browse</h3></div></div>
+              <div id="topPagesList" class="rank-list"><p class="empty-state">No analytics yet.</p></div>
+            </article>
+            <article class="panel" data-overview-widget="activity">
+              <div class="panel-head"><div><p>Recent owner activity</p><h3>Latest changes</h3></div><button class="text-button" type="button" data-jump-view="activity">See all →</button></div>
+              <div id="recentActivityList" class="activity-list"><p class="empty-state">No changes yet.</p></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="products">
+          <div class="toolbar">
+            <div class="search-field"><span>⌕</span><input id="productSearch" type="search" placeholder="Search product, category or ID…" /></div>
+            <select id="productCategoryFilter" aria-label="Filter category"><option value="">All categories</option></select>
+            <select id="productStatusFilter" aria-label="Filter status"><option value="">All statuses</option><option value="live">Live</option><option value="edited">Edited</option><option value="new">New</option><option value="hidden">Hidden</option><option value="draft">Draft</option><option value="missing-photo">Missing photo</option><option value="needs-attention">Needs attention</option></select>
+            <select id="productAvailabilityFilter" aria-label="Filter availability"><option value="">All availability</option><option value="in_stock">In stock</option><option value="out_of_stock">Out of stock</option><option value="coming_soon">Coming soon</option></select>
+            <button class="button-secondary button-small" id="addCategoryButton" type="button">+ Add category</button>
+            <button class="button-primary button-small" id="addProductButton" type="button">+ Add product</button>
+          </div>
+          <div class="bulk-product-bar" id="bulkProductBar" hidden>
+            <div><strong id="bulkSelectedCount">0 selected</strong><button class="text-button" id="clearProductSelection" type="button">Clear</button></div>
+            <select id="bulkProductAction" aria-label="Bulk action">
+              <option value="">Choose bulk action…</option>
+              <option value="availability">Change availability</option>
+              <option value="visibility">Change visibility</option>
+              <option value="category">Change category</option>
+              <option value="delete">Delete selected</option>
+            </select>
+            <select id="bulkProductValue" aria-label="Bulk value" hidden></select>
+            <button class="button-primary button-small" id="applyBulkProductAction" type="button">Apply</button>
+          </div>
+          <div class="table-card">
+            <div class="table-summary"><span id="productResultCount">0 products</span><div><button id="selectVisibleProducts" class="text-button" type="button">Select visible</button><button id="deselectAllProducts" class="text-button" type="button">Deselect all</button><button id="exportProductsButton" class="text-button" type="button">Excel / CSV ↗</button></div></div>
+            <div class="product-table-wrap">
+              <table class="product-table">
+                <thead><tr><th class="select-col"><span class="sr-only">Select</span></th><th>Product</th><th>Category</th><th>Price</th><th>Availability</th><th>Status</th><th>Updated</th><th></th></tr></thead>
+                <tbody id="productTableBody"></tbody>
+              </table>
+            </div>
+            <div id="productCardsMobile" class="product-cards-mobile"></div>
+          </div>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="orders">
+          <div class="section-intro">
+            <div><p>Orders & deliveries</p><h2>Receive and manage every website and owner-created order in one place.</h2></div>
+            <span>Website checkout orders appear automatically. Delivery status and payment status are synced separately. Points settle only after delivery + confirmed payment.</span>
+          </div>
+
+          <div class="metric-grid order-metrics">
+            <article class="metric-card"><div><small>Order received</small><strong id="ordersNewCount">0</strong><em>Needs owner review</em></div></article>
+            <article class="metric-card"><div><small>Confirmed</small><strong id="ordersConfirmedCount">0</strong><em>Approved by owner</em></div></article>
+            <article class="metric-card"><div><small>Preparing</small><strong id="ordersPreparingCount">0</strong><em>Being prepared</em></div></article>
+            <article class="metric-card"><div><small>Out for delivery</small><strong id="ordersOutCount">0</strong><em>On the way</em></div></article>
+            <article class="metric-card"><div><small>Delivered</small><strong id="ordersDeliveredCount">0</strong><em>Delivery completed</em></div></article>
+            <article class="metric-card payment-metric"><div><small>Payment pending</small><strong id="ordersPaymentPendingCount">0</strong><em>Money not confirmed received</em></div></article>
+          </div>
+          <div class="order-settlement-rule">
+            <span>🌿</span>
+            <div><strong>Points require both checks</strong><small>Mouneh Points are issued only when the order is <b>Delivered</b> and payment is marked <b>Received</b>.</small></div>
+          </div>
+
+          <div class="order-command-strip">
+            <button type="button" data-order-command="today">Today</button>
+            <button type="button" data-order-command="waiting">Waiting 30m+</button>
+            <button type="button" data-order-command="delivered_today">Delivered today</button>
+            <button class="button-primary button-small" id="manualOrderButton" type="button">+ Manual order</button>
+          </div>
+
+          <div class="order-scope-tabs" role="tablist" aria-label="Order history view">
+            <button type="button" class="is-active" data-order-scope="active">Active <em id="orderActiveTabCount">0</em></button>
+            <button type="button" data-order-scope="past">Past orders <em id="orderPastTabCount">0</em></button>
+            <button type="button" data-order-scope="all">All history <em id="orderAllTabCount">0</em></button>
+          </div>
+
+          <div class="toolbar order-toolbar">
+            <div class="search-field"><span>⌕</span><input id="orderSearch" type="search" placeholder="Search code, customer, area or product…" /></div>
+            <select id="orderStatusFilter" aria-label="Filter delivery status">
+              <option value="">All statuses</option>
+              <option value="new">New</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="preparing">Preparing</option>
+              <option value="out_for_delivery">Out for delivery</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <select id="orderKindFilter" aria-label="Filter order type"><option value="">All types</option><option value="order">Pantry orders</option><option value="gift">Gifts</option></select>
+            <button class="button-secondary button-small" id="exportOrdersButton" type="button">Excel / CSV</button>
+          </div>
+
+          <div class="table-card">
+            <div class="table-summary"><span id="orderResultCount">0 orders</span><span>Use the status menu to update delivery progress.</span></div>
+            <div class="product-table-wrap order-table-wrap">
+              <table class="product-table order-table">
+                <thead><tr><th>WhatsApp code</th><th>Customer / area</th><th>Items</th><th>Total</th><th>Status</th><th>Sent</th><th></th></tr></thead>
+                <tbody id="orderTableBody"></tbody>
+              </table>
+            </div>
+            <div id="orderCardsMobile" class="product-cards-mobile order-cards-mobile"></div>
+          </div>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="wholesale">
+          <div class="section-intro">
+            <div><p>Wholesale & business</p><h2>Qualify and follow up on business enquiries without mixing them into retail orders.</h2></div>
+            <span>Requests are enquiries for quotation. Availability, pricing, packaging, delivery and payment arrangements remain subject to owner review.</span>
+          </div>
+          <div class="wholesale-admin-summary">
+            <article><small>All leads</small><strong id="wholesaleMetricAll">0</strong></article>
+            <article><small>New</small><strong id="wholesaleMetricNew">0</strong></article>
+            <article><small>Quote activity</small><strong id="wholesaleMetricQuotes">0</strong></article>
+            <article><small>Converted</small><strong id="wholesaleMetricConverted">0</strong></article>
+          </div>
+          <div class="wholesale-admin-toolbar">
+            <div class="search-field"><span>⌕</span><input id="wholesaleLeadSearch" type="search" placeholder="Business, contact, location…" autocomplete="off" /></div>
+            <select id="wholesaleLeadStatus" aria-label="Filter wholesale leads by status">
+              <option value="">All statuses</option><option value="new">New</option><option value="contacted">Contacted</option>
+              <option value="needs_information">Needs information</option><option value="quote_preparing">Quote preparing</option>
+              <option value="quote_sent">Quote sent</option><option value="negotiating">Negotiating</option>
+              <option value="approved">Approved</option><option value="converted">Converted</option>
+              <option value="lost">Lost</option><option value="archived">Archived</option>
+            </select>
+            <button class="button-secondary button-small" id="refreshWholesaleLeads" type="button">Refresh</button>
+            <span id="wholesaleLeadResultCount">0 leads</span>
+          </div>
+          <div class="table-card wholesale-leads-table-wrap">
+            <table class="wholesale-leads-table">
+              <thead><tr><th>Business</th><th>Contact</th><th>Location</th><th>Products</th><th>Frequency</th><th>Status</th><th>Created</th><th></th></tr></thead>
+              <tbody id="wholesaleLeadTableBody"><tr><td colspan="8" class="wholesale-admin-empty">Open Wholesale Leads to load enquiries.</td></tr></tbody>
+            </table>
+          </div>
+          <div id="wholesaleLeadCards" class="wholesale-mobile-cards"></div>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="customers">
+          <div class="section-intro"><div><p>Customer history</p><h2>See repeat customers, order history and spending at a glance.</h2></div><span>Customers are grouped by phone when available, otherwise by name and area.</span></div>
+          <div class="toolbar">
+            <div class="search-field"><span>⌕</span><input id="customerSearch" type="search" placeholder="Search customer, phone or area…" /></div>
+            <select id="customerSort"><option value="recent">Most recent</option><option value="orders">Most orders</option><option value="spend">Highest spend</option></select><button class="button-secondary button-small" id="customerExportButton" type="button">Excel / CSV</button>
+          </div>
+          <div class="customer-grid" id="customerGrid"><p class="empty-state">No customer history yet.</p></div>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="rewards">
+          <div class="section-intro"><div><p>Mouneh Points</p><h2>Run the rewards club from the same owner console.</h2></div><span>Points settle only when an order is Delivered and payment is confirmed received. Cancelling or refunding an order reverses its order-linked points and releases eligible reserved vouchers.</span></div>
+          <div class="rewards-admin-shell" id="rewardsAdminBody">
+            <details class="rewards-auth-status" id="rewardsAuthStatus"><summary>Sign-in &amp; verification setup</summary>
+              <div class="rewards-auth-status-head"><div><p>Customer accounts</p><h3>Sign-in & verification setup</h3></div><span>Live status from the account service</span></div>
+              <div class="rewards-auth-status-grid">
+                <article><span>Email + password</span><strong data-no-i18n id="rewardsAuthEmailStatus">Checking…</strong><small>Website-created Zayt w Mouneh accounts</small></article>
+                <article><span>Email confirmation</span><strong data-no-i18n id="rewardsAuthConfirmStatus">Checking…</strong><small>Required before rewards enrollment</small></article>
+                <article><span>Google sign-in</span><strong data-no-i18n id="rewardsAuthGoogleStatus">Checking…</strong><small>Google OAuth provider</small></article>
+                <article><span>Branded email sender</span><strong id="rewardsAuthSenderStatus">Not checked</strong><small>Sender settings are managed in the account service.</small></article>
+              </div>
+            </details>
+
+            <div class="rewards-referral-security">
+              <div><span>✓</span><div><p>Referral protection</p><h3>Delivery + payment confirm the reward.</h3></div></div>
+              <p>A referral code alone never earns points. The friend must join with the code <strong>before ordering</strong>, their first qualifying order must be at least $25 after discount, be marked <strong>Delivered</strong>, and have payment confirmed as <strong>Received</strong> in Orders & history. The database issues each referral bonus only once, normalizes Lebanese phone formats, blocks same-phone referrals, and does not allow retroactive referral credit.</p>
+            </div>
+
+            <div class="rewards-admin-summary">
+              <article class="rewards-mini-metric"><span>Members</span><strong id="rewardsMembersMetric">0</strong><small>Joined rewards accounts</small></article>
+              <article class="rewards-mini-metric"><span>Points outstanding</span><strong id="rewardsPointsMetric">0</strong><small>Positive member balances</small></article>
+              <article class="rewards-mini-metric"><span>Available vouchers</span><strong id="rewardsVoucherMetric">$0.00</strong><small>Wallet value not yet used</small></article>
+              <article class="rewards-mini-metric"><span>Active boosts</span><strong id="rewardsCampaignMetric">0</strong><small>Live multiplier campaigns</small></article>
+              <article class="rewards-mini-metric"><span>Golden members</span><strong id="rewardsGoldenMetric">0</strong><small>Top annual-spend tier</small></article>
+            </div>
+
+            <div class="rewards-admin-grid">
+              <article class="rewards-admin-panel">
+                <div class="rewards-panel-head"><div><p>Members</p><h3>Balances, tiers & rewards</h3></div><button id="rewardsRefresh" type="button">Refresh ↻</button></div>
+                <div class="rewards-member-tools"><input id="rewardsMemberSearch" type="search" placeholder="Search member, phone, code or tier…" /><span data-no-i18n id="rewardsMemberCount">0 members</span></div>
+                <div class="rewards-member-grid" data-no-i18n id="rewardsMemberGrid"><p class="empty-state">Open this section to load rewards members.</p></div>
+              </article>
+
+              <article class="rewards-admin-panel">
+                <div class="rewards-panel-head"><div><p>Program</p><h3>Core earning settings</h3></div></div>
+                <div class="rewards-settings-form">
+                  <label class="rewards-settings-toggle"><span>Rewards program enabled</span><input id="rewardsEnabled" type="checkbox" /></label>
+                  <label>Base points per $1<input id="rewardsBaseRate" type="number" min="0.1" max="3" step="0.1" value="1" /></label>
+                  <p class="panel-copy">Default is 1 point per $1 of product subtotal. Tier and campaign multipliers are applied automatically.</p>
+                  <button id="rewardsSaveConfig" type="button">Save program settings</button>
+                </div>
+              </article>
+
+              <article class="rewards-admin-panel rewards-admin-panel-wide">
+                <div class="rewards-panel-head"><div><p>Reward ladder</p><h3>Edit point milestones and voucher values</h3></div><span class="field-help">Minimum order protects margin when a voucher is used.</span></div>
+                <div class="rewards-ladder-actions"><button id="rewardsAddLevel" type="button" aria-expanded="false" aria-controls="rewardsNewLevel">Add reward level</button><p>Pause a level to hide it from new redemptions; existing vouchers stay valid.</p></div>
+                <form id="rewardsNewLevel" class="rewards-new-level" hidden>
+                  <h4>New reward level</h4>
+                  <label>Points required<input id="rewardsNewPoints" type="number" min="1" max="1000000" step="1" required></label>
+                  <label>Discount ($)<input id="rewardsNewValue" type="number" min="0.01" max="1000" step="0.01" required></label>
+                  <label>Minimum order ($)<input id="rewardsNewMinimum" type="number" min="0.01" max="1000000" step="0.01" required></label>
+                  <p>Save to publish this level to customers. Existing vouchers keep their original value.</p>
+                  <div><button type="submit">Add to ladder</button><button id="rewardsCancelLevel" type="button">Cancel</button></div>
+                </form>
+                <div class="reward-rule-grid" id="rewardsRuleGrid" data-no-i18n></div>
+              </article>
+
+              <article class="rewards-admin-panel rewards-admin-panel-wide">
+                <div class="rewards-panel-head"><div><p>Point boosts</p><h3>Create a limited-time multiplier</h3></div><span class="field-help">Choose a category for a targeted boost, or all categories for the whole pantry.</span></div>
+                <form class="rewards-campaign-form" id="rewardsCampaignForm">
+                  <label>Title<input id="rewardsCampaignTitle" type="text" maxlength="100" required placeholder="Olive Week" /></label>
+                  <label>Arabic title<input id="rewardsCampaignTitleAr" type="text" maxlength="100" dir="rtl" placeholder="أسبوع الزيتون" /></label>
+                  <label>Category<select id="rewardsCampaignCategory" data-no-i18n><option value="">All categories</option></select></label>
+                  <label>Multiplier<select id="rewardsCampaignMultiplier"><option value="1.5">1.5×</option><option value="2" selected>2×</option><option value="3">3×</option></select></label>
+                  <label>Starts<input id="rewardsCampaignStart" type="datetime-local" required /></label>
+                  <label>Ends<input id="rewardsCampaignEnd" type="datetime-local" required /></label>
+                  <button type="submit">Create boost</button>
+                </form>
+                <div class="rewards-campaign-list" data-no-i18n id="rewardsCampaignList"></div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="content">
+          <div class="section-intro"><div><p>Website content</p><h2>Edit the customer-facing settings the live website actually uses.</h2></div><span>Save publishes to the storefront; open tabs sync automatically.</span></div>
+          <form id="contentForm" class="content-grid">
+            <article class="panel content-panel">
+              <div class="panel-head"><div><p>Announcement bar</p><h3>Top-of-site message</h3></div><label class="switch"><input id="announcementEnabled" type="checkbox" /><span></span></label></div>
+              <label>English message<input id="announcementEn" type="text" maxlength="140" /></label>
+              <label>Arabic message<input id="announcementAr" type="text" maxlength="140" dir="rtl" /></label>
+            </article>
+            <article class="panel content-panel">
+              <div class="panel-head"><div><p>Orders</p><h3>WhatsApp destination</h3></div></div>
+              <label>WhatsApp number<input id="contentWhatsApp" type="tel" inputmode="tel" autocomplete="tel" minlength="8" maxlength="20" required placeholder="96181581230" /></label>
+              <p class="field-help">Digits only, including country code. Existing WhatsApp order buttons will use this number.</p>
+            </article>
+            <article class="panel content-panel content-panel-wide">
+              <div class="panel-head"><div><p>Promo message</p><h3>Optional customer notice</h3></div><label class="switch"><input id="promoEnabled" type="checkbox" /><span></span></label></div>
+              <div class="two-col-fields">
+                <label>English title<input id="promoTitleEn" type="text" maxlength="90" /></label>
+                <label>Arabic title<input id="promoTitleAr" type="text" maxlength="90" dir="rtl" /></label>
+                <label>English message<textarea id="promoBodyEn" rows="4" maxlength="320"></textarea></label>
+                <label>Arabic message<textarea id="promoBodyAr" rows="4" maxlength="320" dir="rtl"></textarea></label>
+                <label>Start date & time<input id="promoStartsAt" type="datetime-local" /></label>
+                <label>End date & time<input id="promoEndsAt" type="datetime-local" /></label>
+              </div>
+              <p class="field-help">Leave dates empty to show the promo whenever it is enabled.</p>
+            </article>
+            <article class="panel content-panel content-panel-wide">
+              <div class="panel-head"><div><p>Delivery defaults</p><h3>Keep delivery rules in one place</h3></div></div>
+              <div class="four-col-fields">
+                <label>Delivery status<select id="deliveryEnabled"><option value="1">Enabled</option><option value="0">Paused</option></select></label>
+                <label>Free-delivery threshold basis<select id="deliveryEligibilityBasis"><option value="before_discount">Before reward discount</option><option value="after_discount">After reward discount</option></select></label>
+                <label>Default fee (USD)<input id="deliveryFee" type="number" min="0" step="0.01" /></label>
+                <label>Free delivery above (USD)<input id="deliveryFreeAbove" type="number" min="0" step="0.01" /></label>
+                <label>Minimum order (USD)<input id="deliveryMinimum" type="number" min="0" step="0.01" /></label>
+                <label>Estimated delivery<input id="deliveryEta" type="text" maxlength="80" placeholder="e.g. Same day / 1–2 days" /></label>
+              </div>
+              <p class="field-help">These values publish to the website delivery notice and are also used for owner planning and manual orders. Final delivery can still be confirmed on WhatsApp.</p>
+              <div class="delivery-zones-head"><div><strong>Delivery areas</strong><small>Optional area-specific fee and ETA overrides.</small></div><button class="text-button" id="addDeliveryZone" type="button">+ Add area</button></div>
+              <div id="deliveryZoneRows" class="delivery-zone-rows"></div>
+            </article>
+            <div class="form-actions content-save-row">
+              <div class="content-preview-actions">
+                <button class="button-secondary" id="previewContentDesktop" type="button">Preview real site · desktop</button>
+                <button class="button-secondary" id="previewContentMobile" type="button">Preview real site · mobile</button>
+              </div>
+              <button class="button-primary" id="saveContentButton" type="submit">Save website content</button>
+              <span id="contentStatus" class="form-status" role="status"></span>
+            </div>
+          </form>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="analytics">
+          <div class="analytics-head">
+            <div><p>Website analytics</p><h2>Live traffic and customer activity from one synchronized event stream.</h2><span class="analytics-freshness" id="analyticsFreshness">Loading analytics…</span></div>
+            <select id="analyticsRange"><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select>
+          </div>
+          <div class="metric-grid analytics-metrics">
+            <article class="metric-card"><div><small>Page views</small><strong id="analyticsViews">—</strong><em id="analyticsViewsSub">Selected period</em></div></article>
+            <article class="metric-card"><div><small>Unique sessions</small><strong id="analyticsSessions">—</strong><em id="analyticsSessionsSub">Selected period</em></div></article>
+            <article class="metric-card"><div><small>Add to pantry</small><strong id="analyticsAdds">—</strong><em>Product intent</em></div></article>
+            <article class="metric-card"><div><small>WhatsApp clicks</small><strong id="analyticsWhatsApp">—</strong><em>Order/contact intent</em></div></article>
+          </div>
+          <div class="overview-grid">
+            <article class="panel panel-wide"><div class="panel-head"><div><p>Daily traffic</p><h3>Page views & sessions</h3></div></div><div id="analyticsChart" class="analytics-chart"></div></article>
+            <article class="panel"><div class="panel-head"><div><p>Top pages</p><h3>Most viewed</h3></div></div><div id="analyticsPages" class="rank-list"></div></article>
+          </div>
+          <div class="metric-grid analytics-metrics order-business-metrics">
+            <article class="metric-card"><div><small>Orders</small><strong id="analyticsOrders">—</strong><em>Selected period</em></div></article>
+            <article class="metric-card"><div><small>Order value</small><strong id="analyticsOrderValue">—</strong><em>Delivered + active</em></div></article>
+            <article class="metric-card"><div><small>Average order</small><strong id="analyticsAvgOrder">—</strong><em>Average basket</em></div></article>
+            <article class="metric-card"><div><small>Gift share</small><strong id="analyticsGiftShare">—</strong><em>Gift vs pantry</em></div></article>
+          </div>
+          <div class="overview-grid">
+            <article class="panel"><div class="panel-head"><div><p>Top ordered products</p><h3>What customers actually order</h3></div></div><div id="analyticsOrderedProducts" class="rank-list"></div></article>
+            <article class="panel"><div class="panel-head"><div><p>Top viewed products</p><h3>What customers browse</h3></div></div><div id="analyticsProducts" class="rank-list"></div></article>
+            <article class="panel"><div class="panel-head"><div><p>Customer intent</p><h3>Useful conversion signals</h3></div></div><div id="intentBreakdown" class="intent-grid"></div></article>
+          </div>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="activity">
+          <div class="section-intro"><div><p>Owner activity</p><h2>A simple audit trail of dashboard changes.</h2></div></div>
+          <div class="table-card"><div id="activityTimeline" class="activity-timeline"></div></div>
+        </section>
+
+        <section class="dashboard-view" data-view-panel="settings">
+          <div class="settings-grid">
+            <article class="panel">
+              <div class="panel-head"><div><p>Security</p><h3>Owner access</h3></div><span class="status-badge status-live">Protected</span></div>
+              <dl class="settings-list"><div><dt>Signed in as</dt><dd id="settingsEmail">—</dd></div><div><dt>Authorization</dt><dd>Owner allowlist + RLS</dd></div><div><dt>Session</dt><dd>Supabase Auth · this browser session only</dd></div></dl>
+              <button class="button-secondary" id="settingsSignOut" type="button">Sign out on this device</button>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><p>Backend</p><h3>Connection health</h3></div><span class="status-badge" id="backendStatusBadge">Checking</span></div>
+              <dl class="settings-list"><div><dt>Database</dt><dd id="backendDatabase">Checking…</dd></div><div><dt>Product images</dt><dd id="backendStorage">Checking…</dd></div><div><dt>Analytics</dt><dd id="backendAnalytics">Checking…</dd></div></dl>
+              <button class="button-secondary" id="runHealthCheck" type="button">Run health check</button>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><p>Data</p><h3>Owner backups</h3></div></div>
+              <p class="panel-copy">Download a complete owner backup or readable Excel report. JSON is used for restore; Excel/CSV are for viewing, editing and reporting.</p>
+              <div class="settings-action-stack">
+                <button class="button-primary" id="openDataCenterButton" type="button">Import / Export Center</button><button class="button-secondary" id="createCloudBackup" type="button">Create cloud backup</button>
+                <button class="button-secondary" id="exportBackupButton" type="button">Export dashboard backup ↓</button>
+                <label class="button-secondary upload-backup-button">Restore backup<input id="restoreBackupInput" type="file" accept="application/json,.json" /></label>
+              </div>
+              <p class="field-help">Restore applies products, categories and public settings. Order history is never overwritten.</p>
+              <div class="cloud-backup-list" id="cloudBackupList"><p class="empty-state">No cloud backups yet.</p></div>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><p>Phone app</p><h3>Install Owner Console</h3></div><span class="status-badge">PWA</span></div>
+              <p class="panel-copy">Add the admin to your phone home screen so it opens like an app. Admin data and passwords are not cached by the service worker.</p>
+              <button class="button-primary" id="installAdminApp" type="button">Install on this device</button>
+              <p class="field-help" id="installAdminHint">On iPhone, use Share → Add to Home Screen if the install prompt is not available.</p>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><p>Overview</p><h3>Customize your home screen</h3></div></div>
+              <p class="panel-copy">Choose what you want to see first when you open the owner console on your phone.</p>
+              <div class="overview-preference-list">
+                <label><input type="checkbox" data-overview-pref="inbox" checked /><span>Owner inbox</span></label><label><input type="checkbox" data-overview-pref="orders" checked /><span>Order command center</span></label>
+                <label><input type="checkbox" data-overview-pref="traffic" checked /><span>Traffic chart</span></label>
+                <label><input type="checkbox" data-overview-pref="health" checked /><span>Catalogue health</span></label>
+                <label><input type="checkbox" data-overview-pref="pages" checked /><span>Top pages</span></label>
+                <label><input type="checkbox" data-overview-pref="activity" checked /><span>Recent activity</span></label>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <nav class="mobile-admin-nav" id="mobileAdminNav" aria-label="Mobile owner navigation" hidden>
+    <button type="button" data-mobile-view="overview" class="is-active"><span>⌂</span><b>Overview</b><em id="mobileInboxCount">0</em></button>
+    <button type="button" data-mobile-view="products"><span>▦</span><b>Products</b></button>
+    <button type="button" data-mobile-view="orders"><span>◎</span><b>Orders</b><em id="mobileOrderCount">0</em></button>
+    <button type="button" data-mobile-view="wholesale"><span>▦</span><b>Wholesale</b><em></em></button>
+    <button type="button" data-mobile-more><span>•••</span><b>More</b></button>
+  </nav>
+
+  <div class="mobile-more-backdrop" id="mobileMoreBackdrop" hidden></div>
+  <section class="mobile-more-sheet" id="mobileMoreSheet" hidden aria-label="More owner tools">
+    <header><div><small>Owner tools</small><strong>More</strong></div><button type="button" id="closeMobileMore" aria-label="Close">×</button></header>
+    <div class="mobile-more-grid">
+      <button type="button" id="mobileGlobalSearchButton"><span>⌕</span><b>Search everything</b><small>Products, orders and customers</small></button><button type="button" id="mobileDataCenterButton"><span>⇅</span><b>Import / Export</b><small>Excel, CSV and backups</small></button>
+      <button type="button" data-mobile-view="customers"><span>♙</span><b>Customers</b><small>Repeat orders and spending</small></button>
+      <button type="button" data-mobile-view="rewards"><span>🌿</span><b>Mouneh Points</b><small>Members, balances and reward rules</small></button>
+      <button type="button" data-mobile-view="content"><span>✎</span><b>Website content</b><small>Edit customer-facing text</small></button>
+      <button type="button" data-mobile-view="analytics"><span>↗</span><b>Analytics</b><small>Traffic and customer actions</small></button>
+      <button type="button" data-mobile-view="activity"><span>◷</span><b>Activity</b><small>Recent owner changes</small></button>
+      <button type="button" data-mobile-view="settings"><span>⚙</span><b>Settings</b><small>Security, backend and backup</small></button>
+    </div>
+  </section>
+
+  <div class="quick-action-backdrop" id="quickActionBackdrop" hidden></div>
+  <section class="quick-action-sheet" id="quickActionSheet" hidden aria-label="Quick actions">
+    <header><div><small>Quick actions</small><strong>What do you want to do?</strong></div><button id="closeQuickActions" type="button" aria-label="Close">×</button></header>
+    <div class="quick-action-grid">
+      <button type="button" data-quick-action="product"><span>＋</span><b>Add product</b><small>Create a new catalogue item</small></button>
+      <button type="button" data-quick-action="category"><span>▦</span><b>Add category</b><small>Create English + Arabic category</small></button>
+      <button type="button" data-quick-action="order"><span>◎</span><b>Manual order</b><small>Phone, Instagram or walk-in order</small></button>
+      <button type="button" data-quick-action="promo"><span>✦</span><b>Create promo</b><small>Open website promo controls</small></button>
+    </div>
+  </section>
+
+  <div class="modal-backdrop" id="contentPreviewModal" hidden>
+    <section class="content-preview-modal" role="dialog" aria-modal="true" aria-labelledby="contentPreviewTitle">
+      <header class="editor-head"><div><p>Real website preview</p><h2 id="contentPreviewTitle">Preview before publishing</h2></div><button id="closeContentPreview" type="button" aria-label="Close">×</button></header>
+      <div class="content-preview-toolbar">
+        <div class="preview-device-switch" data-no-i18n role="group" aria-label="Preview device">
+          <button type="button" class="is-active" data-content-preview-mode="desktop">Desktop</button>
+          <button type="button" data-content-preview-mode="mobile">Mobile</button>
+        </div>
+        <label class="content-preview-page-picker">Preview page
+          <select id="contentPreviewPage">
+            <option value="index.html">Home</option>
+            <option value="shop.html">Shop</option>
+            <option value="gift.html">Gift</option>
+            <option value="contact.html">Contact</option>
+          </select>
+        </label>
+        <a class="text-button" id="openLivePreviewPage" href="index.html" target="_blank" rel="noopener">Open this live page ↗</a>
+      </div>
+      <div class="content-preview-stage">
+        <div class="content-preview-device is-desktop" id="contentPreviewDevice">
+          <div class="preview-browser-bar"><span class="preview-browser-dots" aria-hidden="true"><i></i><i></i><i></i></span><b>zaytwmouneh.com</b><span>↗</span></div>
+          <iframe id="contentPreviewFrame" title="Zayt w Mouneh website preview" src="about:blank"></iframe>
+        </div>
+      </div>
+      <footer class="content-preview-footer"><span>This iframe loads the actual storefront page and layers your current unsaved values over it. Nothing publishes until Save succeeds.</span><button class="button-primary" id="closeContentPreviewFooter" type="button">Done</button></footer>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="dataCenterModal" hidden>
+    <section class="data-center-modal" role="dialog" aria-modal="true" aria-labelledby="dataCenterTitle">
+      <header class="editor-head">
+        <div><p>Data tools</p><h2 id="dataCenterTitle">Import / Export Center</h2></div>
+        <button id="closeDataCenter" type="button" aria-label="Close">×</button>
+      </header>
+      <div class="data-center-body">
+        <section class="data-center-section">
+          <div class="data-center-section-head"><div><small>Download</small><h3>Excel, CSV & backup files</h3></div><span>Phone-friendly downloads</span></div>
+          <div class="export-data-grid">
+            <article><div><b>Products</b><small>Products, variants, availability and categories.</small></div><div><button type="button" data-export-dataset="products" data-export-format="xlsx">Excel</button><button type="button" data-export-dataset="products" data-export-format="csv">CSV</button></div></article>
+            <article><div><b>Orders</b><small>Full order history with codes, customer and items.</small></div><div><button type="button" data-export-dataset="orders" data-export-format="xlsx">Excel</button><button type="button" data-export-dataset="orders" data-export-format="csv">CSV</button></div></article>
+            <article><div><b>Customers</b><small>Repeat customers, phone, area, orders and spend.</small></div><div><button type="button" data-export-dataset="customers" data-export-format="xlsx">Excel</button><button type="button" data-export-dataset="customers" data-export-format="csv">CSV</button></div></article>
+            <article><div><b>Analytics</b><small>30-day daily traffic, sessions, WhatsApp activity, searches and top pages.</small></div><div><button type="button" data-export-dataset="analytics" data-export-format="xlsx">Excel</button><button type="button" data-export-dataset="analytics" data-export-format="csv">CSV</button></div></article>
+            <article><div><b>Owner report</b><small>One Excel workbook with products, orders, customers and categories.</small></div><div><button type="button" data-export-dataset="report" data-export-format="xlsx">Excel report</button></div></article>
+            <article><div><b>Backup</b><small><b>JSON</b> is the restorable backup. <b>Excel</b> is a readable reference copy of the same owner data.</small></div><div><button type="button" data-export-dataset="backup" data-export-format="json">Restorable JSON</button><button type="button" data-export-dataset="backup" data-export-format="xlsx">Readable Excel</button></div></article>
+          </div>
+        </section>
+
+        <section class="data-center-section import-products-section">
+          <div class="data-center-section-head"><div><small>Upload</small><h3>Update products from Excel or CSV</h3></div><span>A safety backup is created first</span></div>
+          <label class="import-dropzone" id="productImportDropzone">
+            <input id="productImportFile" type="file" accept=".xlsx,.xls,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" />
+            <span>↑</span><b>Choose Excel or CSV file</b><small>Best workflow: export Products, edit it, then upload the edited file here.</small>
+          </label>
+          <div class="import-preview-panel" id="importPreviewPanel" hidden>
+            <div class="import-preview-summary">
+              <div><small>Products found</small><strong id="importProductCount">0</strong></div>
+              <div><small>Ready</small><strong id="importValidCount">0</strong></div>
+              <div><small>Issues</small><strong id="importIssueCount">0</strong></div>
+            </div>
+            <div id="importIssueList" class="import-issue-list"></div>
+            <div class="import-preview-table-wrap"><table class="import-preview-table"><thead><tr><th>ID</th><th>Product</th><th>Category</th><th>Availability</th><th>Variants</th><th>Result</th></tr></thead><tbody id="importPreviewBody"></tbody></table></div>
+            <div class="import-preview-actions"><button class="button-secondary" id="clearProductImport" type="button">Clear file</button><button class="button-primary" id="applyProductImport" type="button">Apply product import</button></div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="globalSearchModal" hidden>
+    <section class="search-command-modal" role="dialog" aria-modal="true" aria-labelledby="globalSearchTitle">
+      <header class="editor-head"><div><p>Search everything</p><h2 id="globalSearchTitle">Find anything fast</h2></div><button id="closeGlobalSearch" type="button" aria-label="Close">×</button></header>
+      <div class="search-command-body">
+        <div class="search-field search-command-input"><span>⌕</span><input id="globalSearchInput" type="search" placeholder="Product, order code, customer, area…" autocomplete="off" /></div>
+        <div id="globalSearchResults" class="global-search-results"><p class="empty-state">Start typing to search products, orders and customers.</p></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="manualOrderModal" hidden>
+    <section class="manual-order-modal" role="dialog" aria-modal="true" aria-labelledby="manualOrderTitle">
+      <header class="editor-head"><div><p>Manual order</p><h2 id="manualOrderTitle">Add an order from anywhere</h2></div><button id="closeManualOrder" type="button" aria-label="Close">×</button></header>
+      <form id="manualOrderForm" class="manual-order-form">
+        <div class="manual-order-fields">
+          <label>Customer name<input id="manualCustomerName" required maxlength="120" /></label>
+          <label>Phone / WhatsApp<input id="manualCustomerPhone" type="tel" maxlength="40" placeholder="961…" /></label>
+          <label>Delivery area<input id="manualOrderArea" maxlength="180" /></label>
+          <label>Order type<select id="manualOrderKind"><option value="order">Pantry order</option><option value="gift">Gift order</option></select></label>
+        </div>
+        <article class="editor-section">
+          <div class="editor-section-head"><div><h3>Products</h3><p>Add products and quantities.</p></div><button class="text-button" id="addManualOrderItem" type="button">+ Add item</button></div>
+          <div id="manualOrderItems" class="manual-order-items"></div>
+        </article>
+        <div class="manual-order-fields">
+          <label>Delivery fee (USD)<input id="manualDeliveryFee" type="number" min="0" step="0.01" value="0" /></label>
+          <label>Private owner note<textarea id="manualPrivateNote" rows="2" maxlength="1200"></textarea></label>
+          <label class="manual-notes-span">Customer/order notes<textarea id="manualOrderNotes" rows="3" maxlength="800"></textarea></label>
+        </div>
+        <div class="manual-order-total"><span>Total</span><strong id="manualOrderTotal">$0.00</strong></div>
+        <footer class="manual-order-actions"><button class="button-secondary" id="cancelManualOrder" type="button">Cancel</button><button class="button-primary" type="submit">Create order</button></footer>
+      </form>
+    </section>
+  </div>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
+
+  <div class="modal-backdrop" id="productModal" hidden>
+    <section class="editor-modal" role="dialog" aria-modal="true" aria-labelledby="productEditorTitle">
+      <header class="editor-head"><div><p id="productEditorKicker">Product editor</p><h2 id="productEditorTitle">Add product</h2></div><button id="closeProductModal" type="button" aria-label="Close">×</button></header>
+      <form id="productForm" class="editor-form">
+        <input id="productEditingId" type="hidden" />
+        <div class="editor-grid">
+          <div class="editor-main">
+            <article class="editor-section">
+              <h3>Product details</h3>
+              <div class="two-col-fields">
+                <label>English name<input id="productNameEn" required maxlength="120" /></label>
+                <label>Arabic name<input id="productNameAr" required maxlength="120" dir="rtl" /></label>
+                <label>Category<div class="field-inline-action"><select id="productCategory" required></select><button class="button-secondary field-action-button" id="addCategoryEditorButton" type="button">+ Add</button></div></label>
+                <label>Product ID<input id="productId" required maxlength="140" pattern="[a-z0-9][a-z0-9-]*" /></label>
+              </div>
+              <label>Original / supplier name<input id="productOriginal" maxlength="160" /></label>
+            </article>
+
+            <article class="editor-section">
+              <div class="editor-section-head"><div><h3>Sizes & prices</h3><p>Add every size a customer can choose.</p></div><button class="text-button" id="addVariantButton" type="button">+ Add size</button></div>
+              <div id="variantRows" class="variant-rows"></div>
+            </article>
+
+            <article class="editor-section">
+              <div class="editor-section-head"><div><h3>Visibility</h3><p>Draft products stay out of the live shop.</p></div></div>
+              <div class="status-options">
+                <label><input type="radio" name="productVisibility" value="live" checked /><span><b>Live</b><small>Visible to customers</small></span></label>
+                <label><input type="radio" name="productVisibility" value="draft" /><span><b>Draft</b><small>Saved but not shown</small></span></label>
+                <label><input type="radio" name="productVisibility" value="hidden" /><span><b>Hidden</b><small>Temporarily removed</small></span></label>
+              </div>
+            </article>
+
+            <article class="editor-section">
+              <div class="editor-section-head"><div><h3>Availability</h3><p>Keep stock simple for customers.</p></div></div>
+              <div class="status-options availability-options">
+                <label><input type="radio" name="productAvailability" value="in_stock" checked /><span><b>In stock</b><small>Can be ordered</small></span></label>
+                <label><input type="radio" name="productAvailability" value="out_of_stock" /><span><b>Out of stock</b><small>Visible, ordering disabled</small></span></label>
+                <label><input type="radio" name="productAvailability" value="coming_soon" /><span><b>Coming soon</b><small>Visible, ordering disabled</small></span></label>
+              </div>
+            </article>
+
+            <article class="editor-section">
+              <h3>Private owner note</h3>
+              <textarea id="productPrivateNote" rows="3" maxlength="2000" placeholder="Supplier note, replacement, reminder… customers never see this."></textarea>
+            </article>
+          </div>
+
+          <aside class="editor-side">
+            <article class="editor-section image-editor">
+              <h3>Product photo</h3>
+              <div class="image-preview image-position-preview" id="imagePreview"><span>No photo</span></div>
+              <div class="image-button-row">
+                <label class="upload-button">Choose / replace<input id="productImage" type="file" accept="image/jpeg,image/png,image/webp,image/avif" /></label>
+                <button class="danger-button image-remove-button" id="removeProductImage" type="button">Remove photo</button>
+              </div>
+              <small>Use the clearest original image available. Max 10 MB. Drag the preview or use the controls below to position it.</small>
+
+              <div class="image-position-controls" id="imagePositionControls">
+                <label>Horizontal position <span id="imagePositionXValue">50%</span><input id="imagePositionX" type="range" min="0" max="100" step="1" value="50" /></label>
+                <label>Vertical position <span id="imagePositionYValue">50%</span><input id="imagePositionY" type="range" min="0" max="100" step="1" value="50" /></label>
+                <label>Zoom <span id="imageZoomValue">100%</span><input id="imageZoom" type="range" min="100" max="180" step="1" value="100" /></label>
+                <div class="image-tool-row">
+                  <button class="button-secondary" id="rotateImageLeft" type="button">↶ Rotate</button>
+                  <button class="button-secondary" id="rotateImageRight" type="button">Rotate ↷</button>
+                </div>
+                <div class="image-tool-row">
+                  <button class="button-secondary is-active" id="imageFitFill" type="button" data-image-fit="cover">Fill frame</button>
+                  <button class="button-secondary" id="imageFitContain" type="button" data-image-fit="contain">Fit whole photo</button>
+                </div>
+                <div class="image-preview-toggle" role="group" aria-label="Photo preview">
+                  <button type="button" class="is-active" data-image-preview="card">Card preview</button>
+                  <button type="button" data-image-preview="modal">Popup preview</button>
+                </div>
+                <button class="text-button image-reset-button" id="resetImagePosition" type="button">Reset framing</button>
+              </div>
+
+              <input id="existingImageUrl" type="hidden" />
+              <input id="existingImageWidth" type="hidden" />
+              <input id="existingImageHeight" type="hidden" />
+              <input id="imageRemoved" type="hidden" value="0" />
+            </article>
+            <article class="editor-section">
+              <h3>Quick checks</h3>
+              <ul class="check-list" id="editorChecklist"><li>English + Arabic names</li><li>Correct category</li><li>At least one size and price</li><li>Availability selected</li><li>Clear product photo when available</li></ul>
+            </article>
+            <article class="editor-section" id="productHistoryPanel" hidden>
+              <div class="editor-section-head"><div><h3>Version history</h3><p>Restore a recent product version.</p></div></div>
+              <div id="productRevisionList" class="revision-list"></div>
+            </article>
+          </aside>
+        </div>
+
+        <footer class="editor-actions">
+          <div class="editor-destructive-actions"><button class="danger-button danger-strong" id="deleteProductButton" type="button" hidden>Delete product</button><button class="danger-button" id="hideProductButton" type="button" hidden>Hide product</button><button class="text-button" id="restoreProductButton" type="button" hidden>Restore base version</button></div>
+          <div><span id="productFormStatus" class="form-status" role="status"></span><button class="button-secondary" id="cancelProductButton" type="button">Cancel</button><button class="button-primary" id="saveProductButton" type="submit">Save product</button></div>
+        </footer>
+      </form>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="orderModal" hidden>
+    <section class="order-detail-modal" role="dialog" aria-modal="true" aria-labelledby="orderDetailTitle">
+      <header class="editor-head">
+        <div><p>Order history</p><h2 id="orderDetailTitle">Order details</h2></div>
+        <button id="closeOrderModal" type="button" aria-label="Close order details">×</button>
+      </header>
+      <div class="order-detail-content">
+        <div class="order-detail-hero">
+          <div>
+            <span class="order-detail-label">Order code</span>
+            <strong id="orderDetailCode">—</strong>
+            <small id="orderDetailSent">—</small>
+          </div>
+          <button class="button-secondary button-small" id="copyOrderCode" type="button">Copy code</button>
+        </div>
+
+        <div class="order-detail-grid">
+          <article class="order-detail-card"><span>Customer / recipient</span><strong id="orderDetailCustomer">—</strong><small id="orderDetailArea">—</small><small id="orderDetailPhone">—</small></article>
+          <article class="order-detail-card"><span>Order type</span><strong id="orderDetailKind">—</strong><small id="orderDetailLanguage">—</small><small id="orderDetailSource">—</small></article>
+          <article class="order-detail-card"><span>Total</span><strong id="orderDetailTotal">—</strong><small id="orderDetailBreakdown">USD</small></article>
+          <article class="order-detail-card"><span>Current status</span><div id="orderDetailStatus"></div><small>Matches the customer tracking page.</small></article>
+          <article class="order-detail-card order-payment-card"><span>Payment</span><strong id="orderDetailPaymentStatus">—</strong><small id="orderDetailPaymentMethod">—</small><div id="orderDetailPaymentAction"></div></article>
+          <article class="order-detail-card order-rewards-card"><span>Mouneh Points</span><strong id="orderDetailRewardsState">—</strong><small id="orderDetailRewardsHelp">Delivery + payment are both required.</small></article>
+        </div>
+
+        <article class="order-detail-section">
+          <div class="order-detail-section-head"><div><span>Products</span><h3>Full order</h3></div><strong id="orderDetailItemCount">0 items</strong></div>
+          <div id="orderDetailItems" class="order-detail-items"></div>
+        </article>
+
+        <div class="order-detail-two-col">
+          <article class="order-detail-section"><span>Customer notes</span><p id="orderDetailNotes">No notes.</p></article>
+          <article class="order-detail-section" id="orderGiftDetails"><span>Gift details</span><div id="orderDetailGift" class="order-gift-details"></div></article>
+        </div>
+
+        <article class="order-detail-section">
+          <div class="order-detail-section-head"><div><span>WhatsApp tools</span><h3>Customer updates</h3></div></div>
+          <div class="whatsapp-template-grid" id="orderWhatsAppTools">
+            <button type="button" data-order-message="confirmed">Order confirmed</button>
+            <button type="button" data-order-message="preparing">Preparing</button>
+            <button type="button" data-order-message="out_for_delivery">On the way</button>
+            <button type="button" data-order-message="delivered">Delivered</button>
+          </div>
+          <p class="field-help">If the customer phone is saved, this opens WhatsApp. Otherwise the message is copied.</p>
+        </article>
+
+        <article class="order-detail-section">
+          <div class="order-detail-section-head"><div><span>Private owner note</span><h3>Internal notes</h3></div><button class="text-button" id="saveOrderPrivateNote" type="button">Save note</button></div>
+          <textarea id="orderPrivateNote" rows="3" maxlength="1200" placeholder="Driver note, follow-up, customer preference…"></textarea>
+        </article>
+
+        <article class="order-detail-section">
+          <div class="order-detail-section-head"><div><span>Customer history</span><h3>Previous orders</h3></div></div>
+          <div id="orderCustomerHistory" class="customer-history-mini"></div>
+        </article>
+
+        <article class="order-detail-section">
+          <div class="order-detail-section-head"><div><span>Status history</span><h3>Order timeline</h3></div></div>
+          <div id="orderDetailTimeline" class="order-status-timeline"></div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <div class="rewards-member-modal-backdrop" id="rewardsMemberModal" hidden>
+    <section class="rewards-member-modal" role="dialog" aria-modal="true" aria-labelledby="rewardsMemberModalName">
+      <header><div><small>Mouneh Points member</small><strong data-no-i18n id="rewardsMemberModalName">Member</strong><span data-no-i18n id="rewardsMemberModalMeta">—</span></div><button type="button" id="rewardsMemberModalClose" aria-label="Close">×</button></header>
+      <div class="rewards-member-modal-body">
+        <article class="rewards-member-action">
+          <h4>Adjust points</h4><p>Add a bonus or subtract points with an owner reason. Every adjustment is logged.</p>
+          <label>Points (+ / −)<input id="rewardsAdjustPoints" type="number" step="1" min="-10000" max="10000" placeholder="+25" /></label>
+          <label>Reason<input id="rewardsAdjustReason" type="text" maxlength="250" placeholder="Customer care bonus" /></label>
+          <button id="rewardsAdjustButton" type="button">Apply point adjustment</button>
+        </article>
+        <article class="rewards-member-action">
+          <h4>Tier override</h4><p>Leave automatic to use annual paid & delivered spend: Olive at $200, Golden at $500.</p>
+          <label>Tier<select id="rewardsTierOverride"><option value="">Automatic</option><option value="member">Member</option><option value="olive">Olive</option><option value="golden">Golden</option></select></label>
+          <button id="rewardsTierButton" type="button">Save tier</button>
+        </article>
+        <article class="rewards-member-action">
+          <h4>Gift a voucher</h4><p>Add a no-points-cost voucher directly to this member’s wallet.</p>
+          <label>Voucher value ($)<input id="rewardsGiftValue" type="number" min="0.01" max="100" step="0.01" /></label>
+          <label>Minimum order ($)<input id="rewardsGiftMinimum" type="number" min="0" step="0.01" /></label>
+          <label>Reason<input id="rewardsGiftReason" type="text" maxlength="200" placeholder="Thank you" /></label>
+          <button id="rewardsGiftButton" type="button">Add voucher</button>
+        </article>
+        <article class="rewards-member-action rewards-member-danger">
+          <h4>Remove customer account</h4>
+          <p>Deletes this customer’s sign-in, Mouneh Points profile, points, vouchers, reviews and saved addresses. Historical orders stay in Orders &amp; history for business records.</p>
+          <button id="rewardsRemoveAccountButton" class="danger-button" type="button">Remove account</button>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="admin-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
+  <script src="products-data.js"></script>
+  <script src="product-photos.js"></script>
+
+  <script src="admin.js"></script>
+  <script src="admin-rewards.js"></script>
+  <script src="admin-wholesale.js"></script>
+  <!-- mobilebottom-fallback -->
+  <script>
+  (function(){
+    function q(s){return document.querySelector(s)}
+    function qa(s){return Array.from(document.querySelectorAll(s))}
+    function closeMore(){
+      var sheet=q("#mobileMoreSheet"), back=q("#mobileMoreBackdrop");
+      if(sheet)sheet.hidden=true;
+      if(back)back.hidden=true;
+      document.body.classList.remove("mobile-more-open");
+    }
+    function directView(view){
+      qa(".dashboard-view").forEach(function(p){p.classList.toggle("is-active",p.dataset.viewPanel===view)});
+      qa(".admin-nav button[data-view]").forEach(function(b){b.classList.toggle("is-active",b.dataset.view===view)});
+      qa("#mobileAdminNav [data-mobile-view]").forEach(function(b){b.classList.toggle("is-active",b.dataset.mobileView===view)});
+      var titles={overview:"Overview",products:"Products",orders:"Orders & history",wholesale:"Wholesale Leads",customers:"Customers",rewards:"Mouneh Points",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
+      var title=q("#viewTitle"); if(title)title.textContent=titles[view]||"Owner Console";
+      var side=q("#adminSidebar"); if(side)side.classList.remove("is-open");
+      var sideBack=q("#sidebarBackdrop"); if(sideBack)sideBack.hidden=true;
+      document.body.classList.remove("admin-menu-open");
+      closeMore();
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+    document.addEventListener("click",function(e){
+      var viewButton=e.target.closest("[data-mobile-view]");
+      if(viewButton){
+        e.preventDefault();
+        var view=viewButton.getAttribute("data-mobile-view");
+        var desktop=q('#adminNav button[data-view="'+view+'"]');
+        if(desktop)desktop.click();
+        setTimeout(function(){
+          var panel=q('.dashboard-view[data-view-panel="'+view+'"]');
+          if(panel&&!panel.classList.contains("is-active"))directView(view);
+          else{
+            qa("#mobileAdminNav [data-mobile-view]").forEach(function(b){b.classList.toggle("is-active",b.dataset.mobileView===view)});
+            closeMore();
+          }
+        },0);
+        return;
+      }
+      if(e.target.closest("[data-mobile-more]")){
+        e.preventDefault();
+        var sheet=q("#mobileMoreSheet"), back=q("#mobileMoreBackdrop");
+        if(sheet)sheet.hidden=false;
+        if(back)back.hidden=false;
+        document.body.classList.add("mobile-more-open");
+        return;
+      }
+      if(e.target.closest("#closeMobileMore")||e.target===q("#mobileMoreBackdrop"))closeMore();
+    },true);
+    document.addEventListener("keydown",function(e){if(e.key==="Escape")closeMore()});
+  })();
+  </script>
+</body>
+</html>

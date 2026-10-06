@@ -4,7 +4,7 @@ The live Cloudflare worker serves `public/`. Its photo map lagged behind the roo
 
 Added the dedicated dried-tomato artwork from ZIP 7 at its original resolution; restored salted corn using the artwork explicitly showing salted and cheese flavors; mapped the branded white honey blend to the supplied white-honey image. No resizing or recompression. Existing official Debsy image URLs are retained.
 
-Coverage: 287 of 328 shopper-facing products; 41 lack an exact supplied photograph. Generic popcorn artwork says Jumbo; generic verjuice/olive artwork does not establish Bekaa or Koura origin; whole and ground spices remain distinct. These are not assigned arbitrarily.
+Batch 6 revalidation (2026-10-06): the production `public/` photo map covers 290 of 332 source catalogue records (87.35%); 42 lack an exact mapping. Generic popcorn artwork says Jumbo; generic verjuice/olive artwork does not establish Bekaa or Koura origin; whole and ground spices remain distinct. These are not assigned arbitrarily. Live owner visibility can differ from the source-record count.
 
 Remaining exact photos needed:
 
@@ -33,6 +33,7 @@ Remaining exact photos needed:
 - Castor Seed Oil (`castor-seeds-oil`)
 - Bekaa Green Olives (`zaytoun-akhdar-beqaa`)
 - Spicy Stuffed Green Olives (`zaytoun-akhdar-mahshe-har`)
+- Spicy Stuffed Green Olives (`zaytoun-akhdar-mehshe-har`)
 - Bekaa Black Olives (`zaytoun-aswad-beqaa`)
 - Pickled Almonds (`kabees-el-loz`)
 - American Chickpeas (`humus-amreeki`)

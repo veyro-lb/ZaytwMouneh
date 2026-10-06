@@ -212,7 +212,7 @@ function renderRewards(){
   }
   var wallet=(state.dashboard.wallet||[]).filter(function(w){return w.status==="available"&&sub>=Number(w.minimum||0)}),tier=m.tier==="golden"?1.5:m.tier==="olive"?1.25:1,base=Number(state.publicRewards&&state.publicRewards.config&&state.publicRewards.config.base_rate||1),estimate=Math.floor(sub*base*tier);
   if(state.walletId&&!wallet.some(function(w){return w.id===state.walletId})){state.walletId="";remove(WALLET_KEY)}
-  box.innerHTML='<div class="reward-balance"><div><strong>'+esc(Number(m.balance||0).toLocaleString()+" 🌿 "+(tx("points","نقطة")))+'</strong><small>'+esc(state.lang==="ar"?"حوالي "+estimate+" نقطة بعد التسليم":"About "+estimate+" points after delivery")+'</small></div><a href="/account#points">'+esc(tx("Wallet","المحفظة"))+'</a></div>'+
+  box.innerHTML='<div class="reward-balance"><div><strong>'+esc(Number(m.balance||0).toLocaleString()+" 🌿 "+(tx("points","نقطة")))+'</strong><small>'+esc(tx("About ","حوالي ")+estimate+tx(" points after delivery"," نقطة بعد التسليم"))+'</small></div><a href="/account#points">'+esc(tx("Wallet","المحفظة"))+'</a></div>'+
     (wallet.length?'<label class="commerce-field"><span>'+esc(tx("Use a reward voucher","استخدم قسيمة مكافأة"))+'</span><select id="checkoutWallet"><option value="">'+esc(tx("No voucher","بدون قسيمة"))+'</option>'+wallet.map(function(w){return '<option value="'+esc(w.id)+'" '+(w.id===state.walletId?"selected":"")+">"+esc(money(w.value)+" "+(tx("off · min ","خصم · حد أدنى "))+money(w.minimum))+"</option>"}).join("")+'</select></label>':'<small class="checkout-help">'+esc(tx("No reward voucher is available for this basket yet.","لا توجد قسيمة متاحة لهذه السلة حالياً."))+'</small>');
   var select=$("checkoutWallet");if(select)select.onchange=function(){state.walletId=select.value;if(state.walletId)write(WALLET_KEY,state.walletId);else remove(WALLET_KEY);renderSummary()}
 }
@@ -229,7 +229,7 @@ function renderSummary(){
   if(!q.deliveryEnabled)msg=tx("Delivery is temporarily paused","التوصيل متوقف مؤقتاً");
   else if(q.hasArea&&!q.zoneAvailable)msg=tx("Delivery is not currently available for this area","التوصيل غير متاح حالياً لهذه المنطقة");
   else if(q.free)msg=tx("You unlocked FREE delivery ✓","حصلت على التوصيل المجاني ✓");
-  else msg=state.lang==="ar"?"أضف "+money(remain)+" للتوصيل المجاني":"Add "+money(remain)+" more for FREE delivery 🚚";
+  else msg=tx("Add ","أضف ")+money(remain)+tx(" more for FREE delivery 🚚"," للتوصيل المجاني");
   $("freeDeliveryBox").innerHTML='<strong>'+esc(msg)+'</strong><div class="free-delivery-track"><span style="width:'+pct+'%"></span></div>'+(q.minimum>0?'<small>'+esc((tx("Minimum order ","الحد الأدنى للطلب "))+money(q.minimum))+'</small>':'');
   var btn=$("placeOrderButton");
   btn.textContent=(tx("Place Order — ","إرسال الطلب — "))+money(total);

@@ -1802,12 +1802,34 @@ function setupPerformance(){
     new IntersectionObserver(entries=>{
       heroVisible=entries[0]?.isIntersecting??true;
       if(heroVisible)showScene(sceneIndex);
-      else $$("[data-scene] video").forEach(v=>v.pause());
+      else $("[data-scene] video").forEach(v=>v.pause());
     },{threshold:.12}).observe(hero);
   }
+  const homeVideo=$("#shopHeroVideo");
+  if(homeVideo){
+    const limited=shouldLimitHeroMedia();
+    if(limited){
+      homeVideo.autoplay=false;
+      homeVideo.removeAttribute("autoplay");
+      homeVideo.preload="none";
+      homeVideo.pause();
+    }
+    if("IntersectionObserver" in window){
+      new IntersectionObserver(entries=>{
+        const visible=entries[0]?.isIntersecting??true;
+        if(!visible||limited)homeVideo.pause();
+        else if(!document.hidden){const play=homeVideo.play();if(play&&play.catch)play.catch(()=>{})}
+      },{threshold:.08}).observe(homeVideo);
+    }
+  }
   document.addEventListener("visibilitychange",()=>{
-    if(document.hidden)$$("[data-scene] video").forEach(v=>v.pause());
-    else if(heroVisible)showScene(sceneIndex);
+    if(document.hidden){
+      $("[data-scene] video").forEach(v=>v.pause());
+      if(homeVideo)homeVideo.pause();
+    }else{
+      if(heroVisible)showScene(sceneIndex);
+      if(homeVideo&&!shouldLimitHeroMedia()){const play=homeVideo.play();if(play&&play.catch)play.catch(()=>{})}
+    }
   });
 }
 
@@ -1857,7 +1879,9 @@ function backdropMaybeOff(){
 }
 
 function shouldLimitHeroMedia(){
-  return Boolean(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const reducedMotion=Boolean(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const saveData=Boolean(navigator.connection&&navigator.connection.saveData);
+  return reducedMotion||saveData;
 }
 let heroManualPlayback=false;
 function showScene(i,manual=false){
@@ -1876,7 +1900,7 @@ function showScene(i,manual=false){
     video.muted=true;
     video.defaultMuted=true;
     video.playsInline=true;
-    video.preload=activeNow?"auto":"metadata";
+    video.preload=shouldLimitHeroMedia()&&!manual&&!heroManualPlayback?"none":"metadata";
     if(activeNow&&video.readyState===0){try{video.load()}catch{}}
     if(activeNow&&heroVisible&&!document.hidden&&(manual||heroManualPlayback||!shouldLimitHeroMedia())){
       if(changed||video.ended){try{video.currentTime=0}catch{}}
@@ -1897,7 +1921,7 @@ function startScenes(){
     if(!video||video.dataset.sequenceBound==="1")return;
     video.dataset.sequenceBound="1";
     video.loop=false;
-    video.preload=index===0?"auto":"metadata";
+    video.preload=shouldLimitHeroMedia()?"none":"metadata";
     video.addEventListener("playing",()=>{if(index===sceneIndex&&button)button.hidden=true;});
     video.addEventListener("pause",()=>{if(index===sceneIndex&&button)button.hidden=false;});
     video.addEventListener("error",()=>{if(index===sceneIndex&&button)button.hidden=false;});

@@ -919,7 +919,7 @@
     try{await loadScript(CONFIG_SRC)}catch{return}
     if(!enabled())return;
     if(!PREVIEW_MODE)ensureCustomerNotificationAssets();
-    if(!PREVIEW_MODE&&!document.querySelector("script[data-mouneh-rewards]")){
+    if(!PREVIEW_MODE&&!document.querySelector('script[data-mouneh-rewards],script[src*="mouneh-rewards-v8.js"]')){
       const rewardsScript=document.createElement("script");
       rewardsScript.src="mouneh-rewards-v8.js?v=20261004-mobileauth3";
       rewardsScript.async=true;

@@ -157,8 +157,22 @@ function renderHistory(){
   state.hidden=true;
   list.innerHTML=historyRows.map(row=>{
     const info=statusInfo(row.status),items=Array.isArray(row.items)?row.items:[],follow=row.next_follow_up_at?fmtHistoryDate(row.next_follow_up_at):"",updated=fmtHistoryDate(row.updated_at||row.created_at),submitted=fmtHistoryDate(row.created_at);
-    return `<article class="wholesale-history-card" data-status="${esc(row.status||"new")}"><header><div><small>${esc(row.reference||"")}</small><h3>${esc(row.business_name||"")}</h3></div><span class="wholesale-customer-status">${esc(info[0])}</span></header><p class="wholesale-history-next">${esc(info[1])}</p><div class="wholesale-history-meta"><span><b>${esc(t("historySubmitted"))}</b>${esc(submitted)}</span><span><b>${esc(t("historyUpdated"))}</b>${esc(updated)}</span><span><b>${esc(t("historyContact"))}</b>${esc(contactLabel(row.preferred_contact_method))}</span>${follow?`<span><b>${esc(t("historyFollowUp"))}</b>${esc(follow)}</span>`:""}</div><details><summary>${esc(t("historyProducts"))} · ${items.length}</summary><ul>${historyItemRows(items)||`<li>${esc(row.unlisted_products||"—")}</li>`}</ul>${row.notes?`<p>${esc(row.notes)}</p>`:""}</details><div class="wholesale-history-card-actions"><button type="button" class="wholesale-history-delete" data-history-delete="${esc(row.reference||"")}">${esc(t("historyDelete"))}</button></div></article>`
+    return `<article class="wholesale-history-card" data-status="${esc(row.status||"new")}" data-wholesale-lead-id="${esc(row.lead_id||"")}" tabindex="-1"><header><div><small>${esc(row.reference||"")}</small><h3>${esc(row.business_name||"")}</h3></div><span class="wholesale-customer-status">${esc(info[0])}</span></header><p class="wholesale-history-next">${esc(info[1])}</p><div class="wholesale-history-meta"><span><b>${esc(t("historySubmitted"))}</b>${esc(submitted)}</span><span><b>${esc(t("historyUpdated"))}</b>${esc(updated)}</span><span><b>${esc(t("historyContact"))}</b>${esc(contactLabel(row.preferred_contact_method))}</span>${follow?`<span><b>${esc(t("historyFollowUp"))}</b>${esc(follow)}</span>`:""}</div><details><summary>${esc(t("historyProducts"))} · ${items.length}</summary><ul>${historyItemRows(items)||`<li>${esc(row.unlisted_products||"—")}</li>`}</ul>${row.notes?`<p>${esc(row.notes)}</p>`:""}</details><div class="wholesale-history-card-actions"><button type="button" class="wholesale-history-delete" data-history-delete="${esc(row.reference||"")}">${esc(t("historyDelete"))}</button></div></article>`
   }).join("");
+  queueMicrotask(revealDeepLinkedRequest);
+}
+function revealDeepLinkedRequest(){
+  try{
+    const u=new URL(location.href);
+    if(u.searchParams.get("notification")!=="wholesale")return;
+    const id=u.searchParams.get("id");if(!id)return;
+    const card=qa("[data-wholesale-lead-id]").find(el=>el.dataset.wholesaleLeadId===id);
+    if(!card)return;
+    const details=card.querySelector("details");if(details)details.open=true;
+    card.focus({preventScroll:true});card.scrollIntoView({behavior:"smooth",block:"center"});
+    u.searchParams.delete("notification");u.searchParams.delete("id");
+    history.replaceState(null,"",u.pathname+u.search+u.hash);
+  }catch(e){console.warn("Wholesale notification deep link failed",e)}
 }
 async function deleteHistoryRow(reference,button){const row=historyRows.find(x=>x.reference===reference);if(!row||!window.confirm(t("historyDeleteConfirm")))return;if(button)button.disabled=true;try{if(row.lead_id&&authSession()?.access_token){const hidden=await rpc("hide_my_wholesale_enquiry",{p_lead_id:row.lead_id});if(hidden!==true)throw new Error("history_remove_failed")}removeReceipt(row);historyRows=historyRows.filter(x=>x.reference!==reference);renderHistory()}catch(e){console.warn("Wholesale history removal failed",e);window.alert(t("historyDeleteFail"));if(button)button.disabled=false}}
 async function loadHistory(){

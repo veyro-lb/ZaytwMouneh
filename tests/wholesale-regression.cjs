@@ -72,6 +72,12 @@ assert(sql.includes("public.get_wholesale_enquiry_status"),"public receipt statu
 assert(sql.includes("private.get_my_wholesale_enquiries_core"),"account-linked Wholesale history core missing");
 assert(sql.includes("public.get_my_wholesale_enquiries"),"account-linked Wholesale history wrapper missing");
 assert(sql.includes("WHOLESALE_INQUIRY_CREATED"),"owner notification event missing");
+assert(sql.includes("private.notification_create("),"Wholesale notifications must use the durable notification creator/outbox path");
+assert(sql.includes("WHOLESALE_STATUS_CHANGED"),"customer Wholesale status notification event missing");
+assert(sql.includes("customer:WHOLESALE_STATUS:"),"Wholesale status notification dedupe key missing");
+assert(sql.includes("'customer'")&&sql.includes("'wholesale'"),"customer Wholesale notification category integration missing");
+assert(js.includes("data-wholesale-lead-id"),"customer Wholesale notification deep link target missing");
+assert(js.includes("revealDeepLinkedRequest"),"customer Wholesale notification deep link behavior missing");
 assert(sql.includes("wholesale_inquiries"),"owner Wholesale notification preference integration missing");
 console.log("Wholesale static regression passed: localized RFQ, bounded catalogue picker, CRM and RLS guards.");
 

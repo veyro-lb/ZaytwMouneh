@@ -1,6 +1,6 @@
 (function(){
 "use strict";
-const CFG="/admin-config.js?v=20261005-notifications12", KEY="zwm:owner-session:v3";
+const CFG="/admin-config.js?v=20261006-notificationhardening1", KEY="zwm:owner-session:v3";
 let cfg,user,client,channel,rows=[];
 const $=(s,r=document)=>r.querySelector(s), esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const lang=()=>{try{if(localStorage.getItem("zwm:french:v1")==="1")return"fr";return localStorage.getItem("zwm-lang-v2")==="ar"||localStorage.getItem("zwm:admin-lang:v1")==="ar"?"ar":"en"}catch{return"en"}};
@@ -17,7 +17,7 @@ function headers(extra={}){const s=sess();return{"apikey":cfg.supabasePublishabl
 async function api(path,opt={}){const r=await fetch(cfg.supabaseUrl.replace(/\/$/,"")+"/rest/v1/"+path,{...opt,headers:{...headers(),...(opt.headers||{})}}),d=await r.json().catch(()=>null);if(!r.ok)throw new Error(d?.message||"Request failed");return d}
 async function me(){const s=sess();if(!s?.access_token)return null;const r=await fetch(cfg.supabaseUrl.replace(/\/$/,"")+"/auth/v1/user",{headers:headers()});return r.ok?r.json():null}
 function b64(s){const p="=".repeat((4-s.length%4)%4),raw=atob((s+p).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
-async function reg(){return navigator.serviceWorker.register("/admin-sw.js?v=20261005-notifications12",{scope:"/",updateViaCache:"none"})}
+async function reg(){return navigator.serviceWorker.register("/admin-sw.js?v=20261006-notificationhardening1",{scope:"/",updateViaCache:"none"})}
 async function subscribe(){
  if(!("Notification"in window)||!("PushManager"in window)||!("serviceWorker"in navigator))throw Error("Push unsupported");
  if(Notification.permission==="denied")throw Error(tr("blocked"));

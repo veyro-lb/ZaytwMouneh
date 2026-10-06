@@ -41,15 +41,18 @@ assert(notificationCss.includes("white-space:normal;text-align:start"),"Notifica
 
 assert(adminWholesaleJs.includes('e.key==="Escape"&&modal&&!modal.hidden'),"Wholesale owner modal Escape close regression");
 assert(adminWholesaleJs.includes('<button type="button" class="wholesale-lead-open"'),"Wholesale table action must be an explicit button");
+assert((adminWholesaleJs.match(/class="wholesale-lead-open"/g)||[]).length>=2,"Desktop and mobile Wholesale open actions must share the audited button class");
+assert(adminWholesaleJs.includes("function contactPhone(v)"),"Wholesale admin contact link normalization missing");
+assert(adminWholesaleCss.includes(".wholesale-mobile-card button{width:100%;min-height:44px"),"Wholesale mobile-card Open lead touch target must be at least 44px");
 assert(customerNotifications.includes('bell.id="zwmCustomerNotificationBell"'),"Customer notification bell missing");
 assert(customerNotifications.includes('data-test'),"Customer production notification test control missing");
 assert(adminNotifications.includes('b.id="zwmNotificationBell"'),"Admin notification bell missing");
 assert(adminNotifications.includes('notification_test_status'),"Admin production notification delivery verification missing");
 assert(siteRuntime.includes('CUSTOMER_NOTIFICATIONS_VERSION = "20261006-mobileaudit1"'),"Site runtime must request the audited notification assets");
 
-assert(read("wholesale.html").includes("/wholesale-v1.css?v=20261006-mobileaudit1"),"Wholesale CSS cache token stale");
-assert(read("admin.html").includes("admin-wholesale.css?v=20261006-mobileaudit1"),"Admin Wholesale CSS cache token stale");
-assert(read("admin.html").includes("admin-wholesale.js?v=20261006-mobileaudit1"),"Admin Wholesale JS cache token stale");
+assert(read("wholesale.html").includes("/wholesale-v1.css?v=20261006-wholesaleqa1"),"Wholesale CSS cache token stale");
+assert(read("admin.html").includes("admin-wholesale.css?v=20261006-wholesaleqa1"),"Admin Wholesale CSS cache token stale");
+assert(read("admin.html").includes("admin-wholesale.js?v=20261006-wholesaleqa1"),"Admin Wholesale JS cache token stale");
 assert(read("account.html").includes("/notifications-v1.css?v=20261006-mobileaudit1"),"Customer notification CSS cache token stale");
 assert(read("admin-config.js").includes("/notifications-v1.css?v=20261006-mobileaudit1"),"Admin notification CSS loader cache token stale");
 for(const file of ["account.html","product.html","gift.html","shop.html","recipes.html"]){
@@ -59,5 +62,7 @@ for(const file of ["index.html","shop.html","gift.html","recipes.html","about.ht
   assert(read(file).includes("site-runtime-v9.js?v=20261006-mobileaudit1"),file+" runtime cache token stale");
 }
 assert(read("wholesale.html").includes("/notifications-v1.css?v=20261006-mobileaudit1"),"Wholesale must load audited notification styles directly");
+assert(read("wholesale.html").includes("/site-runtime-v9.js?v=20261006-mobileaudit1"),"Wholesale storefront runtime cache token stale");
+assert(read("wholesale.html").includes("/wholesale-v1.js?v=20261006-wholesaleqa1"),"Wholesale behavior JS cache token stale");
 
 console.log("Today UI/mobile regression passed: Wholesale, notification bells, owner modal and conversion forms.");

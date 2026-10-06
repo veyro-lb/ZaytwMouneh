@@ -26,17 +26,45 @@ function current(){
 function sync(code){
   var next=normalize(code);
   set(LOCALE_KEY,next);
+  // Temporary compatibility for legacy readers; values stay synchronized and
+  // zwm-locale-v3 remains authoritative.
   if(next==="fr"){set(FR_KEY,"1");set(LANG_KEY,"en");set(ADMIN_LANG_KEY,"en")}
   else{del(FR_KEY);set(LANG_KEY,next);set(ADMIN_LANG_KEY,next)}
   document.documentElement.lang=next;
   document.documentElement.dir=next==="ar"?"rtl":"ltr";
+  document.documentElement.dataset.zwmLocale=next;
+  try{document.dispatchEvent(new CustomEvent("zwm:localechange",{detail:{locale:next}}))}catch(e){}
   return next;
 }
+function localePath(path,code){
+  var next=normalize(code),value=String(path||location.pathname||"/");
+  value=value.replace(/^\/(ar|fr)(?=\/|$)/,"")||"/";
+  if(value.charAt(0)!=="/")value="/"+value;
+  return next==="en"?value:"/"+next+(value==="/"?"/":value);
+}
+function navigate(code,path){
+  var target=localePath(path||location.pathname,code)+(location.search||"")+(location.hash||"");
+  if(target!==location.pathname+location.search+location.hash)location.assign(target);else location.reload();
+}
+function text(en,ar,fr){
+  var l=current();
+  if(l==="ar")return ar==null?en:ar;
+  if(l==="fr"){
+    if(fr!=null)return fr;
+    try{if(typeof window.ZWM_FR_TRANSLATE==="function")return window.ZWM_FR_TRANSLATE(en)}catch(e){}
+  }
+  return en;
+}
+function formatNumber(value,options){try{return new Intl.NumberFormat(current()==="ar"?"ar-LB":current()==="fr"?"fr-LB":"en-LB",options||{}).format(value)}catch(e){return String(value)}}
+function formatDate(value,options){try{return new Intl.DateTimeFormat(current()==="ar"?"ar-LB":current()==="fr"?"fr-LB":"en-LB",options||{dateStyle:"medium"}).format(new Date(value))}catch(e){return String(value||"")}}
 var initial=sync(current());
 window.ZWM_LOCALE={
-  get:current,set:sync,is:function(code){return current()===normalize(code)},
-  t:function(en,ar,fr){var l=current();return l==="ar"?(ar==null?en:ar):l==="fr"?(fr==null?en:fr):en},
-  translate:function(value){return String(value==null?"":value)}
+  get:current,set:sync,is:function(code){return current()===normalize(code)},normalize:normalize,
+  getDirection:function(code){return normalize(code)==="ar"?"rtl":"ltr"},
+  localePath:localePath,navigate:navigate,text:text,
+  t:function(en,ar,fr){return text(en,ar,fr)},
+  translate:function(value){return current()==="fr"&&typeof window.ZWM_FR_TRANSLATE==="function"?window.ZWM_FR_TRANSLATE(value):String(value==null?"":value)},
+  formatNumber:formatNumber,formatDate:formatDate
 };
 if(initial==="fr"){
   document.documentElement.classList.add("zwm-fr-loading");
@@ -89,7 +117,7 @@ function ensureControls(){
     b.innerHTML='<span class="welcome-lang-monogram">FR</span><span class="welcome-lang-copy"><strong>Français</strong><small>Continuer en français</small></span><b class="welcome-lang-arrow" aria-hidden="true">→</b>';wrap.appendChild(b);
   }
 }
-function switchLocale(code,welcome){if(welcome)set(WELCOME_KEY,"1");sync(code);location.reload()}
+function switchLocale(code,welcome){if(welcome)set(WELCOME_KEY,"1");sync(code);navigate(code)}
 document.addEventListener("click",function(e){
   var toggle=e.target.closest&&e.target.closest("[data-fr-menu-toggle]");
   if(toggle){e.preventDefault();e.stopImmediatePropagation();var menu=toggle.parentElement&&toggle.parentElement.querySelector(".fr-globe-menu");

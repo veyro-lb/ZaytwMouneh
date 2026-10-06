@@ -4,8 +4,8 @@
 var VERSION="20261004-nativecheckout1";
 var CONFIG="/admin-config.js?v="+VERSION;
 var AUTH_KEY="zwm:mouneh:session:v1";
-var lang=function(){try{return localStorage.getItem("zwm-lang-v2")==="ar"?"ar":"en"}catch{return document.documentElement.lang==="ar"?"ar":"en"}};
-var tr=function(en,ar){return lang()==="ar"?ar:en};
+var lang=function(){try{return window.ZWM_LOCALE?.get?.()||"en"}catch{return document.documentElement.lang||"en"}};
+var tr=function(en,ar,fr){var l=lang();if(l==="ar")return ar;if(l==="fr")return fr!=null?fr:(window.ZWM_FR_TRANSLATE?window.ZWM_FR_TRANSLATE(en):en);return en};
 var esc=function(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
 var scheduled=false,addressMode=(location.hash||"")==="#addresses",addressRows=[],editingAddress="";
 function cfg(){return window.ZWM_CMS_CONFIG||{}}

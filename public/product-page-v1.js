@@ -68,8 +68,7 @@ function money(v){return "$"+Number(v||0).toFixed(2)}
 function locale(){
  try{
   if(window.ZWM_LOCALE&&window.ZWM_LOCALE.get)return window.ZWM_LOCALE.get();
-  if(localStorage.getItem("zwm:french:v1")==="1")return "fr";
-  return localStorage.getItem("zwm-lang-v2")==="ar"?"ar":"en";
+  return localStorage.getItem("zwm-locale-v3")|| (localStorage.getItem("zwm-lang-v2")==="ar"?"ar":"en");
  }catch(e){return "en"}
 }
 function t(k){return (COPY[state.locale]&&COPY[state.locale][k])||COPY.en[k]||k}

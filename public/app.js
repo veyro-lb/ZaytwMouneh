@@ -443,7 +443,7 @@ const PAGE_I18N={
   }
 };
 
-let lang=safeStorageGet(LANG_KEY)==="ar"?"ar":"en";
+let lang=window.ZWM_LOCALE?.get?.()||(safeStorageGet(LANG_KEY)==="ar"?"ar":"en");
 let activeCategory="All";
 let query="";
 let visibleLimit=catalogPageSize();
@@ -973,9 +973,9 @@ function syncLanguageVisibility(){
 }
 
 function applyLanguage(next,{immediate=false}={}){
-  lang=next==="ar"?"ar":"en";
-  safeStorageSet(LANG_KEY,lang);
-  const t=UI[lang];
+  lang=next==="ar"?"ar":next==="fr"?"fr":"en";
+  if(window.ZWM_LOCALE?.set)window.ZWM_LOCALE.set(lang);else safeStorageSet(LANG_KEY,lang==="ar"?"ar":"en");
+  const t=lang==="fr"?new Proxy(UI.en,{get:(target,key)=>typeof target[key]==="string"&&window.ZWM_FR_TRANSLATE?window.ZWM_FR_TRANSLATE(target[key]):target[key]}):UI[lang];
   $$("[data-lang]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.lang===lang));
 
   const commitLanguage=()=>{
@@ -1966,8 +1966,8 @@ function chooseWelcomeLanguage(next,event){
     applyLanguage(next,{immediate:true});
   }catch(error){
     console.error("Language switch failed:",error);
-    lang=next==="ar"?"ar":"en";
-    safeStorageSet(LANG_KEY,lang);
+    lang=next==="ar"?"ar":next==="fr"?"fr":"en";
+    if(window.ZWM_LOCALE?.set)window.ZWM_LOCALE.set(lang);else safeStorageSet(LANG_KEY,lang==="ar"?"ar":"en");
     document.documentElement.lang=lang;
     document.documentElement.dir=lang==="ar"?"rtl":"ltr";
   }finally{
@@ -2189,7 +2189,7 @@ function init(){
 
   addEventListener("storage",e=>{
     if(e.key===CART_KEY){cart=loadCart();renderCart()}
-    if(e.key===LANG_KEY){applyLanguage(e.newValue==="ar"?"ar":"en",{immediate:true})}
+    if(e.key===LANG_KEY||e.key==="zwm-locale-v3"){applyLanguage(window.ZWM_LOCALE?.get?.()||(e.newValue==="ar"?"ar":e.newValue==="fr"?"fr":"en"),{immediate:true})}
     if(e.key===FAV_KEY){favorites=loadFavorites();renderProducts();renderRecent();renderFavoritesCount()}
     if(e.key===GIFT_KEY){giftItems=loadGiftItems();renderGiftSummary();renderGiftPickerResults()}
   });

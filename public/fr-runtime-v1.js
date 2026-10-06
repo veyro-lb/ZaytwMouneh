@@ -13,26 +13,8 @@ function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
 function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 function del(k){try{localStorage.removeItem(k)}catch(e){}}
 function normalizeLocale(code){return code==="ar"||code==="fr"?code:"en"}
-function currentLocale(){
-  var canonical=get(LOCALE_KEY);
-  if(canonical==="en"||canonical==="ar"||canonical==="fr")return canonical;
-  if(get(FR_KEY)==="1")return "fr";
-  return get(LANG_KEY)==="ar"||get(ADMIN_LANG_KEY)==="ar"?"ar":"en";
-}
-function syncLocaleState(code){
-  var next=normalizeLocale(code);
-  set(LOCALE_KEY,next);
-  if(next==="fr"){
-    set(FR_KEY,"1");
-    // Legacy storefront modules still render their English source before the
-    // French dictionary is applied. Keep their compatibility key on English,
-    // while LOCALE_KEY remains the single authoritative locale.
-    set(LANG_KEY,"en");set(ADMIN_LANG_KEY,"en");
-  }else{
-    del(FR_KEY);set(LANG_KEY,next);set(ADMIN_LANG_KEY,next);
-  }
-  return next;
-}
+function currentLocale(){if(window.ZWM_LOCALE&&window.ZWM_LOCALE.get)return window.ZWM_LOCALE.get();var canonical=get(LOCALE_KEY);if(canonical==="en"||canonical==="ar"||canonical==="fr")return canonical;if(get(FR_KEY)==="1")return "fr";return get(LANG_KEY)==="ar"||get(ADMIN_LANG_KEY)==="ar"?"ar":"en"}
+function syncLocaleState(code){var next=normalizeLocale(code);if(window.ZWM_LOCALE&&window.ZWM_LOCALE.set)return window.ZWM_LOCALE.set(next);set(LOCALE_KEY,next);set(LANG_KEY,next==="ar"?"ar":"en");if(next==="fr")set(FR_KEY,"1");else del(FR_KEY);return next}
 function isFrench(){return currentLocale()==="fr"}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 
@@ -2592,11 +2574,7 @@ function ensureControls(){
     wrap.appendChild(b);
   }
 }
-function switchLocale(code,welcome){
-  if(welcome)set(WELCOME_KEY,"1");
-  syncLocaleState(code);
-  location.reload();
-}
+function switchLocale(code,welcome){if(welcome)set(WELCOME_KEY,"1");if(window.ZWM_LOCALE&&window.ZWM_LOCALE.set){window.ZWM_LOCALE.set(code);window.ZWM_LOCALE.navigate(code);return}syncLocaleState(code);location.reload()}
 
 document.addEventListener("click",function(e){
   var toggle=e.target.closest("[data-fr-menu-toggle]");
@@ -2643,18 +2621,7 @@ function applyFrench(root){
 }
 window.ZWM_APPLY_FRENCH=applyFrench;
 window.ZWM_FR_TRANSLATE=dynamicFr;
-window.ZWM_LOCALE=Object.freeze({
-  get:currentLocale,
-  set:syncLocaleState,
-  is:function(code){return currentLocale()===normalizeLocale(code)},
-  t:function(en,ar,fr){
-    var locale=currentLocale();
-    if(locale==="ar")return ar==null?en:ar;
-    if(locale==="fr")return fr==null?en:fr;
-    return en;
-  },
-  translate:function(value){return currentLocale()==="fr"?dynamicFr(value):String(value==null?"":value)}
-});
+if(!window.ZWM_LOCALE){window.ZWM_LOCALE=Object.freeze({get:currentLocale,set:syncLocaleState,is:function(code){return currentLocale()===normalizeLocale(code)},text:function(en,ar,fr){var l=currentLocale();return l==="ar"?(ar==null?en:ar):l==="fr"?(fr==null?dynamicFr(en):fr):en}});}
 if(!window.__ZWM_LOCALE_DIALOGS__){
   window.__ZWM_LOCALE_DIALOGS__=true;
   var nativeAlert=window.alert&&window.alert.bind(window);
@@ -2667,46 +2634,7 @@ document.addEventListener("zwm:translate-french",function(e){
   applyFrench(e&&e.detail&&e.detail.root?e.detail.root:document.body);
 });
 
-function boot(){
-  // Migrate old zwm:french / zwm-lang keys once and keep one canonical locale.
-  syncLocaleState(currentLocale());
-  addStyles();ensureControls();
-  if(isFrench())applyFrench(document.body);
-
-  // Do not drop mutations while a translation frame is already queued.
-  // The account dashboard renders asynchronously after auth/data loads, so losing
-  // one childList batch can leave the whole dashboard in English.
-  var queued=false,pending=[];
-  var observer=new MutationObserver(function(list){
-    list.forEach(function(m){
-      if(m.addedNodes&&m.addedNodes.length)m.addedNodes.forEach(function(n){pending.push(n)});
-      if(m.type==="characterData"||m.type==="attributes")pending.push(m.target);
-    });
-    if(queued)return;
-    queued=true;
-    requestAnimationFrame(function(){
-      queued=false;
-      ensureControls();
-      if(!isFrench()){pending.length=0;return}
-      var batch=pending.splice(0,pending.length);
-      batch.forEach(function(n){
-        if(n&&n.nodeType===3)translateTextNode(n);
-        else if(n)walk(n);
-      });
-      setDocFrench();
-      // If mutations arrived during this frame, translate the full page once so
-      // late account/commerce renders cannot remain untranslated.
-      if(pending.length){
-        var late=pending.splice(0,pending.length);
-        late.forEach(function(n){if(n&&n.nodeType===3)translateTextNode(n);else if(n)walk(n)});
-        setDocFrench();
-      }
-    });
-  });
-  observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["aria-label","title","placeholder","alt","content"]});
-  setTimeout(function(){ensureControls();if(isFrench())applyFrench(document.body)},80);
-  setTimeout(function(){ensureControls();if(isFrench())applyFrench(document.body)},450);
-  setTimeout(function(){ensureControls();if(isFrench())applyFrench(document.body)},1200);
-}
+function boot(){syncLocaleState(currentLocale());addStyles();ensureControls();if(isFrench())applyFrench(document.body)}
+document.addEventListener("zwm:localechange",function(){ensureControls()});
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
 })();

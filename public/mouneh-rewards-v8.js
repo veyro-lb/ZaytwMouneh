@@ -15,8 +15,9 @@
 
   const $=(id)=>document.getElementById(id);
   const esc=(v)=>String(v??"").replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const ar=()=>document.documentElement.lang==="ar"||document.documentElement.dir==="rtl";
-  const tr=(en,arText)=>ar()?arText:en;
+  const locale=()=>window.ZWM_LOCALE?.get?.()||(document.documentElement.lang||"en");
+  const ar=()=>locale()==="ar";
+  const tr=(en,arText,frText)=>locale()==="ar"?arText:locale()==="fr"?(frText??(window.ZWM_FR_TRANSLATE?window.ZWM_FR_TRANSLATE(en):en)):en;
   const ltr=(v)=>ar()?"\u2066"+String(v??"")+"\u2069":String(v??"");
   const money=(v)=>ltr("$"+(Number(v)||0).toFixed(2));
   function serviceErrorMessage(err){

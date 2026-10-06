@@ -8,7 +8,7 @@ const VERSION="20261006-notificationhardening1";
 let cfg=null,user=null,rows=[];
 const $=(s,r=document)=>r.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const lang=()=>{try{if(localStorage.getItem("zwm:french:v1")==="1")return"fr";return localStorage.getItem("zwm-lang-v2")==="ar"?"ar":"en"}catch{return"en"}};
+const lang=()=>{try{return window.ZWM_LOCALE?.get?.()||"en"}catch{return"en"}};
 const C={
  en:{
   notifications:"Notifications",title:"Account alerts",copy:"Get important updates about orders and wholesale requests linked to this account.",

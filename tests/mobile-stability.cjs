@@ -37,7 +37,8 @@ async function account(){
  const state={ready:true,session:false,googleEnabled:true};
  w.ZWM_REWARDS={getState:()=>state,auth:{setMode(){},rememberLegalConsent(){},signInWithGoogle:async()=>{googleCalls++}}};
  try{
-  w.eval(read('locale-loader-v1.js'));\n  w.eval(read('account.js'));const d=w.document;
+  w.eval(read('locale-loader-v1.js'));
+  w.eval(read('account.js'));const d=w.document;
   const email=d.getElementById('accountEmail');email.value='test@example.invalid';
   const consent=d.getElementById('accountLegalConsent');consent.click();assert.equal(consent.checked,true);
   d.dispatchEvent(new w.CustomEvent('zwm:account-updated'));

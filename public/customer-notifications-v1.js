@@ -4,7 +4,7 @@ if(window.__ZWM_CUSTOMER_NOTIFICATIONS_V1__)return;
 window.__ZWM_CUSTOMER_NOTIFICATIONS_V1__=true;
 const KEY="zwm:mouneh:session:v1";
 const CFG="/admin-config.js?v=20261006-notificationhardening1";
-const VERSION="20261006-notificationhardening1";
+const VERSION="20261006-transactionalemail1";
 let cfg=null,user=null,rows=[];
 const $=(s,r=document)=>r.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -15,7 +15,7 @@ const C={
   enable:"Enable on this device",enabled:"On for this device",off:"Not enabled on this device",blocked:"Blocked by browser",
   unsupported:"Push notifications unavailable",test:"Send test",testing:"Sending test notification…",
   delivered:"Test notification delivered to this device.",retry:"Temporary delivery issue. It will retry automatically.",
-  order:"Order status updates",orderHelp:"Order received, confirmed, preparing, out for delivery, delivered or cancelled.",wholesale:"Wholesale request updates",wholesaleHelp:"Status changes such as review, follow-up, approval or more information needed.",
+  order:"Order status updates",orderHelp:"Order received, confirmed, preparing, out for delivery, delivered, cancelled, or an item needing attention.",wholesale:"Wholesale request updates",wholesaleHelp:"Status changes such as review, follow-up, approval or more information needed.",
   note:"Your phone or computer controls notification sounds, vibration, Focus and Do Not Disturb.",
   ios:"On iPhone, add Zayt w Mouneh to your Home Screen, open it there, then enable notifications.",
   empty:"No notifications yet.",markAll:"Mark all as read",now:"Now"
@@ -25,7 +25,7 @@ const C={
   enable:"تفعيل على هذا الجهاز",enabled:"مفعّلة على هذا الجهاز",off:"غير مفعّلة على هذا الجهاز",blocked:"محظورة من المتصفح",
   unsupported:"الإشعارات غير متاحة",test:"إرسال اختبار",testing:"جارٍ إرسال الإشعار التجريبي…",
   delivered:"تم تسليم الإشعار التجريبي إلى هذا الجهاز.",retry:"تعذّر التسليم مؤقتاً وسيتم إعادة المحاولة تلقائياً.",
-  order:"تحديثات حالة الطلب",orderHelp:"تم الاستلام، التأكيد، التحضير، خرج للتوصيل، تم التسليم أو الإلغاء.",wholesale:"تحديثات طلبات الجملة",wholesaleHelp:"تغييرات الحالة مثل المراجعة أو المتابعة أو الموافقة أو الحاجة إلى معلومات إضافية.",
+  order:"تحديثات حالة الطلب",orderHelp:"تم الاستلام، التأكيد، التحضير، خرج للتوصيل، التسليم، الإلغاء، أو وجود صنف يحتاج إلى متابعة.",wholesale:"تحديثات طلبات الجملة",wholesaleHelp:"تغييرات الحالة مثل المراجعة أو المتابعة أو الموافقة أو الحاجة إلى معلومات إضافية.",
   note:"الهاتف أو الكمبيوتر هو الذي يتحكم بالصوت والاهتزاز ووضع التركيز وعدم الإزعاج.",
   ios:"على iPhone، أضف زيت ومونة إلى الشاشة الرئيسية وافتحه منها ثم فعّل الإشعارات.",
   empty:"لا توجد إشعارات بعد.",markAll:"تحديد الكل كمقروء",now:"الآن"
@@ -35,7 +35,7 @@ const C={
   enable:"Activer sur cet appareil",enabled:"Activées sur cet appareil",off:"Non activées sur cet appareil",blocked:"Bloquées par le navigateur",
   unsupported:"Notifications push indisponibles",test:"Envoyer un test",testing:"Envoi de la notification test…",
   delivered:"Notification test livrée à cet appareil.",retry:"Échec temporaire. Une nouvelle tentative sera faite automatiquement.",
-  order:"Mises à jour de commande",orderHelp:"Commande reçue, confirmée, en préparation, en livraison, livrée ou annulée.",wholesale:"Mises à jour des demandes de gros",wholesaleHelp:"Changements de statut : examen, suivi, approbation ou informations complémentaires.",
+  order:"Mises à jour de commande",orderHelp:"Commande reçue, confirmée, en préparation, en livraison, livrée, annulée ou article nécessitant votre attention.",wholesale:"Mises à jour des demandes de gros",wholesaleHelp:"Changements de statut : examen, suivi, approbation ou informations complémentaires.",
   note:"Votre téléphone ou ordinateur contrôle les sons, vibrations, Concentration et Ne pas déranger.",
   ios:"Sur iPhone, ajoutez Zayt w Mouneh à l’écran d’accueil, ouvrez-la depuis cet écran, puis activez les notifications.",
   empty:"Aucune notification.",markAll:"Tout marquer comme lu",now:"À l’instant"
@@ -96,6 +96,7 @@ async function bootstrapPrefs(){
 function statusTitle(n){
  const m=n.metadata||{},ref=m.reference||n.entity_id||"";
  if(n.notification_type==="ORDER_CREATED")return (lang()==="ar"?"تم استلام الطلب":lang()==="fr"?"Commande reçue":"Order received")+(ref?" · "+ref:"");
+ if(n.notification_type==="ORDER_ITEM_ATTENTION")return (lang()==="ar"?"هناك صنف في طلبك يحتاج إلى متابعة":lang()==="fr"?"Un article de votre commande nécessite votre attention":"An item in your order needs attention")+(ref?" · "+ref:"");
  if(n.notification_type==="ORDER_STATUS_CHANGED"){
   const map={
    en:{confirmed:"Order confirmed",preparing:"Order is being prepared",out_for_delivery:"Out for delivery",delivered:"Order delivered",cancelled:"Order cancelled"},
@@ -114,7 +115,7 @@ function statusTitle(n){
  }
  return tr("notifications");
 }
-function iconFor(n){if(n.notification_type==="WHOLESALE_STATUS_CHANGED")return"📦";if(n.notification_type==="ORDER_CREATED")return"🧺";if(n.notification_type==="ORDER_STATUS_CHANGED"){const s=n.metadata?.status;return s==="out_for_delivery"?"🚚":s==="delivered"?"✓":s==="cancelled"?"×":"📦"}return"🔔"}
+function iconFor(n){if(n.notification_type==="WHOLESALE_STATUS_CHANGED")return"📦";if(n.notification_type==="ORDER_CREATED")return"🧺";if(n.notification_type==="ORDER_ITEM_ATTENTION")return"⚠️";if(n.notification_type==="ORDER_STATUS_CHANGED"){const s=n.metadata?.status;return s==="out_for_delivery"?"🚚":s==="delivered"?"✓":s==="cancelled"?"×":"📦"}return"🔔"}
 function timeLabel(v){const t=new Date(v),s=Math.max(0,Math.floor((Date.now()-t.getTime())/1000));if(s<60)return tr("now");if(s<3600)return Math.floor(s/60)+(lang()==="ar"?" د":lang()==="fr"?" min":" min");if(s<86400)return Math.floor(s/3600)+(lang()==="ar"?" س":lang()==="fr"?" h":" h");return t.toLocaleDateString(lang()==="ar"?"ar-LB":lang()==="fr"?"fr-LB":"en-LB",{month:"short",day:"numeric"})}
 function safeRoute(route){try{const u=new URL(route||"/account",location.origin);return u.origin===location.origin?u.pathname+u.search+u.hash:"/account"}catch{return"/account"}}
 async function fetchNotifications(){

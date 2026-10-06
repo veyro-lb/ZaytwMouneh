@@ -25,6 +25,7 @@ for(const event of [
   assert.ok(migration.includes("'"+event+"'"),"missing event "+event);
 }
 
+assert.doesNotMatch(migration,/^\\$;$/m,"malformed PL/pgSQL dollar-quote terminator");
 assert.match(migration,/create table if not exists private\.transactional_email_outbox/i);
 assert.match(migration,/event_key text not null unique/i);
 assert.match(migration,/for update skip locked/i);

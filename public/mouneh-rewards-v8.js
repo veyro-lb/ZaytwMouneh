@@ -293,7 +293,13 @@
   async function requestPasswordRecovery(email){
     const cleanEmail=String(email||"").trim();
     if(!cleanEmail||!cleanEmail.includes("@"))throw new Error(tr("Enter the email address for your account.","أدخل البريد الإلكتروني المرتبط بحسابك."));
-    await authRequest("recover?redirect_to="+encodeURIComponent(authRedirectUrl()),{email:cleanEmail});
+    try{
+      await authRequest("recover?redirect_to="+encodeURIComponent(authRedirectUrl()),{email:cleanEmail});
+    }catch(err){
+      const status=Number(err?.status||0);
+      if(status>=400&&status<500&&status!==429)return true;
+      throw err;
+    }
     return true;
   }
   async function finishPasswordRecovery(newPassword){

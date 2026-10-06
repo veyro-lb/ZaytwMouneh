@@ -263,7 +263,7 @@ Deno.serve(async(req:Request)=>{
   const prefResp=await rest(supabaseUrl+`/rest/v1/notification_preferences?select=push_enabled&user_id=eq.${encodeURIComponent(n.user_id)}&category=eq.${encodeURIComponent(category)}&limit=1`,{headers:serviceHeaders});
   const pref=Array.isArray(prefResp.data)?prefResp.data[0]:null;
   if(pref&&pref.push_enabled===false){
-    await fetch(supabaseUrl+"/rest/v1/notification_delivery_attempts",{method:"POST",headers:{...serviceHeaders,"Prefer":"return=minimal"},body:JSON.stringify({notification_id:n.id,state:"skipped_preference"})});
+    await fetch(supabaseUrl+"/rest/v1/rpc/notification_legacy_delivery_record",{method:"POST",headers:serviceHeaders,body:JSON.stringify({p_notification_id:n.id,p_subscription_id:null,p_state:"skipped_preference",p_error_category:null})});
     await fetch(supabaseUrl+`/rest/v1/notifications?id=eq.${encodeURIComponent(n.id)}`,{method:"PATCH",headers:{...serviceHeaders,"Prefer":"return=minimal"},body:JSON.stringify({push_dispatched_at:new Date().toISOString()})});
     return json(origin,{ok:true,skipped:"preference"});
   }
@@ -271,27 +271,26 @@ Deno.serve(async(req:Request)=>{
   const subsResp=await rest(supabaseUrl+`/rest/v1/push_subscriptions?select=*&user_id=eq.${encodeURIComponent(n.user_id)}&audience=eq.${encodeURIComponent(n.audience)}&enabled=eq.true&revoked_at=is.null`,{headers:serviceHeaders});
   const subs=Array.isArray(subsResp.data)?subsResp.data:[];
   if(!subs.length){
-    await fetch(supabaseUrl+"/rest/v1/notification_delivery_attempts",{method:"POST",headers:{...serviceHeaders,"Prefer":"return=minimal"},body:JSON.stringify({notification_id:n.id,state:"no_subscription"})});
+    await fetch(supabaseUrl+"/rest/v1/rpc/notification_legacy_delivery_record",{method:"POST",headers:serviceHeaders,body:JSON.stringify({p_notification_id:n.id,p_subscription_id:null,p_state:"no_subscription",p_error_category:null})});
     await fetch(supabaseUrl+`/rest/v1/notifications?id=eq.${encodeURIComponent(n.id)}`,{method:"PATCH",headers:{...serviceHeaders,"Prefer":"return=minimal"},body:JSON.stringify({push_dispatched_at:new Date().toISOString()})});
     return json(origin,{ok:true,devices:0});
   }
 
-  const deliveredResp=await rest(supabaseUrl+`/rest/v1/notification_delivery_attempts?select=subscription_id,state&notification_id=eq.${encodeURIComponent(n.id)}&state=eq.accepted`,{headers:serviceHeaders});
-  const accepted=new Set((Array.isArray(deliveredResp.data)?deliveredResp.data:[]).map((x:any)=>x.subscription_id));
   let temporary=false,acceptedCount=0;
   for(const sub of subs){
     const payload=content({...n,locale:sub.locale||n.locale});
-    if(accepted.has(sub.id))continue;
+    const legacyAccepted=await rest(supabaseUrl+"/rest/v1/rpc/notification_legacy_delivery_accepted",{method:"POST",headers:serviceHeaders,body:JSON.stringify({p_notification_id:n.id,p_subscription_id:sub.id})});
+    if(legacyAccepted.r.ok&&legacyAccepted.data===true)continue;
     try{
       await webpush.sendNotification({endpoint:sub.endpoint,keys:{p256dh:sub.p256dh,auth:sub.auth_key}},JSON.stringify({title:payload.title,body:payload.body,route:n.route||"/",tag:n.dedupe_key,notification_id:n.id}),{TTL:n.priority==="critical"?3600:86400,urgency:n.priority==="critical"?"high":"normal"});
       acceptedCount++;
-      await fetch(supabaseUrl+"/rest/v1/notification_delivery_attempts",{method:"POST",headers:{...serviceHeaders,"Prefer":"return=minimal"},body:JSON.stringify({notification_id:n.id,subscription_id:sub.id,state:"accepted"})});
+      await fetch(supabaseUrl+"/rest/v1/rpc/notification_legacy_delivery_record",{method:"POST",headers:serviceHeaders,body:JSON.stringify({p_notification_id:n.id,p_subscription_id:sub.id,p_state:"accepted",p_error_category:null})});
       await fetch(supabaseUrl+`/rest/v1/push_subscriptions?id=eq.${encodeURIComponent(sub.id)}`,{method:"PATCH",headers:{...serviceHeaders,"Prefer":"return=minimal"},body:JSON.stringify({last_success_at:new Date().toISOString(),last_used_at:new Date().toISOString(),failure_count:0})});
     }catch(e:any){
       const status=Number(e?.statusCode||0);
       const permanent=status===404||status===410;
       if(!permanent)temporary=true;
-      await fetch(supabaseUrl+"/rest/v1/notification_delivery_attempts",{method:"POST",headers:{...serviceHeaders,"Prefer":"return=minimal"},body:JSON.stringify({notification_id:n.id,subscription_id:sub.id,state:permanent?"permanent_failure":"temporary_failure",error_category:status?`http_${status}`:"delivery_error"})});
+      await fetch(supabaseUrl+"/rest/v1/rpc/notification_legacy_delivery_record",{method:"POST",headers:serviceHeaders,body:JSON.stringify({p_notification_id:n.id,p_subscription_id:sub.id,p_state:permanent?"permanent_failure":"temporary_failure",p_error_category:status?`http_${status}`:"delivery_error"})});
       if(permanent){
         await fetch(supabaseUrl+`/rest/v1/push_subscriptions?id=eq.${encodeURIComponent(sub.id)}`,{method:"PATCH",headers:{...serviceHeaders,"Prefer":"return=minimal"},body:JSON.stringify({enabled:false,revoked_at:new Date().toISOString(),failure_count:Number(sub.failure_count||0)+1})});
       }else{

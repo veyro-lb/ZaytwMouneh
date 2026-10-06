@@ -14,6 +14,9 @@ function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 function del(k){try{localStorage.removeItem(k)}catch(e){}}
 function normalizeLocale(code){return code==="ar"||code==="fr"?code:"en"}
 function currentLocale(){
+  if(window.__ZWM_LOCALE_V4__&&window.ZWM_LOCALE&&typeof window.ZWM_LOCALE.get==="function"){
+    return normalizeLocale(window.ZWM_LOCALE.get());
+  }
   var canonical=get(LOCALE_KEY);
   if(canonical==="en"||canonical==="ar"||canonical==="fr")return canonical;
   if(get(FR_KEY)==="1")return "fr";
@@ -21,16 +24,15 @@ function currentLocale(){
 }
 function syncLocaleState(code){
   var next=normalizeLocale(code);
-  set(LOCALE_KEY,next);
-  if(next==="fr"){
-    set(FR_KEY,"1");
-    // Legacy storefront modules still render their English source before the
-    // French dictionary is applied. Keep their compatibility key on English,
-    // while LOCALE_KEY remains the single authoritative locale.
-    set(LANG_KEY,"en");set(ADMIN_LANG_KEY,"en");
-  }else{
-    del(FR_KEY);set(LANG_KEY,next);set(ADMIN_LANG_KEY,next);
+  if(window.__ZWM_LOCALE_V4__&&window.ZWM_LOCALE&&typeof window.ZWM_LOCALE.set==="function"){
+    window.ZWM_LOCALE.set(next,{navigate:false});
+    return next;
   }
+  // Admin keeps its independent compatibility preference until its own
+  // localization architecture is migrated. Storefront pages use locale-v4.
+  set(LOCALE_KEY,next);
+  if(next==="fr"){set(FR_KEY,"1");set(LANG_KEY,"en")}
+  else{del(FR_KEY);set(LANG_KEY,next)}
   return next;
 }
 function isFrench(){return currentLocale()==="fr"}
@@ -2643,18 +2645,23 @@ function applyFrench(root){
 }
 window.ZWM_APPLY_FRENCH=applyFrench;
 window.ZWM_FR_TRANSLATE=dynamicFr;
-window.ZWM_LOCALE=Object.freeze({
-  get:currentLocale,
-  set:syncLocaleState,
-  is:function(code){return currentLocale()===normalizeLocale(code)},
-  t:function(en,ar,fr){
-    var locale=currentLocale();
-    if(locale==="ar")return ar==null?en:ar;
-    if(locale==="fr")return fr==null?en:fr;
-    return en;
-  },
-  translate:function(value){return currentLocale()==="fr"?dynamicFr(value):String(value==null?"":value)}
-});
+if(window.__ZWM_LOCALE_V4__&&window.ZWM_LOCALE&&typeof window.ZWM_LOCALE.registerFrenchTranslator==="function"){
+  window.ZWM_LOCALE.registerFrenchTranslator(dynamicFr);
+}else{
+  // Compatibility API for the separately-localized owner console only.
+  window.ZWM_LOCALE=Object.freeze({
+    get:currentLocale,
+    set:syncLocaleState,
+    is:function(code){return currentLocale()===normalizeLocale(code)},
+    t:function(en,ar,fr){
+      var locale=currentLocale();
+      if(locale==="ar")return ar==null?en:ar;
+      if(locale==="fr")return fr==null?en:fr;
+      return en;
+    },
+    translate:function(value){return currentLocale()==="fr"?dynamicFr(value):String(value==null?"":value)}
+  });
+}
 if(!window.__ZWM_LOCALE_DIALOGS__){
   window.__ZWM_LOCALE_DIALOGS__=true;
   var nativeAlert=window.alert&&window.alert.bind(window);
@@ -2668,45 +2675,35 @@ document.addEventListener("zwm:translate-french",function(e){
 });
 
 function boot(){
-  // Migrate old zwm:french / zwm-lang keys once and keep one canonical locale.
   syncLocaleState(currentLocale());
   addStyles();ensureControls();
+  // Storefront components now render in the active locale themselves. This
+  // single pass exists only for static legacy HTML that has not yet been
+  // converted to semantic keys; it is not a render lifecycle.
   if(isFrench())applyFrench(document.body);
 
-  // Do not drop mutations while a translation frame is already queued.
-  // The account dashboard renders asynchronously after auth/data loads, so losing
-  // one childList batch can leave the whole dashboard in English.
-  var queued=false,pending=[];
-  var observer=new MutationObserver(function(list){
-    list.forEach(function(m){
-      if(m.addedNodes&&m.addedNodes.length)m.addedNodes.forEach(function(n){pending.push(n)});
-      if(m.type==="characterData"||m.type==="attributes")pending.push(m.target);
-    });
-    if(queued)return;
-    queued=true;
-    requestAnimationFrame(function(){
-      queued=false;
-      ensureControls();
-      if(!isFrench()){pending.length=0;return}
-      var batch=pending.splice(0,pending.length);
-      batch.forEach(function(n){
-        if(n&&n.nodeType===3)translateTextNode(n);
-        else if(n)walk(n);
+  // The owner console intentionally keeps its independent locale preference.
+  // Until Admin is migrated in its own batch, observe only its main content
+  // for newly-rendered owner tools. Storefront pages never install this observer.
+  if(!window.__ZWM_LOCALE_V4__&&/\/admin(?:\.html)?$/.test(location.pathname)){
+    var root=document.querySelector("main")||document.body;
+    if(root){
+      var queued=false,pending=[];
+      var observer=new MutationObserver(function(list){
+        list.forEach(function(m){
+          if(m.addedNodes&&m.addedNodes.length)m.addedNodes.forEach(function(n){pending.push(n)});
+        });
+        if(queued||!isFrench())return;
+        queued=true;
+        requestAnimationFrame(function(){
+          queued=false;
+          pending.splice(0,pending.length).forEach(function(n){if(n)walk(n)});
+          setDocFrench();
+        });
       });
-      setDocFrench();
-      // If mutations arrived during this frame, translate the full page once so
-      // late account/commerce renders cannot remain untranslated.
-      if(pending.length){
-        var late=pending.splice(0,pending.length);
-        late.forEach(function(n){if(n&&n.nodeType===3)translateTextNode(n);else if(n)walk(n)});
-        setDocFrench();
-      }
-    });
-  });
-  observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["aria-label","title","placeholder","alt","content"]});
-  setTimeout(function(){ensureControls();if(isFrench())applyFrench(document.body)},80);
-  setTimeout(function(){ensureControls();if(isFrench())applyFrench(document.body)},450);
-  setTimeout(function(){ensureControls();if(isFrench())applyFrench(document.body)},1200);
+      observer.observe(root,{subtree:true,childList:true});
+    }
+  }
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
 })();

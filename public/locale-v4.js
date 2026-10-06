@@ -206,4 +206,15 @@ window.ZWM_LOCALE=Object.freeze({
   formatDate:formatDate,
   plural:plural
 });
+function loadFrenchDictionary(){
+  if(active!=="fr"||window.__ZWM_FRENCH_RUNTIME__)return;
+  var src="/fr-runtime-v1.js?v=20261006-batch3locale1";
+  if(document.readyState==="loading"){
+    document.write('<script src="'+src+'"><\\/script>');
+    return;
+  }
+  var script=document.createElement("script");
+  script.src=src;script.async=false;document.head.appendChild(script);
+}
+loadFrenchDictionary();
 })();

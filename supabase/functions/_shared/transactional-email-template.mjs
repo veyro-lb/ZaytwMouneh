@@ -109,8 +109,52 @@ const COPY={
   }
 };
 
+
+const RETURN_COPY={
+  en:{
+    RETURN_REQUEST_RECEIVED:{subject:r=>"We received your return / product issue request "+r,eyebrow:"Request received",heading:"We received your request",intro:"Your request is safely in our system and will be reviewed by our team.",notice:"Submitting a request does not automatically guarantee a refund or exchange."},
+    RETURN_INFORMATION_NEEDED:{subject:r=>"We need more information for request "+r,eyebrow:"Information needed",heading:"We need a little more information",intro:"Please open your request and send the requested details so we can continue the review."},
+    RETURN_AUTHORIZED:{subject:r=>"Return authorized for request "+r,eyebrow:"Return authorized",heading:"Your return has been authorized",intro:"Please review the instructions in your request before sending or bringing back the product."},
+    RETURN_RESOLUTION_APPROVED:{subject:r=>"Resolution approved for request "+r,eyebrow:"Resolution approved",heading:"We approved a resolution",intro:"Your request has been reviewed and a resolution has been approved."},
+    RETURN_REJECTED:{subject:r=>"Update on request "+r,eyebrow:"Request reviewed",heading:"Your request has been reviewed",intro:"We completed our review and could not approve the requested resolution based on the available information."},
+    RETURN_REFUND_PENDING:{subject:r=>"Refund approved for request "+r,eyebrow:"Refund approved",heading:"Your refund is pending processing",intro:"The refund has been approved and is awaiting the recorded payment step."},
+    RETURN_REFUND_COMPLETED:{subject:r=>"Refund processed for request "+r,eyebrow:"Refund processed",heading:"Your refund has been processed",intro:"The approved refund has been recorded as processed."},
+    RETURN_COMPLETED:{subject:r=>"Request "+r+" is complete",eyebrow:"Request complete",heading:"Your request is complete",intro:"This return or product-issue request has reached its completed stage."}
+  },
+  ar:{
+    RETURN_REQUEST_RECEIVED:{subject:r=>"استلمنا طلب الإرجاع أو مشكلة المنتج "+r,eyebrow:"تم استلام الطلب",heading:"استلمنا طلبك",intro:"تم تسجيل طلبك بأمان وسيقوم فريقنا بمراجعته.",notice:"إرسال الطلب لا يعني الموافقة التلقائية على الاسترداد أو الاستبدال."},
+    RETURN_INFORMATION_NEEDED:{subject:r=>"نحتاج معلومات إضافية للطلب "+r,eyebrow:"معلومات مطلوبة",heading:"نحتاج إلى بعض المعلومات الإضافية",intro:"يرجى فتح الطلب وإرسال التفاصيل المطلوبة حتى نتمكن من متابعة المراجعة."},
+    RETURN_AUTHORIZED:{subject:r=>"تمت الموافقة على إرجاع الطلب "+r,eyebrow:"تمت الموافقة على الإرجاع",heading:"تمت الموافقة على الإرجاع",intro:"يرجى مراجعة التعليمات داخل طلبك قبل إعادة المنتج."},
+    RETURN_RESOLUTION_APPROVED:{subject:r=>"تمت الموافقة على حل للطلب "+r,eyebrow:"تمت الموافقة على الحل",heading:"وافقنا على حل لطلبك",intro:"تمت مراجعة طلبك والموافقة على الحل المناسب."},
+    RETURN_REJECTED:{subject:r=>"تحديث بخصوص الطلب "+r,eyebrow:"تمت مراجعة الطلب",heading:"اكتملت مراجعة طلبك",intro:"بعد المراجعة لم نتمكن من الموافقة على الحل المطلوب بناءً على المعلومات المتوفرة."},
+    RETURN_REFUND_PENDING:{subject:r=>"تمت الموافقة على الاسترداد للطلب "+r,eyebrow:"تمت الموافقة على الاسترداد",heading:"الاسترداد بانتظار المعالجة",intro:"تمت الموافقة على مبلغ الاسترداد وهو بانتظار تسجيل خطوة الدفع."},
+    RETURN_REFUND_COMPLETED:{subject:r=>"تمت معالجة الاسترداد للطلب "+r,eyebrow:"تمت معالجة الاسترداد",heading:"تمت معالجة الاسترداد",intro:"تم تسجيل مبلغ الاسترداد المعتمد على أنه تمت معالجته."},
+    RETURN_COMPLETED:{subject:r=>"اكتمل الطلب "+r,eyebrow:"اكتمل الطلب",heading:"اكتمل طلبك",intro:"وصل طلب الإرجاع أو مشكلة المنتج إلى مرحلة الاكتمال."}
+  },
+  fr:{
+    RETURN_REQUEST_RECEIVED:{subject:r=>"Nous avons reçu votre demande retour / produit "+r,eyebrow:"Demande reçue",heading:"Nous avons reçu votre demande",intro:"Votre demande est enregistrée et sera examinée par notre équipe.",notice:"L’envoi d’une demande ne garantit pas automatiquement un remboursement ou un échange."},
+    RETURN_INFORMATION_NEEDED:{subject:r=>"Informations requises pour la demande "+r,eyebrow:"Informations requises",heading:"Nous avons besoin de quelques informations",intro:"Ouvrez votre demande et envoyez les informations demandées afin de poursuivre l’examen."},
+    RETURN_AUTHORIZED:{subject:r=>"Retour autorisé pour la demande "+r,eyebrow:"Retour autorisé",heading:"Votre retour est autorisé",intro:"Consultez les instructions de votre demande avant de retourner le produit."},
+    RETURN_RESOLUTION_APPROVED:{subject:r=>"Solution approuvée pour la demande "+r,eyebrow:"Solution approuvée",heading:"Une solution a été approuvée",intro:"Votre demande a été examinée et une solution a été approuvée."},
+    RETURN_REJECTED:{subject:r=>"Mise à jour de la demande "+r,eyebrow:"Demande examinée",heading:"Votre demande a été examinée",intro:"Après examen, nous n’avons pas pu approuver la solution demandée sur la base des informations disponibles."},
+    RETURN_REFUND_PENDING:{subject:r=>"Remboursement approuvé pour la demande "+r,eyebrow:"Remboursement approuvé",heading:"Votre remboursement est en attente de traitement",intro:"Le remboursement a été approuvé et attend l’étape de paiement enregistrée."},
+    RETURN_REFUND_COMPLETED:{subject:r=>"Remboursement traité pour la demande "+r,eyebrow:"Remboursement traité",heading:"Votre remboursement a été traité",intro:"Le remboursement approuvé a été enregistré comme traité."},
+    RETURN_COMPLETED:{subject:r=>"Demande "+r+" terminée",eyebrow:"Demande terminée",heading:"Votre demande est terminée",intro:"Cette demande de retour ou de problème produit est maintenant terminée."}
+  }
+};
+const RETURN_LABELS={
+  en:{request:"Request reference",order:"Order reference",status:"Status",amount:"Approved refund",view:"View request"},
+  ar:{request:"مرجع الطلب",order:"مرجع الطلب الأصلي",status:"الحالة",amount:"مبلغ الاسترداد المعتمد",view:"عرض الطلب"},
+  fr:{request:"Référence de la demande",order:"Référence de commande",status:"Statut",amount:"Remboursement approuvé",view:"Voir la demande"}
+};
+
 function eventCopy(eventType,locale,reference){
   const c=COPY[locale]||COPY.en;
+  if(String(eventType||"").startsWith("RETURN_")){
+    const value=(RETURN_COPY[locale]||RETURN_COPY.en)[eventType];
+    if(!value)throw new Error("Unsupported transactional email template");
+    return {...value,subject:typeof value.subject==="function"?value.subject(reference):value.subject};
+  }
   const key={
     ORDER_RECEIVED:"orderReceived",
     ORDER_CONFIRMED:"orderConfirmed",
@@ -193,6 +237,7 @@ export function renderTransactionalEmailJob(job){
   const isWholesale=String(job?.event_type||"").startsWith("WHOLESALE_");
   const isAttention=job?.event_type==="ORDER_ITEM_ATTENTION";
   const isOrder=String(job?.event_type||"").startsWith("ORDER_");
+  const isReturn=String(job?.event_type||"").startsWith("RETURN_");
 
   let details=[];
   let contentHtml="";
@@ -215,10 +260,18 @@ export function renderTransactionalEmailJob(job){
       [c.wholesaleRef,reference],
       [c.business,payload.business_name||""]
     ];
+  }else if(isReturn){
+    const labels=RETURN_LABELS[locale]||RETURN_LABELS.en;
+    details=[
+      [labels.request,reference],
+      [labels.order,payload.order_reference||""],
+      [labels.status,payload.status||""],
+      [labels.amount,Number(payload.approved_refund_total||0)>0?money(payload.approved_refund_total,payload.currency||"USD",locale):""]
+    ];
   }
 
   const route=safeRoute(payload.route,isWholesale?"/wholesale":"/account");
-  const actionLabel=isWholesale?c.viewWholesale:(route==="/contact"?c.contact:c.viewOrder);
+  const actionLabel=isWholesale?c.viewWholesale:isReturn?(RETURN_LABELS[locale]||RETURN_LABELS.en).view:(route==="/contact"?c.contact:c.viewOrder);
   return {
     subject:copy.subject,
     html:renderShell({

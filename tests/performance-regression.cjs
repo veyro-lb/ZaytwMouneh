@@ -16,5 +16,6 @@ if(!site.includes('script[data-mouneh-rewards],script[src*="mouneh-rewards-v8.js
 const app=read("public/app.js");
 if(app.includes('preload=activeNow?"auto"')||app.includes('preload=index===0?"auto"'))throw new Error("Hero video code still forces preload auto");
 if(!app.includes("navigator.connection&&navigator.connection.saveData"))throw new Error("Save-Data media guard is missing");
+if((app.match(/\\$\\$\\("\\[data-scene\\] video"\\)\\.forEach\\(v=>v\\.pause\\(\\)\\);/g)||[]).length<2)throw new Error("Scene video pause handlers must use the multi-element selector");
 if(!/product-photo-original[^>]*width=/.test(app)||!/product-photo-original[^>]*loading="lazy"/.test(app))throw new Error("Product-card image safeguards regressed");
 console.log("performance regression checks passed");

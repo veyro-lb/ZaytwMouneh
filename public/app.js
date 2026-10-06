@@ -1802,7 +1802,7 @@ function setupPerformance(){
     new IntersectionObserver(entries=>{
       heroVisible=entries[0]?.isIntersecting??true;
       if(heroVisible)showScene(sceneIndex);
-      else $("[data-scene] video").forEach(v=>v.pause());
+      else $$("[data-scene] video").forEach(v=>v.pause());
     },{threshold:.12}).observe(hero);
   }
   const homeVideo=$("#shopHeroVideo");
@@ -1824,7 +1824,7 @@ function setupPerformance(){
   }
   document.addEventListener("visibilitychange",()=>{
     if(document.hidden){
-      $("[data-scene] video").forEach(v=>v.pause());
+      $$("[data-scene] video").forEach(v=>v.pause());
       if(homeVideo)homeVideo.pause();
     }else{
       if(heroVisible)showScene(sceneIndex);

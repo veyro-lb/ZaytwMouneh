@@ -54,7 +54,7 @@ function updateCart(){
   if(heading)setText(heading,tr("Ready for checkout","جاهز لإتمام الطلب"));
   if(note)setText(note,tr("Delivery, rewards and final total are confirmed at checkout.","يتم تأكيد التوصيل والمكافآت والمجموع النهائي عند إتمام الطلب."));
   if(btn){setMarkup(btn,tr("Checkout <span>→</span>","إتمام الطلب <span>←</span>"));btn.setAttribute("aria-label",tr("Go to checkout","الانتقال لإتمام الطلب"))}
-  if(price)setText(price,tr("Final prices and availability are rechecked securely before your order is created.","يتم التحقق من الأسعار والتوفر بأمان قبل إنشاء الطلب."));
+  if(price)setText(price,tr("Prices and availability are rechecked before the order is created.","تُراجع الأسعار والتوفر قبل إنشاء الطلب."));
 }
 function decorateOrders(){
   if(document.body.dataset.page!=="account")return;

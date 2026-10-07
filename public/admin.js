@@ -1946,11 +1946,20 @@
 
     state.selectedOrderReference=reference;
 
-    // Open the shell first so a non-critical detail rendering error can never
-    // make the Details button appear to crash the dashboard.
+    // Render order details inline in the Orders view instead of as a fixed
+    // full-screen overlay. This avoids the browser/GPU lockup seen when the
+    // old modal opened while keeping all existing detail controls intact.
+    const ordersPanel=document.querySelector('[data-view-panel="orders"]');
+    const tableCard=ordersPanel?.querySelector(".table-card");
+    if(tableCard&&modal.parentElement!==ordersPanel){
+      tableCard.insertAdjacentElement("afterend",modal);
+    }else if(tableCard&&modal.previousElementSibling!==tableCard){
+      tableCard.insertAdjacentElement("afterend",modal);
+    }
+    modal.classList.add("order-details-inline");
     modal.hidden=false;
     modal.setAttribute("aria-hidden","false");
-    document.body.style.overflow="hidden";
+    modal.querySelector(".order-detail-modal")?.setAttribute("aria-modal","false");
 
     const setText=(id,value)=>{
       const el=$(id);
@@ -2065,12 +2074,19 @@
       setText("orderDetailTitle","Order details");
       setText("orderDetailCode",order.reference||reference||"—");
     }
+
+    requestAnimationFrame(()=>{
+      try{modal.scrollIntoView({behavior:"smooth",block:"start"});}catch{}
+    });
   }
 
   function closeOrderDetails() {
-    $("orderModal").hidden=true;
+    const modal=$("orderModal");
+    if(modal){
+      modal.hidden=true;
+      modal.setAttribute("aria-hidden","true");
+    }
     state.selectedOrderReference=null;
-    if($("productModal").hidden)document.body.style.overflow="";
   }
 
   async function copyOrderCode() {

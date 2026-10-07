@@ -890,7 +890,12 @@
       queued=true;
       requestAnimationFrame(()=>{queued=false;ensurePersistentChrome()});
     };
-    new MutationObserver(check).observe(document.body,{childList:true,subtree:true});
+    // Observe only the persistent shell. Watching the entire body subtree made
+    // product-grid/cart renders wake this repair pass hundreds of times.
+    [document.querySelector(".site-header"),document.querySelector("footer.footer")].filter(Boolean).forEach(target=>{
+      new MutationObserver(check).observe(target,{childList:true,subtree:true});
+    });
+    new MutationObserver(check).observe(document.body,{childList:true,subtree:false});
     new MutationObserver(()=>{syncBrandLanguage();check()}).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
     window.addEventListener("pageshow",event=>{
       ensureFreshLegalPage();
@@ -922,7 +927,17 @@
     check();
   }
 
+  function refreshExistingStorefrontWorker(){
+    if(PREVIEW_MODE||!("serviceWorker" in navigator))return;
+    navigator.serviceWorker.getRegistration("/").then(reg=>{
+      if(!reg)return;
+      const script=reg.active?.scriptURL||reg.waiting?.scriptURL||reg.installing?.scriptURL||"";
+      if(script.includes("/admin-sw.js"))reg.update().catch(()=>{});
+    }).catch(()=>{});
+  }
+
   async function init(){
+    refreshExistingStorefrontWorker();
     ensurePersistentChrome();
     bindPersistentChrome();
     try{await loadScript(CONFIG_SRC)}catch{return}
@@ -968,7 +983,8 @@
     });
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",add,{once:true});else add();
-  new MutationObserver(add).observe(document.documentElement,{childList:true,subtree:true});
+  setTimeout(add,500);
+  window.addEventListener("pageshow",add,{passive:true});
 })();
 
 /* zwm-returns-center-nav */
@@ -1064,21 +1080,7 @@
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",add,{once:true});else add();
   setTimeout(add,500);
   setTimeout(add,1500);
-  var scheduled=false;
-  var observer=new MutationObserver(function(mutations){
-    // Coalesce DOM changes and ignore mutations caused only by our own
-    // returns link/index nodes once the menu is already stable.
-    if(scheduled)return;
-    var relevant=mutations.some(function(m){
-      if(m.type!=="childList")return false;
-      var target=m.target;
-      if(target&&target.closest&&target.closest("[data-returns-center-link]"))return false;
-      return true;
-    });
-    if(!relevant)return;
-    scheduled=true;
-    requestAnimationFrame(function(){scheduled=false;add()});
-  });
-  observer.observe(document.documentElement,{subtree:true,childList:true});
+  window.addEventListener("pageshow",add,{passive:true});
+  document.addEventListener("zwm:localechange",add);
 })();
 

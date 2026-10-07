@@ -987,8 +987,9 @@
         link.className="zwm-returns-center-nav-link";
         nav.appendChild(link);
       }
-      link.textContent=currentLabel();
-      if(document.body.dataset.page==="returns")link.setAttribute("aria-current","page");
+      var label=currentLabel();
+      if(link.textContent!==label)link.textContent=label;
+      if(document.body.dataset.page==="returns")link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");
       return;
     }
     if(document.body.dataset.page==="returns")return;
@@ -1001,7 +1002,8 @@
       tab.setAttribute("data-returns-fallback","");
       document.body.appendChild(tab);
     }
-    tab.textContent=currentLabel();
+    var fallbackLabel=currentLabel();
+    if(tab.textContent!==fallbackLabel)tab.textContent=fallbackLabel;
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",add,{once:true});else add();
   setTimeout(add,500);

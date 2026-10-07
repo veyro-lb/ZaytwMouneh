@@ -145,7 +145,8 @@ async function rest(path,options){
 async function loadData(){
  state.locale=locale();document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==="ar"?"rtl":"ltr";
  state.products=typeof PRODUCTS_DATA!=="undefined"?JSON.parse(JSON.stringify(PRODUCTS_DATA)):[];
- var id=slug();
+ var requestedId=slug();
+ var id=(window.ZWM_PRODUCT_ALIASES&&window.ZWM_PRODUCT_ALIASES[requestedId])||requestedId;
  try{
   var overrides=await rest("product_overrides?select=product_id,action,payload");
   var byOverride=new Map((overrides||[]).map(function(row){return [row.product_id,row]}));

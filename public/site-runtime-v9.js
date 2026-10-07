@@ -1021,14 +1021,25 @@
           nav.querySelector('a[href="/about"]'),
           nav.querySelector('a[href="/contact"]')
         ].filter(Boolean);
-        wanted.forEach(function(a){nav.insertBefore(a,utility||null)});
+        // Keep the desired menu order without continuously moving nodes.
+        // The previous implementation called insertBefore() on every observer
+        // pass even when the links were already correctly ordered, which
+        // retriggered the MutationObserver indefinitely and could freeze the
+        // customer storefront.
+        var cursor=utility||null;
+        for(var wi=wanted.length-1;wi>=0;wi--){
+          var item=wanted[wi];
+          if(item.nextElementSibling!==cursor)nav.insertBefore(item,cursor);
+          cursor=item;
+        }
         wanted.forEach(function(a,i){
           var n=a.querySelector(":scope > span:first-child");
           if(!n){
             n=document.createElement("span");
             a.insertBefore(n,a.firstChild);
           }
-          n.textContent=String(i+1).padStart(2,"0");
+          var indexText=String(i+1).padStart(2,"0");
+          if(n.textContent!==indexText)n.textContent=indexText;
           if(a===link)n.setAttribute("data-returns-nav-index","");
         });
       }else if(link.textContent!==label){
@@ -1053,6 +1064,21 @@
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",add,{once:true});else add();
   setTimeout(add,500);
   setTimeout(add,1500);
-  new MutationObserver(add).observe(document.documentElement,{subtree:true,childList:true});
+  var scheduled=false;
+  var observer=new MutationObserver(function(mutations){
+    // Coalesce DOM changes and ignore mutations caused only by our own
+    // returns link/index nodes once the menu is already stable.
+    if(scheduled)return;
+    var relevant=mutations.some(function(m){
+      if(m.type!=="childList")return false;
+      var target=m.target;
+      if(target&&target.closest&&target.closest("[data-returns-center-link]"))return false;
+      return true;
+    });
+    if(!relevant)return;
+    scheduled=true;
+    requestAnimationFrame(function(){scheduled=false;add()});
+  });
+  observer.observe(document.documentElement,{subtree:true,childList:true});
 })();
 

@@ -49,57 +49,7 @@
   </style>
   <link rel="stylesheet" href="storefront-shell.css?v=20261007-mobileheaderfix2" />
   <meta name="zwm-release" content="20261007-architecture1" />
-  <style id="menuEmergencyLayerFix">
-    /* Critical menu/header fallback. Inline by design so a stale cached stylesheet cannot
-       put the menu behind its own backdrop or restore the oversized legacy phone header. */
-    body.menu-open:after{
-      content:""!important;position:fixed!important;inset:0!important;
-      z-index:6100!important;background:rgba(4,23,10,.40)!important;
-      backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
-      pointer-events:auto!important;
-    }
-    body.menu-open .site-header{z-index:6150!important}
-    .site-header .nav>#navLinks.is-open,#navLinks.is-mobile-portal.is-open{
-      z-index:6200!important;opacity:1!important;visibility:visible!important;
-      pointer-events:auto!important;transform:none!important;display:grid!important;
-    }
-    @media(max-width:760px){
-      .site-header .nav{width:calc(100% - 20px)!important;height:64px!important;min-height:64px!important;margin-inline:auto!important;position:relative!important}
-      .site-header .nav>.nav-toggle{
-        position:absolute!important;inset-inline-start:0!important;left:auto!important;right:auto!important;
-        top:50%!important;transform:translateY(-50%)!important;
-        width:44px!important;min-width:44px!important;max-width:44px!important;
-        height:44px!important;min-height:44px!important;max-height:44px!important;
-        margin:0!important;padding:0!important;border-radius:14px!important;overflow:hidden!important;
-        display:flex!important;align-items:center!important;justify-content:center!important;z-index:3!important;
-      }
-      .site-header .nav-toggle .menu-label{display:none!important}
-      /* menuEmergencyMobileControlQuarantine */
-      .site-header .nav>.nav-actions>.nav-search,
-      .site-header .nav>.nav-actions>.nav-instagram,
-      .site-header .nav>.nav-actions>#languageSwitch.language-switch,
-      .site-header .nav>.nav-actions>.language-switch,
-      .site-header .nav>.nav-actions>#mounehRewardsButton.mouneh-points-nav,
-      .site-header .nav>.nav-actions>#mounehRewardsButton.mouneh-points-nav.is-compact,
-      .site-header .nav>.nav-actions>#mounehAccountButton.mouneh-account-nav{
-        display:none!important;visibility:hidden!important;pointer-events:none!important;
-      }
-      .site-header .nav>.brand{
-        position:absolute!important;left:50%!important;right:auto!important;top:50%!important;
-        transform:translate(-50%,-50%)!important;max-width:calc(100% - 120px)!important;
-        margin:0!important;gap:7px!important;z-index:2!important;
-      }
-      .site-header .nav .brand-logo{width:34px!important;height:34px!important;min-width:34px!important;flex:0 0 34px!important}
-      .site-header .nav .brand-wordmark{display:block!important;max-width:150px!important;font-size:1.05rem!important;line-height:1!important}
-      .site-header .nav>#navLinks,#navLinks.is-mobile-portal{
-        position:fixed!important;top:var(--zwm-menu-top,94px)!important;left:0!important;right:0!important;
-        width:100%!important;max-width:none!important;max-height:calc(100dvh - var(--zwm-menu-top,94px))!important;
-        margin:0!important;padding:10px 10px calc(14px + env(safe-area-inset-bottom))!important;
-        overflow-y:auto!important;border-radius:0 0 18px 18px!important;
-      }
-      html[dir="rtl"] .site-header .nav>.brand{left:50%!important;right:auto!important;transform:translate(-50%,-50%)!important}
-    }
-  </style>
+
 
   <script src="/storefront-release.js?v=20261007-architecture1" defer></script>
   <style id="homeHeroBalanceFix">

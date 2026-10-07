@@ -283,7 +283,7 @@ const UI={
     cartEyebrow:"Your pantry list",cartTitle:"My pantry",cartSaved:"Saved on this device",cartEmptyTitle:"Your pantry is empty.",cartEmptyCopy:"Add products from the catalogue and they’ll appear here.",browseProducts:"Browse products",
     total:"Estimated total",orderDetailsTitle:"Ready for checkout",orderDetailsNote:"Delivery, rewards and the final total are confirmed at checkout.",
     yourName:"Your name",namePlaceholder:"Name",phone:"WhatsApp number (optional)",phonePlaceholder:"e.g. 961 70 123 456",area:"Area / location",areaPlaceholder:"e.g. Baabda",notes:"Order notes",notesPlaceholder:"Delivery notes, substitutions, anything we should know…",
-    sendOrder:"Checkout <span>→</span>",priceNote:"Final prices and availability are securely rechecked before the order is created.",
+    sendOrder:"Checkout <span>→</span>",priceNote:"Prices and availability are rechecked before the order is created.",
     what:"What it is",use:"Use it for",nutritionLabel:"General nutrition note",nutritionBadge:"General nutrition",chooseSize:"Choose size",add:"Add to pantry",update:"Update pantry",view:"View",from:"From",sizeOptions:"size options",
     remove:"Remove",details:"View details",qty:"Qty",unitPrice:"Unit",subtotal:"Subtotal",
     standard:"Standard",added:"Added to cart",updated:"Cart updated",removed:"Removed",

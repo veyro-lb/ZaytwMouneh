@@ -57,6 +57,25 @@ jobs:
           (async()=>{
             const browser=await chromium.launch({headless:true});
             const page=await browser.newPage({viewport:{width:1285,height:932}});
+            page.on("console",msg=>{if(msg.text().includes("ANNOUNCEMENT_"))console.log(msg.text())});
+            await page.addInitScript(()=>{
+              const desc=Object.getOwnPropertyDescriptor(HTMLElement.prototype,"hidden");
+              if(desc?.get&&desc?.set){
+                Object.defineProperty(HTMLElement.prototype,"hidden",{
+                  configurable:desc.configurable,enumerable:desc.enumerable,
+                  get:desc.get,
+                  set(value){
+                    if(this?.classList?.contains("announcement"))console.log("ANNOUNCEMENT_HIDDEN_WRITE="+value+"\\n"+new Error().stack);
+                    return desc.set.call(this,value);
+                  }
+                });
+              }
+              const remove=Element.prototype.removeAttribute;
+              Element.prototype.removeAttribute=function(name){
+                if(name==="hidden"&&this?.classList?.contains("announcement"))console.log("ANNOUNCEMENT_REMOVE_HIDDEN\\n"+new Error().stack);
+                return remove.call(this,name);
+              };
+            });
             await page.goto("https://zaytwmouneh.veyro-202.workers.dev/",{waitUntil:"domcontentloaded"});
             await page.waitForTimeout(800);
             const before=await page.evaluate(()=>{

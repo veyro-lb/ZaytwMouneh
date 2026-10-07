@@ -155,7 +155,7 @@ var EXACT=Object.freeze({
 "How do I pay?":"Comment payer ?",
 "Cash on Delivery is currently available. Place the order through website checkout and pay the final order total in cash when your delivery arrives.":"Le paiement à la livraison est actuellement disponible. Passez votre commande sur le site et payez le total final en espèces lorsque votre livraison arrive.",
 "What if something is unavailable?":"Que se passe-t-il si un produit est indisponible ?",
-"We confirm availability before the order is final and can discuss a suitable substitution with you.":"Nous confirmons la disponibilité avant de finaliser la commande et pouvons convenir avec vous d’un remplacement adapté.",
+"If an item cannot be fulfilled after you place the order, we may contact you to discuss an available alternative or another appropriate resolution.":"Si un article ne peut pas être fourni après votre commande, nous pouvons vous contacter pour discuter d’une alternative disponible ou d’une autre solution appropriée.",
 "Can I send a gift?":"Puis-je envoyer un cadeau ?",
 "Yes. Choose a ready-made idea or build your own gift and enter the recipient’s delivery area.":"Oui. Choisissez une idée prête à offrir ou composez votre cadeau, puis indiquez la zone de livraison du destinataire.",
 "Close":"Fermer",

@@ -64,6 +64,47 @@ async function testCustomerOrders(){
   }
 }
 
+async function testCustomerOrdersAuthRecovery(){
+  const html='<!doctype html><html><body data-page="account"><main id="accountShell"><section data-account-panel="overview"><div class="account-grid"></div></section><section data-account-panel="orders"></section></main></body></html>';
+  const dom=new JSDOM(html,{url:"https://store.example/account#orders",runScripts:"outside-only",pretendToBeVisual:true});
+  const w=dom.window;
+  let now=150000,fetches=0,refreshCalls=0;
+  const intervals=[];
+  w.Date.now=()=>now;
+  w.requestAnimationFrame=fn=>w.setTimeout(()=>fn(now),0);
+  w.setInterval=(fn,delay)=>{intervals.push({fn,delay});return intervals.length};
+  w.clearInterval=()=>{};
+  w.ZWM_CMS_CONFIG={supabaseUrl:"https://example.supabase.co",supabasePublishableKey:"public"};
+  w.localStorage.setItem("zwm:mouneh:session:v1",JSON.stringify({access_token:"expired",refresh_token:"refresh"}));
+  w.ZWM_REWARDS={
+    getState:()=>({member:{id:"m1"}}),
+    refresh:async()=>{},
+    auth:{refreshSession:async()=>{refreshCalls++;const next={access_token:"fresh",refresh_token:"refresh2"};w.localStorage.setItem("zwm:mouneh:session:v1",JSON.stringify(next));return next}}
+  };
+  w.fetch=async()=>{
+    fetches++;
+    if(fetches===1)return {ok:false,status:401,json:async()=>({message:"expired"})};
+    return {ok:true,status:200,json:async()=>({orders:[],counts:{all:0,active:0,delivered:0,cancelled:0}})};
+  };
+  try{
+    w.eval(read("public/customer-orders-v1.js"));
+    w.document.dispatchEvent(new w.Event("DOMContentLoaded"));
+    await wait(30);
+    assert.equal(refreshCalls,1,"orders 401 should use exactly one shared session refresh");
+    assert.equal(fetches,2,"orders should retry once after the coordinated refresh");
+
+    w.dispatchEvent(new w.Event("zwm:auth-expired"));
+    now+=180000;
+    const background=intervals.find(x=>x.delay===120000);
+    assert(background,"orders background timer should exist");
+    background.fn();
+    await wait(10);
+    assert.equal(fetches,2,"settled signed-out orders must stop authenticated background traffic");
+  }finally{
+    dom.window.close();
+  }
+}
+
 async function testAccountStaleness(){
   const dom=new JSDOM(stripScripts(read("public/account.html")),{url:"https://store.example/account#overview",runScripts:"outside-only",pretendToBeVisual:true});
   const w=dom.window;
@@ -79,7 +120,7 @@ async function testAccountStaleness(){
   try{
     w.eval(read("public/account.js"));
     await wait(10);
-    assert(intervals.some(x=>x.delay===120000),"account cadence should be 120 seconds");
+    assert(!intervals.some(x=>x.delay===120000),"account shell should not own a duplicate recurring account poll");
     w.dispatchEvent(new w.Event("focus"));
     await wait(5);
     assert.equal(refreshes,0,"fresh account focus must not hit the API");
@@ -164,10 +205,13 @@ function testCoordinationGuards(){
   assert.match(notifications,/BELL_BACKGROUND_REFRESH_MS=120000/,"notification polling should be moderate");
   assert.match(order,/ORDER_REFRESH_MS=30000/,"order detail should not poll every five seconds");
   assert.match(returns,/REQUEST_TIMEOUT_MS=15000/,"returns requests need a finite timeout");
+  assert.match(returns,/refreshSession/,"returns 401s should route through the shared session refresh");
+  assert.match(read("public/customer-orders-v1.js"),/REQUEST_TIMEOUT_MS=15000/,"customer order requests need a finite timeout");
 }
 
 (async()=>{
   await testCustomerOrders();
+  await testCustomerOrdersAuthRecovery();
   await testAccountStaleness();
   await testAuthRefreshSingleFlight();
   testCoordinationGuards();

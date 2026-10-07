@@ -9,6 +9,7 @@ let cfg=null,user=null,rows=[];
 let bellRefreshInFlight=null,lastBellRefreshAt=0,lastOrderSignal="";
 const BELL_STALE_MS=60000;
 const BELL_BACKGROUND_REFRESH_MS=120000;
+const REQUEST_TIMEOUT_MS=12000;
 const $=(s,r=document)=>r.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const lang=()=>{try{return window.ZWM_LOCALE?.get?.()||"en"}catch{return"en"}};
@@ -45,6 +46,7 @@ const C={
  }
 };
 const tr=k=>(C[lang()]||C.en)[k]||k;
+const msg=(en,ar,fr)=>lang()==="ar"?ar:lang()==="fr"?(fr||en):en;
 function sess(){try{return JSON.parse(localStorage.getItem(KEY)||"null")}catch{return null}}
 async function setup(){
  if(window.ZWM_CMS_CONFIG){cfg=window.ZWM_CMS_CONFIG;return}
@@ -55,16 +57,36 @@ function headers(extra={}){
  const s=sess();
  return {"apikey":cfg.supabasePublishableKey,"Content-Type":"application/json",...(s?.access_token?{"Authorization":"Bearer "+s.access_token}:{}),...extra};
 }
-async function api(path,opt={}){
- const r=await fetch(cfg.supabaseUrl.replace(/\/$/,"")+"/rest/v1/"+path,{...opt,headers:{...headers(),...(opt.headers||{})}});
+async function fetchTimed(url,opt={}){
+ const controller=typeof AbortController==="function"?new AbortController():null;
+ const timer=controller?setTimeout(()=>controller.abort(),REQUEST_TIMEOUT_MS):null;
+ try{return await fetch(url,{...opt,signal:controller?controller.signal:undefined})}
+ finally{if(timer)clearTimeout(timer)}
+}
+async function refreshAuth(){
+ const fn=window.ZWM_REWARDS?.auth?.refreshSession;
+ if(typeof fn!=="function")return null;
+ try{return await fn()}catch{return null}
+}
+async function api(path,opt={},retry=true){
+ let r;
+ try{r=await fetchTimed(cfg.supabaseUrl.replace(/\/$/,"")+"/rest/v1/"+path,{...opt,headers:{...headers(),...(opt.headers||{})}})}
+ catch(err){throw Error(err?.name==="AbortError"?msg("Request timed out. Please retry.","انتهت مهلة الطلب. يرجى إعادة المحاولة.","La demande a expiré. Veuillez réessayer."):msg("Could not reach notification services.","تعذّر الاتصال بخدمة الإشعارات.","Impossible de joindre le service de notifications."))}
  const d=await r.json().catch(()=>null);
- if(!r.ok)throw Error(d?.message||d?.hint||"Request failed");
+ if(r.status===401&&retry){
+  const fresh=await refreshAuth();
+  if(fresh?.access_token)return api(path,opt,false);
+ }
+ if(!r.ok){const e=Error(d?.message||d?.hint||(r.status===401?msg("Your session expired. Please sign in again.","انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً.","Votre session a expiré. Veuillez vous reconnecter."):"Request failed"));e.status=r.status;throw e}
  return d;
 }
-async function me(){
+async function me(retry=true){
  const s=sess();if(!s?.access_token)return null;
- const r=await fetch(cfg.supabaseUrl.replace(/\/$/,"")+"/auth/v1/user",{headers:headers()});
- return r.ok?r.json():null;
+ try{
+  const r=await fetchTimed(cfg.supabaseUrl.replace(/\/$/,"")+"/auth/v1/user",{headers:headers()});
+  if(r.status===401&&retry){const fresh=await refreshAuth();if(fresh?.access_token)return me(false)}
+  return r.ok?r.json():null;
+ }catch{return null}
 }
 function b64(s){const p="=".repeat((4-s.length%4)%4),raw=atob((s+p).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
 async function reg(){if(!("serviceWorker"in navigator))throw Error(tr("unsupported"));return navigator.serviceWorker.register("/admin-sw.js?v="+VERSION,{scope:"/",updateViaCache:"none"})}
@@ -155,9 +177,14 @@ async function refreshBell(force=false){
    const unread=rows.filter(n=>!n.read_at).length,b=$("#zwmCustomerNotificationBadge"),list=$("#zwmCustomerNotificationList");
    if(b){b.textContent=String(unread);b.hidden=!unread}
    if(list)list.innerHTML=rows.length?rows.slice(0,20).map(n=>'<button type="button" class="zwm-notification-item '+(!n.read_at?"is-unread":"")+'" data-customer-notification="'+n.id+'"><span class="zwm-notification-icon" aria-hidden="true">'+iconFor(n)+'</span><span class="zwm-notification-copy"><strong>'+esc(statusTitle(n))+'</strong><small>'+esc(timeLabel(n.created_at))+'</small></span>'+(!n.read_at?'<span class="zwm-unread-dot" aria-label="Unread"></span>':'')+'</button>').join(""):'<p class="zwm-notification-empty">'+esc(tr("empty"))+'</p>';
-  }catch{}
+  }catch(err){if(err?.status===401)handleSessionExpired()}
  })();
  try{return await bellRefreshInFlight}finally{bellRefreshInFlight=null}
+}
+function handleSessionExpired(){
+ user=null;rows=[];lastBellRefreshAt=0;lastOrderSignal="";
+ const b=$("#zwmCustomerNotificationBadge");if(b){b.textContent="0";b.hidden=true}
+ const list=$("#zwmCustomerNotificationList");if(list)list.innerHTML='<p class="zwm-notification-empty">'+esc(tr("empty"))+'</p>';
 }
 function bellShell(){
  const actions=$(".site-header .nav-actions")||$(".c6-nav-actions")||$(".commerce-header-actions")||$(".nav-actions");
@@ -198,7 +225,7 @@ async function testProduction(root){
  if(status?.status==="sent"&&status?.delivery_state==="accepted"){
   help.textContent=tr("delivered");
   await api("notifications?id=eq."+encodeURIComponent(notificationId),{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})}).catch(()=>{});
-  refreshBell().catch(()=>{});
+  refreshBell(true).catch(()=>{});
  }else if(status?.status==="retry")help.textContent=tr("retry");
  else if(status)throw Error("Test push failed: "+(status.error_category||status.last_error||status.status));
  else help.textContent=lang()==="ar"?"تم وضع الاختبار في قائمة الإرسال.":lang()==="fr"?"Test mis en file d’attente.":"Test queued for delivery.";
@@ -222,7 +249,7 @@ async function renderCard(root){
 async function cardAction(e){
  const root=e.currentTarget,help=$("[data-help]",root);
  try{
-  if(e.target.closest("[data-enable]")){help.textContent="";await subscribe();help.textContent=tr("enabled");await renderCard(root);await refreshBell()}
+  if(e.target.closest("[data-enable]")){help.textContent="";await subscribe();help.textContent=tr("enabled");await renderCard(root);await refreshBell(true)}
   if(e.target.closest("[data-test]"))await testProduction(root);
   const t=e.target.closest("[data-pref]");if(t)await api("notification_preferences?user_id=eq."+encodeURIComponent(user.id)+"&category=eq."+encodeURIComponent(t.dataset.pref),{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({push_enabled:t.checked,updated_at:new Date().toISOString()})});
  }catch(err){help.textContent=err?.message||"Notification setup failed"}
@@ -254,9 +281,10 @@ async function boot(){
   accountPage?$('[data-account-panel="profile"]'):null
  ].filter(Boolean);
  watchTargets.forEach(target=>new MutationObserver(refreshShell).observe(target,{subtree:true,childList:true}));
- window.addEventListener("focus",()=>{refreshBell();const card=$("#zwmCustomerNotifications");if(card)renderCard(card)});
- document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshBell()});
- setInterval(()=>{if(!document.hidden)refreshBell()},BELL_BACKGROUND_REFRESH_MS);
+ window.addEventListener("zwm:auth-expired",handleSessionExpired);
+ window.addEventListener("focus",()=>refreshBell(false));
+ document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshBell(false)});
+ setInterval(()=>{if(!document.hidden)refreshBell(false)},BELL_BACKGROUND_REFRESH_MS);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(boot,0),{once:true});else setTimeout(boot,0);
 })();

@@ -9,6 +9,7 @@ let cfg=null,user=null,rows=[];
 let bellRefreshInFlight=null,lastBellRefreshAt=0,lastOrderSignal="";
 const BELL_STALE_MS=60000;
 const BELL_BACKGROUND_REFRESH_MS=120000;
+const REQUEST_TIMEOUT_MS=12000;
 const $=(s,r=document)=>r.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const lang=()=>{try{return window.ZWM_LOCALE?.get?.()||"en"}catch{return"en"}};
@@ -45,6 +46,19 @@ const C={
  }
 };
 const tr=k=>(C[lang()]||C.en)[k]||k;
+function settleSignedOut(){
+ user=null;rows=[];lastBellRefreshAt=0;lastOrderSignal="";
+ const badge=$("#zwmCustomerNotificationBadge"),list=$("#zwmCustomerNotificationList"),popover=$("#zwmCustomerNotificationPopover");
+ if(badge){badge.textContent="0";badge.hidden=true}
+ if(list)list.innerHTML='<p class="zwm-notification-empty">'+esc(tr("empty"))+'</p>';
+ if(popover)popover.hidden=true;
+}
+async function timedFetch(url,opt={}){
+ const controller=typeof AbortController==="function"?new AbortController():null;
+ const timer=controller?setTimeout(()=>controller.abort(),REQUEST_TIMEOUT_MS):null;
+ try{return await fetch(url,{...opt,...(controller?{signal:controller.signal}:{})})}
+ finally{if(timer)clearTimeout(timer)}
+}
 function sess(){try{return JSON.parse(localStorage.getItem(KEY)||"null")}catch{return null}}
 async function setup(){
  if(window.ZWM_CMS_CONFIG){cfg=window.ZWM_CMS_CONFIG;return}
@@ -55,15 +69,25 @@ function headers(extra={}){
  const s=sess();
  return {"apikey":cfg.supabasePublishableKey,"Content-Type":"application/json",...(s?.access_token?{"Authorization":"Bearer "+s.access_token}:{}),...extra};
 }
-async function api(path,opt={}){
- const r=await fetch(cfg.supabaseUrl.replace(/\/$/,"")+"/rest/v1/"+path,{...opt,headers:{...headers(),...(opt.headers||{})}});
+async function api(path,opt={},retry=true){
+ const r=await timedFetch(cfg.supabaseUrl.replace(/\/$/,"")+"/rest/v1/"+path,{...opt,headers:{...headers(),...(opt.headers||{})}});
  const d=await r.json().catch(()=>null);
+ if(r.status===401&&retry){
+  const refreshed=await window.ZWM_REWARDS?.auth?.refreshSession?.();
+  if(refreshed?.access_token)return api(path,opt,false);
+  settleSignedOut();
+ }
  if(!r.ok)throw Error(d?.message||d?.hint||"Request failed");
  return d;
 }
-async function me(){
+async function me(retry=true){
  const s=sess();if(!s?.access_token)return null;
- const r=await fetch(cfg.supabaseUrl.replace(/\/$/,"")+"/auth/v1/user",{headers:headers()});
+ const r=await timedFetch(cfg.supabaseUrl.replace(/\/$/,"")+"/auth/v1/user",{headers:headers()});
+ if(r.status===401&&retry){
+  const refreshed=await window.ZWM_REWARDS?.auth?.refreshSession?.();
+  if(refreshed?.access_token)return me(false);
+  settleSignedOut();return null;
+ }
  return r.ok?r.json():null;
 }
 function b64(s){const p="=".repeat((4-s.length%4)%4),raw=atob((s+p).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
@@ -254,16 +278,9 @@ async function boot(){
   accountPage?$('[data-account-panel="profile"]'):null
  ].filter(Boolean);
  watchTargets.forEach(target=>new MutationObserver(refreshShell).observe(target,{subtree:true,childList:true}));
- const settleSignedOut=()=>{
-  user=null;rows=[];lastBellRefreshAt=0;lastOrderSignal="";
-  const badge=$("#zwmCustomerNotificationBadge"),list=$("#zwmCustomerNotificationList"),popover=$("#zwmCustomerNotificationPopover");
-  if(badge){badge.textContent="0";badge.hidden=true}
-  if(list)list.innerHTML='<p class="zwm-notification-empty">'+esc(tr("empty"))+'</p>';
-  if(popover)popover.hidden=true;
- };
  window.addEventListener("zwm:auth-expired",settleSignedOut);
  window.addEventListener("storage",e=>{if(e.key===SESSION_KEY&&!session())settleSignedOut()});
- window.addEventListener("focus",()=>{refreshBell();const card=$("#zwmCustomerNotifications");if(card)renderCard(card)});
+ window.addEventListener("focus",()=>{if(!user)return;refreshBell();const card=$("#zwmCustomerNotifications");if(card)renderCard(card).catch(()=>{})});
  document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshBell()});
  setInterval(()=>{if(!document.hidden)refreshBell()},BELL_BACKGROUND_REFRESH_MS);
 }

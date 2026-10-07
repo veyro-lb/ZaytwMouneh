@@ -1,7 +1,8 @@
 (function(){
 "use strict";
 const SESSION_KEY="zwm:mouneh:session:v1",CLAIMS_KEY="zwm:mouneh:claims:v1";
-const S={context:null,requests:[],active:null,files:[],busy:false,clientRequestId:null,accessToken:null};
+const S={context:null,requests:[],active:null,files:[],busy:false,clientRequestId:null,accessToken:null,lastHistoryLoad:0};
+const REQUEST_TIMEOUT_MS=15000,HISTORY_STALE_MS=120000;
 const $=(s,r)=> (r||document).querySelector(s), $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
 const ar=()=>document.documentElement.lang==="ar"||document.documentElement.dir==="rtl";
 const fr=()=>document.documentElement.lang==="fr";
@@ -17,6 +18,7 @@ const date=v=>{try{return new Date(v).toLocaleDateString(ar()?"ar-LB":fr()?"fr-L
 const statusLabel=s=>({submitted:tr("Submitted","تم الإرسال","Envoyée"),under_review:tr("Under review","قيد المراجعة","En cours d’examen"),awaiting_customer:tr("More information needed","معلومات إضافية مطلوبة","Informations requises"),return_authorized:tr("Return authorized","تمت الموافقة على الإرجاع","Retour autorisé"),received:tr("Received","تم الاستلام","Reçu"),approved:tr("Approved","تمت الموافقة","Approuvée"),rejected:tr("Rejected","مرفوض","Refusée"),resolution_in_progress:tr("Resolution in progress","الحل قيد التنفيذ","Solution en cours"),completed:tr("Completed","مكتمل","Terminée"),cancelled:tr("Cancelled","ملغي","Annulée")}[s]||s||"");
 const refundStatusLabel=s=>({not_required:tr("Not required","غير مطلوب","Non requis"),pending:tr("Pending","قيد الانتظار","En attente"),processing:tr("Processing","قيد المعالجة","En cours"),completed:tr("Completed","مكتمل","Terminé"),failed:tr("Needs attention","يحتاج إلى متابعة","À vérifier"),cancelled:tr("Cancelled","ملغي","Annulé")}[s]||String(s||"").replace(/_/g," "));
 const reasonLabel=s=>({damaged:tr("Item arrived damaged","وصل المنتج متضرراً","Article endommagé"),leaking_broken:tr("Item is leaking / broken","المنتج يسرّب أو مكسور","Article cassé / fuite"),wrong_product:tr("Wrong product received","تم استلام منتج خاطئ","Mauvais produit reçu"),missing_item:tr("Product is missing","منتج ناقص","Produit manquant"),quality_safety:tr("Product quality / safety issue","مشكلة جودة أو سلامة","Problème de qualité / sécurité"),unopened_return:tr("Return / exchange an unopened item","إرجاع / استبدال منتج غير مفتوح","Retour / échange d’un article non ouvert"),other:tr("Other order problem","مشكلة أخرى في الطلب","Autre problème")}[s]||s||"");
+async function timedFetch(url,options){const controller=typeof AbortController==="function"?new AbortController():null,timer=controller?setTimeout(()=>controller.abort(),REQUEST_TIMEOUT_MS):null;try{return await fetch(url,{...(options||{}),signal:controller?controller.signal:undefined})}catch(err){throw new Error(err?.name==="AbortError"?tr("The request took too long. Please retry.","استغرق الطلب وقتاً طويلاً. حاول مجدداً.","La demande a pris trop de temps. Réessayez."):tr("Could not reach the service. Check your connection and retry.","تعذّر الاتصال بالخدمة. تحقق من اتصالك وحاول مجدداً.","Impossible de joindre le service. Vérifiez votre connexion et réessayez."))}finally{if(timer)clearTimeout(timer)}}
 
 async function config(){
  if(window.ZWM_CMS_CONFIG?.supabaseUrl)return window.ZWM_CMS_CONFIG;
@@ -27,14 +29,14 @@ async function rpc(action,p,needsAuth=false){
  const c=await config(),sess=session();
  if(needsAuth&&(!sess||!sess.access_token))throw new Error(tr("Please sign in first.","يرجى تسجيل الدخول أولاً.","Veuillez vous connecter."));
  const h={apikey:c.supabasePublishableKey,"Content-Type":"application/json"}; if(sess?.access_token)h.Authorization="Bearer "+sess.access_token;
- const r=await fetch(c.supabaseUrl.replace(/\/$/,"")+"/rest/v1/rpc/zwm_returns",{method:"POST",headers:h,body:JSON.stringify({action,p:p||{}})});
+ const r=await timedFetch(c.supabaseUrl.replace(/\/$/,"")+"/rest/v1/rpc/zwm_returns",{method:"POST",headers:h,body:JSON.stringify({action,p:p||{}})});
  const d=await r.json().catch(()=>({})); if(!r.ok)throw new Error(d.message||d.hint||tr("Could not complete this request.","تعذّر إكمال الطلب.","Impossible de terminer la demande.")); return d;
 }
 async function verifyOrder(reference,contact){
  const c=await config(),sess=session();
  const h={apikey:c.supabasePublishableKey,"Content-Type":"application/json"};
  if(sess?.access_token)h.Authorization="Bearer "+sess.access_token;
- const r=await fetch(c.supabaseUrl.replace(/\/$/,"")+"/functions/v1/return-order-verify",{method:"POST",headers:h,body:JSON.stringify({reference,contact})});
+ const r=await timedFetch(c.supabaseUrl.replace(/\/$/,"")+"/functions/v1/return-order-verify",{method:"POST",headers:h,body:JSON.stringify({reference,contact})});
  const d=await r.json().catch(()=>({}));
  if(!r.ok)throw new Error(d.error||tr("We could not verify those order details.","تعذّر التحقق من بيانات الطلب.","Nous n’avons pas pu vérifier ces informations."));
  return d;
@@ -42,7 +44,7 @@ async function verifyOrder(reference,contact){
 async function uploadEvidence(requestId,file){
  const c=await config(),sess=session(); if(!sess?.access_token)throw new Error(tr("Sign in to attach photos securely.","سجّل الدخول لإرفاق الصور بأمان.","Connectez-vous pour joindre des photos en toute sécurité."));
  const fd=new FormData();fd.append("request_id",requestId);fd.append("file",file,file.name);
- const r=await fetch(c.supabaseUrl.replace(/\/$/,"")+"/functions/v1/return-evidence-upload",{method:"POST",headers:{apikey:c.supabasePublishableKey,Authorization:"Bearer "+sess.access_token},body:fd});
+ const r=await timedFetch(c.supabaseUrl.replace(/\/$/,"")+"/functions/v1/return-evidence-upload",{method:"POST",headers:{apikey:c.supabasePublishableKey,Authorization:"Bearer "+sess.access_token},body:fd});
  const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||tr("Photo upload failed.","فشل رفع الصورة.","Échec de l’envoi de la photo."));return d;
 }
 function ensureCss(){if(!$('link[data-returns-css]')){const l=document.createElement("link");l.rel="stylesheet";l.href="/returns-v1.css?v=20261007-returnslocales1";l.dataset.returnsCss="1";document.head.appendChild(l)}}
@@ -97,7 +99,7 @@ async function mountOrderHelp(){
  }
  const actions=content.querySelector(".commerce-card:last-of-type");(actions||content).insertAdjacentElement(actions?"beforebegin":"beforeend",card);card.querySelector("[data-get-order-help]").addEventListener("click",()=>openForOrder(ref));
 }
-async function loadHistory(silent){if(!session()?.access_token){S.requests=[];mountHistory();return}try{const x=await rpc("list",{},true);S.requests=Array.isArray(x.requests)?x.requests:[];mountHistory()}catch(e){if(!silent)console.warn(e)}}
+async function loadHistory(silent,force=false){if(!session()?.access_token){S.requests=[];S.lastHistoryLoad=0;mountHistory();return}if(!force&&S.lastHistoryLoad&&Date.now()-S.lastHistoryLoad<HISTORY_STALE_MS){mountHistory();return}try{const x=await rpc("list",{},true);S.requests=Array.isArray(x.requests)?x.requests:[];S.lastHistoryLoad=Date.now();mountHistory()}catch(e){if(!silent)console.warn(e)}}
 function requestCard(r){const item=(r.items||[]).map(i=>esc(i.product_name)+(i.quantity_requested>1?' ×'+i.quantity_requested:'')).join(" · ");return '<article class="zwm-history-card"><div class="zwm-history-head"><div><small>'+esc(date(r.submitted_at))+'</small><strong>'+esc(r.request_number)+'</strong><span>'+esc(r.order_reference)+'</span></div><span class="zwm-status status-'+esc(r.status)+'">'+esc(statusLabel(r.status))+'</span></div><p>'+esc(reasonLabel(r.reason_code))+(item?' · '+item:'')+'</p>'+(Number(r.approved_refund_total)>0?'<strong>'+esc(tr("Approved refund","الاسترداد المعتمد","Remboursement approuvé"))+': '+money(r.approved_refund_total)+'</strong>':'')+'<button type="button" data-return-detail="'+esc(r.id)+'">'+esc(tr("View request","عرض الطلب","Voir la demande"))+'</button></article>'}
 function mountHistory(){
  if(document.body.dataset.page!=="account")return;const panel=$('[data-account-panel="orders"]');if(!panel)return;let root=$("#zwmReturnHistory",panel);if(!root){root=document.createElement("article");root.id="zwmReturnHistory";root.className="account-card zwm-return-history";panel.appendChild(root)}
@@ -139,6 +141,6 @@ function mountReturnCenter(){
    finally{S.busy=false;if(button){button.disabled=false;button.textContent=tr("Verify order","تحقق من الطلب","Vérifier la commande")}}
  });
 }
-function init(){ensureCss();ensureModal();mountStandaloneReturnsTab();mountReturnCenter();if(document.body.dataset.page==="order"){const mo=new MutationObserver(mountOrderHelp);mo.observe(document.body,{childList:true,subtree:true});mountOrderHelp()}if(document.body.dataset.page==="account"){const mo=new MutationObserver(()=>{if(!$("#zwmReturnHistory"))mountHistory()});mo.observe(document.body,{childList:true,subtree:true});setTimeout(()=>loadHistory(false),500);window.addEventListener("focus",()=>loadHistory(true))}}
+function init(){ensureCss();ensureModal();mountStandaloneReturnsTab();mountReturnCenter();if(document.body.dataset.page==="order"){document.addEventListener("zwm:order-rendered",mountOrderHelp);setTimeout(mountOrderHelp,0)}if(document.body.dataset.page==="account"){const orders=$("[data-account-panel=\"orders\"]");if(orders)new MutationObserver(()=>{if(!$("#zwmReturnHistory",orders))mountHistory()}).observe(orders,{childList:true,subtree:true});setTimeout(()=>loadHistory(false),500);window.addEventListener("focus",()=>loadHistory(true,false));document.addEventListener("zwm:customer-order-changed",()=>loadHistory(true,true))}}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();

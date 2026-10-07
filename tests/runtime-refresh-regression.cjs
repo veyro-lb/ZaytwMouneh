@@ -95,6 +95,61 @@ async function testAccountStaleness(){
   }
 }
 
+async function testAuthRefreshSingleFlight(){
+  const dom=new JSDOM("<!doctype html><html lang=\"en\"><body></body></html>",{url:"https://store.example/",runScripts:"outside-only",pretendToBeVisual:true});
+  const w=dom.window;
+  let refreshCalls=0,expiredEvents=0,failRefresh=false;
+  w.ZWM_CMS_CONFIG={enabled:true,supabaseUrl:"https://example.supabase.co",supabasePublishableKey:"public"};
+  w.requestAnimationFrame=fn=>w.setTimeout(()=>fn(Date.now()),0);
+  w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});
+  w.addEventListener("zwm:auth-expired",()=>expiredEvents++);
+  w.fetch=async(url,options={})=>{
+    const href=String(url);
+    let status=200,data={};
+    if(href.includes("grant_type=password")){
+      data={session:{access_token:"access-1",refresh_token:"refresh-1",expires_at:Math.floor(Date.now()/1000)+3600},user:{id:"u1",email:"test@example.invalid"}};
+    }else if(href.includes("grant_type=refresh_token")){
+      refreshCalls++;
+      if(failRefresh){status=400;data={message:"refresh failed"}}
+      else data={session:{access_token:"access-2",refresh_token:"refresh-2",expires_at:Math.floor(Date.now()/1000)+3600},user:{id:"u1"}};
+    }else if(href.includes("/auth/v1/user")){
+      data={id:"u1",email:"test@example.invalid",user_metadata:{}};
+    }else if(href.includes("/auth/v1/settings")){
+      data={external:{google:false}};
+    }else if(href.includes("/rest/v1/rpc/mouneh_api")){
+      let body={};try{body=JSON.parse(options.body||"{}")}catch{}
+      data=body.action==="public"?{rewards:[],campaigns:[],config:{}}:body.action==="dashboard"?{member:null,needsJoin:false,wallet:[],orders:[],ledger:[]}:{};
+    }else{
+      data={};
+    }
+    return {ok:status>=200&&status<300,status,json:async()=>data};
+  };
+  try{
+    w.eval(read("public/mouneh-rewards-v8.js"));
+    await w.ZWM_REWARDS.auth.signIn("test@example.invalid","password123");
+    await Promise.all([
+      w.ZWM_REWARDS.auth.refreshSession(),
+      w.ZWM_REWARDS.auth.refreshSession(),
+      w.ZWM_REWARDS.auth.refreshSession()
+    ]);
+    assert.equal(refreshCalls,1,"simultaneous refresh callers must share one token refresh");
+
+    failRefresh=true;
+    await Promise.all([
+      w.ZWM_REWARDS.auth.refreshSession(),
+      w.ZWM_REWARDS.auth.refreshSession()
+    ]);
+    assert.equal(refreshCalls,2,"failed simultaneous refresh must still make only one refresh request");
+    const state=w.ZWM_REWARDS.getState();
+    assert.equal(state.session,false,"failed token refresh must settle signed out");
+    assert.equal(expiredEvents,1,"expired session should emit one settled auth-expired event");
+    assert.match(state.authNotice,/session expired/i,"expired session should show a clear sign-in-required notice");
+  }finally{
+    await wait(20);
+    dom.window.close();
+  }
+}
+
 function testCoordinationGuards(){
   const rewards=read("public/mouneh-rewards-v8.js");
   const site=read("public/site-runtime-v9.js");
@@ -113,6 +168,7 @@ function testCoordinationGuards(){
 (async()=>{
   await testCustomerOrders();
   await testAccountStaleness();
+  await testAuthRefreshSingleFlight();
   testCoordinationGuards();
-  console.log("Runtime refresh regression passed: stale-aware account/orders, hidden-tab suppression, manual refresh, and coordination guards.");
+  console.log("Runtime refresh regression passed: stale-aware account/orders, hidden-tab suppression, manual refresh, single-flight auth refresh, and expiry settlement.");
 })().catch(err=>{console.error(err);process.exitCode=1});

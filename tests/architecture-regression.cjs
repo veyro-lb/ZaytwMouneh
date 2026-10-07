@@ -19,6 +19,10 @@ for(const name of htmlFiles){
   assert.ok(marker,name+" must declare zwm-release");
   assert.equal(marker[1],release,name+" release marker must match release.json");
   assert.ok(html.includes("storefront-release.js?v="+release),name+" must load current storefront-release");
+  if(html.includes("storefront-shell.css")){
+    const styles=[...html.matchAll(/<link\\b[^>]*rel=["\']stylesheet["\'][^>]*>/gi)].map(m=>m[0]);
+    assert.ok(styles.at(-1)?.includes("storefront-shell.css"),name+" canonical storefront shell must be the final stylesheet");
+  }
 }
 for(const name of ["product.html","checkout.html","order.html"]){
   const html=read("public/"+name);

@@ -11,7 +11,11 @@
   const VERSION="20261005-account-reliability2";
   const REQUEST_TIMEOUT_MS=12000;
   const CONFIG_TIMEOUT_MS=8000;
+  const ACCOUNT_STALE_MS=90000;
+  const PUBLIC_STALE_MS=300000;
+  const LIVE_SYNC_INTERVAL_MS=120000;
   const state={config:null,session:null,authUser:null,publicData:{rewards:[],campaigns:[],config:{}},dashboard:null,loading:false,authMode:"signin",selectedWallet:"",lastSubtotal:0,pendingSignupEmail:"",authNotice:"",googleEnabled:null,pendingOpen:false,referralStatus:null,bonusStatus:null,accountBusy:false,accountError:"",lastAccountLoadAt:0};
+  let refreshSessionInFlight=null,dashboardInFlight=null,publicInFlight=null,lastPublicLoadAt=0,lastAccountNotifySig="",sessionInvalidated=false;
 
   const $=(id)=>document.getElementById(id);
   const esc=(v)=>String(v??"").replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -191,8 +195,24 @@
   }
   function writeSession(s){
     state.session=s&&s.access_token?s:null;
-    if(state.session)saveLocal(AUTH_KEY,state.session);
+    if(state.session){sessionInvalidated=false;saveLocal(AUTH_KEY,state.session);}
     else try{localStorage.removeItem(AUTH_KEY)}catch{}
+  }
+  function settleExpiredSession(){
+    const hadSession=!!state.session||!!readSession();
+    if(sessionInvalidated&&!hadSession)return;
+    sessionInvalidated=true;
+    writeSession(null);
+    state.authUser=null;
+    state.dashboard=null;
+    state.referralStatus=null;
+    state.bonusStatus=null;
+    state.accountBusy=false;
+    state.accountError="";
+    state.authNotice=tr("Your session expired. Please sign in again.","انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً.","Votre session a expiré. Veuillez vous reconnecter.");
+    try{document.dispatchEvent(new CustomEvent("zwm:session-expired"))}catch{}
+    notifyAccount(true);
+    render();renderCheckout();
   }
   function sessionExpired(s){
     if(!s)return true;
@@ -219,21 +239,21 @@
     try{state.authUser=await authGet("user",s.access_token);return state.authUser}catch{state.authUser=null;return null}
   }
   async function refreshSession(){
+    if(refreshSessionInFlight)return refreshSessionInFlight;
+    if(!state.session)state.session=readSession();
     if(!state.session?.refresh_token)return null;
-    try{
-      const data=await authRequest("token?grant_type=refresh_token",{refresh_token:state.session.refresh_token});
-      const s=data.session||data;
-      if(s?.access_token)writeSession(s);
-      return state.session;
-    }catch{
-      writeSession(null);
-      state.dashboard=null;
-      state.referralStatus=null;
-      state.bonusStatus=null;
-      state.accountError="";
-      state.authNotice=tr("Your session expired. Please sign in again.","انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً.");
-      return null;
-    }
+    refreshSessionInFlight=(async()=>{
+      try{
+        const data=await authRequest("token?grant_type=refresh_token",{refresh_token:state.session.refresh_token});
+        const next=data.session||data;
+        if(next?.access_token)writeSession(next);
+        return state.session;
+      }catch{
+        settleExpiredSession();
+        return null;
+      }
+    })();
+    try{return await refreshSessionInFlight}finally{refreshSessionInFlight=null}
   }
   async function validSession(){
     if(!state.session)state.session=readSession();
@@ -399,8 +419,10 @@
     if(s?.access_token)headers.Authorization="Bearer "+s.access_token;
     const {response:r,data}=await fetchJson(baseUrl()+"/rest/v1/rpc/mouneh_api",{method:"POST",headers,body:JSON.stringify({action,p})});
     if(r.status===401&&s?.refresh_token&&retry){
-      await refreshSession();
-      return rpc(action,p,false);
+      const fresh=await refreshSession();
+      if(fresh?.access_token)return rpc(action,p,false);
+      const expired=new Error(state.authNotice||tr("Your session expired. Please sign in again.","انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً.","Votre session a expiré. Veuillez vous reconnecter."));
+      expired.status=401;throw expired;
     }
     if(!r.ok)throw new Error(data.message||data.hint||data.details||tr("Mouneh Points request failed.","تعذّر طلب نقاط المونة."));
     return data;
@@ -411,8 +433,10 @@
     if(s?.access_token)headers.Authorization="Bearer "+s.access_token;
     const {response:r,data}=await fetchJson(baseUrl()+"/rest/v1/rpc/"+encodeURIComponent(name),{method:"POST",headers,body:JSON.stringify(p||{})});
     if(r.status===401&&s?.refresh_token&&retry){
-      await refreshSession();
-      return namedRpc(name,p,false);
+      const fresh=await refreshSession();
+      if(fresh?.access_token)return namedRpc(name,p,false);
+      const expired=new Error(state.authNotice||tr("Your session expired. Please sign in again.","انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً.","Votre session a expiré. Veuillez vous reconnecter."));
+      expired.status=401;throw expired;
     }
     if(!r.ok)throw new Error(data.message||data.hint||data.details||tr("Account request failed.","تعذّر طلب الحساب."));
     return data;
@@ -455,8 +479,20 @@
     return true;
   }
 
-  async function loadPublic(){
-    try{state.publicData=await rpc("public",{},false)||state.publicData;state.publicLoaded=true;syncLegalLadder();}catch{}
+  async function loadPublic(options={}){
+    const force=!!options.force;
+    if(!force&&state.publicLoaded&&Date.now()-lastPublicLoadAt<PUBLIC_STALE_MS)return state.publicData;
+    if(publicInFlight)return publicInFlight;
+    publicInFlight=(async()=>{
+      try{
+        state.publicData=await rpc("public",{},false)||state.publicData;
+        state.publicLoaded=true;
+        lastPublicLoadAt=Date.now();
+        syncLegalLadder();
+      }catch{}
+      return state.publicData;
+    })();
+    try{return await publicInFlight}finally{publicInFlight=null}
   }
 
   async function claimSavedOrders(){
@@ -477,30 +513,36 @@
     }
   }
 
-  async function loadDashboard(){
-    state.accountBusy=true;
-    state.accountError="";
-    try{
-      const s=await validSession();
-      if(!s){state.dashboard=null;state.referralStatus=null;state.bonusStatus=null;return null;}
+  async function loadDashboard(options={}){
+    const force=!!options.force;
+    if(dashboardInFlight)return dashboardInFlight;
+    if(!force&&state.session&&state.dashboard&&Date.now()-state.lastAccountLoadAt<ACCOUNT_STALE_MS)return state.dashboard;
+    dashboardInFlight=(async()=>{
+      state.accountBusy=true;
+      state.accountError="";
       try{
-        state.dashboard=await rpc("dashboard",{});
-        await claimSavedOrders();
-        await Promise.all([loadReferralStatus(),loadBonusStatus()]);
+        const s=await validSession();
+        if(!s){state.dashboard=null;state.referralStatus=null;state.bonusStatus=null;return null;}
+        try{
+          state.dashboard=await rpc("dashboard",{});
+          await claimSavedOrders();
+          await Promise.all([loadReferralStatus(),loadBonusStatus()]);
+        }catch(err){
+          if(/Join Mouneh Rewards first/i.test(String(err.message||"")))state.dashboard={needsJoin:true};
+          else if(/verified email/i.test(String(err.message||"")))state.dashboard={needsVerification:true};
+          else throw err;
+        }
+        return state.dashboard;
       }catch(err){
-        if(/Join Mouneh Rewards first/i.test(String(err.message||"")))state.dashboard={needsJoin:true};
-        else if(/verified email/i.test(String(err.message||"")))state.dashboard={needsVerification:true};
-        else throw err;
+        state.accountError=serviceErrorMessage(err);
+        throw err;
+      }finally{
+        state.accountBusy=false;
+        state.lastAccountLoadAt=Date.now();
+        render();renderCheckout();notifyAccount();
       }
-      return state.dashboard;
-    }catch(err){
-      state.accountError=serviceErrorMessage(err);
-      throw err;
-    }finally{
-      state.accountBusy=false;
-      state.lastAccountLoadAt=Date.now();
-      render();renderCheckout();notifyAccount();
-    }
+    })();
+    try{return await dashboardInFlight}finally{dashboardInFlight=null}
   }
 
   const DEFAULT_REWARD_LADDER=[
@@ -710,8 +752,15 @@
       '<div class="mr-footer-actions"><button type="button" data-mr-refresh>'+tr("Refresh","تحديث")+'</button><button type="button" data-mr-signout>'+tr("Sign out","تسجيل الخروج")+"</button></div>";
   }
 
-  function notifyAccount(){
-    try{document.dispatchEvent(new CustomEvent("zwm:account-updated",{detail:{signedIn:!!state.dashboard?.member}}))}catch{}
+  function notifyAccount(force=false){
+    const sig=JSON.stringify([
+      !!state.session,!!state.dashboard?.member,state.dashboard?.member?.balance,state.dashboard?.member?.name,
+      state.dashboard?.orders?.length,state.dashboard?.wallet?.length,state.referralStatus?.joined,state.referralStatus?.qualified,
+      state.bonusStatus?.birthday?.eligible_today,state.accountError,state.authNotice
+    ]);
+    if(!force&&sig===lastAccountNotifySig)return;
+    lastAccountNotifySig=sig;
+    try{document.dispatchEvent(new CustomEvent("zwm:account-updated",{detail:{signedIn:!!state.dashboard?.member,updatedAt:state.lastAccountLoadAt}}))}catch{}
   }
 
   function render(){
@@ -1215,14 +1264,31 @@
         }
       }catch{}
       window.addEventListener("storage",(e)=>{
-        if(e.key===AUTH_KEY){state.session=readSession();loadDashboard().catch(()=>{})}
+        if(e.key!==AUTH_KEY)return;
+        state.session=readSession();
+        if(state.session){
+          sessionInvalidated=false;
+          loadDashboard({force:true}).catch(()=>{});
+        }else{
+          state.authUser=null;state.dashboard=null;state.referralStatus=null;state.bonusStatus=null;
+          notifyAccount(true);render();renderCheckout();
+        }
       });
       let syncing=false;
-      const liveSync=async()=>{if(document.visibilityState==="hidden"||syncing)return;syncing=true;try{await loadPublic();if(state.session)await loadDashboard();else{state.accountError="";render();renderCheckout();}}catch(err){state.accountError=serviceErrorMessage(err);render();notifyAccount();}finally{syncing=false;}};
-      window.addEventListener("storage",e=>{if(e.key==="zwm:rewards-updated")liveSync();});
-      window.addEventListener("focus",liveSync);
-      document.addEventListener("visibilitychange",()=>{if(!document.hidden)liveSync()});
-      setInterval(liveSync,60000);
+      const liveSync=async(force=false)=>{
+        if(document.visibilityState==="hidden"||syncing)return;
+        syncing=true;
+        try{
+          await loadPublic({force});
+          if(state.session)await loadDashboard({force});
+          else{state.accountError="";render();renderCheckout();}
+        }catch(err){state.accountError=serviceErrorMessage(err);render();notifyAccount();}
+        finally{syncing=false;}
+      };
+      window.addEventListener("storage",e=>{if(e.key==="zwm:rewards-updated")loadDashboard({force:true}).catch(()=>{});});
+      window.addEventListener("focus",()=>liveSync(false));
+      document.addEventListener("visibilitychange",()=>{if(!document.hidden)liveSync(false)});
+      setInterval(()=>liveSync(false),LIVE_SYNC_INTERVAL_MS);
       new MutationObserver(()=>{const newAr=ar();const drawer=$("mounehRewardsDrawer");if(drawer&&drawer.dataset.mrAr!==String(newAr)){drawer.dataset.mrAr=String(newAr);render();renderCheckout();}}).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
     }catch(err){state.accountBusy=false;state.accountError=serviceErrorMessage(err);state.authNotice=state.accountError;render();notifyAccount();console.warn("Mouneh Rewards unavailable:",err);}
   }
@@ -1233,7 +1299,8 @@
     open:requestOpen,
     openSignIn,
     openSignUp,
-    refresh:()=>loadDashboard(),
+    refresh:()=>loadDashboard({force:true}),
+    refreshIfStale:()=>loadDashboard({force:false}),
     getState:()=>({
       ready:!!(state.config?.enabled&&state.config?.supabaseUrl&&state.config?.supabasePublishableKey),
       session:!!state.session,
@@ -1263,7 +1330,8 @@
       requestPasswordRecovery,
       finishPasswordRecovery,
       signInWithGoogle,
-      rememberLegalConsent:rememberPendingLegalConsent
+      rememberLegalConsent:rememberPendingLegalConsent,
+      refreshSession
     },
     account:{
       addresses:accountAddresses,

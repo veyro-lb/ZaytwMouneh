@@ -48,10 +48,15 @@
     const select=$("orderAttentionItem");
     if(!select)return;
     const current=select.value,items=itemChoices();
-    select.innerHTML=items.map((item)=>'<option value="'+item.index+'"></option>').join("");
-    [...select.options].forEach((option,i)=>{option.textContent=items[i]?.label||"";option.dataset.value=items[i]?.value||""});
-    if(current&&[...select.options].some(x=>x.value===current))select.value=current;
-    $("orderAttentionAction").disabled=!items.length;
+    const signature=items.map(item=>item.value+"|"+item.label).join("\n");
+    if(select.dataset.itemsSignature!==signature){
+      select.innerHTML=items.map((item)=>'<option value="'+item.index+'"></option>').join("");
+      [...select.options].forEach((option,i)=>{option.textContent=items[i]?.label||"";option.dataset.value=items[i]?.value||""});
+      select.dataset.itemsSignature=signature;
+      if(current&&[...select.options].some(x=>x.value===current))select.value=current;
+    }
+    const action=$("orderAttentionAction");
+    if(action)action.disabled=!items.length;
   }
 
   async function send(){
@@ -106,8 +111,39 @@
   function boot(){
     if(!document.body.classList.contains("admin-body"))return;
     style();ensurePanel();
-    new MutationObserver(()=>ensurePanel()).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["hidden"]});
-    document.addEventListener("zwm:admin-language",()=>{const old=$("orderAttentionPanel");old?.remove();ensurePanel()});
+
+    const modal=$("orderModal");
+    const items=$("orderDetailItems");
+    let scheduled=false;
+    const scheduleEnsure=()=>{
+      if(scheduled)return;
+      scheduled=true;
+      queueMicrotask(()=>{
+        scheduled=false;
+        ensurePanel();
+      });
+    };
+
+    // Only react to the two things that actually require a refresh:
+    // order items changing, or the order detail panel opening/closing.
+    // The previous body-wide observer reacted to populate() changing its own
+    // <select>, which recursively triggered itself until the page locked up.
+    if(modal&&items){
+      new MutationObserver(mutations=>{
+        const relevant=mutations.some(m=>{
+          if(m.type==="attributes")return m.target===modal&&m.attributeName==="hidden";
+          if(m.type!=="childList")return false;
+          return m.target===items||items.contains(m.target);
+        });
+        if(relevant)scheduleEnsure();
+      }).observe(modal,{subtree:true,childList:true,attributes:true,attributeFilter:["hidden"]});
+    }
+
+    document.addEventListener("zwm:admin-language",()=>{
+      const old=$("orderAttentionPanel");
+      old?.remove();
+      scheduleEnsure();
+    });
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
 })();

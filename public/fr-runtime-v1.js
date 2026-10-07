@@ -689,9 +689,9 @@ var EXACT=Object.freeze({
 "What it affects":"Ce que cela affecte",
 "A curated starting point across za’atar, olive oil, honey, kishk, debes, olives, grains and spices.":"Un point de départ soigneusement sélectionné autour du za’atar, de l’huile d’olive, du miel, du kishk, du debes, des olives, des céréales et des épices.",
 "A parsley-heavy Lebanese salad with tomato, mint, fine bulgur, lemon and olive oil.":"Une salade libanaise généreuse en persil, avec tomate, menthe, boulgour fin, citron et huile d’olive.",
-"Add only what you know now. We can confirm the rest on WhatsApp.":"Ajoutez seulement ce que vous savez maintenant. Nous pouvons confirmer le reste sur WhatsApp.",
+
 "Add the recipient details and any presentation preferences. Packing style and theme are subject to availability.":"Ajoutez les coordonnées du destinataire et vos préférences de présentation. L’emballage et le thème sont sous réserve de disponibilité.",
-"Adjust size or quantity before you send.":"Ajustez le format ou la quantité avant d’envoyer.",
+"Adjust size or quantity before checkout.":"Ajustez le format ou la quantité avant le paiement.",
 "Ask on WhatsApp ↗":"Demander sur WhatsApp ↗",
 "Availability, packing and delivery are confirmed directly.":"La disponibilité, l’emballage et la livraison sont confirmés directement.",
 "Review delivery and the final total, then place the order on the website.":"Vérifiez la livraison et le total final, puis passez la commande sur le site.",

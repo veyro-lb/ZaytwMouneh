@@ -869,7 +869,7 @@
       qa(".dashboard-view").forEach(function(p){p.classList.toggle("is-active",p.dataset.viewPanel===view)});
       qa(".admin-nav button[data-view]").forEach(function(b){b.classList.toggle("is-active",b.dataset.view===view)});
       qa("#mobileAdminNav [data-mobile-view]").forEach(function(b){b.classList.toggle("is-active",b.dataset.mobileView===view)});
-      var titles={overview:"Overview",products:"Products",orders:"Orders & history",wholesale:"Wholesale Leads",customers:"Customers",rewards:"Mouneh Points",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
+      var titles={overview:"Overview",products:"Products",orders:"Orders & history",returns:"Returns & Issues",wholesale:"Wholesale Leads",customers:"Customers",rewards:"Mouneh Points",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
       var title=q("#viewTitle"); if(title)title.textContent=titles[view]||"Owner Console";
       var side=q("#adminSidebar"); if(side)side.classList.remove("is-open");
       var sideBack=q("#sidebarBackdrop"); if(sideBack)sideBack.hidden=true;

@@ -2,7 +2,8 @@
 "use strict";
 
 var AUTH_KEY="zwm:mouneh:session:v1",CLAIMS_KEY="zwm:mouneh:claims:v1",CART_KEY="zwm-cart-v5",LANG_KEY="zwm-lang-v2";
-var state={lang:"en",order:null,ref:"",claim:"",products:[],lastStatus:"",refreshing:false,loaded:false};
+var REQUEST_TIMEOUT_MS=12000,ORDER_STALE_MS=20000,ORDER_POLL_MS=30000;
+var state={lang:"en",order:null,ref:"",claim:"",products:[],lastStatus:"",refreshing:false,loaded:false,lastRefreshedAt:0};
 var $=function(id){return document.getElementById(id)};
 var money=function(v){var value="$"+(Number(v)||0).toFixed(2);return isArabic()?"\u2066"+value+"\u2069":value};
 var esc=function(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
@@ -16,13 +17,14 @@ function isFrench(){return state.lang==="fr"}
 function tr(en,ar,fr){if(isArabic())return ar;if(isFrench())return fr!=null?fr:(window.ZWM_FR_TRANSLATE?window.ZWM_FR_TRANSLATE(en):en);return en}
 
 async function rpc(action,p){
-  var c=config(),s=session(),headers={"apikey":c.supabasePublishableKey,"Content-Type":"application/json","Prefer":"return=representation"};
+  var c=config(),s=session(),headers={"apikey":c.supabasePublishableKey,"Content-Type":"application/json","Prefer":"return=representation"},controller=typeof AbortController==="function"?new AbortController():null,timer=null,r;
   if(s&&s.access_token)headers.Authorization="Bearer "+s.access_token;
-  var r=await fetch(String(c.supabaseUrl||"").replace(/\/$/,"")+"/rest/v1/rpc/zwm_checkout",{
-    method:"POST",
-    headers:headers,
-    body:JSON.stringify({action:action,p:p||{}})
-  });
+  try{
+    if(controller)timer=setTimeout(function(){controller.abort()},REQUEST_TIMEOUT_MS);
+    r=await fetch(String(c.supabaseUrl||"").replace(/\/$/,"")+"/rest/v1/rpc/zwm_checkout",{method:"POST",headers:headers,body:JSON.stringify({action:action,p:p||{}}),signal:controller?controller.signal:undefined});
+  }catch(err){
+    throw new Error(err&&err.name==="AbortError"?tr("Order status took too long to load. Please retry.","استغرق تحميل حالة الطلب وقتاً طويلاً. يرجى إعادة المحاولة.","Le statut de la commande a mis trop de temps à charger. Veuillez réessayer."):tr("Order service is unreachable. Check your connection and retry.","تعذّر الاتصال بخدمة الطلب. تحقق من الاتصال وأعد المحاولة.","Le service de commande est inaccessible. Vérifiez votre connexion et réessayez."));
+  }finally{if(timer)clearTimeout(timer)}
   var data=await r.json().catch(function(){return {}});
   if(!r.ok)throw new Error(data.message||data.hint||data.details||tr("Order unavailable","تعذّر فتح الطلب.","Commande indisponible"));
   return data;
@@ -32,8 +34,10 @@ async function loadOverrides(){
   var base=[];
   try{base=typeof PRODUCTS_DATA!=="undefined"?JSON.parse(JSON.stringify(PRODUCTS_DATA)):[]}catch{}
   var map=new Map(base.map(function(p){return [p.id,p]})),c=config();
+  var controller=typeof AbortController==="function"?new AbortController():null,timer=null;
   try{
-    var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/rest/v1/product_overrides?select=product_id,action,payload",{headers:{"apikey":c.supabasePublishableKey}});
+    if(controller)timer=setTimeout(function(){controller.abort()},REQUEST_TIMEOUT_MS);
+    var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/rest/v1/product_overrides?select=product_id,action,payload",{headers:{"apikey":c.supabasePublishableKey},signal:controller?controller.signal:undefined});
     if(r.ok){
       (await r.json()).forEach(function(o){
         var p=map.get(o.product_id)||{id:o.product_id};
@@ -42,7 +46,7 @@ async function loadOverrides(){
         map.set(o.product_id,p);
       });
     }
-  }catch{}
+  }catch{}finally{if(timer)clearTimeout(timer)}
   state.products=Array.from(map.values());
 }
 
@@ -248,9 +252,17 @@ function renderErrorCopy(){
     "Pour protéger votre vie privée, la commande n’est visible que par le compte qui la possède ou par le navigateur ayant passé la commande en invité."
   );
   if(a)a.textContent=tr("Sign in","تسجيل الدخول","Se connecter");
+  var retry=box.querySelector("[data-order-retry]");
+  if(!retry){
+    retry=document.createElement("button");retry.type="button";retry.dataset.orderRetry="1";retry.className="is-primary";
+    retry.addEventListener("click",async function(){retry.disabled=true;$("orderLoading").hidden=false;box.hidden=true;await refresh(true);retry.disabled=false});
+    box.appendChild(retry);
+  }
+  retry.textContent=tr("Retry","إعادة المحاولة","Réessayer");
 }
-async function refresh(){
+async function refresh(force){
   if(state.refreshing)return;
+  if(!force&&state.loaded&&Date.now()-state.lastRefreshedAt<ORDER_STALE_MS)return;
   state.refreshing=true;
   try{
     var previous=state.lastStatus||state.order&&state.order.status||"";
@@ -258,6 +270,7 @@ async function refresh(){
     state.order=next;
     state.lastStatus=next&&next.status||"";
     state.loaded=true;
+    state.lastRefreshedAt=Date.now();
     render();
     if(previous&&state.lastStatus&&previous!==state.lastStatus){
       $("orderActionStatus").textContent=tr("Order status updated to ","تم تحديث حالة طلبك إلى: ","Statut de la commande mis à jour : ")+label(state.lastStatus)+(isArabic()?"":".");
@@ -289,7 +302,7 @@ async function cancel(){
   }catch(e){
     console.warn("Order cancellation failed",e);
     $("orderActionStatus").textContent=tr("We couldn’t cancel the order right now. Please try again.","تعذّر إلغاء الطلب حالياً. حاول مجدداً.","Impossible d’annuler la commande pour le moment. Réessayez.");
-    await refresh();
+    await refresh(true);
   }finally{
     $("cancelOrderButton").disabled=false;
   }
@@ -336,11 +349,12 @@ async function init(){
   $("cancelOrderButton").addEventListener("click",cancel);
   $("reorderButton").addEventListener("click",reorder);
 
-  setInterval(function(){if(!document.hidden)refresh()},5000);
-  window.addEventListener("focus",refresh);
-  window.addEventListener("online",refresh);
-  window.addEventListener("pageshow",refresh);
-  document.addEventListener("visibilitychange",function(){if(!document.hidden)refresh()});
+  var resume=function(){if(!document.hidden)refresh(false)};
+  setInterval(resume,ORDER_POLL_MS);
+  window.addEventListener("focus",resume);
+  window.addEventListener("online",function(){refresh(true)});
+  window.addEventListener("pageshow",resume);
+  document.addEventListener("visibilitychange",function(){if(!document.hidden)resume()});
 }
 
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});

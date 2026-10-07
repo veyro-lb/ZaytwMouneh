@@ -28,8 +28,9 @@ async function testCustomerOrders(){
   try{
     w.eval(read("public/customer-orders-v1.js"));
     w.document.dispatchEvent(new w.Event("DOMContentLoaded"));
+    w.document.dispatchEvent(new w.CustomEvent("zwm:account-updated"));
     await wait(25);
-    assert.equal(fetches,1,"customer orders should make one initial list request");
+    assert.equal(fetches,1,"account-ready event should make one initial list request");
     assert(intervals.some(x=>x.delay===120000),"orders background cadence should be 120 seconds");
     assert(!intervals.some(x=>x.delay===8000),"8-second order polling must not return");
 

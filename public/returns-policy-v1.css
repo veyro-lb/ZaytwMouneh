@@ -1,1 +1,35 @@
 :root{--policy-green:#123f24;--policy-gold:#d3a323;--policy-cream:#f8f2e5;--policy-ink:#183123}.policy-shell{width:min(1120px,calc(100% - 32px));margin:0 auto}.policy-header{position:sticky;top:0;z-index:20;background:#103f24;color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.12)}.policy-nav{display:flex;justify-content:space-between;align-items:center;gap:18px;min-height:72px}.policy-brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800}.policy-brand img{width:42px;height:42px}.policy-nav nav{display:flex;gap:8px}.policy-nav nav a{min-height:40px;display:inline-flex;align-items:center;padding:0 13px;border-radius:999px;color:#fff;text-decoration:none;font-weight:700}.policy-nav nav a:hover{background:rgba(255,255,255,.1)}.policy-main{padding:42px 0 70px;background:linear-gradient(180deg,#f7f0e2 0,#fff 430px)}.policy-hero{max-width:850px;margin:0 auto 32px;text-align:center}.policy-hero>p:first-child{margin:0;color:#9b7413;font-weight:850;letter-spacing:.12em;text-transform:uppercase;font-size:.74rem}.policy-hero h1{margin:8px 0 10px;color:#103f24;font:700 clamp(2.1rem,6vw,4rem)/1.02 Georgia,serif}.policy-hero>span{display:block;color:#777d73;font-size:.84rem}.policy-hero>p:not(:first-child){max-width:720px;margin:18px auto;color:#46564a;font-size:1.05rem;line-height:1.7}.policy-hero>a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:999px;background:#174c2a;color:#fff;text-decoration:none;font-weight:800}.policy-layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:24px;align-items:start}.policy-summary{position:sticky;top:94px;padding:20px;border:1px solid #dfd7c6;border-radius:18px;background:#fffaf0;box-shadow:0 10px 32px rgba(38,55,41,.06)}.policy-summary strong{color:#123f24;font-size:1.05rem}.policy-summary ul{margin:12px 0 0;padding-left:20px;color:#566257;line-height:1.55}.policy-summary li+li{margin-top:9px}.policy-content{min-width:0}.policy-content section{margin:0 0 16px;padding:24px;border:1px solid #e5e2d9;border-radius:20px;background:#fff;box-shadow:0 8px 28px rgba(30,48,34,.04)}.policy-content h2{margin:0 0 10px;color:#123f24;font:700 1.45rem/1.2 Georgia,serif}.policy-content p{margin:0;color:#455447;line-height:1.72}.policy-content p+p{margin-top:12px}.policy-content strong{color:#203f2b}.policy-legal{border-color:#d9bf72!important;background:#fffaf0!important}.policy-footer{background:#0b321c;color:#d9e5da;padding:24px 0}.policy-footer .policy-shell{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.policy-footer a{color:#fff;text-decoration:none;font-weight:700}.policy-footer span{color:#b7c7b9}@media(max-width:800px){.policy-layout{grid-template-columns:1fr}.policy-summary{position:static}.policy-main{padding-top:28px}}@media(max-width:560px){.policy-shell{width:min(100% - 22px,1120px)}.policy-nav{min-height:64px}.policy-brand span{display:none}.policy-nav nav a{padding:0 9px;font-size:.88rem}.policy-content section{padding:18px 16px}.policy-hero{text-align:left}.policy-hero h1{font-size:2.35rem}.policy-hero>p:not(:first-child){font-size:1rem}.policy-hero>a{width:100%}}[dir=rtl] .policy-content,[dir=rtl] .policy-summary{text-align:right}[dir=rtl] .policy-summary ul{padding-left:0;padding-right:20px}
+
+/* policy-storefront-polish2 */
+.returns-policy-page .policy-main{padding:52px 0 78px;background:linear-gradient(180deg,#f7f0e2 0,#fffdf8 370px,#fff 100%)}
+.returns-policy-page .policy-shell{width:min(1200px,calc(100% - 32px));margin-inline:auto}
+.returns-policy-page .policy-hero{max-width:900px;margin:0 auto 38px;text-align:center}
+.returns-policy-page .policy-hero>p:first-child{color:#a47712;font-size:.73rem;font-weight:900;letter-spacing:.14em}
+.returns-policy-page .policy-hero h1{margin:10px auto 12px;max-width:900px;color:#103f24;font:400 clamp(2.45rem,5vw,4.2rem)/1.02 "DM Serif Display",Georgia,serif;letter-spacing:-.03em}
+.returns-policy-page .policy-hero>span{color:#7b8078;font-size:.8rem;font-weight:700}
+.returns-policy-page .policy-hero>p:not(:first-child){max-width:760px;margin:18px auto 0;color:#4c5b4e;font-size:1.02rem;line-height:1.72}
+.returns-policy-page .policy-hero-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px}
+.returns-policy-page .policy-hero-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border-radius:999px;text-decoration:none;font-weight:850}
+.returns-policy-page .policy-primary{background:#174c2a;color:#fff;border:1px solid #174c2a}
+.returns-policy-page .policy-secondary{background:#fff;color:#174c2a;border:1px solid #cbd4c9}
+.returns-policy-page .policy-layout{grid-template-columns:minmax(230px,280px) minmax(0,1fr);gap:24px}
+.returns-policy-page .policy-summary{top:calc(var(--zwm-menu-top,94px) + 18px);padding:22px;border:1px solid #ded8ca;border-radius:20px;background:#fffaf0;box-shadow:0 12px 34px rgba(29,49,34,.055)}
+.returns-policy-page .policy-summary strong{font-size:1rem}
+.returns-policy-page .policy-summary li{font-size:.92rem}
+.returns-policy-page .policy-content section{margin-bottom:14px;padding:25px 26px;border:1px solid #e5e1d8;border-radius:20px;box-shadow:0 8px 24px rgba(30,48,34,.035)}
+.returns-policy-page .policy-content h2{font:400 1.55rem/1.18 "DM Serif Display",Georgia,serif;letter-spacing:-.01em}
+.returns-policy-page .policy-content p{font-size:.96rem;line-height:1.75}
+@media(max-width:800px){
+  .returns-policy-page .policy-main{padding:36px 0 62px}
+  .returns-policy-page .policy-layout{grid-template-columns:1fr}
+  .returns-policy-page .policy-summary{position:static}
+}
+@media(max-width:560px){
+  .returns-policy-page .policy-shell{width:min(100% - 22px,1200px)}
+  .returns-policy-page .policy-hero{margin-bottom:26px;text-align:left}
+  .returns-policy-page .policy-hero h1{font-size:2.55rem}
+  .returns-policy-page .policy-hero>p:not(:first-child){font-size:.98rem}
+  .returns-policy-page .policy-hero-actions{display:grid;grid-template-columns:1fr}
+  .returns-policy-page .policy-hero-actions a{width:100%}
+  .returns-policy-page .policy-content section{padding:19px 16px;border-radius:17px}
+}

@@ -267,6 +267,11 @@ function renderSummary(){
     if(gift){
       if(gift.recipient)parts.push("<strong>"+esc(t("Recipient: ","المستلم: ","Destinataire : ")+gift.recipient)+"</strong>");
       if(gift.occasion)parts.push("<small>"+esc(t("Occasion: ","المناسبة: ","Occasion : ")+gift.occasion)+"</small>");
+      if(gift.packing)parts.push("<small>"+esc(t("Packing preference: ","تفضيل التغليف: ","Préférence d’emballage : ")+gift.packing)+"</small>");
+      if(gift.theme)parts.push("<small>"+esc(t("Theme preference: ","تفضيل الطابع: ","Préférence de thème : ")+gift.theme)+"</small>");
+      if(gift.card_language)parts.push("<small>"+esc(t("Card language: ","لغة البطاقة: ","Langue de la carte : ")+gift.card_language)+"</small>");
+      if(Object.prototype.hasOwnProperty.call(gift,"hide_prices"))parts.push("<small>"+esc(t("Hide prices: ","إخفاء الأسعار: ","Masquer les prix : ")+(gift.hide_prices!==false?t("Yes","نعم","Oui"):t("No","لا","Non")))+"</small>");
+      if(gift.packing||gift.theme)parts.push("<small>"+esc(t("Packing and theme are preferences subject to availability.","التغليف والطابع تفضيلات رهن بالتوفر.","L’emballage et le thème sont des préférences sous réserve de disponibilité."))+"</small>");
       if(gift.requested_delivery_date)parts.push("<small>"+esc(t("Requested date: ","التاريخ المطلوب: ","Date souhaitée : ")+gift.requested_delivery_date)+"</small>");
       if(gift.message)parts.push("<small>"+esc(t("Gift message: ","رسالة الهدية: ","Message cadeau : ")+gift.message)+"</small>")
     }

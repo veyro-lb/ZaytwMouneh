@@ -5,6 +5,9 @@ var SESSION_KEY="zwm:mouneh:session:v1";
 var CLAIMS_KEY="zwm:mouneh:claims:v1";
 var state={orders:[],counts:{all:0,active:0,delivered:0,cancelled:0},filter:"all",loading:false,loaded:false,error:"",claiming:false,lastLoaded:0};
 var mountQueued=false;
+var ORDER_STALE_MS=60000;
+var ORDER_BACKGROUND_REFRESH_MS=120000;
+var ORDER_RESUME_GRACE_MS=15000;
 
 function qs(s,r){return (r||document).querySelector(s)}
 function qsa(s,r){return Array.from((r||document).querySelectorAll(s))}
@@ -216,25 +219,30 @@ document.addEventListener("click",function(e){
   var refresh=e.target.closest&&e.target.closest("[data-customer-orders-refresh]");
   if(refresh){loadOrders();return}
 });
-document.addEventListener("zwm:account-updated",function(){loadOrders({silent:true})});
-window.addEventListener("focus",function(){if(Date.now()-state.lastLoaded>4000)loadOrders({silent:true})});
-window.addEventListener("online",function(){loadOrders({silent:true})});
+function refreshIfStale(maxAge){
+  if(document.hidden||state.loading)return;
+  if(!state.lastLoaded||Date.now()-state.lastLoaded>=maxAge)loadOrders({silent:true});
+}
+document.addEventListener("zwm:account-updated",function(){refreshIfStale(ORDER_STALE_MS)});
+document.addEventListener("zwm:customer-order-changed",function(){loadOrders({silent:true})});
+window.addEventListener("focus",function(){refreshIfStale(ORDER_STALE_MS)});
+window.addEventListener("online",function(){refreshIfStale(ORDER_RESUME_GRACE_MS)});
 window.addEventListener("storage",function(e){
-  if(!e.key||e.key===SESSION_KEY||e.key===CLAIMS_KEY||String(e.key).indexOf("zwm:rewards")===0)loadOrders({silent:true});
+  if(e.key===SESSION_KEY||e.key===CLAIMS_KEY)refreshIfStale(ORDER_RESUME_GRACE_MS);
 });
-document.addEventListener("visibilitychange",function(){if(!document.hidden&&Date.now()-state.lastLoaded>4000)loadOrders({silent:true})});
+document.addEventListener("visibilitychange",function(){if(!document.hidden)refreshIfStale(ORDER_STALE_MS)});
 
 function init(){
   injectCss();
   var root=qs("#accountShell")||document.body;
-  new MutationObserver(function(){scheduleMount();var rs=rewardsState();if(rs.member&&!state.loaded&&!state.loading)loadOrders({silent:true})}).observe(root,{childList:true,subtree:true});
+  new MutationObserver(function(){scheduleMount()}).observe(root,{childList:true,subtree:true});
   var tries=0,timer=setInterval(function(){
     tries++;
     var rs=rewardsState();
     if(rs.member){clearInterval(timer);loadOrders();scheduleMount()}
     else if(tries>30)clearInterval(timer);
   },300);
-  setInterval(function(){if(!document.hidden&&rewardsState().member)loadOrders({silent:true})},8000);
+  setInterval(function(){if(!document.hidden&&rewardsState().member)refreshIfStale(ORDER_BACKGROUND_REFRESH_MS)},ORDER_BACKGROUND_REFRESH_MS);
   scheduleMount();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();

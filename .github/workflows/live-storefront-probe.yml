@@ -11,7 +11,7 @@ on:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 6
     steps:
       - name: Read deployed homepage and shell
         shell: bash
@@ -37,3 +37,40 @@ jobs:
               echo "LIVE_DESKTOP_BUTTON_RULE=missing"
             fi
           fi
+
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Install Chromium
+        run: npx playwright install chromium
+      - name: Measure live desktop menu geometry
+        shell: bash
+        run: |
+          node <<'NODE'
+          const { chromium } = require("playwright");
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage({viewport:{width:1285,height:932}});
+            await page.goto("https://zaytwmouneh.veyro-202.workers.dev/",{waitUntil:"domcontentloaded"});
+            await page.waitForTimeout(800);
+            const before=await page.evaluate(()=>{
+              const t=document.getElementById("navToggle"), l=t?.querySelector(".menu-label"), i=t?.querySelector(".menu-icon"), h=document.querySelector(".site-header");
+              const pack=el=>{if(!el)return null; const r=el.getBoundingClientRect(), s=getComputedStyle(el); return {x:r.x,y:r.y,w:r.width,h:r.height,left:r.left,right:r.right,top:r.top,bottom:r.bottom,display:s.display,position:s.position,transform:s.transform,padding:s.padding,margin:s.margin,borderRadius:s.borderRadius,overflow:s.overflow,fontSize:s.fontSize}};
+              return {toggle:pack(t),label:pack(l),icon:pack(i),header:pack(h),shellHref:[...document.styleSheets].map(s=>s.href).filter(Boolean).find(h=>h.includes("storefront-shell.css"))||null};
+            });
+            console.log("LIVE_DESKTOP_BEFORE="+JSON.stringify(before));
+            await page.locator("#navToggle").click();
+            await page.waitForTimeout(250);
+            const after=await page.evaluate(()=>{
+              const m=document.getElementById("navLinks"),h=document.querySelector(".site-header"),t=document.getElementById("navToggle");
+              const pack=el=>{if(!el)return null; const r=el.getBoundingClientRect(), s=getComputedStyle(el); return {x:r.x,y:r.y,w:r.width,h:r.height,left:r.left,right:r.right,top:r.top,bottom:r.bottom,display:s.display,position:s.position,transform:s.transform,padding:s.padding,margin:s.margin,borderRadius:s.borderRadius,overflow:s.overflow,zIndex:s.zIndex}};
+              return {toggle:pack(t),menu:pack(m),header:pack(h),gap:m&&h?m.getBoundingClientRect().top-h.getBoundingClientRect().bottom:null};
+            });
+            console.log("LIVE_DESKTOP_AFTER="+JSON.stringify(after));
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE

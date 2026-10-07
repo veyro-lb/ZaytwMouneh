@@ -37,7 +37,7 @@ function updateOrderCopy(){
   if(announcement){setText(announcement,tr("Shop online","تسوّق أونلاين"));announcement.href="/shop#shop";announcement.removeAttribute("target")}
   var title=document.getElementById("orderTitle"),intro=document.getElementById("orderIntroCopy"),s3=document.getElementById("step3Title"),s3c=document.getElementById("step3Copy");
   if(title)setMarkup(title,tr("From shelf to<br><em>your door.</em>","من الرف إلى<br><em>باب بيتك.</em>"));
-  if(intro)setText(intro,tr("Build your pantry, review everything, then place the order directly on the website.","حضّر سلتك وراجعها ثم أرسل الطلب مباشرة عبر الموقع."));
+  if(intro)setText(intro,tr("Build your cart, review everything, then place the order directly on the website.","حضّر سلتك وراجعها ثم أرسل الطلب مباشرة عبر الموقع."));
   if(s3)setText(s3,tr("Checkout","إتمام الطلب"));
   if(s3c)setText(s3c,tr("Enter delivery details, review the final total and place your order securely.","أدخل تفاصيل التوصيل وراجع المجموع النهائي ثم أرسل طلبك بأمان."));
   document.querySelectorAll(".footer-delivery").forEach(function(el){setMarkup(el,'<span class="only-en">Website checkout · WhatsApp support available</span><span class="only-ar" lang="ar">طلب مباشر عبر الموقع · واتساب متاح للمساعدة</span>')})

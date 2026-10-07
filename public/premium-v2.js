@@ -20,7 +20,7 @@
   function safeProducts(){return typeof PRODUCTS_DATA!=="undefined"?PRODUCTS_DATA:[]}
   function pname(p){if(typeof currentName==="function")return currentName(p);return isAr()?(p.nameAr||p.nameEn):p.nameEn}
   function pmoney(n){return typeof money==="function"?money(n):("$"+Number(n).toFixed(2))}
-  function porigin(p){return typeof originFor==="function"?originFor(p):txt("Source · Lebanon","المصدر · لبنان")}
+  function porigin(p){return typeof originFor==="function"?originFor(p):""}
   function pcategory(p){
     if(!p)return "";
     if(typeof categoryName==="function")return categoryName(p.category);
@@ -175,20 +175,20 @@
 
   var regionCopy={
     "Bekaa":{
-      en:"Most of the pantry comes from the Bekaa: grains, pulses, herbs and everyday mouneh staples.",
-      ar:"معظم المونة تأتي من البقاع: الحبوب والبقوليات والأعشاب وأساسيات المونة اليومية."
+      en:"Much of our pantry selection comes from producers in the Bekaa, including grains, pulses, herbs and everyday mouneh staples.",
+      ar:"يأتي جزء كبير من تشكيلة المونة لدينا من منتجين في البقاع، بما في ذلك الحبوب والبقوليات والأعشاب وأساسيات المونة اليومية."
     },
     "Koura":{
-      en:"Koura is highlighted for olive oil, with the specific product name taking precedence whenever a more precise origin is listed.",
-      ar:"نبرز الكورة كمصدر لزيت الزيتون، مع اعتماد اسم المنتج إذا ذكر مصدراً أكثر تحديداً."
+      en:"Our olive oil is sourced from Koura.",
+      ar:"يُورَّد زيت الزيتون لدينا من الكورة."
     },
     "Mount Lebanon":{
-      en:"Honey is associated with Mount Lebanon in the brand provenance information.",
-      ar:"العسل مرتبط بجبل لبنان ضمن معلومات المصدر الخاصة بالعلامة."
+      en:"Our honey is sourced from Mount Lebanon.",
+      ar:"يُورَّد العسل لدينا من جبل لبنان."
     },
     "Chouf":{
-      en:"Debes and molasses are associated with the Chouf in the brand provenance information.",
-      ar:"الدبس مرتبط بالشوف ضمن معلومات المصدر الخاصة بالعلامة."
+      en:"Our debes is sourced from the Chouf.",
+      ar:"يُورَّد الدبس لدينا من الشوف."
     }
   };
 
@@ -214,7 +214,7 @@
     if(page!=="home"&&page!=="about")return;
     var anchor=page==="about"?q(".provenance-section"):q(".about-section");if(!anchor)return;
     var sec=document.createElement("section");sec.id="premiumProvenance";sec.className="premium-section premium-provenance";
-    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("A pantry rooted in place","مونة مرتبطة بأرضها"))+'</p><h2>'+esc(txt("Follow the pantry","تتبّع المونة"))+' <em>'+esc(txt("across Lebanon.","في لبنان."))+'</em></h2></div><p>'+esc(txt("Explore the origin information used across the catalogue. We keep it precise and avoid claims that are not verified.","اكتشف معلومات المصدر المستخدمة في الكتالوج. نحافظ عليها دقيقة ونتجنب أي ادعاء غير موثّق."))+'</p></div><div class="provenance-experience"><div class="lebanon-map-card"><div class="lebanon-silhouette" aria-hidden="true"></div><button class="region-pin" data-region="Koura" type="button">'+esc(txt("Koura","الكورة"))+'</button><button class="region-pin" data-region="Mount Lebanon" type="button">'+esc(txt("Mount Lebanon","جبل لبنان"))+'</button><button class="region-pin" data-region="Bekaa" type="button">'+esc(txt("Bekaa","البقاع"))+'</button><button class="region-pin" data-region="Chouf" type="button">'+esc(txt("Chouf","الشوف"))+'</button></div><div class="provenance-detail"></div></div></div>';
+    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("A pantry rooted in place","مونة مرتبطة بأرضها"))+'</p><h2>'+esc(txt("Follow the pantry","تتبّع المونة"))+' <em>'+esc(txt("across Lebanon.","في لبنان."))+'</em></h2></div><p>'+esc(txt("Explore the places behind the pantry and the products whose regional origin is identified in the catalogue.","اكتشف الأماكن التي تقف وراء المونة والمنتجات التي يظهر مصدرها الإقليمي بوضوح في الكتالوج."))+'</p></div><div class="provenance-experience"><div class="lebanon-map-card"><div class="lebanon-silhouette" aria-hidden="true"></div><button class="region-pin" data-region="Koura" type="button">'+esc(txt("Koura","الكورة"))+'</button><button class="region-pin" data-region="Mount Lebanon" type="button">'+esc(txt("Mount Lebanon","جبل لبنان"))+'</button><button class="region-pin" data-region="Bekaa" type="button">'+esc(txt("Bekaa","البقاع"))+'</button><button class="region-pin" data-region="Chouf" type="button">'+esc(txt("Chouf","الشوف"))+'</button></div><div class="provenance-detail"></div></div></div>';
     anchor.after(sec);
     qa(".region-pin",sec).forEach(function(btn){btn.addEventListener("click",function(){renderRegion(btn.dataset.region,sec)})});
     renderRegion("Bekaa",sec);
@@ -337,7 +337,7 @@
     if(page!=="home"||q("#premiumRecipes"))return;
     var anchor=q(".home-gift")||q(".order-strip");if(!anchor)return;
     var sec=document.createElement("section");sec.id="premiumRecipes";sec.className="premium-section premium-recipes";
-    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Shop by recipe","تسوّق حسب الوصفة"))+'</p><h2>'+esc(txt("Start with the","ابدأ من"))+' <em>'+esc(txt("table.","السفرة."))+'</em></h2></div><p>'+esc(txt("Choose from six familiar Lebanese dishes. Add the exact pantry ingredients in one click, then pick up the fresh ingredients yourself.","اختر من ستة أطباق لبنانية مألوفة. أضف مكونات المونة الصحيحة بضغطة واحدة، ثم جهّز المكونات الطازجة في البيت."))+'</p></div><div class="recipe-grid">'+recipeCards()+'</div><a class="premium-pill" style="margin-top:18px" href="recipes.html">'+esc(txt("See recipe notes","شاهد تفاصيل الوصفات"))+' ↗</a></div>';
+    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Shop by recipe","تسوّق حسب الوصفة"))+'</p><h2>'+esc(txt("Start with the","ابدأ من"))+' <em>'+esc(txt("table.","السفرة."))+'</em></h2></div><p>'+esc(txt("Choose from six familiar Lebanese dishes. Add the suggested pantry ingredients in one click, then add the fresh ingredients at home.","اختر من ستة أطباق لبنانية مألوفة. أضف مكونات المونة المقترحة بضغطة واحدة، ثم أضف المكونات الطازجة في البيت."))+'</p></div><div class="recipe-grid">'+recipeCards()+'</div><a class="premium-pill" style="margin-top:18px" href="recipes.html">'+esc(txt("See recipe notes","شاهد تفاصيل الوصفات"))+' ↗</a></div>';
     anchor.before(sec);bindRecipeButtons(sec);
   }
 
@@ -354,7 +354,8 @@
   function selectedCollectionProductMarkup(p,index){
     var media=pvisual(p,"selected-collection-image");
     var tag=index===0?txt("Collection favourite","مفضّل من التشكيلة"):txt("Collection pick","مختار من التشكيلة");
-    return '<button class="selected-collection-card'+(index===0?" is-lead":"")+'" type="button" data-selected-collection-product="'+esc(p.id)+'"><span class="selected-collection-media">'+media+'<span class="selected-collection-tag">'+esc(tag)+'</span></span><span class="selected-collection-copy"><small>'+esc(porigin(p))+'</small><strong>'+esc(pname(p))+'</strong><span class="selected-collection-price">'+esc(txt("From ","من "))+pmoney(minPrice(p))+'</span><em>'+esc(txt("View product","عرض المنتج"))+' ↗</em></span></button>';
+    var origin=porigin(p);
+    return '<button class="selected-collection-card'+(index===0?" is-lead":"")+'" type="button" data-selected-collection-product="'+esc(p.id)+'"><span class="selected-collection-media">'+media+'<span class="selected-collection-tag">'+esc(tag)+'</span></span><span class="selected-collection-copy">'+(origin?'<small>'+esc(origin)+'</small>':"")+'<strong>'+esc(pname(p))+'</strong><span class="selected-collection-price">'+esc(txt("From ","من "))+pmoney(minPrice(p))+'</span><em>'+esc(txt("View product","عرض المنتج"))+' ↗</em></span></button>';
   }
 
   function injectShopTools(){
@@ -630,7 +631,7 @@
     });
     var ld=q("#premiumProductSchema");if(!ld){ld=document.createElement("script");ld.type="application/ld+json";ld.id="premiumProductSchema";document.head.appendChild(ld)}
     ld.textContent=JSON.stringify(productJsonLd(p));
-    var desc=txt("Shop ","تسوّق ")+pname(p)+" · "+porigin(p)+" · "+txt("sizes and prices from the current Zayt w Mouneh catalogue.","الأحجام والأسعار من كتالوج زيت ومونة الحالي.");
+    var origin=porigin(p);var desc=txt("Shop ","تسوّق ")+pname(p)+(origin?" · "+origin:"")+" · "+txt("sizes and prices from the current Zayt w Mouneh catalogue.","الأحجام والأسعار من كتالوج زيت ومونة الحالي.");
     document.title=pname(p)+" | "+txt("Zayt w Mouneh","زيت ومونة");
     var md=q('meta[name="description"]');if(md)md.content=desc;
     var ot=q('meta[property="og:title"]');if(ot)ot.content=pname(p)+" | "+txt("Zayt w Mouneh","زيت ومونة");

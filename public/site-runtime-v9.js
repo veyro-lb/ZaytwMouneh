@@ -991,14 +991,36 @@
       var isStorefrontMenu=nav.id==="navLinks"&&nav.classList.contains("nav-links");
       if(isStorefrontMenu){
         if(!link.querySelector("[data-returns-nav-index]")||!link.querySelector("strong")){
-          link.innerHTML='<span data-returns-nav-index>08</span><strong></strong><b>↗</b>';
+          link.innerHTML='<span data-returns-nav-index></span><strong></strong><b>↗</b>';
         }
         var strong=link.querySelector("strong");
         if(strong&&strong.textContent!==label)strong.textContent=label;
+
+        var utility=nav.querySelector(".menu-utility");
+        var wanted=[
+          nav.querySelector('a[href="/"]'),
+          nav.querySelector('a[href="/shop"]'),
+          nav.querySelector('a[href="/gift"]'),
+          nav.querySelector('a[href="/recipes"]'),
+          nav.querySelector('a[href="/wholesale"]'),
+          link,
+          nav.querySelector('a[href="/about"]'),
+          nav.querySelector('a[href="/contact"]')
+        ].filter(Boolean);
+        wanted.forEach(function(a){nav.insertBefore(a,utility||null)});
+        wanted.forEach(function(a,i){
+          var n=a.querySelector(":scope > span:first-child");
+          if(!n){
+            n=document.createElement("span");
+            a.insertBefore(n,a.firstChild);
+          }
+          n.textContent=String(i+1).padStart(2,"0");
+          if(a===link)n.setAttribute("data-returns-nav-index","");
+        });
       }else if(link.textContent!==label){
         link.textContent=label;
       }
-      if(document.body.dataset.page==="returns")link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");
+      if(document.body.dataset.page==="returns"||document.body.dataset.page==="returns-policy")link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");
       return;
     }
     if(document.body.dataset.page==="returns")return;

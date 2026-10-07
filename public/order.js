@@ -34,8 +34,10 @@ async function loadOverrides(){
   var base=[];
   try{base=typeof PRODUCTS_DATA!=="undefined"?JSON.parse(JSON.stringify(PRODUCTS_DATA)):[]}catch{}
   var map=new Map(base.map(function(p){return [p.id,p]})),c=config();
+  var controller=typeof AbortController==="function"?new AbortController():null,timer=null;
   try{
-    var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/rest/v1/product_overrides?select=product_id,action,payload",{headers:{"apikey":c.supabasePublishableKey}});
+    if(controller)timer=setTimeout(function(){controller.abort()},REQUEST_TIMEOUT_MS);
+    var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/rest/v1/product_overrides?select=product_id,action,payload",{headers:{"apikey":c.supabasePublishableKey},signal:controller?controller.signal:undefined});
     if(r.ok){
       (await r.json()).forEach(function(o){
         var p=map.get(o.product_id)||{id:o.product_id};
@@ -44,7 +46,7 @@ async function loadOverrides(){
         map.set(o.product_id,p);
       });
     }
-  }catch{}
+  }catch{}finally{if(timer)clearTimeout(timer)}
   state.products=Array.from(map.values());
 }
 
@@ -250,6 +252,13 @@ function renderErrorCopy(){
     "Pour protéger votre vie privée, la commande n’est visible que par le compte qui la possède ou par le navigateur ayant passé la commande en invité."
   );
   if(a)a.textContent=tr("Sign in","تسجيل الدخول","Se connecter");
+  var retry=box.querySelector("[data-order-retry]");
+  if(!retry){
+    retry=document.createElement("button");retry.type="button";retry.dataset.orderRetry="1";retry.className="is-primary";
+    retry.addEventListener("click",async function(){retry.disabled=true;$("orderLoading").hidden=false;box.hidden=true;await refresh(true);retry.disabled=false});
+    box.appendChild(retry);
+  }
+  retry.textContent=tr("Retry","إعادة المحاولة","Réessayer");
 }
 async function refresh(force){
   if(state.refreshing)return;

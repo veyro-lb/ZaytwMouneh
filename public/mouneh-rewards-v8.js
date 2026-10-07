@@ -238,7 +238,8 @@
   }
   async function refreshSession(){
     if(refreshSessionInFlight)return refreshSessionInFlight;
-    if(!state.session?.refresh_token)return settleExpiredSession();
+    if(!state.session)return null;
+    if(!state.session.refresh_token)return settleExpiredSession();
     refreshSessionInFlight=(async()=>{
       try{
         const data=await authRequest("token?grant_type=refresh_token",{refresh_token:state.session.refresh_token});

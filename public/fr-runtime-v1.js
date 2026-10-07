@@ -104,6 +104,7 @@ var EXACT=Object.freeze({
 "Gift card preview":"Aperçu de la carte cadeau",
 "Gift theme":"Thème du cadeau",
 "Card language":"Langue de la carte",
+"Card language request":"Demande de langue de carte",
 "Hide prices from the recipient":"Masquer les prix pour le destinataire",
 "Request: hide prices from the recipient":"Demande : masquer les prix pour le destinataire",
 "Clear gift":"Vider le cadeau",

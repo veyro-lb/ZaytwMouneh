@@ -33,8 +33,8 @@ function setAttr(selector,name,value){var el=q(selector);if(el)el.setAttribute(n
 
 var COPY={
   en:{
-    title:"Returns & Product Issues | Zayt W Mouneh",
-    description:"Verify a Zayt W Mouneh order and submit a secure return, exchange or product issue request.",
+    title:"Returns & Product Issues | Zayt w Mouneh",
+    description:"Verify a Zayt w Mouneh order and submit a secure return, exchange or product issue request.",
     skip:"Skip to content",
     eyebrow:"Customer care",
     heading:"Returns & Product Issues",
@@ -43,7 +43,7 @@ var COPY={
     cardIntro:"Enter your order code and the contact information used for the order. We verify ownership before showing private order details.",
     codeLabel:"Order code",
     codePlaceholder:"Example: ZW-…",
-    codeHint:"Use the code shown on your Zayt W Mouneh order confirmation or receipt.",
+    codeHint:"Use the code shown on your Zayt w Mouneh order confirmation or receipt.",
     contactLabel:"Email or phone used on the order",
     contactPlaceholder:"Email address or phone number",
     contactHint:"For guest orders, this must match the email or phone used when ordering. If you are signed in to the account that owns the order, the order code is enough.",
@@ -87,8 +87,8 @@ var COPY={
     policy:"اقرأ سياسة الإرجاع ومشاكل المنتجات"
   },
   fr:{
-    title:"Retours et problèmes produits | Zayt W Mouneh",
-    description:"Vérifiez une commande Zayt W Mouneh et envoyez en toute sécurité une demande de retour, d’échange ou un signalement produit.",
+    title:"Retours et problèmes produits | Zayt w Mouneh",
+    description:"Vérifiez une commande Zayt w Mouneh et envoyez en toute sécurité une demande de retour, d’échange ou un signalement produit.",
     skip:"Aller au contenu",
     eyebrow:"Service client",
     heading:"Retours et problèmes produits",
@@ -97,7 +97,7 @@ var COPY={
     cardIntro:"Saisissez le code de commande et les coordonnées utilisées pour la commande. Nous vérifions qu’elle vous appartient avant d’afficher ses informations privées.",
     codeLabel:"Code de commande",
     codePlaceholder:"Exemple : ZW-…",
-    codeHint:"Utilisez le code figurant sur votre confirmation de commande Zayt W Mouneh ou votre reçu.",
+    codeHint:"Utilisez le code figurant sur votre confirmation de commande Zayt w Mouneh ou votre reçu.",
     contactLabel:"E-mail ou téléphone utilisé pour la commande",
     contactPlaceholder:"Adresse e-mail ou numéro de téléphone",
     contactHint:"Pour une commande invité, ces informations doivent correspondre à l’e-mail ou au téléphone utilisé lors de la commande. Si vous êtes connecté au compte propriétaire de la commande, le code suffit.",

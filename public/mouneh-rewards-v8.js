@@ -1299,7 +1299,8 @@
       requestPasswordRecovery,
       finishPasswordRecovery,
       signInWithGoogle,
-      rememberLegalConsent:rememberPendingLegalConsent
+      rememberLegalConsent:rememberPendingLegalConsent,
+      refreshSession
     },
     account:{
       addresses:accountAddresses,

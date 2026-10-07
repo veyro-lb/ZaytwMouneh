@@ -679,7 +679,8 @@ function productSearchText(p){
   const infoAr=CATEGORY_INFO[p.category]?.ar?.join(" ")||"";
   let nameFr=p.nameFr||"";
   if(!nameFr){try{nameFr=window.ZWM_FR_TRANSLATE?window.ZWM_FR_TRANSLATE(p.nameEn):""}catch{}}
-  return smartNormalize([p.nameEn,plainArabic(p.nameAr),nameFr,p.original,p.category,CATEGORY_AR[p.category]||"",infoEn,infoAr].join(" "));
+  const searchAliases=Array.isArray(p.searchAliases)?p.searchAliases.join(" "):"";
+  return smartNormalize([p.nameEn,plainArabic(p.nameAr),nameFr,p.original,searchAliases,p.category,CATEGORY_AR[p.category]||"",infoEn,infoAr].join(" "));
 }
 function fuzzyTokenMatch(qToken,hayTokens){
   let best=99;

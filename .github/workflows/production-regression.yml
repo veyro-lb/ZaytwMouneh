@@ -24,6 +24,11 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: Guard production source of truth
+        env:
+          ZWM_GIT_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          ZWM_GIT_HEAD: ${{ github.sha }}
+        run: node scripts/guard-source-of-truth.cjs
       - name: Install locked test dependencies
         run: npm ci --ignore-scripts
       - name: Syntax and production regression checks

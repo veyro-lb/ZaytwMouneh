@@ -1,6 +1,6 @@
 const fs=require("fs"),assert=require("assert");
 const read=p=>fs.readFileSync(p,"utf8");
-const loader=read("public/locale-loader-v1.js"),fr=read("public/fr-runtime-v1.js"),account=read("public/account.js"),app=read("public/app.js"),checkout=read("public/checkout.js"),wholesale=read("public/wholesale-v1.js");
+const loader=read("public/locale-loader-v1.js"),fr=read("public/fr-runtime-v1.js"),account=read("public/account.js"),app=read("public/app.js"),checkout=read("public/checkout.js"),wholesale=read("public/wholesale-v1.js"),returnsLocale=read("public/returns-center-locale-v1.js"),returnsPolicyLocale=read("public/returns-policy-locale-v1.js"),returnsHtml=read("public/returns.html"),policyHtml=read("public/returns-policy.html");
 assert(loader.includes("var route=pathLocale();"),"URL locale must be checked first");
 assert(loader.includes("localePath:localePath,navigate:navigate,text:text"),"Canonical locale API missing");
 assert(loader.includes('document.documentElement.dir=next==="ar"?"rtl":"ltr"'),"Arabic direction missing");
@@ -11,5 +11,10 @@ assert(account.includes('document.addEventListener("zwm:localechange"'),"Account
 assert(app.includes('next==="fr"?"fr":"en"'),"App must recognize French");
 assert(checkout.includes("T.fr=Object.fromEntries"),"Checkout must render French dictionary values");
 assert(wholesale.includes("window.ZWM_LOCALE?.get"),"Wholesale must use canonical locale API");
+assert(returnsLocale.includes("اعثر على طلبك بأمان")&&returnsLocale.includes("Retrouvez votre commande en toute sécurité"),"Returns center must include Arabic and French static-form translations");
+assert(returnsHtml.includes("returns-center-locale-v1.js?v=20261007-locales1"),"Returns center locale runtime must be loaded with a versioned URL");
+assert(returnsHtml.includes("data-no-fr"),"Returns center must opt out of generic French DOM translation");
+assert(returnsPolicyLocale.includes('String(location.pathname||"/").split("/")'),"Returns policy must prioritize locale from the URL");
+assert(policyHtml.includes("returns-policy-locale-v1.js?v=20261007-locales2"),"Returns policy locale runtime must use the latest cache token");
 for(const p of ["public/index.html","public/shop.html","public/account.html","public/checkout.html","public/gift.html","public/recipes.html","public/wholesale.html","public/product.html"]){const html=read(p);assert(html.includes("locale-loader-v1.js"),p+" must load locale loader");assert(!html.includes('src="/fr-runtime-v1.js'),p+" must not eagerly load French runtime");}
 console.log("localization regression: ok");

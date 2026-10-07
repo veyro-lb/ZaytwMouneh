@@ -1,0 +1,46 @@
+name: Storefront browser regression
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - public/storefront-shell.css
+      - public/site-runtime-v9.js
+      - tests/browser-regression.cjs
+      - package.json
+      - .github/workflows/browser-regression.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - public/storefront-shell.css
+      - public/site-runtime-v9.js
+      - tests/browser-regression.cjs
+      - package.json
+      - .github/workflows/browser-regression.yml
+  workflow_dispatch:
+
+concurrency:
+  group: storefront-browser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    name: Chromium and WebKit responsive gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install locked project dependencies
+        run: npm ci --ignore-scripts
+      - name: Install free browser tooling
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.55.0
+          npx playwright install --with-deps chromium webkit
+      - name: Run responsive browser regression
+        run: npm run test:browser

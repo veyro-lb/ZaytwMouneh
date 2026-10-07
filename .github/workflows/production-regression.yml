@@ -29,8 +29,11 @@ jobs:
       - name: Syntax and production regression checks
         run: npm run check
       - name: Install free browser regression tooling
+        id: install-browsers
+        if: ${{ always() }}
         run: |
           npm install --no-save --ignore-scripts playwright@1.55.0
           npx playwright install --with-deps chromium webkit
       - name: Real browser responsive regression
+        if: ${{ always() && steps.install-browsers.outcome == 'success' }}
         run: npm run test:browser

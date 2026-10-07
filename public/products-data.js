@@ -245,6 +245,53 @@ PRODUCTS_DATA.forEach((product)=>{
   }
 });
 
+/* Shopper-facing catalogue clarity fixes: preserve stable IDs/prices and change only
+   evidence-backed display labels or pack metadata. Raw source labels remain in `original`
+   so legacy/transliteration search terms continue to work. */
+const PRODUCT_CATALOGUE_DISPLAY_FIXES=Object.freeze({
+  "bandoura-mujafafeh":{
+    nameEn:"Bandoura Mujafafeh (Sun-Dried Tomatoes)",
+    nameFr:"Bandoura Mujafafeh (tomates séchées au soleil)"
+  },
+  "dora-flour":{
+    nameEn:"Dora Flour (Corn Flour)",
+    nameAr:"طحين الذرة (دورا)",
+    nameFr:"Farine Dora (farine de maïs)"
+  },
+  "korfa-cigar":{
+    nameEn:"Cinnamon Sticks (Cigar)",
+    nameFr:"Bâtons de cannelle (Cigar)"
+  },
+  "korfa-oud":{
+    nameEn:"Cinnamon Sticks (Oud)",
+    nameFr:"Bâtons de cannelle (Oud)"
+  }
+});
+const VARIANT_CATALOGUE_DISPLAY_FIXES=Object.freeze({
+  "caramel-craze-size-not-listed":{sizeEn:"7 pieces",sizeAr:"7 قطع",sizeFr:"7 pièces"},
+  "cherry-craze-size-not-listed":{sizeEn:"7 pieces",sizeAr:"7 قطع",sizeFr:"7 pièces"},
+  "craze-control-size-not-listed":{sizeEn:"7 pieces",sizeAr:"7 قطع",sizeFr:"7 pièces"},
+  "crunchy-craze-size-not-listed":{sizeEn:"7 pieces",sizeAr:"7 قطع",sizeFr:"7 pièces"},
+  "debsy-pretzy-size-not-listed":{sizeEn:"300 g",sizeAr:"300 غ",sizeFr:"300 g"},
+  "hazelnut-craze-size-not-listed":{sizeEn:"7 pieces",sizeAr:"7 قطع",sizeFr:"7 pièces"},
+  "nutty-bites-size-not-listed":{sizeEn:"11 pieces",sizeAr:"11 قطعة",sizeFr:"11 pièces"}
+});
+PRODUCTS_DATA.forEach((product)=>{
+  Object.assign(product,PRODUCT_CATALOGUE_DISPLAY_FIXES[product.id]||{});
+  (product.variants||[]).forEach((variant)=>{
+    Object.assign(variant,VARIANT_CATALOGUE_DISPLAY_FIXES[variant.id]||{});
+    if(/^Size not listed$/i.test(String(variant.sizeEn||"").trim())){
+      variant.sizeEn="Pack size unavailable";
+      variant.sizeAr="حجم العبوة غير متوفر";
+      variant.sizeFr="Format non disponible";
+    }else if(/\(unit not listed\)/i.test(String(variant.sizeEn||""))){
+      variant.sizeEn="Pack unit unavailable";
+      variant.sizeAr="وحدة العبوة غير متوفرة";
+      variant.sizeFr="Unité de l’emballage non disponible";
+    }
+  });
+});
+
 /* Catalogue alias cleanup: merge safe transliteration duplicates into one shopper-facing card. */
 (function(){
   const aliases={

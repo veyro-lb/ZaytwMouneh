@@ -15,7 +15,7 @@ function stylesAt(width){
  const result=flatten(d.window.document.styleSheets[0].cssRules);d.window.close();return result;
 }
 (async()=>{
-for(const width of [320,375,390,430,700,768,980,1280])for(const language of ['en','ar']){
+for(const width of [320,360,375,390,430,700,768,980,1280])for(const language of ['en','ar','fr']){
  const dom=new JSDOM('<html lang="'+language+'" dir="'+(language==='ar'?'rtl':'ltr')+'"><head><style></style></head><body data-page="account"><div id="accountShell"></div></body></html>',{url:'https://store.example/account#overview',runScripts:'outside-only'});
  const w=dom.window,d=w.document;
  const member={name:'Test Customer',balance:75,tier:'olive',annual_spend:75,phone:'0000000'};

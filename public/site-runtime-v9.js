@@ -979,16 +979,25 @@
     if(nav){
       var fallback=document.querySelector("[data-returns-fallback]");
       if(fallback)fallback.remove();
-      var link=nav.querySelector("[data-returns-center-link]");
+      var link=nav.querySelector('[data-returns-center-link],a[href="/returns"],a[href="/returns/"]');
       if(!link){
         link=document.createElement("a");
         link.href="/returns";
-        link.setAttribute("data-returns-center-link","");
-        link.className="zwm-returns-center-nav-link";
         nav.appendChild(link);
       }
+      link.setAttribute("data-returns-center-link","");
+      link.classList.add("zwm-returns-center-nav-link");
       var label=currentLabel();
-      if(link.textContent!==label)link.textContent=label;
+      var isStorefrontMenu=nav.id==="navLinks"&&nav.classList.contains("nav-links");
+      if(isStorefrontMenu){
+        if(!link.querySelector("[data-returns-nav-index]")||!link.querySelector("strong")){
+          link.innerHTML='<span data-returns-nav-index>08</span><strong></strong><b>↗</b>';
+        }
+        var strong=link.querySelector("strong");
+        if(strong&&strong.textContent!==label)strong.textContent=label;
+      }else if(link.textContent!==label){
+        link.textContent=label;
+      }
       if(document.body.dataset.page==="returns")link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");
       return;
     }

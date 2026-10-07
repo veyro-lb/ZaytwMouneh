@@ -956,3 +956,56 @@
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",add,{once:true});else add();
   new MutationObserver(add).observe(document.documentElement,{childList:true,subtree:true});
 })();
+
+/* zwm-returns-center-nav */
+(function(){
+  function currentLabel(){
+    try{
+      if(document.documentElement.lang==="ar"||document.documentElement.dir==="rtl"||localStorage.getItem("zwm-lang-v2")==="ar")return "الإرجاع والمشاكل";
+      if(document.documentElement.lang==="fr"||localStorage.getItem("zwm:french:v1")==="1")return "Retours & problèmes";
+    }catch{}
+    return "Returns & Issues";
+  }
+  function ensureFallbackStyle(){
+    if(document.getElementById("zwmReturnsNavStyle"))return;
+    var style=document.createElement("style");
+    style.id="zwmReturnsNavStyle";
+    style.textContent=".zwm-returns-fallback-tab{position:fixed;right:14px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:9990;display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 14px;border:1px solid rgba(255,255,255,.28);border-radius:999px;background:#174c2a;color:#fff!important;text-decoration:none;font:800 12px/1.1 'DM Sans',sans-serif;box-shadow:0 10px 30px rgba(14,50,28,.22)}@media(max-width:640px){.zwm-returns-fallback-tab{right:10px;bottom:calc(72px + env(safe-area-inset-bottom));max-width:150px;text-align:center}}";
+    document.head.appendChild(style);
+  }
+  function add(){
+    if(!document.body||document.body.classList.contains("admin-body"))return;
+    var nav=document.querySelector("#navLinks")||document.querySelector(".c6-nav-links")||document.querySelector(".commerce-nav-links");
+    if(nav){
+      var fallback=document.querySelector("[data-returns-fallback]");
+      if(fallback)fallback.remove();
+      var link=nav.querySelector("[data-returns-center-link]");
+      if(!link){
+        link=document.createElement("a");
+        link.href="/returns";
+        link.setAttribute("data-returns-center-link","");
+        link.className="zwm-returns-center-nav-link";
+        nav.appendChild(link);
+      }
+      link.textContent=currentLabel();
+      if(document.body.dataset.page==="returns")link.setAttribute("aria-current","page");
+      return;
+    }
+    if(document.body.dataset.page==="returns")return;
+    ensureFallbackStyle();
+    var tab=document.querySelector("[data-returns-fallback]");
+    if(!tab){
+      tab=document.createElement("a");
+      tab.href="/returns";
+      tab.className="zwm-returns-fallback-tab";
+      tab.setAttribute("data-returns-fallback","");
+      document.body.appendChild(tab);
+    }
+    tab.textContent=currentLabel();
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",add,{once:true});else add();
+  setTimeout(add,500);
+  setTimeout(add,1500);
+  new MutationObserver(add).observe(document.documentElement,{subtree:true,childList:true});
+})();
+

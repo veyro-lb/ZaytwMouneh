@@ -8,6 +8,8 @@
   const RELOAD_KEY = "zwm:cms:last-reload:v1";
   const PREVIEW_RELOAD_KEY = "zwm:cms:preview-last-reload:v1";
   const ADMIN_SYNC_KEY = "zwm:cms:admin-sync:v1";
+  const CMS_REFRESH_AT_KEY = "zwm:cms:last-refresh-at:v1";
+  const CMS_STALE_MS = 5*60*1000;
   const PREVIEW_MODE = new URLSearchParams(location.search).get("zwm_admin_preview")==="1";
   let previewSettings=null;
   let refreshInFlight=null;
@@ -241,8 +243,10 @@
     renderDeliverySummary();
   }
 
-  async function refreshCms(){
+  async function refreshCms({force=false}={}){
     if(refreshInFlight)return refreshInFlight;
+    const last=Number(localStorage.getItem(CMS_REFRESH_AT_KEY)||0);
+    if(!force&&last&&Date.now()-last<CMS_STALE_MS)return previewSettings||readSettings();
     refreshInFlight=(async()=>{
       const c=config(),t=c.tables||{};
       const [overrides,settingsRows]=await Promise.all([
@@ -260,6 +264,7 @@
           window.dispatchEvent(new CustomEvent("zwm:catalog-cache-updated",{detail:{signature:nextSig}}));
         }catch{}
       }
+      try{localStorage.setItem(CMS_REFRESH_AT_KEY,String(Date.now()))}catch{}
       return settings;
     })();
     try{return await refreshInFlight}finally{refreshInFlight=null}
@@ -963,11 +968,11 @@
       try{parent.postMessage({type:"zwm-preview-ready"},location.origin)}catch{}
       return;
     }
-    const requestSync=()=>{if(document.visibilityState!=="hidden")refreshCms().catch(()=>{})};
-    window.addEventListener("focus",requestSync);
-    document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")requestSync()});
-    window.addEventListener("storage",event=>{if(event.key===ADMIN_SYNC_KEY)requestSync()});
-    setInterval(requestSync,60000);
+    const requestSync=(force=false)=>{if(document.visibilityState!=="hidden")refreshCms({force}).catch(()=>{})};
+    window.addEventListener("focus",()=>requestSync(false));
+    document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")requestSync(false)});
+    window.addEventListener("storage",event=>{if(event.key===ADMIN_SYNC_KEY)requestSync(true)});
+    setInterval(()=>requestSync(false),CMS_STALE_MS);
   }
   init();
 })();

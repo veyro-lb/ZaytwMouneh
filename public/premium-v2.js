@@ -623,7 +623,7 @@
     var extras=q(".premium-product-extras",copy);
     if(!extras){extras=document.createElement("div");extras.className="premium-product-extras";var actions=q(".product-modal-actions",copy);if(actions)actions.before(extras);else copy.appendChild(extras)}
     var feedbackUrl="https://wa.me/96181581230?text="+encodeURIComponent(txt("Feedback about ","ملاحظات حول ")+pname(p)+": ");
-    extras.innerHTML='<div class="premium-product-extra"><span>'+esc(txt("Storage guidance","طريقة الحفظ"))+'</span><p>'+esc(storageGuidance(p))+'</p></div><div class="premium-product-extra"><span>'+esc(txt("Pairs well with","يناسب"))+'</span><p>'+esc(pairingText(p))+'</p></div><div class="premium-product-extra premium-feedback"><div><span>'+esc(txt("Availability","التوفر"))+'</span><p>'+esc(txt("Final availability is confirmed directly on WhatsApp before the order is final.","يتم تأكيد التوفر النهائي مباشرة عبر واتساب قبل تثبيت الطلب."))+'</p></div><div class="premium-product-toolbar"><button type="button" data-share-product="'+esc(p.id)+'">'+esc(txt("Share product","شارك المنتج"))+'</button><a href="'+esc(feedbackUrl)+'" target="_blank" rel="noopener">'+esc(txt("Send feedback","أرسل ملاحظتك"))+'</a></div></div>';
+    extras.innerHTML='<div class="premium-product-extra"><span>'+esc(txt("Storage guidance","طريقة الحفظ"))+'</span><p>'+esc(storageGuidance(p))+'</p></div><div class="premium-product-extra"><span>'+esc(txt("Pairs well with","يناسب"))+'</span><p>'+esc(pairingText(p))+'</p></div><div class="premium-product-extra premium-feedback"><div><span>'+esc(txt("Availability","التوفر"))+'</span><p>'+esc(txt("Availability is rechecked when you place the order through website checkout.","يُعاد التحقق من التوفر عند تقديم الطلب عبر إتمام الطلب في الموقع."))+'</p></div><div class="premium-product-toolbar"><button type="button" data-share-product="'+esc(p.id)+'">'+esc(txt("Share product","شارك المنتج"))+'</button><a href="'+esc(feedbackUrl)+'" target="_blank" rel="noopener">'+esc(txt("Send feedback","أرسل ملاحظتك"))+'</a></div></div>';
     q("[data-share-product]",extras).addEventListener("click",function(){
       var url=new URL(location.href);url.searchParams.set("product",p.id);
       track("product_shared",{product:p.id});shareUrl(url.toString(),pname(p));
@@ -688,7 +688,7 @@
     qa(".product-card").forEach(function(card){
       if(card.querySelector(".premium-availability"))return;
       var actions=card.querySelector(".product-actions");if(!actions)return;
-      var note=document.createElement("span");note.className="premium-availability";note.textContent=txt("Availability confirmed on WhatsApp","التوفر يُؤكد عبر واتساب");actions.before(note);
+      var note=document.createElement("span");note.className="premium-availability";note.textContent=txt("Availability rechecked at checkout","يُعاد التحقق من التوفر عند إتمام الطلب");actions.before(note);
     });
   }
 

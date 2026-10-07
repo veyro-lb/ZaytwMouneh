@@ -1,0 +1,26 @@
+name: Runtime batch 1 verification
+
+on:
+  push:
+    branches:
+      - runtime-batch1-verify-20261007
+
+concurrency:
+  group: runtime-batch1-verify
+  cancel-in-progress: true
+
+jobs:
+  runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Runtime syntax
+        run: node --check public/account.js && node --check public/customer-orders-v1.js && node --check public/customer-notifications-v1.js && node --check public/mouneh-rewards-v8.js && node --check public/site-runtime-v9.js && node --check public/checkout.js && node --check public/order.js && node --check public/returns-v1.js
+      - name: Runtime behavioral regression
+        run: node tests/runtime-refresh-regression.cjs

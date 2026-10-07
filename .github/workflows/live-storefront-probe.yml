@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - .github/workflows/live-storefront-probe.yml
+      - "public/**"
   workflow_dispatch:
 
 jobs:

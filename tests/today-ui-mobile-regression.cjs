@@ -71,6 +71,6 @@ for(const file of ["index.html","shop.html","gift.html","recipes.html","about.ht
 }
 assert(read("wholesale.html").includes("/notifications-v1.css?v=20261006-mobileaudit1"),"Wholesale must load audited notification styles directly");
 assert(read("wholesale.html").includes("/site-runtime-v9.js?v=20261007-footerlegal1"),"Wholesale stabilized storefront runtime cache token stale");
-assert(read("wholesale.html").includes("/wholesale-v1.js?v=20261006-notificationhardening1"),"Wholesale behavior JS cache token stale");
+assert(read("wholesale.html").includes("/wholesale-v1.js?v=20261007-content6b"),"Wholesale behavior JS cache token stale");
 
 console.log("Today UI/mobile regression passed: Wholesale, notification bells, owner modal and conversion forms.");

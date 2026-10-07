@@ -8,14 +8,20 @@ var lang=function(){try{return window.ZWM_LOCALE?.get?.()||"en"}catch{return doc
 var tr=function(en,ar,fr){var l=lang();if(l==="ar")return ar;if(l==="fr")return fr!=null?fr:(window.ZWM_FR_TRANSLATE?window.ZWM_FR_TRANSLATE(en):en);return en};
 var esc=function(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
 var scheduled=false,addressMode=(location.hash||"")==="#addresses",addressRows=[],editingAddress="";
+var REQUEST_TIMEOUT_MS=15000;
 function cfg(){return window.ZWM_CMS_CONFIG||{}}
 function session(){try{return JSON.parse(localStorage.getItem(AUTH_KEY)||"null")}catch{return null}}
 async function ensureConfig(){if(window.ZWM_CMS_CONFIG)return;await new Promise(function(resolve){var s=document.createElement("script");s.src=CONFIG;s.onload=resolve;s.onerror=resolve;document.head.appendChild(s)})}
-async function rpc(name,body){
-  await ensureConfig();var c=cfg(),s=session(),headers={"apikey":c.supabasePublishableKey,"Content-Type":"application/json","Prefer":"return=representation"};
+async function rpc(name,body,retry){
+  await ensureConfig();var c=cfg(),s=session(),headers={"apikey":c.supabasePublishableKey,"Content-Type":"application/json","Prefer":"return=representation"},controller=typeof AbortController==="function"?new AbortController():null,timer=null,r;
   if(s&&s.access_token)headers.Authorization="Bearer "+s.access_token;
-  var r=await fetch(String(c.supabaseUrl||"").replace(/\/$/,"")+"/rest/v1/rpc/"+name,{method:"POST",headers:headers,body:JSON.stringify(body||{})});
+  try{
+    if(controller)timer=setTimeout(function(){controller.abort()},REQUEST_TIMEOUT_MS);
+    r=await fetch(String(c.supabaseUrl||"").replace(/\/$/,"")+"/rest/v1/rpc/"+name,{method:"POST",headers:headers,body:JSON.stringify(body||{}),signal:controller?controller.signal:undefined});
+  }catch(err){throw new Error(err&&err.name==="AbortError"?tr("The request took too long. Please retry.","استغرق الطلب وقتاً طويلاً. حاول مجدداً."):tr("Could not reach the service. Please retry.","تعذّر الاتصال بالخدمة. حاول مجدداً."))}
+  finally{if(timer)clearTimeout(timer)}
   var data=await r.json().catch(function(){return {}});
+  if(r.status===401&&retry!==false){var refreshed=await window.ZWM_REWARDS?.auth?.refreshSession?.();if(refreshed?.access_token)return rpc(name,body,false)}
   if(!r.ok)throw new Error(data.message||data.hint||data.details||tr("Request failed.","تعذّر تنفيذ الطلب."));
   return data
 }
@@ -156,6 +162,8 @@ document.addEventListener("submit",async function(e){
   finally{if(btn&&btn.isConnected)btn.disabled=false}
 },true);
 window.addEventListener("hashchange",function(){addressMode=location.hash==="#addresses";schedule();if(addressMode)loadAddresses()});
-new MutationObserver(schedule).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:["lang","dir"]});
+new MutationObserver(schedule).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+var dynamicRoot=document.getElementById("accountShell")||document.body;
+new MutationObserver(schedule).observe(dynamicRoot,{childList:true,subtree:dynamicRoot!==document.body});
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){schedule();if(addressMode)setTimeout(loadAddresses,800)},{once:true});else{schedule();if(addressMode)setTimeout(loadAddresses,800)}
 })();

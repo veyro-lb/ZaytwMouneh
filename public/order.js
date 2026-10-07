@@ -99,6 +99,13 @@ function setLang(next){
   var shopLink=document.querySelector(".commerce-header-actions>a[href='/shop']"),accountLink=document.querySelector(".commerce-header-actions>a[href='/account#orders']");
   if(shopLink)shopLink.textContent=tr("Shop","المتجر","Boutique");
   if(accountLink)accountLink.textContent=tr("My Account","حسابي","Mon compte");
+  var footerCopy=[
+    ["orderFooterShop","Shop","المتجر","Boutique"],
+    ["orderFooterReturns","Returns & Issues","الإرجاع والمشاكل","Retours et problèmes"],
+    ["orderFooterTerms","Terms","الشروط","Conditions"],
+    ["orderFooterPrivacy","Privacy","الخصوصية","Confidentialité"]
+  ];
+  footerCopy.forEach(function(row){var el=$(row[0]);if(el)el.textContent=tr(row[1],row[2],row[3])});
   if(state.order)render();renderErrorCopy()
 }
 function claimFor(ref){

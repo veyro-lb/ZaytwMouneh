@@ -4,19 +4,39 @@
 var VERSION="20261004-nativecheckout1";
 var CONFIG="/admin-config.js?v="+VERSION;
 var AUTH_KEY="zwm:mouneh:session:v1";
+var REQUEST_TIMEOUT_MS=12000,CONFIG_TIMEOUT_MS=8000;
 var lang=function(){try{return window.ZWM_LOCALE?.get?.()||"en"}catch{return document.documentElement.lang||"en"}};
 var tr=function(en,ar,fr){var l=lang();if(l==="ar")return ar;if(l==="fr")return fr!=null?fr:(window.ZWM_FR_TRANSLATE?window.ZWM_FR_TRANSLATE(en):en);return en};
 var esc=function(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
 var scheduled=false,addressMode=(location.hash||"")==="#addresses",addressRows=[],editingAddress="";
 function cfg(){return window.ZWM_CMS_CONFIG||{}}
 function session(){try{return JSON.parse(localStorage.getItem(AUTH_KEY)||"null")}catch{return null}}
-async function ensureConfig(){if(window.ZWM_CMS_CONFIG)return;await new Promise(function(resolve){var s=document.createElement("script");s.src=CONFIG;s.onload=resolve;s.onerror=resolve;document.head.appendChild(s)})}
-async function rpc(name,body){
-  await ensureConfig();var c=cfg(),s=session(),headers={"apikey":c.supabasePublishableKey,"Content-Type":"application/json","Prefer":"return=representation"};
+async function ensureConfig(){
+  if(window.ZWM_CMS_CONFIG)return;
+  await new Promise(function(resolve){
+    var script=document.createElement("script"),done=false;
+    var finish=function(){if(done)return;done=true;clearTimeout(timer);script.onload=null;script.onerror=null;resolve()};
+    var timer=setTimeout(finish,CONFIG_TIMEOUT_MS);
+    script.src=CONFIG;script.onload=finish;script.onerror=finish;document.head.appendChild(script)
+  })
+}
+async function rpc(name,body,retry){
+  await ensureConfig();var c=cfg(),s=session(),headers={"apikey":c.supabasePublishableKey,"Content-Type":"application/json","Prefer":"return=representation"},controller=typeof AbortController==="function"?new AbortController():null,timer=null,r;
+  if(!c.supabaseUrl||!c.supabasePublishableKey)throw new Error(tr("Account services are temporarily unavailable.","خدمات الحساب غير متاحة مؤقتاً.","Les services du compte sont temporairement indisponibles."));
   if(s&&s.access_token)headers.Authorization="Bearer "+s.access_token;
-  var r=await fetch(String(c.supabaseUrl||"").replace(/\/$/,"")+"/rest/v1/rpc/"+name,{method:"POST",headers:headers,body:JSON.stringify(body||{})});
+  try{
+    if(controller)timer=setTimeout(function(){controller.abort()},REQUEST_TIMEOUT_MS);
+    r=await fetch(String(c.supabaseUrl||"").replace(/\/$/,"")+"/rest/v1/rpc/"+name,{method:"POST",headers:headers,body:JSON.stringify(body||{}),signal:controller?controller.signal:undefined});
+  }catch(err){
+    throw new Error(err&&err.name==="AbortError"?tr("This request took too long. Please retry.","استغرق هذا الطلب وقتاً طويلاً. يرجى إعادة المحاولة.","Cette demande a pris trop de temps. Veuillez réessayer."):tr("Could not reach account services. Check your connection and retry.","تعذّر الاتصال بخدمات الحساب. تحقق من الاتصال وأعد المحاولة.","Impossible de joindre les services du compte. Vérifiez votre connexion et réessayez."));
+  }finally{if(timer)clearTimeout(timer)}
   var data=await r.json().catch(function(){return {}});
-  if(!r.ok)throw new Error(data.message||data.hint||data.details||tr("Request failed.","تعذّر تنفيذ الطلب."));
+  if(r.status===401&&retry!==false&&s&&s.refresh_token){
+    var fn=window.ZWM_REWARDS&&window.ZWM_REWARDS.auth&&window.ZWM_REWARDS.auth.refreshSession;
+    var fresh=typeof fn==="function"?await fn().catch(function(){return null}):null;
+    if(fresh&&fresh.access_token)return rpc(name,body,false);
+  }
+  if(!r.ok)throw new Error(data.message||data.hint||data.details||tr(r.status===401?"Your session expired. Please sign in again.":"Request failed.",r.status===401?"انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً.":"تعذّر تنفيذ الطلب.",r.status===401?"Votre session a expiré. Veuillez vous reconnecter.":"La demande a échoué."));
   return data
 }
 function injectStyle(){
@@ -156,6 +176,9 @@ document.addEventListener("submit",async function(e){
   finally{if(btn&&btn.isConnected)btn.disabled=false}
 },true);
 window.addEventListener("hashchange",function(){addressMode=location.hash==="#addresses";schedule();if(addressMode)loadAddresses()});
-new MutationObserver(schedule).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:["lang","dir"]});
+new MutationObserver(schedule).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+var accountRoot=document.getElementById("accountShell");
+if(accountRoot)new MutationObserver(schedule).observe(accountRoot,{subtree:true,childList:true});
+document.addEventListener("zwm:localechange",schedule);
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){schedule();if(addressMode)setTimeout(loadAddresses,800)},{once:true});else{schedule();if(addressMode)setTimeout(loadAddresses,800)}
 })();

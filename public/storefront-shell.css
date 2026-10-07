@@ -177,3 +177,22 @@ html[dir="rtl"] .site-header .nav .brand-wordmark,html[lang="ar"] .site-header .
   .footer .footer-legal-label{text-align:start!important}
   .footer .footer-legal-button{flex:1 1 100%!important;width:100%!important}
 }
+
+
+/* ===== mobile canonical source-control quarantine ===== */
+@media(max-width:760px){
+  /* Rewards/account styles contain older high-specificity visibility guards.
+     The real phone controls live inside #navLinks; source header controls must not
+     participate in layout or overflow. Keep this in the canonical shell. */
+  .site-header .nav>.nav-actions>.nav-search,
+  .site-header .nav>.nav-actions>.nav-instagram,
+  .site-header .nav>.nav-actions>#languageSwitch.language-switch,
+  .site-header .nav>.nav-actions>.language-switch,
+  .site-header .nav>.nav-actions>#mounehRewardsButton.mouneh-points-nav,
+  .site-header .nav>.nav-actions>#mounehRewardsButton.mouneh-points-nav.is-compact,
+  .site-header .nav>.nav-actions>#mounehAccountButton.mouneh-account-nav{
+    display:none!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+}

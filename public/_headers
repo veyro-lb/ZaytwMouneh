@@ -12,6 +12,46 @@
 /*.js
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
+
+# Core mutable storefront files must revalidate on navigation. These files are
+# shared across many pages and must not be stranded behind an old query key.
+/site-runtime-v9.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/storefront-release.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/locale-loader-v1.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/mouneh-rewards-v8.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/products-data.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/product-photos.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/app.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/premium-v2.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/styles.css
+  Cache-Control: public, max-age=0, must-revalidate
+
+/premium.css
+  Cache-Control: public, max-age=0, must-revalidate
+
+/storefront-shell.css
+  Cache-Control: public, max-age=0, must-revalidate
+
+/commerce-v1.css
+  Cache-Control: public, max-age=0, must-revalidate
+
+
 /*.css
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 

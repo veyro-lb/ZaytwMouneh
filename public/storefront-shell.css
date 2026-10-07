@@ -181,9 +181,10 @@ html[dir="rtl"] .site-header .nav .brand-wordmark,html[lang="ar"] .site-header .
 
 /* ===== mobile canonical source-control quarantine ===== */
 @media(max-width:760px){
-  /* Rewards/account styles contain older high-specificity visibility guards.
-     The real phone controls live inside #navLinks; source header controls must not
-     participate in layout or overflow. Keep this in the canonical shell. */
+  /* Runtime/rewards code keeps desktop source controls alive so the menu tools can
+     proxy them. Some of those controls use inline !important visibility styles.
+     Remove their geometry instead of fighting inline display declarations: the
+     customer-facing phone controls live in #navLinks and the cart stays in header. */
   .site-header .nav>.nav-actions>.nav-search,
   .site-header .nav>.nav-actions>.nav-instagram,
   .site-header .nav>.nav-actions>#languageSwitch.language-switch,
@@ -191,8 +192,22 @@ html[dir="rtl"] .site-header .nav .brand-wordmark,html[lang="ar"] .site-header .
   .site-header .nav>.nav-actions>#mounehRewardsButton.mouneh-points-nav,
   .site-header .nav>.nav-actions>#mounehRewardsButton.mouneh-points-nav.is-compact,
   .site-header .nav>.nav-actions>#mounehAccountButton.mouneh-account-nav{
-    display:none!important;
-    visibility:hidden!important;
-    pointer-events:none!important;
+    position:absolute!important;
+    width:0!important;
+    min-width:0!important;
+    max-width:0!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    gap:0!important;
+    overflow:hidden!important;
+    clip-path:inset(50%)!important;
+  }
+  .site-header .nav>.nav-actions>#cartButton{
+    position:relative!important;
+    z-index:2!important;
   }
 }

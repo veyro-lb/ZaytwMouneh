@@ -972,7 +972,7 @@
     if(!PREVIEW_MODE)ensureCustomerNotificationAssets();
     if(!PREVIEW_MODE&&!document.querySelector('script[data-mouneh-rewards],script[src*="mouneh-rewards-v8.js"]')){
       const rewardsScript=document.createElement("script");
-      rewardsScript.src="mouneh-rewards-v8.js?v=20261004-mobileauth3";
+      rewardsScript.src="/mouneh-rewards-v8.js?v="+encodeURIComponent(RUNTIME_ASSET_VERSION);
       rewardsScript.async=true;
       rewardsScript.dataset.mounehRewards="1";
       document.head.appendChild(rewardsScript);

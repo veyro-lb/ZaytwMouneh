@@ -17,7 +17,7 @@ jobs:
   regression:
     name: Production regression gate
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -26,5 +26,19 @@ jobs:
           cache: npm
       - name: Install locked test dependencies
         run: npm ci --ignore-scripts
+      - name: Install browser engines
+        run: npx playwright install --with-deps chromium webkit
       - name: Syntax and production regression checks
         run: npm run check
+      - name: Real-browser responsive regression
+        run: npm run test:browser
+      - name: Upload browser failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-regression-artifacts
+          path: |
+            playwright-report
+            test-results
+          if-no-files-found: ignore
+          retention-days: 7

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   
   <base href="/">
-    <script src="/locale-loader-v1.js?v=20261006-perf1"></script>
+    <script src="/locale-loader-v1.js?v=20261007-content6"></script>
 <link rel="stylesheet" href="/seo-a11y-v1.css?v=20261005-batch7">
   <script src="/seo-a11y-v1.js?v=20261005-wholesale-nav2" defer></script>
 <meta name="theme-color" content="#0f4a20" />
@@ -194,7 +194,7 @@
           <ol class="gift-v4-steps">
             <li><span>01</span><div><strong class="only-en">Choose products</strong><strong class="only-ar" lang="ar">اختر المنتجات</strong><small class="only-en">Search the full pantry or use a ready-made gift.</small><small class="only-ar" lang="ar">ابحث في كامل المونة أو ابدأ بهدية جاهزة.</small></div></li>
             <li><span>02</span><div><strong class="only-en">Personalize it</strong><strong class="only-ar" lang="ar">خصّص الهدية</strong><small class="only-en">Recipient, occasion, message and presentation.</small><small class="only-ar" lang="ar">المستلم والمناسبة والرسالة وطابع الهدية.</small></div></li>
-            <li><span>03</span><div><strong class="only-en">Complete checkout online</strong><strong class="only-ar" lang="ar">أتمّ الطلب عبر الموقع</strong><small class="only-en">Availability, packing and delivery are confirmed directly.</small><small class="only-ar" lang="ar">يتم تأكيد التوفر والتغليف والتوصيل مباشرة.</small></div></li>
+            <li><span>03</span><div><strong class="only-en">Complete checkout online</strong><strong class="only-ar" lang="ar">أتمّ الطلب عبر الموقع</strong><small class="only-en">Review delivery and the final total, then place the order on the website.</small><small class="only-ar" lang="ar">راجع التوصيل والمجموع النهائي ثم أرسل الطلب عبر الموقع.</small></div></li>
           </ol>
         </aside>
       </div>
@@ -223,8 +223,8 @@
             <h2 class="only-en">Three clear steps.<br><em>Nothing hidden.</em></h2>
             <h2 class="only-ar" lang="ar">ثلاث خطوات واضحة.<br><em>من دون تعقيد.</em></h2>
           </div>
-          <p class="only-en">Your gift stays editable until you continue to checkout. Prices shown are product totals; packing, delivery and the final total are confirmed at checkout.</p>
-          <p class="only-ar" lang="ar">تبقى الهدية قابلة للتعديل حتى تتابع إلى إتمام الطلب. الأسعار المعروضة للمنتجات، ويتم تأكيد التغليف والتوصيل والمجموع النهائي عند إتمام الطلب.</p>
+          <p class="only-en">Your gift stays editable until checkout. Prices shown are product totals. Delivery and the final total are confirmed at checkout; packing and presentation choices are preferences subject to availability.</p>
+          <p class="only-ar" lang="ar">تبقى الهدية قابلة للتعديل حتى إتمام الطلب. الأسعار المعروضة هي مجموع المنتجات. يتم تأكيد التوصيل والمجموع النهائي عند إتمام الطلب، أما خيارات التغليف والتقديم فهي تفضيلات بحسب التوفر.</p>
         </div>
 
         <form class="gift-v4-builder" id="giftForm">
@@ -282,20 +282,20 @@
                   <div>
                     <strong class="only-en">Personalize & send</strong>
                     <strong class="only-ar" lang="ar">خصّص وأرسل</strong>
-                    <small class="only-en">Add only what you know now. We can confirm the rest on WhatsApp.</small>
-                    <small class="only-ar" lang="ar">أضف ما تعرفه الآن، ويمكن تأكيد الباقي عبر واتساب.</small>
+                    <small class="only-en">Add the recipient details and any presentation preferences. Packing style and theme are subject to availability.</small>
+                    <small class="only-ar" lang="ar">أضف بيانات المستلم وأي تفضيلات للتقديم. طريقة التغليف والطابع رهن بالتوفر.</small>
                   </div>
                 </div>
 
                 <div class="gift-form-grid gift-v4-form-grid">
                   <label><span id="giftRecipientLabel">Recipient name</span><input id="giftRecipient" type="text" placeholder="Who is the gift for?" /></label>
                   <label><span id="giftOccasionLabel">Occasion</span><select id="giftOccasion"></select></label>
-                  <label><span id="giftPackagingLabel">Packing style</span><select id="giftPackaging"></select></label>
+                  <label><span id="giftPackagingLabel">Packing preference</span><select id="giftPackaging"></select></label>
                   <label><span id="giftAreaLabel">Delivery area</span><input id="giftArea" type="text" placeholder="Area in Lebanon" /></label>
                 </div>
 
                 <div class="gift-v4-presentation">
-                  <label><span class="only-en">Gift theme</span><span class="only-ar" lang="ar">طابع الهدية</span>
+                  <label><span class="only-en">Gift theme preference</span><span class="only-ar" lang="ar">تفضيل طابع الهدية</span>
                     <select id="giftTheme">
                       <option value="Olive green">Olive green</option>
                       <option value="Natural linen">Natural linen</option>
@@ -309,8 +309,9 @@
                       <option value="Bilingual">English + العربية</option>
                     </select>
                   </label>
-                  <label class="gift-v4-check"><input id="giftHidePrices" type="checkbox" checked /><span class="only-en">Hide prices from the recipient</span><span class="only-ar" lang="ar">إخفاء الأسعار عن المستلم</span></label>
+                  <label class="gift-v4-check"><input id="giftHidePrices" type="checkbox" checked /><span class="only-en">Request: hide prices from the recipient</span><span class="only-ar" lang="ar">طلب: إخفاء الأسعار عن المستلم</span></label>
                 </div>
+                <p class="gift-v4-note"><span class="only-en">Packing style and theme are preferences subject to availability. They do not change the product total shown here.</span><span class="only-ar" lang="ar">طريقة التغليف والطابع تفضيلات رهن بالتوفر، ولا تغيّر مجموع المنتجات المعروض هنا.</span></p>
 
                 <label class="gift-v4-full"><span id="giftMessageLabel">Gift message</span><textarea id="giftMessage" rows="3" placeholder="Write a short note for the recipient…"></textarea></label>
                 <label class="gift-v4-full"><span id="giftSenderLabel">Your name</span><input id="giftSender" type="text" placeholder="Your name" /></label>
@@ -324,7 +325,7 @@
                 </div>
 
                 <button class="gift-v4-submit" id="giftSend" type="submit"><span class="only-en">Continue to secure checkout</span><span class="only-ar" lang="ar">المتابعة لإتمام طلب الهدية بأمان</span><b>↗</b></button>
-                <p class="gift-v4-note" id="giftNote">Gift details, delivery and the final total are confirmed in website checkout. WhatsApp is available only if you need help.</p>
+                <p class="gift-v4-note" id="giftNote">Gift preferences are carried into checkout. Delivery and the final total are confirmed there; WhatsApp is only for help.</p>
               </section>
             </div>
           </div>
@@ -470,8 +471,8 @@
   <script src="site-runtime-v9.js?v=20261007-footerlegal1" data-zwm-site-runtime="1"></script>
   <script src="products-data.js?v=20261005-arabic4"></script>
   <script src="product-photos.js?v=20261004-mobileheader1"></script>
-  <script src="app.js?v=20261005-arabic3"></script>
-  <script src="/commerce-v1.js?v=20261005-arabic3"></script>
+  <script src="app.js?v=20261007-content6"></script>
+  <script src="/commerce-v1.js?v=20261007-content6"></script>
   <script src="/conversion-v1.js?v=20261005-batch6"></script>
 </body>
 </html>

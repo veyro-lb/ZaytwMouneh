@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const CONFIG_SRC = "admin-config.js?v=20261004-toolkit10";
+  const CONFIG_SRC = "/admin-config.js";
   const CUSTOMER_NOTIFICATIONS_VERSION = "20261007-storefrontstability1";
   const PRODUCT_CACHE = "zwm:cms:product-overrides:v1";
   const SETTINGS_CACHE = "zwm:cms:settings:v1";
@@ -871,7 +871,7 @@
           if(window.__ZWM_REWARDS_RETRY_LOADING)return;
           window.__ZWM_REWARDS_RETRY_LOADING=true;
           const retry=document.createElement("script");
-          retry.src="mouneh-rewards-v8.js?v=20261004-mobileauth3";
+          retry.src="/mouneh-rewards-v8.js";
           retry.async=true;
           retry.dataset.mounehRewardsRetry="1";
           retry.addEventListener("load",()=>{window.__ZWM_REWARDS_RETRY_LOADING=false;window.ZWM_REWARDS?.open?.()},{once:true});
@@ -948,7 +948,7 @@
     if(!PREVIEW_MODE)ensureCustomerNotificationAssets();
     if(!PREVIEW_MODE&&!document.querySelector('script[data-mouneh-rewards],script[src*="mouneh-rewards-v8.js"]')){
       const rewardsScript=document.createElement("script");
-      rewardsScript.src="mouneh-rewards-v8.js?v=20261004-mobileauth3";
+      rewardsScript.src="/mouneh-rewards-v8.js";
       rewardsScript.async=true;
       rewardsScript.dataset.mounehRewards="1";
       document.head.appendChild(rewardsScript);

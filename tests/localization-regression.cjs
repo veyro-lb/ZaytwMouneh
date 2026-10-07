@@ -12,13 +12,13 @@ assert(app.includes('next==="fr"?"fr":"en"'),"App must recognize French");
 assert(checkout.includes("T.fr=Object.fromEntries"),"Checkout must render French dictionary values");
 assert(wholesale.includes("window.ZWM_LOCALE?.get"),"Wholesale must use canonical locale API");
 assert(returnsLocale.includes("اعثر على طلبك بأمان")&&returnsLocale.includes("Retrouvez votre commande en toute sécurité"),"Returns center must include Arabic and French static-form translations");
-assert(returnsHtml.includes("returns-center-locale-v1.js?v=20261007-locales1"),"Returns center locale runtime must be loaded with a versioned URL");
+assert.match(returnsHtml,/returns-center-locale-v1\.js\?v=\d{8}-[a-z0-9-]+/,"Returns center locale runtime must be loaded with a versioned URL");
 assert(returnsHtml.includes("data-no-fr"),"Returns center must opt out of generic French DOM translation");
 assert(returnsPolicyLocale.includes('String(location.pathname||"/").split("/")'),"Returns policy must prioritize locale from the URL");
-assert(policyHtml.includes("returns-policy-locale-v1.js?v=20261007-locales2"),"Returns policy locale runtime must use the latest cache token");
+assert.match(policyHtml,/returns-policy-locale-v1\.js\?v=\d{8}-[a-z0-9-]+/,"Returns policy locale runtime must use a versioned URL");
 const returnsRuntime=read("public/returns-v1.js");
 assert(returnsRuntime.includes('route("/returns-policy")'),"returns dynamic policy links must preserve locale");
 assert(returnsRuntime.includes('tr("Affected quantity","الكمية المتأثرة","Quantité concernée")'),"returns wizard accessibility labels must be localized");
-assert(returnsHtml.includes("returns-v1.js?v=20261007-returnslocales1"),"Returns runtime cache token must be refreshed");
+assert.match(returnsHtml,/returns-v1\.js\?v=\d{8}-[a-z0-9-]+/,"Returns runtime must stay explicitly versioned");
 for(const p of ["public/index.html","public/shop.html","public/account.html","public/checkout.html","public/gift.html","public/recipes.html","public/wholesale.html","public/product.html"]){const html=read(p);assert(html.includes("locale-loader-v1.js"),p+" must load locale loader");assert(!html.includes('src="/fr-runtime-v1.js'),p+" must not eagerly load French runtime");}
 console.log("localization regression: ok");

@@ -1930,61 +1930,141 @@
   }
 
   function openOrderDetails(reference) {
-    const order=state.orders.find(o=>o.reference===reference);
-    if(!order)return;
+    const order=state.orders.find(o=>o?.reference===reference);
+    if(!order){
+      toast("Order details are no longer available. Refreshing orders…","error");
+      refreshOrdersLive();
+      return;
+    }
+
+    const modal=$("orderModal");
+    if(!modal){
+      console.error("Order details modal is missing from the page.");
+      toast("Could not open order details. Please refresh the owner console.","error");
+      return;
+    }
+
     state.selectedOrderReference=reference;
-    const extra=order.extra||{};
-    const customer=order.kind==="gift"?(extra.recipient||order.customer_name||"Gift order"):(order.customer_name||"Customer");
-    const items=Array.isArray(order.items)?order.items:[];
-    $("orderDetailTitle").textContent=order.kind==="gift"?"Gift order":"Pantry order";
-    $("orderDetailCode").textContent=order.reference;
-    $("orderDetailSent").textContent=`Created ${new Date(order.submitted_at).toLocaleString([], {year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}`;
-    $("orderDetailCustomer").textContent=customer;
-    $("orderDetailArea").textContent=order.area||"Area not supplied";
-    $("orderDetailPhone").textContent=order.customer_phone||"No phone saved";
-    $("orderDetailKind").textContent=order.kind==="gift"?"Gift order":"Pantry order";
-    $("orderDetailLanguage").textContent=order.language==="ar"?"Arabic order":"English order";
-    if($("orderDetailSource"))$("orderDetailSource").textContent=orderSourceLabel(order);
-    $("orderDetailTotal").textContent=money(order.total);
-    if($("orderDetailBreakdown")){
-      const parts=[`Products ${money(order.subtotal ?? extra.products_subtotal ?? order.total)}`];
-      if(Number(order.reward_discount||extra.mouneh_discount||0)>0)parts.push(`Reward -${money(order.reward_discount||extra.mouneh_discount)}`);
-      parts.push(Number(order.delivery_fee||extra.delivery_fee||0)>0?`Delivery ${money(order.delivery_fee||extra.delivery_fee)}`:"Delivery free");
-      $("orderDetailBreakdown").textContent=parts.join(" · ");
-    }
-    $("orderDetailStatus").innerHTML=orderStatusSelect(order,"order-detail-status-select");
-    if($("orderDetailPaymentStatus"))$("orderDetailPaymentStatus").innerHTML=paymentBadgeHtml(order)+(order.paid_at?`<small class="payment-paid-at">Confirmed ${esc(new Date(order.paid_at).toLocaleString([], {month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}))}</small>`:"");
-    if($("orderDetailPaymentMethod"))$("orderDetailPaymentMethod").textContent=paymentMethodLabel(order.payment_method);
-    if($("orderDetailPaymentAction"))$("orderDetailPaymentAction").innerHTML=paymentActionHtml(order);
-    const rewardsState=orderRewardsState(order);
-    if($("orderDetailRewardsState")){$("orderDetailRewardsState").textContent=rewardsState.label;$("orderDetailRewardsState").className=rewardsState.className;}
-    if($("orderDetailRewardsHelp"))$("orderDetailRewardsHelp").textContent=rewardsState.help;
-    $("orderDetailItemCount").textContent=`${items.reduce((n,i)=>n+(Number(i.qty)||0),0)} item${items.reduce((n,i)=>n+(Number(i.qty)||0),0)===1?"":"s"}`;
-    $("orderDetailItems").innerHTML=items.map((item,i)=>`
-      <div class="order-detail-item">
-        <span>${i+1}</span>
-        <div><b>${esc(item.name||item.product_id||"Item")}</b><small>${esc(item.size||"")} · Qty ${Number(item.qty)||1}</small></div>
-        <strong>${money(item.subtotal ?? ((Number(item.unit_price)||0)*(Number(item.qty)||1)))}</strong>
-      </div>`).join("")||'<p class="empty-state">No item details stored.</p>';
-    $("orderDetailNotes").textContent=order.notes||"No notes.";
-    $("orderPrivateNote").value=order.private_notes||state.notes.get(`order:${order.reference}`)?.note||"";
-    const customerHistory=customerHistoryFor(order);
-    $("orderCustomerHistory").innerHTML=customerHistory?
-      `<div class="customer-history-summary"><div><b>${customerHistory.orders.length}</b><span>orders</span></div><div><b>${money(customerHistory.total)}</b><span>total spend</span></div></div>
-       <div class="customer-history-orders">${customerHistory.orders.slice().sort((a,b)=>new Date(b.submitted_at)-new Date(a.submitted_at)).slice(0,5).map(o=>`<button type="button" data-view-order="${esc(o.reference)}"><span>${esc(o.reference)}</span><b>${money(o.total)}</b><small>${esc(when(o.submitted_at))}</small></button>`).join("")}</div>`
-      :'<p class="empty-state">No previous orders found.</p>';
-    $("orderGiftDetails").hidden=order.kind!=="gift";
-    if(order.kind==="gift"){
-      const fields=[
-        ["Recipient",extra.recipient],["Recipient phone",extra.recipient_phone],["Occasion",extra.occasion],["Packing",extra.packing],
-        ["Theme",extra.theme],["Card language",extra.card_language],["Gift message",extra.gift_message],
-        ["Hide prices",extra.hide_prices===true?"Yes":extra.hide_prices===false?"No":""]
-      ].filter(([,v])=>v!==undefined&&v!==null&&v!=="");
-      $("orderDetailGift").innerHTML=fields.map(([k,v])=>`<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("")||'<p class="empty-state">No extra gift details stored.</p>';
-    }
-    renderOrderTimeline(order);
-    $("orderModal").hidden=false;
+
+    // Open the shell first so a non-critical detail rendering error can never
+    // make the Details button appear to crash the dashboard.
+    modal.hidden=false;
+    modal.setAttribute("aria-hidden","false");
     document.body.style.overflow="hidden";
+
+    const setText=(id,value)=>{
+      const el=$(id);
+      if(el)el.textContent=value==null?"":String(value);
+    };
+    const setHtml=(id,value)=>{
+      const el=$(id);
+      if(el)el.innerHTML=value==null?"":String(value);
+    };
+    const safeDate=(value,options)=>{
+      const d=new Date(value);
+      return Number.isNaN(d.getTime())?"—":d.toLocaleString([],options);
+    };
+
+    try{
+      const extra=(order.extra&&typeof order.extra==="object")?order.extra:{};
+      const customer=order.kind==="gift"
+        ?(extra.recipient||order.customer_name||"Gift order")
+        :(order.customer_name||"Customer");
+      const items=Array.isArray(order.items)?order.items:[];
+
+      setText("orderDetailTitle",order.kind==="gift"?"Gift order":"Pantry order");
+      setText("orderDetailCode",order.reference||"—");
+      setText("orderDetailSent",`Created ${safeDate(order.submitted_at,{year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}`);
+      setText("orderDetailCustomer",customer);
+      setText("orderDetailArea",order.area||"Area not supplied");
+      setText("orderDetailPhone",order.customer_phone||"No phone saved");
+      setText("orderDetailKind",order.kind==="gift"?"Gift order":"Pantry order");
+      setText("orderDetailLanguage",order.language==="ar"?"Arabic order":"English order");
+      if($("orderDetailSource"))setText("orderDetailSource",orderSourceLabel(order));
+      setText("orderDetailTotal",money(order.total));
+
+      if($("orderDetailBreakdown")){
+        const parts=[`Products ${money(order.subtotal ?? extra.products_subtotal ?? order.total)}`];
+        if(Number(order.reward_discount||extra.mouneh_discount||0)>0){
+          parts.push(`Reward -${money(order.reward_discount||extra.mouneh_discount)}`);
+        }
+        parts.push(Number(order.delivery_fee||extra.delivery_fee||0)>0
+          ?`Delivery ${money(order.delivery_fee||extra.delivery_fee)}`
+          :"Delivery free");
+        setText("orderDetailBreakdown",parts.join(" · "));
+      }
+
+      setHtml("orderDetailStatus",orderStatusSelect(order,"order-detail-status-select"));
+
+      if($("orderDetailPaymentStatus")){
+        const paidAt=order.paid_at
+          ?`<small class="payment-paid-at">Confirmed ${esc(safeDate(order.paid_at,{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}))}</small>`
+          :"";
+        setHtml("orderDetailPaymentStatus",paymentBadgeHtml(order)+paidAt);
+      }
+      if($("orderDetailPaymentMethod"))setText("orderDetailPaymentMethod",paymentMethodLabel(order.payment_method));
+      if($("orderDetailPaymentAction"))setHtml("orderDetailPaymentAction",paymentActionHtml(order));
+
+      try{
+        const rewardsState=orderRewardsState(order);
+        if($("orderDetailRewardsState")){
+          setText("orderDetailRewardsState",rewardsState.label);
+          $("orderDetailRewardsState").className=rewardsState.className||"";
+        }
+        if($("orderDetailRewardsHelp"))setText("orderDetailRewardsHelp",rewardsState.help||"");
+      }catch(err){
+        console.warn("Order rewards detail render failed:",err);
+        setText("orderDetailRewardsState","Pending");
+        setText("orderDetailRewardsHelp","Rewards status could not be loaded.");
+      }
+
+      const itemCount=items.reduce((n,i)=>n+(Number(i?.qty)||0),0);
+      setText("orderDetailItemCount",`${itemCount} item${itemCount===1?"":"s"}`);
+      setHtml("orderDetailItems",items.map((item,i)=>`
+        <div class="order-detail-item">
+          <span>${i+1}</span>
+          <div><b>${esc(item?.name||item?.product_id||"Item")}</b><small>${esc(item?.size||"")} · Qty ${Number(item?.qty)||1}</small></div>
+          <strong>${money(item?.subtotal ?? ((Number(item?.unit_price)||0)*(Number(item?.qty)||1)))}</strong>
+        </div>`).join("")||'<p class="empty-state">No item details stored.</p>');
+
+      setText("orderDetailNotes",order.notes||"No notes.");
+      if($("orderPrivateNote")){
+        $("orderPrivateNote").value=order.private_notes||state.notes?.get?.(`order:${order.reference}`)?.note||"";
+      }
+
+      try{
+        const customerHistory=customerHistoryFor(order);
+        setHtml("orderCustomerHistory",customerHistory
+          ?`<div class="customer-history-summary"><div><b>${customerHistory.orders.length}</b><span>orders</span></div><div><b>${money(customerHistory.total)}</b><span>total spend</span></div></div>
+             <div class="customer-history-orders">${customerHistory.orders.slice().sort((a,b)=>new Date(b.submitted_at)-new Date(a.submitted_at)).slice(0,5).map(o=>`<button type="button" data-view-order="${esc(o.reference)}"><span>${esc(o.reference)}</span><b>${money(o.total)}</b><small>${esc(when(o.submitted_at))}</small></button>`).join("")}</div>`
+          :'<p class="empty-state">No previous orders found.</p>');
+      }catch(err){
+        console.warn("Customer order history render failed:",err);
+        setHtml("orderCustomerHistory",'<p class="empty-state">Customer history could not be loaded.</p>');
+      }
+
+      if($("orderGiftDetails"))$("orderGiftDetails").hidden=order.kind!=="gift";
+      if(order.kind==="gift"&&$("orderDetailGift")){
+        const fields=[
+          ["Recipient",extra.recipient],["Recipient phone",extra.recipient_phone],["Occasion",extra.occasion],["Packing",extra.packing],
+          ["Theme",extra.theme],["Card language",extra.card_language],["Gift message",extra.gift_message],
+          ["Hide prices",extra.hide_prices===true?"Yes":extra.hide_prices===false?"No":""]
+        ].filter(([,v])=>v!==undefined&&v!==null&&v!=="");
+        setHtml("orderDetailGift",fields.map(([k,v])=>`<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("")||'<p class="empty-state">No extra gift details stored.</p>');
+      }
+
+      try{
+        renderOrderTimeline(order);
+      }catch(err){
+        console.warn("Order timeline render failed:",err);
+        setHtml("orderDetailTimeline",'<p class="empty-state">Order timeline could not be loaded.</p>');
+      }
+    }catch(err){
+      console.error("Could not render order details:",err);
+      toast("Order details opened, but part of the information could not be displayed.","error");
+      setText("orderDetailTitle","Order details");
+      setText("orderDetailCode",order.reference||reference||"—");
+    }
   }
 
   function closeOrderDetails() {
@@ -4044,7 +4124,7 @@
     const orderStatusHandler=e=>{const select=e.target.closest("[data-order-status]");if(select)updateOrderStatus(select.dataset.orderStatus,select.value);};
     $("orderTableBody")?.addEventListener("change",orderStatusHandler);
     $("orderCardsMobile")?.addEventListener("change",orderStatusHandler);
-    const orderDetailsHandler=e=>{const btn=e.target.closest("[data-view-order]");if(btn)openOrderDetails(btn.dataset.viewOrder);};
+    const orderDetailsHandler=e=>{const btn=e.target.closest("[data-view-order]");if(!btn)return;e.preventDefault();e.stopPropagation();openOrderDetails(btn.dataset.viewOrder);};
     $("orderTableBody")?.addEventListener("click",orderDetailsHandler);
     $("orderCardsMobile")?.addEventListener("click",orderDetailsHandler);
     $("orderCardsMobile")?.addEventListener("click",e=>{const b=e.target.closest("[data-order-quick-status]");if(b){e.stopPropagation();updateOrderStatus(b.dataset.orderRef,b.dataset.orderQuickStatus);}});

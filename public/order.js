@@ -2,7 +2,8 @@
 "use strict";
 
 var AUTH_KEY="zwm:mouneh:session:v1",CLAIMS_KEY="zwm:mouneh:claims:v1",CART_KEY="zwm-cart-v5",LANG_KEY="zwm-lang-v2";
-var state={lang:"en",order:null,ref:"",claim:"",products:[],lastStatus:"",refreshing:false,loaded:false};
+var state={lang:"en",order:null,ref:"",claim:"",products:[],lastStatus:"",refreshing:false,loaded:false,lastLoaded:0};
+var ORDER_REFRESH_MS=30000,ORDER_STALE_MS=20000,REQUEST_TIMEOUT_MS=15000;
 var $=function(id){return document.getElementById(id)};
 var money=function(v){var value="$"+(Number(v)||0).toFixed(2);return isArabic()?"\u2066"+value+"\u2069":value};
 var esc=function(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
@@ -15,15 +16,22 @@ function isArabic(){return state.lang==="ar"}
 function isFrench(){return state.lang==="fr"}
 function tr(en,ar,fr){if(isArabic())return ar;if(isFrench())return fr!=null?fr:(window.ZWM_FR_TRANSLATE?window.ZWM_FR_TRANSLATE(en):en);return en}
 
-async function rpc(action,p){
-  var c=config(),s=session(),headers={"apikey":c.supabasePublishableKey,"Content-Type":"application/json","Prefer":"return=representation"};
+async function rpc(action,p,retry){
+  var c=config(),s=session(),headers={"apikey":c.supabasePublishableKey,"Content-Type":"application/json","Prefer":"return=representation"},controller=typeof AbortController==="function"?new AbortController():null,timer=null,r;
   if(s&&s.access_token)headers.Authorization="Bearer "+s.access_token;
-  var r=await fetch(String(c.supabaseUrl||"").replace(/\/$/,"")+"/rest/v1/rpc/zwm_checkout",{
-    method:"POST",
-    headers:headers,
-    body:JSON.stringify({action:action,p:p||{}})
-  });
+  try{
+    if(controller)timer=setTimeout(function(){controller.abort()},REQUEST_TIMEOUT_MS);
+    r=await fetch(String(c.supabaseUrl||"").replace(/\/$/,"")+"/rest/v1/rpc/zwm_checkout",{
+      method:"POST",headers:headers,body:JSON.stringify({action:action,p:p||{}}),signal:controller?controller.signal:undefined
+    });
+  }catch(err){
+    throw new Error(err&&err.name==="AbortError"?tr("Order check timed out. Please retry.","انتهت مهلة التحقق من الطلب. حاول مجدداً.","La vérification a expiré. Réessayez."):tr("Could not reach the order service.","تعذّر الاتصال بخدمة الطلب.","Impossible de joindre le service de commande."));
+  }finally{if(timer)clearTimeout(timer)}
   var data=await r.json().catch(function(){return {}});
+  if(r.status===401&&retry!==false){
+    var refreshed=await window.ZWM_REWARDS?.auth?.refreshSession?.();
+    if(refreshed?.access_token)return rpc(action,p,false);
+  }
   if(!r.ok)throw new Error(data.message||data.hint||data.details||tr("Order unavailable","تعذّر فتح الطلب.","Commande indisponible"));
   return data;
 }
@@ -258,7 +266,9 @@ async function refresh(){
     state.order=next;
     state.lastStatus=next&&next.status||"";
     state.loaded=true;
+    state.lastLoaded=Date.now();
     render();
+    try{document.dispatchEvent(new CustomEvent("zwm:order-rendered",{detail:{reference:state.ref,status:state.lastStatus}}))}catch{}
     if(previous&&state.lastStatus&&previous!==state.lastStatus){
       $("orderActionStatus").textContent=tr("Order status updated to ","تم تحديث حالة طلبك إلى: ","Statut de la commande mis à jour : ")+label(state.lastStatus)+(isArabic()?"":".");
     }
@@ -336,11 +346,16 @@ async function init(){
   $("cancelOrderButton").addEventListener("click",cancel);
   $("reorderButton").addEventListener("click",reorder);
 
-  setInterval(function(){if(!document.hidden)refresh()},5000);
-  window.addEventListener("focus",refresh);
-  window.addEventListener("online",refresh);
-  window.addEventListener("pageshow",refresh);
-  document.addEventListener("visibilitychange",function(){if(!document.hidden)refresh()});
+  function refreshIfStale(maxAge){
+    if(document.hidden||state.refreshing)return;
+    if(!state.lastLoaded||Date.now()-state.lastLoaded>=maxAge)refresh();
+  }
+  setInterval(function(){refreshIfStale(ORDER_STALE_MS)},ORDER_REFRESH_MS);
+  document.addEventListener("zwm:customer-order-changed",refresh);
+  window.addEventListener("focus",function(){refreshIfStale(ORDER_STALE_MS)});
+  window.addEventListener("online",function(){refreshIfStale(5000)});
+  window.addEventListener("pageshow",function(){refreshIfStale(ORDER_STALE_MS)});
+  document.addEventListener("visibilitychange",function(){if(!document.hidden)refreshIfStale(ORDER_STALE_MS)});
 }
 
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});

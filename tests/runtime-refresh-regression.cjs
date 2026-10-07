@@ -1,0 +1,118 @@
+const fs=require("node:fs");
+const path=require("node:path");
+const assert=require("node:assert/strict");
+const {JSDOM}=require("jsdom");
+
+const root=path.join(__dirname,"..");
+const read=p=>fs.readFileSync(path.join(root,p),"utf8");
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+
+function stripScripts(html){
+  return html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,"").replace(/<link\b[^>]*rel=["']stylesheet["'][^>]*>/gi,"");
+}
+
+async function testCustomerOrders(){
+  const html='<!doctype html><html><body data-page="account"><main id="accountShell"><section data-account-panel="overview"><div class="account-grid"></div></section><section data-account-panel="orders"></section></main></body></html>';
+  const dom=new JSDOM(html,{url:"https://store.example/account#orders",runScripts:"outside-only",pretendToBeVisual:true});
+  const w=dom.window;
+  let now=100000,fetches=0;
+  const intervals=[];
+  w.Date.now=()=>now;
+  w.requestAnimationFrame=fn=>w.setTimeout(()=>fn(now),0);
+  w.setInterval=(fn,delay)=>{intervals.push({fn,delay});return intervals.length};
+  w.clearInterval=()=>{};
+  w.ZWM_CMS_CONFIG={supabaseUrl:"https://example.supabase.co",supabasePublishableKey:"public"};
+  w.localStorage.setItem("zwm:mouneh:session:v1",JSON.stringify({access_token:"token",refresh_token:"refresh"}));
+  w.ZWM_REWARDS={getState:()=>({member:{id:"m1"}}),refresh:async()=>{}};
+  w.fetch=async()=>{fetches++;return {ok:true,status:200,json:async()=>({orders:[],counts:{all:0,active:0,delivered:0,cancelled:0}})}};
+  try{
+    w.eval(read("public/customer-orders-v1.js"));
+    w.document.dispatchEvent(new w.Event("DOMContentLoaded"));
+    await wait(25);
+    assert.equal(fetches,1,"customer orders should make one initial list request");
+    assert(intervals.some(x=>x.delay===120000),"orders background cadence should be 120 seconds");
+    assert(!intervals.some(x=>x.delay===8000),"8-second order polling must not return");
+
+    const rootEl=w.document.getElementById("accountShell");
+    rootEl.appendChild(w.document.createElement("div"));
+    await wait(25);
+    assert.equal(fetches,1,"DOM mutation must not trigger an order network request");
+
+    w.dispatchEvent(new w.Event("focus"));
+    await wait(5);
+    assert.equal(fetches,1,"fresh focus must not refetch orders");
+
+    now+=61000;
+    w.dispatchEvent(new w.Event("focus"));
+    await wait(10);
+    assert.equal(fetches,2,"stale focus should refresh orders once");
+
+    const button=w.document.querySelector("[data-customer-orders-refresh]");
+    assert(button,"manual order refresh button should remain mounted");
+    button.click();
+    await wait(10);
+    assert.equal(fetches,3,"manual refresh should still work");
+
+    Object.defineProperty(w.document,"hidden",{configurable:true,value:true});
+    now+=180000;
+    w.document.dispatchEvent(new w.Event("visibilitychange"));
+    await wait(5);
+    assert.equal(fetches,3,"hidden tabs must not refresh orders");
+  }finally{
+    dom.window.close();
+  }
+}
+
+async function testAccountStaleness(){
+  const dom=new JSDOM(stripScripts(read("public/account.html")),{url:"https://store.example/account#overview",runScripts:"outside-only",pretendToBeVisual:true});
+  const w=dom.window;
+  let now=200000,refreshes=0;
+  const intervals=[];
+  w.Date.now=()=>now;
+  w.requestAnimationFrame=fn=>w.setTimeout(()=>fn(now),0);
+  w.setInterval=(fn,delay)=>{intervals.push({fn,delay});return intervals.length};
+  w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});
+  w.HTMLElement.prototype.scrollIntoView=function(){};
+  const rewardState={ready:true,session:true,member:{name:"Test",balance:0},dashboard:{member:{name:"Test",balance:0},wallet:[],orders:[],ledger:[]},lastAccountLoadAt:now,publicData:{config:{}},providers:[],authMode:"public",accountBusy:false,accountError:""};
+  w.ZWM_REWARDS={getState:()=>rewardState,refresh:async()=>{refreshes++;rewardState.lastAccountLoadAt=now},account:{refresh:async()=>{refreshes++;rewardState.lastAccountLoadAt=now}}};
+  try{
+    w.eval(read("public/account.js"));
+    await wait(10);
+    assert(intervals.some(x=>x.delay===120000),"account cadence should be 120 seconds");
+    w.dispatchEvent(new w.Event("focus"));
+    await wait(5);
+    assert.equal(refreshes,0,"fresh account focus must not hit the API");
+    now+=121000;
+    w.dispatchEvent(new w.Event("focus"));
+    await wait(10);
+    assert.equal(refreshes,1,"stale account focus should refresh once");
+    w.dispatchEvent(new w.Event("pageshow"));
+    w.document.dispatchEvent(new w.Event("visibilitychange"));
+    await wait(10);
+    assert.equal(refreshes,1,"focus/pageshow/visibility burst should deduplicate while fresh");
+  }finally{
+    dom.window.close();
+  }
+}
+
+function testCoordinationGuards(){
+  const rewards=read("public/mouneh-rewards-v8.js");
+  const site=read("public/site-runtime-v9.js");
+  const notifications=read("public/customer-notifications-v1.js");
+  const order=read("public/order.js");
+  const returns=read("public/returns-v1.js");
+  assert.match(rewards,/refreshSessionInFlight/,"session refresh must be single-flight");
+  assert.match(rewards,/dashboardLoadInFlight/,"dashboard refresh must be single-flight");
+  assert.match(rewards,/zwm:auth-expired/,"expired session must settle into one auth-expired event");
+  assert.match(site,/CMS_STALE_MS\s*=\s*5\*60\*1000/,"CMS refresh should use a five-minute freshness window");
+  assert.match(notifications,/BELL_BACKGROUND_REFRESH_MS=120000/,"notification polling should be moderate");
+  assert.match(order,/ORDER_REFRESH_MS=30000/,"order detail should not poll every five seconds");
+  assert.match(returns,/REQUEST_TIMEOUT_MS=15000/,"returns requests need a finite timeout");
+}
+
+(async()=>{
+  await testCustomerOrders();
+  await testAccountStaleness();
+  testCoordinationGuards();
+  console.log("Runtime refresh regression passed: stale-aware account/orders, hidden-tab suppression, manual refresh, and coordination guards.");
+})().catch(err=>{console.error(err);process.exitCode=1});

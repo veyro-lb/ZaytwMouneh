@@ -19,18 +19,20 @@ Premium responsive static storefront for Zayt w Mouneh.
 - Responsive mobile, tablet and laptop layouts
 - Cart persistence with localStorage
 - Reduced-motion accessibility support
-- No framework, package manager, build step or Wrangler requirement
+- No storefront framework or build step; Cloudflare serves the production files directly from `public/`
 
-## Cloudflare Pages
+## Production deployment
 
-This repository is a plain static site.
+This repository is a plain static storefront. **The only production storefront source is `public/`.**
 
+Cloudflare Wrangler is configured in both `wrangler.toml` and `wrangler.jsonc` with the assets directory set to `./public`. Root-level HTML/CSS/JS files are legacy snapshots and must not be edited as customer-facing production files.
+
+- Production storefront: `public/`
 - Framework preset: None
-- Build command: leave empty
-- Build output directory: /
-- Root directory: /
+- Build command: none
+- Wrangler assets directory: `./public`
 
-If Cloudflare Pages is connected to this repository and watches `main`, commits deploy directly.
+See `docs/PRODUCTION-STOREFRONT.md` for the source-of-truth rules and regression guard.
 
 
 ## Commerce UX added

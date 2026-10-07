@@ -75,6 +75,8 @@
   const allowed=new Set(["overview","points","orders","referrals","profile"]);
   if(!allowed.has(active))active="overview";
   let syncing=false, lastRenderSig="", lastSyncedAt=Date.now(), previousMemberState=null;
+  const ACCOUNT_STALE_MS=120000;
+  const ACCOUNT_RESUME_GRACE_MS=30000;
 
   function syncLanguageVisibility(){
     const showArabic=ar();
@@ -331,9 +333,11 @@
     }
     el.innerHTML=memberView(s,s.member);
   }
-  async function sync(){
+  async function sync({force=false,maxAge=ACCOUNT_STALE_MS}={}){
     if(syncing||document.visibilityState==="hidden")return;
     const a=api(),s=state(); if(!a||!s.session)return render();
+    const freshest=Math.max(lastSyncedAt,Number(s.lastAccountLoadAt)||0);
+    if(!force&&freshest&&Date.now()-freshest<maxAge)return;
     syncing=true;try{await a.refresh?.();lastSyncedAt=Date.now()}catch{}finally{syncing=false;render(true)}
   }
   async function retryAccount(button){
@@ -546,12 +550,12 @@
     const next=(location.hash||"").slice(1);
     if(allowed.has(next)&&next!==active){active=next;render(true)}
   });
-  window.addEventListener("focus",sync);
-  window.addEventListener("online",sync);
+  window.addEventListener("focus",()=>sync());
+  window.addEventListener("online",()=>sync({maxAge:ACCOUNT_RESUME_GRACE_MS}));
   window.addEventListener("storage",syncAccountShellChrome);
   window.addEventListener("pageshow",syncAccountShellChrome);
-  window.addEventListener("pageshow",sync);
-  window.addEventListener("storage",e=>{if(!e.key||String(e.key).startsWith("zwm"))sync()});
+  window.addEventListener("pageshow",()=>sync());
+  window.addEventListener("storage",e=>{if(e.key==="zwm:mouneh:session:v1"||e.key==="zwm:rewards-updated")sync({maxAge:ACCOUNT_RESUME_GRACE_MS})});
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)sync()});
   document.addEventListener("zwm:localechange",()=>{syncLanguageVisibility();render(true)});
   // Compatibility for code/tests that still update <html lang/dir> directly.
@@ -603,5 +607,5 @@
     }
   });
   setTimeout(()=>{accountBootTimedOut=true;render(true)},ACCOUNT_BOOT_TIMEOUT_MS);
-  setInterval(sync,30000);
+  setInterval(()=>sync(),ACCOUNT_STALE_MS);
 })();

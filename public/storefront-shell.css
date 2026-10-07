@@ -1297,3 +1297,15 @@ html[dir="rtl"] #navLinks.is-mobile-portal>a[aria-current="page"]:not(.menu-util
   }
 }
 
+/* ===== menuspacing3: desktop breathing room without overlap ===== */
+@media(min-width:761px){
+  .site-header .nav>#navLinks,
+  #navLinks.is-mobile-portal{
+    max-height:min(600px,calc(100dvh - var(--zwm-menu-top,116px) - 88px))!important;
+  }
+
+  .site-header .nav>#navLinks .menu-heading,
+  #navLinks.is-mobile-portal .menu-heading{
+    position:static!important;
+  }
+}

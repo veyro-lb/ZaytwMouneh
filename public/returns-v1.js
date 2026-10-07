@@ -102,6 +102,14 @@ function mountHistory(){
  root.querySelectorAll("[data-return-detail]").forEach(b=>b.addEventListener("click",()=>openDetail(b.dataset.returnDetail)));
 }
 async function openDetail(id){try{const r=await rpc("detail",{request_id:id},true);openModal();const msgs=(r.messages||[]).map(m=>'<div class="zwm-message"><small>'+esc(m.sender_role==="admin"?tr("Zayt W Mouneh","زيت ومونة","Zayt W Mouneh"):tr("You","أنت","Vous"))+' · '+date(m.created_at)+'</small><p>'+esc(m.message)+'</p></div>').join("");$("#zwmReturnBody").innerHTML='<div class="zwm-detail"><div class="zwm-detail-title"><div><small>'+esc(r.order_reference)+'</small><h3>'+esc(r.request_number)+'</h3></div><span class="zwm-status status-'+esc(r.status)+'">'+esc(statusLabel(r.status))+'</span></div><p><strong>'+esc(reasonLabel(r.reason_code))+'</strong></p><p>'+esc(r.customer_description)+'</p>'+(r.customer_visible_resolution?'<div class="zwm-resolution"><strong>'+esc(tr("Resolution","الحل","Solution"))+'</strong><p>'+esc(r.customer_visible_resolution)+'</p></div>':'')+(r.rejection_reason?'<div class="zwm-resolution"><strong>'+esc(tr("Review result","نتيجة المراجعة","Résultat de l’examen"))+'</strong><p>'+esc(r.rejection_reason)+'</p></div>':'')+(Number(r.approved_refund_total)>0?'<div class="zwm-resolution"><strong>'+esc(tr("Approved refund","الاسترداد المعتمد","Remboursement approuvé"))+'</strong><p>'+money(r.approved_refund_total)+' · '+esc(r.refund_status)+'</p></div>':'')+'<div class="zwm-messages">'+msgs+'</div>'+(r.status==="awaiting_customer"?'<form id="zwmReplyForm"><label class="zwm-field"><span>'+esc(tr("Add information","إضافة معلومات","Ajouter des informations"))+'</span><textarea id="zwmReplyText" rows="4" maxlength="3000" required></textarea></label><button class="zwm-return-submit" type="submit">'+esc(tr("Send update","إرسال التحديث","Envoyer"))+'</button><p id="zwmReplyError" class="zwm-return-error"></p></form>':'')+'</div>';const f=$("#zwmReplyForm");if(f)f.addEventListener("submit",async e=>{e.preventDefault();try{await rpc("add_message",{request_id:r.id,message:$("#zwmReplyText").value},true);await loadHistory(true);openDetail(r.id)}catch(x){$("#zwmReplyError").textContent=x.message}})}catch(e){openModal();$("#zwmReturnBody").innerHTML='<p class="zwm-return-error">'+esc(e.message)+'</p>'}}
+function mountStandaloneReturnsTab(){
+ if(document.body.dataset.page!=="order")return;
+ if(document.querySelector("[data-returns-center-link],[data-returns-fallback]"))return;
+ const a=document.createElement("a");
+ a.href="/returns";a.className="zwm-returns-fallback-tab";a.setAttribute("data-returns-fallback","");
+ a.textContent=tr("Returns & Issues","الإرجاع والمشاكل","Retours & problèmes");
+ document.body.appendChild(a);
+}
 function mountReturnCenter(){
  if(document.body.dataset.page!=="returns")return;
  const form=$("#returnsLookupForm"),result=$("#returnsLookupResult"),contact=$("#returnsLookupContact"),hint=$("#returnsLookupContactHint");
@@ -128,6 +136,6 @@ function mountReturnCenter(){
    finally{S.busy=false;if(button){button.disabled=false;button.textContent=tr("Verify order","تحقق من الطلب","Vérifier la commande")}}
  });
 }
-function init(){ensureCss();ensureModal();mountReturnCenter();if(document.body.dataset.page==="order"){const mo=new MutationObserver(mountOrderHelp);mo.observe(document.body,{childList:true,subtree:true});mountOrderHelp()}if(document.body.dataset.page==="account"){const mo=new MutationObserver(()=>{if(!$("#zwmReturnHistory"))mountHistory()});mo.observe(document.body,{childList:true,subtree:true});setTimeout(()=>loadHistory(false),500);window.addEventListener("focus",()=>loadHistory(true))}}
+function init(){ensureCss();ensureModal();mountStandaloneReturnsTab();mountReturnCenter();if(document.body.dataset.page==="order"){const mo=new MutationObserver(mountOrderHelp);mo.observe(document.body,{childList:true,subtree:true});mountOrderHelp()}if(document.body.dataset.page==="account"){const mo=new MutationObserver(()=>{if(!$("#zwmReturnHistory"))mountHistory()});mo.observe(document.body,{childList:true,subtree:true});setTimeout(()=>loadHistory(false),500);window.addEventListener("focus",()=>loadHistory(true))}}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();

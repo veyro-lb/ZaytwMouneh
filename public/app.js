@@ -551,7 +551,19 @@ function repeatedListingNote(p){
 }
 
 function money(n){const value=`$${Number(n).toFixed(2)}`;return lang==="ar"?`\u2066${value}\u2069`:value}
-function currentName(p){return lang==="ar"?plainArabic(p.nameAr):p.nameEn}
+function currentName(p){
+  if(lang==="ar")return plainArabic(p.nameAr||p.nameEn||p.id);
+  if(lang==="fr"){
+    if(p.nameFr)return p.nameFr;
+    try{if(window.ZWM_FR_TRANSLATE)return window.ZWM_FR_TRANSLATE(p.nameEn||p.id)}catch{}
+  }
+  return p.nameEn||p.nameAr||p.id;
+}
+function currentSize(v){
+  if(lang==="ar")return plainArabic(v?.sizeAr||v?.sizeEn||"");
+  if(lang==="fr")return v?.sizeFr||v?.sizeEn||v?.sizeAr||"";
+  return v?.sizeEn||v?.sizeAr||"";
+}
 function categoryName(cat){return lang==="ar"?(CATEGORY_AR[cat]||cat):cat}
 function originKeyFor(p){
   const source=normalize([p.nameEn,p.original].join(" "));
@@ -633,8 +645,8 @@ function searchAliasTerms(q){
 function productSearchText(p){
   const infoEn=CATEGORY_INFO[p.category]?.en?.join(" ")||"";
   const infoAr=CATEGORY_INFO[p.category]?.ar?.join(" ")||"";
-  let nameFr="";
-  try{nameFr=window.ZWM_FR_TRANSLATE?window.ZWM_FR_TRANSLATE(p.nameEn):""}catch{}
+  let nameFr=p.nameFr||"";
+  if(!nameFr){try{nameFr=window.ZWM_FR_TRANSLATE?window.ZWM_FR_TRANSLATE(p.nameEn):""}catch{}}
   return smartNormalize([p.nameEn,plainArabic(p.nameAr),nameFr,p.original,p.category,CATEGORY_AR[p.category]||"",infoEn,infoAr].join(" "));
 }
 function fuzzyTokenMatch(qToken,hayTokens){
@@ -1178,8 +1190,8 @@ function renderProducts(){
     const availability=productAvailability(p);
     const canOrder=availability==="in_stock";
     const sizeOptions=p.variants.length>1
-      ? `<select class="card-variant-select" data-card-variant="${p.id}" aria-label="${escapeHtml(t.chooseSize)}">${p.variants.map(v=>`<option value="${escapeHtml(v.id)}"${v.id===selected.id?" selected":""}>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${money(v.price)}</option>`).join("")}</select>`
-      : `<div class="single-size">${escapeHtml(lang==="ar"?selected.sizeAr:selected.sizeEn)}</div>`;
+      ? `<select class="card-variant-select" data-card-variant="${p.id}" aria-label="${escapeHtml(t.chooseSize)}">${p.variants.map(v=>`<option value="${escapeHtml(v.id)}"${v.id===selected.id?" selected":""}>${escapeHtml(currentSize(v))} · ${money(v.price)}</option>`).join("")}</select>`
+      : `<div class="single-size">${escapeHtml(currentSize(selected))}</div>`;
 
     return `<article class="product-card product-card-animated" style="--card-i:${index%8}" data-product="${escapeHtml(p.id)}" tabindex="0" role="button" aria-label="${escapeHtml(t.view+" "+currentName(p))}">
       <div class="product-top">
@@ -1196,7 +1208,7 @@ function renderProducts(){
       ${health?`<div class="product-health"><span>✦ ${escapeHtml(health.badge)}</span><p>${escapeHtml(health.text)}</p></div>`:""}
       <div class="product-price-row">
         <div class="product-price"><small>${p.variants.length>1?escapeHtml(t.from):""}</small><strong class="money">${money(ps.min)}</strong></div>
-        <div class="product-size-summary">${p.variants.length>1?`${p.variants.length} ${escapeHtml(t.sizeOptions)}`:escapeHtml(lang==="ar"?selected.sizeAr:selected.sizeEn)}</div>
+        <div class="product-size-summary">${p.variants.length>1?`${p.variants.length} ${escapeHtml(t.sizeOptions)}`:escapeHtml(currentSize(selected))}</div>
       </div>
       <div class="product-actions">
         ${sizeOptions}
@@ -1266,7 +1278,7 @@ function addToCart(p,v,qty){
   const deliveryCopy=remaining>0
     ?(lang==="ar"?"باقي "+money(remaining)+" للتوصيل المجاني":money(remaining)+" away from free delivery")
     :(lang==="ar"?"التوصيل المجاني أصبح متاحاً ✓":"Free delivery unlocked ✓");
-  toast(`${currentName(p)} · ${lang==="ar"?v.sizeAr:v.sizeEn} — ${UI[lang].added} · ${deliveryCopy}`);
+  toast(`${currentName(p)} · ${currentSize(v)} — ${UI[lang].added} · ${deliveryCopy}`);
 }
 
 function changeCartQty(key,delta){
@@ -1320,7 +1332,7 @@ function renderCart(){
     <article class="cart-item">
       <div>
         <h3>${escapeHtml(currentName(p))}</h3>
-        <p class="cart-item-meta">${escapeHtml(categoryName(p.category))} · ${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${escapeHtml(availabilityLabel(p))}</p>
+        <p class="cart-item-meta">${escapeHtml(categoryName(p.category))} · ${escapeHtml(currentSize(v))} · ${escapeHtml(availabilityLabel(p))}</p>
         <p class="cart-item-price">${money(v.price)} × ${qty}</p>
       </div>
       <div class="qty-control">
@@ -1454,7 +1466,7 @@ function renderModal(productId,variantId){
   const modalCanOrder=productCanOrder(p);
   $("#productModalAdd").textContent=modalCanOrder?t.add:availabilityLabel(p);
   $("#productModalAdd").disabled=!modalCanOrder;
-  $("#variantOptions").innerHTML=p.variants.map(option=>`<button type="button" class="variant-option ${option.id===v.id?"is-active":""}" data-modal-variant="${escapeHtml(option.id)}">${escapeHtml(lang==="ar"?option.sizeAr:option.sizeEn)} · ${money(option.price)}</button>`).join("");
+  $("#variantOptions").innerHTML=p.variants.map(option=>`<button type="button" class="variant-option ${option.id===v.id?"is-active":""}" data-modal-variant="${escapeHtml(option.id)}">${escapeHtml(currentSize(option))} · ${money(option.price)}</button>`).join("");
   $$("[data-modal-variant]").forEach(btn=>btn.addEventListener("click",()=>{
     const next=variantById(p,btn.dataset.modalVariant);
     if(!next)return;
@@ -1497,7 +1509,7 @@ function renderFeaturedProducts(){
         <p>${escapeHtml(categoryName(p.category))}</p>
         <h3>${escapeHtml(currentName(p))}</h3>
         <span class="featured-origin">${escapeHtml(originFor(p))}</span>
-        <div class="featured-product-foot"><span><strong>${money(ps.min)}</strong><small>${p.variants.length>1?(lang==="ar"?"من ":"from ")+money(ps.min):escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)}</small></span><button type="button" data-featured-add="${escapeHtml(p.id)}" ${canOrder?"":"disabled"}>${escapeHtml(canOrder?UI[lang].add:availabilityLabel(p))} <b>${canOrder?"+":""}</b></button></div>
+        <div class="featured-product-foot"><span><strong>${money(ps.min)}</strong><small>${p.variants.length>1?(lang==="ar"?"من ":"from ")+money(ps.min):escapeHtml(currentSize(v))}</small></span><button type="button" data-featured-add="${escapeHtml(p.id)}" ${canOrder?"":"disabled"}>${escapeHtml(canOrder?UI[lang].add:availabilityLabel(p))} <b>${canOrder?"+":""}</b></button></div>
       </div>
     </article>`;
   }).join("");
@@ -1569,7 +1581,7 @@ function renderGiftPickerResults(){
     const v=defaultVariant(p),already=giftRows().some(r=>r.p.id===p.id),canOrder=productCanOrder(p);
     return `<button type="button" class="gift-result ${already?"is-added":""} ${canOrder?"":"is-unavailable"}" data-gift-add="${escapeHtml(p.id)}" ${canOrder?"":"disabled"}>
       <span class="gift-result-mark">${productVisualMarkup(p,"gift-product-image")}</span>
-      <span><small>${escapeHtml(categoryName(p.category))}</small><strong>${escapeHtml(currentName(p))}</strong><em>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${money(v.price)}${p.variants.length>1?` · ${p.variants.length} ${escapeHtml(UI[lang].sizeOptions)}`:""}</em></span>
+      <span><small>${escapeHtml(categoryName(p.category))}</small><strong>${escapeHtml(currentName(p))}</strong><em>${escapeHtml(currentSize(v))} · ${money(v.price)}${p.variants.length>1?` · ${p.variants.length} ${escapeHtml(UI[lang].sizeOptions)}`:""}</em></span>
       <b>${already?"✓":canOrder?escapeHtml(EXTRA_UI[lang].giftAdd):escapeHtml(availabilityLabel(p))}</b>
     </button>`;
   }).join("");
@@ -1592,7 +1604,7 @@ function renderGiftSummary(){
   summary.innerHTML=rows.length?rows.map(r=>`<article class="gift-selected-row">
     <div class="gift-selected-name"><strong>${escapeHtml(currentName(r.p))}</strong><small>${escapeHtml(categoryName(r.p.category))}</small></div>
     <select data-gift-variant="${escapeHtml(r.key)}" data-gift-product="${escapeHtml(r.p.id)}" aria-label="${escapeHtml(UI[lang].chooseSize)}">
-      ${r.p.variants.map(v=>`<option value="${escapeHtml(v.id)}"${v.id===r.v.id?" selected":""}>${escapeHtml(lang==="ar"?v.sizeAr:v.sizeEn)} · ${money(v.price)}</option>`).join("")}
+      ${r.p.variants.map(v=>`<option value="${escapeHtml(v.id)}"${v.id===r.v.id?" selected":""}>${escapeHtml(currentSize(v))} · ${money(v.price)}</option>`).join("")}
     </select>
     <div class="gift-selected-controls"><button type="button" data-gift-q="-1" data-key="${escapeHtml(r.key)}" aria-label="${escapeHtml(lang==="ar"?"تقليل الكمية":"Decrease quantity")}">−</button><span>${r.qty}</span><button type="button" data-gift-q="1" data-key="${escapeHtml(r.key)}" aria-label="${escapeHtml(lang==="ar"?"زيادة الكمية":"Increase quantity")}">+</button></div>
     <strong class="gift-line-total">${money(r.v.price*r.qty)}</strong>

@@ -306,11 +306,20 @@ PRODUCTS_DATA.forEach((product)=>{
   const redirectOnlyAliases={
     "sekar-nabet":"secar-nabat"
   };
+  const preserveAliasSearchTerms=(canonical,alias)=>{
+    const terms=[
+      ...(Array.isArray(canonical.searchAliases)?canonical.searchAliases:[]),
+      alias?.nameEn,alias?.nameAr,alias?.nameFr,alias?.original,
+      String(alias?.id||"").replace(/-/g," ")
+    ].filter(Boolean);
+    canonical.searchAliases=[...new Set(terms)];
+  };
   Object.entries(aliases).forEach(([aliasId,canonicalId])=>{
     const aliasIndex=PRODUCTS_DATA.findIndex(p=>p.id===aliasId);
     const canonical=PRODUCTS_DATA.find(p=>p.id===canonicalId);
     if(aliasIndex<0||!canonical)return;
     const alias=PRODUCTS_DATA[aliasIndex];
+    preserveAliasSearchTerms(canonical,alias);
     const seen=new Set(canonical.variants.map(v=>v.id));
     canonical.variants=[
       ...canonical.variants,
@@ -320,7 +329,9 @@ PRODUCTS_DATA.forEach((product)=>{
   });
   Object.entries(redirectOnlyAliases).forEach(([aliasId,canonicalId])=>{
     const aliasIndex=PRODUCTS_DATA.findIndex(p=>p.id===aliasId);
-    if(aliasIndex<0||!PRODUCTS_DATA.some(p=>p.id===canonicalId))return;
+    const canonical=PRODUCTS_DATA.find(p=>p.id===canonicalId);
+    if(aliasIndex<0||!canonical)return;
+    preserveAliasSearchTerms(canonical,PRODUCTS_DATA[aliasIndex]);
     PRODUCTS_DATA.splice(aliasIndex,1);
   });
   window.ZWM_PRODUCT_ALIASES={...aliases,...redirectOnlyAliases};

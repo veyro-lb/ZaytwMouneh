@@ -26,6 +26,12 @@ jobs:
           echo "LIVE_SHELL_TOKEN=$token"
           echo "EXPECTED_SHELL_TOKEN=$expected"
           echo "LIVE_RELEASE=$release"
+          release_js="$(curl -fsSL --max-time 20 "$base/storefront-release.js?t=$(date +%s)")"
+          if printf '%s' "$release_js" | grep -q 'SHELL_ASSET_VERSION="20261008-desktopmenufix4"'; then
+            echo "LIVE_RELEASE_HELPER_SHELL_PIN=present"
+          else
+            echo "LIVE_RELEASE_HELPER_SHELL_PIN=missing"
+          fi
           if [ "$token" != "$expected" ]; then
             echo "::warning::Live HTML has not reached the latest shell token yet."
           fi

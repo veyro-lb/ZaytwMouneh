@@ -1,0 +1,38 @@
+name: Live storefront probe
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/live-storefront-probe.yml
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Read deployed homepage and shell
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://zaytwmouneh.veyro-202.workers.dev"
+          html="$(curl -fsSL --max-time 20 "$base/")"
+          token="$(printf '%s' "$html" | grep -oE 'storefront-shell\.css\?v=[^" >]+' | head -1 || true)"
+          release="$(printf '%s' "$html" | grep -oE 'name="zwm-release" content="[^"]+"' | head -1 || true)"
+          echo "LIVE_SHELL_TOKEN=$token"
+          echo "LIVE_RELEASE=$release"
+          if [ -n "$token" ]; then
+            css_path="/${token}"
+            css="$(curl -fsSL --max-time 20 "$base$css_path")"
+            if printf '%s' "$css" | grep -q 'desktop/tablet menu fit refinement'; then
+              echo "LIVE_DESKTOP_REFINEMENT=present"
+            else
+              echo "LIVE_DESKTOP_REFINEMENT=missing"
+            fi
+            if printf '%s' "$css" | grep -q 'min-width:94px!important'; then
+              echo "LIVE_DESKTOP_BUTTON_RULE=present"
+            else
+              echo "LIVE_DESKTOP_BUTTON_RULE=missing"
+            fi
+          fi

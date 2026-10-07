@@ -128,13 +128,13 @@ var COPY={
     ]
   },
   fr:{
-    title:"Politique de retours et problèmes produits | Zayt W Mouneh",
-    description:"Politique Zayt W Mouneh concernant les retours, échanges, remboursements et problèmes produits.",
+    title:"Politique de retours et problèmes produits | Zayt w Mouneh",
+    description:"Politique Zayt w Mouneh concernant les retours, échanges, remboursements et problèmes produits.",
     skip:"Aller au contenu",
     eyebrow:"Service client",
     heading:"Politique de retours, échanges et problèmes produits",
     updated:"Dernière mise à jour : 7 octobre 2026",
-    intro:"Zayt W Mouneh souhaite que chaque client soit satisfait de sa commande. Si un article arrive endommagé, incorrect ou manquant, ou présente un véritable problème de qualité ou de sécurité, vous pouvez envoyer une demande liée à la commande afin qu’elle soit examinée.",
+    intro:"Zayt w Mouneh souhaite que chaque client soit satisfait de sa commande. Si un article arrive endommagé, incorrect ou manquant, ou présente un véritable problème de qualité ou de sécurité, vous pouvez envoyer une demande liée à la commande afin qu’elle soit examinée.",
     primary:"Commencer un retour ou signaler un problème",
     secondary:"Voir mes commandes",
     summaryTitle:"En bref",
@@ -202,7 +202,7 @@ var COPY={
         paragraphs:[
           "Si un remboursement est approuvé, il est limité au montant effectivement payé pour l’article ou la quantité concernés, après prise en compte des remises, promotions et remboursements antérieurs.",
           "Le site ne publie actuellement ni méthode de remboursement unique ni délai de traitement standard. Si un remboursement est approuvé, la méthode de remboursement et tout délai applicable vous seront confirmés dans le cadre de la solution.",
-          "Pour un retour ou un échange ordinaire lié à un changement d’avis, les frais de livraison ou de collecte peuvent être à la charge du client lorsque cela est permis. Lorsque l’erreur vient de Zayt W Mouneh, par exemple si un produit incorrect a été fourni, nous prenons normalement en charge les frais raisonnables nécessaires à la résolution. Si une collecte ou une nouvelle livraison est nécessaire, nous confirmerons l’organisation après examen."
+          "Pour un retour ou un échange ordinaire lié à un changement d’avis, les frais de livraison ou de collecte peuvent être à la charge du client lorsque cela est permis. Lorsque l’erreur vient de Zayt w Mouneh, par exemple si un produit incorrect a été fourni, nous prenons normalement en charge les frais raisonnables nécessaires à la résolution. Si une collecte ou une nouvelle livraison est nécessaire, nous confirmerons l’organisation après examen."
         ]
       },
       {
@@ -216,7 +216,7 @@ var COPY={
         title:"10. Droits des consommateurs",
         legal:true,
         paragraphs:[
-          "<strong>Rien dans cette politique ne limite les droits des consommateurs prévus par la législation libanaise applicable.</strong> Cette politique explique le processus de Zayt W Mouneh concernant les retours et problèmes produits et ne remplace ni ne réduit les protections légales des consommateurs."
+          "<strong>Rien dans cette politique ne limite les droits des consommateurs prévus par la législation libanaise applicable.</strong> Cette politique explique le processus de Zayt w Mouneh concernant les retours et problèmes produits et ne remplace ni ne réduit les protections légales des consommateurs."
         ]
       }
     ]

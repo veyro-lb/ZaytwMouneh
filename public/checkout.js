@@ -46,7 +46,10 @@ async function rpc(name,body,retry){
     networkError.retryable=true;throw networkError
   }finally{if(timer)clearTimeout(timer)}
   var data=await r.json().catch(function(){return {}});
-  if(r.status===401&&retry!==false){await new Promise(function(res){setTimeout(res,500)});return rpc(name,body,false)}
+  if(r.status===401&&retry!==false){
+    var refreshed=await window.ZWM_REWARDS?.auth?.refreshSession?.();
+    if(refreshed?.access_token)return rpc(name,body,false);
+  }
   if(!r.ok){var requestError=new Error(data.message||data.hint||data.details||t("Request failed.","تعذّر تنفيذ الطلب.","La demande a échoué."));requestError.status=r.status;throw requestError}
   return data
 }

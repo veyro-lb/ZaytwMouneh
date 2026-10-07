@@ -11,87 +11,27 @@ on:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 3
     steps:
       - name: Read deployed homepage and shell
         shell: bash
         run: |
           set -euo pipefail
+          sleep 12
           base="https://zaytwmouneh.veyro-202.workers.dev"
+          expected="storefront-shell.css?v=20261008-desktopmenufix4"
           html="$(curl -fsSL --max-time 20 "$base/")"
           token="$(printf '%s' "$html" | grep -oE 'storefront-shell\.css\?v=[^" >]+' | head -1 || true)"
           release="$(printf '%s' "$html" | grep -oE 'name="zwm-release" content="[^"]+"' | head -1 || true)"
           echo "LIVE_SHELL_TOKEN=$token"
+          echo "EXPECTED_SHELL_TOKEN=$expected"
           echo "LIVE_RELEASE=$release"
-          if [ -n "$token" ]; then
-            css_path="/${token}"
-            css="$(curl -fsSL --max-time 20 "$base$css_path")"
-            if printf '%s' "$css" | grep -q 'desktop/tablet menu fit refinement'; then
-              echo "LIVE_DESKTOP_REFINEMENT=present"
-            else
-              echo "LIVE_DESKTOP_REFINEMENT=missing"
-            fi
-            if printf '%s' "$css" | grep -q 'min-width:94px!important'; then
-              echo "LIVE_DESKTOP_BUTTON_RULE=present"
-            else
-              echo "LIVE_DESKTOP_BUTTON_RULE=missing"
-            fi
+          if [ "$token" != "$expected" ]; then
+            echo "::warning::Live HTML has not reached the latest shell token yet."
           fi
-
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - name: Install locked dependencies
-        run: npm ci
-      - name: Install free browser probe dependency
-        run: npm install --no-save playwright@1.55.0
-      - name: Install Chromium
-        run: npx playwright install chromium
-      - name: Measure live desktop menu geometry
-        shell: bash
-        run: |
-          node <<'NODE'
-          const { chromium } = require("playwright");
-          (async()=>{
-            const browser=await chromium.launch({headless:true});
-            const page=await browser.newPage({viewport:{width:1285,height:932}});
-            page.on("console",msg=>{if(msg.text().includes("ANNOUNCEMENT_"))console.log(msg.text())});
-            await page.addInitScript(()=>{
-              const desc=Object.getOwnPropertyDescriptor(HTMLElement.prototype,"hidden");
-              if(desc?.get&&desc?.set){
-                Object.defineProperty(HTMLElement.prototype,"hidden",{
-                  configurable:desc.configurable,enumerable:desc.enumerable,
-                  get:desc.get,
-                  set(value){
-                    if(this?.classList?.contains("announcement"))console.log("ANNOUNCEMENT_HIDDEN_WRITE="+value+"\\n"+new Error().stack);
-                    return desc.set.call(this,value);
-                  }
-                });
-              }
-              const remove=Element.prototype.removeAttribute;
-              Element.prototype.removeAttribute=function(name){
-                if(name==="hidden"&&this?.classList?.contains("announcement"))console.log("ANNOUNCEMENT_REMOVE_HIDDEN\\n"+new Error().stack);
-                return remove.call(this,name);
-              };
-            });
-            await page.goto("https://zaytwmouneh.veyro-202.workers.dev/",{waitUntil:"domcontentloaded"});
-            await page.waitForTimeout(800);
-            const before=await page.evaluate(()=>{
-              const t=document.getElementById("navToggle"), l=t?.querySelector(".menu-label"), i=t?.querySelector(".menu-icon"), h=document.querySelector(".site-header"), a=document.querySelector(".announcement"), n=document.querySelector(".site-header .nav");
-              const pack=el=>{if(!el)return null; const r=el.getBoundingClientRect(), s=getComputedStyle(el); return {x:r.x,y:r.y,w:r.width,h:r.height,left:r.left,right:r.right,top:r.top,bottom:r.bottom,display:s.display,position:s.position,transform:s.transform,padding:s.padding,margin:s.margin,borderRadius:s.borderRadius,overflow:s.overflow,fontSize:s.fontSize,hidden:el.hidden,cls:el.className,style:el.getAttribute("style")}};
-              return {toggle:pack(t),label:pack(l),icon:pack(i),announcement:pack(a),nav:pack(n),header:pack(h),shellHref:[...document.styleSheets].map(s=>s.href).filter(Boolean).find(h=>h.includes("storefront-shell.css"))||null};
-            });
-            console.log("LIVE_DESKTOP_BEFORE="+JSON.stringify(before));
-            await page.locator("#navToggle").click();
-            await page.waitForTimeout(250);
-            const after=await page.evaluate(()=>{
-              const m=document.getElementById("navLinks"),h=document.querySelector(".site-header"),t=document.getElementById("navToggle"),a=document.querySelector(".announcement"),n=document.querySelector(".site-header .nav");
-              const pack=el=>{if(!el)return null; const r=el.getBoundingClientRect(), s=getComputedStyle(el); return {x:r.x,y:r.y,w:r.width,h:r.height,left:r.left,right:r.right,top:r.top,bottom:r.bottom,display:s.display,position:s.position,transform:s.transform,padding:s.padding,margin:s.margin,borderRadius:s.borderRadius,overflow:s.overflow,zIndex:s.zIndex,hidden:el.hidden,cls:el.className,style:el.getAttribute("style")}};
-              return {toggle:pack(t),menu:pack(m),announcement:pack(a),nav:pack(n),header:pack(h),gap:m&&h?m.getBoundingClientRect().top-h.getBoundingClientRect().bottom:null};
-            });
-            console.log("LIVE_DESKTOP_AFTER="+JSON.stringify(after));
-            await browser.close();
-          })().catch(e=>{console.error(e);process.exit(1)});
-          NODE
+          if [ -n "$token" ]; then
+            css="$(curl -fsSL --max-time 20 "$base/$token")"
+            printf '%s' "$css" | grep -q 'desktop/tablet menu fit refinement' && echo "LIVE_DESKTOP_REFINEMENT=present"
+            printf '%s' "$css" | grep -q 'min-width:94px!important' && echo "LIVE_DESKTOP_BUTTON_RULE=present"
+            printf '%s' "$css" | grep -q 'top:calc(100% + 14px)!important' && echo "LIVE_DESKTOP_PANEL_ANCHOR=present"
+          fi

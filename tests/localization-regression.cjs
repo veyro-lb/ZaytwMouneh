@@ -16,5 +16,9 @@ assert(returnsHtml.includes("returns-center-locale-v1.js?v=20261007-locales1"),"
 assert(returnsHtml.includes("data-no-fr"),"Returns center must opt out of generic French DOM translation");
 assert(returnsPolicyLocale.includes('String(location.pathname||"/").split("/")'),"Returns policy must prioritize locale from the URL");
 assert(policyHtml.includes("returns-policy-locale-v1.js?v=20261007-locales2"),"Returns policy locale runtime must use the latest cache token");
+const returnsRuntime=read("public/returns-v1.js");
+assert(returnsRuntime.includes('route("/returns-policy")'),"returns dynamic policy links must preserve locale");
+assert(returnsRuntime.includes('tr("Affected quantity","الكمية المتأثرة","Quantité concernée")'),"returns wizard accessibility labels must be localized");
+assert(returnsHtml.includes("returns-v1.js?v=20261007-returnslocales1"),"Returns runtime cache token must be refreshed");
 for(const p of ["public/index.html","public/shop.html","public/account.html","public/checkout.html","public/gift.html","public/recipes.html","public/wholesale.html","public/product.html"]){const html=read(p);assert(html.includes("locale-loader-v1.js"),p+" must load locale loader");assert(!html.includes('src="/fr-runtime-v1.js'),p+" must not eagerly load French runtime");}
 console.log("localization regression: ok");

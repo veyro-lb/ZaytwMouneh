@@ -53,20 +53,31 @@ async function rpc(name,body,retry){
   if(!r.ok){var requestError=new Error(data.message||data.hint||data.details||t("Request failed.","تعذّر تنفيذ الطلب.","La demande a échoué."));requestError.status=r.status;throw requestError}
   return data
 }
-async function authUser(){
+async function authUser(retry){
   var s=session(),c=config();if(!s||!s.access_token)return null;
-  try{var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/auth/v1/user",{headers:{"apikey":c.supabasePublishableKey,"Authorization":"Bearer "+s.access_token}});if(!r.ok)return null;return await r.json()}catch{return null}
+  var controller=typeof AbortController==="function"?new AbortController():null,timer=null;
+  try{
+    if(controller)timer=setTimeout(function(){controller.abort()},12000);
+    var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/auth/v1/user",{headers:{"apikey":c.supabasePublishableKey,"Authorization":"Bearer "+s.access_token},signal:controller?controller.signal:undefined});
+    if(r.status===401&&retry!==false){
+      var refreshed=await window.ZWM_REWARDS?.auth?.refreshSession?.();
+      if(refreshed?.access_token)return authUser(false)
+    }
+    if(!r.ok)return null;return await r.json()
+  }catch{return null}finally{if(timer)clearTimeout(timer)}
 }
 async function loadOverrides(){
   var c=config(),base=productBase(),map=new Map(base.map(function(p){return [p.id,p]}));
   state.catalogVerified=false;
+  var controller=typeof AbortController==="function"?new AbortController():null,timer=null;
   try{
-    var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/rest/v1/product_overrides?select=product_id,action,payload",{headers:{"apikey":c.supabasePublishableKey}});
+    if(controller)timer=setTimeout(function(){controller.abort()},12000);
+    var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/rest/v1/product_overrides?select=product_id,action,payload",{headers:{"apikey":c.supabasePublishableKey},signal:controller?controller.signal:undefined});
     if(!r.ok)throw new Error("Catalogue verification failed");
     var rows=await r.json();
     rows.forEach(function(o){var p=map.get(o.product_id)||{id:o.product_id};if(o.action==="hide"){p.__hidden=true}else if(o.payload&&typeof o.payload==="object"){p=Object.assign({},p,o.payload);p.__hidden=o.action==="hide"}map.set(o.product_id,p)});
     state.catalogVerified=true
-  }catch{}
+  }catch{}finally{if(timer)clearTimeout(timer)}
   state.products=Array.from(map.values());
   return state.catalogVerified
 }

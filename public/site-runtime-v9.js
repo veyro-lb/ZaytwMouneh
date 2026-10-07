@@ -974,20 +974,33 @@
 
 /* zwm-returns-policy-footer-link */
 (function(){
+  function label(){
+    try{
+      if(document.documentElement.lang==="ar"||document.documentElement.dir==="rtl"||localStorage.getItem("zwm-lang-v2")==="ar")return "سياسة الإرجاع ومشاكل المنتجات";
+      if(document.documentElement.lang==="fr"||localStorage.getItem("zwm:french:v1")==="1")return "Politique de retours et problèmes produit";
+    }catch{}
+    return "Returns & Product Issues Policy";
+  }
   function add(){
     document.querySelectorAll(".footer-legal-bar").forEach(function(bar){
-      if(bar.querySelector('[data-returns-policy-link]'))return;
-      var a=document.createElement("a");
-      a.href="/returns-policy.html";
-      a.dataset.returnsPolicyLink="1";
-      a.textContent="Returns & Product Issues Policy";
-      bar.appendChild(document.createTextNode(" · "));
-      bar.appendChild(a);
+      var a=bar.querySelector('[data-returns-policy-link]');
+      if(!a){
+        a=document.createElement("a");
+        a.href="/returns-policy";
+        a.dataset.returnsPolicyLink="1";
+        a.dataset.legalLink="returns";
+        bar.appendChild(a);
+      }
+      a.classList.add("footer-legal-button");
+      a.textContent=label();
+      var prev=a.previousSibling;
+      if(prev&&prev.nodeType===3&&prev.textContent.trim()==="·")prev.remove();
     });
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",add,{once:true});else add();
   setTimeout(add,500);
   window.addEventListener("pageshow",add,{passive:true});
+  document.addEventListener("zwm:localechange",add);
 })();
 
 /* zwm-returns-center-nav */

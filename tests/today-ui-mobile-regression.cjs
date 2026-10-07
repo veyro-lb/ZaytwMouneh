@@ -67,10 +67,10 @@ for(const file of ["account.html","product.html","gift.html","shop.html","recipe
   assert(read(file).includes("/conversion-v1.css?v=20261006-mobileaudit1"),file+" conversion CSS cache token stale");
 }
 for(const file of ["index.html","shop.html","gift.html","recipes.html","about.html","contact.html","account.html","checkout.html","product.html","returns.html","terms.html","privacy.html","returns-policy.html","privacy-policy.html","privacy-and-data.html","terms-of-service.html","terms-and-rewards.html"]){
-  assert(read(file).includes("site-runtime-v9.js?v=20261007-storefrontstability1"),file+" stabilized runtime cache token stale");
+  assert(read(file).includes("site-runtime-v9.js?v=20261007-footerlegal1"),file+" stabilized runtime cache token stale");
 }
 assert(read("wholesale.html").includes("/notifications-v1.css?v=20261006-mobileaudit1"),"Wholesale must load audited notification styles directly");
-assert(read("wholesale.html").includes("/site-runtime-v9.js?v=20261007-storefrontstability1"),"Wholesale stabilized storefront runtime cache token stale");
+assert(read("wholesale.html").includes("/site-runtime-v9.js?v=20261007-footerlegal1"),"Wholesale stabilized storefront runtime cache token stale");
 assert(read("wholesale.html").includes("/wholesale-v1.js?v=20261006-notificationhardening1"),"Wholesale behavior JS cache token stale");
 
 console.log("Today UI/mobile regression passed: Wholesale, notification bells, owner modal and conversion forms.");

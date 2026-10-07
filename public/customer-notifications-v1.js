@@ -140,7 +140,7 @@ async function fetchNotifications(){
  return rows;
 }
 async function markRead(id){await api("notifications?id=eq."+encodeURIComponent(id),{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})})}
-async function markAll(){await api("notifications?user_id=eq."+encodeURIComponent(user.id)+"&audience=eq.customer&read_at=is.null",{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})});await refreshBell()}
+async function markAll(){await api("notifications?user_id=eq."+encodeURIComponent(user.id)+"&audience=eq.customer&read_at=is.null",{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})});await refreshBell(true)}
 async function refreshBell(force=false){
  if(!user)return;
  if(!force&&lastBellRefreshAt&&Date.now()-lastBellRefreshAt<BELL_STALE_MS)return;

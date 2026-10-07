@@ -1041,12 +1041,12 @@ html[lang="ar"] .footer .brand-wordmark{
 @media(max-width:760px){
   .site-header .nav>.nav-links,
   .nav-links.is-mobile-portal{
-    top:94px!important;
+    top:var(--zwm-menu-top,94px)!important;
     left:0!important;
     right:0!important;
     width:100%!important;
     max-width:none!important;
-    max-height:calc(100dvh - 94px)!important;
+    max-height:calc(100dvh - var(--zwm-menu-top,94px))!important;
     margin:0!important;
     padding:10px 12px calc(16px + env(safe-area-inset-bottom))!important;
     border-left:0!important;

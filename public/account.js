@@ -340,6 +340,17 @@
     if(!force&&freshest&&Date.now()-freshest<maxAge)return;
     syncing=true;try{await a.refresh?.();lastSyncedAt=Date.now()}catch{}finally{syncing=false;render(true)}
   }
+  let resumeSyncQueued=false,resumeSyncMaxAge=Infinity;
+  function scheduleSync(maxAge=ACCOUNT_STALE_MS){
+    resumeSyncMaxAge=Math.min(resumeSyncMaxAge,Number(maxAge)||ACCOUNT_STALE_MS);
+    if(resumeSyncQueued)return;
+    resumeSyncQueued=true;
+    requestAnimationFrame(()=>{
+      const age=Number.isFinite(resumeSyncMaxAge)?resumeSyncMaxAge:ACCOUNT_STALE_MS;
+      resumeSyncQueued=false;resumeSyncMaxAge=Infinity;
+      sync({maxAge:age});
+    });
+  }
   async function retryAccount(button){
     if(button){button.disabled=true;button.setAttribute("aria-busy","true")}
     try{
@@ -550,13 +561,13 @@
     const next=(location.hash||"").slice(1);
     if(allowed.has(next)&&next!==active){active=next;render(true)}
   });
-  window.addEventListener("focus",()=>sync());
-  window.addEventListener("online",()=>sync({maxAge:ACCOUNT_RESUME_GRACE_MS}));
+  window.addEventListener("focus",()=>scheduleSync());
+  window.addEventListener("online",()=>scheduleSync(ACCOUNT_RESUME_GRACE_MS));
   window.addEventListener("storage",syncAccountShellChrome);
   window.addEventListener("pageshow",syncAccountShellChrome);
-  window.addEventListener("pageshow",()=>sync());
-  window.addEventListener("storage",e=>{if(e.key==="zwm:mouneh:session:v1"||e.key==="zwm:rewards-updated")sync({maxAge:ACCOUNT_RESUME_GRACE_MS})});
-  document.addEventListener("visibilitychange",()=>{if(!document.hidden)sync()});
+  window.addEventListener("pageshow",()=>scheduleSync());
+  window.addEventListener("storage",e=>{if(e.key==="zwm:mouneh:session:v1"||e.key==="zwm:rewards-updated")scheduleSync(ACCOUNT_RESUME_GRACE_MS)});
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)scheduleSync()});
   document.addEventListener("zwm:localechange",()=>{syncLanguageVisibility();render(true)});
   // Compatibility for code/tests that still update <html lang/dir> directly.
   // This observes only two root attributes; it does not scan or translate the DOM.
@@ -607,5 +618,4 @@
     }
   });
   setTimeout(()=>{accountBootTimedOut=true;render(true)},ACCOUNT_BOOT_TIMEOUT_MS);
-  setInterval(()=>sync(),ACCOUNT_STALE_MS);
 })();

@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 const SESSION_KEY="zwm:mouneh:session:v1",CLAIMS_KEY="zwm:mouneh:claims:v1";
-const S={context:null,requests:[],active:null,files:[],busy:false,clientRequestId:null};
+const S={context:null,requests:[],active:null,files:[],busy:false,clientRequestId:null,accessToken:null};
 const $=(s,r)=> (r||document).querySelector(s), $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
 const ar=()=>document.documentElement.lang==="ar"||document.documentElement.dir==="rtl";
 const fr=()=>document.documentElement.lang==="fr";
@@ -26,6 +26,15 @@ async function rpc(action,p,needsAuth=false){
  const h={apikey:c.supabasePublishableKey,"Content-Type":"application/json"}; if(sess?.access_token)h.Authorization="Bearer "+sess.access_token;
  const r=await fetch(c.supabaseUrl.replace(/\/$/,"")+"/rest/v1/rpc/zwm_returns",{method:"POST",headers:h,body:JSON.stringify({action,p:p||{}})});
  const d=await r.json().catch(()=>({})); if(!r.ok)throw new Error(d.message||d.hint||tr("Could not complete this request.","تعذّر إكمال الطلب.","Impossible de terminer la demande.")); return d;
+}
+async function verifyOrder(reference,contact){
+ const c=await config(),sess=session();
+ const h={apikey:c.supabasePublishableKey,"Content-Type":"application/json"};
+ if(sess?.access_token)h.Authorization="Bearer "+sess.access_token;
+ const r=await fetch(c.supabaseUrl.replace(/\/$/,"")+"/functions/v1/return-order-verify",{method:"POST",headers:h,body:JSON.stringify({reference,contact})});
+ const d=await r.json().catch(()=>({}));
+ if(!r.ok)throw new Error(d.error||tr("We could not verify those order details.","تعذّر التحقق من بيانات الطلب.","Nous n’avons pas pu vérifier ces informations."));
+ return d;
 }
 async function uploadEvidence(requestId,file){
  const c=await config(),sess=session(); if(!sess?.access_token)throw new Error(tr("Sign in to attach photos securely.","سجّل الدخول لإرفاق الصور بأمان.","Connectez-vous pour joindre des photos en toute sécurité."));
@@ -66,14 +75,14 @@ async function submitRequest(e){
  const items=selected.map(x=>({line_index:Number(x.value),quantity:Number($('[data-return-qty="'+x.value+'"]')?.value||1)}));
  S.busy=true;const btn=$(".zwm-return-submit");btn.disabled=true;btn.textContent=tr("Submitting…","جارٍ الإرسال…","Envoi…");
  try{
-   const req=await rpc("submit",{reference:S.context.reference,claim_token:claimFor(S.context.reference),client_request_id:S.clientRequestId||(S.clientRequestId=crypto.randomUUID()),reason_code:reason,description:$("#zwmReturnDescription").value,discovered_at:$("#zwmDiscoveredAt").value||null,requested_resolution:$("#zwmPreferred").value||null,items,unopened:!!conditions.unopened,unused:!!conditions.unused,seal_intact:!!conditions.seal_intact,packaging_intact:!!conditions.packaging_intact});
+   const req=await rpc("submit",{reference:S.context.reference,claim_token:S.accessToken||claimFor(S.context.reference),client_request_id:S.clientRequestId||(S.clientRequestId=crypto.randomUUID()),reason_code:reason,description:$("#zwmReturnDescription").value,discovered_at:$("#zwmDiscoveredAt").value||null,requested_resolution:$("#zwmPreferred").value||null,items,unopened:!!conditions.unopened,unused:!!conditions.unused,seal_intact:!!conditions.seal_intact,packaging_intact:!!conditions.packaging_intact});
    const failed=[];for(const f of S.files){try{await uploadEvidence(req.id,f)}catch(x){failed.push(f.name)}}
    const signedIn=!!session()?.access_token;
    $("#zwmReturnBody").innerHTML='<div class="zwm-return-success"><span>✓</span><h3>'+esc(tr("Request submitted","تم إرسال الطلب","Demande envoyée"))+'</h3><strong>'+esc(req.request_number)+'</strong><p>'+esc(signedIn?tr("You can monitor this request from your account.","يمكنك متابعة هذا الطلب من حسابك.","Vous pouvez suivre cette demande depuis votre compte."):tr("This request stays linked to the original order. Close this window to keep the order page open and check its status there.","يبقى هذا الطلب مرتبطاً بالطلب الأصلي. أغلق هذه النافذة لمتابعة حالته من صفحة الطلب.","Cette demande reste liée à la commande d’origine. Fermez cette fenêtre pour suivre son statut depuis la page de commande."))+'</p>'+(failed.length?'<p class="zwm-return-warning">'+esc(tr("The request was saved, but some photos could not be uploaded. You can add information later after signing in.","تم حفظ الطلب، لكن تعذر رفع بعض الصور. يمكنك إضافة المعلومات لاحقاً بعد تسجيل الدخول.","La demande est enregistrée, mais certaines photos n’ont pas pu être envoyées. Vous pourrez ajouter des informations après connexion."))+'</p>':'')+'<div>'+(signedIn?'<a class="zwm-return-submit" href="/account#orders">'+esc(tr("View my requests","عرض طلباتي","Voir mes demandes"))+'</a>':'')+'<button type="button" data-return-close>'+esc(tr("Close","إغلاق","Fermer"))+'</button></div></div>';
    loadHistory(true);
  }catch(x){err.textContent=x.message||String(x);btn.disabled=false;btn.textContent=tr("Submit request","إرسال الطلب","Envoyer la demande");}finally{S.busy=false}
 }
-async function openForOrder(ref){try{const ctx=await rpc("order_context",{reference:ref,claim_token:claimFor(ref)});if(ctx.status!=="delivered"||!ctx.eligible_for_help)throw new Error(tr("Order help becomes available when fulfillment reaches the delivery stage.","تتوفر مساعدة الطلب عند وصوله إلى مرحلة التسليم.","L’assistance devient disponible à l’étape de livraison."));renderWizard(ctx)}catch(e){ensureModal();openModal();$("#zwmReturnBody").innerHTML='<p class="zwm-return-error">'+esc(e.message)+'</p>'}}
+async function openForOrder(ref){try{S.accessToken=null;const ctx=await rpc("order_context",{reference:ref,claim_token:claimFor(ref)});if(ctx.status!=="delivered"||!ctx.eligible_for_help)throw new Error(tr("Order help becomes available when fulfillment reaches the delivery stage.","تتوفر مساعدة الطلب عند وصوله إلى مرحلة التسليم.","L’assistance devient disponible à l’étape de livraison."));renderWizard(ctx)}catch(e){ensureModal();openModal();$("#zwmReturnBody").innerHTML='<p class="zwm-return-error">'+esc(e.message)+'</p>'}}
 async function mountOrderHelp(){
  if(document.body.dataset.page!=="order"||$("#zwmOrderHelpCard")||document.body.dataset.returnHelpChecked==="1")return;const ref=new URL(location.href).searchParams.get("ref");if(!ref)return;
  const content=$("#orderContent");if(!content||content.hidden)return;document.body.dataset.returnHelpChecked="1";let eligibility;try{eligibility=await rpc("order_context",{reference:ref,claim_token:claimFor(ref)})}catch{return}if(eligibility?.status!=="delivered"||!eligibility?.eligible_for_help)return;S.context=eligibility;const card=document.createElement("section");card.id="zwmOrderHelpCard";card.className="commerce-card zwm-order-help-card";card.innerHTML='<div><small>'+esc(tr("After delivery","بعد التسليم","Après livraison"))+'</small><h2>'+esc(tr("Problem with an item?","هل توجد مشكلة في منتج؟","Un problème avec un article ?"))+'</h2><p>'+esc(tr("Report damage, a missing or incorrect product, a quality or safety concern, or request a return of an unopened item.","أبلغ عن تلف أو منتج ناقص أو خاطئ أو مشكلة جودة أو سلامة، أو اطلب إرجاع منتج غير مفتوح.","Signalez un dommage, un article manquant ou incorrect, un problème de qualité/sécurité, ou demandez le retour d’un article non ouvert."))+'</p><a href="/returns-policy.html">'+esc(tr("Returns & Product Issues Policy","سياسة الإرجاع ومشاكل المنتجات","Politique de retours"))+'</a></div><button type="button" class="is-primary" data-get-order-help>'+esc(tr("Get Help With This Order","الحصول على مساعدة بخصوص هذا الطلب","Obtenir de l’aide pour cette commande"))+'</button>';
@@ -93,6 +102,32 @@ function mountHistory(){
  root.querySelectorAll("[data-return-detail]").forEach(b=>b.addEventListener("click",()=>openDetail(b.dataset.returnDetail)));
 }
 async function openDetail(id){try{const r=await rpc("detail",{request_id:id},true);openModal();const msgs=(r.messages||[]).map(m=>'<div class="zwm-message"><small>'+esc(m.sender_role==="admin"?tr("Zayt W Mouneh","زيت ومونة","Zayt W Mouneh"):tr("You","أنت","Vous"))+' · '+date(m.created_at)+'</small><p>'+esc(m.message)+'</p></div>').join("");$("#zwmReturnBody").innerHTML='<div class="zwm-detail"><div class="zwm-detail-title"><div><small>'+esc(r.order_reference)+'</small><h3>'+esc(r.request_number)+'</h3></div><span class="zwm-status status-'+esc(r.status)+'">'+esc(statusLabel(r.status))+'</span></div><p><strong>'+esc(reasonLabel(r.reason_code))+'</strong></p><p>'+esc(r.customer_description)+'</p>'+(r.customer_visible_resolution?'<div class="zwm-resolution"><strong>'+esc(tr("Resolution","الحل","Solution"))+'</strong><p>'+esc(r.customer_visible_resolution)+'</p></div>':'')+(r.rejection_reason?'<div class="zwm-resolution"><strong>'+esc(tr("Review result","نتيجة المراجعة","Résultat de l’examen"))+'</strong><p>'+esc(r.rejection_reason)+'</p></div>':'')+(Number(r.approved_refund_total)>0?'<div class="zwm-resolution"><strong>'+esc(tr("Approved refund","الاسترداد المعتمد","Remboursement approuvé"))+'</strong><p>'+money(r.approved_refund_total)+' · '+esc(r.refund_status)+'</p></div>':'')+'<div class="zwm-messages">'+msgs+'</div>'+(r.status==="awaiting_customer"?'<form id="zwmReplyForm"><label class="zwm-field"><span>'+esc(tr("Add information","إضافة معلومات","Ajouter des informations"))+'</span><textarea id="zwmReplyText" rows="4" maxlength="3000" required></textarea></label><button class="zwm-return-submit" type="submit">'+esc(tr("Send update","إرسال التحديث","Envoyer"))+'</button><p id="zwmReplyError" class="zwm-return-error"></p></form>':'')+'</div>';const f=$("#zwmReplyForm");if(f)f.addEventListener("submit",async e=>{e.preventDefault();try{await rpc("add_message",{request_id:r.id,message:$("#zwmReplyText").value},true);await loadHistory(true);openDetail(r.id)}catch(x){$("#zwmReplyError").textContent=x.message}})}catch(e){openModal();$("#zwmReturnBody").innerHTML='<p class="zwm-return-error">'+esc(e.message)+'</p>'}}
-function init(){ensureCss();ensureModal();if(document.body.dataset.page==="order"){const mo=new MutationObserver(mountOrderHelp);mo.observe(document.body,{childList:true,subtree:true});mountOrderHelp()}if(document.body.dataset.page==="account"){const mo=new MutationObserver(()=>{if(!$("#zwmReturnHistory"))mountHistory()});mo.observe(document.body,{childList:true,subtree:true});setTimeout(()=>loadHistory(false),500);window.addEventListener("focus",()=>loadHistory(true))}}
+function mountReturnCenter(){
+ if(document.body.dataset.page!=="returns")return;
+ const form=$("#returnsLookupForm"),result=$("#returnsLookupResult"),contact=$("#returnsLookupContact"),hint=$("#returnsLookupContactHint");
+ if(!form||!result)return;
+ if(session()?.access_token&&hint)hint.textContent=tr("If this order belongs to your signed-in account, the order code is enough. Otherwise enter the email or phone used for the order.","إذا كان الطلب تابعاً لحسابك المسجّل، يكفي رمز الطلب. وإلا أدخل البريد الإلكتروني أو رقم الهاتف المستخدم في الطلب.","Si cette commande appartient à votre compte connecté, le code suffit. Sinon, saisissez l’e-mail ou le téléphone utilisé.");
+ form.addEventListener("submit",async e=>{
+   e.preventDefault();if(S.busy)return;
+   const reference=String($("#returnsLookupReference")?.value||"").trim().toUpperCase();
+   const contactValue=String(contact?.value||"").trim();
+   const error=$("#returnsLookupError"),button=form.querySelector("button[type=submit]");
+   if(error)error.textContent="";
+   S.busy=true;if(button){button.disabled=true;button.textContent=tr("Verifying…","جارٍ التحقق…","Vérification…")}
+   try{
+     const verified=await verifyOrder(reference,contactValue);
+     S.accessToken=verified.access_token||null;S.context=verified.context||null;
+     const ctx=S.context||{},existing=Array.isArray(ctx.requests)?ctx.requests:[],delivered=ctx.status==="delivered"&&ctx.eligible_for_help===true;
+     result.hidden=false;
+     result.innerHTML='<div class="returns-center-result-head"><span aria-hidden="true">✓</span><div><small>'+esc(tr("Order verified","تم التحقق من الطلب","Commande vérifiée"))+'</small><strong>'+esc(ctx.reference||reference)+'</strong></div></div>'+
+       '<div class="returns-center-result-grid"><span><small>'+esc(tr("Order status","حالة الطلب","Statut de commande"))+'</small><b>'+esc(String(ctx.status||"").replace(/_/g," "))+'</b></span><span><small>'+esc(tr("Return access","إمكانية الإرجاع","Accès au retour"))+'</small><b>'+esc(delivered?tr("Available","متاح","Disponible"):tr("Available after delivery","متاح بعد التسليم","Disponible après livraison"))+'</b></span></div>'+
+       (existing.length?'<div class="returns-center-existing"><strong>'+esc(tr("Existing request(s)","الطلبات الحالية","Demandes existantes"))+'</strong>'+existing.slice(0,5).map(r=>'<div><span>'+esc(r.request_number)+'</span><b class="zwm-status status-'+esc(r.status)+'">'+esc(statusLabel(r.status))+'</b></div>').join("")+'</div>':'')+
+       (delivered?'<button type="button" class="zwm-return-submit" id="returnsCenterContinue">'+esc(tr("Start a return / product issue request","ابدأ طلب إرجاع / مشكلة منتج","Commencer une demande de retour / problème produit"))+'</button>':'<p class="zwm-return-warning">'+esc(tr("This order is verified, but a request can only be submitted after the order is marked delivered.","تم التحقق من الطلب، لكن لا يمكن إرسال الطلب إلا بعد تسجيل الطلب كمُسلَّم.","Cette commande est vérifiée, mais une demande ne peut être envoyée qu’après sa livraison."))+'</p>');
+     $("#returnsCenterContinue")?.addEventListener("click",()=>renderWizard(ctx));
+   }catch(x){S.accessToken=null;S.context=null;result.hidden=true;if(error)error.textContent=x.message||String(x)}
+   finally{S.busy=false;if(button){button.disabled=false;button.textContent=tr("Verify order","تحقق من الطلب","Vérifier la commande")}}
+ });
+}
+function init(){ensureCss();ensureModal();mountReturnCenter();if(document.body.dataset.page==="order"){const mo=new MutationObserver(mountOrderHelp);mo.observe(document.body,{childList:true,subtree:true});mountOrderHelp()}if(document.body.dataset.page==="account"){const mo=new MutationObserver(()=>{if(!$("#zwmReturnHistory"))mountHistory()});mo.observe(document.body,{childList:true,subtree:true});setTimeout(()=>loadHistory(false),500);window.addEventListener("focus",()=>loadHistory(true))}}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();

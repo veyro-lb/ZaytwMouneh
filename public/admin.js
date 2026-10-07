@@ -1785,8 +1785,11 @@
     $("orderCardsMobile").innerHTML=list.map(orderCardHtml).join("")||'<p class="empty-state">No orders match these filters.</p>';
   }
   const ORDER_NEXT_STATUS=Object.freeze({
-    new:["confirmed","cancelled"],
-    confirmed:["preparing","cancelled"],
+    // Owners may jump directly to the real current delivery stage if earlier
+    // operational steps were not recorded yet. Delivered still requires the
+    // order to have been marked out for delivery first.
+    new:["confirmed","preparing","out_for_delivery","cancelled"],
+    confirmed:["preparing","out_for_delivery","cancelled"],
     preparing:["out_for_delivery","cancelled"],
     out_for_delivery:["delivered","cancelled"],
     delivered:["cancelled"],

@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - runtime-batch1-verify-20261007
   pull_request:
     branches:
       - main

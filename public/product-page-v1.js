@@ -13,7 +13,7 @@ var RECIPES=[
 var COPY={
  en:{
   language:"Language",shop:"Shop",gifts:"Gifts",recipes:"Recipes",about:"About",account:"Account",terms:"Terms",privacy:"Privacy",back:"Shop",pantry:"My pantry",
-  category:"Pantry product",size:"Choose size",qty:"Quantity",add:"Add to pantry",unavailable:"Not currently orderable",
+  category:"Pantry product",size:"Choose size",qty:"Quantity",add:"Add to cart",unavailable:"Not currently orderable",
   verified:"Verified purchase reviews",verifiedCopy:"Only reviews tied to delivered purchases are shown here.",noReviews:"No verified reviews yet.",
   facts:"Verified product information",factsNote:"Only product-specific information supplied or configured by Zayt w Mouneh is shown here. Missing facts are intentionally left out rather than guessed.",
   origin:"Origin",ingredients:"Ingredients",storage:"Storage",allergens:"Allergens",details:"Product-specific details",nutrition:"Nutrition",
@@ -21,9 +21,9 @@ var COPY={
   freeAbove:"Free delivery threshold",eta:"Estimated delivery",fee:"Delivery fee",free:"Free",
   related:"Related products",relatedCopy:"More products from the same catalogue category.",
   recipe:"Related recipes",recipeCopy:"Recipes that use this exact pantry item.",viewRecipe:"Open recipes",
-  bundle:"Smart pantry bundle",bundleRecipe:"Add the pantry ingredients for this recipe in one click. Fresh ingredients are not added.",bundleCategory:"A transparent same-category set using current catalogue products; no discount is assumed.",addBundle:"Add bundle to pantry",
+  bundle:"Smart pantry bundle",bundleRecipe:"Add the pantry ingredients for this recipe in one click. Fresh ingredients are not added.",bundleCategory:"A transparent same-category set using current catalogue products; no discount is assumed.",addBundle:"Add bundle to cart",
   alertTitle:"Back-in-stock alert",alertCopy:"Join the request list for this product. Contact details stay private and are not shown publicly.",email:"Email",whatsapp:"WhatsApp",contact:"Contact",notify:"Save alert request",saved:"Alert request saved.",duplicate:"You are already on the pending list for this product.",error:"Could not save the request. Please try again.",
-  verifiedCustomer:"Verified customer",share:"Share",copied:"Link copied",added:"Added to your pantry.",notFound:"Product not found",notFoundCopy:"This product link may be outdated or the item may no longer be in the active catalogue.",allProducts:"Browse all products",
+  verifiedCustomer:"Verified customer",share:"Share",copied:"Link copied",added:"Added to your cart.",notFound:"Product not found",notFoundCopy:"This product link may be outdated or the item may no longer be in the active catalogue.",allProducts:"Browse all products",
   in_stock:"In stock",low_stock:"Low stock",seasonal:"Seasonal",available_on_request:"Available on request",out_of_stock:"Out of stock",coming_soon:"Coming soon",
   paymentCod:"Cash on Delivery",paymentNote:"Pay when your order arrives.",from:"From"
  },

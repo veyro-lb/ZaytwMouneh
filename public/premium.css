@@ -6961,10 +6961,10 @@ body[data-page="home"] .home-pantry-hero .page-intro-actions>a{
 /* Quick View lifecycle hotfix: keep the genuine modal layer above the sticky header
    while leaving the cart's normal stacking untouched. */
 body.modal-open .cart-backdrop{
-  z-index:6300!important;
+  z-index:var(--zwm-layer-modal-backdrop,6500)!important;
 }
 body.modal-open .product-modal{
-  z-index:6400!important;
+  z-index:var(--zwm-layer-modal,6600)!important;
   overflow:auto!important;
   overscroll-behavior:contain!important;
 }

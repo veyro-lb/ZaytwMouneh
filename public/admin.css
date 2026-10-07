@@ -1863,3 +1863,113 @@ html[dir="rtl"] .auth-language-toggle{
     pointer-events:auto;
   }
 }
+
+
+/* ===== order-console-layout-repair-v1 ===== */
+/* Keep the desktop order console inside its card after payment controls were added.
+   Tablet widths use the already-supported order cards instead of forcing a wide table. */
+@media(min-width:1181px){
+  .order-toolbar{
+    display:grid;
+    grid-template-columns:minmax(260px,1fr) minmax(150px,240px) minmax(140px,220px) max-content;
+    gap:10px;
+    align-items:center;
+  }
+  .order-toolbar .search-field,
+  .order-toolbar select{
+    width:100%;
+    min-width:0;
+  }
+  .order-toolbar .button-secondary{
+    white-space:nowrap;
+  }
+
+  .order-table-wrap{
+    overflow-x:hidden;
+  }
+  .order-table{
+    width:100%;
+    min-width:0;
+    table-layout:fixed;
+  }
+  .order-table th,
+  .order-table td{
+    padding-left:10px;
+    padding-right:10px;
+  }
+  .order-table th:nth-child(1){width:17%}
+  .order-table th:nth-child(2){width:15%}
+  .order-table th:nth-child(3){width:18%}
+  .order-table th:nth-child(4){width:14%}
+  .order-table th:nth-child(5){width:17%}
+  .order-table th:nth-child(6){width:12%}
+  .order-table th:nth-child(7){width:7%}
+
+  .order-table .order-code-cell,
+  .order-table .order-customer-cell,
+  .order-table .order-items-cell,
+  .order-table .order-date-cell,
+  .order-table .order-total-payment,
+  .order-table .order-status-stack{
+    min-width:0;
+  }
+  .order-table .order-code-cell b,
+  .order-table .order-code-cell small,
+  .order-table .order-customer-cell b,
+  .order-table .order-customer-cell small,
+  .order-table .order-items-cell b,
+  .order-table .order-items-cell small,
+  .order-table .order-date-cell b,
+  .order-table .order-date-cell small{
+    overflow-wrap:anywhere;
+  }
+  .order-table .order-status-select{
+    width:100%;
+    min-width:0;
+  }
+  .order-table .order-payment-badge{
+    max-width:100%;
+    white-space:normal;
+  }
+  .order-table .order-payment-confirm{
+    width:100%;
+    max-width:120px;
+    min-width:0;
+    white-space:normal;
+    line-height:1.2;
+  }
+  .order-table .row-action{
+    width:100%;
+    min-width:0;
+    padding-left:5px;
+    padding-right:5px;
+  }
+}
+
+@media(min-width:761px) and (max-width:1180px){
+  .order-toolbar{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:10px;
+  }
+  .order-toolbar .search-field{
+    grid-column:1/-1;
+    min-width:0;
+  }
+  .order-toolbar select{
+    width:100%;
+    min-width:0;
+  }
+  .order-toolbar .button-secondary{
+    grid-column:1/-1;
+    width:100%;
+  }
+  .order-table-wrap{
+    display:none;
+  }
+  .order-cards-mobile{
+    display:grid!important;
+    gap:10px;
+    padding:12px;
+  }
+}

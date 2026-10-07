@@ -662,6 +662,8 @@
     };
 
     const setOpen=open=>{
+      const announcement=document.querySelector(".site-header .announcement");
+      const preserveAnnouncementHidden=!!announcement?.hidden;
       if(open){
         syncMenuTop();
         panel.scrollTop=0;
@@ -672,7 +674,11 @@
       document.body.classList.toggle("menu-open",!!open);
       toggle.setAttribute("aria-expanded",open?"true":"false");
       panel.setAttribute("aria-hidden",open?"false":"true");
-      if(open)requestAnimationFrame(()=>panel.querySelector("a[href],button:not([disabled])")?.focus({preventScroll:true}));
+      if(open)requestAnimationFrame(()=>{
+        if(preserveAnnouncementHidden&&announcement)announcement.hidden=true;
+        if(window.matchMedia("(max-width: 760px)").matches)syncMenuTop();
+        panel.querySelector("a[href],button:not([disabled])")?.focus({preventScroll:true});
+      });
       const ar=document.documentElement.dir==="rtl";
       toggle.setAttribute("aria-label",open?(ar?"إغلاق القائمة":"Close menu"):(ar?"فتح القائمة":"Open menu"));
     };

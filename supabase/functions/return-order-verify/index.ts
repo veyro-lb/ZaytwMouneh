@@ -53,12 +53,8 @@ Deno.serve(async(req:Request)=>{
     body:JSON.stringify({p_reference:reference,p_contact:contact||null,p_ip_hash:ipHash,p_user_id:userId})
   });
 
-  if(!rpc.response.ok){
-    const message=String(rpc.data?.message||"");
-    if(message.includes("Too many verification attempts")){
-      return json(origin,{ok:false,error:"Too many verification attempts. Please try again later."},429);
-    }
-    return json(origin,{ok:false,error:"We could not verify those order details. Check the order code and the email or phone used for the order."},400);
-  }
+  if(!rpc.response.ok)return json(origin,{ok:false,error:"Verification is temporarily unavailable. Please try again."},503);
+  if(rpc.data?.rate_limited===true)return json(origin,{ok:false,error:"Too many verification attempts. Please try again later."},429);
+  if(rpc.data?.verified!==true)return json(origin,{ok:false,error:"We could not verify those order details. Check the order code and the email or phone used for the order."},400);
   return json(origin,{ok:true,...rpc.data});
 });

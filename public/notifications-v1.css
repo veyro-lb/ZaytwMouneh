@@ -1,6 +1,6 @@
 .zwm-notification-bell{position:relative}
 .zwm-notification-bell span{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;border-radius:999px;background:#9b2c2c;color:#fff;font-size:10px;font-weight:800;line-height:18px;text-align:center}
-.zwm-notification-popover{position:fixed;z-index:1200;top:78px;right:22px;width:min(350px,calc(100vw - 24px));max-height:430px;overflow:auto;border:1px solid #dfe4dd;border-radius:14px;background:#fff;box-shadow:0 16px 42px rgba(16,38,26,.16)}
+.zwm-notification-popover{position:fixed;z-index:var(--zwm-layer-popover,6050);top:calc(var(--zwm-menu-top,116px) + 8px);right:22px;width:min(350px,calc(100vw - 24px));max-height:430px;overflow:auto;border:1px solid #dfe4dd;border-radius:14px;background:#fff;box-shadow:0 16px 42px rgba(16,38,26,.16)}
 .zwm-notification-popover[hidden]{display:none}
 .zwm-notification-popover header{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:rgba(255,255,255,.98);border-bottom:1px solid #edf0eb}
 .zwm-notification-popover header strong{font-size:15px;line-height:1.2}
@@ -22,7 +22,7 @@
 .zwm-pref-list label{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:44px;padding:10px 12px;border:1px solid var(--line,#ddd);border-radius:12px}
 .zwm-pref-list input{width:20px;height:20px}
 .zwm-device-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line,#eee)}
-@media(max-width:760px){.zwm-notification-popover{top:64px;right:10px;left:10px;width:auto;max-height:60vh}.zwm-notification-actions>*{flex:1 1 180px;min-height:44px}}
+@media(max-width:760px){.zwm-notification-popover{top:calc(var(--zwm-menu-top,94px) + 8px);right:10px;left:10px;width:auto;max-height:60vh}.zwm-notification-actions>*{flex:1 1 180px;min-height:44px}}
 @media(max-width:430px){.zwm-notification-popover{border-radius:12px}.zwm-notification-actions>*{flex-basis:100%}.zwm-notification-item{padding:10px 12px}}
 /* Customer account notification controls */
 .zwm-customer-notification-bell{
@@ -72,7 +72,7 @@
   display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:16px
 }
 .zwm-customer-notification-footer .zwm-notification-actions{margin:0}
-.zwm-customer-notification-footer button{min-height:42px!important;padding:0 16px!important;border-radius:12px!important}
+.zwm-customer-notification-footer button{min-height:44px!important;padding:0 16px!important;border-radius:12px!important}
 .zwm-customer-notification-footer button[disabled]{opacity:.45;cursor:not-allowed}
 .zwm-customer-notification-footer [data-test]{background:#fff;border:1px solid #d8dfd6;color:#20452c}
 .zwm-customer-notification-footer .account-status{margin:0!important;flex:1 1 260px;text-align:end}
@@ -83,10 +83,10 @@
  .zwm-customer-notification-head{gap:16px}
 }
 @media(max-width:700px){
- .zwm-customer-notification-bell{width:42px;height:42px;flex-basis:42px}
- .site-header .zwm-customer-notification-bell,.c6-nav-actions .zwm-customer-notification-bell,.commerce-header-actions .zwm-customer-notification-bell{width:38px;height:38px;flex-basis:38px}
+ .zwm-customer-notification-bell{width:44px;height:44px;flex-basis:44px}
+ .site-header .zwm-customer-notification-bell,.c6-nav-actions .zwm-customer-notification-bell,.commerce-header-actions .zwm-customer-notification-bell{width:44px;height:44px;flex-basis:44px}
 
- .zwm-customer-notification-popover{top:70px;left:10px;right:10px;width:auto}
+ .zwm-customer-notification-popover{top:calc(var(--zwm-menu-top,94px) + 8px);left:10px;right:10px;width:auto}
  .zwm-account-notifications{padding:18px!important;border-radius:18px!important}
  .zwm-customer-notification-head{grid-template-columns:1fr;gap:12px}
  .zwm-customer-notification-state{justify-self:start}
@@ -211,12 +211,12 @@
     overscroll-behavior:contain
   }
   .site-header .nav>.nav-actions:has(#zwmCustomerNotificationBell){
-    width:88px!important;min-width:88px!important;
+    width:92px!important;min-width:92px!important;
     display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:4px!important
   }
   .site-header .nav>.nav-actions:has(#zwmCustomerNotificationBell) #zwmCustomerNotificationBell{
     position:relative!important;inset:auto!important;transform:none!important;
-    display:grid!important;width:42px!important;min-width:42px!important;height:42px!important;min-height:42px!important
+    display:grid!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important
   }
   .site-header .nav:has(#zwmCustomerNotificationBell)>.brand{
     max-width:calc(100% - 200px)!important
@@ -232,6 +232,6 @@
     display:none!important
   }
   .topbar-right #zwmNotificationBell{
-    display:grid!important;width:40px!important;min-width:40px!important;height:40px!important;min-height:40px!important
+    display:grid!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important
   }
 }

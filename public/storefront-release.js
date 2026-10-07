@@ -4,9 +4,21 @@
   const RELEASE_PARAM="__zwm_release";
   const FRESH_PARAM="__zwm_fresh";
   const PROBE_PARAM="__zwm_probe";
+  const SHELL_ASSET_VERSION="20261008-desktopmenufix4";
   const meta=document.querySelector('meta[name="zwm-release"]');
   const current=String(meta?.content||"").trim();
   let checkPromise=null;
+
+  function ensureCurrentShellAsset(){
+    try{
+      const link=document.querySelector('link[rel="stylesheet"][href*="storefront-shell.css"]');
+      if(!link)return;
+      const url=new URL(link.getAttribute("href")||"",location.href);
+      if(url.searchParams.get("v")===SHELL_ASSET_VERSION)return;
+      url.searchParams.set("v",SHELL_ASSET_VERSION);
+      link.href=url.pathname+url.search;
+    }catch{}
+  }
 
   function cleanTransientParams(){
     try{
@@ -70,6 +82,7 @@
   // otherwise get trapped in visible refresh loops while caches are settling.
   // Versioned asset URLs already provide normal cache busting on navigation.
   cleanTransientParams();
+  ensureCurrentShellAsset();
   window.ZWM_RELEASE=current;
   window.ZWM_CHECK_RELEASE=checkRelease;
   checkRelease().then(result=>{if(result?.latest)window.ZWM_RELEASE=result.latest}).catch(()=>{});

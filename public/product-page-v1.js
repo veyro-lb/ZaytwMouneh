@@ -15,8 +15,8 @@ var COPY={
   language:"Language",shop:"Shop",gifts:"Gifts",recipes:"Recipes",about:"About",account:"Account",terms:"Terms",privacy:"Privacy",back:"Shop",pantry:"My pantry",
   category:"Pantry product",size:"Choose size",qty:"Quantity",add:"Add to pantry",unavailable:"Not currently orderable",
   verified:"Verified purchase reviews",verifiedCopy:"Only reviews tied to delivered purchases are shown here.",noReviews:"No verified reviews yet.",
-  facts:"Product details",factsNote:"Product facts are shown only where Zayt w Mouneh has supplied or configured them. Missing facts are not guessed.",
-  origin:"Origin",ingredients:"Ingredients",storage:"Storage",allergens:"Allergens",details:"Details",
+  facts:"Verified product information",factsNote:"Only product-specific information supplied or configured by Zayt w Mouneh is shown here. Missing facts are intentionally left out rather than guessed.",
+  origin:"Origin",ingredients:"Ingredients",storage:"Storage",allergens:"Allergens",details:"Product-specific details",nutrition:"Nutrition",
   payment:"Accepted payment",delivery:"Delivery estimate",deliveryPlaceholder:"Enter your area",estimate:"Check",deliveryUnknown:"Enter your area at checkout to see the delivery amount currently applied to your order. Delivery timing may not be available for every area.",
   freeAbove:"Free delivery threshold",eta:"Estimated delivery",fee:"Delivery fee",free:"Free",
   related:"Related products",relatedCopy:"More products from the same catalogue category.",
@@ -31,8 +31,8 @@ var COPY={
   language:"اللغة",shop:"المتجر",gifts:"الهدايا",recipes:"الوصفات",about:"من نحن",account:"الحساب",terms:"الشروط",privacy:"الخصوصية",back:"المتجر",pantry:"سلّتي",
   category:"منتج من المونة",size:"اختر الحجم",qty:"الكمية",add:"أضف إلى السلة",unavailable:"غير متاح للطلب حالياً",
   verified:"مراجعات شراء موثّقة",verifiedCopy:"تظهر هنا فقط المراجعات المرتبطة بطلبات تم تسليمها.",noReviews:"لا توجد مراجعات موثّقة بعد.",
-  facts:"تفاصيل المنتج",factsNote:"لا نعرض إلا معلومات المنتج التي وفّرتها أو أعدّتها زيت ومونة. لا يتم تخمين المعلومات الناقصة.",
-  origin:"المنشأ",ingredients:"المكونات",storage:"الحفظ",allergens:"مسببات الحساسية",details:"التفاصيل",
+  facts:"معلومات المنتج الموثّقة",factsNote:"لا نعرض هنا إلا معلومات خاصة بالمنتج وفّرتها أو أعدّتها زيت ومونة. تُترك المعلومات الناقصة من دون عرض بدلاً من تخمينها.",
+  origin:"المنشأ",ingredients:"المكونات",storage:"الحفظ",allergens:"مسببات الحساسية",details:"تفاصيل خاصة بالمنتج",nutrition:"معلومات غذائية",
   payment:"طرق الدفع المقبولة",delivery:"تقدير التوصيل",deliveryPlaceholder:"اكتب منطقتك",estimate:"تحقق",deliveryUnknown:"أدخل منطقتك عند إتمام الطلب لعرض قيمة التوصيل المطبّقة حالياً على طلبك. قد لا يتوفر وقت توصيل مقدّر لكل منطقة.",
   freeAbove:"حد التوصيل المجاني",eta:"مدة التوصيل المتوقعة",fee:"رسم التوصيل",free:"مجاني",
   related:"منتجات مرتبطة",relatedCopy:"منتجات أخرى من الفئة نفسها في الكتالوج.",
@@ -47,8 +47,8 @@ var COPY={
   language:"Langue",shop:"Boutique",gifts:"Cadeaux",recipes:"Recettes",about:"À propos",account:"Compte",terms:"Conditions",privacy:"Confidentialité",back:"Boutique",pantry:"Mon panier",
   category:"Produit de la mouneh",size:"Choisir le format",qty:"Quantité",add:"Ajouter au panier",unavailable:"Non commandable actuellement",
   verified:"Avis d’achat vérifié",verifiedCopy:"Seuls les avis liés à des commandes livrées sont affichés ici.",noReviews:"Aucun avis vérifié pour le moment.",
-  facts:"Détails du produit",factsNote:"Les informations produit ne sont affichées que lorsqu’elles ont été fournies ou configurées par Zayt w Mouneh. Rien n’est inventé.",
-  origin:"Origine",ingredients:"Ingrédients",storage:"Conservation",allergens:"Allergènes",details:"Détails",
+  facts:"Informations produit vérifiées",factsNote:"Seules les informations propres au produit fournies ou configurées par Zayt w Mouneh sont affichées ici. Les données manquantes sont laissées absentes plutôt qu’inventées.",
+  origin:"Origine",ingredients:"Ingrédients",storage:"Conservation",allergens:"Allergènes",details:"Détails spécifiques au produit",nutrition:"Informations nutritionnelles",
   payment:"Paiement accepté",delivery:"Estimation de livraison",deliveryPlaceholder:"Saisissez votre zone",estimate:"Vérifier",deliveryUnknown:"Indiquez votre zone lors du paiement pour voir le montant de livraison actuellement appliqué à votre commande. Un délai de livraison peut ne pas être disponible pour toutes les zones.",
   freeAbove:"Seuil de livraison gratuite",eta:"Délai estimé",fee:"Frais de livraison",free:"Gratuite",
   related:"Produits associés",relatedCopy:"Autres produits de la même catégorie du catalogue.",
@@ -102,11 +102,12 @@ function sizeName(v){
 }
 function valueFor(p,key){
  var keys={
-  origin:{en:["originEn","origin","sourceEn","source"],ar:["originAr","sourceAr","origin","source"],fr:["originFr","sourceFr","originEn","origin","sourceEn","source"]},
-  ingredients:{en:["ingredientsEn","ingredients"],ar:["ingredientsAr","ingredients"],fr:["ingredientsFr","ingredientsEn","ingredients"]},
-  storage:{en:["storageEn","storage"],ar:["storageAr","storage"],fr:["storageFr","storageEn","storage"]},
-  allergens:{en:["allergensEn","allergens"],ar:["allergensAr","allergens"],fr:["allergensFr","allergensEn","allergens"]},
-  details:{en:["descriptionEn","detailsEn","description","details"],ar:["descriptionAr","detailsAr","description","details"],fr:["descriptionFr","detailsFr","descriptionEn","detailsEn","description","details"]}
+  origin:{en:["originEn","origin","sourceEn","source"],ar:["originAr","sourceAr","originEn","origin","sourceEn","source"],fr:["originFr","sourceFr","originEn","origin","sourceEn","source"]},
+  ingredients:{en:["ingredientsEn","ingredients"],ar:["ingredientsAr","ingredientsEn","ingredients"],fr:["ingredientsFr","ingredientsEn","ingredients"]},
+  storage:{en:["storageEn","storage"],ar:["storageAr","storageEn","storage"],fr:["storageFr","storageEn","storage"]},
+  allergens:{en:["allergensEn","allergens"],ar:["allergensAr","allergensEn","allergens"],fr:["allergensFr","allergensEn","allergens"]},
+  details:{en:["descriptionEn","detailsEn","description","details"],ar:["descriptionAr","detailsAr","descriptionEn","detailsEn","description","details"],fr:["descriptionFr","detailsFr","descriptionEn","detailsEn","description","details"]},
+  nutrition:{en:["nutritionEn","nutrition"],ar:["nutritionAr","nutritionEn","nutrition"],fr:["nutritionFr","nutritionEn","nutrition"]}
  };
  var list=(keys[key]&&keys[key][state.locale])||[];
  for(var i=0;i<list.length;i++){
@@ -237,7 +238,7 @@ function photoMarkup(p){
  return '<div class="c6-product-placeholder" aria-hidden="true">'+esc((productName(p)||"ZW").slice(0,2).toUpperCase())+'</div>';
 }
 function factsMarkup(p){
- var fields=[["origin",t("origin")],["ingredients",t("ingredients")],["storage",t("storage")],["allergens",t("allergens")],["details",t("details")]];
+ var fields=[["origin",t("origin")],["ingredients",t("ingredients")],["allergens",t("allergens")],["storage",t("storage")],["nutrition",t("nutrition")],["details",t("details")]];
  var rows=fields.map(function(x){var v=valueFor(p,x[0]);return v?'<div class="c6-info-card"><span>'+esc(x[1])+'</span><p>'+esc(v)+'</p></div>':""}).join("");
  if(!rows)return '<p class="c6-data-note">'+esc(t("factsNote"))+'</p>';
  return '<div class="c6-info-grid">'+rows+'</div><p class="c6-data-note">'+esc(t("factsNote"))+'</p>';

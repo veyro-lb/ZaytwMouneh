@@ -171,12 +171,12 @@ const CATEGORY_INFO={
     ar:["مياه زهرية ومقطرات وشرابات تقليدية للمشروبات والحلويات.","تُستخدم في المشروبات الباردة والحلويات والوصفات التقليدية."]
   },
   "Dried Foods":{
-    en:["Fruits and pantry ingredients preserved by drying for concentrated flavour and longer keeping.","Snack on them or add them to breakfast, baking, desserts and savoury dishes."],
-    ar:["فواكه ومكونات مونة محفوظة بالتجفيف لنكهة مركزة وحفظ أطول.","تُؤكل كوجبة خفيفة أو تُضاف إلى الفطور والخبز والحلويات والأطباق المالحة."]
+    en:["Dried fruits and pantry ingredients are commonly used for concentrated flavour and texture.","Snack on them or add them to breakfast, baking, desserts and savoury dishes."],
+    ar:["فواكه ومكونات مونة مجففة تُستخدم عادةً للنكهة المركزة والقوام.","تُؤكل كوجبة خفيفة أو تُضاف إلى الفطور والخبز والحلويات والأطباق المالحة."]
   },
   "Flour":{
-    en:["Milled grain or nut flour used as a base ingredient in baking and cooking.","Use for dough, bread, batters, pastries and recipes suited to each flour."],
-    ar:["طحين من الحبوب أو المكسرات يُستخدم أساساً في الخَبز والطبخ.","يُستخدم للعجين والخبز والمعجنات والوصفات المناسبة لكل نوع."]
+    en:["Flours are milled pantry ingredients used in baking and cooking; the source ingredient varies by product.","Use for dough, bread, batters, pastries and recipes suited to each flour."],
+    ar:["الطحين مكوّن مطحون للمطبخ والخَبز، ويختلف المكوّن الأساسي بحسب المنتج.","يُستخدم للعجين والخبز والمعجنات والوصفات المناسبة لكل نوع."]
   },
   "Grains":{
     en:["Rice, wheat and grain staples for filling everyday meals.","Cook as a side, pilaf, soup ingredient, salad base or family meal staple."],
@@ -195,8 +195,8 @@ const CATEGORY_INFO={
     ar:["دبس فاكهة مركز بطعم غني يجمع الحلاوة والحموضة.","يُستخدم في التتبيلات والصلصات والماريناد والوصفات اللبنانية الحلوة الحامضة."]
   },
   "Mouneh":{
-    en:["Traditional preserved pantry foods prepared to carry seasonal ingredients through the year.","Serve at breakfast or mezze, spread, cook with or add to home-style meals depending on the item."],
-    ar:["أصناف مونة تقليدية تحفظ خيرات الموسم طوال السنة.","تُقدّم على الفطور أو المازة أو تُستخدم في الطبخ بحسب الصنف."]
+    en:["Mouneh is a broad Lebanese pantry tradition of preserved and seasonal foods; the exact preparation varies by item.","Serve at breakfast or mezze, spread, cook with or add to home-style meals depending on the item."],
+    ar:["المونة تقليد لبناني واسع للأطعمة المحفوظة والموسمية، وتختلف طريقة التحضير بحسب الصنف.","تُقدّم على الفطور أو المازة أو تُستخدم في الطبخ بحسب الصنف."]
   },
   "Nuts + Seeds":{
     en:["Whole, cut or roasted nuts and seeds for snacking and pantry use.","Snack on them, bake with them, garnish salads or add to breakfast and sweets."],
@@ -207,28 +207,28 @@ const CATEGORY_INFO={
     ar:["زيوت نباتية وزيوت بذور من مجموعة الزيوت في المتجر.","تختلف الاستخدامات بحسب الزيت؛ اختر الحجم المناسب واسألنا عند الحاجة."]
   },
   "Olive Oil":{
-    en:["Extra virgin olive oil — a central ingredient of the Lebanese pantry.","Drizzle, dress, dip, marinate or cook with it."],
-    ar:["زيت زيتون بكر ممتاز، من أساسيات المونة اللبنانية.","يُستخدم للتغميس والتتبيل والماريناد والطبخ."]
+    en:["Olive oil is a central ingredient of the Lebanese pantry; grade and production details vary by product.","Drizzle, dress, dip, marinate or cook with it."],
+    ar:["زيت الزيتون من أساسيات المونة اللبنانية، وتختلف الدرجة وتفاصيل الإنتاج بحسب المنتج.","يُستخدم للتغميس والتتبيل والماريناد والطبخ."]
   },
   "Olives":{
     en:["Green or black olives prepared for the table.","Serve with breakfast, mezze, cheeses, salads and shared platters."],
     ar:["زيتون أخضر أو أسود محضّر للمائدة.","يُقدّم مع الفطور والمازة والأجبان والسلطات."]
   },
   "Pickles":{
-    en:["Vegetables preserved in brine for acidity, crunch and long keeping.","Serve beside sandwiches, grilled foods, mezze and hearty meals."],
-    ar:["خضار محفوظة بالمحلول الملحي لطعم حامض وقوام مقرمش.","تُقدّم مع السندويشات والمشاوي والمازة والوجبات الدسمة."]
+    en:["Pickles are preserved vegetables; the exact pickling method and ingredients vary by product.","Serve beside sandwiches, grilled foods, mezze and hearty meals."],
+    ar:["المخللات خضار محفوظة، وتختلف طريقة التخليل والمكونات بحسب المنتج.","تُقدّم مع السندويشات والمشاوي والمازة والوجبات الدسمة."]
   },
   "Pulses":{
     en:["Dried legumes such as lentils, beans, chickpeas and lupini beans.","Cook in soups, stews, salads, dips and traditional home dishes."],
     ar:["بقوليات مجففة مثل العدس والفاصوليا والحمص والترمس.","تُطبخ في الحساء واليخنات والسلطات والغموس والأطباق البيتية."]
   },
   "Soap":{
-    en:["Traditional-inspired soap from the shop’s care collection.","Use for everyday washing according to the soap type and your preference."],
-    ar:["صابون من مجموعة العناية بطابع تقليدي.","يُستخدم للتنظيف اليومي بحسب نوع الصابون وتفضيلك."]
+    en:["This category includes soaps for everyday washing; ingredients and intended use vary by item.","Use according to the soap type, package directions and your preference."],
+    ar:["تضم هذه الفئة صابوناً للاستخدام اليومي، وتختلف المكونات والاستعمال المقصود بحسب الصنف.","يُستخدم بحسب نوع الصابون وتعليمات العبوة وتفضيلك."]
   },
   "Spices":{
-    en:["Whole, ground or blended spices for building aroma and flavour.","Season rice, meat, chicken, fish, vegetables, marinades and traditional dishes."],
-    ar:["بهارات كاملة أو مطحونة أو خلطات لإضافة النكهة والرائحة.","تُستخدم مع الأرز واللحوم والدجاج والسمك والخضار والماريناد."]
+    en:["Spices may be whole, ground or blended; the exact composition is product-specific.","Season rice, meat, chicken, fish, vegetables, marinades and traditional dishes."],
+    ar:["قد تكون البهارات كاملة أو مطحونة أو خلطات، وتكون التركيبة الدقيقة خاصة بكل منتج.","تُستخدم مع الأرز واللحوم والدجاج والسمك والخضار والماريناد."]
   },
   "Sweets + Candy":{
     en:["Small sweets and candy for sharing or a quick treat.","Enjoy as a snack or serve with coffee and gatherings."],
@@ -284,7 +284,7 @@ const UI={
     total:"Estimated total",orderDetailsTitle:"Ready for checkout",orderDetailsNote:"Delivery, rewards and the final total are confirmed at checkout.",
     yourName:"Your name",namePlaceholder:"Name",phone:"WhatsApp number (optional)",phonePlaceholder:"e.g. 961 70 123 456",area:"Area / location",areaPlaceholder:"e.g. Baabda",notes:"Order notes",notesPlaceholder:"Delivery notes, substitutions, anything we should know…",
     sendOrder:"Checkout <span>→</span>",priceNote:"Prices and availability are rechecked before the order is created.",
-    what:"What it is",use:"Use it for",nutritionLabel:"General nutrition note",nutritionBadge:"General nutrition",chooseSize:"Choose size",add:"Add to pantry",update:"Update pantry",view:"View",from:"From",sizeOptions:"size options",
+    what:"About this product type",use:"Common uses",nutritionLabel:"Verified product information",nutritionBadge:"Verified product information",chooseSize:"Choose size",add:"Add to pantry",update:"Update pantry",view:"View",from:"From",sizeOptions:"size options",
     remove:"Remove",details:"View details",qty:"Qty",unitPrice:"Unit",subtotal:"Subtotal",
     standard:"Standard",added:"Added to cart",updated:"Cart updated",removed:"Removed",
     categoryAll:"All categories",
@@ -338,7 +338,7 @@ const UI={
     total:"المجموع التقديري",orderDetailsTitle:"جاهز لإتمام الطلب",orderDetailsNote:"يتم تأكيد التوصيل والمكافآت والمجموع النهائي عند إتمام الطلب.",
     yourName:"الاسم",namePlaceholder:"اسمك",phone:"رقم واتساب (اختياري)",phonePlaceholder:"مثلاً 961 70 123 456",area:"المنطقة / الموقع",areaPlaceholder:"مثلاً بعبدا",notes:"ملاحظات الطلب",notesPlaceholder:"ملاحظات التوصيل أو الاستبدال أو أي تفاصيل إضافية…",
     sendOrder:"إتمام الطلب <span>←</span>",priceNote:"يتم التحقق من الأسعار والتوفر بأمان قبل إنشاء الطلب.",
-    what:"ما هو",use:"كيف يُستخدم",nutritionLabel:"معلومة غذائية عامة",nutritionBadge:"معلومة غذائية عامة",chooseSize:"اختر الحجم",add:"أضف إلى السلة",update:"حدّث السلة",view:"عرض",from:"ابتداءً من",sizeOptions:"خيارات الحجم",
+    what:"عن هذا النوع من المنتجات",use:"استخدامات شائعة",nutritionLabel:"معلومات المنتج الموثّقة",nutritionBadge:"معلومات موثّقة",chooseSize:"اختر الحجم",add:"أضف إلى السلة",update:"حدّث السلة",view:"عرض",from:"ابتداءً من",sizeOptions:"خيارات الحجم",
     remove:"حذف",details:"عرض التفاصيل",qty:"الكمية",unitPrice:"السعر",subtotal:"المجموع",
     standard:"حجم واحد",added:"تمت الإضافة إلى السلة",updated:"تم تحديث السلة",removed:"تم الحذف",
     categoryAll:"كل الأقسام",
@@ -414,8 +414,8 @@ const PAGE_I18N={
     ar:{title:"زيت ومونة | مونة لبنانية أصيلة",description:"مونة لبنانية أصيلة وهدايا منذ 2006، مع أسعار واضحة وتوصيل إلى مختلف المناطق في لبنان.",skip:"الانتقال إلى المنتجات"}
   },
   shop:{
-    en:{title:"Shop Lebanese Pantry Essentials | Zayt w Mouneh",description:"Browse 300+ Lebanese pantry products with clear sizes and prices, origin information, favourites and secure website checkout.",skip:"Skip to catalogue"},
-    ar:{title:"تسوّق المونة اللبنانية | زيت ومونة",description:"تصفّح أكثر من 300 منتج من المونة اللبنانية مع أحجام وأسعار واضحة ومعلومات المصدر وإتمام طلب آمن عبر الموقع.",skip:"الانتقال إلى المنتجات"}
+    en:{title:"Shop Lebanese Pantry Essentials | Zayt w Mouneh",description:"Browse 300+ Lebanese pantry products with clear sizes, prices, favourites and secure website checkout.",skip:"Skip to catalogue"},
+    ar:{title:"تسوّق المونة اللبنانية | زيت ومونة",description:"تصفّح أكثر من 300 منتج من المونة اللبنانية مع أحجام وأسعار واضحة ومفضّلات وإتمام طلب آمن عبر الموقع.",skip:"الانتقال إلى المنتجات"}
   },
   about:{
     en:{title:"Our Story & Provenance | Zayt w Mouneh",description:"Learn about Zayt w Mouneh since 2006 and the origins behind the pantry: Bekaa, Koura, Mount Lebanon and Chouf.",skip:"Skip to our story"},
@@ -565,12 +565,45 @@ function currentSize(v){
   return v?.sizeEn||v?.sizeAr||"";
 }
 function categoryName(cat){return lang==="ar"?(CATEGORY_AR[cat]||cat):cat}
+const VERIFIED_PRODUCT_KEYS={
+  origin:{en:["originEn","origin","sourceEn","source"],ar:["originAr","sourceAr","originEn","origin","sourceEn","source"],fr:["originFr","sourceFr","originEn","origin","sourceEn","source"]},
+  ingredients:{en:["ingredientsEn","ingredients"],ar:["ingredientsAr","ingredientsEn","ingredients"],fr:["ingredientsFr","ingredientsEn","ingredients"]},
+  allergens:{en:["allergensEn","allergens"],ar:["allergensAr","allergensEn","allergens"],fr:["allergensFr","allergensEn","allergens"]},
+  storage:{en:["storageEn","storage"],ar:["storageAr","storageEn","storage"],fr:["storageFr","storageEn","storage"]},
+  details:{en:["descriptionEn","detailsEn","description","details"],ar:["descriptionAr","detailsAr","descriptionEn","detailsEn","description","details"],fr:["descriptionFr","detailsFr","descriptionEn","detailsEn","description","details"]},
+  nutrition:{en:["nutritionEn","nutrition"],ar:["nutritionAr","nutritionEn","nutrition"],fr:["nutritionFr","nutritionEn","nutrition"]}
+};
+function verifiedProductValue(p,key){
+  const locale=lang==="ar"?"ar":lang==="fr"?"fr":"en";
+  const fields=VERIFIED_PRODUCT_KEYS[key]?.[locale]||[];
+  for(const field of fields){
+    const value=p?.[field];
+    if(Array.isArray(value)){
+      const clean=value.map(item=>String(item??"").trim()).filter(Boolean);
+      if(clean.length)return clean.join(" · ");
+      continue;
+    }
+    if(value&&typeof value==="object")continue;
+    const text=String(value??"").trim();
+    if(text)return text;
+  }
+  return "";
+}
+function verifiedProductFacts(p){
+  const locale=lang==="ar"?"ar":lang==="fr"?"fr":"en";
+  const labels={
+    en:{origin:"Origin",ingredients:"Ingredients",allergens:"Allergens",storage:"Storage",details:"Product-specific details",nutrition:"Nutrition"},
+    ar:{origin:"المنشأ",ingredients:"المكونات",allergens:"مسببات الحساسية",storage:"الحفظ",details:"تفاصيل خاصة بالمنتج",nutrition:"معلومات غذائية"},
+    fr:{origin:"Origine",ingredients:"Ingrédients",allergens:"Allergènes",storage:"Conservation",details:"Détails spécifiques au produit",nutrition:"Informations nutritionnelles"}
+  }[locale];
+  return ["origin","ingredients","allergens","storage","details","nutrition"].map(key=>{
+    const value=verifiedProductValue(p,key);
+    return value?{key,label:labels[key],value}:null;
+  }).filter(Boolean);
+}
 function originKeyFor(p){
-  const source=normalize([
-    p.originEn,p.originAr,p.originFr,p.origin,
-    p.sourceEn,p.sourceAr,p.sourceFr,p.source,
-    p.nameEn,p.original
-  ].filter(Boolean).join(" "));
+  const source=normalize(verifiedProductValue(p,"origin"));
+  if(!source)return "";
   if(source.includes("chouf")||source.includes("الشوف"))return "Chouf";
   if(source.includes("koura")||source.includes("الكورة"))return "Koura";
   if(source.includes("mount lebanon")||source.includes("mont liban")||source.includes("جبل لبنان"))return "Mount Lebanon";
@@ -578,28 +611,10 @@ function originKeyFor(p){
   return "";
 }
 function originFor(p){
-  const explicit=lang==="ar"
-    ? (p.originAr||p.sourceAr||p.originEn||p.origin||p.sourceEn||p.source||"")
-    : lang==="fr"
-      ? (p.originFr||p.sourceFr||p.originEn||p.origin||p.sourceEn||p.source||"")
-      : (p.originEn||p.origin||p.sourceEn||p.source||"");
-  if(String(explicit).trim()){
-    if(lang==="ar")return `المصدر · ${plainArabic(explicit)}`;
-    if(lang==="fr")return `Origine · ${String(explicit).trim()}`;
-    return `Source · ${String(explicit).trim()}`;
-  }
-  const key=originKeyFor(p);
-  if(!key)return "";
-  const isDebes=p.category==="Molasses"||normalize([p.nameEn,p.original].join(" ")).includes("molasses");
-  if(lang==="ar"){
-    const labels={"Bekaa":"البقاع","Koura":"الكورة","Mount Lebanon":"جبل لبنان","Chouf":"الشوف"};
-    return `${isDebes?"مصدر الدبس":"المصدر"} · ${labels[key]||key}`;
-  }
-  if(lang==="fr"){
-    const labels={"Bekaa":"Bekaa","Koura":"Koura","Mount Lebanon":"Mont-Liban","Chouf":"Chouf"};
-    return `${isDebes?"Origine du debes":"Origine"} · ${labels[key]||key}, Liban`;
-  }
-  return `${isDebes?"Debes source":"Source"} · ${key}, Lebanon`;
+  const value=verifiedProductValue(p,"origin");
+  if(!value)return "";
+  const label=lang==="ar"?"المنشأ":lang==="fr"?"Origine":"Origin";
+  return label+" · "+(lang==="ar"?plainArabic(value):value);
 }
 function plainArabic(s){
   return String(s||"")
@@ -824,9 +839,9 @@ function infoFor(p){
     arWhat="الزعتر من أساسيات المونة الشامية، وتختلف الخلطة بحسب النوع.";
     arUse="يُخلط مع زيت الزيتون للمناقيش أو يُقدّم مع اللبنة والبيض والخبز والسلطات.";
   }else if(n.includes("lentil")){
-    enWhat="Lentils are dried pulses valued for quick cooking, protein and earthy flavour.";
+    enWhat="Lentils are dried pulses commonly used in quick-cooking everyday dishes.";
     enUse="Cook in soups, mujadara-style dishes, stews and salads.";
-    arWhat="العدس من البقوليات المجففة، سريع الطبخ وغني ومناسب للوجبات اليومية.";
+    arWhat="العدس من البقوليات المجففة ويُستخدم عادةً في أطباق يومية سريعة الطبخ.";
     arUse="يُستخدم في الشوربات والمجدرة واليخنات والسلطات.";
   }else if(n.includes("chickpea")){
     enWhat="Chickpeas are dried pulses with a nutty flavour and creamy texture when cooked.";
@@ -839,9 +854,9 @@ function infoFor(p){
     arWhat="البرغل قمح مسلوق ومجفف ومجروش، ويتوفر بدرجات خشونة مختلفة.";
     arUse="يُستخدم في التبولة والكبة والبرغل المفلفل والحشوات وسلطات الحبوب.";
   }else if(n.includes("olive oil")){
-    enWhat="Extra virgin olive oil is a central ingredient of the Lebanese pantry.";
+    enWhat="Olive oil is a Lebanese pantry staple; grade and production details vary by product.";
     enUse="Use for dipping, dressings, mezze, marinades and cooking.";
-    arWhat="زيت الزيتون البكر الممتاز من أساسيات المونة اللبنانية.";
+    arWhat="زيت الزيتون من أساسيات المونة اللبنانية، وتختلف الدرجة وتفاصيل الإنتاج بحسب المنتج.";
     arUse="يُستخدم للتغميس والتتبيلات والمازة والماريناد والطبخ.";
   }else if(n.includes("honey")){
     enWhat="Honey is a naturally sweet bee-made pantry food; flavour varies by floral source and blend.";
@@ -849,19 +864,19 @@ function infoFor(p){
     arWhat="العسل غذاء طبيعي حلو من النحل، وتختلف نكهته بحسب مصدر الرحيق والخلطة.";
     arUse="يُستخدم مع الفطور والمشروبات والتتبيلات والحلويات أو مع الجبنة.";
   }else if(n.includes("molasses")){
-    enWhat="Fruit molasses is concentrated fruit juice cooked down to a thick, intense syrup.";
+    enWhat="Fruit molasses is a concentrated syrup; exact ingredients and production method vary by product.";
     enUse="Use in dressings, marinades, sauces and Lebanese sweet-sour pairings.";
-    arWhat="الدبس عصير فاكهة مركز يُطبخ حتى يصبح كثيفاً وغني النكهة.";
+    arWhat="دبس الفاكهة شراب مركز، وتختلف المكونات وطريقة الإنتاج الدقيقة بحسب المنتج.";
     arUse="يُستخدم في التتبيلات والماريناد والصلصات والوصفات اللبنانية الحلوة الحامضة.";
   }else if(n.includes("jam")){
-    enWhat="A fruit or flower preserve cooked into a spreadable pantry staple.";
+    enWhat="Jams and preserves are spreadable fruit- or flower-based pantry foods; exact ingredients and preparation vary by product.";
     enUse="Serve with bread, labneh, breakfast plates, pastries or desserts.";
-    arWhat="مربّى من الفاكهة أو الورد محضّر ليكون قابلاً للدهن والحفظ.";
+    arWhat="المربيات أصناف قابلة للدهن من الفاكهة أو الورد، وتختلف المكونات وطريقة التحضير بحسب المنتج.";
     arUse="يُقدّم مع الخبز واللبنة والفطور والمعجنات والحلويات.";
   }else if(n.includes("labneh")){
-    enWhat="Labneh is strained yogurt; these mouneh-style balls are preserved for a rich, tangy bite.";
+    enWhat="Labneh is strained yogurt. Labneh balls are a common mouneh format; exact ingredients and preservation method vary by product.";
     enUse="Serve with olive oil, bread, breakfast, mezze and herbs.";
-    arWhat="اللبنة لبن مصفّى، وتُحفظ هنا على شكل كرات مونة بطعم غني وحامض لطيف.";
+    arWhat="اللبنة لبن مصفّى، وكرات اللبنة من أشكال المونة الشائعة؛ وتختلف المكونات وطريقة الحفظ بحسب المنتج.";
     arUse="تُقدّم مع زيت الزيتون والخبز والفطور والمازة والأعشاب.";
   }else if(n.includes("makdous")){
     enWhat="Makdous is a traditional preserved stuffed eggplant preparation.";
@@ -869,67 +884,12 @@ function infoFor(p){
     arWhat="المكدوس باذنجان محشي ومحفوظ على الطريقة التقليدية.";
     arUse="يُقدّم على الفطور أو المازة مع الخبز والخضار وزيت الزيتون.";
   }else if(n.includes("vinegar")||n.includes("verjuice")){
-    enWhat="A bright acidic pantry ingredient made from fruit vinegar or unripe grape juice.";
+    enWhat="Vinegar and verjuice are acidic pantry ingredients; the exact base and preparation vary by item.";
     enUse="Use in dressings, marinades, sauces and preserved foods.";
-    arWhat="مكوّن حامض ومنعش من خل الفاكهة أو عصير العنب غير الناضج.";
+    arWhat="الخل والحصرم من المكونات الحامضة للمطبخ، ويختلف المصدر وطريقة التحضير بحسب الصنف.";
     arUse="يُستخدم في التتبيلات والماريناد والصلصات والمونة.";
   }
   return lang==="ar"?{what:arWhat,use:arUse}:{what:enWhat,use:enUse};
-}
-
-function healthNoteFor(p){
-  const n=p.nameEn.toLowerCase();
-  const pulseMatch=/(lentil|aadas|chickpea|humus|hummus|fasol|bean|foul|pea|bazela|termos|lupin)/.test(n);
-  const wholeGrainMatch=/(bulgur|freek|barley|brown rice|quinoa|kinwa|oat|shoufen|whole wheat|kameh)/.test(n);
-  const nutSeedMatch=/(almond|loz|walnut|joz |pecan|cashew|kajo|pistach|fustuq|chia|shea seed|sesame|somsom|flax|ketan|pumpkin seed|yaqtin|sunflower seed|dwar el shames|pine nut|snoubar|blackseed|habet el barakeh)/.test(n);
-  const flourMatch=/(whole wheat flour|almond flour|barley flour|oat flour|shoufen flour)/.test(n);
-
-  const copy=(en,ar,fr)=>lang==="ar"?ar:(lang==="fr"?fr:en);
-  const badge=copy("General nutrition","معلومة غذائية عامة","Information nutritionnelle générale");
-
-  if(p.category==="Pulses"&&pulseMatch){
-    return {badge,text:copy(
-      "General information about pulses: lentils, chickpeas and beans commonly provide plant protein and fiber. Exact values vary by product; check the package nutrition label for product-specific information.",
-      "معلومة عامة عن البقوليات: العدس والحمص والفاصوليا توفّر عادةً بروتيناً نباتياً وأليافاً. تختلف القيم الدقيقة بحسب المنتج؛ راجع البطاقة الغذائية على العبوة للمعلومات الخاصة بهذا المنتج.",
-      "Information générale sur les légumineuses : les lentilles, pois chiches et haricots apportent couramment des protéines végétales et des fibres. Les valeurs exactes varient selon le produit ; consultez l’étiquette nutritionnelle de l’emballage pour les informations propres à ce produit."
-    )};
-  }
-  if(wholeGrainMatch){
-    return {badge,text:copy(
-      "General information about whole grains: bulgur, freekeh, barley, oats, quinoa and brown rice commonly provide fiber and other nutrients. Exact values vary by product; check the package nutrition label for product-specific information.",
-      "معلومة عامة عن الحبوب الكاملة: البرغل والفريكة والشعير والشوفان والكينوا والأرز الأسمر توفّر عادةً أليافاً ومغذيات أخرى. تختلف القيم الدقيقة بحسب المنتج؛ راجع البطاقة الغذائية على العبوة للمعلومات الخاصة بهذا المنتج.",
-      "Information générale sur les céréales complètes : le boulgour, la freekeh, l’orge, l’avoine, le quinoa et le riz brun apportent couramment des fibres et d’autres nutriments. Les valeurs exactes varient selon le produit ; consultez l’étiquette nutritionnelle de l’emballage pour les informations propres à ce produit."
-    )};
-  }
-  if(p.category==="Nuts + Seeds"&&nutSeedMatch){
-    return {badge,text:copy(
-      "General information about nuts and seeds: they commonly provide unsaturated fats, plant protein and fiber. Exact values vary by product; check the package nutrition label for product-specific information.",
-      "معلومة عامة عن المكسرات والبذور: توفّر عادةً دهوناً غير مشبعة وبروتيناً نباتياً وأليافاً. تختلف القيم الدقيقة بحسب المنتج؛ راجع البطاقة الغذائية على العبوة للمعلومات الخاصة بهذا المنتج.",
-      "Information générale sur les noix et les graines : elles apportent couramment des graisses insaturées, des protéines végétales et des fibres. Les valeurs exactes varient selon le produit ; consultez l’étiquette nutritionnelle de l’emballage pour les informations propres à ce produit."
-    )};
-  }
-  if(n.includes("extra virgin olive oil")){
-    return {badge,text:copy(
-      "General information about extra virgin olive oil: monounsaturated fat commonly makes up a large share of its fat profile. Exact values vary by product; check the package nutrition label for product-specific information.",
-      "معلومة عامة عن زيت الزيتون البكر الممتاز: تكون الدهون الأحادية غير المشبعة عادةً جزءاً كبيراً من تركيب الدهون فيه. تختلف القيم الدقيقة بحسب المنتج؛ راجع البطاقة الغذائية على العبوة للمعلومات الخاصة بهذا المنتج.",
-      "Information générale sur l’huile d’olive extra vierge : les graisses mono-insaturées représentent couramment une part importante de son profil lipidique. Les valeurs exactes varient selon le produit ; consultez l’étiquette nutritionnelle de l’emballage pour les informations propres à ce produit."
-    )};
-  }
-  if(n.includes("tahini")){
-    return {badge,text:copy(
-      "General information about tahini: sesame-based tahini commonly provides unsaturated fats, plant protein and minerals. Exact values vary by product; check the package nutrition label for product-specific information.",
-      "معلومة عامة عن الطحينة: الطحينة المصنوعة من السمسم توفّر عادةً دهوناً غير مشبعة وبروتيناً نباتياً ومعادن. تختلف القيم الدقيقة بحسب المنتج؛ راجع البطاقة الغذائية على العبوة للمعلومات الخاصة بهذا المنتج.",
-      "Information générale sur le tahini : le tahini à base de sésame apporte couramment des graisses insaturées, des protéines végétales et des minéraux. Les valeurs exactes varient selon le produit ; consultez l’étiquette nutritionnelle de l’emballage pour les informations propres à ce produit."
-    )};
-  }
-  if(flourMatch){
-    return {badge,text:copy(
-      "General information about whole-grain and nut-based flours: fiber and protein can differ from refined white flour depending on the type. Check the package nutrition label for product-specific values.",
-      "معلومة عامة عن طحين الحبوب الكاملة وطحين المكسرات: قد تختلف كمية الألياف والبروتين فيه عن الطحين الأبيض المكرر بحسب النوع. راجع البطاقة الغذائية على العبوة للقيم الخاصة بهذا المنتج.",
-      "Information générale sur les farines complètes et les farines à base de fruits à coque : leur teneur en fibres et en protéines peut différer de celle d’une farine blanche raffinée selon le type. Consultez l’étiquette nutritionnelle de l’emballage pour les valeurs propres à ce produit."
-    )};
-  }
-  return null;
 }
 
 function applyPageMetadata(){
@@ -1212,7 +1172,6 @@ function renderProducts(){
 
   grid.innerHTML=shown.map((p,index)=>{
     const info=infoFor(p);
-    const health=healthNoteFor(p);
     const badges=badgesFor(p);
     const isFav=favorites.has(p.id);
     const selected=cardVariantFor(p);
@@ -1235,9 +1194,8 @@ function renderProducts(){
       </div>
       <div class="product-badges">${badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("")}<span class="availability-chip availability-${availability}">${escapeHtml(availabilityLabel(p))}</span></div>
       <p class="product-category">${escapeHtml(categoryName(p.category))}</p>\n      ${originFor(p)?`<p class="product-origin">${escapeHtml(originFor(p))}</p>`:""}\n      ${listingNote?`<p class="product-listing-note">${escapeHtml(listingNote)}</p>`:""}\n      <h3 class="product-name">${escapeHtml(currentName(p))}</h3>
-      <p class="product-description">${escapeHtml(info.what)}</p>
+      <p class="product-description"><strong>${escapeHtml(t.what)}:</strong> ${escapeHtml(info.what)}</p>
       <p class="product-use"><strong>${escapeHtml(t.use)}:</strong> ${escapeHtml(info.use)}</p>
-      ${health?`<div class="product-health"><span>✦ ${escapeHtml(health.badge)}</span><p>${escapeHtml(health.text)}</p></div>`:""}
       <div class="product-price-row">
         <div class="product-price"><small>${p.variants.length>1?escapeHtml(t.from):""}</small><strong class="money">${money(ps.min)}</strong></div>
         <div class="product-size-summary">${p.variants.length>1?`${p.variants.length} ${escapeHtml(t.sizeOptions)}`:escapeHtml(currentSize(selected))}</div>
@@ -1477,7 +1435,7 @@ function renderModal(productId,variantId){
   if(!v)return false;
   currentModalProduct=p;
   currentModalVariant=v;
-  const t=UI[lang],info=infoFor(p),health=healthNoteFor(p),badges=badgesFor(p);
+  const t=UI[lang],info=infoFor(p),facts=verifiedProductFacts(p),badges=badgesFor(p);
   $("#productModalMark").innerHTML=productVisualMarkup(p,"product-modal-image");
   $("#productModalCategory").textContent=categoryName(p.category);
   $("#productModalTitle").textContent=currentName(p);
@@ -1486,13 +1444,13 @@ function renderModal(productId,variantId){
   const fav=$("#modalFavorite");
   if(fav){const saved=favorites.has(p.id);fav.classList.toggle("is-active",saved);fav.setAttribute("aria-pressed",String(saved));fav.innerHTML=`${uiIcon("heart",saved)} <span id="modalFavoriteLabel">${escapeHtml(saved?EXTRA_UI[lang].favorited:EXTRA_UI[lang].favorite)}</span>`;}
   if($("#relatedLabel"))$("#relatedLabel").textContent=EXTRA_UI[lang].related;
-  const origin=$("#productOrigin");if(origin)origin.textContent=originFor(p);
+  const origin=$("#productOrigin");if(origin){origin.textContent="";origin.hidden=true;}
   $("#relatedProducts").innerHTML=PRODUCTS_DATA.filter(x=>x.category===p.category&&x.id!==p.id).slice(0,4).map(x=>`<button type="button" data-related="${escapeHtml(x.id)}"><span>${escapeHtml(currentName(x))}</span><strong>${money(productPriceSummary(x).min)}</strong></button>`).join("");
   $$("[data-related]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.related,btn)));
   $("#productModalDescription").textContent=info.what;
   $("#productModalUse").textContent=info.use;
-  $("#nutritionPanel").hidden=!health;
-  $("#productNutrition").textContent=health?health.text:"";
+  $("#nutritionPanel").hidden=!facts.length;
+  $("#productNutrition").textContent=facts.map(item=>`${item.label}: ${item.value}`).join(" · ");
   $("#modalPrice").textContent=money(v.price);
   $("#productModalQty").textContent=qtyFor("modal");
   const modalCanOrder=productCanOrder(p);
@@ -1540,7 +1498,7 @@ function renderFeaturedProducts(){
       <div class="featured-product-copy">
         <p>${escapeHtml(categoryName(p.category))}</p>
         <h3>${escapeHtml(currentName(p))}</h3>
-        <span class="featured-origin">${escapeHtml(originFor(p))}</span>
+        ${originFor(p)?`<span class="featured-origin">${escapeHtml(originFor(p))}</span>`:""}
         <div class="featured-product-foot"><span><strong>${money(ps.min)}</strong><small>${p.variants.length>1?(lang==="ar"?"من ":"from ")+money(ps.min):escapeHtml(currentSize(v))}</small></span><button type="button" data-featured-add="${escapeHtml(p.id)}" ${canOrder?"":"disabled"}>${escapeHtml(canOrder?UI[lang].add:availabilityLabel(p))} <b>${canOrder?"+":""}</b></button></div>
       </div>
     </article>`;

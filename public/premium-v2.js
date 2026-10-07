@@ -590,11 +590,7 @@
   }
 
   function storageGuidance(p){
-    var c=(p.category||"").toLowerCase(),n=(p.nameEn||"").toLowerCase();
-    if(/olive oil|oil/.test(c+" "+n))return txt("Keep sealed in a cool, dark place away from direct heat and light.","يُحفظ مغلقاً في مكان بارد ومظلم بعيداً عن الحرارة والضوء المباشر.");
-    if(/honey|molasses|syrup|jam/.test(c+" "+n))return txt("Keep sealed in a cool, dry place. Follow the label after opening when present.","يُحفظ مغلقاً في مكان بارد وجاف، واتبع تعليمات الملصق بعد الفتح عند وجودها.");
-    if(/flour|grain|pulse|spice|herb|nut|seed|dried|condiment/.test(c+" "+n))return txt("Keep tightly sealed in a cool, dry pantry away from moisture and strong heat.","يُحفظ محكم الإغلاق في مكان بارد وجاف بعيداً عن الرطوبة والحرارة.");
-    return txt("Store according to the package label and keep the product sealed between uses.","يُحفظ بحسب تعليمات العبوة مع إبقائه مغلقاً بين الاستخدامات.");
+    return typeof verifiedProductValue==="function"?verifiedProductValue(p,"storage"):"";
   }
 
   function pairingText(p){
@@ -624,7 +620,9 @@
     var extras=q(".premium-product-extras",copy);
     if(!extras){extras=document.createElement("div");extras.className="premium-product-extras";var actions=q(".product-modal-actions",copy);if(actions)actions.before(extras);else copy.appendChild(extras)}
     var feedbackUrl="https://wa.me/96181581230?text="+encodeURIComponent(txt("Feedback about ","ملاحظات حول ")+pname(p)+": ");
-    extras.innerHTML='<div class="premium-product-extra"><span>'+esc(txt("Storage guidance","طريقة الحفظ"))+'</span><p>'+esc(storageGuidance(p))+'</p></div><div class="premium-product-extra"><span>'+esc(txt("Pairs well with","يناسب"))+'</span><p>'+esc(pairingText(p))+'</p></div><div class="premium-product-extra premium-feedback"><div><span>'+esc(txt("Availability","التوفر"))+'</span><p>'+esc(txt("Availability is rechecked when you place the order through website checkout.","يُعاد التحقق من التوفر عند تقديم الطلب عبر إتمام الطلب في الموقع."))+'</p></div><div class="premium-product-toolbar"><button type="button" data-share-product="'+esc(p.id)+'">'+esc(txt("Share product","شارك المنتج"))+'</button><a href="'+esc(feedbackUrl)+'" target="_blank" rel="noopener">'+esc(txt("Send feedback","أرسل ملاحظتك"))+'</a></div></div>';
+    var storage=storageGuidance(p);
+    var storageBlock=storage?'<div class="premium-product-extra"><span>'+esc(txt("Verified storage information","معلومات الحفظ الموثّقة"))+'</span><p>'+esc(storage)+'</p></div>':"";
+    extras.innerHTML=storageBlock+'<div class="premium-product-extra"><span>'+esc(txt("General pairing ideas","أفكار عامة للتقديم"))+'</span><p>'+esc(pairingText(p))+'</p></div><div class="premium-product-extra premium-feedback"><div><span>'+esc(txt("Availability","التوفر"))+'</span><p>'+esc(txt("Availability is rechecked when you place the order through website checkout.","يُعاد التحقق من التوفر عند تقديم الطلب عبر إتمام الطلب في الموقع."))+'</p></div><div class="premium-product-toolbar"><button type="button" data-share-product="'+esc(p.id)+'">'+esc(txt("Share product","شارك المنتج"))+'</button><a href="'+esc(feedbackUrl)+'" target="_blank" rel="noopener">'+esc(txt("Send feedback","أرسل ملاحظتك"))+'</a></div></div>';
     q("[data-share-product]",extras).addEventListener("click",function(){
       var url=new URL(location.href);url.searchParams.set("product",p.id);
       track("product_shared",{product:p.id});shareUrl(url.toString(),pname(p));

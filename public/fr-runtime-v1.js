@@ -1816,7 +1816,6 @@ var STATIC_FR=Object.freeze({
   "Memory kept within reach.": "La mémoire à portée de main.",
   "Mon–Sat 9:00–20:00 · Sun 12:00–20:00": "Lun–Sam 9:00–20:00 · Dim 12:00–20:00",
   "More than a shelf.": "Bien plus qu’une étagère.",
-  "Most of our pantry selection comes from the Bekaa. Our olive oil comes from Koura, our honey from Mount Lebanon, and our debes from the Chouf. We present that provenance plainly, without making claims we cannot verify.": "La majeure partie de notre mouneh vient de la Bekaa. Notre huile d’olive vient du Koura, notre miel du Mont-Liban et notre debs du Chouf. Nous présentons ces provenances clairement, sans avancer d’affirmations que nous ne pouvons pas vérifier.",
   "Names, sizes and": "Noms, formats et",
   "Natural linen": "Lin naturel",
   "Nothing found.": "Aucun résultat.",

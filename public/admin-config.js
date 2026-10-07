@@ -34,7 +34,7 @@ window.ZWM_CMS_CONFIG = Object.freeze({
       const s=document.createElement("script");s.src="/admin-notifications-v1.js?v=20261006-transactionalemail1";s.async=false;document.head.appendChild(s);
     }
     if(!document.querySelector('script[src*="admin-order-attention-v1.js"]')){
-      const a=document.createElement("script");a.src="/admin-order-attention-v1.js?v=20261006-transactionalemail1";a.async=false;document.head.appendChild(a);
+      const a=document.createElement("script");a.src="/admin-order-attention-v1.js?v=20261007-orderdetails2";a.async=false;document.head.appendChild(a);
     }
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",loadAdminNotifications,{once:true});

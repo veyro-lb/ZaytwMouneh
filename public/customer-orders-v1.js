@@ -8,6 +8,8 @@ var mountQueued=false;
 var ORDER_STALE_MS=60000;
 var ORDER_BACKGROUND_REFRESH_MS=120000;
 var ORDER_RESUME_GRACE_MS=15000;
+var REQUEST_TIMEOUT_MS=15000;
+var authSettledOut=false;
 
 function qs(s,r){return (r||document).querySelector(s)}
 function qsa(s,r){return Array.from((r||document).querySelectorAll(s))}
@@ -50,17 +52,36 @@ async function ensureConfig(){
   return window.ZWM_CMS_CONFIG||{};
 }
 
-async function rpc(action,p){
+function settleSignedOut(){
+  authSettledOut=true;
+  state.orders=[];state.counts={all:0,active:0,delivered:0,cancelled:0};state.loading=false;state.loaded=true;
+  state.error=tr("Your session expired. Please sign in again.","انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً.");
+  scheduleMount();
+}
+async function timedFetch(url,options){
+  var controller=typeof AbortController==="function"?new AbortController():null;
+  var timer=controller?setTimeout(function(){controller.abort()},REQUEST_TIMEOUT_MS):null;
+  try{return await fetch(url,Object.assign({},options||{},controller?{signal:controller.signal}:{}))}
+  catch(err){
+    if(typeof navigator!=="undefined"&&navigator.onLine===false)throw new Error(tr("You are offline. Reconnect, then retry.","أنت غير متصل بالإنترنت. أعد الاتصال ثم حاول مجدداً."));
+    throw new Error(err&&err.name==="AbortError"?tr("Order loading took too long. Please retry.","استغرق تحميل الطلبات وقتاً طويلاً. حاول مجدداً."):tr("Could not reach the order service. Please retry.","تعذّر الاتصال بخدمة الطلبات. حاول مجدداً."));
+  }finally{if(timer)clearTimeout(timer)}
+}
+async function rpc(action,p,retry){
   var cfg=await ensureConfig(),sess=session();
+  if(authSettledOut)throw new Error(tr("Your session expired. Please sign in again.","انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً."));
   if(!cfg.supabaseUrl||!cfg.supabasePublishableKey)throw new Error(tr("Order services are temporarily unavailable.","خدمة الطلبات غير متاحة مؤقتاً."));
   var headers={"apikey":cfg.supabasePublishableKey,"Content-Type":"application/json","Prefer":"return=representation"};
   if(sess&&sess.access_token)headers.Authorization="Bearer "+sess.access_token;
-  var response=await fetch(String(cfg.supabaseUrl).replace(/\/$/,"")+"/rest/v1/rpc/zwm_customer_orders",{
-    method:"POST",
-    headers:headers,
-    body:JSON.stringify({action:action,p:p||{}})
+  var response=await timedFetch(String(cfg.supabaseUrl).replace(/\/$/,"")+"/rest/v1/rpc/zwm_customer_orders",{
+    method:"POST",headers:headers,body:JSON.stringify({action:action,p:p||{}})
   });
   var data=await response.json().catch(function(){return {}});
+  if(response.status===401&&retry!==false){
+    var refreshed=await window.ZWM_REWARDS?.auth?.refreshSession?.();
+    if(refreshed&&refreshed.access_token){authSettledOut=false;return rpc(action,p,false)}
+    settleSignedOut();
+  }
   if(!response.ok)throw new Error(data.message||data.hint||data.details||tr("Could not load your orders.","تعذّر تحميل طلباتك."));
   return data;
 }
@@ -96,8 +117,8 @@ async function claimGuestOrders(){
 async function loadOrders(options){
   options=options||{};
   var rs=rewardsState(),sess=session();
-  if(!rs.member||!sess||!sess.access_token){
-    state.orders=[];state.counts={all:0,active:0,delivered:0,cancelled:0};state.loaded=false;state.loading=false;state.error="";
+  if(authSettledOut||!rs.member||!sess||!sess.access_token){
+    state.orders=[];state.counts={all:0,active:0,delivered:0,cancelled:0};state.loaded=authSettledOut;state.loading=false;state.error=authSettledOut?tr("Your session expired. Please sign in again.","انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً."):"";
     scheduleMount();
     return;
   }
@@ -227,7 +248,9 @@ document.addEventListener("zwm:account-updated",function(){refreshIfStale(ORDER_
 document.addEventListener("zwm:customer-order-changed",function(){loadOrders({silent:true})});
 window.addEventListener("focus",function(){refreshIfStale(ORDER_STALE_MS)});
 window.addEventListener("online",function(){refreshIfStale(ORDER_RESUME_GRACE_MS)});
+window.addEventListener("zwm:auth-expired",settleSignedOut);
 window.addEventListener("storage",function(e){
+  if(e.key===SESSION_KEY&&session()?.access_token)authSettledOut=false;
   if(e.key===SESSION_KEY||e.key===CLAIMS_KEY)refreshIfStale(ORDER_RESUME_GRACE_MS);
 });
 document.addEventListener("visibilitychange",function(){if(!document.hidden)refreshIfStale(ORDER_STALE_MS)});
@@ -235,7 +258,7 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden)refr
 function init(){
   injectCss();
   var root=qs("#accountShell")||document.body;
-  new MutationObserver(function(){scheduleMount()}).observe(root,{childList:true,subtree:true});
+  new MutationObserver(function(){scheduleMount()}).observe(root,{childList:true,subtree:false});
   var tries=0,timer=setInterval(function(){
     tries++;
     var rs=rewardsState();

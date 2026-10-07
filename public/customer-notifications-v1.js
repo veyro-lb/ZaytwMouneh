@@ -6,6 +6,9 @@ const KEY="zwm:mouneh:session:v1";
 const CFG="/admin-config.js?v=20261006-notificationhardening1";
 const VERSION="20261007-storefrontstability1";
 let cfg=null,user=null,rows=[];
+let bellRefreshInFlight=null,lastBellRefreshAt=0,lastOrderSignal="";
+const BELL_STALE_MS=60000;
+const BELL_BACKGROUND_REFRESH_MS=120000;
 const $=(s,r=document)=>r.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const lang=()=>{try{return window.ZWM_LOCALE?.get?.()||"en"}catch{return"en"}};
@@ -138,14 +141,23 @@ async function fetchNotifications(){
 }
 async function markRead(id){await api("notifications?id=eq."+encodeURIComponent(id),{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})})}
 async function markAll(){await api("notifications?user_id=eq."+encodeURIComponent(user.id)+"&audience=eq.customer&read_at=is.null",{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})});await refreshBell()}
-async function refreshBell(){
+async function refreshBell(force=false){
  if(!user)return;
- try{
-  await fetchNotifications();
-  const unread=rows.filter(n=>!n.read_at).length,b=$("#zwmCustomerNotificationBadge"),list=$("#zwmCustomerNotificationList");
-  if(b){b.textContent=String(unread);b.hidden=!unread}
-  if(list)list.innerHTML=rows.length?rows.slice(0,20).map(n=>'<button type="button" class="zwm-notification-item '+(!n.read_at?"is-unread":"")+'" data-customer-notification="'+n.id+'"><span class="zwm-notification-icon" aria-hidden="true">'+iconFor(n)+'</span><span class="zwm-notification-copy"><strong>'+esc(statusTitle(n))+'</strong><small>'+esc(timeLabel(n.created_at))+'</small></span>'+(!n.read_at?'<span class="zwm-unread-dot" aria-label="Unread"></span>':'')+'</button>').join(""):'<p class="zwm-notification-empty">'+esc(tr("empty"))+'</p>';
- }catch{}
+ if(!force&&lastBellRefreshAt&&Date.now()-lastBellRefreshAt<BELL_STALE_MS)return;
+ if(bellRefreshInFlight)return bellRefreshInFlight;
+ bellRefreshInFlight=(async()=>{
+  try{
+   await fetchNotifications();
+   lastBellRefreshAt=Date.now();
+   const orderSignal=rows.filter(n=>n.notification_type==="ORDER_STATUS_CHANGED"||n.notification_type==="ORDER_ITEM_ATTENTION"||n.notification_type==="ORDER_CREATED").slice(0,8).map(n=>[n.id,n.created_at,n.metadata?.status].join(":")).join("|");
+   if(lastOrderSignal&&orderSignal!==lastOrderSignal)document.dispatchEvent(new CustomEvent("zwm:customer-order-changed"));
+   lastOrderSignal=orderSignal;
+   const unread=rows.filter(n=>!n.read_at).length,b=$("#zwmCustomerNotificationBadge"),list=$("#zwmCustomerNotificationList");
+   if(b){b.textContent=String(unread);b.hidden=!unread}
+   if(list)list.innerHTML=rows.length?rows.slice(0,20).map(n=>'<button type="button" class="zwm-notification-item '+(!n.read_at?"is-unread":"")+'" data-customer-notification="'+n.id+'"><span class="zwm-notification-icon" aria-hidden="true">'+iconFor(n)+'</span><span class="zwm-notification-copy"><strong>'+esc(statusTitle(n))+'</strong><small>'+esc(timeLabel(n.created_at))+'</small></span>'+(!n.read_at?'<span class="zwm-unread-dot" aria-label="Unread"></span>':'')+'</button>').join(""):'<p class="zwm-notification-empty">'+esc(tr("empty"))+'</p>';
+  }catch{}
+ })();
+ try{return await bellRefreshInFlight}finally{bellRefreshInFlight=null}
 }
 function bellShell(){
  const actions=$(".site-header .nav-actions")||$(".c6-nav-actions")||$(".commerce-header-actions")||$(".nav-actions");
@@ -165,7 +177,7 @@ function bellShell(){
   document.body.appendChild(pop);
   pop.addEventListener("click",e=>{if(e.target.closest("[data-customer-mark-all]")){markAll();return}const item=e.target.closest("[data-customer-notification]");if(!item)return;const n=rows.find(x=>x.id===item.dataset.customerNotification);if(n){markRead(n.id).catch(()=>{});location.href=safeRoute(n.route)}});
  }
- bell.addEventListener("click",e=>{e.stopPropagation();pop.hidden=!pop.hidden;if(!pop.hidden)refreshBell()});
+ bell.addEventListener("click",e=>{e.stopPropagation();pop.hidden=!pop.hidden;if(!pop.hidden)refreshBell(true)});
  if(!document.documentElement.dataset.zwmCustomerNotificationDismissBound){
   document.documentElement.dataset.zwmCustomerNotificationDismissBound="1";
   document.addEventListener("click",e=>{const p=$("#zwmCustomerNotificationPopover");if(p&&!p.hidden&&!e.target.closest("#zwmCustomerNotificationPopover")&&!e.target.closest("#zwmCustomerNotificationBell"))p.hidden=true});
@@ -244,7 +256,7 @@ async function boot(){
  watchTargets.forEach(target=>new MutationObserver(refreshShell).observe(target,{subtree:true,childList:true}));
  window.addEventListener("focus",()=>{refreshBell();const card=$("#zwmCustomerNotifications");if(card)renderCard(card)});
  document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshBell()});
- setInterval(()=>{if(!document.hidden)refreshBell()},30000);
+ setInterval(()=>{if(!document.hidden)refreshBell()},BELL_BACKGROUND_REFRESH_MS);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(boot,0),{once:true});else setTimeout(boot,0);
 })();

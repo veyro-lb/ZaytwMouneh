@@ -9,7 +9,8 @@
     "test": "npm run test:regression",
     "check": "npm run catalogue:check && npm run check:syntax && npm run test:regression",
     "catalogue:report": "node scripts/catalogue-validator.cjs",
-    "catalogue:check": "node scripts/catalogue-validator.cjs --ci"
+    "catalogue:check": "node scripts/catalogue-validator.cjs --ci",
+    "test:browser": "node tests/browser-regression.cjs"
   },
   "devDependencies": {
     "jsdom": "26.1.0"

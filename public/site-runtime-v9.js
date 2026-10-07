@@ -570,11 +570,12 @@
         '<a class="mobile-menu-tool mobile-menu-search" data-mobile-menu-search href="shop.html#shop"><span class="mobile-menu-tool-icon" aria-hidden="true">⌕</span><span class="mobile-menu-tool-copy"><strong></strong><small></small></span></a>'+
         '<a class="mobile-menu-tool mobile-menu-account" data-mobile-menu-account href="/account?auth=signin#signin"><span class="mobile-menu-tool-icon" aria-hidden="true">●</span><span class="mobile-menu-tool-copy"><strong></strong><small></small></span></a>'+
         '<button type="button" class="mobile-menu-tool mobile-menu-points" data-mobile-menu-points><span class="mobile-menu-tool-icon" aria-hidden="true">🌿</span><span class="mobile-menu-tool-copy"><strong></strong><small></small></span><b data-mobile-points-balance>—</b></button>'+
-        '<div class="mobile-menu-language" data-mobile-menu-language><span class="mobile-menu-language-copy"><strong></strong><small></small></span><div class="mobile-menu-language-buttons"><button type="button" data-mobile-lang="en" hidden aria-hidden="true" tabindex="-1">EN</button><button type="button" data-mobile-lang="ar" hidden aria-hidden="true" tabindex="-1">عربي</button></div></div>';
+        '<div class="mobile-menu-language" data-mobile-menu-language><span class="mobile-menu-language-copy"><strong></strong><small></small></span><div class="mobile-menu-language-buttons"><button type="button" data-mobile-lang="en">EN</button><button type="button" data-mobile-lang="ar">عربي</button><button type="button" data-mobile-lang="fr">FR</button></div></div>';
       panel.appendChild(tools);
     }
 
-    const arabic=document.documentElement.dir==="rtl"||document.documentElement.lang==="ar";
+    const lang=document.documentElement.lang==="ar"?"ar":document.documentElement.lang==="fr"?"fr":"en";
+    const arabic=lang==="ar"||document.documentElement.dir==="rtl";
     const setText=(el,value)=>{if(el&&el.textContent!==value)el.textContent=value};
 
     const search=tools.querySelector("[data-mobile-menu-search]");
@@ -605,7 +606,7 @@
     if(language){
       setText(language.querySelector("strong"),arabic?"اللغة":"Language");
       setText(language.querySelector("small"),arabic?"غيّر لغة الموقع":"Change site language");
-      language.querySelectorAll("[data-mobile-lang]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.mobileLang===(arabic?"ar":"en")));
+      language.querySelectorAll("[data-mobile-lang]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.mobileLang===lang));
     }
 
     const compact=window.matchMedia("(max-width: 760px)").matches;
@@ -657,6 +658,7 @@
       document.body.classList.toggle("menu-open",!!open);
       toggle.setAttribute("aria-expanded",open?"true":"false");
       panel.setAttribute("aria-hidden",open?"false":"true");
+      if(open)requestAnimationFrame(()=>panel.querySelector("a[href],button:not([disabled])")?.focus({preventScroll:true}));
       const ar=document.documentElement.dir==="rtl";
       toggle.setAttribute("aria-label",open?(ar?"إغلاق القائمة":"Close menu"):(ar?"فتح القائمة":"Open menu"));
     };
@@ -718,6 +720,9 @@
       },{passive:true});
       window.addEventListener("orientationchange",()=>{
         setTimeout(()=>{if(document.getElementById("navLinks")?.classList.contains("is-open"))syncMenuTop()},80);
+      },{passive:true});
+      window.visualViewport?.addEventListener("resize",()=>{
+        if(document.getElementById("navLinks")?.classList.contains("is-open"))syncMenuTop();
       },{passive:true});
     }
 

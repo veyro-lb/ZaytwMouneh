@@ -28,3 +28,9 @@ jobs:
         run: npm ci --ignore-scripts
       - name: Syntax and production regression checks
         run: npm run check
+      - name: Install free browser regression tooling
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.55.0
+          npx playwright install --with-deps chromium webkit
+      - name: Real browser responsive regression
+        run: npm run test:browser

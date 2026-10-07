@@ -4,7 +4,7 @@ if(window.__ZWM_CUSTOMER_NOTIFICATIONS_V1__)return;
 window.__ZWM_CUSTOMER_NOTIFICATIONS_V1__=true;
 const KEY="zwm:mouneh:session:v1";
 const CFG="/admin-config.js?v=20261006-notificationhardening1";
-const VERSION="20261006-transactionalemail1";
+const VERSION="20261007-storefrontstability1";
 let cfg=null,user=null,rows=[];
 const $=(s,r=document)=>r.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -227,7 +227,21 @@ async function boot(){
  user=await me();if(!user)return;
  if(accountPage)await bootstrapPrefs();
  bellShell();if(accountPage)cardShell();
- const obs=new MutationObserver(()=>{bellShell();if(accountPage)cardShell()});obs.observe(document.body,{subtree:true,childList:true});
+ let shellQueued=false;
+ const refreshShell=()=>{
+  if(shellQueued)return;
+  shellQueued=true;
+  requestAnimationFrame(()=>{
+   shellQueued=false;
+   bellShell();
+   if(accountPage)cardShell();
+  });
+ };
+ const watchTargets=[
+  $(".site-header"),
+  accountPage?$('[data-account-panel="profile"]'):null
+ ].filter(Boolean);
+ watchTargets.forEach(target=>new MutationObserver(refreshShell).observe(target,{subtree:true,childList:true}));
  window.addEventListener("focus",()=>{refreshBell();const card=$("#zwmCustomerNotifications");if(card)renderCard(card)});
  document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshBell()});
  setInterval(()=>{if(!document.hidden)refreshBell()},30000);

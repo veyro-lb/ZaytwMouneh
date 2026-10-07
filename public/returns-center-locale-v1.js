@@ -38,9 +38,9 @@ var COPY={
     skip:"Skip to content",
     eyebrow:"Customer care",
     heading:"Returns & Product Issues",
-    intro:"Have a problem with an order? Enter the order code from your receipt or order confirmation. We verify the order before showing its products or allowing a request.",
+    intro:"Have a problem with an order? Enter the order code from your receipt or order confirmation. We verify that the order belongs to you before showing private order details.",
     cardTitle:"Find your order securely",
-    cardIntro:"Your order code identifies the order, but it is not treated as a password. We verify ownership before revealing order details.",
+    cardIntro:"Enter your order code and the contact information used for the order. We verify ownership before showing private order details.",
     codeLabel:"Order code",
     codePlaceholder:"Example: ZW-…",
     codeHint:"Use the code shown on your Zayt W Mouneh order confirmation or receipt.",
@@ -48,15 +48,15 @@ var COPY={
     contactPlaceholder:"Email address or phone number",
     contactHint:"For guest orders, this must match the email or phone used when ordering. If you are signed in to the account that owns the order, the order code is enough.",
     security:[
-      ["Order code check","We confirm the code exists without revealing customer data."],
-      ["Ownership verification","Signed-in ownership or matching order contact details are required."],
-      ["Temporary access","Successful verification creates a short-lived access token. Repeated incorrect attempts are rate-limited."]
+      ["Find the order","Enter the order code shown on your confirmation or receipt."],
+      ["Confirm it is yours","We match your signed-in account or the contact details used for the order."],
+      ["Continue securely","Once verified, you can view the order and submit an eligible request."]
     ],
     verify:"Verify order",
     sideTitle:"What you can report",
-    sideIntro:"This center is available even before you place an order, but a request can only be opened for a verified delivered order.",
+    sideIntro:"Return and product-issue requests can be opened for verified orders after delivery.",
     items:["Damaged, broken or leaking products","Missing or incorrect products","Quality, spoilage or safety concerns","Return or exchange of an eligible unopened product"],
-    sideOutro:"Submitting a request does not automatically approve a refund. Every resolution is reviewed against the actual order, quantities and amount paid.",
+    sideOutro:"We’ll review your request and any supporting information, then update you with the available resolution.",
     policy:"Read the Returns & Product Issues Policy"
   },
   ar:{
@@ -65,9 +65,9 @@ var COPY={
     skip:"الانتقال إلى المحتوى",
     eyebrow:"خدمة العملاء",
     heading:"الإرجاع ومشاكل المنتجات",
-    intro:"هل لديك مشكلة في طلب؟ أدخل رمز الطلب الموجود على الإيصال أو تأكيد الطلب. نتحقق من الطلب قبل إظهار منتجاته أو السماح بإرسال طلب.",
+    intro:"هل لديك مشكلة في طلب؟ أدخل رمز الطلب الموجود على الإيصال أو تأكيد الطلب. نتحقق من أن الطلب يعود إليك قبل إظهار تفاصيله الخاصة.",
     cardTitle:"اعثر على طلبك بأمان",
-    cardIntro:"رمز الطلب يحدد طلبك، لكنه لا يُعامل ككلمة مرور. نتحقق من ملكية الطلب قبل إظهار أي تفاصيل.",
+    cardIntro:"أدخل رمز الطلب وبيانات التواصل المستخدمة فيه. نتحقق من ملكية الطلب قبل إظهار تفاصيله الخاصة.",
     codeLabel:"رمز الطلب",
     codePlaceholder:"مثال: ZW-…",
     codeHint:"استخدم الرمز الظاهر في تأكيد طلب زيت ومونة أو على الإيصال.",
@@ -75,15 +75,15 @@ var COPY={
     contactPlaceholder:"البريد الإلكتروني أو رقم الهاتف",
     contactHint:"في طلبات الزوار، يجب أن يطابق ذلك البريد الإلكتروني أو رقم الهاتف المستخدم عند الطلب. وإذا كنت مسجّل الدخول إلى الحساب المرتبط بالطلب، فيكفي رمز الطلب.",
     security:[
-      ["التحقق من رمز الطلب","نتأكد من وجود الرمز من دون كشف بيانات العميل."],
-      ["التحقق من ملكية الطلب","يلزم أن يكون الطلب مرتبطاً بالحساب المسجّل أو أن تتطابق بيانات التواصل مع الطلب."],
-      ["وصول مؤقت","بعد التحقق الناجح يتم إنشاء رمز وصول قصير المدة، كما يتم تقييد المحاولات الخاطئة المتكررة."]
+      ["العثور على الطلب","أدخل رمز الطلب الظاهر في التأكيد أو الإيصال."],
+      ["تأكيد ملكية الطلب","نطابق الحساب المسجّل أو بيانات التواصل المستخدمة في الطلب."],
+      ["المتابعة بأمان","بعد التحقق، يمكنك عرض الطلب وإرسال طلب مؤهل."]
     ],
     verify:"تحقق من الطلب",
     sideTitle:"ما يمكنك الإبلاغ عنه",
-    sideIntro:"يمكنك فتح هذا المركز في أي وقت، لكن لا يمكن إنشاء طلب إرجاع أو بلاغ إلا لطلب تم التحقق منه وتسجيله كمُسلَّم.",
+    sideIntro:"يمكن فتح طلب إرجاع أو مشكلة منتج للطلبات التي تم التحقق منها بعد التسليم.",
     items:["منتجات متضررة أو مكسورة أو تسرّب","منتجات ناقصة أو خاطئة","مشاكل الجودة أو التلف أو السلامة","إرجاع أو استبدال منتج مؤهل غير مفتوح"],
-    sideOutro:"إرسال الطلب لا يعني الموافقة التلقائية على استرداد المبلغ. تتم مراجعة كل حل بالاستناد إلى الطلب الفعلي والكميات والمبلغ المدفوع.",
+    sideOutro:"سنراجع طلبك وأي معلومات داعمة، ثم نطلعك على الحل المتاح.",
     policy:"اقرأ سياسة الإرجاع ومشاكل المنتجات"
   },
   fr:{
@@ -92,9 +92,9 @@ var COPY={
     skip:"Aller au contenu",
     eyebrow:"Service client",
     heading:"Retours et problèmes produits",
-    intro:"Un problème avec une commande ? Saisissez le code figurant sur votre reçu ou confirmation. Nous vérifions la commande avant d’afficher ses produits ou d’autoriser une demande.",
+    intro:"Un problème avec une commande ? Saisissez le code figurant sur votre reçu ou votre confirmation. Nous vérifions qu’elle vous appartient avant d’afficher ses informations privées.",
     cardTitle:"Retrouvez votre commande en toute sécurité",
-    cardIntro:"Le code de commande identifie votre commande, mais n’est pas considéré comme un mot de passe. Nous vérifions que la commande vous appartient avant d’en afficher les détails.",
+    cardIntro:"Saisissez le code de commande et les coordonnées utilisées pour la commande. Nous vérifions qu’elle vous appartient avant d’afficher ses informations privées.",
     codeLabel:"Code de commande",
     codePlaceholder:"Exemple : ZW-…",
     codeHint:"Utilisez le code figurant sur votre confirmation de commande Zayt W Mouneh ou votre reçu.",
@@ -102,15 +102,15 @@ var COPY={
     contactPlaceholder:"Adresse e-mail ou numéro de téléphone",
     contactHint:"Pour une commande invité, ces informations doivent correspondre à l’e-mail ou au téléphone utilisé lors de la commande. Si vous êtes connecté au compte propriétaire de la commande, le code suffit.",
     security:[
-      ["Vérification du code","Nous confirmons que le code existe sans révéler les données du client."],
-      ["Vérification du propriétaire","Le compte connecté doit être propriétaire de la commande ou les coordonnées doivent correspondre à celles de la commande."],
-      ["Accès temporaire","Une vérification réussie crée un jeton d’accès de courte durée. Les tentatives incorrectes répétées sont limitées."]
+      ["Retrouver la commande","Saisissez le code figurant sur votre confirmation ou votre reçu."],
+      ["Confirmer qu’elle est bien à vous","Nous faisons correspondre votre compte connecté ou les coordonnées utilisées pour la commande."],
+      ["Continuer en toute sécurité","Une fois la commande vérifiée, vous pouvez la consulter et envoyer une demande éligible."]
     ],
     verify:"Vérifier la commande",
     sideTitle:"Ce que vous pouvez signaler",
-    sideIntro:"Ce centre est accessible à tout moment, mais une demande ne peut être ouverte que pour une commande vérifiée et marquée comme livrée.",
+    sideIntro:"Les demandes de retour ou de problème produit peuvent être ouvertes pour les commandes vérifiées après livraison.",
     items:["Produits endommagés, cassés ou fuyants","Produits manquants ou incorrects","Problèmes de qualité, d’altération ou de sécurité","Retour ou échange d’un produit non ouvert éligible"],
-    sideOutro:"L’envoi d’une demande n’approuve pas automatiquement un remboursement. Chaque solution est examinée selon la commande réelle, les quantités et le montant payé.",
+    sideOutro:"Nous examinerons votre demande et les informations utiles, puis nous vous indiquerons la solution disponible.",
     policy:"Lire la politique de retours et problèmes produits"
   }
 };

@@ -642,7 +642,10 @@
     };
 
     const setOpen=open=>{
-      if(open)syncMenuTop();
+      if(open){
+        syncMenuTop();
+        panel.scrollTop=0;
+      }
       panel.classList.toggle("is-open",!!open);
       panel.inert=!open;
       panel.classList.remove("is-mobile-portal");

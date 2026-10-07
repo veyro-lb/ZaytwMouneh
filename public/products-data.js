@@ -267,6 +267,26 @@ const PRODUCT_CATALOGUE_DISPLAY_FIXES=Object.freeze({
     nameEn:"Cinnamon Sticks (Oud)",
     nameAr:"عيدان قرفة (عود)",
     nameFr:"Bâtons de cannelle (Oud)"
+  },
+  "meshmosh-mojafaf":{
+    nameEn:"Dried Apricots — 500 g",
+    nameAr:"مشمش مجفف — 500 غ",
+    nameFr:"Abricots secs — 500 g"
+  },
+  "moshmosh-mojafaf":{
+    nameEn:"Dried Apricots — 250 g",
+    nameAr:"مشمش مجفف — 250 غ",
+    nameFr:"Abricots secs — 250 g"
+  },
+  "zaytoun-akhdar-mahshe-har":{
+    nameEn:"Spicy Stuffed Green Olives — 360 g",
+    nameAr:"زيتون أخضر محشي حار — 360 غ",
+    nameFr:"Olives vertes farcies piquantes — 360 g"
+  },
+  "zaytoun-akhdar-mehshe-har":{
+    nameEn:"Spicy Stuffed Green Olives — 2.5 kg",
+    nameAr:"زيتون أخضر محشي حار — 2.5 كغ",
+    nameFr:"Olives vertes farcies piquantes — 2,5 kg"
   }
 });
 const VARIANT_CATALOGUE_DISPLAY_FIXES=Object.freeze({
@@ -298,10 +318,8 @@ PRODUCTS_DATA.forEach((product)=>{
    with conflicting variant pricing can redirect to a canonical product without merging data. */
 (function(){
   const aliases={
-    "moshmosh-mojafaf":"meshmosh-mojafaf",
     "barly-flour":"barley-flour",
-    "bezer-el-kettan":"bezer-al-ketan",
-    "zaytoun-akhdar-mehshe-har":"zaytoun-akhdar-mahshe-har"
+    "bezer-el-kettan":"bezer-al-ketan"
   };
   const redirectOnlyAliases={
     "sekar-nabet":"secar-nabat"

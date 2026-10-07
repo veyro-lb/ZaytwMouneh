@@ -8,9 +8,13 @@
   const RELOAD_KEY = "zwm:cms:last-reload:v1";
   const PREVIEW_RELOAD_KEY = "zwm:cms:preview-last-reload:v1";
   const ADMIN_SYNC_KEY = "zwm:cms:admin-sync:v1";
+  const CMS_REFRESH_KEY = "zwm:cms:last-refresh:v1";
+  const CMS_STALE_MS = 120000;
+  const CMS_POLL_MS = 120000;
   const PREVIEW_MODE = new URLSearchParams(location.search).get("zwm_admin_preview")==="1";
   let previewSettings=null;
   let refreshInFlight=null;
+  let lastCmsRefreshAt=(()=>{try{return Number(localStorage.getItem(CMS_REFRESH_KEY))||0}catch{return 0}})();
   const persistentChromeRefs={};
 
   function loadScript(src){
@@ -241,7 +245,10 @@
     renderDeliverySummary();
   }
 
-  async function refreshCms(){
+  async function refreshCms(force=false){
+    if(!force&&lastCmsRefreshAt&&Date.now()-lastCmsRefreshAt<CMS_STALE_MS){
+      const cached=readSettings();applySettings(previewSettings||cached);return cached;
+    }
     if(refreshInFlight)return refreshInFlight;
     refreshInFlight=(async()=>{
       const c=config(),t=c.tables||{};
@@ -253,6 +260,8 @@
       const prevSig=hash(previous),nextSig=hash(overrides);
       localStorage.setItem(PRODUCT_CACHE,JSON.stringify(overrides));
       const settings=cacheSettings(settingsRows);
+      lastCmsRefreshAt=Date.now();
+      try{localStorage.setItem(CMS_REFRESH_KEY,String(lastCmsRefreshAt))}catch{}
       applySettings(previewSettings||settings);
       if(prevSig!==nextSig){
         document.documentElement.dataset.zwmCatalogCache=nextSig;
@@ -963,11 +972,11 @@
       try{parent.postMessage({type:"zwm-preview-ready"},location.origin)}catch{}
       return;
     }
-    const requestSync=()=>{if(document.visibilityState!=="hidden")refreshCms().catch(()=>{})};
-    window.addEventListener("focus",requestSync);
-    document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")requestSync()});
-    window.addEventListener("storage",event=>{if(event.key===ADMIN_SYNC_KEY)requestSync()});
-    setInterval(requestSync,60000);
+    const requestSync=(force=false)=>{if(document.visibilityState!=="hidden")refreshCms(force).catch(()=>{})};
+    window.addEventListener("focus",()=>requestSync(false));
+    document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")requestSync(false)});
+    window.addEventListener("storage",event=>{if(event.key===ADMIN_SYNC_KEY)requestSync(true)});
+    setInterval(()=>requestSync(false),CMS_POLL_MS);
   }
   init();
 })();

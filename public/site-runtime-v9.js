@@ -634,7 +634,15 @@
       nav.insertBefore(panel,actions||null);
     }
 
+    const syncMenuTop=()=>{
+      const header=document.querySelector(".site-header");
+      if(!header)return;
+      const bottom=Math.max(0,Math.round(header.getBoundingClientRect().bottom));
+      document.documentElement.style.setProperty("--zwm-menu-top",bottom+"px");
+    };
+
     const setOpen=open=>{
+      if(open)syncMenuTop();
       panel.classList.toggle("is-open",!!open);
       panel.inert=!open;
       panel.classList.remove("is-mobile-portal");
@@ -697,6 +705,12 @@
         ensureReliableMenu();
         setOpen(false);
       });
+      window.addEventListener("resize",()=>{
+        if(document.getElementById("navLinks")?.classList.contains("is-open"))syncMenuTop();
+      },{passive:true});
+      window.addEventListener("orientationchange",()=>{
+        setTimeout(()=>{if(document.getElementById("navLinks")?.classList.contains("is-open"))syncMenuTop()},80);
+      },{passive:true});
     }
 
     ensureMobileMenuTools(panel);

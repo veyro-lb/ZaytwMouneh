@@ -33,6 +33,11 @@ function uuid(){return crypto.randomUUID?crypto.randomUUID():"xxxxxxxx-xxxx-4xxx
 function token(){var a=new Uint8Array(32);crypto.getRandomValues(a);return Array.from(a,function(n){return n.toString(16).padStart(2,"0")}).join("")}
 function productBase(){try{return typeof PRODUCTS_DATA!=="undefined"?JSON.parse(JSON.stringify(PRODUCTS_DATA)):[]}catch{return []}}
 function config(){return window.ZWM_CMS_CONFIG||{}}
+async function refreshAuthSession(){
+  var fn=window.ZWM_REWARDS&&window.ZWM_REWARDS.auth&&window.ZWM_REWARDS.auth.refreshSession;
+  if(typeof fn!=="function")return null;
+  try{return await fn()}catch{return null}
+}
 async function rpc(name,body,retry){
   var c=config(),s=session(),headers={"apikey":c.supabasePublishableKey,"Content-Type":"application/json","Prefer":"return=representation"},controller=typeof AbortController==="function"?new AbortController():null,timer=null,r;
   if(s&&s.access_token)headers.Authorization="Bearer "+s.access_token;
@@ -46,24 +51,35 @@ async function rpc(name,body,retry){
     networkError.retryable=true;throw networkError
   }finally{if(timer)clearTimeout(timer)}
   var data=await r.json().catch(function(){return {}});
-  if(r.status===401&&retry!==false){await new Promise(function(res){setTimeout(res,500)});return rpc(name,body,false)}
-  if(!r.ok){var requestError=new Error(data.message||data.hint||data.details||t("Request failed.","تعذّر تنفيذ الطلب.","La demande a échoué."));requestError.status=r.status;throw requestError}
+  if(r.status===401&&retry!==false){
+    var fresh=await refreshAuthSession();
+    if(fresh&&fresh.access_token)return rpc(name,body,false);
+  }
+  if(!r.ok){var requestError=new Error(data.message||data.hint||data.details||(r.status===401?t("Your session expired. Please sign in again before placing the order.","انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً قبل إرسال الطلب.","Votre session a expiré. Veuillez vous reconnecter avant de passer la commande."):t("Request failed.","تعذّر تنفيذ الطلب.","La demande a échoué.")));requestError.status=r.status;throw requestError}
   return data
 }
-async function authUser(){
+async function authUser(retry){
   var s=session(),c=config();if(!s||!s.access_token)return null;
-  try{var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/auth/v1/user",{headers:{"apikey":c.supabasePublishableKey,"Authorization":"Bearer "+s.access_token}});if(!r.ok)return null;return await r.json()}catch{return null}
+  var controller=typeof AbortController==="function"?new AbortController():null,timer=null;
+  try{
+    if(controller)timer=setTimeout(function(){controller.abort()},12000);
+    var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/auth/v1/user",{headers:{"apikey":c.supabasePublishableKey,"Authorization":"Bearer "+s.access_token},signal:controller?controller.signal:undefined});
+    if(r.status===401&&retry!==false){var fresh=await refreshAuthSession();if(fresh&&fresh.access_token)return authUser(false)}
+    if(!r.ok)return null;return await r.json()
+  }catch{return null}finally{if(timer)clearTimeout(timer)}
 }
 async function loadOverrides(){
   var c=config(),base=productBase(),map=new Map(base.map(function(p){return [p.id,p]}));
   state.catalogVerified=false;
+  var controller=typeof AbortController==="function"?new AbortController():null,timer=null;
   try{
-    var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/rest/v1/product_overrides?select=product_id,action,payload",{headers:{"apikey":c.supabasePublishableKey}});
+    if(controller)timer=setTimeout(function(){controller.abort()},12000);
+    var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/rest/v1/product_overrides?select=product_id,action,payload",{headers:{"apikey":c.supabasePublishableKey},signal:controller?controller.signal:undefined});
     if(!r.ok)throw new Error("Catalogue verification failed");
     var rows=await r.json();
     rows.forEach(function(o){var p=map.get(o.product_id)||{id:o.product_id};if(o.action==="hide"){p.__hidden=true}else if(o.payload&&typeof o.payload==="object"){p=Object.assign({},p,o.payload);p.__hidden=o.action==="hide"}map.set(o.product_id,p)});
     state.catalogVerified=true
-  }catch{}
+  }catch{}finally{if(timer)clearTimeout(timer)}
   state.products=Array.from(map.values());
   return state.catalogVerified
 }

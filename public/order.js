@@ -40,8 +40,10 @@ async function loadOverrides(){
   var base=[];
   try{base=typeof PRODUCTS_DATA!=="undefined"?JSON.parse(JSON.stringify(PRODUCTS_DATA)):[]}catch{}
   var map=new Map(base.map(function(p){return [p.id,p]})),c=config();
+  var overrideController=typeof AbortController==="function"?new AbortController():null,overrideTimer=null;
   try{
-    var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/rest/v1/product_overrides?select=product_id,action,payload",{headers:{"apikey":c.supabasePublishableKey}});
+    if(overrideController)overrideTimer=setTimeout(function(){overrideController.abort()},REQUEST_TIMEOUT_MS);
+    var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/rest/v1/product_overrides?select=product_id,action,payload",{headers:{"apikey":c.supabasePublishableKey},signal:overrideController?overrideController.signal:undefined});
     if(r.ok){
       (await r.json()).forEach(function(o){
         var p=map.get(o.product_id)||{id:o.product_id};
@@ -50,7 +52,7 @@ async function loadOverrides(){
         map.set(o.product_id,p);
       });
     }
-  }catch{}
+  }catch{}finally{if(overrideTimer)clearTimeout(overrideTimer)}
   state.products=Array.from(map.values());
 }
 

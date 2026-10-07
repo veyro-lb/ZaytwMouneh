@@ -180,20 +180,20 @@
 
   var regionCopy={
     "Bekaa":{
-      en:"Most of the pantry comes from the Bekaa: grains, pulses, herbs and everyday mouneh staples.",
-      ar:"معظم المونة تأتي من البقاع: الحبوب والبقوليات والأعشاب وأساسيات المونة اليومية."
+      en:"At brand level, much of the pantry selection comes from the Bekaa, including grains, pulses, herbs and everyday mouneh staples. Product-specific origin is shown when available.",
+      ar:"على مستوى العلامة، يأتي جزء كبير من تشكيلة المونة من البقاع، بما في ذلك الحبوب والبقوليات والأعشاب وأساسيات المونة اليومية. ويُعرض مصدر المنتج المحدد عندما يكون متاحاً."
     },
     "Koura":{
-      en:"Koura is highlighted for olive oil, with the specific product name taking precedence whenever a more precise origin is listed.",
-      ar:"نبرز الكورة كمصدر لزيت الزيتون، مع اعتماد اسم المنتج إذا ذكر مصدراً أكثر تحديداً."
+      en:"At brand level, our olive oil is sourced from Koura. If an individual product lists a more specific origin, that product-specific detail takes precedence.",
+      ar:"على مستوى العلامة، نُورّد زيت الزيتون من الكورة. وإذا ذكر منتج محدد مصدراً أكثر دقة، نعتمد معلومة المصدر الخاصة بذلك المنتج."
     },
     "Mount Lebanon":{
-      en:"Honey is associated with Mount Lebanon in the brand provenance information.",
-      ar:"العسل مرتبط بجبل لبنان ضمن معلومات المصدر الخاصة بالعلامة."
+      en:"At brand level, our honey is sourced from Mount Lebanon. Product-specific origin is shown when available.",
+      ar:"على مستوى العلامة، نُورّد العسل من جبل لبنان. ويُعرض مصدر المنتج المحدد عندما يكون متاحاً."
     },
     "Chouf":{
-      en:"Debes and molasses are associated with the Chouf in the brand provenance information.",
-      ar:"الدبس مرتبط بالشوف ضمن معلومات المصدر الخاصة بالعلامة."
+      en:"At brand level, our debes and molasses are sourced from the Chouf. Product-specific origin is shown when available.",
+      ar:"على مستوى العلامة، نُورّد الدبس من الشوف. ويُعرض مصدر المنتج المحدد عندما يكون متاحاً."
     }
   };
 
@@ -219,7 +219,7 @@
     if(page!=="home"&&page!=="about")return;
     var anchor=page==="about"?q(".provenance-section"):q(".about-section");if(!anchor)return;
     var sec=document.createElement("section");sec.id="premiumProvenance";sec.className="premium-section premium-provenance";
-    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("A pantry rooted in place","مونة مرتبطة بأرضها"))+'</p><h2>'+esc(txt("Follow the pantry","تتبّع المونة"))+' <em>'+esc(txt("across Lebanon.","في لبنان."))+'</em></h2></div><p>'+esc(txt("Explore the origin information used across the catalogue. We keep it precise and avoid claims that are not verified.","اكتشف معلومات المصدر المستخدمة في الكتالوج. نحافظ عليها دقيقة ونتجنب أي ادعاء غير موثّق."))+'</p></div><div class="provenance-experience"><div class="lebanon-map-card"><div class="lebanon-silhouette" aria-hidden="true"></div><button class="region-pin" data-region="Koura" type="button">'+esc(txt("Koura","الكورة"))+'</button><button class="region-pin" data-region="Mount Lebanon" type="button">'+esc(txt("Mount Lebanon","جبل لبنان"))+'</button><button class="region-pin" data-region="Bekaa" type="button">'+esc(txt("Bekaa","البقاع"))+'</button><button class="region-pin" data-region="Chouf" type="button">'+esc(txt("Chouf","الشوف"))+'</button></div><div class="provenance-detail"></div></div></div>';
+    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("A pantry rooted in place","مونة مرتبطة بأرضها"))+'</p><h2>'+esc(txt("Follow the pantry","تتبّع المونة"))+' <em>'+esc(txt("across Lebanon.","في لبنان."))+'</em></h2></div><p>'+esc(txt("Explore the origin information used across the catalogue, with product-specific details shown whenever they are available.","اكتشف معلومات المصدر المستخدمة في الكتالوج، مع عرض التفاصيل الخاصة بكل منتج عندما تكون متاحة."))+'</p></div><div class="provenance-experience"><div class="lebanon-map-card"><div class="lebanon-silhouette" aria-hidden="true"></div><button class="region-pin" data-region="Koura" type="button">'+esc(txt("Koura","الكورة"))+'</button><button class="region-pin" data-region="Mount Lebanon" type="button">'+esc(txt("Mount Lebanon","جبل لبنان"))+'</button><button class="region-pin" data-region="Bekaa" type="button">'+esc(txt("Bekaa","البقاع"))+'</button><button class="region-pin" data-region="Chouf" type="button">'+esc(txt("Chouf","الشوف"))+'</button></div><div class="provenance-detail"></div></div></div>';
     anchor.after(sec);
     qa(".region-pin",sec).forEach(function(btn){btn.addEventListener("click",function(){renderRegion(btn.dataset.region,sec)})});
     renderRegion("Bekaa",sec);

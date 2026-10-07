@@ -883,7 +883,7 @@ var EXACT=Object.freeze({
 "$125 minimum":"minimum 125 $",
 "$35 off":"35 $ de réduction",
 "$175 minimum":"minimum 175 $",
-"The first standard reward now unlocks at 25 points: $1 off a $10+ eligible order. This table reflects the standard program configuration in effect on the effective date of these Terms. The live reward screen in your account controls if a reward value, minimum, campaign or earning rate is later updated.":"La première récompense standard se débloque désormais à 25 points : 1 $ de réduction sur une commande éligible d’au moins 10 $. Ce tableau reflète la configuration standard du programme en vigueur à la date d’effet des présentes Conditions. Si la valeur d’une récompense, un minimum, une campagne ou un taux de gain est modifié ultérieurement, les informations en direct affichées dans votre compte font foi.",
+"The first standard reward unlocks at 25 points: $1 off a $10+ eligible order. This table shows the standard reward ladder at the effective date of these Terms. If reward values, minimums, campaigns or earning rates change later, the current details shown in your account apply.":"La première récompense standard se débloque à 25 points : 1 $ de réduction sur une commande éligible d’au moins 10 $. Ce tableau présente le barème standard à la date d’entrée en vigueur des présentes Conditions. Si les valeurs, minimums, campagnes ou taux de gain changent par la suite, les informations actuelles affichées dans votre compte s’appliquent.",
 "Points are calculated from the eligible":"Les points sont calculés à partir du",
 "product subtotal":"sous-total des produits",
 ", not from delivery fees.":", et non des frais de livraison.",

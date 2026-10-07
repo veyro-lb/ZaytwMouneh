@@ -5,7 +5,8 @@ window.__ZWM_CUSTOMER_NOTIFICATIONS_V1__=true;
 const KEY="zwm:mouneh:session:v1";
 const CFG="/admin-config.js?v=20261006-notificationhardening1";
 const VERSION="20261007-storefrontstability1";
-let cfg=null,user=null,rows=[];
+const REQUEST_TIMEOUT_MS=12000,NOTIFICATION_STALE_MS=60000,NOTIFICATION_POLL_MS=120000;
+let cfg=null,user=null,rows=[],bellRefreshInFlight=null,lastBellRefreshAt=0;
 const $=(s,r=document)=>r.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const lang=()=>{try{return window.ZWM_LOCALE?.get?.()||"en"}catch{return"en"}};
@@ -52,16 +53,36 @@ function headers(extra={}){
  const s=sess();
  return {"apikey":cfg.supabasePublishableKey,"Content-Type":"application/json",...(s?.access_token?{"Authorization":"Bearer "+s.access_token}:{}),...extra};
 }
-async function api(path,opt={}){
- const r=await fetch(cfg.supabaseUrl.replace(/\/$/,"")+"/rest/v1/"+path,{...opt,headers:{...headers(),...(opt.headers||{})}});
+async function fetchTimed(url,opt={}){
+ const controller=typeof AbortController==="function"?new AbortController():null;
+ const timer=controller?setTimeout(()=>controller.abort(),REQUEST_TIMEOUT_MS):null;
+ try{return await fetch(url,{...opt,signal:controller?controller.signal:undefined})}
+ finally{if(timer)clearTimeout(timer)}
+}
+async function refreshAuth(){
+ const fn=window.ZWM_REWARDS?.auth?.refreshSession;
+ if(typeof fn!=="function")return null;
+ try{return await fn()}catch{return null}
+}
+async function api(path,opt={},retry=true){
+ let r;
+ try{r=await fetchTimed(cfg.supabaseUrl.replace(/\/$/,"")+"/rest/v1/"+path,{...opt,headers:{...headers(),...(opt.headers||{})}})}
+ catch(err){throw Error(err?.name==="AbortError"?"Request timed out. Please retry.":"Could not reach notification services.")}
  const d=await r.json().catch(()=>null);
- if(!r.ok)throw Error(d?.message||d?.hint||"Request failed");
+ if(r.status===401&&retry){
+  const fresh=await refreshAuth();
+  if(fresh?.access_token)return api(path,opt,false);
+ }
+ if(!r.ok){const e=Error(d?.message||d?.hint||(r.status===401?"Your session expired. Please sign in again.":"Request failed"));e.status=r.status;throw e}
  return d;
 }
-async function me(){
+async function me(retry=true){
  const s=sess();if(!s?.access_token)return null;
- const r=await fetch(cfg.supabaseUrl.replace(/\/$/,"")+"/auth/v1/user",{headers:headers()});
- return r.ok?r.json():null;
+ try{
+  const r=await fetchTimed(cfg.supabaseUrl.replace(/\/$/,"")+"/auth/v1/user",{headers:headers()});
+  if(r.status===401&&retry){const fresh=await refreshAuth();if(fresh?.access_token)return me(false)}
+  return r.ok?r.json():null;
+ }catch{return null}
 }
 function b64(s){const p="=".repeat((4-s.length%4)%4),raw=atob((s+p).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
 async function reg(){if(!("serviceWorker"in navigator))throw Error(tr("unsupported"));return navigator.serviceWorker.register("/admin-sw.js?v="+VERSION,{scope:"/",updateViaCache:"none"})}
@@ -137,15 +158,25 @@ async function fetchNotifications(){
  return rows;
 }
 async function markRead(id){await api("notifications?id=eq."+encodeURIComponent(id),{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})})}
-async function markAll(){await api("notifications?user_id=eq."+encodeURIComponent(user.id)+"&audience=eq.customer&read_at=is.null",{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})});await refreshBell()}
-async function refreshBell(){
+async function markAll(){await api("notifications?user_id=eq."+encodeURIComponent(user.id)+"&audience=eq.customer&read_at=is.null",{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})});await refreshBell(true)}
+async function refreshBell(force=false){
  if(!user)return;
- try{
-  await fetchNotifications();
-  const unread=rows.filter(n=>!n.read_at).length,b=$("#zwmCustomerNotificationBadge"),list=$("#zwmCustomerNotificationList");
-  if(b){b.textContent=String(unread);b.hidden=!unread}
-  if(list)list.innerHTML=rows.length?rows.slice(0,20).map(n=>'<button type="button" class="zwm-notification-item '+(!n.read_at?"is-unread":"")+'" data-customer-notification="'+n.id+'"><span class="zwm-notification-icon" aria-hidden="true">'+iconFor(n)+'</span><span class="zwm-notification-copy"><strong>'+esc(statusTitle(n))+'</strong><small>'+esc(timeLabel(n.created_at))+'</small></span>'+(!n.read_at?'<span class="zwm-unread-dot" aria-label="Unread"></span>':'')+'</button>').join(""):'<p class="zwm-notification-empty">'+esc(tr("empty"))+'</p>';
- }catch{}
+ if(!force&&lastBellRefreshAt&&Date.now()-lastBellRefreshAt<NOTIFICATION_STALE_MS)return;
+ if(bellRefreshInFlight)return bellRefreshInFlight;
+ bellRefreshInFlight=(async()=>{
+  try{
+   await fetchNotifications();lastBellRefreshAt=Date.now();
+   const unread=rows.filter(n=>!n.read_at).length,b=$("#zwmCustomerNotificationBadge"),list=$("#zwmCustomerNotificationList");
+   if(b){b.textContent=String(unread);b.hidden=!unread}
+   if(list)list.innerHTML=rows.length?rows.slice(0,20).map(n=>'<button type="button" class="zwm-notification-item '+(!n.read_at?"is-unread":"")+'" data-customer-notification="'+n.id+'"><span class="zwm-notification-icon" aria-hidden="true">'+iconFor(n)+'</span><span class="zwm-notification-copy"><strong>'+esc(statusTitle(n))+'</strong><small>'+esc(timeLabel(n.created_at))+'</small></span>'+(!n.read_at?'<span class="zwm-unread-dot" aria-label="Unread"></span>':'')+'</button>').join(""):'<p class="zwm-notification-empty">'+esc(tr("empty"))+'</p>';
+  }catch(err){if(err?.status===401)handleSessionExpired()}
+ })();
+ try{return await bellRefreshInFlight}finally{bellRefreshInFlight=null}
+}
+function handleSessionExpired(){
+ user=null;rows=[];lastBellRefreshAt=0;
+ const b=$("#zwmCustomerNotificationBadge");if(b){b.textContent="0";b.hidden=true}
+ const list=$("#zwmCustomerNotificationList");if(list)list.innerHTML='<p class="zwm-notification-empty">'+esc(tr("empty"))+'</p>';
 }
 function bellShell(){
  const actions=$(".site-header .nav-actions")||$(".c6-nav-actions")||$(".commerce-header-actions")||$(".nav-actions");
@@ -165,7 +196,7 @@ function bellShell(){
   document.body.appendChild(pop);
   pop.addEventListener("click",e=>{if(e.target.closest("[data-customer-mark-all]")){markAll();return}const item=e.target.closest("[data-customer-notification]");if(!item)return;const n=rows.find(x=>x.id===item.dataset.customerNotification);if(n){markRead(n.id).catch(()=>{});location.href=safeRoute(n.route)}});
  }
- bell.addEventListener("click",e=>{e.stopPropagation();pop.hidden=!pop.hidden;if(!pop.hidden)refreshBell()});
+ bell.addEventListener("click",e=>{e.stopPropagation();pop.hidden=!pop.hidden;if(!pop.hidden)refreshBell(true)});
  if(!document.documentElement.dataset.zwmCustomerNotificationDismissBound){
   document.documentElement.dataset.zwmCustomerNotificationDismissBound="1";
   document.addEventListener("click",e=>{const p=$("#zwmCustomerNotificationPopover");if(p&&!p.hidden&&!e.target.closest("#zwmCustomerNotificationPopover")&&!e.target.closest("#zwmCustomerNotificationBell"))p.hidden=true});
@@ -186,7 +217,7 @@ async function testProduction(root){
  if(status?.status==="sent"&&status?.delivery_state==="accepted"){
   help.textContent=tr("delivered");
   await api("notifications?id=eq."+encodeURIComponent(notificationId),{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})}).catch(()=>{});
-  refreshBell().catch(()=>{});
+  refreshBell(true).catch(()=>{});
  }else if(status?.status==="retry")help.textContent=tr("retry");
  else if(status)throw Error("Test push failed: "+(status.error_category||status.last_error||status.status));
  else help.textContent=lang()==="ar"?"تم وضع الاختبار في قائمة الإرسال.":lang()==="fr"?"Test mis en file d’attente.":"Test queued for delivery.";
@@ -242,9 +273,10 @@ async function boot(){
   accountPage?$('[data-account-panel="profile"]'):null
  ].filter(Boolean);
  watchTargets.forEach(target=>new MutationObserver(refreshShell).observe(target,{subtree:true,childList:true}));
- window.addEventListener("focus",()=>{refreshBell();const card=$("#zwmCustomerNotifications");if(card)renderCard(card)});
- document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshBell()});
- setInterval(()=>{if(!document.hidden)refreshBell()},30000);
+ document.addEventListener("zwm:session-expired",handleSessionExpired);
+ window.addEventListener("focus",()=>refreshBell(false));
+ document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshBell(false)});
+ setInterval(()=>{if(!document.hidden)refreshBell(false)},NOTIFICATION_POLL_MS);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(boot,0),{once:true});else setTimeout(boot,0);
 })();

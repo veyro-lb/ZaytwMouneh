@@ -159,8 +159,8 @@ const CATEGORY_INFO={
     ar:["أساسيات للمطبخ تُستخدم في التتبيل والخبز والتحضير اليومي.","تُستخدم بحسب الصنف في الخَبز أو التتبيل أو التحلية أو التحضير."]
   },
   "Dates":{
-    en:["Date-based pantry products with natural sweetness and a soft, dense texture.","Use in fillings, desserts, energy bites or as a naturally sweet ingredient."],
-    ar:["منتجات من التمر بطعم حلو طبيعي وقوام غني.","تُستخدم في الحشوات والحلويات ولقيمات الطاقة أو كمكوّن للتحلية."]
+    en:["This category generally includes date-based pantry products, which vary by format and formulation.","Common uses include fillings, desserts, snacks and recipes where date flavour is wanted."],
+    ar:["تضم هذه الفئة عموماً منتجات أساسها التمر، وتختلف الصيغة والمكونات بحسب الصنف.","من الاستخدامات الشائعة الحشوات والحلويات والوجبات الخفيفة والوصفات التي يُراد فيها طعم التمر."]
   },
   "Debsy Carob":{
     en:["Carob-focused snacks, spreads and sweets from the Debsy range.","Enjoy as a snack, dessert component or sweet pantry treat."],
@@ -187,8 +187,8 @@ const CATEGORY_INFO={
     ar:["أوراق وزهور وأعشاب مجففة تُستخدم للعطر أو للنقع.","تُنقع كمشروب عند ملاءمة الصنف أو تُضاف إلى الطبخ للنكهة والرائحة."]
   },
   "Honey":{
-    en:["Honey and bee-derived pantry products with naturally rich flavour.","Serve at breakfast, stir into drinks, pair with cheese or use in desserts and dressings."],
-    ar:["عسل ومنتجات من خلية النحل بنكهة طبيعية غنية.","يُقدّم مع الفطور أو المشروبات والجبنة أو في الحلويات والتتبيلات."]
+    en:["This category includes honey and other bee-related pantry products; floral source, blend and composition vary by item.","Common uses include breakfast, drinks, cheese pairings, desserts and dressings, depending on the product."],
+    ar:["تضم هذه الفئة العسل ومنتجات أخرى مرتبطة بخلية النحل، ويختلف مصدر الرحيق والخلطة والتركيب بحسب الصنف.","من الاستخدامات الشائعة الفطور والمشروبات والجبنة والحلويات والتتبيلات بحسب المنتج."]
   },
   "Molasses":{
     en:["Concentrated fruit molasses with deep sweet-tart flavour.","Use in dressings, marinades, sauces and classic Lebanese sweet-sour pairings."],

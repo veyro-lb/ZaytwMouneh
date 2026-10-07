@@ -50,7 +50,10 @@ assert(customerNotifications.includes('WHOLESALE_STATUS_CHANGED'),"Customer Whol
 assert(customerNotifications.includes('data-pref="wholesale"'),"Customer Wholesale push preference missing");
 assert(adminNotifications.includes('b.id="zwmNotificationBell"'),"Admin notification bell missing");
 assert(adminNotifications.includes('notification_test_status'),"Admin production notification delivery verification missing");
-assert(siteRuntime.includes('CUSTOMER_NOTIFICATIONS_VERSION = "20261006-transactionalemail1"'),"Site runtime must request the audited notification assets");
+assert(siteRuntime.includes('CUSTOMER_NOTIFICATIONS_VERSION = "20261007-storefrontstability1"'),"Site runtime must request the stabilized notification assets");
+assert(!siteRuntime.includes('new MutationObserver(check).observe(document.body,{childList:true,subtree:true})'),"Site runtime must not observe the entire customer body subtree");
+assert(!siteRuntime.includes('observer.observe(document.documentElement,{subtree:true,childList:true})'),"Returns navigation must not observe the entire document subtree");
+assert(!customerNotifications.includes('obs.observe(document.body,{subtree:true,childList:true})'),"Customer notifications must not observe the entire body subtree");
 
 assert(read("wholesale.html").includes("/wholesale-v1.css?v=20261006-wholesaleqa1"),"Wholesale CSS cache token stale");
 assert(read("admin.html").includes("admin-wholesale.css?v=20261006-wholesaleqa1"),"Admin Wholesale CSS cache token stale");
@@ -63,12 +66,11 @@ assert(read("account.html").includes("/customer-notifications-v1.js?v=20261006-t
 for(const file of ["account.html","product.html","gift.html","shop.html","recipes.html"]){
   assert(read(file).includes("/conversion-v1.css?v=20261006-mobileaudit1"),file+" conversion CSS cache token stale");
 }
-assert(read("index.html").includes("site-runtime-v9.js?v=20261007-mobileblank1"),"index.html synchronized mobile release token stale");
-for(const file of ["shop.html","gift.html","recipes.html","about.html","contact.html","account.html","checkout.html","product.html"]){
-  assert(read(file).includes("site-runtime-v9.js?v=20261006-notificationhardening1"),file+" runtime cache token stale");
+for(const file of ["index.html","shop.html","gift.html","recipes.html","about.html","contact.html","account.html","checkout.html","product.html","returns.html","terms.html","privacy.html","returns-policy.html","privacy-policy.html","privacy-and-data.html","terms-of-service.html","terms-and-rewards.html"]){
+  assert(read(file).includes("site-runtime-v9.js?v=20261007-storefrontstability1"),file+" stabilized runtime cache token stale");
 }
 assert(read("wholesale.html").includes("/notifications-v1.css?v=20261006-mobileaudit1"),"Wholesale must load audited notification styles directly");
-assert(read("wholesale.html").includes("/site-runtime-v9.js?v=20261006-notificationhardening1"),"Wholesale storefront runtime cache token stale");
+assert(read("wholesale.html").includes("/site-runtime-v9.js?v=20261007-storefrontstability1"),"Wholesale stabilized storefront runtime cache token stale");
 assert(read("wholesale.html").includes("/wholesale-v1.js?v=20261006-notificationhardening1"),"Wholesale behavior JS cache token stale");
 
 console.log("Today UI/mobile regression passed: Wholesale, notification bells, owner modal and conversion forms.");

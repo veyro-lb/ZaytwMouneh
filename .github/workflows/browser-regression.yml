@@ -8,7 +8,6 @@ on:
       - public/storefront-shell.css
       - public/site-runtime-v9.js
       - tests/browser-regression.cjs
-      - package.json
       - .github/workflows/browser-regression.yml
   pull_request:
     branches:
@@ -22,8 +21,8 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: storefront-browser-${{ github.ref }}
-  cancel-in-progress: true
+  group: storefront-browser-${{ github.sha }}
+  cancel-in-progress: false
 
 jobs:
   browser:

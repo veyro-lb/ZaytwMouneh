@@ -33,3 +33,73 @@
   .returns-policy-page .policy-hero-actions a{width:100%}
   .returns-policy-page .policy-content section{padding:19px 16px;border-radius:17px}
 }
+
+
+/* policy-locale-layout1 */
+.returns-policy-page .policy-shell[data-policy-locale="ar"]{
+  font-family:"Noto Kufi Arabic","DM Sans",sans-serif;
+}
+html[dir="rtl"] .returns-policy-page .policy-hero{
+  text-align:center;
+}
+html[dir="rtl"] .returns-policy-page .policy-hero>p:first-child{
+  letter-spacing:0;
+  text-transform:none;
+}
+html[dir="rtl"] .returns-policy-page .policy-hero h1{
+  max-width:980px;
+  font-family:"Noto Kufi Arabic","DM Sans",sans-serif;
+  font-size:clamp(2rem,4.4vw,3.5rem);
+  font-weight:700;
+  line-height:1.42;
+  letter-spacing:0;
+}
+html[dir="rtl"] .returns-policy-page .policy-content h2{
+  font-family:"Noto Kufi Arabic","DM Sans",sans-serif;
+  font-size:1.28rem;
+  font-weight:700;
+  line-height:1.6;
+  letter-spacing:0;
+}
+html[dir="rtl"] .returns-policy-page .policy-hero>p:not(:first-child),
+html[dir="rtl"] .returns-policy-page .policy-content p,
+html[dir="rtl"] .returns-policy-page .policy-summary{
+  line-height:1.9;
+}
+html[dir="rtl"] .returns-policy-page .policy-content,
+html[dir="rtl"] .returns-policy-page .policy-summary{
+  text-align:right;
+}
+html[dir="rtl"] .returns-policy-page .policy-summary ul{
+  padding-left:0;
+  padding-right:20px;
+}
+html[dir="rtl"] .returns-policy-page .policy-hero-actions a{
+  min-height:52px;
+  padding:8px 20px;
+  line-height:1.55;
+}
+html[lang="fr"] .returns-policy-page .policy-hero h1{
+  font-size:clamp(2.25rem,4.7vw,4rem);
+  line-height:1.08;
+}
+html[lang="fr"] .returns-policy-page .policy-hero-actions a{
+  text-align:center;
+  line-height:1.35;
+}
+@media(max-width:560px){
+  html[dir="rtl"] .returns-policy-page .policy-hero{
+    text-align:right;
+  }
+  html[dir="rtl"] .returns-policy-page .policy-hero h1{
+    font-size:2rem;
+    line-height:1.5;
+  }
+  html[dir="rtl"] .returns-policy-page .policy-content h2{
+    font-size:1.16rem;
+  }
+  html[lang="fr"] .returns-policy-page .policy-hero h1{
+    font-size:2.22rem;
+    line-height:1.1;
+  }
+}

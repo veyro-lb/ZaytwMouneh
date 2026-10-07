@@ -1,6 +1,7 @@
 (() => {
   "use strict";
-  const CONFIG_SRC = "admin-config.js?v=20261004-toolkit10";
+  const CONFIG_SRC = "/admin-config.js";
+  const RUNTIME_ASSET_VERSION = String(document.querySelector('meta[name="zwm-release"]')?.content||"20261007-architecture1").trim();
   const CUSTOMER_NOTIFICATIONS_VERSION = "20261007-storefrontstability1";
   const PRODUCT_CACHE = "zwm:cms:product-overrides:v1";
   const SETTINGS_CACHE = "zwm:cms:settings:v1";
@@ -76,6 +77,18 @@
   function readSettings(){return safeParse(localStorage.getItem(SETTINGS_CACHE),{})}
 
   function currentLang(){try{if(window.ZWM_LOCALE?.get)return window.ZWM_LOCALE.get()}catch{}const stored=localStorage.getItem("zwm-locale-v3")||localStorage.getItem("zwm-lang-v2");if(stored==="ar"||stored==="fr")return stored;return document.documentElement.lang==="ar"?"ar":document.documentElement.lang==="fr"?"fr":"en"}
+  function syncCommerceLegalFooter(){
+    const labels={
+      en:{terms:"Terms",privacy:"Privacy",returns:"Returns",contact:"Contact"},
+      ar:{terms:"الشروط",privacy:"الخصوصية",returns:"المرتجعات",contact:"تواصل معنا"},
+      fr:{terms:"Conditions",privacy:"Confidentialité",returns:"Retours",contact:"Contact"}
+    };
+    const copy=labels[currentLang()]||labels.en;
+    document.querySelectorAll("[data-commerce-legal]").forEach(el=>{
+      const key=el.dataset.commerceLegal;
+      if(copy[key])el.textContent=copy[key];
+    });
+  }
   function applySettings(settings=readSettings()){
     const announcement=settings.announcement||{};
     const announcementEl=document.getElementById("announcementText");
@@ -266,7 +279,8 @@
       }
       try{localStorage.setItem(CMS_REFRESH_AT_KEY,String(Date.now()))}catch{}
       return settings;
-    })();
+      if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",syncCommerceLegalFooter,{once:true});else syncCommerceLegalFooter();
+})();
     try{return await refreshInFlight}finally{refreshInFlight=null}
   }
 
@@ -881,7 +895,7 @@
           if(window.__ZWM_REWARDS_RETRY_LOADING)return;
           window.__ZWM_REWARDS_RETRY_LOADING=true;
           const retry=document.createElement("script");
-          retry.src="mouneh-rewards-v8.js?v=20261004-mobileauth3";
+          retry.src="/mouneh-rewards-v8.js?v="+encodeURIComponent(RUNTIME_ASSET_VERSION);
           retry.async=true;
           retry.dataset.mounehRewardsRetry="1";
           retry.addEventListener("load",()=>{window.__ZWM_REWARDS_RETRY_LOADING=false;window.ZWM_REWARDS?.open?.()},{once:true});

@@ -12,7 +12,7 @@ var RECIPES=[
 ];
 var COPY={
  en:{
-  language:"Language",shop:"Shop",gifts:"Gifts",recipes:"Recipes",about:"About",account:"Account",terms:"Terms",privacy:"Privacy",back:"Shop",pantry:"My pantry",
+  language:"Language",shop:"Shop",gifts:"Gifts",recipes:"Recipes",about:"About",account:"Account",terms:"Terms",privacy:"Privacy",returns:"Returns",contactPage:"Contact",back:"Shop",pantry:"My pantry",
   category:"Pantry product",size:"Choose size",qty:"Quantity",add:"Add to cart",unavailable:"Not currently orderable",
   verified:"Verified purchase reviews",verifiedCopy:"Only reviews tied to delivered purchases are shown here.",noReviews:"No verified reviews yet.",
   facts:"Verified product information",factsNote:"Only product-specific information supplied or configured by Zayt w Mouneh is shown here. Missing facts are intentionally left out rather than guessed.",
@@ -28,7 +28,7 @@ var COPY={
   paymentCod:"Cash on Delivery",paymentNote:"Pay when your order arrives.",from:"From"
  },
  ar:{
-  language:"اللغة",shop:"المتجر",gifts:"الهدايا",recipes:"الوصفات",about:"من نحن",account:"الحساب",terms:"الشروط",privacy:"الخصوصية",back:"المتجر",pantry:"سلّتي",
+  language:"اللغة",shop:"المتجر",gifts:"الهدايا",recipes:"الوصفات",about:"من نحن",account:"الحساب",terms:"الشروط",privacy:"الخصوصية",returns:"المرتجعات",contactPage:"تواصل معنا",back:"المتجر",pantry:"سلّتي",
   category:"منتج من المونة",size:"اختر الحجم",qty:"الكمية",add:"أضف إلى السلة",unavailable:"غير متاح للطلب حالياً",
   verified:"مراجعات شراء موثّقة",verifiedCopy:"تظهر هنا فقط المراجعات المرتبطة بطلبات تم تسليمها.",noReviews:"لا توجد مراجعات موثّقة بعد.",
   facts:"معلومات المنتج الموثّقة",factsNote:"لا نعرض هنا إلا معلومات خاصة بالمنتج وفّرتها أو أعدّتها زيت ومونة. تُترك المعلومات الناقصة من دون عرض بدلاً من تخمينها.",
@@ -44,7 +44,7 @@ var COPY={
   paymentCod:"الدفع عند الاستلام",paymentNote:"ادفع عند وصول طلبك.",from:"ابتداءً من"
  },
  fr:{
-  language:"Langue",shop:"Boutique",gifts:"Cadeaux",recipes:"Recettes",about:"À propos",account:"Compte",terms:"Conditions",privacy:"Confidentialité",back:"Boutique",pantry:"Mon panier",
+  language:"Langue",shop:"Boutique",gifts:"Cadeaux",recipes:"Recettes",about:"À propos",account:"Compte",terms:"Conditions",privacy:"Confidentialité",returns:"Retours",contactPage:"Contact",back:"Boutique",pantry:"Mon panier",
   category:"Produit de la mouneh",size:"Choisir le format",qty:"Quantité",add:"Ajouter au panier",unavailable:"Non commandable actuellement",
   verified:"Avis d’achat vérifié",verifiedCopy:"Seuls les avis liés à des commandes livrées sont affichés ici.",noReviews:"Aucun avis vérifié pour le moment.",
   facts:"Informations produit vérifiées",factsNote:"Seules les informations propres au produit fournies ou configurées par Zayt w Mouneh sont affichées ici. Les données manquantes sont laissées absentes plutôt qu’inventées.",
@@ -215,7 +215,8 @@ function updateSeo(){
   setMeta('meta[name="twitter:image"]',{name:"twitter:image",content:photoUrl});
  }
  if(variants.length){
-  var av=availability(p);
+  var rawAvailability=String(p.availability||"").trim();
+  var av=rawAvailability?availability(p):"";
   ld.offers=variants.map(function(v){
    var offer={"@type":"Offer","priceCurrency":"USD","price":Number(v.price).toFixed(2),"url":canonical()};
    if(av==="in_stock")offer.availability="https://schema.org/InStock";

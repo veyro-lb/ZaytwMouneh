@@ -1,5 +1,7 @@
 # Zayt w Mouneh
 
+> **Production storefront source of truth:** `public/` only. Cloudflare Workers serves `./public` via Wrangler. Root-level storefront copies are obsolete and must not be reintroduced. See `docs/storefront-architecture.md`.
+
 Premium responsive static storefront for Zayt w Mouneh.
 
 ## Current experience
@@ -21,16 +23,16 @@ Premium responsive static storefront for Zayt w Mouneh.
 - Reduced-motion accessibility support
 - No framework, package manager, build step or Wrangler requirement
 
-## Cloudflare Pages
+## Cloudflare Workers deployment
 
-This repository is a plain static site.
+This repository is a static storefront served directly from `public/`.
 
-- Framework preset: None
-- Build command: leave empty
-- Build output directory: /
-- Root directory: /
+- Production asset directory: `./public`
+- Wrangler source: `wrangler.toml` / `wrangler.jsonc`
+- Framework/build migration: none
+- Customer-facing edits belong under `public/`
 
-If Cloudflare Pages is connected to this repository and watches `main`, commits deploy directly.
+Do not recreate or edit root-level storefront copies. The production regression gate rejects them.
 
 
 ## Commerce UX added

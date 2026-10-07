@@ -72,5 +72,6 @@
   cleanTransientParams();
   window.ZWM_RELEASE=current;
   window.ZWM_CHECK_RELEASE=checkRelease;
+  checkRelease().then(result=>{if(result?.latest)window.ZWM_RELEASE=result.latest}).catch(()=>{});
   window.addEventListener("pageshow",cleanTransientParams,{passive:true});
 })();

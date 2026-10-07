@@ -272,3 +272,11 @@ html[dir="rtl"] .order-address-row,html[dir="rtl"] .order-recipient{text-align:r
 .checkout-retry{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin-top:10px;padding:10px 16px;border:1px solid rgba(23,76,42,.22);border-radius:999px;background:#fff;color:#174c2a;font:inherit;font-weight:800;cursor:pointer}
 .checkout-retry:disabled{opacity:.55;cursor:wait}
 .checkout-retry:focus-visible{outline:3px solid rgba(23,76,42,.28);outline-offset:3px}
+
+/* Focused commerce pages keep a compact storefront/legal footer without adding full navigation noise. */
+.commerce-footer{margin-top:34px;border-top:1px solid #e3dacb;background:#fbf8f1;color:#24402e}
+.commerce-footer-inner{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 0;font-size:.78rem}
+.commerce-footer strong{color:#174c2a}.commerce-footer nav{display:flex;flex-wrap:wrap;gap:10px 16px;justify-content:flex-end}
+.commerce-footer a{color:#31583c;text-decoration:none;font-weight:700}.commerce-footer a:hover{text-decoration:underline}
+html[dir="rtl"] .commerce-footer nav{justify-content:flex-start}
+@media(max-width:640px){.commerce-footer-inner{min-height:0;align-items:flex-start;flex-direction:column}.commerce-footer nav{justify-content:flex-start}}

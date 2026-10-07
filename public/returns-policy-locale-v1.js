@@ -4,8 +4,19 @@ if(window.__ZWM_RETURNS_POLICY_LOCALE_V1__)return;
 window.__ZWM_RETURNS_POLICY_LOCALE_V1__=true;
 
 function currentLocale(){
+  var first=String(location.pathname||"/").split("/")[1];
+  if(first==="ar"||first==="fr")return first;
   try{
-    if(window.ZWM_LOCALE&&typeof window.ZWM_LOCALE.get==="function")return window.ZWM_LOCALE.get();
+    if(window.ZWM_LOCALE&&typeof window.ZWM_LOCALE.get==="function"){
+      var fromApi=window.ZWM_LOCALE.get();
+      if(fromApi==="ar"||fromApi==="fr"||fromApi==="en")return fromApi;
+    }
+  }catch(e){}
+  try{
+    var canonical=localStorage.getItem("zwm-locale-v3");
+    if(canonical==="ar"||canonical==="fr"||canonical==="en")return canonical;
+    if(localStorage.getItem("zwm:french:v1")==="1")return "fr";
+    if(localStorage.getItem("zwm-lang-v2")==="ar")return "ar";
   }catch(e){}
   var lang=(document.documentElement.lang||"en").toLowerCase();
   return lang==="ar"||lang==="fr"?lang:"en";
@@ -250,6 +261,7 @@ function render(){
 }
 
 document.addEventListener("zwm:localechange",render);
+window.addEventListener("pageshow",render,{passive:true});
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",render,{once:true});
 else render();
 })();

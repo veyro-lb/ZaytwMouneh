@@ -337,7 +337,7 @@ const UI={
     cartEyebrow:"سلة التسوق",cartTitle:"السلة",cartSaved:"محفوظة على هذا الجهاز",cartEmptyTitle:"السلة فارغة.",cartEmptyCopy:"أضف منتجات من المتجر وستظهر هنا.",browseProducts:"تصفّح المنتجات",
     total:"المجموع التقديري",orderDetailsTitle:"جاهز لإتمام الطلب",orderDetailsNote:"يتم تأكيد التوصيل والمكافآت والمجموع النهائي عند إتمام الطلب.",
     yourName:"الاسم",namePlaceholder:"اسمك",phone:"رقم واتساب (اختياري)",phonePlaceholder:"مثلاً 961 70 123 456",area:"المنطقة / الموقع",areaPlaceholder:"مثلاً بعبدا",notes:"ملاحظات الطلب",notesPlaceholder:"ملاحظات التوصيل أو الاستبدال أو أي تفاصيل إضافية…",
-    sendOrder:"إتمام الطلب <span>←</span>",priceNote:"يتم التحقق من الأسعار والتوفر بأمان قبل إنشاء الطلب.",
+    sendOrder:"إتمام الطلب <span>←</span>",priceNote:"يتم التحقق من الأسعار والتوفر قبل إنشاء الطلب.",
     what:"عن هذا النوع من المنتجات",use:"استخدامات شائعة",nutritionLabel:"معلومات المنتج الموثّقة",nutritionBadge:"معلومات موثّقة",chooseSize:"اختر الحجم",add:"أضف إلى السلة",update:"حدّث السلة",view:"عرض",from:"ابتداءً من",sizeOptions:"خيارات الحجم",
     remove:"حذف",details:"عرض التفاصيل",qty:"الكمية",unitPrice:"السعر",subtotal:"المجموع",
     standard:"حجم واحد",added:"تمت الإضافة إلى السلة",updated:"تم تحديث السلة",removed:"تم الحذف",

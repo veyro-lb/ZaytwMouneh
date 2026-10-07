@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 const SESSION_KEY="zwm:mouneh:session:v1",CLAIMS_KEY="zwm:mouneh:claims:v1";
-const S={context:null,requests:[],active:null,files:[],busy:false};
+const S={context:null,requests:[],active:null,files:[],busy:false,clientRequestId:null};
 const $=(s,r)=> (r||document).querySelector(s), $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
 const ar=()=>document.documentElement.lang==="ar"||document.documentElement.dir==="rtl";
 const fr=()=>document.documentElement.lang==="fr";
@@ -45,7 +45,7 @@ function openModal(){ensureModal();$("#zwmReturnModal").hidden=false;document.bo
 function closeModal(){const d=$("#zwmReturnModal");if(d)d.hidden=true;document.body.classList.remove("zwm-return-open")}
 function itemLabel(i){return esc(i.product_name)+(i.variant_name?' <small>'+esc(i.variant_name)+'</small>':'')}
 function renderWizard(ctx){
- openModal();S.context=ctx;S.files=[];
+ openModal();S.context=ctx;S.files=[];S.clientRequestId=crypto.randomUUID();
  const b=$("#zwmReturnBody");
  const unopenedDisabled=!ctx.unopened_return_allowed;
  b.innerHTML='<p class="zwm-return-intro">'+esc(tr("We’re sorry there was a problem with your order. Tell us what happened and we’ll review it.","نأسف لوجود مشكلة في طلبك. أخبرنا بما حدث وسنراجع الطلب.","Nous sommes désolés qu’un problème soit survenu. Expliquez-nous ce qui s’est passé et nous l’examinerons."))+'</p>'+
@@ -66,7 +66,7 @@ async function submitRequest(e){
  const items=selected.map(x=>({line_index:Number(x.value),quantity:Number($('[data-return-qty="'+x.value+'"]')?.value||1)}));
  S.busy=true;const btn=$(".zwm-return-submit");btn.disabled=true;btn.textContent=tr("Submitting…","جارٍ الإرسال…","Envoi…");
  try{
-   const req=await rpc("submit",{reference:S.context.reference,claim_token:claimFor(S.context.reference),client_request_id:crypto.randomUUID(),reason_code:reason,description:$("#zwmReturnDescription").value,discovered_at:$("#zwmDiscoveredAt").value||null,requested_resolution:$("#zwmPreferred").value||null,items,unopened:!!conditions.unopened,unused:!!conditions.unused,seal_intact:!!conditions.seal_intact,packaging_intact:!!conditions.packaging_intact});
+   const req=await rpc("submit",{reference:S.context.reference,claim_token:claimFor(S.context.reference),client_request_id:S.clientRequestId||(S.clientRequestId=crypto.randomUUID()),reason_code:reason,description:$("#zwmReturnDescription").value,discovered_at:$("#zwmDiscoveredAt").value||null,requested_resolution:$("#zwmPreferred").value||null,items,unopened:!!conditions.unopened,unused:!!conditions.unused,seal_intact:!!conditions.seal_intact,packaging_intact:!!conditions.packaging_intact});
    const failed=[];for(const f of S.files){try{await uploadEvidence(req.id,f)}catch(x){failed.push(f.name)}}
    $("#zwmReturnBody").innerHTML='<div class="zwm-return-success"><span>✓</span><h3>'+esc(tr("Request submitted","تم إرسال الطلب","Demande envoyée"))+'</h3><strong>'+esc(req.request_number)+'</strong><p>'+esc(tr("You can monitor this request from your account.","يمكنك متابعة هذا الطلب من حسابك.","Vous pouvez suivre cette demande depuis votre compte."))+'</p>'+(failed.length?'<p class="zwm-return-warning">'+esc(tr("The request was saved, but some photos could not be uploaded. You can add information later from your account.","تم حفظ الطلب، لكن تعذر رفع بعض الصور. يمكنك إضافة المعلومات لاحقاً من حسابك.","La demande est enregistrée, mais certaines photos n’ont pas pu être envoyées. Vous pourrez ajouter des informations depuis votre compte."))+'</p>':'')+'<div><a class="zwm-return-submit" href="/account#orders">'+esc(tr("View my requests","عرض طلباتي","Voir mes demandes"))+'</a><button type="button" data-return-close>'+esc(tr("Close","إغلاق","Fermer"))+'</button></div></div>';
    loadHistory(true);

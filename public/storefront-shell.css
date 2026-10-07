@@ -1065,10 +1065,10 @@ html[lang="ar"] .footer .brand-wordmark{
 /* ===== menupolish2: clearer anchored storefront menu ===== */
 .site-header .nav>#navLinks,
 #navLinks.is-mobile-portal{
-  top:calc(var(--zwm-menu-top,116px) + 8px)!important;
+  top:calc(var(--zwm-menu-top,116px) + 10px)!important;
   width:min(420px,calc(100vw - 32px))!important;
   max-width:420px!important;
-  max-height:calc(100dvh - var(--zwm-menu-top,116px) - 20px)!important;
+  max-height:min(680px,calc(100dvh - var(--zwm-menu-top,116px) - 46px))!important;
   padding:14px!important;
   gap:7px!important;
   border:1px solid rgba(15,74,32,.13)!important;

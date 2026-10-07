@@ -162,7 +162,7 @@ function mountOrdersPanel(){
   panel.dataset.customerOrdersStamp=stamp;
   var rows=filteredOrders();
   panel.innerHTML='<article class="account-card customer-orders-shell">'+
-    '<div class="account-section-title"><div><h2>'+tr("My Orders","طلباتي")+'</h2><p>'+tr("Orders placed on the website appear here automatically. Guest orders from this browser are securely added after sign-in.","تظهر الطلبات التي تتم عبر الموقع هنا تلقائياً. وتُضاف طلبات الضيف من هذا المتصفح بأمان بعد تسجيل الدخول.")+'</p></div>'+
+    '<div class="account-section-title"><div><h2>'+tr("My Orders","طلباتي")+'</h2><p>'+tr("Orders placed on the website appear here automatically. After you sign in, guest orders from this browser are added to your account.","تظهر الطلبات التي تتم عبر الموقع هنا تلقائياً. بعد تسجيل الدخول، تُضاف طلبات الضيف من هذا المتصفح إلى حسابك.")+'</p></div>'+
     '<button type="button" class="customer-orders-refresh" data-customer-orders-refresh '+(state.loading?"disabled":"")+'>'+tr(state.loading?"Refreshing…":"Refresh",state.loading?"جارٍ التحديث…":"تحديث")+'</button></div>'+
     '<div class="customer-order-filters">'+
       filterButton("all","All","الكل")+filterButton("active","Active","قيد التنفيذ")+filterButton("delivered","Delivered","تم التسليم")+filterButton("cancelled","Cancelled","ملغي")+

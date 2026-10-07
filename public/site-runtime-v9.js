@@ -1,7 +1,7 @@
 (() => {
   "use strict";
   const CONFIG_SRC = "admin-config.js?v=20261004-toolkit10";
-  const CUSTOMER_NOTIFICATIONS_VERSION = "20261006-transactionalemail1";
+  const CUSTOMER_NOTIFICATIONS_VERSION = "20261007-storefrontstability1";
   const PRODUCT_CACHE = "zwm:cms:product-overrides:v1";
   const SETTINGS_CACHE = "zwm:cms:settings:v1";
   const SESSION_KEY = "zwm:analytics:session:v1";

@@ -284,7 +284,7 @@ const UI={
     total:"Estimated total",orderDetailsTitle:"Ready for checkout",orderDetailsNote:"Delivery, rewards and the final total are confirmed at checkout.",
     yourName:"Your name",namePlaceholder:"Name",phone:"WhatsApp number (optional)",phonePlaceholder:"e.g. 961 70 123 456",area:"Area / location",areaPlaceholder:"e.g. Baabda",notes:"Order notes",notesPlaceholder:"Delivery notes, substitutions, anything we should know…",
     sendOrder:"Checkout <span>→</span>",priceNote:"Final prices and availability are securely rechecked before the order is created.",
-    what:"What it is",use:"Use it for",nutritionLabel:"Nutrition note",nutritionBadge:"Nutritious choice",chooseSize:"Choose size",add:"Add to pantry",update:"Update pantry",view:"View",from:"From",sizeOptions:"size options",
+    what:"What it is",use:"Use it for",nutritionLabel:"General nutrition note",nutritionBadge:"General nutrition",chooseSize:"Choose size",add:"Add to pantry",update:"Update pantry",view:"View",from:"From",sizeOptions:"size options",
     remove:"Remove",details:"View details",qty:"Qty",unitPrice:"Unit",subtotal:"Subtotal",
     standard:"Standard",added:"Added to cart",updated:"Cart updated",removed:"Removed",
     categoryAll:"All categories",
@@ -338,7 +338,7 @@ const UI={
     total:"المجموع التقديري",orderDetailsTitle:"جاهز لإتمام الطلب",orderDetailsNote:"يتم تأكيد التوصيل والمكافآت والمجموع النهائي عند إتمام الطلب.",
     yourName:"الاسم",namePlaceholder:"اسمك",phone:"رقم واتساب (اختياري)",phonePlaceholder:"مثلاً 961 70 123 456",area:"المنطقة / الموقع",areaPlaceholder:"مثلاً بعبدا",notes:"ملاحظات الطلب",notesPlaceholder:"ملاحظات التوصيل أو الاستبدال أو أي تفاصيل إضافية…",
     sendOrder:"إتمام الطلب <span>←</span>",priceNote:"يتم التحقق من الأسعار والتوفر بأمان قبل إنشاء الطلب.",
-    what:"ما هو",use:"كيف يُستخدم",nutritionLabel:"ملاحظة غذائية",nutritionBadge:"خيار مُغذٍ",chooseSize:"اختر الحجم",add:"أضف إلى السلة",update:"حدّث السلة",view:"عرض",from:"ابتداءً من",sizeOptions:"خيارات الحجم",
+    what:"ما هو",use:"كيف يُستخدم",nutritionLabel:"معلومة غذائية عامة",nutritionBadge:"معلومة غذائية عامة",chooseSize:"اختر الحجم",add:"أضف إلى السلة",update:"حدّث السلة",view:"عرض",from:"ابتداءً من",sizeOptions:"خيارات الحجم",
     remove:"حذف",details:"عرض التفاصيل",qty:"الكمية",unitPrice:"السعر",subtotal:"المجموع",
     standard:"حجم واحد",added:"تمت الإضافة إلى السلة",updated:"تم تحديث السلة",removed:"تم الحذف",
     categoryAll:"كل الأقسام",
@@ -566,21 +566,38 @@ function currentSize(v){
 }
 function categoryName(cat){return lang==="ar"?(CATEGORY_AR[cat]||cat):cat}
 function originKeyFor(p){
-  const source=normalize([p.nameEn,p.original].join(" "));
-  if(source.includes("chouf"))return "Chouf";
-  if(source.includes("koura"))return "Koura";
-  if(source.includes("beqaa")||source.includes("bekaa"))return "Bekaa";
-  if(p.category==="Olive Oil")return "Koura";
-  if(p.category==="Honey")return "Mount Lebanon";
-  if(p.category==="Molasses"||source.includes("molasses"))return "Chouf";
-  return "Bekaa";
+  const source=normalize([
+    p.originEn,p.originAr,p.originFr,p.origin,
+    p.sourceEn,p.sourceAr,p.sourceFr,p.source,
+    p.nameEn,p.original
+  ].filter(Boolean).join(" "));
+  if(source.includes("chouf")||source.includes("الشوف"))return "Chouf";
+  if(source.includes("koura")||source.includes("الكورة"))return "Koura";
+  if(source.includes("mount lebanon")||source.includes("mont liban")||source.includes("جبل لبنان"))return "Mount Lebanon";
+  if(source.includes("beqaa")||source.includes("bekaa")||source.includes("البقاع"))return "Bekaa";
+  return "";
 }
 function originFor(p){
+  const explicit=lang==="ar"
+    ? (p.originAr||p.sourceAr||p.originEn||p.origin||p.sourceEn||p.source||"")
+    : lang==="fr"
+      ? (p.originFr||p.sourceFr||p.originEn||p.origin||p.sourceEn||p.source||"")
+      : (p.originEn||p.origin||p.sourceEn||p.source||"");
+  if(String(explicit).trim()){
+    if(lang==="ar")return `المصدر · ${plainArabic(explicit)}`;
+    if(lang==="fr")return `Origine · ${String(explicit).trim()}`;
+    return `Source · ${String(explicit).trim()}`;
+  }
   const key=originKeyFor(p);
+  if(!key)return "";
   const isDebes=p.category==="Molasses"||normalize([p.nameEn,p.original].join(" ")).includes("molasses");
   if(lang==="ar"){
     const labels={"Bekaa":"البقاع","Koura":"الكورة","Mount Lebanon":"جبل لبنان","Chouf":"الشوف"};
     return `${isDebes?"مصدر الدبس":"المصدر"} · ${labels[key]||key}`;
+  }
+  if(lang==="fr"){
+    const labels={"Bekaa":"Bekaa","Koura":"Koura","Mount Lebanon":"Mont-Liban","Chouf":"Chouf"};
+    return `${isDebes?"Origine du debes":"Origine"} · ${labels[key]||key}, Liban`;
   }
   return `${isDebes?"Debes source":"Source"} · ${key}, Lebanon`;
 }
@@ -867,35 +884,50 @@ function healthNoteFor(p){
   const nutSeedMatch=/(almond|loz|walnut|joz |pecan|cashew|kajo|pistach|fustuq|chia|shea seed|sesame|somsom|flax|ketan|pumpkin seed|yaqtin|sunflower seed|dwar el shames|pine nut|snoubar|blackseed|habet el barakeh)/.test(n);
   const flourMatch=/(whole wheat flour|almond flour|barley flour|oat flour|shoufen flour)/.test(n);
 
+  const copy=(en,ar,fr)=>lang==="ar"?ar:(lang==="fr"?fr:en);
+  const badge=copy("General nutrition","معلومة غذائية عامة","Information nutritionnelle générale");
+
   if(p.category==="Pulses"&&pulseMatch){
-    return lang==="ar"
-      ? {badge:"خيار مُغذٍ",text:"البقوليات مثل العدس والحمص والفاصوليا مصدر نباتي للبروتين والألياف، ويمكن أن تكون جزءاً ممتازاً من وجبة متوازنة."}
-      : {badge:"Nutritious choice",text:"Pulses such as lentils, chickpeas and beans naturally provide plant protein and fiber, making them a strong choice in a balanced meal."};
+    return {badge,text:copy(
+      "General information about pulses: lentils, chickpeas and beans commonly provide plant protein and fiber. Exact values vary by product; check the package nutrition label for product-specific information.",
+      "معلومة عامة عن البقوليات: العدس والحمص والفاصوليا توفّر عادةً بروتيناً نباتياً وأليافاً. تختلف القيم الدقيقة بحسب المنتج؛ راجع البطاقة الغذائية على العبوة للمعلومات الخاصة بهذا المنتج.",
+      "Information générale sur les légumineuses : les lentilles, pois chiches et haricots apportent couramment des protéines végétales et des fibres. Les valeurs exactes varient selon le produit ; consultez l’étiquette nutritionnelle de l’emballage pour les informations propres à ce produit."
+    )};
   }
   if(wholeGrainMatch){
-    return lang==="ar"
-      ? {badge:"خيار مُغذٍ",text:"الحبوب الكاملة مثل البرغل والفريكة والشعير والشوفان والكينوا والأرز الأسمر يمكن أن تضيف الألياف ومغذيات مفيدة إلى نظام غذائي متوازن."}
-      : {badge:"Nutritious choice",text:"Whole-grain staples such as bulgur, freekeh, barley, oats, quinoa and brown rice can contribute fiber and useful nutrients as part of a balanced diet."};
+    return {badge,text:copy(
+      "General information about whole grains: bulgur, freekeh, barley, oats, quinoa and brown rice commonly provide fiber and other nutrients. Exact values vary by product; check the package nutrition label for product-specific information.",
+      "معلومة عامة عن الحبوب الكاملة: البرغل والفريكة والشعير والشوفان والكينوا والأرز الأسمر توفّر عادةً أليافاً ومغذيات أخرى. تختلف القيم الدقيقة بحسب المنتج؛ راجع البطاقة الغذائية على العبوة للمعلومات الخاصة بهذا المنتج.",
+      "Information générale sur les céréales complètes : le boulgour, la freekeh, l’orge, l’avoine, le quinoa et le riz brun apportent couramment des fibres et d’autres nutriments. Les valeurs exactes varient selon le produit ; consultez l’étiquette nutritionnelle de l’emballage pour les informations propres à ce produit."
+    )};
   }
   if(p.category==="Nuts + Seeds"&&nutSeedMatch){
-    return lang==="ar"
-      ? {badge:"خيار مُغذٍ",text:"المكسرات والبذور أطعمة كثيفة بالعناصر الغذائية وتوفّر عادةً دهوناً غير مشبعة وبروتيناً نباتياً وأليافاً."}
-      : {badge:"Nutritious choice",text:"Nuts and seeds are nutrient-dense foods that commonly provide unsaturated fats, plant protein and fiber."};
+    return {badge,text:copy(
+      "General information about nuts and seeds: they commonly provide unsaturated fats, plant protein and fiber. Exact values vary by product; check the package nutrition label for product-specific information.",
+      "معلومة عامة عن المكسرات والبذور: توفّر عادةً دهوناً غير مشبعة وبروتيناً نباتياً وأليافاً. تختلف القيم الدقيقة بحسب المنتج؛ راجع البطاقة الغذائية على العبوة للمعلومات الخاصة بهذا المنتج.",
+      "Information générale sur les noix et les graines : elles apportent couramment des graisses insaturées, des protéines végétales et des fibres. Les valeurs exactes varient selon le produit ; consultez l’étiquette nutritionnelle de l’emballage pour les informations propres à ce produit."
+    )};
   }
   if(n.includes("extra virgin olive oil")){
-    return lang==="ar"
-      ? {badge:"خيار مُغذٍ",text:"زيت الزيتون البكر الممتاز غني بالدهون الأحادية غير المشبعة ويُستخدم تقليدياً ضمن نمط الأكل المتوسطي."}
-      : {badge:"Nutritious choice",text:"Extra virgin olive oil is rich in monounsaturated fat and is a classic ingredient in Mediterranean-style eating."};
+    return {badge,text:copy(
+      "General information about extra virgin olive oil: monounsaturated fat commonly makes up a large share of its fat profile. Exact values vary by product; check the package nutrition label for product-specific information.",
+      "معلومة عامة عن زيت الزيتون البكر الممتاز: تكون الدهون الأحادية غير المشبعة عادةً جزءاً كبيراً من تركيب الدهون فيه. تختلف القيم الدقيقة بحسب المنتج؛ راجع البطاقة الغذائية على العبوة للمعلومات الخاصة بهذا المنتج.",
+      "Information générale sur l’huile d’olive extra vierge : les graisses mono-insaturées représentent couramment une part importante de son profil lipidique. Les valeurs exactes varient selon le produit ; consultez l’étiquette nutritionnelle de l’emballage pour les informations propres à ce produit."
+    )};
   }
   if(n.includes("tahini")){
-    return lang==="ar"
-      ? {badge:"خيار مُغذٍ",text:"الطحينة مصنوعة من السمسم وتوفّر طبيعياً دهوناً غير مشبعة وبروتيناً ومعادن."}
-      : {badge:"Nutritious choice",text:"Tahini is sesame-based and naturally provides unsaturated fats, plant protein and minerals."};
+    return {badge,text:copy(
+      "General information about tahini: sesame-based tahini commonly provides unsaturated fats, plant protein and minerals. Exact values vary by product; check the package nutrition label for product-specific information.",
+      "معلومة عامة عن الطحينة: الطحينة المصنوعة من السمسم توفّر عادةً دهوناً غير مشبعة وبروتيناً نباتياً ومعادن. تختلف القيم الدقيقة بحسب المنتج؛ راجع البطاقة الغذائية على العبوة للمعلومات الخاصة بهذا المنتج.",
+      "Information générale sur le tahini : le tahini à base de sésame apporte couramment des graisses insaturées, des protéines végétales et des minéraux. Les valeurs exactes varient selon le produit ; consultez l’étiquette nutritionnelle de l’emballage pour les informations propres à ce produit."
+    )};
   }
   if(flourMatch){
-    return lang==="ar"
-      ? {badge:"خيار مُغذٍ",text:"هذا النوع من الطحين الكامل أو طحين المكسرات يمكن أن يوفّر أليافاً أو بروتيناً أكثر من الطحين الأبيض المكرر، بحسب الصنف."}
-      : {badge:"Nutritious choice",text:"This whole-grain or nut-based flour can provide more fiber or protein than standard refined white flour, depending on the type."};
+    return {badge,text:copy(
+      "General information about whole-grain and nut-based flours: fiber and protein can differ from refined white flour depending on the type. Check the package nutrition label for product-specific values.",
+      "معلومة عامة عن طحين الحبوب الكاملة وطحين المكسرات: قد تختلف كمية الألياف والبروتين فيه عن الطحين الأبيض المكرر بحسب النوع. راجع البطاقة الغذائية على العبوة للقيم الخاصة بهذا المنتج.",
+      "Information générale sur les farines complètes et les farines à base de fruits à coque : leur teneur en fibres et en protéines peut différer de celle d’une farine blanche raffinée selon le type. Consultez l’étiquette nutritionnelle de l’emballage pour les valeurs propres à ce produit."
+    )};
   }
   return null;
 }
@@ -1202,7 +1234,7 @@ function renderProducts(){
         </div>
       </div>
       <div class="product-badges">${badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("")}<span class="availability-chip availability-${availability}">${escapeHtml(availabilityLabel(p))}</span></div>
-      <p class="product-category">${escapeHtml(categoryName(p.category))}</p>\n      <p class="product-origin">${escapeHtml(originFor(p))}</p>\n      ${listingNote?`<p class="product-listing-note">${escapeHtml(listingNote)}</p>`:""}\n      <h3 class="product-name">${escapeHtml(currentName(p))}</h3>
+      <p class="product-category">${escapeHtml(categoryName(p.category))}</p>\n      ${originFor(p)?`<p class="product-origin">${escapeHtml(originFor(p))}</p>`:""}\n      ${listingNote?`<p class="product-listing-note">${escapeHtml(listingNote)}</p>`:""}\n      <h3 class="product-name">${escapeHtml(currentName(p))}</h3>
       <p class="product-description">${escapeHtml(info.what)}</p>
       <p class="product-use"><strong>${escapeHtml(t.use)}:</strong> ${escapeHtml(info.use)}</p>
       ${health?`<div class="product-health"><span>✦ ${escapeHtml(health.badge)}</span><p>${escapeHtml(health.text)}</p></div>`:""}

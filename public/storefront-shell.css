@@ -277,18 +277,19 @@ html[dir="rtl"] .site-header .nav .brand-wordmark,html[lang="ar"] .site-header .
 
   .site-header .nav>#navLinks,
   #navLinks.is-mobile-portal{
-    top:calc(var(--zwm-menu-top,116px) + 16px)!important;
-    left:max(16px,calc((100vw - min(1420px,calc(100vw - 32px)))/2))!important;
+    position:absolute!important;
+    top:calc(100% + 14px)!important;
+    left:0!important;
     right:auto!important;
     width:min(420px,calc(100vw - 32px))!important;
     max-width:420px!important;
-    max-height:min(680px,calc(100dvh - var(--zwm-menu-top,116px) - 34px))!important;
+    max-height:min(680px,calc(100dvh - 118px))!important;
     margin:0!important;
     border-radius:22px!important;
   }
   html[dir="rtl"] .site-header .nav>#navLinks,
   html[dir="rtl"] #navLinks.is-mobile-portal{
     left:auto!important;
-    right:max(16px,calc((100vw - min(1420px,calc(100vw - 32px)))/2))!important;
+    right:0!important;
   }
 }

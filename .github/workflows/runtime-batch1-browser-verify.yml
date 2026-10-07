@@ -1,0 +1,26 @@
+name: Runtime batch 1 browser verification
+
+on:
+  push:
+    branches:
+      - runtime-batch1-verify-20261007
+
+concurrency:
+  group: runtime-batch1-browser-verify
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm install --no-save --ignore-scripts playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - name: Runtime browser verification
+        run: node tests/runtime-batch1-browser-verify.cjs

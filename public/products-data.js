@@ -260,10 +260,12 @@ const PRODUCT_CATALOGUE_DISPLAY_FIXES=Object.freeze({
   },
   "korfa-cigar":{
     nameEn:"Cinnamon Sticks (Cigar)",
+    nameAr:"عيدان قرفة (سيجار)",
     nameFr:"Bâtons de cannelle (Cigar)"
   },
   "korfa-oud":{
     nameEn:"Cinnamon Sticks (Oud)",
+    nameAr:"عيدان قرفة (عود)",
     nameFr:"Bâtons de cannelle (Oud)"
   }
 });

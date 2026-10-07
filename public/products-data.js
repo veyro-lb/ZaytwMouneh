@@ -294,13 +294,17 @@ PRODUCTS_DATA.forEach((product)=>{
   });
 });
 
-/* Catalogue alias cleanup: merge safe transliteration duplicates into one shopper-facing card. */
+/* Catalogue alias cleanup: merge only safe transliteration duplicates. Legacy records
+   with conflicting variant pricing can redirect to a canonical product without merging data. */
 (function(){
   const aliases={
     "moshmosh-mojafaf":"meshmosh-mojafaf",
     "barly-flour":"barley-flour",
     "bezer-el-kettan":"bezer-al-ketan",
     "zaytoun-akhdar-mehshe-har":"zaytoun-akhdar-mahshe-har"
+  };
+  const redirectOnlyAliases={
+    "sekar-nabet":"secar-nabat"
   };
   Object.entries(aliases).forEach(([aliasId,canonicalId])=>{
     const aliasIndex=PRODUCTS_DATA.findIndex(p=>p.id===aliasId);
@@ -314,5 +318,10 @@ PRODUCTS_DATA.forEach((product)=>{
     ].sort((a,b)=>Number(a.price)-Number(b.price));
     PRODUCTS_DATA.splice(aliasIndex,1);
   });
-  window.ZWM_PRODUCT_ALIASES=aliases;
+  Object.entries(redirectOnlyAliases).forEach(([aliasId,canonicalId])=>{
+    const aliasIndex=PRODUCTS_DATA.findIndex(p=>p.id===aliasId);
+    if(aliasIndex<0||!PRODUCTS_DATA.some(p=>p.id===canonicalId))return;
+    PRODUCTS_DATA.splice(aliasIndex,1);
+  });
+  window.ZWM_PRODUCT_ALIASES={...aliases,...redirectOnlyAliases};
 })();

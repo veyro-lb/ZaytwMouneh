@@ -254,6 +254,15 @@ async function boot(){
   accountPage?$('[data-account-panel="profile"]'):null
  ].filter(Boolean);
  watchTargets.forEach(target=>new MutationObserver(refreshShell).observe(target,{subtree:true,childList:true}));
+ const settleSignedOut=()=>{
+  user=null;rows=[];lastBellRefreshAt=0;lastOrderSignal="";
+  const badge=$("#zwmCustomerNotificationBadge"),list=$("#zwmCustomerNotificationList"),popover=$("#zwmCustomerNotificationPopover");
+  if(badge){badge.textContent="0";badge.hidden=true}
+  if(list)list.innerHTML='<p class="zwm-notification-empty">'+esc(tr("empty"))+'</p>';
+  if(popover)popover.hidden=true;
+ };
+ window.addEventListener("zwm:auth-expired",settleSignedOut);
+ window.addEventListener("storage",e=>{if(e.key===SESSION_KEY&&!session())settleSignedOut()});
  window.addEventListener("focus",()=>{refreshBell();const card=$("#zwmCustomerNotifications");if(card)renderCard(card)});
  document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshBell()});
  setInterval(()=>{if(!document.hidden)refreshBell()},BELL_BACKGROUND_REFRESH_MS);

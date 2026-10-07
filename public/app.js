@@ -1896,6 +1896,7 @@ async function order(){
 function openCart(){
   if(document.body.classList.contains("cart-open"))return;
   window.ZWM_CLOSE_NAV?.();
+  window.ZWM_REWARDS?.close?.();
   closeProduct();
   document.body.classList.add("cart-open");
   backdropOn();
@@ -1908,6 +1909,7 @@ function closeCart(){
   $("#cartDrawer").setAttribute("aria-hidden","true");
   backdropMaybeOff();
 }
+window.ZWM_CLOSE_CART=closeCart;
 function backdropOn(){
   const b=$("#cartBackdrop");
   if(!b)return;

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <base href="/">
+  <script src="/locale-loader-v1.js?v=20261006-perf1"></script>
+  <meta name="theme-color" content="#174c2a">
+  <meta name="description" content="Verify a Zayt W Mouneh order and submit a secure return, exchange or product issue request.">
+  <title>Returns & Product Issues | Zayt W Mouneh</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=20261003-round1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=20261004-mobileheader1">
+  <link rel="stylesheet" href="/premium.css?v=20261004-uifix1">
+  <link rel="stylesheet" href="/returns-policy-v1.css?v=20261007-returns1">
+  <link rel="stylesheet" href="/returns-v1.css?v=20261007-returns2">
+</head>
+<body data-page="returns">
+  <header class="policy-header" id="top">
+    <div class="policy-shell policy-nav">
+      <a href="/" class="policy-brand"><img src="/assets/logo.svg?v=20261002-1005" alt="Zayt W Mouneh"><span>Zayt W Mouneh</span></a>
+      <nav id="navLinks" aria-label="Customer navigation">
+        <a href="/shop">Shop</a>
+        <a href="/account#orders">My orders</a>
+        <a href="/returns" aria-current="page">Returns & Issues</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="returns-center-main" id="main">
+    <div class="returns-center-shell">
+      <section class="returns-center-hero">
+        <small>Customer care</small>
+        <h1>Returns & Product Issues</h1>
+        <p>Have a problem with an order? Enter the order code from your receipt or order confirmation. We verify the order before showing its products or allowing a request.</p>
+      </section>
+
+      <div class="returns-center-grid">
+        <section class="returns-center-card">
+          <h2>Find your order securely</h2>
+          <p>Your order code identifies the order, but it is not treated as a password. We verify ownership before revealing order details.</p>
+
+          <form class="returns-center-form" id="returnsLookupForm" novalidate>
+            <label>
+              <span>Order code</span>
+              <input id="returnsLookupReference" name="reference" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" maxlength="80" placeholder="Example: ZW-…" required>
+              <small>Use the code shown on your Zayt W Mouneh order confirmation or receipt.</small>
+            </label>
+
+            <label>
+              <span>Email or phone used on the order</span>
+              <input id="returnsLookupContact" name="contact" type="text" autocomplete="email" maxlength="254" placeholder="Email address or phone number">
+              <small id="returnsLookupContactHint">For guest orders, this must match the email or phone used when ordering. If you are signed in to the account that owns the order, the order code is enough.</small>
+            </label>
+
+            <div class="returns-center-security">
+              <div><span>1</span><p><strong>Order code check</strong><small>We confirm the code exists without revealing customer data.</small></p></div>
+              <div><span>2</span><p><strong>Ownership verification</strong><small>Signed-in ownership or matching order contact details are required.</small></p></div>
+              <div><span>3</span><p><strong>Temporary access</strong><small>Successful verification creates a short-lived access token. Repeated incorrect attempts are rate-limited.</small></p></div>
+            </div>
+
+            <p class="zwm-return-error" id="returnsLookupError" role="alert"></p>
+            <button type="submit" class="zwm-return-submit">Verify order</button>
+          </form>
+
+          <div class="returns-center-result" id="returnsLookupResult" hidden></div>
+        </section>
+
+        <aside class="returns-center-side">
+          <h2>What you can report</h2>
+          <p>This center is available even before you place an order, but a request can only be opened for a verified delivered order.</p>
+          <ul>
+            <li>Damaged, broken or leaking products</li>
+            <li>Missing or incorrect products</li>
+            <li>Quality, spoilage or safety concerns</li>
+            <li>Return or exchange of an eligible unopened product</li>
+          </ul>
+          <p>Submitting a request does not automatically approve a refund. Every resolution is reviewed against the actual order, quantities and amount paid.</p>
+          <a class="returns-center-policy-link" href="/returns-policy.html">Read the Returns & Product Issues Policy</a>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="policy-footer">
+    <div class="policy-shell"><a href="/">Zayt W Mouneh</a><span>·</span><a href="/contact">Contact</a><span>·</span><a href="/returns-policy.html">Returns policy</a></div>
+  </footer>
+
+  <script src="/admin-config.js?v=20261007-returns2"></script>
+  <script src="/site-runtime-v9.js?v=20261007-returnsnav1" data-zwm-site-runtime="1"></script>
+  <script defer src="/returns-v1.js?v=20261007-returns2"></script>
+</body>
+</html>

@@ -25,12 +25,18 @@ async function config(){
  await new Promise(resolve=>{const s=document.createElement("script");s.src="/admin-config.js?v=20261007-returns1";s.onload=resolve;s.onerror=resolve;document.head.appendChild(s)});
  return window.ZWM_CMS_CONFIG||{};
 }
-async function rpc(action,p,needsAuth=false){
+async function rpc(action,p,needsAuth=false,retry=true){
  const c=await config(),sess=session();
  if(needsAuth&&(!sess||!sess.access_token))throw new Error(tr("Please sign in first.","يرجى تسجيل الدخول أولاً.","Veuillez vous connecter."));
  const h={apikey:c.supabasePublishableKey,"Content-Type":"application/json"}; if(sess?.access_token)h.Authorization="Bearer "+sess.access_token;
  const r=await timedFetch(c.supabaseUrl.replace(/\/$/,"")+"/rest/v1/rpc/zwm_returns",{method:"POST",headers:h,body:JSON.stringify({action,p:p||{}})});
- const d=await r.json().catch(()=>({})); if(!r.ok)throw new Error(d.message||d.hint||tr("Could not complete this request.","تعذّر إكمال الطلب.","Impossible de terminer la demande.")); return d;
+ const d=await r.json().catch(()=>({}));
+ if(r.status===401&&retry&&sess?.access_token){
+  const refreshed=await window.ZWM_REWARDS?.auth?.refreshSession?.();
+  if(refreshed?.access_token)return rpc(action,p,needsAuth,false);
+  throw new Error(tr("Your session expired. Please sign in again.","انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً.","Votre session a expiré. Veuillez vous reconnecter."));
+ }
+ if(!r.ok)throw new Error(d.message||d.hint||tr("Could not complete this request.","تعذّر إكمال الطلب.","Impossible de terminer la demande.")); return d;
 }
 async function verifyOrder(reference,contact){
  const c=await config(),sess=session();

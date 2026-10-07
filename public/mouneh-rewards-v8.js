@@ -745,7 +745,10 @@
     if(!drawer||!back)return;
     const isOpen=drawer.classList.contains("is-open");
     if(Boolean(open)===isOpen)return;
-    if(open)window.ZWM_CLOSE_NAV?.();
+    if(open){
+      window.ZWM_CLOSE_NAV?.();
+      window.ZWM_CLOSE_CART?.();
+    }
     drawer.classList.toggle("is-open",open);
     back.hidden=!open;
     document.body.classList.toggle("mouneh-rewards-open",open);
@@ -1231,6 +1234,7 @@
     submitOrder,
     refreshCheckout,
     open:requestOpen,
+    close:()=>setDrawer(false),
     openSignIn,
     openSignUp,
     refresh:()=>loadDashboard(),

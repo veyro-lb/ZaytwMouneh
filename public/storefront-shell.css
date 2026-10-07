@@ -1,10 +1,24 @@
 /* Zayt w Mouneh — canonical storefront header shell
    Loaded last. This file is the single visual source of truth for the site header. */
 
+/* Shared overlay ladder. Keep feature CSS on these named layers instead of inventing
+   new z-index values: header < popover < menu backdrop/header/panel < drawers < modals. */
+:root{
+  --zwm-layer-header:6000;
+  --zwm-layer-popover:6050;
+  --zwm-layer-menu-backdrop:6100;
+  --zwm-layer-menu-header:6150;
+  --zwm-layer-menu:6200;
+  --zwm-layer-drawer-backdrop:6300;
+  --zwm-layer-drawer:6400;
+  --zwm-layer-modal-backdrop:6500;
+  --zwm-layer-modal:6600;
+}
+
 .site-header{
   position:sticky!important;
   top:0!important;
-  z-index:6000!important;
+  z-index:var(--zwm-layer-header)!important;
   overflow:visible!important;
   background:#fbf8f1!important;
   border-bottom:1px solid #e3dacb!important;
@@ -317,7 +331,7 @@
 .site-header .nav>.nav-links,
 .nav-links.is-mobile-portal{
   position:fixed!important;
-  z-index:6200!important;
+  z-index:var(--zwm-layer-menu)!important;
   top:calc(36px + 80px + 8px)!important;
   left:max(16px,calc((100vw - min(1420px,calc(100vw - 32px)))/2))!important;
   right:auto!important;
@@ -399,11 +413,19 @@ body.menu-open:after{
   content:""!important;
   position:fixed!important;
   inset:0!important;
-  z-index:6100!important;
+  z-index:var(--zwm-layer-menu-backdrop)!important;
   background:rgba(4,23,10,.40)!important;
   pointer-events:auto!important;
 }
-body.menu-open .site-header{z-index:6150!important}
+body.menu-open .site-header{z-index:var(--zwm-layer-menu-header)!important}
+
+/* Cart and rewards share the drawer tier and are made mutually exclusive in JS. */
+.cart-backdrop{z-index:var(--zwm-layer-drawer-backdrop)!important}
+.cart-drawer{z-index:var(--zwm-layer-drawer)!important}
+#cartClose,#productModalClose,#modalQtyMinus,#modalQtyPlus{
+  min-width:44px!important;
+  min-height:44px!important;
+}
 
 html[dir="rtl"] .site-header .nav>.nav-links,
 html[dir="rtl"] .nav-links.is-mobile-portal{
@@ -427,75 +449,6 @@ html[dir="rtl"] .site-header .nav>.nav-actions{direction:rtl!important}
   .site-header #cartButton.cart-button{min-width:46px!important;width:46px!important;padding:0!important}
   .site-header #cartButton .cart-label{display:none!important}
 }
-
-/* Tablet/phone: brand becomes logo-only before controls can collide. */
-@media(max-width:760px){
-  .announcement{height:32px!important;min-height:32px!important}
-  .announcement-inner{height:32px!important;min-height:32px!important}
-  .site-header .nav{
-    width:min(100% - 14px,1420px)!important;
-    height:66px!important;min-height:66px!important;
-    gap:4px!important;
-  }
-  .site-header .nav>.nav-toggle{
-    width:38px!important;min-width:38px!important;height:38px!important;padding:0!important
-  }
-  .site-header .nav .brand-logo{
-    width:37px!important;height:37px!important;flex-basis:37px!important
-  }
-  .site-header .nav .brand-wordmark{display:none!important}
-  .site-header .nav>.brand{gap:0!important;max-width:37px!important}
-  .site-header .nav>.nav-actions{gap:4px!important}
-  .site-header #languageSwitch,.site-header .language-switch{
-    height:38px!important;min-height:38px!important;padding:2px!important
-  }
-  .site-header #languageSwitch button,.site-header .language-switch button{
-    min-width:29px!important;height:32px!important;min-height:32px!important;
-    padding:0 4px!important;font-size:.56rem!important
-  }
-  .site-header #mounehRewardsButton.mouneh-points-nav{
-    min-width:48px!important;height:38px!important;min-height:38px!important;padding:0 7px!important;gap:4px!important
-  }
-  .site-header #mounehRewardsButton .mr-nav-leaf{font-size:16px!important}
-  .site-header #mounehRewardsButton #mounehPointsBadge{font-size:10px!important}
-  .site-header #mounehAccountButton.mouneh-account-nav{
-    min-width:38px!important;width:38px!important;height:38px!important;min-height:38px!important;padding:0!important
-  }
-  .site-header #mounehAccountButton .mr-account-nav-avatar{
-    width:24px!important;height:24px!important;min-width:24px!important
-  }
-  .site-header #cartButton.cart-button{
-    min-width:38px!important;width:38px!important;height:38px!important;min-height:38px!important;padding:0!important
-  }
-  .site-header #cartButton .cart-count{
-    position:absolute!important;
-    transform:translate(13px,-13px)!important;
-    width:18px!important;height:18px!important;min-width:18px!important;
-    border:2px solid #fbf8f1!important;
-    font-size:.52rem!important
-  }
-  .site-header .nav>.nav-links,
-  .nav-links.is-mobile-portal{
-    top:calc(32px + 66px + 6px)!important;
-    left:8px!important;right:8px!important;
-    width:auto!important;max-width:none!important;
-    max-height:calc(100dvh - 114px)!important;
-    border-radius:18px!important;
-  }
-  html[dir="rtl"] .site-header .nav>.nav-links,
-  html[dir="rtl"] .nav-links.is-mobile-portal{
-    left:8px!important;right:8px!important
-  }
-}
-
-@media(max-width:380px){
-  .site-header .nav{width:min(100% - 8px,1420px)!important}
-  .site-header #languageSwitch button,.site-header .language-switch button{
-    min-width:26px!important;padding:0 3px!important;font-size:.52rem!important
-  }
-  .site-header #mounehRewardsButton.mouneh-points-nav{min-width:44px!important;padding:0 5px!important}
-}
-
 
 /* ===== shell3 canonical footer ===== */
 .footer{
@@ -645,10 +598,10 @@ html[dir="rtl"] .site-header .nav>.nav-actions{direction:rtl!important}
     right:auto!important;
     top:50%!important;
     transform:translateY(-50%)!important;
-    width:42px!important;
-    min-width:42px!important;
-    height:42px!important;
-    min-height:42px!important;
+    width:44px!important;
+    min-width:44px!important;
+    height:44px!important;
+    min-height:44px!important;
     padding:0!important;
     margin:0!important;
     border-radius:14px!important;
@@ -719,10 +672,10 @@ html[dir="rtl"] .site-header .nav>.nav-actions{direction:rtl!important}
     left:auto!important;
     top:50%!important;
     transform:translateY(-50%)!important;
-    width:42px!important;
-    min-width:42px!important;
-    height:42px!important;
-    min-height:42px!important;
+    width:44px!important;
+    min-width:44px!important;
+    height:44px!important;
+    min-height:44px!important;
     margin:0!important;
     padding:0!important;
     display:block!important;
@@ -766,10 +719,10 @@ html[dir="rtl"] .site-header .nav>.nav-actions{direction:rtl!important}
     transform:none!important;
     display:grid!important;
     place-items:center!important;
-    width:42px!important;
-    min-width:42px!important;
-    height:42px!important;
-    min-height:42px!important;
+    width:44px!important;
+    min-width:44px!important;
+    height:44px!important;
+    min-height:44px!important;
     margin:0!important;
     padding:0!important;
     gap:0!important;
@@ -794,36 +747,6 @@ html[dir="rtl"] .site-header .nav>.nav-actions{direction:rtl!important}
     border:2px solid #fbf8f1!important;
     font-size:.51rem!important;
     line-height:1!important;
-  }
-
-  .site-header .nav>.nav-links,
-  .nav-links.is-mobile-portal{
-    top:100px!important;
-    left:8px!important;
-    right:8px!important;
-    width:auto!important;
-    max-width:none!important;
-    max-height:calc(100dvh - 108px)!important;
-    padding:11px!important;
-    gap:6px!important;
-    border-radius:18px!important;
-    overflow:auto!important;
-    overscroll-behavior:contain!important;
-  }
-  html[dir="rtl"] .site-header .nav>.nav-links,
-  html[dir="rtl"] .nav-links.is-mobile-portal{
-    left:8px!important;
-    right:8px!important;
-  }
-  .site-header .nav>.nav-links .menu-heading,
-  .nav-links.is-mobile-portal .menu-heading{
-    padding:8px 9px 10px!important;
-  }
-  .site-header .nav>.nav-links>a:not(.menu-utility-link),
-  .nav-links.is-mobile-portal>a:not(.menu-utility-link){
-    min-height:48px!important;
-    padding:7px 10px!important;
-    border-radius:12px!important;
   }
 
   .mobile-menu-tools{
@@ -945,8 +868,9 @@ html[dir="rtl"] .site-header .nav>.nav-actions{direction:rtl!important}
     background:#eee7dc!important;
   }
   .mobile-menu-language-buttons button{
-    min-width:42px!important;
-    height:34px!important;
+    min-width:44px!important;
+    height:44px!important;
+    min-height:44px!important;
     border:0!important;
     border-radius:999px!important;
     background:transparent!important;
@@ -998,13 +922,6 @@ html[dir="rtl"] .site-header .nav>.nav-actions{direction:rtl!important}
     max-width:128px!important;
     font-size:.98rem!important;
   }
-  .site-header .nav>.nav-toggle,
-  .site-header #cartButton.cart-button{
-    width:40px!important;
-    min-width:40px!important;
-    height:40px!important;
-    min-height:40px!important;
-  }
   .mobile-menu-tools{grid-template-columns:1fr!important}
   .mobile-menu-points,
   .mobile-menu-language{grid-column:1!important}
@@ -1036,31 +953,6 @@ html[lang="ar"] .footer .brand-wordmark{
 #navLinks:not(.is-open),
 #navLinks:not(.is-open) *{visibility:hidden!important;pointer-events:none!important}
 
-
-/* returns-navigation-layout2: mobile menu attaches directly to the header */
-@media(max-width:760px){
-  .site-header .nav>.nav-links,
-  .nav-links.is-mobile-portal{
-    top:var(--zwm-menu-top,94px)!important;
-    left:0!important;
-    right:0!important;
-    width:100%!important;
-    max-width:none!important;
-    max-height:calc(100dvh - var(--zwm-menu-top,94px))!important;
-    margin:0!important;
-    padding:10px 12px calc(16px + env(safe-area-inset-bottom))!important;
-    border-left:0!important;
-    border-right:0!important;
-    border-top:1px solid #e3dacb!important;
-    border-radius:0 0 18px 18px!important;
-    box-shadow:0 18px 38px rgba(3,34,14,.18)!important;
-  }
-  html[dir="rtl"] .site-header .nav>.nav-links,
-  html[dir="rtl"] .nav-links.is-mobile-portal{
-    left:0!important;
-    right:0!important;
-  }
-}
 
 /* ===== menupolish2: clearer anchored storefront menu ===== */
 .site-header .nav>#navLinks,

@@ -1,8 +1,8 @@
 (function(){
 "use strict";
 const SESSION_KEY="zwm:mouneh:session:v1",CLAIMS_KEY="zwm:mouneh:claims:v1";
-const S={context:null,requests:[],active:null,files:[],busy:false,clientRequestId:null,accessToken:null,lastHistoryLoad:0};
-const REQUEST_TIMEOUT_MS=15000,HISTORY_STALE_MS=120000;
+const S={context:null,requests:[],active:null,files:[],busy:false,clientRequestId:null,accessToken:null,lastHistoryLoad:0,historyLoading:false};
+const REQUEST_TIMEOUT_MS=15000,HISTORY_STALE_MS=120000,CONFIG_TIMEOUT_MS=8000;
 const $=(s,r)=> (r||document).querySelector(s), $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
 const ar=()=>document.documentElement.lang==="ar"||document.documentElement.dir==="rtl";
 const fr=()=>document.documentElement.lang==="fr";
@@ -22,30 +22,59 @@ async function timedFetch(url,options){const controller=typeof AbortController==
 
 async function config(){
  if(window.ZWM_CMS_CONFIG?.supabaseUrl)return window.ZWM_CMS_CONFIG;
- await new Promise(resolve=>{const s=document.createElement("script");s.src="/admin-config.js?v=20261007-returns1";s.onload=resolve;s.onerror=resolve;document.head.appendChild(s)});
+ await new Promise((resolve,reject)=>{
+  const script=document.createElement("script");let done=false;
+  const finish=(fn,value)=>{if(done)return;done=true;clearTimeout(timer);script.onload=null;script.onerror=null;fn(value)};
+  const timer=setTimeout(()=>finish(reject,new Error(tr("Customer care configuration took too long to load.","استغرق تحميل إعدادات خدمة العملاء وقتاً طويلاً.","La configuration du service client a pris trop de temps."))),CONFIG_TIMEOUT_MS);
+  script.src="/admin-config.js?v=20261007-returns1";
+  script.onload=()=>finish(resolve);
+  script.onerror=()=>finish(reject,new Error(tr("Customer care is temporarily unavailable.","خدمة العملاء غير متاحة مؤقتاً.","Le service client est temporairement indisponible.")));
+  document.head.appendChild(script);
+ });
  return window.ZWM_CMS_CONFIG||{};
 }
-async function rpc(action,p,needsAuth=false){
+async function refreshAuthSession(){
+ const fn=window.ZWM_REWARDS?.auth?.refreshSession;
+ if(typeof fn!=="function")return null;
+ try{return await fn()}catch{return null}
+}
+async function rpc(action,p,needsAuth=false,retry=true){
  const c=await config(),sess=session();
  if(needsAuth&&(!sess||!sess.access_token))throw new Error(tr("Please sign in first.","يرجى تسجيل الدخول أولاً.","Veuillez vous connecter."));
  const h={apikey:c.supabasePublishableKey,"Content-Type":"application/json"}; if(sess?.access_token)h.Authorization="Bearer "+sess.access_token;
  const r=await timedFetch(c.supabaseUrl.replace(/\/$/,"")+"/rest/v1/rpc/zwm_returns",{method:"POST",headers:h,body:JSON.stringify({action,p:p||{}})});
- const d=await r.json().catch(()=>({})); if(!r.ok)throw new Error(d.message||d.hint||tr("Could not complete this request.","تعذّر إكمال الطلب.","Impossible de terminer la demande.")); return d;
+ const d=await r.json().catch(()=>({}));
+ if(r.status===401&&retry&&sess?.refresh_token){
+  const fresh=await refreshAuthSession();
+  if(fresh?.access_token)return rpc(action,p,needsAuth,false);
+ }
+ if(!r.ok){const e=new Error(d.message||d.hint||(r.status===401?tr("Your session expired. Please sign in again.","انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً.","Votre session a expiré. Veuillez vous reconnecter."):tr("Could not complete this request.","تعذّر إكمال الطلب.","Impossible de terminer la demande.")));e.status=r.status;throw e}
+ return d;
 }
-async function verifyOrder(reference,contact){
+async function verifyOrder(reference,contact,retry=true){
  const c=await config(),sess=session();
  const h={apikey:c.supabasePublishableKey,"Content-Type":"application/json"};
  if(sess?.access_token)h.Authorization="Bearer "+sess.access_token;
  const r=await timedFetch(c.supabaseUrl.replace(/\/$/,"")+"/functions/v1/return-order-verify",{method:"POST",headers:h,body:JSON.stringify({reference,contact})});
  const d=await r.json().catch(()=>({}));
- if(!r.ok)throw new Error(d.error||tr("We could not verify those order details.","تعذّر التحقق من بيانات الطلب.","Nous n’avons pas pu vérifier ces informations."));
+ if(r.status===401&&retry&&sess?.refresh_token){
+  const fresh=await refreshAuthSession();
+  if(fresh?.access_token)return verifyOrder(reference,contact,false);
+ }
+ if(!r.ok)throw new Error(d.error||(r.status===401?tr("Your session expired. Please sign in again.","انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً.","Votre session a expiré. Veuillez vous reconnecter."):tr("We could not verify those order details.","تعذّر التحقق من بيانات الطلب.","Nous n’avons pas pu vérifier ces informations.")));
  return d;
 }
-async function uploadEvidence(requestId,file){
+async function uploadEvidence(requestId,file,retry=true){
  const c=await config(),sess=session(); if(!sess?.access_token)throw new Error(tr("Sign in to attach photos securely.","سجّل الدخول لإرفاق الصور بأمان.","Connectez-vous pour joindre des photos en toute sécurité."));
  const fd=new FormData();fd.append("request_id",requestId);fd.append("file",file,file.name);
  const r=await timedFetch(c.supabaseUrl.replace(/\/$/,"")+"/functions/v1/return-evidence-upload",{method:"POST",headers:{apikey:c.supabasePublishableKey,Authorization:"Bearer "+sess.access_token},body:fd});
- const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||tr("Photo upload failed.","فشل رفع الصورة.","Échec de l’envoi de la photo."));return d;
+ const d=await r.json().catch(()=>({}));
+ if(r.status===401&&retry&&sess?.refresh_token){
+  const fresh=await refreshAuthSession();
+  if(fresh?.access_token)return uploadEvidence(requestId,file,false);
+ }
+ if(!r.ok)throw new Error(d.error||(r.status===401?tr("Your session expired. Please sign in again.","انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً.","Votre session a expiré. Veuillez vous reconnecter."):tr("Photo upload failed.","فشل رفع الصورة.","Échec de l’envoi de la photo.")));
+ return d;
 }
 function ensureCss(){if(!$('link[data-returns-css]')){const l=document.createElement("link");l.rel="stylesheet";l.href="/returns-v1.css?v=20261007-returnslocales1";l.dataset.returnsCss="1";document.head.appendChild(l)}}
 function ensureModal(){
@@ -99,7 +128,15 @@ async function mountOrderHelp(){
  }
  const actions=content.querySelector(".commerce-card:last-of-type");(actions||content).insertAdjacentElement(actions?"beforebegin":"beforeend",card);card.querySelector("[data-get-order-help]").addEventListener("click",()=>openForOrder(ref));
 }
-async function loadHistory(silent,force=false){if(!session()?.access_token){S.requests=[];S.lastHistoryLoad=0;mountHistory();return}if(!force&&S.lastHistoryLoad&&Date.now()-S.lastHistoryLoad<HISTORY_STALE_MS){mountHistory();return}try{const x=await rpc("list",{},true);S.requests=Array.isArray(x.requests)?x.requests:[];S.lastHistoryLoad=Date.now();mountHistory()}catch(e){if(!silent)console.warn(e)}}
+async function loadHistory(silent,force=false){
+ if(!session()?.access_token){S.requests=[];S.lastHistoryLoad=0;mountHistory();return}
+ if(S.historyLoading)return;
+ if(!force&&S.lastHistoryLoad&&Date.now()-S.lastHistoryLoad<HISTORY_STALE_MS){mountHistory();return}
+ S.historyLoading=true;
+ try{const x=await rpc("list",{},true);S.requests=Array.isArray(x.requests)?x.requests:[];S.lastHistoryLoad=Date.now();mountHistory()}
+ catch(e){if(!silent)console.warn(e)}
+ finally{S.historyLoading=false}
+}
 function requestCard(r){const item=(r.items||[]).map(i=>esc(i.product_name)+(i.quantity_requested>1?' ×'+i.quantity_requested:'')).join(" · ");return '<article class="zwm-history-card"><div class="zwm-history-head"><div><small>'+esc(date(r.submitted_at))+'</small><strong>'+esc(r.request_number)+'</strong><span>'+esc(r.order_reference)+'</span></div><span class="zwm-status status-'+esc(r.status)+'">'+esc(statusLabel(r.status))+'</span></div><p>'+esc(reasonLabel(r.reason_code))+(item?' · '+item:'')+'</p>'+(Number(r.approved_refund_total)>0?'<strong>'+esc(tr("Approved refund","الاسترداد المعتمد","Remboursement approuvé"))+': '+money(r.approved_refund_total)+'</strong>':'')+'<button type="button" data-return-detail="'+esc(r.id)+'">'+esc(tr("View request","عرض الطلب","Voir la demande"))+'</button></article>'}
 function mountHistory(){
  if(document.body.dataset.page!=="account")return;const panel=$('[data-account-panel="orders"]');if(!panel)return;let root=$("#zwmReturnHistory",panel);if(!root){root=document.createElement("article");root.id="zwmReturnHistory";root.className="account-card zwm-return-history";panel.appendChild(root)}
@@ -141,6 +178,6 @@ function mountReturnCenter(){
    finally{S.busy=false;if(button){button.disabled=false;button.textContent=tr("Verify order","تحقق من الطلب","Vérifier la commande")}}
  });
 }
-function init(){ensureCss();ensureModal();mountStandaloneReturnsTab();mountReturnCenter();if(document.body.dataset.page==="order"){document.addEventListener("zwm:order-rendered",mountOrderHelp);setTimeout(mountOrderHelp,0)}if(document.body.dataset.page==="account"){const orders=$("[data-account-panel=\"orders\"]");if(orders)new MutationObserver(()=>{if(!$("#zwmReturnHistory",orders))mountHistory()}).observe(orders,{childList:true,subtree:true});setTimeout(()=>loadHistory(false),500);window.addEventListener("focus",()=>loadHistory(true,false));document.addEventListener("zwm:customer-order-changed",()=>loadHistory(true,true))}}
+function init(){ensureCss();ensureModal();mountStandaloneReturnsTab();mountReturnCenter();if(document.body.dataset.page==="order"){document.addEventListener("zwm:order-rendered",mountOrderHelp);setTimeout(mountOrderHelp,0)}if(document.body.dataset.page==="account"){const orders=$("[data-account-panel=\"orders\"]");if(orders)new MutationObserver(()=>{if(!$("#zwmReturnHistory",orders))mountHistory()}).observe(orders,{childList:true,subtree:true});setTimeout(()=>loadHistory(false),500);window.addEventListener("focus",()=>loadHistory(true,false));document.addEventListener("zwm:customer-order-changed",()=>loadHistory(true,true));window.addEventListener("zwm:auth-expired",()=>{S.requests=[];S.lastHistoryLoad=0;S.historyLoading=false;mountHistory()})}}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();

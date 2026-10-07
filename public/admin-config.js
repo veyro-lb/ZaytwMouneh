@@ -46,7 +46,7 @@ window.ZWM_CMS_CONFIG = Object.freeze({
   function load(){
     if(!document.body||!document.body.classList.contains("admin-body")||document.querySelector('script[data-admin-returns-script]'))return;
     var s=document.createElement("script");
-    s.src="/admin-returns-v1.js?v=20261007-returns1";
+    s.src="/admin-returns-v1.js?v=20261007-returnsemail1";
     s.defer=true;
     s.dataset.adminReturnsScript="1";
     document.body.appendChild(s);

@@ -114,6 +114,7 @@ const RETURN_COPY={
   en:{
     RETURN_REQUEST_RECEIVED:{subject:r=>"We received your return / product issue request "+r,eyebrow:"Request received",heading:"We received your request",intro:"Your request is safely in our system and will be reviewed by our team.",notice:"Submitting a request does not automatically guarantee a refund or exchange."},
     RETURN_INFORMATION_NEEDED:{subject:r=>"We need more information for request "+r,eyebrow:"Information needed",heading:"We need a little more information",intro:"Please open your request and send the requested details so we can continue the review."},
+    RETURN_REPLY_RECEIVED:{subject:r=>"New reply on request "+r,eyebrow:"New reply",heading:"We replied to your request",intro:"There is a new message from Zayt W Mouneh about your return or product-issue request."},
     RETURN_AUTHORIZED:{subject:r=>"Return authorized for request "+r,eyebrow:"Return authorized",heading:"Your return has been authorized",intro:"Please review the instructions in your request before sending or bringing back the product."},
     RETURN_RESOLUTION_APPROVED:{subject:r=>"Resolution approved for request "+r,eyebrow:"Resolution approved",heading:"We approved a resolution",intro:"Your request has been reviewed and a resolution has been approved."},
     RETURN_REJECTED:{subject:r=>"Update on request "+r,eyebrow:"Request reviewed",heading:"Your request has been reviewed",intro:"We completed our review and could not approve the requested resolution based on the available information."},
@@ -124,6 +125,7 @@ const RETURN_COPY={
   ar:{
     RETURN_REQUEST_RECEIVED:{subject:r=>"استلمنا طلب الإرجاع أو مشكلة المنتج "+r,eyebrow:"تم استلام الطلب",heading:"استلمنا طلبك",intro:"تم تسجيل طلبك بأمان وسيقوم فريقنا بمراجعته.",notice:"إرسال الطلب لا يعني الموافقة التلقائية على الاسترداد أو الاستبدال."},
     RETURN_INFORMATION_NEEDED:{subject:r=>"نحتاج معلومات إضافية للطلب "+r,eyebrow:"معلومات مطلوبة",heading:"نحتاج إلى بعض المعلومات الإضافية",intro:"يرجى فتح الطلب وإرسال التفاصيل المطلوبة حتى نتمكن من متابعة المراجعة."},
+    RETURN_REPLY_RECEIVED:{subject:r=>"رد جديد بخصوص الطلب "+r,eyebrow:"رد جديد",heading:"أرسلنا لك رداً جديداً",intro:"هناك رسالة جديدة من زيت ومونة بخصوص طلب الإرجاع أو مشكلة المنتج."},
     RETURN_AUTHORIZED:{subject:r=>"تمت الموافقة على إرجاع الطلب "+r,eyebrow:"تمت الموافقة على الإرجاع",heading:"تمت الموافقة على الإرجاع",intro:"يرجى مراجعة التعليمات داخل طلبك قبل إعادة المنتج."},
     RETURN_RESOLUTION_APPROVED:{subject:r=>"تمت الموافقة على حل للطلب "+r,eyebrow:"تمت الموافقة على الحل",heading:"وافقنا على حل لطلبك",intro:"تمت مراجعة طلبك والموافقة على الحل المناسب."},
     RETURN_REJECTED:{subject:r=>"تحديث بخصوص الطلب "+r,eyebrow:"تمت مراجعة الطلب",heading:"اكتملت مراجعة طلبك",intro:"بعد المراجعة لم نتمكن من الموافقة على الحل المطلوب بناءً على المعلومات المتوفرة."},
@@ -134,6 +136,7 @@ const RETURN_COPY={
   fr:{
     RETURN_REQUEST_RECEIVED:{subject:r=>"Nous avons reçu votre demande retour / produit "+r,eyebrow:"Demande reçue",heading:"Nous avons reçu votre demande",intro:"Votre demande est enregistrée et sera examinée par notre équipe.",notice:"L’envoi d’une demande ne garantit pas automatiquement un remboursement ou un échange."},
     RETURN_INFORMATION_NEEDED:{subject:r=>"Informations requises pour la demande "+r,eyebrow:"Informations requises",heading:"Nous avons besoin de quelques informations",intro:"Ouvrez votre demande et envoyez les informations demandées afin de poursuivre l’examen."},
+    RETURN_REPLY_RECEIVED:{subject:r=>"Nouveau message pour la demande "+r,eyebrow:"Nouveau message",heading:"Nous avons répondu à votre demande",intro:"Un nouveau message de Zayt W Mouneh est disponible concernant votre retour ou problème produit."},
     RETURN_AUTHORIZED:{subject:r=>"Retour autorisé pour la demande "+r,eyebrow:"Retour autorisé",heading:"Votre retour est autorisé",intro:"Consultez les instructions de votre demande avant de retourner le produit."},
     RETURN_RESOLUTION_APPROVED:{subject:r=>"Solution approuvée pour la demande "+r,eyebrow:"Solution approuvée",heading:"Une solution a été approuvée",intro:"Votre demande a été examinée et une solution a été approuvée."},
     RETURN_REJECTED:{subject:r=>"Mise à jour de la demande "+r,eyebrow:"Demande examinée",heading:"Votre demande a été examinée",intro:"Après examen, nous n’avons pas pu approuver la solution demandée sur la base des informations disponibles."},

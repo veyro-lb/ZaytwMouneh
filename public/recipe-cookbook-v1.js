@@ -3,6 +3,7 @@
   "use strict";
   var recipes=window.ZWM_RECIPE_LIBRARY||[];
   var french=window.ZWM_RECIPE_FR||{};
+  var frenchProducts=window.ZWM_RECIPE_PRODUCTS_FR||{};
   if(document.body.dataset.page!=="recipes"||!recipes.length)return;
   var host=document.querySelector("#recipes .recipe-grid");
   if(!host)return;
@@ -45,7 +46,7 @@
   function translated(r,stem){var value=french[r.id]||{};return text(r[stem+"En"],r[stem+"Ar"],value[stem+"Fr"])}
   function escape(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
   function money(v){return "$"+Number(v||0).toFixed(2)}
-  function name(p){return typeof currentName==="function"?currentName(p):text(p.nameEn,p.nameAr)}
+  function name(p){if(fr()&&frenchProducts[p.id])return frenchProducts[p.id];return typeof currentName==="function"?currentName(p):text(p.nameEn,p.nameAr)}
   function variants(p){return (p.variants||[]).filter(function(v){return Number.isFinite(Number(v.price))&&Number(v.price)>=0}).slice().sort(function(a,b){return Number(a.price)-Number(b.price)})}
   function orderable(p){return p&&variants(p).length>0&&(typeof productCanOrder!=="function"||productCanOrder(p))}
   function recipeRows(r){var tr=french[r.id]||{};return r.ingredients.map(function(row,i){return {index:i,amount:text(row[0],row[1],(tr.ingredientsFr||[])[i]),id:row[2]||null,product:row[2]?products.get(row[2]):null}})}

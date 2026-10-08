@@ -348,5 +348,362 @@ window.ZWM_RECIPE_LIBRARY = [
     "storageAr": "أفضل ما تكون طازجة؛ يمكن حفظ المكونات دون تتبيلة ليوم واحد.",
     "allergensEn": "Contains wheat/gluten (bulgur).",
     "allergensAr": "تحتوي على القمح والغلوتين (البرغل)."
-  }
-];
+  },
+{
+  "id": "kibbeh",
+  "titleEn": "Kibbeh bil Sanieh",
+  "titleAr": "كبّة بالصينية",
+  "category": "Mains",
+  "prep": 45,
+  "cook": 40,
+  "serves": 6,
+  "icon": "🥘",
+  "introEn": "A treasured family bake with delicately spiced bulgur-and-beef layers surrounding a fragrant onion and pine nut filling. Score the top into diamonds before baking for golden, crisp portions.",
+  "introAr": "كبّة بالصينية من أكلات اللمة: طبقتان من البرغل واللحم المتبّل تحتضنان حشوة البصل والصنوبر. تُقطّع معينات قبل الخبز لتخرج ذهبية ومقرمشة.",
+  "ingredients": [
+    [
+      "1½ cups (270 g) fine bulgur",
+      "كوب ونصف (٢٧٠ غ) برغل ناعم",
+      "burglur-asmar-neeme"
+    ],
+    [
+      "2 tsp ground kibbeh spice",
+      "ملعقتان صغيرتان دقّة كبة",
+      "daqet-el-kebbe-nehme"
+    ],
+    [
+      "½ tsp seven spice",
+      "نصف ملعقة صغيرة سبع بهارات",
+      "sabaa-bharat"
+    ],
+    [
+      "¼ cup olive oil",
+      "ربع كوب زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "¼ cup pine nuts",
+      "ربع كوب صنوبر",
+      "snoubar"
+    ],
+    [
+      "800 g lean minced beef or lamb, divided",
+      "٨٠٠ غ لحم هبرة مفروم مقسم"
+    ],
+    [
+      "2 onions, one grated and one diced",
+      "بصلتان إحداهما مبشورة والأخرى مكعبات"
+    ],
+    [
+      "Salt and ½ cup cold water as needed",
+      "ملح ونصف كوب ماء بارد عند الحاجة",
+      "sea-salt"
+    ]
+  ],
+  "stepsEn": [
+    "Rinse bulgur briefly, soak 10 minutes and squeeze well. Knead with 500 g raw lean mince, grated onion, kibbeh spice and salt until smooth and cohesive; add cold water sparingly.",
+    "Sauté diced onion in a spoon of oil for 5 minutes. Add remaining 300 g mince, cook until browned, stir in seven spice and toasted pine nuts; cool the filling.",
+    "Heat oven to 190°C. Oil a 28 cm baking dish and press half the kibbeh mixture into an even thin layer using wet hands.",
+    "Spread cooled filling over the base, then patch remaining kibbeh on top, smoothing joins with wet fingers.",
+    "Score diamonds without cutting through the base; drizzle with olive oil and bake 35–40 minutes until browned and the centre of the ground meat reaches 71°C.",
+    "Rest 10 minutes before cutting along the marks; serve with yogurt and a fresh salad."
+  ],
+  "stepsAr": [
+    "اغسل البرغل وانقعه ١٠ دقائق واعصره. ادعكه مع ٥٠٠ غ من اللحم النيّئ الهبرة والبصل المبشور ودقّة الكبة والملح حتى يتماسك، مع قليل من الماء البارد.",
+    "شوّح البصل المقطّع بقليل من الزيت ٥ دقائق ثم أضف ٣٠٠ غ لحم وحرّك حتى ينضج ويتحمّر. أضف السبع بهارات والصنوبر المحمّص واترك الحشوة تبرد.",
+    "سخّن الفرن إلى ١٩٠°م وادهَن صينية قطرها ٢٨ سم. افرد نصف عجينة الكبة بطبقة متساوية مستخدماً يدين مبللتين.",
+    "وزّع الحشوة الباردة ثم غطّها بباقي عجينة الكبة مع تسوية الفواصل.",
+    "اقطع الوجه إلى معينات من دون قطع القاعدة ورش زيت الزيتون. اخبز ٣٥–٤٠ دقيقة حتى يتحمّر وينضج اللحم المفروم في الوسط إلى ٧١°م.",
+    "أرح الصينية ١٠ دقائق ثم قطّعها وقدّمها مع اللبن والسلطة."
+  ],
+  "tipEn": "A cool filling and wet hands make the top kibbeh layer far easier to seal.",
+  "tipAr": "الحشوة الباردة واليدان المبللتان تساعدان على فرد طبقة الكبة العليا.",
+  "storageEn": "Refrigerate for 3 days; reheat thoroughly in a covered oven.",
+  "storageAr": "تحفظ ٣ أيام بالثلاجة وتسخّن جيداً في فرن مغطّى.",
+  "allergensEn": "Contains wheat/gluten and pine nuts.",
+  "allergensAr": "تحتوي على القمح والغلوتين والصنوبر."
+},
+{
+  "id": "dawood-basha",
+  "titleEn": "Dawood Basha Meatballs",
+  "titleAr": "داوود باشا",
+  "category": "Mains",
+  "prep": 25,
+  "cook": 45,
+  "serves": 4,
+  "icon": "🍲",
+  "introEn": "Tender Lebanese spiced meatballs simmer in a silky tomato-onion sauce, sometimes brightened with pomegranate molasses. Spoon generously over fluffy rice for a comforting family dinner.",
+  "introAr": "كرات لحم طرية بالبهارات اللبنانية تطهى في صلصة بندورة وبصل غنية، وقد يضاف إليها قليل من دبس الرمان. تُقدّم فوق الأرز لسفرة بيتية دافئة.",
+  "ingredients": [
+    [
+      "1½ cups long-grain rice",
+      "كوب ونصف أرز طويل",
+      "golden-sila-basmati-rice"
+    ],
+    [
+      "2 tbsp tomato paste",
+      "ملعقتان كبيرتان رب بندورة",
+      "rub-el-bandoura"
+    ],
+    [
+      "1 tsp seven spice",
+      "ملعقة صغيرة سبع بهارات",
+      "sabaa-bharat"
+    ],
+    [
+      "1 tbsp pomegranate molasses, optional",
+      "ملعقة كبيرة دبس رمان اختيارية",
+      "debes-el-remen"
+    ],
+    [
+      "2 tbsp olive oil",
+      "ملعقتان كبيرتان زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "500 g minced beef or lamb",
+      "٥٠٠ غ لحم بقر أو غنم مفروم"
+    ],
+    [
+      "2 onions, one grated, one finely chopped",
+      "بصلتان مبشورة ومفرومة"
+    ],
+    [
+      "400 g crushed tomatoes and 1 cup water",
+      "٤٠٠ غ بندورة مهروسة وكوب ماء"
+    ]
+  ],
+  "stepsEn": [
+    "Knead mince with grated onion, half the seven spice and a pinch of salt; shape into walnut-size balls.",
+    "Brown meatballs in 1 tablespoon oil in batches for 5–7 minutes; transfer to a plate. They will finish cooking in the sauce.",
+    "Soften chopped onion in remaining oil for 6 minutes; stir in tomato paste for 1 minute, then add crushed tomatoes, water and remaining spice.",
+    "Return meatballs and simmer gently, partly covered, for 25–30 minutes until sauce thickens and ground-meat centres reach 71°C.",
+    "Stir in optional pomegranate molasses, taste and season. Meanwhile cook rinsed rice according to package directions.",
+    "Serve the meatballs and sauce over rice with a spoonful of fresh parsley if available."
+  ],
+  "stepsAr": [
+    "ادعك اللحم مع البصل المبشور ونصف البهارات وقليل من الملح وشكّله كرات بحجم الجوز.",
+    "حمّر الكرات على دفعات بملعقة زيت لمدة ٥–٧ دقائق ثم ارفعها؛ ستكمل نضجها في الصلصة.",
+    "ليّن البصل المفروم بباقي الزيت ٦ دقائق، وأضف رب البندورة لدقيقة ثم البندورة المهروسة والماء والبهارات.",
+    "أعد كرات اللحم واتركها تغلي برفق ٢٥–٣٠ دقيقة حتى تتكثف الصلصة ويبلغ وسط اللحم المفروم ٧١°م.",
+    "أضف دبس الرمان إن رغبت وعدّل الملح. اسلق الأرز المغسول بحسب تعليمات العبوة.",
+    "قدّم كرات اللحم والصلصة فوق الأرز مع بقدونس طازج عند توفره."
+  ],
+  "tipEn": "Brown meatballs without crowding the pan so they hold their shape.",
+  "tipAr": "حمّر كرات اللحم على دفعات حتى تحافظ على شكلها.",
+  "storageEn": "Cool promptly, refrigerate 3 days and reheat until steaming hot.",
+  "storageAr": "تبرّد سريعاً وتحفظ ٣ أيام بالثلاجة وتسخّن جيداً.",
+  "allergensEn": "Check spice blends for cross-contact allergens.",
+  "allergensAr": "تحقق من مكونات خلطة البهارات عند وجود حساسية."
+},
+{
+  "id": "riz-a-djej",
+  "titleEn": "Lebanese Chicken & Spiced Rice",
+  "titleAr": "رز ع دجاج",
+  "category": "Mains",
+  "prep": 25,
+  "cook": 55,
+  "serves": 6,
+  "icon": "🍗",
+  "introEn": "A celebratory Lebanese platter of gently spiced rice with tender chicken and toasted nuts. The fragrant broth and warm cinnamon notes make it special enough for guests.",
+  "introAr": "طبق لبناني للمناسبات يجمع الأرز المعطّر والدجاج الطري والمكسرات المحمّصة. المرق الغني ولمسة القرفة يمنحانه رائحة سفرة العائلة.",
+  "ingredients": [
+    [
+      "2 cups (400 g) basmati rice",
+      "كوبان (٤٠٠ غ) أرز بسمتي",
+      "golden-sila-basmati-rice"
+    ],
+    [
+      "1 tsp Lebanese rice spice",
+      "ملعقة صغيرة بهار أرز",
+      "bhar-el-riz"
+    ],
+    [
+      "½ tsp cinnamon",
+      "نصف ملعقة صغيرة قرفة",
+      "korfa"
+    ],
+    [
+      "¼ cup sliced almonds",
+      "ربع كوب لوز شرائح",
+      "loz-mkataa"
+    ],
+    [
+      "¼ cup pine nuts",
+      "ربع كوب صنوبر",
+      "snoubar"
+    ],
+    [
+      "2 tbsp olive oil",
+      "ملعقتان كبيرتان زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "750 g boneless chicken thighs or breasts",
+      "٧٥٠ غ دجاج منزوع العظم"
+    ],
+    [
+      "1 onion, chopped; 3½ cups chicken stock",
+      "بصلة مفرومة و٣ أكواب ونصف مرق دجاج"
+    ]
+  ],
+  "stepsEn": [
+    "Season chicken with salt and a little rice spice. Simmer in stock for 20–25 minutes until safely cooked to 74°C; reserve the fragrant broth and shred the meat.",
+    "Rinse rice until water runs mostly clear; soak 15 minutes and drain.",
+    "Toast almonds and pine nuts separately in a dry pan over gentle heat until light golden; set aside.",
+    "Soften chopped onion in olive oil, stir in rice, cinnamon and remaining spice, and toast for 2 minutes.",
+    "Add 3 cups strained hot broth (or the quantity indicated by your rice packet), cover and cook gently 15–18 minutes; rest off heat for 10 minutes.",
+    "Fluff rice and arrange shredded chicken and nuts on top; serve any extra hot broth on the side."
+  ],
+  "stepsAr": [
+    "تبّل الدجاج بالملح وقليل من بهار الأرز واسلقه بالمرق ٢٠–٢٥ دقيقة حتى تصل حرارته الداخلية إلى ٧٤°م. احتفظ بالمرق وفتّت الدجاج.",
+    "اغسل الأرز حتى يصفو الماء تقريباً وانقعه ١٥ دقيقة ثم صفّه.",
+    "حمّص اللوز والصنوبر كلّاً على حدة على نار هادئة حتى يشقرّ لونهما.",
+    "ليّن البصل بزيت الزيتون ثم أضف الأرز والقرفة وباقي البهار وحرّك دقيقتين.",
+    "أضف ٣ أكواب مرق ساخن مصفّى أو الكمية المناسبة لنوع الأرز وغطّه ١٥–١٨ دقيقة ثم أرحه ١٠ دقائق.",
+    "فلفل الأرز ووزّع الدجاج والمكسرات فوقه وقدّم المرق الزائد إلى جانبه."
+  ],
+  "tipEn": "Let rice rest covered before fluffing; it protects the grains.",
+  "tipAr": "أرح الأرز مغطى قبل تفليفه حتى تبقى حباته متماسكة.",
+  "storageEn": "Refrigerate rice and chicken promptly and within 2 hours; eat within 2 days and reheat thoroughly.",
+  "storageAr": "برّد الأرز والدجاج خلال ساعتين واحفظهما بالثلاجة ليومين مع التسخين الجيد.",
+  "allergensEn": "Contains tree nuts (almonds) and pine nuts.",
+  "allergensAr": "يحتوي على مكسرات (اللوز والصنوبر)."
+},
+{
+  "id": "fasolia-bi-zeit",
+  "titleEn": "White Beans in Tomato & Olive Oil",
+  "titleAr": "فاصوليا بيضا بالزيت",
+  "category": "Mains",
+  "prep": 20,
+  "cook": 90,
+  "serves": 5,
+  "icon": "🫘",
+  "introEn": "A rich but gentle Lebanese bean stew: buttery white beans, sweet onion, tomato and generous olive oil. Serve warm with bread or at room temperature as part of a mezze table.",
+  "introAr": "يخنة فاصوليا بيضاء بالزيت، طريّة ومشبعة بصلصة البندورة والبصل الحلو. تقدّم ساخنة مع الخبز أو فاترة مع المازة.",
+  "ingredients": [
+    [
+      "2 cups (350 g) dried white beans, soaked overnight",
+      "كوبان (٣٥٠ غ) فاصوليا بيضاء يابسة منقوعة",
+      "fasolya-aarida"
+    ],
+    [
+      "3 tbsp tomato paste",
+      "٣ ملاعق كبيرة رب بندورة",
+      "rub-el-bandoura"
+    ],
+    [
+      "4 tbsp olive oil",
+      "٤ ملاعق كبيرة زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "½ tsp ground coriander",
+      "نصف ملعقة صغيرة كزبرة مطحونة",
+      "kozbara-yebse-neeme"
+    ],
+    [
+      "2 onions, diced",
+      "بصلتان مفرومتان"
+    ],
+    [
+      "3 garlic cloves, minced",
+      "٣ فصوص ثوم مهروسة"
+    ],
+    [
+      "2 tomatoes, grated",
+      "بندورتان مبشورتان"
+    ],
+    [
+      "4 cups water and salt",
+      "٤ أكواب ماء وملح",
+      "sea-salt"
+    ]
+  ],
+  "stepsEn": [
+    "Drain soaked beans and simmer in fresh water 50–75 minutes until nearly tender; keep some cooking liquid.",
+    "In a wide pot, soften diced onion in olive oil for 8–10 minutes without browning.",
+    "Add garlic and coriander for 30 seconds, then stir in tomato paste and grated tomatoes; cook 5 minutes.",
+    "Add cooked beans and enough reserved liquid to just cover; simmer uncovered 20 minutes until sauce clings to the beans.",
+    "Season with salt and a final drizzle of oil; serve with warm bread or rice."
+  ],
+  "stepsAr": [
+    "صفّ الفاصوليا المنقوعة واسلقها بماء جديد ٥٠–٧٥ دقيقة حتى تقارب النضج واحتفظ بقليل من ماء السلق.",
+    "ليّن البصل المفروم في زيت الزيتون ٨–١٠ دقائق من دون تحمير.",
+    "أضف الثوم والكزبرة لنصف دقيقة ثم رب البندورة والبندورة المبشورة واطبخ ٥ دقائق.",
+    "أضف الفاصوليا وماء السلق بما يغمرها بالكاد واتركها ٢٠ دقيقة دون غطاء حتى تثخن الصلصة.",
+    "اضبط الملح وأنهِ الطبق بقطرات زيت زيتون وقدّمه مع الخبز أو الأرز."
+  ],
+  "tipEn": "Salt toward the end if your beans are slow to soften; cooking times vary with age.",
+  "tipAr": "إذا تأخر نضج الحبوب أضف الملح قرب النهاية؛ يختلف الوقت بحسب عمر الفاصوليا.",
+  "storageEn": "Refrigerate 3 days; freeze in portions for up to 2 months.",
+  "storageAr": "تحفظ ٣ أيام بالثلاجة أو شهرين بالمجمّد على حصص.",
+  "allergensEn": "No major allergens in the basic recipe.",
+  "allergensAr": "لا تحتوي الوصفة الأساسية على مسببات حساسية رئيسية."
+},
+{
+  "id": "bamieh-bi-zeit",
+  "titleEn": "Okra Braised with Tomato",
+  "titleAr": "بامية بالزيت",
+  "category": "Mains",
+  "prep": 20,
+  "cook": 40,
+  "serves": 4,
+  "icon": "🍅",
+  "introEn": "Tender okra stewed with garlic, tomato and olive oil, finished with a little lemon. A much-loved Lebanese home dish, lovely alongside rice or freshly baked bread.",
+  "introAr": "بامية طرية مطبوخة بالثوم والبندورة وزيت الزيتون مع لمسة حامض في النهاية. أكلة بيتية محبوبة تؤكل مع الأرز أو الخبز الطازج.",
+  "ingredients": [
+    [
+      "400 g dried okra, rehydrated according to pack, or 600 g fresh okra",
+      "٤٠٠ غ بامية مجففة منقوعة بحسب العبوة أو ٦٠٠ غ طازجة",
+      "bemye-yebse"
+    ],
+    [
+      "2 tbsp tomato paste",
+      "ملعقتان كبيرتان رب بندورة",
+      "rub-el-bandoura"
+    ],
+    [
+      "3 tbsp olive oil",
+      "٣ ملاعق كبيرة زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "5 garlic cloves, sliced",
+      "٥ فصوص ثوم شرائح"
+    ],
+    [
+      "3 ripe tomatoes, chopped",
+      "٣ بندورات ناضجة مفرومة"
+    ],
+    [
+      "1 onion, finely chopped",
+      "بصلة مفرومة"
+    ],
+    [
+      "Juice of 1 lemon, 1 cup water and salt",
+      "عصير حامضة وكوب ماء وملح",
+      "sea-salt"
+    ]
+  ],
+  "stepsEn": [
+    "If using dried okra, follow its soaking or blanching instructions until pliable, drain and rinse. For fresh okra, trim stems carefully without opening the pods.",
+    "Soften onion in olive oil over medium heat for 7 minutes; stir in garlic until fragrant, about 1 minute.",
+    "Add chopped tomatoes and tomato paste; cook 5 minutes until the tomatoes start to collapse.",
+    "Add okra and about 1 cup water, cover and simmer gently 20–30 minutes until fully tender, adding water as needed. Rehydrated okra may need longer.",
+    "Season with salt and lemon juice, swirl the pot gently to avoid breaking the okra, and serve warm."
+  ],
+  "stepsAr": [
+    "إذا استعملت بامية مجففة فانقعها أو اسلقها سريعاً بحسب تعليمات العبوة حتى تلين ثم صفّها. إذا كانت طازجة فقلّم الأعناق من دون فتح الحبة.",
+    "ليّن البصل بزيت الزيتون على نار متوسطة ٧ دقائق وأضف الثوم حتى تفوح رائحته لدقيقة.",
+    "أضف البندورة المفرومة والرب واطبخ ٥ دقائق حتى تبدأ الصلصة بالتكثف.",
+    "أضف البامية ونحو كوب ماء وغطّها واتركها ٢٠–٣٠ دقيقة أو أكثر للبامية المجففة حتى تنضج تماماً، مع إضافة ماء عند الحاجة.",
+    "تبّل بالملح والحامض وحرّك القدر بلطف كي لا تتفتت البامية ثم قدّمها دافئة."
+  ],
+  "tipEn": "Use gentle simmering, not vigorous stirring, to keep the pods intact.",
+  "tipAr": "اترك البامية تغلي برفق وقلّب القدر بدل التحريك القوي حتى لا تتفتت.",
+  "storageEn": "Refrigerate up to 3 days; reheat gently.",
+  "storageAr": "تحفظ حتى ٣ أيام بالثلاجة وتسخّن برفق.",
+  "allergensEn": "No major allergens in the basic recipe.",
+  "allergensAr": "لا تحتوي الوصفة الأساسية على مسببات حساسية رئيسية."
+}];

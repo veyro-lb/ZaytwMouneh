@@ -295,6 +295,76 @@
     }
   ];
 
+  /* Dedicated French copy for the homepage six-recipe preview. */
+  var homeRecipeFr={
+  "mujadara": {
+    "title": "Moujadara",
+    "copy": "Lentilles et riz, couronnés d’oignons lentement caramélisés.",
+    "fresh": "À prévoir : oignons · yaourt ou salade, au choix",
+    "tags": [
+      "lentilles",
+      "riz",
+      "cumin",
+      "huile d’olive"
+    ]
+  },
+  "manoushe": {
+    "title": "Man’ouché au zaatar",
+    "copy": "Galette libanaise moelleuse garnie de zaatar et d’huile d’olive.",
+    "fresh": "À prévoir : eau · éventuellement tomates, concombre, menthe ou labné",
+    "tags": [
+      "zaatar",
+      "huile d’olive",
+      "farine",
+      "levure"
+    ]
+  },
+  "fattoush": {
+    "title": "Fattouche",
+    "copy": "Salade libanaise croquante à la sauce sumac, citron et mélasse de grenade.",
+    "fresh": "À prévoir : laitue · tomates · concombre · radis · persil · menthe · citron · pita",
+    "tags": [
+      "sumac",
+      "mélasse de grenade",
+      "huile d’olive"
+    ]
+  },
+  "hummus": {
+    "title": "Houmous à la tahina",
+    "copy": "Pois chiches fondants, tahina, citron et ail : un mezzé incontournable.",
+    "fresh": "À prévoir : citron · ail · persil facultatif",
+    "tags": [
+      "pois chiches",
+      "tahina",
+      "huile d’olive",
+      "cumin"
+    ]
+  },
+  "tabbouleh": {
+    "title": "Taboulé libanais",
+    "copy": "Persil, menthe, tomates et un peu de boulgour, avec citron et huile d’olive.",
+    "fresh": "À prévoir : beaucoup de persil · tomates · menthe · oignons nouveaux · citron",
+    "tags": [
+      "boulgour fin",
+      "huile d’olive",
+      "sel marin"
+    ]
+  },
+  "kibbeh": {
+    "title": "Kebbé",
+    "copy": "Le boulgour fin et les épices à kebbé au cœur d’une spécialité libanaise.",
+    "fresh": "À prévoir : bœuf ou agneau maigre · oignons · pignons facultatifs",
+    "tags": [
+      "boulgour fin",
+      "épices à kebbé",
+      "sept épices",
+      "huile d’olive"
+    ]
+  }
+};
+  function isFrRecipe(){return document.documentElement.lang==="fr"}
+  function recipeText(en,ar,fr){return isAr()?ar:isFrRecipe()?fr:en}
+
   function recipeProductById(id){
     return safeProducts().find(function(p){return p.id===id})||null;
   }
@@ -313,14 +383,15 @@
     var items=productsForRecipe(recipe);
     items.forEach(function(p){if(typeof addToCart==="function")addToCart(p,cheapestVariant(p),1)});
     track("recipe_bundle_added",{recipe:recipeId,items:items.map(function(p){return p.id})});
-    toastPremium(txt("Pantry ingredients added. Add the fresh ingredients at home.","تمت إضافة مكونات المونة. أضف المكونات الطازجة في البيت."));
+    toastPremium(recipeText("Pantry ingredients added. Add the fresh ingredients at home.","تمت إضافة مكونات المونة. أضف المكونات الطازجة في البيت.","Ingrédients ajoutés au panier. Prévoyez les produits frais séparément."));
   }
 
   function recipeCards(){
     return recipes.map(function(r,i){
       var items=productsForRecipe(r),total=items.reduce(function(s,p){return s+Number(cheapestVariant(p).price)},0);
-      var tags=isAr()?r.tagsAr:r.tagsEn;
-      return '<article class="recipe-card" data-recipe="'+esc(r.id)+'"><span class="recipe-no">0'+(i+1)+'</span><h3>'+esc(isAr()?r.titleAr:r.titleEn)+'</h3><p>'+esc(isAr()?r.copyAr:r.copyEn)+'</p><div class="recipe-tags">'+tags.map(function(t){return "<span>"+esc(t)+"</span>"}).join("")+'</div><p class="recipe-fresh">'+esc(isAr()?r.freshAr:r.freshEn)+'</p><div class="recipe-card-footer"><small>'+esc(txt("Pantry items from ","منتجات المونة من "))+pmoney(total)+'</small><button class="recipe-add" type="button" data-recipe-add="'+esc(r.id)+'">'+esc(txt("Add to Pantry","أضف إلى سلّتي"))+'</button></div></article>';
+      var tr=homeRecipeFr[r.id];
+      var tags=isAr()?r.tagsAr:isFrRecipe()?tr.tags:r.tagsEn;
+      return '<article class="recipe-card" data-recipe="'+esc(r.id)+'"><span class="recipe-no">0'+(i+1)+'</span><h3>'+esc(recipeText(r.titleEn,r.titleAr,tr.title))+'</h3><p>'+esc(recipeText(r.copyEn,r.copyAr,tr.copy))+'</p><div class="recipe-tags">'+tags.map(function(t){return "<span>"+esc(t)+"</span>"}).join("")+'</div><p class="recipe-fresh">'+esc(recipeText(r.freshEn,r.freshAr,tr.fresh))+'</p><div class="recipe-card-footer"><small>'+esc(recipeText("Pantry items from ","منتجات المونة من ","Produits du panier à partir de "))+pmoney(total)+'</small><button class="recipe-add" type="button" data-recipe-add="'+esc(r.id)+'">'+esc(recipeText("Add to Pantry","أضف إلى سلّتي","Ajouter au panier"))+'</button></div></article>';
     }).join("");
   }
 
@@ -337,7 +408,8 @@
     if(page!=="home"||q("#premiumRecipes"))return;
     var anchor=q(".home-gift")||q(".order-strip");if(!anchor)return;
     var sec=document.createElement("section");sec.id="premiumRecipes";sec.className="premium-section premium-recipes";
-    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Shop by recipe","تسوّق حسب الوصفة"))+'</p><h2>'+esc(txt("Start with the","ابدأ من"))+' <em>'+esc(txt("table.","السفرة."))+'</em></h2></div><p>'+esc(txt("Discover 30 detailed Lebanese recipes in our cookbook. Explore six favourites here, add pantry staples in one click, and see the full collection for more.","اكتشف ٣٠ وصفة لبنانية مفصّلة في كتاب وصفاتنا، وتعرّف هنا إلى ستة أطباق محبوبة مع مكونات المونة المتوفرة في متجرنا."))+'</p></div><div class="recipe-grid">'+recipeCards()+'</div><a class="premium-pill" style="margin-top:18px" href="recipes.html">'+esc(txt("Explore 30 recipes","اكتشف ٣٠ وصفة"))+' ↗</a></div>';
+    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(recipeText("Shop by recipe","تسوّق حسب الوصفة","Cuisiner avec notre épicerie"))+'</p><h2>'+esc(recipeText("Start with the","ابدأ من","Tout commence"))+' <em>'+esc(recipeText("table.","السفرة.","à table."))+'</em></h2></div><p>'+esc(recipeText("Discover 30 detailed Lebanese recipes in our cookbook. Explore six favourites here, add pantry staples in one click, and see the full collection for more.","اكتشف ٣٠ وصفة لبنانية مفصّلة في كتاب وصفاتنا، وتعرّف هنا إلى ستة أطباق محبوبة مع مكونات المونة المتوفرة في متجرنا.","Découvrez 30 recettes libanaises détaillées. Retrouvez ici six incontournables et ajoutez leurs ingrédients du garde-manger en un clic."))+'</p></div><div class="recipe-grid">'+recipeCards()+'</div><a class="premium-pill" style="margin-top:18px" href="recipes.html">'+esc(recipeText("Explore 30 recipes","اكتشف ٣٠ وصفة","Découvrir les 30 recettes"))+' ↗</a></div>';
+    sec.setAttribute("data-no-fr","");
     anchor.before(sec);bindRecipeButtons(sec);
   }
 

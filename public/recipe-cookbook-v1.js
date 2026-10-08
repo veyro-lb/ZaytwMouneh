@@ -46,6 +46,7 @@
   function translated(r,stem){var value=french[r.id]||{};return text(r[stem+"En"],r[stem+"Ar"],value[stem+"Fr"])}
   function escape(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
   function money(v){return "$"+Number(v||0).toFixed(2)}
+  function number(v){try{return new Intl.NumberFormat(ar()?"ar-LB":fr()?"fr-LB":"en-LB",{useGrouping:false}).format(v)}catch(e){return String(v)}}
   function name(p){if(fr()&&frenchProducts[p.id])return frenchProducts[p.id];return typeof currentName==="function"?currentName(p):text(p.nameEn,p.nameAr)}
   function variants(p){return (p.variants||[]).filter(function(v){return Number.isFinite(Number(v.price))&&Number(v.price)>=0}).slice().sort(function(a,b){return Number(a.price)-Number(b.price)})}
   function orderable(p){return p&&variants(p).length>0&&(typeof productCanOrder!=="function"||productCanOrder(p))}
@@ -64,7 +65,7 @@
       '<a class="zwm-recipe-card-media" href="'+escape(recipeUrl(r.id))+'" data-open="'+escape(r.id)+'" aria-label="'+escape(t("view")+": "+translated(r,"title"))+'">'+art(r)+'</a>'+
       '<div class="zwm-recipe-card-body"><span class="zwm-category">'+escape(categoryName(r.category))+'</span>'+
       '<h3>'+escape(translated(r,"title"))+'</h3><p>'+escape(translated(r,"intro"))+'</p>'+
-      '<div class="zwm-recipe-stats"><span>⏱ '+(r.prep+r.cook)+' '+escape(t("time"))+'</span><span>♧ '+r.serves+' '+escape(t("serves"))+'</span></div>'+
+      '<div class="zwm-recipe-stats"><span>⏱ '+number(r.prep+r.cook)+' '+escape(t("time"))+'</span><span>♧ '+number(r.serves)+' '+escape(t("serves"))+'</span></div>'+
       '<div class="zwm-recipe-card-foot"><a class="zwm-open-link" href="'+escape(recipeUrl(r.id))+'" data-open="'+escape(r.id)+'">'+escape(t("view"))+' ↗</a><button type="button" data-pantry="'+escape(r.id)+'">'+escape(t("add"))+'</button></div></div></article>';
   }
   function renderGrid(){
@@ -77,7 +78,7 @@
     var results=root.querySelector("#zwmRecipeResults");
     if(results)results.innerHTML=found.length?found.map(card).join(""):'<p class="zwm-empty">'+escape(t("noresults"))+'</p>';
     var count=root.querySelector("#zwmRecipeCount");
-    if(count)count.textContent=String(found.length)+" "+t("count");
+    if(count)count.textContent=number(found.length)+" "+t("count");
     root.querySelectorAll("[data-filter]").forEach(function(btn){var on=btn.dataset.filter===state.category;btn.setAttribute("aria-pressed",String(on));btn.classList.toggle("is-active",on)});
   }
   function renderIndex(){
@@ -107,7 +108,7 @@
       '<div class="zwm-detail-back"><a href="'+escape(backUrl())+'" data-back>'+(ar()?"→ ":"← ")+escape(t("back"))+'</a><button type="button" data-print>⎙ '+escape(t("print"))+'</button></div>'+
       '<div class="zwm-detail-hero">'+art(r)+'<div class="zwm-detail-hero-copy"><span class="zwm-category">'+escape(categoryName(r.category))+'</span>'+
       '<h1>'+escape(translated(r,"title"))+'</h1><p>'+escape(translated(r,"intro"))+'</p>'+
-      '<div class="zwm-detail-stats"><span>'+escape(t("prep"))+' <b>'+r.prep+' '+escape(t("time"))+'</b></span><span>'+escape(t("cook"))+' <b>'+r.cook+' '+escape(t("time"))+'</b></span><span>'+escape(t("serves"))+' <b>'+r.serves+'</b></span></div></div></div>'+
+      '<div class="zwm-detail-stats"><span>'+escape(t("prep"))+' <b>'+number(r.prep)+' '+escape(t("time"))+'</b></span><span>'+escape(t("cook"))+' <b>'+number(r.cook)+' '+escape(t("time"))+'</b></span><span>'+escape(t("serves"))+' <b>'+number(r.serves)+'</b></span></div></div></div>'+
       '<div class="zwm-detail-columns"><div class="zwm-detail-main">'+
       '<section class="zwm-cooking-ingredients"><h3>'+escape(t("ingredients"))+'</h3><ul>'+rows.map(function(row){return '<li>'+escape(row.amount)+'</li>'}).join("")+'</ul></section>'+
       '<section class="zwm-recipe-method"><h3>'+escape(t("steps"))+'</h3><ol>'+((ar()?r.stepsAr:fr()?(french[r.id]||{}).stepsFr:r.stepsEn)||[]).map(function(step){return '<li>'+escape(step)+'</li>'}).join("")+'</ol></section>'+

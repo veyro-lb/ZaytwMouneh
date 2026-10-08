@@ -69,6 +69,7 @@ function availabilityLabel(p){
   const value=productAvailability(p);
   const labels=lang==="ar"
     ?{in_stock:"متوفر",low_stock:"مخزون منخفض",seasonal:"موسمي",available_on_request:"متوفر عند الطلب",out_of_stock:"غير متوفر",coming_soon:"قريباً"}
+    :lang==="fr"?{in_stock:"En stock",low_stock:"Stock limité",seasonal:"Saisonnier",available_on_request:"Sur demande",out_of_stock:"Épuisé",coming_soon:"Bientôt disponible"}
     :{in_stock:"In stock",low_stock:"Low stock",seasonal:"Seasonal",available_on_request:"Available on request",out_of_stock:"Out of stock",coming_soon:"Coming soon"};
   return labels[value]||labels.in_stock;
 }

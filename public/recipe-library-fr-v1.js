@@ -245,4 +245,251 @@ window.ZWM_RECIPE_FR = {
     "storageFr": "Conservez au réfrigérateur jusqu’à 3 jours ; réchauffez doucement.",
     "allergensFr": "Aucun allergène majeur dans la recette de base."
   }
+},
+"loubieh-bi-zeit": {
+    "titleFr": "Haricots verts libanais à l’huile d’olive",
+    "introFr": "Un classique de l’été libanais : des haricots verts cuits lentement avec des oignons doux, de l’ail et des tomates jusqu’à devenir fondants. Savoureux chauds, ils sont encore meilleurs après un petit repos.",
+    "ingredientsFr": [
+      "4 c. à soupe d’huile d’olive vierge extra",
+      "1 c. à soupe de concentré de tomate",
+      "750 g de haricots verts frais équeutés",
+      "2 gros oignons émincés",
+      "4 gousses d’ail hachées",
+      "4 tomates mûres hachées",
+      "½ c. à café de sel",
+      "½ tasse d’eau"
+    ],
+    "stepsFr": [
+      "Équeutez les haricots et coupez les plus longs en deux. Rincez-les, puis égouttez-les bien.",
+      "Faites chauffer l’huile dans une cocotte épaisse. Ajoutez les oignons et faites-les revenir 10 minutes à feu moyen-doux, jusqu’à ce qu’ils soient souples et légèrement dorés.",
+      "Ajoutez l’ail, puis les tomates et le concentré. Laissez mijoter 5 minutes pour obtenir une sauce bien juteuse.",
+      "Incorporez les haricots, le sel et ½ tasse d’eau. Couvrez et laissez cuire doucement 35 à 45 minutes, en vérifiant de temps à autre, jusqu’à ce que les haricots soient très tendres.",
+      "Découvrez pendant les dernières minutes pour réduire une sauce trop liquide. Laissez reposer 10 minutes avant de servir avec du pain."
+    ],
+    "tipFr": "Les haricots doivent être fondants et non croquants ; des tomates bien mûres apportent une douceur naturelle.",
+    "storageFr": "Conservez au réfrigérateur jusqu’à 3 jours. Servez chaud ou tiède, sans laisser le plat longtemps à température ambiante.",
+    "allergensFr": "Aucun allergène majeur dans la recette de base."
+  },
+  "sheikh-el-mahshi": {
+    "titleFr": "Cheikh el mehchi, aubergines farcies",
+    "introFr": "De petites aubergines rôties, farcies de viande hachée aux pignons, puis mijotées dans une sauce tomate. Un plat familial libanais généreux qui mérite le temps consacré à sa préparation.",
+    "ingredientsFr": [
+      "2 c. à soupe de concentré de tomate",
+      "2 c. à café de mélange sept épices",
+      "⅓ de tasse de pignons de pin",
+      "3 c. à soupe d’huile d’olive",
+      "8 petites aubergines, environ 1 kg",
+      "400 g de bœuf ou d’agneau haché",
+      "1 oignon haché",
+      "500 g de tomates concassées",
+      "1 tasse d’eau",
+      "½ c. à café de sel"
+    ],
+    "stepsFr": [
+      "Préchauffez le four à 200 °C. Coupez les aubergines en deux dans la longueur, incisez leur chair, badigeonnez légèrement d’huile et faites rôtir, côté coupé vers le haut, 20 à 25 minutes jusqu’à ce qu’elles s’attendrissent.",
+      "Pendant ce temps, faites revenir l’oignon 5 minutes. Ajoutez la viande hachée et faites-la cuire jusqu’à coloration complète ; assaisonnez avec les sept épices et incorporez les pignons grillés.",
+      "Creusez délicatement une petite cavité dans chaque demi-aubergine cuite sans percer la peau, puis garnissez-la généreusement de viande.",
+      "Faites mijoter les tomates concassées, le concentré, le sel et l’eau 10 minutes. Versez la sauce dans un plat et déposez les aubergines farcies dessus.",
+      "Enfournez à 190 °C pendant 20 à 25 minutes, jusqu’à ce que la sauce bouillonne et que la farce hachée atteigne au moins 71 °C à cœur. Servez avec du riz."
+    ],
+    "tipFr": "Faire rôtir les aubergines au préalable les attendrit sans les gorger d’huile de friture.",
+    "storageFr": "Conservez au réfrigérateur jusqu’à 3 jours ; réchauffez soigneusement.",
+    "allergensFr": "Contient des pignons de pin."
+  },
+  "lahm-bi-ajeen": {
+    "titleFr": "Lahm bi ajine, galettes à la viande",
+    "introFr": "De fines galettes croustillantes couvertes de viande hachée épicée, de tomates, d’oignon et de persil. Un incontournable des fours libanais, à savourer avec un filet de citron.",
+    "ingredientsFr": [
+      "3 tasses (375 g) de farine de blé",
+      "2 c. à café de levure boulangère sèche",
+      "1 c. à café de mélange sept épices",
+      "1 c. à soupe de mélasse de grenade",
+      "2 c. à soupe d’huile d’olive",
+      "400 g d’agneau ou de bœuf haché",
+      "1 tomate, 1 oignon et ½ tasse de persil hachés finement",
+      "¾ à 1 tasse d’eau",
+      "¾ de c. à café de sel",
+      "Des quartiers de citron pour servir"
+    ],
+    "stepsFr": [
+      "Préparez une pâte avec farine, levure, une pincée de sel, huile d’olive et assez d’eau tiède pour former une boule souple. Pétrissez 8 minutes, couvrez et laissez lever 45 à 60 minutes.",
+      "Mélangez la viande crue avec l’oignon, la tomate et le persil hachés très fin, les sept épices, la mélasse de grenade et le sel. Gardez au frais jusqu’à la cuisson.",
+      "Préchauffez le four et ses plaques à 240 °C. Divisez la pâte en 8 à 10 boules, puis étalez-les très finement sur un plan fariné.",
+      "Étalez une couche mince et régulière de garniture jusqu’aux bords : une couche trop épaisse cuirait de façon inégale.",
+      "Faites cuire sur les plaques chaudes 10 à 15 minutes, jusqu’à ce que la pâte soit dorée et la viande hachée cuite à 71 °C à cœur. Servez aussitôt avec du citron."
+    ],
+    "tipFr": "Plus la couche de viande est fine, plus la cuisson est uniforme et la pâte croustillante.",
+    "storageFr": "Conservez les galettes cuites 2 jours au réfrigérateur et réchauffez-les soigneusement au four.",
+    "allergensFr": "Contient du blé et du gluten."
+  },
+  "moutabbal": {
+    "titleFr": "Moutabbal d’aubergine fumée",
+    "introFr": "Une purée d’aubergine rôtie au goût fumé, mélangée à la tahina, au citron et à l’ail : voilà le moutabbal libanais. Faire bien noircir la peau donne cette saveur grillée incomparable.",
+    "ingredientsFr": [
+      "⅓ de tasse de tahina (crème de sésame)",
+      "2 c. à soupe d’huile d’olive vierge extra",
+      "½ c. à café de sel",
+      "2 grosses aubergines, environ 900 g",
+      "Le jus d’un gros citron",
+      "1 à 2 gousses d’ail écrasées",
+      "Persil haché et graines de grenade, facultatifs"
+    ],
+    "stepsFr": [
+      "Piquez les aubergines plusieurs fois avec une fourchette. Faites-les griller sur une flamme, au barbecue ou sous un gril très chaud pendant 25 à 35 minutes, en les retournant, jusqu’à ce que la peau noircisse et la chair s’affaisse.",
+      "Déposez-les dans un bol couvert pendant 10 minutes, puis ouvrez-les et prélevez la chair tendre en laissant de côté l’essentiel de la peau noircie.",
+      "Laissez la chair s’égoutter dans une passoire 10 minutes pour conserver une préparation épaisse et non aqueuse.",
+      "Écrasez l’aubergine à la main avec la tahina, le citron, l’ail et le sel jusqu’à obtenir une crème qui conserve un peu de texture.",
+      "Goûtez et ajustez l’acidité. Étalez dans une assiette, arrosez d’huile d’olive et décorez de persil ou de graines de grenade."
+    ],
+    "tipFr": "Écrasez plutôt que de mixer excessivement pour préserver la belle texture de l’aubergine grillée.",
+    "storageFr": "Conservez dans un récipient fermé au réfrigérateur jusqu’à 3 jours.",
+    "allergensFr": "Contient du sésame (tahina)."
+  },
+  "falafel": {
+    "titleFr": "Falafels libanais croustillants",
+    "introFr": "Croustillants à l’extérieur, aérés et verts à l’intérieur : les bons falafels se préparent avec des pois chiches secs trempés mais non cuits, des herbes fraîches et du cumin. À glisser dans du pain pita avec du tarator.",
+    "ingredientsFr": [
+      "2 tasses (400 g) de pois chiches secs, trempés 12 à 18 heures",
+      "1 c. à café de cumin moulu",
+      "1 c. à café de coriandre moulue",
+      "½ c. à café de bicarbonate de soude",
+      "½ c. à café de sel",
+      "1 oignon et 4 gousses d’ail",
+      "1 tasse de persil et ½ tasse de coriandre fraîche grossièrement hachés",
+      "Huile neutre pour la friture et sauce tahina pour servir"
+    ],
+    "stepsFr": [
+      "Faites tremper les pois chiches secs 12 à 18 heures dans une grande quantité d’eau froide, puis égouttez soigneusement. N’utilisez ni pois chiches cuits ni pois chiches en conserve pour cette méthode.",
+      "Mixez par impulsions les pois chiches trempés avec l’oignon, l’ail, le persil, la coriandre fraîche, le cumin, la coriandre moulue et le sel. Obtenez une texture finement granuleuse, pas une purée lisse.",
+      "Réfrigérez 30 minutes, puis mélangez le bicarbonate juste avant de former de petites boulettes ou galettes bien compactes.",
+      "Chauffez l’huile dans une casserole profonde et stable à 175–180 °C. Faites frire par petites fournées 3 à 5 minutes, jusqu’à ce que les falafels soient bien dorés et cuits à cœur.",
+      "Laissez égoutter sur une grille plutôt qu’en tas pour garder le croustillant. Servez chauds avec tahina, crudités et pickles."
+    ],
+    "tipFr": "Si la préparation s’effrite, mixez-la un peu plus et remettez-la au frais ; évitez d’ajouter de la farine sauf nécessité.",
+    "storageFr": "Conservez la préparation crue 1 jour au réfrigérateur, ou congelez les galettes façonnées avant friture.",
+    "allergensFr": "La sauce tahina contient du sésame ; le pain d’accompagnement peut contenir du blé."
+  },
+  "warak-enab-bi-zeit": {
+    "titleFr": "Feuilles de vigne farcies au riz et aux herbes",
+    "introFr": "Des feuilles de vigne tendres roulées autour d’un riz citronné, de tomates et d’herbes fraîches : ce mezzé libanais demande de la patience. Servez-le froid ou tiède avec des quartiers de citron.",
+    "ingredientsFr": [
+      "1 bocal de feuilles de vigne, environ 55 feuilles rincées",
+      "1¼ tasse (250 g) de riz rond",
+      "½ tasse d’huile d’olive, répartie",
+      "2 c. à soupe de mélasse de grenade, facultatives",
+      "3 tomates coupées en très petits dés",
+      "1 botte de persil et ½ botte de menthe hachées",
+      "1 oignon haché finement",
+      "Le jus de 3 citrons",
+      "1 c. à café de sel",
+      "2 tasses d’eau"
+    ],
+    "stepsFr": [
+      "Rincez les feuilles de vigne conservées en saumure et blanchissez brièvement celles qui restent fermes. Rincez le riz cru et mélangez-le aux tomates, persil, menthe, oignon, à la moitié de l’huile, au sel et à un peu de citron.",
+      "Placez une feuille côté brillant contre la table. Posez une cuillerée à café bombée de farce près de la tige, repliez les côtés puis roulez fermement mais sans serrer : le riz va gonfler.",
+      "Tapissez le fond d’une cocotte épaisse de feuilles abîmées ou de rondelles de tomate. Rangez les rouleaux serrés, jointure en dessous, par couches.",
+      "Mélangez l’eau, le reste d’huile, le jus de citron et la mélasse de grenade facultative. Versez jusqu’à couvrir tout juste les rouleaux et posez une assiette résistante à la chaleur dessus pour les maintenir.",
+      "Portez à un léger frémissement, couvrez et cuisez 60 à 75 minutes, jusqu’à ce que le riz et les feuilles soient tendres. Ajoutez de l’eau chaude si le fond sèche.",
+      "Laissez refroidir dans la casserole au moins 30 minutes avant de transférer délicatement. Servez à température ambiante ou frais."
+    ],
+    "tipFr": "Faites des rouleaux petits et un peu souples ; trop de farce les ferait éclater.",
+    "storageFr": "Conservez au réfrigérateur jusqu’à 3 jours ; servez frais avec davantage de citron.",
+    "allergensFr": "Aucun allergène majeur dans la recette de base."
+  },
+  "hindbeh-bi-zeit": {
+    "titleFr": "Hindbé aux oignons dorés",
+    "introFr": "Les feuilles de pissenlit ou de chicorée, légèrement amères, deviennent tendres après blanchiment, puis sont relevées d’huile d’olive, d’oignons caramélisés et de citron. Un mezzé rustique du Liban.",
+    "ingredientsFr": [
+      "4 c. à soupe d’huile d’olive",
+      "½ c. à café de sel marin",
+      "750 g de feuilles fraîches de pissenlit ou de chicorée, lavées",
+      "3 oignons émincés finement",
+      "Le jus de 2 citrons",
+      "De l’eau pour blanchir"
+    ],
+    "stepsFr": [
+      "Triez les feuilles pour retirer les tiges trop dures et lavez-les dans plusieurs eaux froides afin d’éliminer toute trace de terre.",
+      "Faites-les bouillir dans beaucoup d’eau salée pendant 8 à 12 minutes, jusqu’à ce qu’elles soient tendres. Égouttez et pressez délicatement l’excédent d’eau.",
+      "Chauffez l’huile d’olive dans une grande poêle et laissez dorer les oignons lentement pendant 20 à 25 minutes, en remuant. Réservez-en la moitié.",
+      "Ajoutez les feuilles blanchies dans la poêle avec le reste des oignons et une pincée de sel ; mélangez 3 à 4 minutes pour réchauffer.",
+      "Étalez sur un plat, parsemez des oignons réservés et arrosez généreusement de jus de citron."
+    ],
+    "tipFr": "Goûtez les feuilles après blanchiment : leur amertume varie et s’équilibre avec l’oignon et le citron.",
+    "storageFr": "Conservez 2 jours au réfrigérateur ; ajoutez du citron frais au moment de servir.",
+    "allergensFr": "Aucun allergène majeur dans la recette de base."
+  },
+  "batata-harra": {
+    "titleFr": "Batata harra, pommes de terre épicées",
+    "introFr": "Des dés de pommes de terre dorés et croustillants, enrobés d’ail, de coriandre, de piment et de citron : ce mezzé libanais disparaît en quelques minutes, surtout servi brûlant.",
+    "ingredientsFr": [
+      "3 c. à soupe d’huile d’olive",
+      "1 c. à café de coriandre moulue",
+      "½ c. à café de flocons de piment",
+      "¾ de c. à café de sel marin",
+      "750 g de pommes de terre épluchées et coupées en dés",
+      "4 gousses d’ail hachées",
+      "Le jus d’un citron",
+      "½ tasse de coriandre fraîche hachée"
+    ],
+    "stepsFr": [
+      "Préchauffez le four à 220 °C. Séchez bien les cubes de pommes de terre et mélangez-les à 2 cuillerées à soupe d’huile d’olive et une pincée de sel.",
+      "Étalez-les en une seule couche sur une plaque chaude et faites rôtir 25 à 30 minutes, en les retournant une fois, jusqu’à ce qu’ils soient dorés et tendres à cœur.",
+      "Faites chauffer le reste d’huile dans une poêle. Faites revenir brièvement l’ail, la coriandre moulue et le piment à feu doux pendant 30 à 45 secondes sans brûler l’ail.",
+      "Ajoutez les pommes de terre rôties et mélangez-les à l’huile parfumée pendant une minute.",
+      "Retirez du feu, incorporez la coriandre fraîche et le jus de citron, goûtez le sel et servez immédiatement."
+    ],
+    "tipFr": "Séchez soigneusement les pommes de terre avant la cuisson pour obtenir des bords bien croustillants.",
+    "storageFr": "À déguster sans attendre. Conservez 2 jours au réfrigérateur et redonnez du croustillant au four.",
+    "allergensFr": "Aucun allergène majeur dans la recette de base."
+  },
+  "shorbet-adas": {
+    "titleFr": "Soupe libanaise aux lentilles corail",
+    "introFr": "Une soupe veloutée et chaleureuse, à base de lentilles corail, d’oignon et de cumin, réveillée par le citron. Un déjeuner libanais simple, économique et profondément réconfortant.",
+    "ingredientsFr": [
+      "1½ tasse (300 g) de lentilles corail cassées",
+      "1 c. à café de cumin moulu",
+      "2 c. à soupe d’huile d’olive vierge extra",
+      "½ c. à café de curcuma, facultatif",
+      "1 oignon moyen coupé en dés",
+      "1 carotte coupée en dés",
+      "5 tasses d’eau ou de bouillon non salé",
+      "Quartiers de citron pour servir",
+      "1 c. à café de sel, selon le goût"
+    ],
+    "stepsFr": [
+      "Rincez les lentilles jusqu’à ce que l’eau soit presque claire et retirez toute petite impureté.",
+      "Faites fondre l’oignon et la carotte dans l’huile d’olive à feu moyen pendant 7 à 8 minutes, sans les laisser brunir.",
+      "Ajoutez le cumin et, si souhaité, le curcuma pendant 30 secondes, puis les lentilles égouttées et 5 tasses d’eau ou de bouillon.",
+      "Laissez frémir à demi couvert pendant 25 à 30 minutes, en remuant de temps en temps, jusqu’à ce que les lentilles se défassent et que la carotte soit tendre.",
+      "Mixez prudemment jusqu’à obtenir un velouté, ou gardez une texture rustique. Ajustez avec de l’eau chaude, salez et servez avec des quartiers de citron."
+    ],
+    "tipFr": "Les lentilles épaississent en refroidissant ; détendez les restes avec un peu d’eau au réchauffage.",
+    "storageFr": "Conservez au réfrigérateur jusqu’à 3 jours ou au congélateur jusqu’à 2 mois.",
+    "allergensFr": "Aucun allergène majeur dans la recette de base."
+  },
+  "freekeh-chicken": {
+    "titleFr": "Friké fumé au poulet",
+    "introFr": "Ce blé vert torréfié, au goût fumé, mijote dans un bouillon de poulet parfumé avant d’être garni de morceaux tendres et de fruits secs grillés. Une belle façon de cuisiner les céréales libanaises.",
+    "ingredientsFr": [
+      "2 tasses (360 g) de friké rincé",
+      "1 c. à café de mélange sept épices",
+      "3 c. à soupe d’huile d’olive",
+      "¼ de tasse de pignons de pin ou d’amandes effilées",
+      "750 g de morceaux de poulet, avec ou sans os",
+      "1 oignon et 1 carotte grossièrement coupés",
+      "4 tasses de bouillon de poulet, plus si nécessaire",
+      "1 c. à café de sel, selon le goût",
+      "¼ de c. à café de poivre noir"
+    ],
+    "stepsFr": [
+      "Faites frémir le poulet avec l’oignon, la carotte, le sel et assez d’eau ou de bouillon jusqu’à ce que le morceau le plus épais atteigne 74 °C à cœur. Retirez-le, gardez-le au chaud et filtrez le bouillon.",
+      "Rincez le friké plusieurs fois, retirez les éventuels petits grains de sable ou résidus trop foncés, puis égouttez.",
+      "Chauffez l’huile d’olive dans une cocotte épaisse et faites revenir le friké 3 à 4 minutes en remuant, puis ajoutez les sept épices.",
+      "Versez 4 tasses de bouillon chaud filtré, portez à frémissement et cuisez à couvert à feu doux pendant 30 à 40 minutes, en ajoutant du liquide si besoin, jusqu’à ce que les grains soient tendres tout en restant légèrement fermes.",
+      "Laissez reposer à couvert 10 minutes, puis aérez les grains et disposez le poulet dessus. Grillez les fruits secs séparément et parsemez-en le plat."
+    ],
+    "tipFr": "Selon sa marque, le friké absorbe plus ou moins de bouillon ; goûtez les grains avant d’arrêter la cuisson.",
+    "storageFr": "Réfrigérez rapidement, consommez dans les 2 jours et réchauffez soigneusement.",
+    "allergensFr": "Contient du blé et du gluten ; fruits à coque facultatifs."
+  }
 };

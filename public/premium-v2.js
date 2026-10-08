@@ -345,9 +345,20 @@
     qa("[data-recipe-detail]").forEach(function(card){
       var r=recipes.find(function(x){return x.id===card.dataset.recipeDetail});if(!r)return;
       var items=productsForRecipe(r),price=q("[data-recipe-price]",card);
-      if(price)price.textContent=pmoney(items.reduce(function(s,p){return s+Number(cheapestVariant(p).price)},0));
+      if(price){
+        price.textContent=items.length
+          ?pmoney(items.reduce(function(s,p){return s+Number(cheapestVariant(p).price)},0))
+          :txt("Unavailable","غير متاح");
+        price.removeAttribute("aria-busy");
+      }
       var names=q("[data-recipe-products]",card);
-      if(names)names.textContent=items.map(pname).join(" · ");
+      if(names){
+        names.innerHTML=items.length
+          ?items.map(function(p){return "<span>"+esc(pname(p))+"</span>"}).join("")
+          :"<span>"+esc(txt("Check product availability","تحقّق من توفّر المنتجات"))+"</span>";
+      }
+      var add=q("[data-recipe-add]",card);
+      if(add)add.disabled=!items.length;
     });
   }
 

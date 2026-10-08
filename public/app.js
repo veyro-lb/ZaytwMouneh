@@ -2076,7 +2076,8 @@ function toast(message,{cartAction=false}={}){
       action.type="button";
       action.className="zwm-toast-cart-action";
       action.addEventListener("click",()=>{
-        panel.classList.remove("is-visible");
+        panel.classList.remove("is-visible","zwm-cart-confirm-toast");
+        action.hidden=true;
         openCart();
       });
       panel.appendChild(action);
@@ -2089,7 +2090,18 @@ function toast(message,{cartAction=false}={}){
   }
   panel.classList.add("is-visible");
   clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>panel.classList.remove("is-visible"),cartAction?4800:1800);
+  const dismiss=()=>{
+    panel.classList.remove("is-visible","zwm-cart-confirm-toast");
+    const button=panel.querySelector(".zwm-toast-cart-action");
+    if(button)button.hidden=true;
+  };
+  toastTimer=setTimeout(()=>{
+    if(cartAction&&panel.contains(document.activeElement)){
+      panel.addEventListener("focusout",()=>{if(!panel.contains(document.activeElement))dismiss()},{once:true});
+      return;
+    }
+    dismiss();
+  },cartAction?4800:1800);
 }
 function initials(name){
   const parts=String(name).replace(/[^\p{L}\p{N}\s]/gu,"").split(/\s+/).filter(Boolean);

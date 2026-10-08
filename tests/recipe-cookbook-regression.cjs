@@ -1,0 +1,85 @@
+"use strict";
+const fs=require("node:fs");
+const path=require("node:path");
+const assert=require("node:assert/strict");
+const {JSDOM}=require("jsdom");
+const root=path.resolve(__dirname,"..");
+const read=p=>fs.readFileSync(path.join(root,"public",p),"utf8");
+
+async function run(){
+  const dom=new JSDOM('<!doctype html><html lang="en"><body data-page="recipes"><section id="recipes"><div class="recipe-grid"></div></section></body></html>',{url:"https://store.example/recipes",runScripts:"outside-only"});
+  const w=dom.window;
+  w.HTMLElement.prototype.scrollIntoView=function(){};
+  const bought=[];
+  let cartOpened=0;
+  w.addToCart=(p,v,qty)=>bought.push({id:p.id,variant:v.id,qty});
+  w.productCanOrder=()=>true;
+  w.openCart=()=>cartOpened++;
+  w.eval(read("products-data.js"));
+  w.eval(read("recipe-library-v1.js"));
+  const all=w.ZWM_RECIPE_LIBRARY;
+  assert.equal(all.length,30,"Cookbook must contain exactly 30 recipes");
+  assert.equal(new Set(all.map(r=>r.id)).size,30,"Recipe IDs must be unique");
+  const preserved=["mujadara","manoushe","fattoush","hummus","tabbouleh","kibbeh"];
+  preserved.forEach(id=>assert(all.some(r=>r.id===id),"Original recipe missing: "+id));
+  const catalogue=w.eval("PRODUCTS_DATA");
+  const byId=new Map(catalogue.map(p=>[p.id,p]));
+  let links=0;
+  for(const r of all){
+    assert(r.titleEn&&r.titleAr&&r.introEn.length>=55&&r.introAr.length>=35,r.id+" requires full bilingual intro");
+    assert(["Mains","Mezze","Salads","Breakfast","Desserts"].includes(r.category),r.id+" category");
+    assert(Number.isInteger(r.prep)&&Number.isInteger(r.cook)&&r.prep>=0&&r.cook>=0&&r.serves>=1,r.id+" timings/servings");
+    assert(r.ingredients.length>=5,r.id+" needs measured ingredients");
+    assert(r.stepsEn.length>=5&&r.stepsAr.length===r.stepsEn.length,r.id+" needs detailed bilingual steps");
+    assert(r.stepsEn.every(s=>s.length>40)&&r.stepsAr.every(s=>s.length>30),r.id+" has short cooking steps");
+    assert(r.tipEn&&r.tipAr&&r.storageEn&&r.storageAr&&r.allergensEn&&r.allergensAr,r.id+" missing cooking safety notes");
+    const recipeProductIds=new Set();
+    for(const ing of r.ingredients){
+      assert(ing[0]&&ing[1],r.id+" has an incomplete ingredient");
+      if(!ing[2])continue;
+      links++;
+      assert(byId.has(ing[2]),r.id+" contains invented product ID "+ing[2]);
+      assert(!recipeProductIds.has(ing[2]),r.id+" has duplicate shopping item "+ing[2]);
+      recipeProductIds.add(ing[2]);
+      assert(byId.get(ing[2]).variants.some(v=>Number.isFinite(Number(v.price))),r.id+" product missing price");
+    }
+    assert(recipeProductIds.size>=2,r.id+" needs relevant real pantry products");
+  }
+  w.eval(read("recipe-cookbook-v1.js"));
+  assert.equal(w.document.querySelectorAll(".zwm-recipe-card").length,30,"All 30 cards should render");
+  assert.match(w.document.querySelector(".zwm-cookbook-intro h2").textContent,/Made with tradition/);
+  const search=w.document.querySelector("#zwmRecipeSearch");
+  search.value="maamoul";search.dispatchEvent(new w.Event("input",{bubbles:true}));
+  assert.equal(w.document.querySelectorAll(".zwm-recipe-card").length,1,"Recipe search must filter cards");
+  search.value="";search.dispatchEvent(new w.Event("input",{bubbles:true}));
+  const filter=w.document.querySelector('[data-filter="Desserts"]');filter.click();
+  assert.equal(w.document.querySelectorAll(".zwm-recipe-card").length,4,"Dessert filter should show four");
+  w.document.querySelector('[data-filter="all"]').click();
+  const quick=w.document.querySelector('[data-pantry="mujadara"]');
+  quick.click();
+  assert(bought.length>=2,"Quick Add to Pantry must call the existing cart");
+  assert(bought.every(b=>byId.has(b.id)),"Only real products may be added");
+  bought.length=0;
+  w.location.hash="#recipe/mujadara";
+  w.dispatchEvent(new w.Event("hashchange"));
+  const detail=w.document.querySelector("#zwmRecipeDetail");
+  assert(detail&&detail.querySelectorAll(".zwm-recipe-method li").length>=5,"Details must contain full cooking instructions");
+  const checkbox=detail.querySelector('[data-item]');
+  const previouslySelected=detail.querySelectorAll('[data-item]:checked').length;
+  checkbox.click();
+  assert.equal(detail.querySelectorAll('[data-item]:checked').length,previouslySelected-1,"Shopping checklist must be interactive");
+  detail.querySelector("[data-add-bundle]").click();
+  assert.equal(bought.length,previouslySelected-1,"Only checked items should be added to the existing cart");
+  detail.querySelector("[data-view-cart]").click();
+  assert.equal(cartOpened,1,"View My Pantry must invoke the existing cart");
+  w.document.documentElement.lang="ar";
+  await new Promise(resolve=>w.setTimeout(resolve,10));
+  assert(w.document.querySelector("#zwmRecipeDetail").textContent.includes("مجدّرة"),"Arabic titles should render when language changes");
+  assert(read("recipes.html").includes("recipe-cookbook-v1.js?v="),"Recipe UI script must be versioned");
+  assert(read("recipes.html").includes("recipe-library-v1.js?v="),"Recipe data must load on the recipe page");
+  assert(read("recipes.html").includes("recipe-cookbook-v1.css?v="),"Recipe stylesheet must be linked");
+  assert(read("recipe-cookbook-v1.css").includes("prefers-reduced-motion:reduce"),"Reduced-motion accessibility must be supported");
+  w.close();
+  console.log("Cookbook regression passed: 30 complete bilingual recipes, "+links+" catalogue ingredient links, searchable filters, detailed routes, real cart shopping and Arabic.");
+}
+run().catch(err=>{console.error(err);process.exitCode=1});

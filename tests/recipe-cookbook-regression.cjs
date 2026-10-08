@@ -7,7 +7,7 @@ const root=path.resolve(__dirname,"..");
 const read=p=>fs.readFileSync(path.join(root,"public",p),"utf8");
 
 async function run(){
-  const dom=new JSDOM('<!doctype html><html lang="en"><body data-page="recipes"><section id="recipes"><div class="recipe-grid"></div></section></body></html>',{url:"https://store.example/recipes",runScripts:"outside-only"});
+  const dom=new JSDOM('<!doctype html><html lang="en"><head><base href="/"></head><body data-page="recipes"><section id="recipes"><div class="recipe-grid"></div></section></body></html>',{url:"https://store.example/recipes.html",runScripts:"outside-only"});
   const w=dom.window;
   w.HTMLElement.prototype.scrollIntoView=function(){};
   const bought=[];
@@ -57,6 +57,19 @@ async function run(){
   const filter=w.document.querySelector('[data-filter="Desserts"]');filter.click();
   assert.equal(w.document.querySelectorAll(".zwm-recipe-card").length,4,"Dessert filter should show four");
   w.document.querySelector('[data-filter="all"]').click();
+  // Production uses <base href="/">. Hash-only links would resolve to the homepage.
+  const view=w.document.querySelector('a[data-open="mujadara"]');
+  assert.equal(new URL(view.href).pathname,"/recipes.html","View Recipe must stay on the current page, not home");
+  view.click();
+  await new Promise(resolve=>w.setTimeout(resolve,25));
+  assert.equal(w.location.pathname,"/recipes.html","View Recipe must not navigate to homepage");
+  assert.equal(w.location.hash,"#recipe/mujadara","View Recipe must open the selected deep link");
+  assert(w.document.querySelector('#zwmRecipeDetail'),"View Recipe must render instructions");
+  const back=w.document.querySelector('a[data-back]');
+  assert.equal(new URL(back.href).pathname,"/recipes.html","Back to Recipes must stay on recipes page");
+  back.click();
+  await new Promise(resolve=>w.setTimeout(resolve,25));
+  assert.equal(w.document.querySelectorAll(".zwm-recipe-card").length,30,"Back to Recipes must show the collection");
   const quick=w.document.querySelector('[data-pantry="mujadara"]');
   quick.click();
   assert(bought.length>=2,"Quick Add to Pantry must call the existing cart");

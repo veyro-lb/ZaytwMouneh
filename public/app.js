@@ -596,6 +596,74 @@ const PAGE_I18N={
   }
 };
 
+/* Complete French SEO, accessibility and catalogue category copy. */
+const PAGE_FR_COPY={
+  "home": {
+    "title": "Zayt w Mouneh | Épicerie libanaise et mouneh",
+    "description": "Épicerie libanaise authentique, mouneh et cadeaux depuis 2006, avec des prix transparents et une livraison dans tout le Liban.",
+    "skip": "Aller au catalogue"
+  },
+  "shop": {
+    "title": "Acheter des produits d’épicerie libanaise | Zayt w Mouneh",
+    "description": "Découvrez plus de 300 produits d’épicerie libanaise avec formats et prix clairement indiqués, favoris et commande sécurisée.",
+    "skip": "Aller au catalogue"
+  },
+  "about": {
+    "title": "Notre histoire et nos origines | Zayt w Mouneh",
+    "description": "Découvrez l’histoire de Zayt w Mouneh depuis 2006 et les origines de nos produits : Bekaa, Koura, Mont-Liban et Chouf.",
+    "skip": "Aller à notre histoire"
+  },
+  "contact": {
+    "title": "Contact, livraison et visite | Zayt w Mouneh",
+    "description": "Contactez Zayt w Mouneh à Sebline et découvrez la commande sécurisée et la livraison dans tout le Liban.",
+    "skip": "Aller à la page contact"
+  },
+  "gift": {
+    "title": "Cadeaux d’épicerie libanaise | Zayt w Mouneh",
+    "description": "Choisissez un cadeau de mouneh libanaise prêt à offrir ou composez le vôtre avec nos produits, livrés partout au Liban.",
+    "skip": "Aller au configurateur de cadeaux"
+  },
+  "recipes": {
+    "title": "30 recettes libanaises | Zayt w Mouneh",
+    "description": "Découvrez 30 recettes libanaises détaillées en français, arabe et anglais et ajoutez les ingrédients de notre épicerie directement à votre panier.",
+    "skip": "Aller aux recettes"
+  },
+  "terms": {
+    "title": "Conditions d’utilisation | Zayt w Mouneh",
+    "description": "Les conditions d’utilisation du site Zayt w Mouneh, des commandes, livraisons, comptes, cadeaux et points de fidélité.",
+    "skip": "Aller aux conditions d’utilisation"
+  },
+  "privacy": {
+    "title": "Politique de confidentialité | Zayt w Mouneh",
+    "description": "Comment Zayt w Mouneh collecte, utilise, protège et partage les informations relatives aux clients, comptes, commandes et points de fidélité.",
+    "skip": "Aller à la politique de confidentialité"
+  }
+};
+Object.keys(PAGE_FR_COPY).forEach(function(page){if(PAGE_I18N[page])PAGE_I18N[page].fr=PAGE_FR_COPY[page]});
+const CATEGORY_FR={
+  "Condiments": "Condiments et aides culinaires",
+  "Dates": "Dattes",
+  "Debsy Carob": "Produits à la caroube",
+  "Distillates + Syrups": "Eaux florales et sirops",
+  "Dried Foods": "Aliments séchés",
+  "Flour": "Farines",
+  "Grains": "Céréales",
+  "Herbs": "Herbes",
+  "Honey": "Miels",
+  "Molasses": "Mélasses",
+  "Mouneh": "Mouneh et conserves",
+  "Nuts + Seeds": "Fruits secs et graines",
+  "Oils": "Huiles",
+  "Olive Oil": "Huiles d’olive",
+  "Olives": "Olives",
+  "Pickles": "Légumes marinés",
+  "Pulses": "Légumineuses",
+  "Soap": "Savons",
+  "Spices": "Épices",
+  "Sweets + Candy": "Confiseries",
+  "Vinegars": "Vinaigres"
+};
+
 let lang=window.ZWM_LOCALE?.get?.()||(safeStorageGet(LANG_KEY)==="ar"?"ar":"en");
 let activeCategory="All";
 let query="";
@@ -717,7 +785,7 @@ function currentSize(v){
   if(lang==="fr")return v?.sizeFr||v?.sizeEn||v?.sizeAr||"";
   return v?.sizeEn||v?.sizeAr||"";
 }
-function categoryName(cat){return lang==="ar"?(CATEGORY_AR[cat]||cat):cat}
+function categoryName(cat){return lang==="ar"?(CATEGORY_AR[cat]||cat):lang==="fr"?(CATEGORY_FR[cat]||cat):cat}
 const VERIFIED_PRODUCT_KEYS={
   origin:{en:["originEn","origin","sourceEn","source"],ar:["originAr","sourceAr","originEn","origin","sourceEn","source"],fr:["originFr","sourceFr","originEn","origin","sourceEn","source"]},
   ingredients:{en:["ingredientsEn","ingredients"],ar:["ingredientsAr","ingredientsEn","ingredients"],fr:["ingredientsFr","ingredientsEn","ingredients"]},
@@ -1053,13 +1121,13 @@ function applyPageMetadata(){
   const md=document.querySelector('meta[name="description"]');if(md)md.content=copy.description;
   const ogTitle=document.querySelector('meta[property="og:title"]');if(ogTitle)ogTitle.content=copy.title;
   const ogDesc=document.querySelector('meta[property="og:description"]');if(ogDesc)ogDesc.content=copy.description;
-  const ogLocale=document.querySelector('meta[property="og:locale"]');if(ogLocale)ogLocale.content=lang==="ar"?"ar_LB":"en_LB";
+  const ogLocale=document.querySelector('meta[property="og:locale"]');if(ogLocale)ogLocale.content=lang==="ar"?"ar_LB":lang==="fr"?"fr_LB":"en_LB";
   const skip=$("#skipLink");if(skip)skip.textContent=copy.skip;
 }
 
 function applyAccessibleLanguage(){
   const ar=lang==="ar";
-  const aria=(selector,en,arText)=>{const el=document.querySelector(selector);if(el)el.setAttribute("aria-label",ar?arText:en)};
+  const aria=(selector,en,arText)=>{const el=document.querySelector(selector);if(el)el.setAttribute("aria-label",ar?arText:lang==="fr"&&typeof window.ZWM_FR_TRANSLATE==="function"?window.ZWM_FR_TRANSLATE(en):en)};
   aria(".nav","Primary navigation","التنقل الرئيسي");
   aria(".brand","Zayt w Mouneh home","الصفحة الرئيسية لزيت ومونة");
   const brandLogo=document.querySelector(".brand-logo img");if(brandLogo)brandLogo.alt=ar?"شعار زيت ومونة":"Zayt w Mouneh logo";

@@ -244,8 +244,7 @@ window.ZWM_RECIPE_FR = {
     "tipFr": "Privilégiez une cuisson douce plutôt qu’un mélange énergique pour garder les gombos entiers.",
     "storageFr": "Conservez au réfrigérateur jusqu’à 3 jours ; réchauffez doucement.",
     "allergensFr": "Aucun allergène majeur dans la recette de base."
-  }
-},
+  },
 "loubieh-bi-zeit": {
     "titleFr": "Haricots verts libanais à l’huile d’olive",
     "introFr": "Un classique de l’été libanais : des haricots verts cuits lentement avec des oignons doux, de l’ail et des tomates jusqu’à devenir fondants. Savoureux chauds, ils sont encore meilleurs après un petit repos.",
@@ -491,8 +490,7 @@ window.ZWM_RECIPE_FR = {
     "tipFr": "Selon sa marque, le friké absorbe plus ou moins de bouillon ; goûtez les grains avant d’arrêter la cuisson.",
     "storageFr": "Réfrigérez rapidement, consommez dans les 2 jours et réchauffez soigneusement.",
     "allergensFr": "Contient du blé et du gluten ; fruits à coque facultatifs."
-  }
-},
+  },
 "bulgur-bi-banadoura": {
     "titleFr": "Pilaf de boulgour à la tomate",
     "introFr": "Le boulgour grossier s’imprègne de tomates douces, d’oignon et d’huile d’olive pour un plat libanais simple et nourrissant. Accompagnez-le d’une salade croquante, de yaourt ou de quelques cornichons.",

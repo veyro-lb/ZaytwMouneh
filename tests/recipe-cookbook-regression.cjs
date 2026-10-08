@@ -47,7 +47,7 @@ async function run(){
   }
   w.eval(read("recipe-cookbook-v1.js"));
   assert.equal(w.document.querySelectorAll(".zwm-recipe-card").length,30,"All 30 cards should render");
-  assert.match(w.document.querySelector(".zwm-cookbook-intro h2").textContent,/Made with tradition/);
+  assert.match(w.document.querySelector(".zwm-cookbook-intro h1").textContent,/Made with tradition/);
   const search=w.document.querySelector("#zwmRecipeSearch");
   search.value="maamoul";search.dispatchEvent(new w.Event("input",{bubbles:true}));
   assert.equal(w.document.querySelectorAll(".zwm-recipe-card").length,1,"Recipe search must filter cards");

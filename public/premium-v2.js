@@ -320,7 +320,7 @@
     return recipes.map(function(r,i){
       var items=productsForRecipe(r),total=items.reduce(function(s,p){return s+Number(cheapestVariant(p).price)},0);
       var tags=isAr()?r.tagsAr:r.tagsEn;
-      return '<article class="recipe-card" data-recipe="'+esc(r.id)+'"><span class="recipe-no">0'+(i+1)+'</span><h3>'+esc(isAr()?r.titleAr:r.titleEn)+'</h3><p>'+esc(isAr()?r.copyAr:r.copyEn)+'</p><div class="recipe-tags">'+tags.map(function(t){return "<span>"+esc(t)+"</span>"}).join("")+'</div><p class="recipe-fresh">'+esc(isAr()?r.freshAr:r.freshEn)+'</p><div class="recipe-card-footer"><small>'+esc(txt("Pantry items from ","منتجات المونة من "))+pmoney(total)+'</small><button class="recipe-add" type="button" data-recipe-add="'+esc(r.id)+'">'+esc(txt("Add pantry ingredients","أضف مكونات المونة"))+'</button></div></article>';
+      return '<article class="recipe-card" data-recipe="'+esc(r.id)+'"><span class="recipe-no">0'+(i+1)+'</span><h3>'+esc(isAr()?r.titleAr:r.titleEn)+'</h3><p>'+esc(isAr()?r.copyAr:r.copyEn)+'</p><div class="recipe-tags">'+tags.map(function(t){return "<span>"+esc(t)+"</span>"}).join("")+'</div><p class="recipe-fresh">'+esc(isAr()?r.freshAr:r.freshEn)+'</p><div class="recipe-card-footer"><small>'+esc(txt("Pantry items from ","منتجات المونة من "))+pmoney(total)+'</small><button class="recipe-add" type="button" data-recipe-add="'+esc(r.id)+'">'+esc(txt("Add to Pantry","أضف إلى سلّتي"))+'</button></div></article>';
     }).join("");
   }
 
@@ -337,7 +337,7 @@
     if(page!=="home"||q("#premiumRecipes"))return;
     var anchor=q(".home-gift")||q(".order-strip");if(!anchor)return;
     var sec=document.createElement("section");sec.id="premiumRecipes";sec.className="premium-section premium-recipes";
-    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Shop by recipe","تسوّق حسب الوصفة"))+'</p><h2>'+esc(txt("Start with the","ابدأ من"))+' <em>'+esc(txt("table.","السفرة."))+'</em></h2></div><p>'+esc(txt("Discover 30 detailed Lebanese recipes in our cookbook. Explore six favourites here, add pantry staples in one click, and see the full collection for more.","اكتشف ٣٠ وصفة لبنانية مفصّلة في كتاب وصفاتنا، وتعرّف هنا إلى ستة أطباق محبوبة مع مكونات المونة المتوفرة في متجرنا."))+'</p></div><div class="recipe-grid">'+recipeCards()+'</div><a class="premium-pill" style="margin-top:18px" href="recipes.html">'+esc(txt("See recipe notes","شاهد تفاصيل الوصفات"))+' ↗</a></div>';
+    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Shop by recipe","تسوّق حسب الوصفة"))+'</p><h2>'+esc(txt("Start with the","ابدأ من"))+' <em>'+esc(txt("table.","السفرة."))+'</em></h2></div><p>'+esc(txt("Discover 30 detailed Lebanese recipes in our cookbook. Explore six favourites here, add pantry staples in one click, and see the full collection for more.","اكتشف ٣٠ وصفة لبنانية مفصّلة في كتاب وصفاتنا، وتعرّف هنا إلى ستة أطباق محبوبة مع مكونات المونة المتوفرة في متجرنا."))+'</p></div><div class="recipe-grid">'+recipeCards()+'</div><a class="premium-pill" style="margin-top:18px" href="recipes.html">'+esc(txt("Explore 30 recipes","اكتشف ٣٠ وصفة"))+' ↗</a></div>';
     anchor.before(sec);bindRecipeButtons(sec);
   }
 

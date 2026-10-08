@@ -1050,4 +1050,349 @@ window.ZWM_RECIPE_LIBRARY = [
   "storageAr": "يحفظ الخليط النيّئ يوماً واحداً بالثلاجة أو تجمّد الأقراص قبل القلي.",
   "allergensEn": "Tahini sauce contains sesame; check accompaniments for wheat.",
   "allergensAr": "الطرطور يحتوي على السمسم وقد يحتوي الخبز على الغلوتين."
+},
+{
+  "id": "warak-enab-bi-zeit",
+  "titleEn": "Vegetarian Warak Enab",
+  "titleAr": "ورق عنب بالزيت",
+  "category": "Mezze",
+  "prep": 55,
+  "cook": 75,
+  "serves": 6,
+  "icon": "🍃",
+  "introEn": "Tender grape leaves wrapped around lemony rice, tomatoes and fresh herbs: a patient, celebratory Lebanese mezze. Serve cool with lemon wedges after the rolls have absorbed their fragrant cooking liquid.",
+  "introAr": "ورق عنب طري ملفوف حول أرز متبّل بالحامض والبندورة والأعشاب، من أشهى أطباق المازة اللبنانية. يحتاج صبراً في اللفّ ويقدّم بارداً مع الحامض.",
+  "ingredients": [
+    [
+      "1 jar grape leaves, about 55 leaves, rinsed",
+      "مرطبان ورق عنب نحو ٥٥ ورقة مغسولة",
+      "waraq-enab-bel-may"
+    ],
+    [
+      "1¼ cups (250 g) short-grain rice",
+      "كوب وربع (٢٥٠ غ) أرز قصير",
+      "egyptian-rice"
+    ],
+    [
+      "½ cup olive oil, divided",
+      "نصف كوب زيت زيتون مقسم",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "2 tbsp pomegranate molasses, optional",
+      "ملعقتان كبيرتان دبس رمان اختيارية",
+      "debes-el-remen"
+    ],
+    [
+      "3 tomatoes, finely diced",
+      "٣ بندورات مفرومة ناعماً"
+    ],
+    [
+      "1 bunch parsley, ½ bunch mint, chopped",
+      "ربطة بقدونس ونصف ربطة نعنع مفرومة"
+    ],
+    [
+      "1 onion, finely chopped",
+      "بصلة مفرومة ناعماً"
+    ],
+    [
+      "Juice of 3 lemons, salt and 2 cups water",
+      "عصير ٣ حامضات وملح وكوبان ماء",
+      "sea-salt"
+    ]
+  ],
+  "stepsEn": [
+    "Rinse preserved grape leaves and briefly blanch any stiff leaves; drain. Rinse rice and combine raw with tomato, parsley, mint, onion, half the olive oil, salt and some lemon.",
+    "Spread a leaf shiny-side down, add one heaped teaspoon filling near the stem and fold sides over; roll snugly but not tight because rice will expand.",
+    "Line a heavy pot with torn leaves or tomato slices and arrange rolls seam-side down in close layers.",
+    "Mix water, remaining olive oil, lemon juice and optional molasses; pour over until rolls are just covered. Set a heatproof plate on top to hold them down.",
+    "Bring to a gentle simmer, cover and cook 60–75 minutes until rice and leaves are tender; add hot water if the pot dries out.",
+    "Cool in the pot at least 30 minutes before carefully transferring. Serve at room temperature or chilled."
+  ],
+  "stepsAr": [
+    "اغسل ورق العنب المحفوظ واسلق سريعاً الورق القاسي ثم صفّه. اغسل الأرز واخلطه نيّئاً مع البندورة والبقدونس والنعنع والبصل ونصف الزيت والملح وبعض الحامض.",
+    "افرد الورقة والجهة اللامعة إلى الأسفل وضع ملعقة صغيرة من الحشوة قرب الساق واطوِ الطرفين ولفّها بإحكام معتدل لأن الأرز يتمدد.",
+    "افرد أوراقاً ممزقة أو شرائح بندورة في قاع قدر سميك ورتّب اللفائف متقاربة والفتحة إلى الأسفل.",
+    "اخلط الماء وبقية الزيت والحامض ودبس الرمان الاختياري واسكب حتى يغمر اللفائف بالكاد وضع طبقاً مقاوماً للحرارة فوقها.",
+    "اتركه يغلي برفق مغطى ٦٠–٧٥ دقيقة حتى تنضج الأوراق والأرز وأضف ماءً ساخناً إذا جف القدر.",
+    "اترك الورق يبرد في القدر ٣٠ دقيقة على الأقل قبل نقله وقدّمه فاتراً أو بارداً."
+  ],
+  "tipEn": "Keep rolls small and slightly loose; overfilling causes them to burst.",
+  "tipAr": "لا تكثر الحشوة داخل الورقة حتى لا تتفتت أثناء تمدد الأرز.",
+  "storageEn": "Refrigerate up to 3 days; serve cool with extra lemon.",
+  "storageAr": "يحفظ حتى ٣ أيام بالثلاجة ويقدّم بارداً مع حامض.",
+  "allergensEn": "No major allergens in the basic recipe.",
+  "allergensAr": "لا تحتوي الوصفة الأساسية على مسببات حساسية رئيسية."
+},
+{
+  "id": "hindbeh-bi-zeit",
+  "titleEn": "Hindbeh with Golden Onions",
+  "titleAr": "هندبة بالزيت والبصل",
+  "category": "Mezze",
+  "prep": 25,
+  "cook": 30,
+  "serves": 4,
+  "icon": "🥬",
+  "introEn": "Earthy Lebanese dandelion greens become tender and mellow when blanched and tossed in olive oil, then crowned with sweet caramelized onions and fresh lemon.",
+  "introAr": "الهندبة من أطيب المازة البلدية، تُسلق لتطرى ثم تقلّب بزيت الزيتون وتزيّن بالبصل المحمّر وعصير الحامض.",
+  "ingredients": [
+    [
+      "4 tbsp olive oil",
+      "٤ ملاعق كبيرة زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "½ tsp sea salt",
+      "نصف ملعقة صغيرة ملح",
+      "sea-salt"
+    ],
+    [
+      "750 g fresh dandelion greens or chicory, washed",
+      "٧٥٠ غ هندبة أو هندباء خضراء مغسولة"
+    ],
+    [
+      "3 onions, thinly sliced",
+      "٣ بصلات مقطعة شرائح"
+    ],
+    [
+      "Juice of 2 lemons",
+      "عصير حامضتين"
+    ],
+    [
+      "Water for blanching",
+      "ماء للسلق"
+    ]
+  ],
+  "stepsEn": [
+    "Pick over greens to remove tough stems and wash in several changes of cold water to remove grit.",
+    "Boil in plenty of salted water for 8–12 minutes until the leaves are tender; drain well and gently squeeze out excess liquid.",
+    "Heat olive oil in a large pan and slowly cook onions for 20–25 minutes, stirring until deep golden; transfer half to a plate.",
+    "Add blanched greens to the pan and toss with remaining onions and a pinch of salt for 3–4 minutes to warm through.",
+    "Spread on a serving dish, top with reserved onions and squeeze lemon juice generously over everything."
+  ],
+  "stepsAr": [
+    "نقّ الهندبة من العيدان القاسية واغسلها أكثر من مرة بالماء البارد لإزالة التراب.",
+    "اسلقها في ماء مملّح ٨–١٢ دقيقة حتى تطرى ثم صفّها واعصر الماء الزائد برفق.",
+    "سخّن زيت الزيتون وحرّك شرائح البصل على نار هادئة ٢٠–٢٥ دقيقة حتى تصبح ذهبية داكنة واحتفظ بنصفها للتزيين.",
+    "أضف الهندبة المسلوقة إلى المقلاة وقلّبها مع البصل والملح ٣–٤ دقائق حتى تسخن.",
+    "وزّع الهندبة في طبق وأضف البصل المتبقي وعصير الحامض بسخاء."
+  ],
+  "tipEn": "Taste after blanching; bitterness varies with the greens and is balanced by onion and lemon.",
+  "tipAr": "ذق الهندبة بعد السلق؛ تختلف المرارة ويوازنها البصل والحامض.",
+  "storageEn": "Refrigerate 2 days; add fresh lemon just before serving.",
+  "storageAr": "تحفظ يومين بالثلاجة ويضاف الحامض عند التقديم.",
+  "allergensEn": "No major allergens in the basic recipe.",
+  "allergensAr": "لا تحتوي الوصفة الأساسية على مسببات حساسية رئيسية."
+},
+{
+  "id": "batata-harra",
+  "titleEn": "Batata Harra",
+  "titleAr": "بطاطا حرّة",
+  "category": "Mezze",
+  "prep": 15,
+  "cook": 35,
+  "serves": 4,
+  "icon": "🥔",
+  "introEn": "Crisp-edged golden potatoes tossed with garlic, coriander, chilli and bright lemon are irresistible straight from the pan. This Lebanese mezze disappears fast.",
+  "introAr": "بطاطا ذهبية مقرمشة مع الثوم والكزبرة والفلفل الحار وعصير الحامض، من أطيب المازة اللبنانية وتؤكل فوراً وهي ساخنة.",
+  "ingredients": [
+    [
+      "3 tbsp olive oil",
+      "٣ ملاعق كبيرة زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "1 tsp ground coriander",
+      "ملعقة صغيرة كزبرة مطحونة",
+      "kozbara-yebse-neeme"
+    ],
+    [
+      "½ tsp chilli flakes",
+      "نصف ملعقة صغيرة فلفل حر",
+      "har-kheshen"
+    ],
+    [
+      "¾ tsp sea salt",
+      "ثلاثة أرباع ملعقة صغيرة ملح",
+      "sea-salt"
+    ],
+    [
+      "750 g potatoes, peeled and cubed",
+      "٧٥٠ غ بطاطا مقشرة ومكعبات"
+    ],
+    [
+      "4 garlic cloves, minced",
+      "٤ فصوص ثوم مهروسة"
+    ],
+    [
+      "Juice of 1 lemon",
+      "عصير حامضة"
+    ],
+    [
+      "½ cup fresh cilantro, chopped",
+      "نصف كوب كزبرة خضراء مفرومة"
+    ]
+  ],
+  "stepsEn": [
+    "Heat oven to 220°C. Pat potato cubes dry and toss with 2 tablespoons olive oil and a pinch of salt.",
+    "Spread in a single layer on a hot tray and roast 25–30 minutes, turning once, until browned and tender inside.",
+    "Warm remaining oil in a skillet; briefly sizzle garlic, ground coriander and chilli over low heat for 30–45 seconds, avoiding burnt garlic.",
+    "Add roasted potatoes and toss with the fragrant oil for a minute.",
+    "Take off heat, add chopped fresh cilantro and lemon juice, taste for salt and serve immediately."
+  ],
+  "stepsAr": [
+    "سخّن الفرن إلى ٢٢٠°م وجفّف مكعبات البطاطا وقلّبها مع ملعقتين زيت ورشة ملح.",
+    "افرد البطاطا في طبقة واحدة على صينية ساخنة واشوها ٢٥–٣٠ دقيقة مع تقليبها مرة حتى تتحمّر وتنضج من الداخل.",
+    "سخّن بقية الزيت في مقلاة وقلّب الثوم والكزبرة اليابسة والفلفل الحار على نار هادئة ٣٠–٤٥ ثانية من دون حرق الثوم.",
+    "أضف البطاطا المشوية وقلّبها في الزيت المعطّر دقيقة.",
+    "ارفع المقلاة عن النار وأضف الكزبرة الخضراء وعصير الحامض واضبط الملح وقدّم فوراً."
+  ],
+  "tipEn": "Dry potatoes well before roasting for the crispest edges.",
+  "tipAr": "جفّف البطاطا جيداً قبل الشوي لتحصل على أطراف مقرمشة.",
+  "storageEn": "Best immediately; refrigerate 2 days and re-crisp in the oven.",
+  "storageAr": "أفضل ما تكون فوراً؛ تحفظ يومين وتعاد قرمشتها في الفرن.",
+  "allergensEn": "No major allergens in the basic recipe.",
+  "allergensAr": "لا تحتوي الوصفة الأساسية على مسببات حساسية رئيسية."
+},
+{
+  "id": "shorbet-adas",
+  "titleEn": "Lebanese Red Lentil Soup",
+  "titleAr": "شوربة عدس لبنانية",
+  "category": "Mains",
+  "prep": 15,
+  "cook": 35,
+  "serves": 5,
+  "icon": "🥣",
+  "introEn": "A velvety, warmly spiced soup of red split lentils, onion and cumin, made bright with lemon. It's one of the simplest and most comforting Lebanese lunches.",
+  "introAr": "شوربة عدس صفراء مخملية مع البصل والكمون، ينعشها الحامض عند التقديم. من أسهل وأدفأ الأطباق اللبنانية.",
+  "ingredients": [
+    [
+      "1½ cups (300 g) red split lentils",
+      "كوب ونصف (٣٠٠ غ) عدس مجروش",
+      "aadas-majroush"
+    ],
+    [
+      "1 tsp ground cumin",
+      "ملعقة صغيرة كمون",
+      "kamoun-neeme"
+    ],
+    [
+      "2 tbsp extra-virgin olive oil",
+      "ملعقتان كبيرتان زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "½ tsp turmeric, optional",
+      "نصف ملعقة صغيرة كركم اختياري",
+      "kurkum"
+    ],
+    [
+      "1 medium onion, diced",
+      "بصلة متوسطة مكعبات"
+    ],
+    [
+      "1 carrot, diced",
+      "جزرة مكعبات"
+    ],
+    [
+      "5 cups water or unsalted stock",
+      "٥ أكواب ماء أو مرق دون ملح"
+    ],
+    [
+      "Lemon wedges and salt",
+      "قطع حامض وملح",
+      "sea-salt"
+    ]
+  ],
+  "stepsEn": [
+    "Rinse lentils until the water runs mostly clear; pick out any debris.",
+    "Soften onion and carrot in olive oil over medium heat for 7–8 minutes without browning.",
+    "Stir in cumin and optional turmeric for 30 seconds, then add drained lentils and 5 cups water or stock.",
+    "Simmer partly covered for 25–30 minutes, stirring occasionally, until lentils dissolve and carrot is tender.",
+    "Blend carefully until smooth or leave rustic; adjust thickness with hot water, season with salt and serve with lemon wedges."
+  ],
+  "stepsAr": [
+    "اغسل العدس حتى يصبح الماء شبه صافٍ وتأكد من خلوّه من الشوائب.",
+    "ليّن البصل والجزر في زيت الزيتون على نار متوسطة ٧–٨ دقائق من دون تحمير.",
+    "أضف الكمون والكركم الاختياري لنصف دقيقة ثم العدس المصفّى و٥ أكواب ماء أو مرق.",
+    "اتركه يغلي برفق ٢٥–٣٠ دقيقة مع التحريك أحياناً حتى يذوب العدس ويطرى الجزر.",
+    "اخلطه بحذر حتى يصبح ناعماً أو اتركه خشناً، وخفّفه بماء ساخن عند الحاجة وتبّله وقدّمه مع الحامض."
+  ],
+  "tipEn": "Lentils thicken as they cool; loosen leftovers with water when reheating.",
+  "tipAr": "تتكثف الشوربة بعد أن تبرد؛ أضف ماءً عند إعادة التسخين.",
+  "storageEn": "Refrigerate up to 3 days; freeze up to 2 months.",
+  "storageAr": "تحفظ ٣ أيام بالثلاجة أو شهرين بالمجمّد.",
+  "allergensEn": "No major allergens in the basic recipe.",
+  "allergensAr": "لا تحتوي الوصفة الأساسية على مسببات حساسية رئيسية."
+},
+{
+  "id": "freekeh-chicken",
+  "titleEn": "Smoky Freekeh with Chicken",
+  "titleAr": "فريكة بالدجاج",
+  "category": "Mains",
+  "prep": 20,
+  "cook": 55,
+  "serves": 5,
+  "icon": "🍗",
+  "introEn": "Toasty, smoky green wheat cooks in a fragrant chicken broth and is finished with tender chicken and toasted nuts. A comforting Lebanese platter with lovely texture.",
+  "introAr": "فريكة خضراء مدخنة تُطهى بمرق الدجاج المعطّر وتعلوها قطع الدجاج والمكسرات المحمّصة. طبق لبناني دافئ بطعم قمح غني.",
+  "ingredients": [
+    [
+      "2 cups (360 g) freekeh, rinsed",
+      "كوبان (٣٦٠ غ) فريكة مغسولة",
+      "freeke"
+    ],
+    [
+      "1 tsp seven spice",
+      "ملعقة صغيرة سبع بهارات",
+      "sabaa-bharat"
+    ],
+    [
+      "3 tbsp olive oil",
+      "٣ ملاعق كبيرة زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "¼ cup pine nuts or sliced almonds",
+      "ربع كوب صنوبر أو لوز شرائح",
+      "snoubar"
+    ],
+    [
+      "750 g chicken pieces, bone-in or boneless",
+      "٧٥٠ غ قطع دجاج بعظم أو دونه"
+    ],
+    [
+      "1 onion and 1 carrot, roughly chopped",
+      "بصلة وجزرة مقطّعتان"
+    ],
+    [
+      "4 cups chicken broth, plus extra if needed",
+      "٤ أكواب مرق دجاج مع المزيد عند الحاجة"
+    ],
+    [
+      "Salt and black pepper",
+      "ملح وفلفل أسود",
+      "sea-salt"
+    ]
+  ],
+  "stepsEn": [
+    "Simmer chicken with onion, carrot, salt and enough water or broth until the thickest piece reaches 74°C; remove and keep warm, reserving strained broth.",
+    "Rinse freekeh several times and pick out any grit or dark particles; drain well.",
+    "Heat olive oil in a heavy pot, toast freekeh 3–4 minutes while stirring, then add seven spice.",
+    "Pour in 4 cups hot strained broth, bring to a simmer and cook covered on low 30–40 minutes, adding more liquid if necessary, until grains are pleasantly chewy.",
+    "Rest covered 10 minutes; fluff and arrange chicken on top. Toast nuts separately and scatter over before serving."
+  ],
+  "stepsAr": [
+    "اسلق الدجاج مع البصل والجزر والملح والماء أو المرق حتى تبلغ حرارة أسمك قطعة ٧٤°م. ارفع الدجاج واحتفظ بالمرق المصفّى.",
+    "اغسل الفريكة مرات عدة ونقّها من الحصى أو الحبوب المتفحمة الزائدة ثم صفّها.",
+    "سخّن زيت الزيتون في قدر سميك وحمّص الفريكة ٣–٤ دقائق مع التحريك وأضف السبع بهارات.",
+    "اسكب ٤ أكواب مرق ساخن واتركها تغلي برفق مغطاة على نار هادئة ٣٠–٤٠ دقيقة مع إضافة مرق عند الحاجة حتى تنضج الحبات وتبقى متماسكة.",
+    "أرحها مغطاة ١٠ دقائق ثم فلفلها وضع الدجاج فوقها وزيّنها بالمكسرات المحمّصة."
+  ],
+  "tipEn": "Freekeh absorbs stock differently by brand; taste the grain before stopping the cook.",
+  "tipAr": "تمتص الفريكة المرق بكميات مختلفة؛ ذق الحبة قبل إطفاء النار.",
+  "storageEn": "Refrigerate promptly and eat within 2 days; reheat thoroughly.",
+  "storageAr": "تبرّد سريعاً وتؤكل خلال يومين مع التسخين الجيد.",
+  "allergensEn": "Contains wheat/gluten; optional nuts.",
+  "allergensAr": "تحتوي على القمح والغلوتين والمكسرات عند إضافتها."
 }];

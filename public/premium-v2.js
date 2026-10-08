@@ -337,7 +337,7 @@
     if(page!=="home"||q("#premiumRecipes"))return;
     var anchor=q(".home-gift")||q(".order-strip");if(!anchor)return;
     var sec=document.createElement("section");sec.id="premiumRecipes";sec.className="premium-section premium-recipes";
-    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Shop by recipe","تسوّق حسب الوصفة"))+'</p><h2>'+esc(txt("Start with the","ابدأ من"))+' <em>'+esc(txt("table.","السفرة."))+'</em></h2></div><p>'+esc(txt("Choose from six familiar Lebanese dishes. Add the suggested pantry ingredients in one click, then add the fresh ingredients at home.","اختر من ستة أطباق لبنانية مألوفة. أضف مكونات المونة المقترحة بضغطة واحدة، ثم أضف المكونات الطازجة في البيت."))+'</p></div><div class="recipe-grid">'+recipeCards()+'</div><a class="premium-pill" style="margin-top:18px" href="recipes.html">'+esc(txt("See recipe notes","شاهد تفاصيل الوصفات"))+' ↗</a></div>';
+    sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("Shop by recipe","تسوّق حسب الوصفة"))+'</p><h2>'+esc(txt("Start with the","ابدأ من"))+' <em>'+esc(txt("table.","السفرة."))+'</em></h2></div><p>'+esc(txt("Discover 30 detailed Lebanese recipes in our cookbook. Explore six favourites here, add pantry staples in one click, and see the full collection for more.","اكتشف ٣٠ وصفة لبنانية مفصّلة في كتاب وصفاتنا، وتعرّف هنا إلى ستة أطباق محبوبة مع مكونات المونة المتوفرة في متجرنا."))+'</p></div><div class="recipe-grid">'+recipeCards()+'</div><a class="premium-pill" style="margin-top:18px" href="recipes.html">'+esc(txt("See recipe notes","شاهد تفاصيل الوصفات"))+' ↗</a></div>';
     anchor.before(sec);bindRecipeButtons(sec);
   }
 

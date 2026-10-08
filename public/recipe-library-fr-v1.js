@@ -492,4 +492,256 @@ window.ZWM_RECIPE_FR = {
     "storageFr": "Réfrigérez rapidement, consommez dans les 2 jours et réchauffez soigneusement.",
     "allergensFr": "Contient du blé et du gluten ; fruits à coque facultatifs."
   }
+},
+"bulgur-bi-banadoura": {
+    "titleFr": "Pilaf de boulgour à la tomate",
+    "introFr": "Le boulgour grossier s’imprègne de tomates douces, d’oignon et d’huile d’olive pour un plat libanais simple et nourrissant. Accompagnez-le d’une salade croquante, de yaourt ou de quelques cornichons.",
+    "ingredientsFr": [
+      "1½ tasse (270 g) de boulgour grossier",
+      "2 c. à soupe de concentré de tomate",
+      "3 c. à soupe d’huile d’olive",
+      "2 tomates râpées",
+      "1 oignon haché finement",
+      "2½ tasses d’eau ou de bouillon tiède",
+      "¾ de c. à café de sel",
+      "Une pincée de poivre noir"
+    ],
+    "stepsFr": [
+      "Rincez rapidement le boulgour puis égouttez-le. Ne le laissez pas tremper trop longtemps au risque d’obtenir une bouillie.",
+      "Faites revenir l’oignon haché dans l’huile d’olive pendant 7 minutes, jusqu’à ce qu’il devienne translucide et légèrement doré.",
+      "Incorporez le concentré de tomate pendant une minute, puis ajoutez les tomates fraîches râpées. Faites cuire 5 minutes pour concentrer les saveurs.",
+      "Ajoutez le boulgour, le sel et l’eau ou le bouillon tiède. Portez à frémissement, couvrez et laissez cuire à feu doux 15 à 20 minutes, jusqu’à absorption du liquide.",
+      "Éteignez le feu, laissez reposer 10 minutes à couvert, puis aérez à la fourchette et servez avec du yaourt ou une salade."
+    ],
+    "tipFr": "Choisissez du boulgour grossier pour obtenir des grains bien séparés.",
+    "storageFr": "Conservez jusqu’à 3 jours au réfrigérateur ; réchauffez avec un peu d’eau.",
+    "allergensFr": "Contient du blé et du gluten."
+  },
+  "fatteh-hummus": {
+    "titleFr": "Fatté aux pois chiches et au yaourt",
+    "introFr": "Des pois chiches chauds, du pain pita croustillant et une sauce fraîche au yaourt, à la tahina et à l’ail : cette fatté libanaise joue sur un délicieux contraste de textures au petit-déjeuner ou en mezzé.",
+    "ingredientsFr": [
+      "1½ tasse de pois chiches secs, trempés une nuit",
+      "¼ de tasse de tahina (crème de sésame)",
+      "2 c. à soupe d’huile d’olive",
+      "¼ de tasse de pignons de pin, facultatifs",
+      "2 pains pita déchirés en morceaux",
+      "1½ tasse de yaourt nature",
+      "2 gousses d’ail écrasées",
+      "Le jus d’un citron",
+      "½ c. à café de sel"
+    ],
+    "stepsFr": [
+      "Égouttez les pois chiches trempés et faites-les mijoter dans de l’eau neuve 60 à 90 minutes, jusqu’à ce qu’ils soient très tendres. Maintenez-les au chaud dans un peu de leur bouillon.",
+      "Faites griller le pain pita déchiré au four à 190 °C pendant 8 à 10 minutes, jusqu’à ce qu’il soit doré et sec. Ne montez pas encore le plat.",
+      "Fouettez le yaourt avec la tahina, l’ail écrasé, le jus de citron et le sel. Détendez avec une cuillerée d’eau de cuisson chaude si nécessaire.",
+      "Faites dorer légèrement les pignons dans une petite poêle avec une cuillerée d’huile d’olive.",
+      "Répartissez le pita croustillant dans des bols, ajoutez les pois chiches chauds et un peu de bouillon, puis la sauce au yaourt et les pignons.",
+      "Arrosez du reste d’huile d’olive et servez aussitôt, avant que le pain ne perde tout son croustillant."
+    ],
+    "tipFr": "Montez la fatté juste avant de servir pour conserver le contraste entre moelleux et croustillant.",
+    "storageFr": "Gardez pois chiches, sauce et pain séparément au réfrigérateur jusqu’à 2 jours ; assemblez au dernier moment.",
+    "allergensFr": "Contient du blé, du gluten, des produits laitiers et du sésame ; pignons facultatifs."
+  },
+  "kafta-bil-sanieh": {
+    "titleFr": "Kafta au four, pommes de terre et tomate",
+    "introFr": "Viande hachée parfumée aux épices, rondelles de pommes de terre et tomates cuisent ensemble dans un plat familial libanais. Le jus de cuisson devient une sauce savoureuse, parfaite sur du riz.",
+    "ingredientsFr": [
+      "1 c. à café de mélange sept épices",
+      "2 c. à soupe de concentré de tomate",
+      "2 c. à soupe d’huile d’olive",
+      "700 g de bœuf ou d’agneau haché",
+      "1 oignon râpé et ½ tasse de persil haché",
+      "3 pommes de terre en tranches de 1 cm",
+      "3 tomates en rondelles",
+      "1½ tasse d’eau",
+      "1 c. à café de sel, selon le goût"
+    ],
+    "stepsFr": [
+      "Préchauffez le four à 200 °C. Mélangez la viande hachée avec l’oignon râpé, le persil, les sept épices et le sel, juste assez pour unir le tout sans trop pétrir.",
+      "Étalez la viande uniformément dans un plat huilé de 28 × 20 cm environ ou façonnez des galettes plates.",
+      "Disposez les tranches de pommes de terre et de tomates sur et autour du kafta. Arrosez d’huile d’olive et salez légèrement.",
+      "Délayez le concentré de tomate dans l’eau tiède et versez la sauce sur les côtés afin de garder une belle surface.",
+      "Couvrez hermétiquement de papier aluminium et enfournez 25 minutes. Découvrez puis poursuivez 20 à 25 minutes, jusqu’à ce que les pommes de terre soient tendres et la viande hachée à 71 °C à cœur.",
+      "Laissez reposer 5 minutes et servez avec du riz en nappant chaque portion du jus de tomate."
+    ],
+    "tipFr": "Coupez les pommes de terre en tranches de même épaisseur pour qu’elles cuisent en même temps que la viande.",
+    "storageFr": "Conservez 3 jours au réfrigérateur ; réchauffez soigneusement jusqu’à ce que le plat soit fumant.",
+    "allergensFr": "Vérifiez la composition des mélanges d’épices emballés en cas d’allergie."
+  },
+  "makhlouta": {
+    "titleFr": "Makhlouta, mélange de céréales et légumineuses",
+    "introFr": "Une marmite rustique et généreuse de lentilles, pois chiches, haricots blancs et boulgour, doucement parfumée aux oignons et à l’huile d’olive. Une belle illustration de la cuisine libanaise du garde-manger.",
+    "ingredientsFr": [
+      "1 tasse de lentilles brunes",
+      "½ tasse de pois chiches secs, trempés une nuit",
+      "½ tasse de haricots blancs secs, trempés une nuit",
+      "½ tasse de boulgour grossier rincé",
+      "¼ de tasse d’huile d’olive",
+      "2 oignons hachés",
+      "1 c. à café de cumin moulu",
+      "1 c. à café de sel, selon le goût",
+      "7 à 8 tasses d’eau, si nécessaire"
+    ],
+    "stepsFr": [
+      "Faites tremper séparément les pois chiches et les haricots blancs pendant la nuit, puis égouttez. Triez toutes les céréales et légumineuses pour retirer les petits cailloux.",
+      "Faites mijoter les pois chiches et les haricots blancs dans de l’eau neuve pendant 50 à 75 minutes, jusqu’à ce qu’ils soient presque tendres, en ajoutant de l’eau si nécessaire.",
+      "Ajoutez les lentilles rincées et laissez cuire encore 20 minutes. Incorporez ensuite le boulgour grossier et poursuivez 15 à 20 minutes, jusqu’à cuisson de tous les grains.",
+      "Pendant ce temps, faites dorer lentement les oignons dans l’huile d’olive pendant 15 à 20 minutes et ajoutez brièvement le cumin.",
+      "Incorporez la majorité des oignons aux grains, salez et laissez cuire encore 5 minutes pour mêler les arômes.",
+      "Servez dans des bols avec le reste des oignons dorés et des quartiers de citron à côté."
+    ],
+    "tipFr": "Commencez par les légumineuses les plus longues à cuire ; tout ajouter d’un coup rendrait certaines céréales pâteuses.",
+    "storageFr": "Conservez jusqu’à 3 jours au réfrigérateur ou congelez en portions jusqu’à 2 mois.",
+    "allergensFr": "Contient du blé et du gluten (boulgour)."
+  },
+  "labneh-breakfast": {
+    "titleFr": "Plateau de petit-déjeuner au labné",
+    "introFr": "Un petit-déjeuner libanais à partager sans se presser : labné frais, bonnes olives, zaatar, huile d’olive et légumes croquants. Une jolie composition simple, mais pleine de saveurs.",
+    "ingredientsFr": [
+      "¼ de tasse de zaatar pour manakich",
+      "⅓ de tasse d’huile d’olive vierge extra",
+      "1 tasse d’olives vertes locales",
+      "500 g de labné frais",
+      "2 concombres et 3 tomates",
+      "Feuilles de menthe fraîche, facultatives",
+      "Pain pita ou autre galette chaude"
+    ],
+    "stepsFr": [
+      "Gardez le labné au frais jusqu’au service. Lavez et séchez soigneusement tous les légumes frais.",
+      "Déposez le labné sur un large plat, étalez-le en une spirale épaisse et formez un petit creux pour l’huile d’olive.",
+      "Rincez ou égouttez les olives si elles sont très salées, puis placez-les dans un petit bol à part.",
+      "Coupez les tomates et les concombres en tranches, puis disposez-les avec la menthe autour du labné, en séparant les couleurs.",
+      "Saupoudrez une partie du labné de zaatar, versez l’huile d’olive dans le creux et servez immédiatement avec le pain chaud."
+    ],
+    "tipFr": "Proposez du zaatar et de l’huile en accompagnement pour que chacun assaisonne à son goût.",
+    "storageFr": "Remettez rapidement le labné au réfrigérateur. Gardez les légumes séparés et consommez sous 2 jours.",
+    "allergensFr": "Contient des produits laitiers, du blé et du gluten dans le pain, et peut contenir du sésame dans le zaatar."
+  },
+  "fatayer-sabanekh": {
+    "titleFr": "Fatayers aux épinards et au sumac",
+    "introFr": "De petits chaussons triangulaires farcis d’épinards citronnés, d’oignons et de sumac : une spécialité des boulangeries libanaises. Essorez bien les épinards pour que la pâte reste croustillante.",
+    "ingredientsFr": [
+      "3 tasses de farine de blé",
+      "2 c. à café de levure boulangère instantanée",
+      "3 c. à soupe d’huile d’olive, plus 1 pour la farce",
+      "1½ c. à soupe de sumac",
+      "1 c. à café de sel",
+      "600 g d’épinards frais finement hachés",
+      "2 oignons très finement hachés",
+      "Le jus de 2 citrons et 1 tasse d’eau tiède"
+    ],
+    "stepsFr": [
+      "Mélangez la farine, la levure et la moitié du sel. Pétrissez avec 3 cuillerées d’huile d’olive et l’eau tiède pendant 8 minutes, jusqu’à obtenir une pâte lisse. Couvrez et laissez lever 45 à 60 minutes.",
+      "Salez légèrement les épinards hachés et laissez reposer 10 minutes, puis pressez-les fermement dans un torchon pour retirer le maximum d’eau.",
+      "Mélangez les épinards essorés avec les oignons, le sumac, le jus de citron, le reste du sel et 1 cuillerée d’huile d’olive. Goûtez pour obtenir une farce bien acidulée.",
+      "Préchauffez le four à 210 °C. Divisez la pâte en environ 16 morceaux et étalez chacun en un cercle de 12 cm.",
+      "Déposez une cuillerée de farce au centre. Pincez fermement trois bords pour former un triangle, en laissant éventuellement une petite ouverture.",
+      "Enfournez sur des plaques recouvertes de papier cuisson pendant 17 à 20 minutes, jusqu’à ce que le dessous soit doré et les bords légèrement colorés. Laissez tiédir avant de déguster."
+    ],
+    "tipFr": "Essorez très soigneusement les épinards : une farce humide est la principale cause d’ouverture des chaussons à la cuisson.",
+    "storageFr": "Conservez les fatayers cuits 3 jours au réfrigérateur et réchauffez au four. Congelez-les bien refroidis jusqu’à 2 mois.",
+    "allergensFr": "Contient du blé et du gluten."
+  },
+  "sfouf": {
+    "titleFr": "Sfouf libanais doré au curcuma",
+    "introFr": "Un gâteau de semoule jaune soleil, délicatement parfumé au curcuma et à l’anis, souvent décoré de sésame ou de pignons. Une douceur libanaise moelleuse, parfaite avec le café de l’après-midi.",
+    "ingredientsFr": [
+      "2 tasses (330 g) de semoule",
+      "1 tasse (125 g) de farine de blé",
+      "1 tasse (200 g) de sucre blanc",
+      "2 c. à café de curcuma",
+      "2 c. à café de levure chimique",
+      "1 c. à café d’anis moulu ou de graines écrasées",
+      "⅔ de tasse (160 ml) d’huile végétale neutre",
+      "1½ tasse de lait ou d’eau",
+      "2 c. à soupe de graines de sésame"
+    ],
+    "stepsFr": [
+      "Préchauffez le four à 180 °C et huilez un moule d’environ 23 × 33 cm ; tapissez le fond de papier cuisson si vous souhaitez démouler facilement.",
+      "Fouettez la semoule, la farine, le sucre, le curcuma, la levure chimique et l’anis dans un grand saladier, jusqu’à ce que la couleur soit uniforme.",
+      "Ajoutez l’huile et le lait ou l’eau. Mélangez juste assez pour ne plus voir de parties sèches, sans fouetter vigoureusement.",
+      "Versez la pâte dans le moule, égalisez le dessus et répartissez les graines de sésame sur toute la surface.",
+      "Enfournez 30 à 35 minutes, jusqu’à ce que le gâteau soit doré et qu’un pique ressort propre du centre. Laissez refroidir entièrement avant de couper en losanges ou carrés."
+    ],
+    "tipFr": "Ne mélangez pas trop après l’ajout des liquides : un geste léger donne une mie plus tendre.",
+    "storageFr": "Conservez couvert 2 jours à température ambiante fraîche ou jusqu’à 5 jours au réfrigérateur.",
+    "allergensFr": "Contient du blé, du gluten et du sésame ; contient des produits laitiers si vous utilisez du lait."
+  },
+  "meghli": {
+    "titleFr": "Meghli, flan de riz aux épices",
+    "introFr": "Ce dessert libanais parfumé à la cannelle, au carvi et à l’anis est traditionnellement partagé pour célébrer une naissance. On le garnit de noix de coco et de fruits secs grillés.",
+    "ingredientsFr": [
+      "¾ de tasse (100 g) de farine de riz ou de riz très finement moulu",
+      "¾ de tasse (150 g) de sucre",
+      "2 c. à café de carvi moulu",
+      "2 c. à café de cannelle",
+      "½ c. à café d’anis moulu",
+      "⅓ de tasse de noix de coco râpée",
+      "¼ de tasse de noix hachées",
+      "¼ de tasse de pistaches décortiquées pour garnir",
+      "6 tasses d’eau froide"
+    ],
+    "stepsFr": [
+      "Si vous utilisez du riz fin entier, réduisez-le d’abord en farine. La farine de riz du commerce permet d’obtenir le flan le plus lisse.",
+      "Fouettez la farine de riz, le sucre, le carvi, la cannelle et l’anis avec 2 tasses d’eau froide jusqu’à disparition des grumeaux.",
+      "Versez les 4 tasses d’eau restantes dans une casserole épaisse, puis ajoutez le mélange de riz aux épices tout en fouettant.",
+      "Faites cuire à feu moyen-doux pendant 25 à 35 minutes, en remuant souvent et en raclant le fond, jusqu’à ce que le mélange nappe une cuillère et que la farine soit complètement cuite.",
+      "Versez dans des bols individuels, laissez tiédir, puis réfrigérez au moins 2 heures pour faire prendre.",
+      "Au moment de servir, parsemez de noix de coco, de noix hachées et de pistaches."
+    ],
+    "tipFr": "Remuez bien jusqu’au fond : la farine de riz accroche et brûle rapidement.",
+    "storageFr": "Conservez couvert au réfrigérateur jusqu’à 3 jours ; ajoutez les fruits secs au moment de servir.",
+    "allergensFr": "Contient des fruits à coque dans la garniture."
+  },
+  "maamoul": {
+    "titleFr": "Maamouls fourrés aux dattes",
+    "introFr": "Ces biscuits sablés à la semoule, garnis d’une pâte de dattes parfumée, sont une tradition des fêtes libanaises. Le repos de la pâte et un façonnage délicat assurent leur texture friable.",
+    "ingredientsFr": [
+      "2 tasses (330 g) de semoule fine",
+      "1 tasse (125 g) de farine de blé",
+      "300 g de pâte de dattes",
+      "2 c. à soupe d’eau de fleur d’oranger",
+      "1 c. à soupe d’eau de rose",
+      "1 c. à soupe de sucre glace, facultative",
+      "200 g de beurre doux fondu ou de ghee",
+      "¼ de tasse de lait ou d’eau, selon la texture"
+    ],
+    "stepsFr": [
+      "Sablez la semoule et la farine avec le beurre fondu ou le ghee jusqu’à ce que chaque grain soit enrobé. Couvrez et laissez reposer 2 heures dans une pièce fraîche ou une nuit au réfrigérateur.",
+      "Incorporez les eaux de fleur d’oranger et de rose, puis ajoutez le lait ou l’eau cuillerée par cuillerée, jusqu’à ce que la pâte tienne quand on la presse. Ne pétrissez pas comme du pain.",
+      "Formez 24 petites boules de pâte de dattes. Divisez la pâte de semoule en 24 morceaux, aplatissez chacun et enveloppez une boule de dattes.",
+      "Soudez bien les bords et pressez doucement dans un moule à maamoul légèrement fariné, ou marquez le dessus à la fourchette. Posez sur une plaque garnie de papier cuisson.",
+      "Préchauffez le four à 180 °C et enfournez 15 à 18 minutes, jusqu’à ce que le dessous soit légèrement doré tandis que le dessus reste pâle.",
+      "Laissez complètement refroidir avant de déplacer les biscuits, très fragiles lorsqu’ils sont chauds. Saupoudrez éventuellement d’un peu de sucre glace."
+    ],
+    "tipFr": "La pâte doit se tenir lorsqu’on la presse sans devenir élastique. Ajoutez le liquide très progressivement.",
+    "storageFr": "Conservez dans une boîte hermétique 5 jours au frais ou congelez jusqu’à 2 mois.",
+    "allergensFr": "Contient du blé et du gluten ; produits laitiers si le beurre ou le lait est utilisé."
+  },
+  "namoura": {
+    "titleFr": "Namoura libanaise au sirop parfumé",
+    "introFr": "Des carrés dorés de semoule imbibés de sirop à la fleur d’oranger : la namoura est un grand classique du goûter libanais. Versez le sirop refroidi sur le gâteau chaud pour une texture tendre et brillante.",
+    "ingredientsFr": [
+      "2 tasses (330 g) de semoule",
+      "¾ de tasse de sucre pour le gâteau + 1 tasse pour le sirop",
+      "1 c. à soupe de levure chimique",
+      "2 c. à soupe d’eau de fleur d’oranger",
+      "¼ de tasse d’amandes effilées",
+      "1 tasse de yaourt nature",
+      "½ tasse de beurre fondu ou d’huile neutre",
+      "1 tasse d’eau et 1 c. à café de jus de citron pour le sirop"
+    ],
+    "stepsFr": [
+      "Préparez d’abord le sirop : faites frémir 1 tasse de sucre avec 1 tasse d’eau pendant 8 à 10 minutes. Ajoutez le jus de citron et l’eau de fleur d’oranger, puis laissez complètement refroidir.",
+      "Préchauffez le four à 180 °C et graissez un moule carré d’environ 23 cm avec du beurre ou de l’huile.",
+      "Mélangez la semoule, ¾ de tasse de sucre et la levure chimique. Incorporez le yaourt et le beurre fondu ou l’huile, juste assez pour réunir les ingrédients. Laissez reposer 10 minutes.",
+      "Étalez uniformément dans le moule, tracez des carrés ou des losanges et déposez quelques amandes sur chaque portion.",
+      "Enfournez 30 à 35 minutes jusqu’à obtenir une belle couleur dorée et un centre ferme. Repassez doucement sur les lignes de découpe pendant que le gâteau est encore chaud.",
+      "Versez immédiatement et lentement le sirop froid sur le gâteau chaud. Laissez absorber au moins 1 heure avant de découper et servir."
+    ],
+    "tipFr": "Un gâteau chaud et un sirop refroidi assurent une absorption régulière.",
+    "storageFr": "Conservez couvert jusqu’à 2 jours dans une pièce fraîche ou 5 jours au réfrigérateur.",
+    "allergensFr": "Contient du blé, du gluten, des produits laitiers et des amandes."
+  }
 };

@@ -1150,7 +1150,8 @@ function filteredProducts(){
     .filter(({p,score})=>{
       const catOk=activeCategory==="All"||p.category===activeCategory;
       const favOk=!favoritesOnly||favorites.has(p.id);
-      return catOk&&favOk&&(!q||score>0);
+      const budgetOk=!window.ZWM_CATALOGUE_ENHANCEMENTS||window.ZWM_CATALOGUE_ENHANCEMENTS.allowsPrice(p);
+      return catOk&&favOk&&budgetOk&&(!q||score>0);
     });
   rows.sort((a,b)=>q?b.score-a.score:a.index-b.index);
   return rows.map(x=>x.p);
@@ -1185,7 +1186,7 @@ function renderProducts(){
       ? `<select class="card-variant-select" data-card-variant="${p.id}" aria-label="${escapeHtml(t.chooseSize)}">${p.variants.map(v=>`<option value="${escapeHtml(v.id)}"${v.id===selected.id?" selected":""}>${escapeHtml(currentSize(v))} · ${money(v.price)}</option>`).join("")}</select>`
       : `<div class="single-size">${escapeHtml(currentSize(selected))}</div>`;
 
-    return `<article class="product-card product-card-animated" style="--card-i:${index%8}" data-product="${escapeHtml(p.id)}" tabindex="0" role="button" aria-label="${escapeHtml(t.view+" "+currentName(p))}">
+    return `<article class="product-card product-card-animated" style="--card-i:${index%8}" data-product="${escapeHtml(p.id)}">
       <div class="product-top">
         <div class="product-visual">${productVisualMarkup(p)}<span class="quick-view-hint">${lang==="ar"?"عرض سريع ↗":"Quick view ↗"}</span></div>
         <div class="product-top-actions">

@@ -48,15 +48,17 @@
   function bundleTotal(r){return selectedRows(r).reduce(function(sum,row){return sum+Number(currentVariant(row).price)},0)}
   function bundleMin(r){return recipeRows(r).filter(function(row){return orderable(row.product)}).reduce(function(s,row){return s+Number(variants(row.product)[0].price)},0)}
   function routeId(){var match=decodeURIComponent(location.hash||"").match(/^#recipe\/([a-z0-9-]+)$/);return match&&byId.has(match[1])?match[1]:null}
+  function recipeUrl(id){return location.pathname+(location.search||"")+"#recipe/"+encodeURIComponent(id)}
+  function backUrl(){return location.pathname+(location.search||"")+"#recipes"}
   function categoryName(c){return ar()?(categoriesAr[c]||c):(categoriesEn[c]||c)}
   function art(r){return '<div class="zwm-food-art zwm-food-art--'+escape(r.category.toLowerCase())+'" aria-hidden="true"><span>'+escape(r.icon||"🍽️")+'</span><i></i></div>'}
   function card(r){
     return '<article class="zwm-recipe-card">'+
-      '<a class="zwm-recipe-card-media" href="#recipe/'+escape(r.id)+'" data-open="'+escape(r.id)+'" aria-label="'+escape(t("view")+": "+text(r.titleEn,r.titleAr))+'">'+art(r)+'</a>'+
+      '<a class="zwm-recipe-card-media" href="'+escape(recipeUrl(r.id))+'" data-open="'+escape(r.id)+'" aria-label="'+escape(t("view")+": "+text(r.titleEn,r.titleAr))+'">'+art(r)+'</a>'+
       '<div class="zwm-recipe-card-body"><span class="zwm-category">'+escape(categoryName(r.category))+'</span>'+
       '<h3>'+escape(text(r.titleEn,r.titleAr))+'</h3><p>'+escape(text(r.introEn,r.introAr))+'</p>'+
       '<div class="zwm-recipe-stats"><span>⏱ '+(r.prep+r.cook)+' '+escape(t("time"))+'</span><span>♧ '+r.serves+' '+escape(t("serves"))+'</span></div>'+
-      '<div class="zwm-recipe-card-foot"><a class="zwm-open-link" href="#recipe/'+escape(r.id)+'" data-open="'+escape(r.id)+'">'+escape(t("view"))+' ↗</a><button type="button" data-pantry="'+escape(r.id)+'">'+escape(t("add"))+'</button></div></div></article>';
+      '<div class="zwm-recipe-card-foot"><a class="zwm-open-link" href="'+escape(recipeUrl(r.id))+'" data-open="'+escape(r.id)+'">'+escape(t("view"))+' ↗</a><button type="button" data-pantry="'+escape(r.id)+'">'+escape(t("add"))+'</button></div></div></article>';
   }
   function renderGrid(){
     var found=recipes.filter(function(r){
@@ -94,7 +96,7 @@
     state.selected=new Set(recipeRows(r).filter(function(x){return orderable(x.product)}).map(function(x){return x.index}));
     var rows=recipeRows(r),fresh=rows.filter(function(row){return !row.product}),unavailable=rows.filter(function(row){return row.product&&!orderable(row.product)}),available=rows.filter(function(row){return orderable(row.product)});
     return '<article class="zwm-cookbook-detail" id="zwmRecipeDetail" tabindex="-1" data-current="'+escape(r.id)+'">'+
-      '<div class="zwm-detail-back"><a href="#recipes" data-back>← '+escape(t("back"))+'</a><button type="button" data-print>⎙ '+escape(t("print"))+'</button></div>'+
+      '<div class="zwm-detail-back"><a href="'+escape(backUrl())+'" data-back>← '+escape(t("back"))+'</a><button type="button" data-print>⎙ '+escape(t("print"))+'</button></div>'+
       '<div class="zwm-detail-hero">'+art(r)+'<div class="zwm-detail-hero-copy"><span class="zwm-category">'+escape(categoryName(r.category))+'</span>'+
       '<h1>'+escape(text(r.titleEn,r.titleAr))+'</h1><p>'+escape(text(r.introEn,r.introAr))+'</p>'+
       '<div class="zwm-detail-stats"><span>'+escape(t("prep"))+' <b>'+r.prep+' '+escape(t("time"))+'</b></span><span>'+escape(t("cook"))+' <b>'+r.cook+' '+escape(t("time"))+'</b></span><span>'+escape(t("serves"))+' <b>'+r.serves+'</b></span></div></div></div>'+
@@ -189,6 +191,13 @@
     }
   }
   root.addEventListener("click",function(e){
+    var route=e.target.closest("a[data-open],a[data-back]");
+    if(route&&!e.defaultPrevented&&e.button===0&&!e.ctrlKey&&!e.metaKey&&!e.shiftKey&&!e.altKey){
+      e.preventDefault();
+      if(route.hasAttribute("data-open"))location.hash="recipe/"+encodeURIComponent(route.dataset.open);
+      else location.hash="recipes";
+      return;
+    }
     var btn=e.target.closest("button");if(!btn)return;
     if(btn.hasAttribute("data-filter")){state.category=btn.dataset.filter;renderGrid();return}
     if(btn.hasAttribute("data-pantry")){

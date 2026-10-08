@@ -132,6 +132,24 @@ async function run(){
   assert(read("recipes.html").includes("recipe-product-fr-v1.js?v="),"French product names must load");
   assert(read("recipe-cookbook-v1.js").includes('root.setAttribute("data-no-fr","")'),"French runtime should not overwrite human French translations");
   assert(read("premium-v2.js").includes("homeRecipeFr"),"Homepage recipe previews need French copy");
+  const storefront=read("app.js");
+  const parseLiteral=(name)=>{
+    const match=storefront.match(new RegExp("const "+name+"=(\\{[\\s\\S]*?\\});"));
+    assert(match,"French storefront dictionary missing: "+name);
+    return JSON.parse(match[1]);
+  };
+  const frUi=parseLiteral("UI_FR_OVERRIDES");
+  const frExtra=parseLiteral("EXTRA_FR_OVERRIDES");
+  const frPages=parseLiteral("PAGE_FR_COPY");
+  const frCats=parseLiteral("CATEGORY_FR");
+  assert(Object.keys(frUi).length>=60&&frUi.add==="Ajouter au panier","French core cart controls incomplete");
+  assert(Object.keys(frExtra).length>=50&&frExtra.giftAdd==="Ajouter","French gift interface incomplete");
+  assert(Object.keys(frPages).length===8&&frPages.recipes.title.includes("30 recettes"),"French page metadata incomplete");
+  assert(Object.keys(frCats).length===21&&frCats.Spices==="Épices","French catalogue categories incomplete");
+  assert(storefront.includes("UI.fr=frenchStorefrontLabels(UI.en,UI_FR_OVERRIDES)"),"French cart UI must exist for addToCart and renderCart");
+  assert(storefront.includes("EXTRA_UI.fr=frenchStorefrontLabels(EXTRA_UI.en,EXTRA_FR_OVERRIDES)"),"French gift controls must exist");
+  assert(storefront.includes('in_stock:"En stock"'),"French availability labels must exist");
+  assert(read("recipe-cookbook-v1.css").includes('html[lang="ar"]'),"Arabic RTL typography must be explicit");
   assert(read("recipes.html").includes("recipe-cookbook-v1.css?v="),"Recipe stylesheet must be linked");
   assert(read("recipe-cookbook-v1.css").includes("prefers-reduced-motion:reduce"),"Reduced-motion accessibility must be supported");
   w.close();

@@ -19,13 +19,19 @@ async function run(){
   // Publish only the test fixture catalogue on window; the production file stays unchanged.
   w.eval(read("products-data.js").replace(/^const PRODUCTS_DATA=/,"window.PRODUCTS_DATA="));
   w.eval(read("recipe-library-v1.js"));
+  w.eval(read("recipe-library-fr-v1.js"));
+  w.eval(read("recipe-product-fr-v1.js"));
   const all=w.ZWM_RECIPE_LIBRARY;
+  const french=w.ZWM_RECIPE_FR;
+  const frenchProducts=w.ZWM_RECIPE_PRODUCTS_FR;
+  assert.equal(Object.keys(french).length,30,"All 30 recipes require French translations");
   assert.equal(all.length,30,"Cookbook must contain exactly 30 recipes");
   assert.equal(new Set(all.map(r=>r.id)).size,30,"Recipe IDs must be unique");
   const preserved=["mujadara","manoushe","fattoush","hummus","tabbouleh","kibbeh"];
   preserved.forEach(id=>assert(all.some(r=>r.id===id),"Original recipe missing: "+id));
   const catalogue=w.PRODUCTS_DATA;
   const byId=new Map(catalogue.map(p=>[p.id,p]));
+  const usedProductIds=new Set();
   let links=0;
   for(const r of all){
     assert(r.titleEn&&r.titleAr&&r.introEn.length>=55&&r.introAr.length>=35,r.id+" requires full bilingual intro");
@@ -35,11 +41,18 @@ async function run(){
     assert(r.stepsEn.length>=5&&r.stepsAr.length===r.stepsEn.length,r.id+" needs detailed bilingual steps");
     assert(r.stepsEn.every(s=>s.length>40)&&r.stepsAr.every(s=>s.length>30),r.id+" has short cooking steps");
     assert(r.tipEn&&r.tipAr&&r.storageEn&&r.storageAr&&r.allergensEn&&r.allergensAr,r.id+" missing cooking safety notes");
+    const tr=french[r.id];
+    assert(tr&&tr.titleFr&&tr.introFr.length>=55,r.id+" requires a full French title and introduction");
+    assert(tr.ingredientsFr.length===r.ingredients.length,r.id+" French ingredient list must be complete and aligned");
+    assert(tr.stepsFr.length===r.stepsEn.length&&tr.stepsFr.every(step=>step.length>=40),r.id+" French instructions must be complete");
+    assert(tr.tipFr&&tr.storageFr&&tr.allergensFr,r.id+" missing French tips, storage or allergy notes");
+    assert(tr.ingredientsFr.every(ingredient=>ingredient.length>=7),r.id+" has empty French ingredient labels");
     const recipeProductIds=new Set();
     for(const ing of r.ingredients){
       assert(ing[0]&&ing[1],r.id+" has an incomplete ingredient");
       if(!ing[2])continue;
       links++;
+      usedProductIds.add(ing[2]);
       assert(byId.has(ing[2]),r.id+" contains invented product ID "+ing[2]);
       assert(!recipeProductIds.has(ing[2]),r.id+" has duplicate shopping item "+ing[2]);
       recipeProductIds.add(ing[2]);
@@ -47,6 +60,8 @@ async function run(){
     }
     assert(recipeProductIds.size>=2,r.id+" needs relevant real pantry products");
   }
+  assert.equal(usedProductIds.size,47,"Cookbook catalogue coverage changed; review the 47 French product labels");
+  usedProductIds.forEach(id=>assert(frenchProducts[id]&&frenchProducts[id].length>=3,"Missing French shopping label for "+id));
   w.eval(read("recipe-cookbook-v1.js"));
   assert.equal(w.document.querySelectorAll(".zwm-recipe-card").length,30,"All 30 cards should render");
   assert.match(w.document.querySelector(".zwm-cookbook-intro h1").textContent,/Made with tradition/);
@@ -92,11 +107,34 @@ async function run(){
   w.document.documentElement.lang="ar";
   await new Promise(resolve=>w.setTimeout(resolve,10));
   assert(w.document.querySelector("#zwmRecipeDetail").textContent.includes("مجدّرة"),"Arabic titles should render when language changes");
+  assert(w.document.querySelector("#zwmRecipeDetail").textContent.includes("طريقة التحضير"),"Arabic cooking labels must render");
+  w.document.documentElement.lang="fr";
+  await new Promise(resolve=>w.setTimeout(resolve,20));
+  const frDetail=w.document.querySelector("#zwmRecipeDetail");
+  assert(frDetail.querySelector("h1").textContent.includes("Moujadara"),"French title must render");
+  assert(frDetail.textContent.includes(french.mujadara.stepsFr[0]),"French cooking instructions must render");
+  assert(frDetail.textContent.includes(french.mujadara.ingredientsFr[0]),"French ingredient quantities must render");
+  assert(frDetail.textContent.includes("Conservation")&&frDetail.textContent.includes("Allergènes"),"French storage and allergy headings must render");
+  assert(frDetail.textContent.includes(frenchProducts["aadas-aarid"]),"French catalogue product labels must render");
+  assert.equal(frDetail.querySelector("[data-add-bundle]").textContent,"Ajouter au panier","French Add to Pantry button must translate");
+  const frBack=frDetail.querySelector("[data-back]");
+  frBack.click();
+  await new Promise(resolve=>w.setTimeout(resolve,20));
+  assert(w.document.querySelector("#zwmRecipeSearch").placeholder.startsWith("Rechercher"),"French search placeholder must render");
+  assert(w.document.querySelector('[data-filter="Mezze"]').textContent==="Mezzés","French category labels must render");
+  const frSearch=w.document.querySelector("#zwmRecipeSearch");
+  frSearch.value="Moujadara";frSearch.dispatchEvent(new w.Event("input",{bubbles:true}));
+  assert.equal(w.document.querySelectorAll(".zwm-recipe-card").length,1,"French recipe search must work");
+  assert(w.document.querySelector(".zwm-recipe-card h3").textContent.includes("Moujadara"),"French search result must have a translated title");
   assert(read("recipes.html").includes("recipe-cookbook-v1.js?v="),"Recipe UI script must be versioned");
   assert(read("recipes.html").includes("recipe-library-v1.js?v="),"Recipe data must load on the recipe page");
+  assert(read("recipes.html").includes("recipe-library-fr-v1.js?v="),"French recipe data must load");
+  assert(read("recipes.html").includes("recipe-product-fr-v1.js?v="),"French product names must load");
+  assert(read("recipe-cookbook-v1.js").includes('root.setAttribute("data-no-fr","")'),"French runtime should not overwrite human French translations");
+  assert(read("premium-v2.js").includes("homeRecipeFr"),"Homepage recipe previews need French copy");
   assert(read("recipes.html").includes("recipe-cookbook-v1.css?v="),"Recipe stylesheet must be linked");
   assert(read("recipe-cookbook-v1.css").includes("prefers-reduced-motion:reduce"),"Reduced-motion accessibility must be supported");
   w.close();
-  console.log("Cookbook regression passed: 30 complete bilingual recipes, "+links+" catalogue ingredient links, searchable filters, detailed routes, real cart shopping and Arabic.");
+  console.log("Cookbook regression passed: 30 complete trilingual recipes, "+links+" catalogue ingredient links, searchable filters, detailed routes, real cart shopping and Arabic.");
 }
 run().catch(err=>{console.error(err);process.exitCode=1});

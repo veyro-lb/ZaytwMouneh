@@ -1,3 +1,6 @@
+/* Keep legacy markup as no-JS fallback; avoid two competing page introductions when cookbook is active. */
+body[data-page="recipes"].zwm-cookbook-ready .page-intro,
+body[data-page="recipes"].zwm-cookbook-ready #recipes>.shell>.premium-head{display:none!important}
 /* Zayt w Mouneh — 30 recipe editorial cookbook */
 #recipes .zwm-cookbook{--cook-ink:#193b2a;--cook-muted:#66746c;--cook-line:#dce6da;--cook-cream:#f9f7ef;--cook-gold:#c7a85c;color:var(--cook-ink);font-family:"DM Sans",sans-serif}
 .zwm-cookbook *{box-sizing:border-box}
@@ -9,7 +12,7 @@
 .zwm-cookbook-intro:before{right:-110px;top:-150px;box-shadow:0 0 0 42px rgba(255,255,255,.025),0 0 0 88px rgba(255,255,255,.02)}
 .zwm-cookbook-intro:after{left:-230px;bottom:-180px}
 .zwm-kicker{display:inline-block;color:#ddca92;text-transform:uppercase;letter-spacing:.17em;font-size:.68rem;font-weight:900}
-.zwm-cookbook-intro h2{font:400 clamp(2.15rem,4.2vw,4.45rem)/1.06 "DM Serif Display",serif;color:#fff;max-width:780px;margin:14px 0}
+.zwm-cookbook-intro h1{font:400 clamp(2.15rem,4.2vw,4.45rem)/1.06 "DM Serif Display",serif;color:#fff;max-width:780px;margin:14px 0}
 .zwm-cookbook-intro p{max-width:680px;color:#e5e9dc;font-size:clamp(.94rem,1.35vw,1.1rem);line-height:1.75;margin:0}
 .zwm-cookbook-tools{padding:20px 0 22px}
 .zwm-search-label{display:grid;gap:9px;font-size:.75rem;letter-spacing:.03em;font-weight:850;color:var(--cook-ink);max-width:640px}
@@ -51,7 +54,7 @@
 .zwm-detail-hero>.zwm-food-art{min-height:310px;height:100%}
 .zwm-detail-hero>.zwm-food-art span{font-size:8rem}
 .zwm-detail-hero-copy{padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
-.zwm-detail-hero h2{font:400 clamp(2.1rem,3.6vw,3.8rem)/1.08 "DM Serif Display",serif;margin:16px 0;color:#1b422c}
+.zwm-detail-hero h1{font:400 clamp(2.1rem,3.6vw,3.8rem)/1.08 "DM Serif Display",serif;margin:16px 0;color:#1b422c}
 .zwm-detail-hero p{color:#637167;line-height:1.75;margin:0}
 .zwm-detail-stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
 .zwm-detail-stats span{display:grid;gap:5px;font-size:.68rem;color:#758377;font-weight:800;border:1px solid #e2e8df;border-radius:11px;padding:9px 13px;min-width:84px}
@@ -91,7 +94,7 @@
 .zwm-fresh-panel p{font-size:.72rem;color:#6c7f70;margin:12px 0 0}
 @media(max-width:1060px){.zwm-recipe-results{grid-template-columns:repeat(2,minmax(0,1fr))}.zwm-detail-columns{grid-template-columns:minmax(0,1fr) 300px}.zwm-cooking-ingredients ul{columns:1}}
 @media(max-width:760px){.zwm-cookbook-intro{border-radius:19px}.zwm-recipe-results{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.zwm-recipe-card-body{padding:16px;gap:10px}.zwm-recipe-card .zwm-food-art{height:155px}.zwm-detail-hero{grid-template-columns:1fr}.zwm-detail-hero>.zwm-food-art{min-height:215px;height:215px}.zwm-detail-hero>.zwm-food-art span{font-size:6.2rem}.zwm-detail-columns{grid-template-columns:1fr}.zwm-pantry-panel{position:static;order:-1}.zwm-detail-hero-copy{padding:23px}.zwm-detail-stats{margin-top:15px}}
-@media(max-width:520px){.zwm-recipe-results{grid-template-columns:1fr;gap:15px}.zwm-recipe-card{border-radius:16px}.zwm-recipe-card .zwm-food-art{height:190px}.zwm-recipe-card-body{padding:19px}.zwm-filters{flex-wrap:nowrap;overflow-x:auto;padding:3px 2px 9px;scrollbar-width:thin}.zwm-filters button{flex:0 0 auto}.zwm-cookbook-intro{padding:25px 21px}.zwm-detail-back{flex-wrap:wrap}.zwm-detail-hero h2{font-size:2.35rem}.zwm-detail-main section,.zwm-recipe-note,.zwm-pantry-panel{border-radius:14px;padding:19px}.zwm-recipe-method li{padding-inline-start:48px;font-size:.88rem}.zwm-recipe-method li:before{width:35px;height:35px}.zwm-recipe-card-foot{gap:12px}}
+@media(max-width:520px){.zwm-recipe-results{grid-template-columns:1fr;gap:15px}.zwm-recipe-card{border-radius:16px}.zwm-recipe-card .zwm-food-art{height:190px}.zwm-recipe-card-body{padding:19px}.zwm-filters{flex-wrap:nowrap;overflow-x:auto;padding:3px 2px 9px;scrollbar-width:thin}.zwm-filters button{flex:0 0 auto}.zwm-cookbook-intro{padding:25px 21px}.zwm-detail-back{flex-wrap:wrap}.zwm-detail-hero h1{font-size:2.35rem}.zwm-detail-main section,.zwm-recipe-note,.zwm-pantry-panel{border-radius:14px;padding:19px}.zwm-recipe-method li{padding-inline-start:48px;font-size:.88rem}.zwm-recipe-method li:before{width:35px;height:35px}.zwm-recipe-card-foot{gap:12px}}
 html[dir="rtl"] .zwm-detail-back a{direction:rtl}
 @media(prefers-reduced-motion:reduce){.zwm-cookbook *,.zwm-cookbook *:before,.zwm-cookbook *:after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 @media print{header.site-header,.footer,.order-strip,.page-intro,.page-progress,.zwm-detail-back,.zwm-pantry-panel,.zwm-cookbook-tools,.zwm-recipe-results,.zwm-cookbook-intro{display:none!important}body,#recipes,.premium-recipes{background:#fff!important;box-shadow:none!important}.zwm-detail-columns{display:block}.zwm-detail-main section,.zwm-recipe-note{border:0;padding:0;box-shadow:none;break-inside:avoid}.zwm-detail-hero{border:0;box-shadow:none;display:block}.zwm-detail-hero>.zwm-food-art{display:none}.zwm-detail-hero-copy{padding:0}.zwm-recipe-method li{break-inside:avoid}}

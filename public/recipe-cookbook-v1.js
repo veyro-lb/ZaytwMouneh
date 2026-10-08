@@ -136,6 +136,32 @@
     var amount=root.querySelector("#zwmBundleAmount");if(amount)amount.textContent=money(bundleTotal(r));
     var btn=root.querySelector("#zwmAddPantry");if(btn)btn.disabled=!selectedRows(r).length||state.busy;
   }
+  function addFromCard(id,button){
+    if(state.busy)return;
+    var r=byId.get(id);if(!r||typeof addToCart!=="function")return;
+    var rows=recipeRows(r).filter(function(row){return orderable(row.product)});
+    if(!rows.length){button.textContent=t("unavailable");return}
+    state.busy=true;button.disabled=true;
+    var added=0;
+    try{
+      rows.forEach(function(row){
+        var p=row.product,v=variants(p)[0];if(!v)return;
+        var previous=0;
+        if(typeof cart!=="undefined"&&typeof cartKey==="function"){
+          var entry=cart[cartKey(p.id,v.id)];previous=entry?Math.max(0,Number(entry.qty)||0):0;
+        }
+        addToCart(p,v,previous+1);added++;
+      });
+      button.textContent=t("success")+" ✓";
+      button.setAttribute("aria-label",t("success")+" · "+added+" "+(ar()?"منتجات":"items"));
+    }catch(e){
+      button.textContent=ar()?"تعذّرت الإضافة":"Could not add";
+    }finally{
+      setTimeout(function(){
+        state.busy=false;button.disabled=false;button.textContent=t("add");button.removeAttribute("aria-label");
+      },1300);
+    }
+  }
   function addBundle(){
     if(state.busy)return;
     var r=byId.get(routeId());if(!r)return;
@@ -165,7 +191,7 @@
     var btn=e.target.closest("button");if(!btn)return;
     if(btn.hasAttribute("data-filter")){state.category=btn.dataset.filter;renderGrid();return}
     if(btn.hasAttribute("data-pantry")){
-      var id=btn.dataset.pantry;location.hash="recipe/"+encodeURIComponent(id);return;
+      addFromCard(btn.dataset.pantry,btn);return;
     }
     if(btn.hasAttribute("data-add-bundle")){addBundle();return}
     if(btn.hasAttribute("data-print")){window.print();return}

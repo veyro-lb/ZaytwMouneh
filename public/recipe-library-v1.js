@@ -706,4 +706,348 @@ window.ZWM_RECIPE_LIBRARY = [
   "storageAr": "تحفظ حتى ٣ أيام بالثلاجة وتسخّن برفق.",
   "allergensEn": "No major allergens in the basic recipe.",
   "allergensAr": "لا تحتوي الوصفة الأساسية على مسببات حساسية رئيسية."
+},
+{
+  "id": "loubieh-bi-zeit",
+  "titleEn": "Green Beans bi Zeit",
+  "titleAr": "لوبيا بالزيت",
+  "category": "Mains",
+  "prep": 20,
+  "cook": 55,
+  "serves": 4,
+  "icon": "🫘",
+  "introEn": "A Lebanese summer staple: green beans slowly cooked with sweet onions, garlic and tomatoes until meltingly tender. Excellent warm, but even better after the flavours settle.",
+  "introAr": "اللوبيا بالزيت من أساسيات الصيف اللبناني، تُطهى على مهل مع البصل والثوم والبندورة حتى تصبح طرية ومليئة بالنكهة. طيبة ساخنة أو فاترة.",
+  "ingredients": [
+    [
+      "4 tbsp extra-virgin olive oil",
+      "٤ ملاعق كبيرة زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "1 tbsp tomato paste",
+      "ملعقة كبيرة رب بندورة",
+      "rub-el-bandoura"
+    ],
+    [
+      "750 g fresh green beans, trimmed",
+      "٧٥٠ غ لوبيا خضراء منظفة"
+    ],
+    [
+      "2 large onions, sliced",
+      "بصلتان كبيرتان شرائح"
+    ],
+    [
+      "4 garlic cloves, minced",
+      "٤ فصوص ثوم مفرومة"
+    ],
+    [
+      "4 ripe tomatoes, chopped",
+      "٤ بندورات ناضجة مفرومة"
+    ],
+    [
+      "½ tsp salt and ½ cup water",
+      "نصف ملعقة صغيرة ملح ونصف كوب ماء",
+      "sea-salt"
+    ]
+  ],
+  "stepsEn": [
+    "Trim the stem ends of the beans and cut long pods into halves; rinse and drain.",
+    "Heat oil in a heavy pot, add onions and cook 10 minutes over medium-low heat until soft and lightly golden.",
+    "Stir in garlic, then tomatoes and tomato paste; simmer 5 minutes until juicy.",
+    "Add beans, salt and half a cup of water. Cover and cook gently 35–45 minutes, checking occasionally, until beans are very tender.",
+    "Uncover for the last few minutes to reduce any watery sauce; rest 10 minutes before serving with bread."
+  ],
+  "stepsAr": [
+    "نظّف أطراف اللوبيا واقطع الحبات الطويلة إلى نصفين ثم اغسلها وصفّها.",
+    "سخّن الزيت في قدر سميك وأضف البصل واطبخه ١٠ دقائق على نار متوسطة إلى هادئة حتى يلين ويشقرّ.",
+    "أضف الثوم ثم البندورة والرب واترك الصلصة ٥ دقائق حتى تطلق عصارتها.",
+    "أضف اللوبيا والملح ونصف كوب ماء ثم غطّ القدر ٣٥–٤٥ دقيقة مع المراقبة حتى تصبح طرية جداً.",
+    "اكشف الغطاء آخر دقائق لتكثيف الصلصة واتركها ترتاح ١٠ دقائق قبل التقديم مع الخبز."
+  ],
+  "tipEn": "This dish should be tender, not crunchy; use ripe tomatoes for natural sweetness.",
+  "tipAr": "يفضّل أن تكون اللوبيا طرية لا مقرمشة؛ البندورة الناضجة تزيد حلاوتها.",
+  "storageEn": "Refrigerate up to 3 days and enjoy warm or at room temperature for a short serving period.",
+  "storageAr": "تحفظ حتى ٣ أيام بالثلاجة وتؤكل دافئة أو فاترة عند التقديم.",
+  "allergensEn": "No major allergens in the basic recipe.",
+  "allergensAr": "لا تحتوي الوصفة الأساسية على مسببات حساسية رئيسية."
+},
+{
+  "id": "sheikh-el-mahshi",
+  "titleEn": "Sheikh el Mahshi Stuffed Eggplant",
+  "titleAr": "شيخ المحشي بالباذنجان",
+  "category": "Mains",
+  "prep": 35,
+  "cook": 60,
+  "serves": 5,
+  "icon": "🍆",
+  "introEn": "Small roasted eggplants stuffed with savoury minced meat and pine nuts, nestled in tomato sauce. A classic Lebanese family centrepiece that is well worth the little extra effort.",
+  "introAr": "باذنجان صغير محشو باللحمة والصنوبر، مستوٍ في صلصة بندورة غنية. شيخ المحشي من أطباق السفرة اللبنانية التي تستحق وقت التحضير.",
+  "ingredients": [
+    [
+      "2 tbsp tomato paste",
+      "ملعقتان كبيرتان رب بندورة",
+      "rub-el-bandoura"
+    ],
+    [
+      "2 tsp seven spice",
+      "ملعقتان صغيرتان سبع بهارات",
+      "sabaa-bharat"
+    ],
+    [
+      "⅓ cup pine nuts",
+      "ثلث كوب صنوبر",
+      "snoubar"
+    ],
+    [
+      "3 tbsp olive oil",
+      "٣ ملاعق كبيرة زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "8 small eggplants, about 1 kg",
+      "٨ حبات باذنجان صغير نحو كيلو"
+    ],
+    [
+      "400 g minced beef or lamb",
+      "٤٠٠ غ لحم بقر أو غنم مفروم"
+    ],
+    [
+      "1 onion, chopped",
+      "بصلة مفرومة"
+    ],
+    [
+      "500 g crushed tomatoes, 1 cup water and salt",
+      "٥٠٠ غ بندورة مهروسة وكوب ماء وملح",
+      "sea-salt"
+    ]
+  ],
+  "stepsEn": [
+    "Heat oven to 200°C. Halve eggplants lengthwise, score flesh and brush lightly with olive oil; roast cut-side up 20–25 minutes until soft.",
+    "Meanwhile sauté onion for 5 minutes. Add mince and cook thoroughly until browned; season with seven spice and fold in toasted pine nuts.",
+    "Scoop a shallow pocket from each softened eggplant half without piercing the skin; fill generously with meat mixture.",
+    "Simmer crushed tomatoes with tomato paste, salt and water for 10 minutes; pour into a baking dish and nestle filled eggplants on top.",
+    "Bake at 190°C for 20–25 minutes until bubbling and the ground-meat filling reaches at least 71°C; serve with rice."
+  ],
+  "stepsAr": [
+    "سخّن الفرن إلى ٢٠٠°م. اقطع الباذنجان بالطول وشقّ لبه قليلاً وادهَنه بالزيت واشوه ٢٠–٢٥ دقيقة حتى يطرى.",
+    "شوّح البصل ٥ دقائق ثم أضف اللحم واطبخه حتى يتحمّر وينضج. تبّله بالسبع بهارات وأضف الصنوبر المحمّص.",
+    "احفر جيباً صغيراً في لب كل نصف باذنجانة دون ثقب القشرة واملأه بحشوة اللحم.",
+    "اغلِ البندورة المهروسة والرب والماء والملح ١٠ دقائق ثم اسكبها في صينية ورصّ الباذنجان المحشو فوقها.",
+    "اخبز على ١٩٠°م لمدة ٢٠–٢٥ دقيقة حتى تغلي الصلصة ويبلغ وسط الحشوة ٧١°م على الأقل. قدّم مع الأرز."
+  ],
+  "tipEn": "Pre-roasting softens the eggplant without soaking it in frying oil.",
+  "tipAr": "شوي الباذنجان أولاً يطرّيه من دون امتصاص كمية كبيرة من زيت القلي.",
+  "storageEn": "Refrigerate for up to 3 days and reheat thoroughly.",
+  "storageAr": "يحفظ حتى ٣ أيام بالثلاجة ويسخّن جيداً.",
+  "allergensEn": "Contains pine nuts.",
+  "allergensAr": "يحتوي على الصنوبر."
+},
+{
+  "id": "lahm-bi-ajeen",
+  "titleEn": "Lahm bi Ajeen Flatbreads",
+  "titleAr": "لحم بعجين",
+  "category": "Breakfast",
+  "prep": 35,
+  "cook": 15,
+  "serves": 6,
+  "icon": "🫓",
+  "introEn": "Thin, crisp Lebanese flatbreads topped with a bright mixture of seasoned minced meat, tomato, onion and parsley. A squeeze of lemon just before eating is non-negotiable.",
+  "introAr": "رقائق عجين لبنانية مغطاة بلحمة متبّلة مع البندورة والبصل والبقدونس، تُخبز حتى تقرمش الأطراف وتؤكل مع عصرة حامض.",
+  "ingredients": [
+    [
+      "3 cups (375 g) all-purpose flour",
+      "٣ أكواب (٣٧٥ غ) طحين",
+      "all-use-flour"
+    ],
+    [
+      "2 tsp dry yeast",
+      "ملعقتان صغيرتان خميرة",
+      "yeast"
+    ],
+    [
+      "1 tsp seven spice",
+      "ملعقة صغيرة سبع بهارات",
+      "sabaa-bharat"
+    ],
+    [
+      "1 tbsp pomegranate molasses",
+      "ملعقة كبيرة دبس رمان",
+      "debes-el-remen"
+    ],
+    [
+      "2 tbsp olive oil",
+      "ملعقتان كبيرتان زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "400 g minced lamb or beef",
+      "٤٠٠ غ لحم غنم أو بقر مفروم"
+    ],
+    [
+      "1 tomato, 1 onion and ½ cup parsley, finely chopped",
+      "بندورة وبصلة ونصف كوب بقدونس مفرومة"
+    ],
+    [
+      "¾–1 cup water, salt and lemon wedges",
+      "¾–١ كوب ماء وملح وقطع حامض",
+      "sea-salt"
+    ]
+  ],
+  "stepsEn": [
+    "Make dough from flour, yeast, a pinch of salt, olive oil and enough lukewarm water to form a soft ball. Knead 8 minutes, cover and rest 45–60 minutes.",
+    "Mix raw mince with very finely chopped onion, tomato and parsley, seven spice, pomegranate molasses and salt. Keep refrigerated until baking.",
+    "Heat oven and baking trays to 240°C. Divide dough into 8–10 balls and roll paper-thin on a floured surface.",
+    "Spread a thin, even layer of meat topping right to the edges; thick toppings cook unevenly.",
+    "Bake on hot trays for 10–15 minutes until bread is golden and minced meat is fully cooked to 71°C. Serve promptly with lemon."
+  ],
+  "stepsAr": [
+    "اعجن الطحين والخميرة والملح وزيت الزيتون مع ماء فاتر يكفي لعجينة طرية. اعجن ٨ دقائق وغطّها لتستريح وتختمر ٤٥–٦٠ دقيقة.",
+    "اخلط اللحم النيّئ مع البصل والبندورة والبقدونس المفرومين ناعماً والبهارات ودبس الرمان والملح، واحفظه بارداً حتى الخبز.",
+    "سخّن الفرن والصواني إلى ٢٤٠°م. قسّم العجينة ٨–١٠ كرات وافردها رقيقة جداً على سطح مرشوش طحيناً.",
+    "وزّع طبقة رقيقة متساوية من الحشوة حتى الأطراف؛ الحشوة السميكة لا تنضج بالتساوي.",
+    "اخبز على الصواني الساخنة ١٠–١٥ دقيقة حتى تشقرّ العجينة وينضج اللحم المفروم إلى ٧١°م. قدّم فوراً مع الحامض."
+  ],
+  "tipEn": "The thinner the topping, the better the texture and more even the cooking.",
+  "tipAr": "كلما كانت طبقة اللحم أرقّ خرجت العجينة أقرمش ونضجت الحشوة بتساوٍ.",
+  "storageEn": "Refrigerate cooked flatbreads for 2 days; reheat thoroughly in oven.",
+  "storageAr": "تحفظ المخبوزات يومين بالثلاجة وتسخّن جيداً في الفرن.",
+  "allergensEn": "Contains wheat/gluten.",
+  "allergensAr": "يحتوي على القمح والغلوتين."
+},
+{
+  "id": "moutabbal",
+  "titleEn": "Smoky Eggplant Moutabbal",
+  "titleAr": "متبّل باذنجان",
+  "category": "Mezze",
+  "prep": 15,
+  "cook": 35,
+  "serves": 5,
+  "icon": "🍆",
+  "introEn": "Smoky roasted eggplant mashed with tahini, lemon and garlic makes a silky Lebanese moutabbal. Charring the skin deeply is the secret to that unmistakable grilled flavour.",
+  "introAr": "متبّل باذنجان لبناني مدخّن مع الطحينة والحامض والثوم. شوي القشرة حتى تسود هو سرّ النكهة المشوية والقوام الكريمي.",
+  "ingredients": [
+    [
+      "⅓ cup tahini",
+      "ثلث كوب طحينة",
+      "tahini"
+    ],
+    [
+      "2 tbsp extra-virgin olive oil",
+      "ملعقتان كبيرتان زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "½ tsp salt",
+      "نصف ملعقة صغيرة ملح",
+      "sea-salt"
+    ],
+    [
+      "2 large eggplants (about 900 g)",
+      "حبتا باذنجان كبيرتان (نحو ٩٠٠ غ)"
+    ],
+    [
+      "Juice of 1 large lemon",
+      "عصير حامضة كبيرة"
+    ],
+    [
+      "1–2 garlic cloves, crushed",
+      "فص أو فصان ثوم مهروس"
+    ],
+    [
+      "Chopped parsley and pomegranate seeds, optional",
+      "بقدونس مفروم وحب رمان للتزيين اختيارياً"
+    ]
+  ],
+  "stepsEn": [
+    "Pierce eggplants several times with a fork. Char over a gas flame, grill or under a hot broiler for 25–35 minutes, turning until the skin blackens and flesh collapses.",
+    "Transfer to a covered bowl for 10 minutes, then split open and scoop out the tender flesh, leaving most charred skin behind.",
+    "Drain the flesh in a sieve for 10 minutes so the dip stays thick rather than watery.",
+    "Mash eggplant by hand with tahini, lemon, crushed garlic and salt until creamy but slightly textured.",
+    "Taste and adjust acidity. Spread on a plate, drizzle olive oil and garnish with parsley or pomegranate seeds."
+  ],
+  "stepsAr": [
+    "اثقب الباذنجان بالشوكة واشوه فوق النار أو على الشواية أو تحت شواية الفرن ٢٥–٣٥ دقيقة مع التقليب حتى تسود القشرة ويذوب اللب.",
+    "ضع الباذنجان في وعاء مغطى ١٠ دقائق ثم افتحه واستخرج اللب الطري واترك معظم القشرة المحروقة.",
+    "صفّ اللب في مصفاة ١٠ دقائق حتى لا يصبح المتبّل مائياً.",
+    "اهرِس اللب باليد مع الطحينة والحامض والثوم المهروس والملح حتى يصبح كريمياً مع بعض القوام.",
+    "ذق وعدّل الحموضة ثم افرده في طبق ورشّ زيت الزيتون وزيّنه بالبقدونس أو حب الرمان."
+  ],
+  "tipEn": "Mash rather than over-blend to preserve the beautiful roasted eggplant texture.",
+  "tipAr": "اهرِس اللب ولا تفرط في خلطه حتى تحتفظ بنسيج الباذنجان المشوي.",
+  "storageEn": "Refrigerate up to 3 days in a sealed container.",
+  "storageAr": "يحفظ في علبة محكمة بالثلاجة حتى ٣ أيام.",
+  "allergensEn": "Contains sesame (tahini).",
+  "allergensAr": "يحتوي على السمسم (الطحينة)."
+},
+{
+  "id": "falafel",
+  "titleEn": "Crisp Lebanese Falafel",
+  "titleAr": "فلافل لبنانية مقرمشة",
+  "category": "Mezze",
+  "prep": 25,
+  "cook": 20,
+  "serves": 6,
+  "icon": "🧆",
+  "introEn": "Crunchy outside, fluffy and green inside: real falafel starts with soaked uncooked chickpeas, lots of herbs and cumin. Tuck into pita with pickles and tahini sauce.",
+  "introAr": "فلافل مقرمشة من الخارج وخضراء وهشّة من الداخل، أساسها حمص منقوع غير مسلوق وأعشاب وكمون. تقدّم بالخبز مع المخلّل والطرطور.",
+  "ingredients": [
+    [
+      "2 cups (400 g) dry chickpeas, soaked 12–18 hours",
+      "كوبان (٤٠٠ غ) حمّص يابس منقوع ١٢–١٨ ساعة",
+      "humus-baladi"
+    ],
+    [
+      "1 tsp ground cumin",
+      "ملعقة صغيرة كمون",
+      "kamoun-neeme"
+    ],
+    [
+      "1 tsp ground coriander",
+      "ملعقة صغيرة كزبرة يابسة",
+      "kozbara-yebse-neeme"
+    ],
+    [
+      "½ tsp baking soda (carbonate)",
+      "نصف ملعقة صغيرة كربونات",
+      "carbonate"
+    ],
+    [
+      "½ tsp salt",
+      "نصف ملعقة صغيرة ملح",
+      "sea-salt"
+    ],
+    [
+      "1 onion and 4 garlic cloves",
+      "بصلة و٤ فصوص ثوم"
+    ],
+    [
+      "1 cup parsley and ½ cup cilantro, roughly chopped",
+      "كوب بقدونس ونصف كوب كزبرة خضراء"
+    ],
+    [
+      "Neutral frying oil and tahini sauce to serve",
+      "زيت نباتي للقلي وطرطور للتقديم"
+    ]
+  ],
+  "stepsEn": [
+    "Soak dry chickpeas 12–18 hours in abundant cool water; drain very well. Do not use cooked or canned chickpeas for this method.",
+    "Pulse soaked chickpeas with onion, garlic, parsley, cilantro, cumin, coriander and salt until finely granular, not smooth paste.",
+    "Chill mixture for 30 minutes, then mix in baking soda just before shaping. Form compact small balls or patties.",
+    "Heat frying oil to 175–180°C in a deep, stable pot. Fry in small batches 3–5 minutes until deeply golden and cooked through.",
+    "Drain on a rack, not in a heap, to keep crisp. Serve hot with tahini, fresh vegetables and pickles."
+  ],
+  "stepsAr": [
+    "انقع الحمص اليابس ١٢–١٨ ساعة بماء بارد وفير ثم صفّه جيداً. لا تستخدم حمصاً مسلوقاً أو معلباً لهذه الطريقة.",
+    "افرِم الحمص المنقوع مع البصل والثوم والبقدونس والكزبرة الخضراء والكمون والكزبرة اليابسة والملح حتى يصبح مفتّتاً ناعماً لا معجوناً أملس.",
+    "برّد الخليط ٣٠ دقيقة ثم أضف الكربونات قبل التشكيل واصنع أقراصاً صغيرة متماسكة.",
+    "سخّن زيت القلي في قدر ثابت إلى ١٧٥–١٨٠°م واقلِ على دفعات ٣–٥ دقائق حتى تتحمّر وتنضج من الداخل.",
+    "صفّ الفلافل على شبك لتبقى مقرمشة وقدّمها ساخنة مع الطرطور والخضار والمخلّل."
+  ],
+  "tipEn": "If the mixture crumbles, process a little more and chill again; avoid adding flour unless necessary.",
+  "tipAr": "إذا تفتت الخليط اطحنه قليلاً أكثر وبرّده مجدداً ولا تضف الطحين إلا عند الحاجة.",
+  "storageEn": "Refrigerate uncooked mixture 1 day; freeze shaped uncooked patties for later frying.",
+  "storageAr": "يحفظ الخليط النيّئ يوماً واحداً بالثلاجة أو تجمّد الأقراص قبل القلي.",
+  "allergensEn": "Tahini sauce contains sesame; check accompaniments for wheat.",
+  "allergensAr": "الطرطور يحتوي على السمسم وقد يحتوي الخبز على الغلوتين."
 }];

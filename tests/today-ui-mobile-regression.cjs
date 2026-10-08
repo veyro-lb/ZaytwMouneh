@@ -36,7 +36,7 @@ assert(notificationCss.includes(".topbar-right #zwmNotificationBell"),"Admin not
 assert(/#zwmNotificationBell\{[\s\S]*display:grid!important/.test(notificationCss),"Admin notification bell must remain visible on narrow phones");
 assert(notificationCss.includes(".nav-actions:has(#zwmCustomerNotificationBell)"),"Storefront header must make room for the customer notification bell");
 assert(notificationCss.includes("max-height:calc(100dvh - 82px)"),"Notification popovers must fit the dynamic phone viewport");
-assert(notificationCss.includes(".zwm-customer-switch,\n.zwm-admin-switch{min-width:46px;min-height:44px"),"Notification toggles need a 44px touch target");
+assert(/\.zwm-customer-switch,\r?\n\.zwm-admin-switch\{min-width:46px;min-height:44px/.test(notificationCss),"Notification toggles need a 44px touch target");
 assert(notificationCss.includes("white-space:normal;text-align:start"),"Notification status pills must wrap on narrow phones");
 
 assert(adminWholesaleJs.includes('e.key==="Escape"&&modal&&!modal.hidden'),"Wholesale owner modal Escape close regression");

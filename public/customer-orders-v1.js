@@ -259,12 +259,16 @@ function init(){
   injectCss();
   var root=qs("#accountShell")||document.body;
   new MutationObserver(function(){scheduleMount()}).observe(root,{childList:true,subtree:false});
-  var tries=0,timer=setInterval(function(){
-    tries++;
-    var rs=rewardsState();
-    if(rs.member){clearInterval(timer);loadOrders();scheduleMount()}
-    else if(tries>30)clearInterval(timer);
-  },300);
+  if(rewardsState().member){
+    loadOrders();
+  }else{
+    var tries=0,timer=setInterval(function(){
+      tries++;
+      var rs=rewardsState();
+      if(rs.member){clearInterval(timer);loadOrders();scheduleMount()}
+      else if(tries>30)clearInterval(timer);
+    },300);
+  }
   setInterval(function(){if(!document.hidden&&rewardsState().member)refreshIfStale(ORDER_BACKGROUND_REFRESH_MS)},ORDER_BACKGROUND_REFRESH_MS);
   scheduleMount();
 }

@@ -1395,4 +1395,354 @@ window.ZWM_RECIPE_LIBRARY = [
   "storageAr": "تبرّد سريعاً وتؤكل خلال يومين مع التسخين الجيد.",
   "allergensEn": "Contains wheat/gluten; optional nuts.",
   "allergensAr": "تحتوي على القمح والغلوتين والمكسرات عند إضافتها."
+},
+{
+  "id": "bulgur-bi-banadoura",
+  "titleEn": "Tomato Bulgur Pilaf",
+  "titleAr": "برغل بالبندورة",
+  "category": "Mains",
+  "prep": 15,
+  "cook": 30,
+  "serves": 4,
+  "icon": "🍅",
+  "introEn": "Coarse bulgur soaks up sweet tomato, olive oil and onion for an easy, satisfying Lebanese pot. Serve with a crunchy salad, yogurt or a few pickles.",
+  "introAr": "البرغل الخشن يتشرّب صلصة البندورة والبصل وزيت الزيتون ليصبح طبقاً لبنانياً بسيطاً ومشبعاً. يقدّم مع سلطة أو لبن أو مخلّل.",
+  "ingredients": [
+    [
+      "1½ cups (270 g) coarse bulgur",
+      "كوب ونصف (٢٧٠ غ) برغل خشن",
+      "burglur-asmar-kheshen"
+    ],
+    [
+      "2 tbsp tomato paste",
+      "ملعقتان كبيرتان رب بندورة",
+      "rub-el-bandoura"
+    ],
+    [
+      "3 tbsp olive oil",
+      "٣ ملاعق كبيرة زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "2 tomatoes, grated",
+      "بندورتان مبشورتان"
+    ],
+    [
+      "1 onion, finely chopped",
+      "بصلة مفرومة"
+    ],
+    [
+      "2½ cups warm water or stock",
+      "كوبان ونصف ماء أو مرق دافئ"
+    ],
+    [
+      "¾ tsp salt and pinch black pepper",
+      "ثلاثة أرباع ملعقة صغيرة ملح ورشة فلفل",
+      "sea-salt"
+    ]
+  ],
+  "stepsEn": [
+    "Rinse bulgur quickly and drain; do not soak for long or it may turn mushy.",
+    "Cook chopped onion in olive oil for 7 minutes until translucent and lightly golden.",
+    "Stir in tomato paste for a minute, then add grated fresh tomatoes and cook 5 minutes to concentrate the flavour.",
+    "Add bulgur, salt and warm water or stock; bring to a simmer, cover and cook on low 15–20 minutes until liquid is absorbed.",
+    "Turn off heat, leave covered 10 minutes, then fluff with a fork and serve with yogurt or salad."
+  ],
+  "stepsAr": [
+    "اغسل البرغل سريعاً وصفّه ولا تنقعه طويلاً حتى لا يصبح مهروساً.",
+    "ليّن البصل المفروم في زيت الزيتون ٧ دقائق حتى يشفّ ويشقرّ قليلاً.",
+    "أضف رب البندورة وحرّكه دقيقة ثم البندورة المبشورة واطبخ ٥ دقائق لتتركز النكهة.",
+    "أضف البرغل والملح والماء الدافئ أو المرق واتركه يغلي ثم غطّه على نار هادئة ١٥–٢٠ دقيقة حتى يمتص السائل.",
+    "أطفئ النار واتركه مغطى ١٠ دقائق ثم فلفله بالشوكة وقدّمه مع اللبن أو السلطة."
+  ],
+  "tipEn": "Choose coarse bulgur for distinct, fluffy grains.",
+  "tipAr": "البرغل الخشن يبقى مفلفلاً ولا يتحول إلى عجينة.",
+  "storageEn": "Refrigerate up to 3 days; reheat with a splash of water.",
+  "storageAr": "يحفظ ٣ أيام بالثلاجة ويسخّن مع قليل من الماء.",
+  "allergensEn": "Contains wheat/gluten.",
+  "allergensAr": "يحتوي على القمح والغلوتين."
+},
+{
+  "id": "fatteh-hummus",
+  "titleEn": "Chickpea Fatteh",
+  "titleAr": "فتّة حمّص",
+  "category": "Mezze",
+  "prep": 20,
+  "cook": 70,
+  "serves": 4,
+  "icon": "🥣",
+  "introEn": "Warm chickpeas, crunchy toasted pita and cool garlicky yogurt-tahini sauce make a beautiful contrast in this beloved Lebanese breakfast and mezze dish.",
+  "introAr": "حمّص دافئ وخبز مقرمش وصلصة لبن وطحينة بالثوم تتلاقى في فتّة لبنانية محبوبة للفطور والمازة.",
+  "ingredients": [
+    [
+      "1½ cups dried chickpeas, soaked overnight",
+      "كوب ونصف حمّص يابس منقوع",
+      "humus-baladi"
+    ],
+    [
+      "¼ cup tahini",
+      "ربع كوب طحينة",
+      "tahini"
+    ],
+    [
+      "2 tbsp olive oil",
+      "ملعقتان كبيرتان زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "¼ cup pine nuts, optional",
+      "ربع كوب صنوبر اختياري",
+      "snoubar"
+    ],
+    [
+      "2 pita breads, torn",
+      "رغيفان خبز عربي مقطعان"
+    ],
+    [
+      "1½ cups plain yogurt",
+      "كوب ونصف لبن طبيعي"
+    ],
+    [
+      "2 garlic cloves, crushed",
+      "فصّان ثوم مهروسان"
+    ],
+    [
+      "Juice of 1 lemon and salt",
+      "عصير حامضة وملح",
+      "sea-salt"
+    ]
+  ],
+  "stepsEn": [
+    "Drain soaked chickpeas and simmer in new water for 60–90 minutes until very soft. Keep warm in a little cooking broth.",
+    "Toast torn pita at 190°C for 8–10 minutes until golden and dry; do not assemble yet.",
+    "Whisk yogurt, tahini, crushed garlic, lemon juice and salt; thin with a spoon of warm chickpea water if needed.",
+    "Toast pine nuts lightly in a small skillet with a spoon of olive oil until golden.",
+    "Layer crisp pita in shallow bowls, spoon warm chickpeas and a little liquid over it, cover with yogurt sauce and scatter nuts on top.",
+    "Drizzle the remaining olive oil and serve immediately, before the bread loses all its crunch."
+  ],
+  "stepsAr": [
+    "صفّ الحمص المنقوع واسلقه بماء جديد ٦٠–٩٠ دقيقة حتى يصبح طرياً جداً واحتفظ به دافئاً مع قليل من ماء السلق.",
+    "حمّص الخبز المقطّع على ١٩٠°م لمدة ٨–١٠ دقائق حتى يجف ويشقرّ ولا تركّب الطبق بعد.",
+    "اخفق اللبن والطحينة والثوم والحامض والملح وخفّف الصلصة بقليل من ماء الحمص الدافئ عند الحاجة.",
+    "حمّص الصنوبر بقليل من زيت الزيتون في مقلاة صغيرة حتى يصبح ذهبياً.",
+    "ضع الخبز المقرمش في أطباق وأضف الحمص الدافئ وقليلاً من مرقه ثم صلصة اللبن والصنوبر.",
+    "رشّ بقية زيت الزيتون وقدّم فوراً قبل أن يفقد الخبز قرمشته."
+  ],
+  "tipEn": "Assemble at the last moment for the best balance of soft and crunchy.",
+  "tipAr": "ركّب الفتة قبل التقديم مباشرة لتحافظ على توازن القوام الطري والمقرمش.",
+  "storageEn": "Keep chickpeas, sauce and bread refrigerated separately for up to 2 days; assemble fresh.",
+  "storageAr": "تحفظ الحبوب والصلصة والخبز منفصلة حتى يومين ويُركّب الطبق طازجاً.",
+  "allergensEn": "Contains wheat/gluten, dairy and sesame; optional pine nuts.",
+  "allergensAr": "تحتوي على القمح والغلوتين والحليب والسمسم وصنوبر اختياري."
+},
+{
+  "id": "kafta-bil-sanieh",
+  "titleEn": "Kafta bil Sanieh",
+  "titleAr": "كفتة بالصينية",
+  "category": "Mains",
+  "prep": 25,
+  "cook": 50,
+  "serves": 5,
+  "icon": "🥘",
+  "introEn": "Spiced minced meat, potatoes and tomato bake together in a hearty Lebanese oven tray. The juices turn into a rich sauce perfect for spooning over rice.",
+  "introAr": "كفتة متبّلة مع البطاطا والبندورة تُخبز في صينية لبنانية غنية بصلصتها. تُقدّم مع الأرز لوجبة عائلية شهية.",
+  "ingredients": [
+    [
+      "1 tsp seven spice",
+      "ملعقة صغيرة سبع بهارات",
+      "sabaa-bharat"
+    ],
+    [
+      "2 tbsp tomato paste",
+      "ملعقتان كبيرتان رب بندورة",
+      "rub-el-bandoura"
+    ],
+    [
+      "2 tbsp olive oil",
+      "ملعقتان كبيرتان زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "700 g minced beef or lamb",
+      "٧٠٠ غ لحم بقر أو غنم مفروم"
+    ],
+    [
+      "1 onion, grated; ½ cup parsley, chopped",
+      "بصلة مبشورة ونصف كوب بقدونس مفروم"
+    ],
+    [
+      "3 potatoes, sliced 1 cm thick",
+      "٣ حبات بطاطا شرائح سماكة ١ سم"
+    ],
+    [
+      "3 tomatoes, sliced",
+      "٣ بندورات شرائح"
+    ],
+    [
+      "1½ cups water and salt",
+      "كوب ونصف ماء وملح",
+      "sea-salt"
+    ]
+  ],
+  "stepsEn": [
+    "Heat oven to 200°C. Mix mince with grated onion, chopped parsley, seven spice and salt until just combined; avoid overworking.",
+    "Press meat evenly across a 28 × 20 cm oiled baking dish or shape into flat patties.",
+    "Arrange potato and tomato slices over and around the kafta, drizzle with olive oil and season lightly.",
+    "Whisk tomato paste with warm water and pour around the sides so the top remains attractive.",
+    "Cover tightly with foil and bake 25 minutes; uncover and bake another 20–25 minutes until potatoes are tender and ground meat reaches 71°C.",
+    "Rest 5 minutes and serve with rice, spooning the tomato cooking juices over each portion."
+  ],
+  "stepsAr": [
+    "سخّن الفرن إلى ٢٠٠°م واخلط اللحم مع البصل المبشور والبقدونس والسبع بهارات والملح من دون عجن زائد.",
+    "افرد اللحمة بطبقة متساوية في صينية مدهونة نحو ٢٨ × ٢٠ سم أو شكّلها أقراصاً مسطحة.",
+    "رتّب شرائح البطاطا والبندورة فوق الكفتة وحولها ورش زيت الزيتون وقليلاً من الملح.",
+    "اخلط رب البندورة مع ماء دافئ واسكب الصلصة حول الأطراف.",
+    "غطّ الصينية بالقصدير واخبز ٢٥ دقيقة ثم اكشفها ٢٠–٢٥ دقيقة أخرى حتى تنضج البطاطا ويبلغ اللحم المفروم ٧١°م.",
+    "أرح الصينية ٥ دقائق وقدّمها مع الأرز والصلصة الناتجة عن الخبز."
+  ],
+  "tipEn": "Cut potatoes evenly so they finish cooking at the same time as the meat.",
+  "tipAr": "اقطع البطاطا بشرائح متساوية حتى تنضج مع اللحمة في الوقت نفسه.",
+  "storageEn": "Refrigerate 3 days; reheat thoroughly until steaming.",
+  "storageAr": "تحفظ ٣ أيام بالثلاجة وتسخّن جيداً حتى تصبح ساخنة جداً.",
+  "allergensEn": "Check packaged spice blends if allergens are a concern.",
+  "allergensAr": "راجع مكونات البهارات المعلبة إذا كانت هناك حساسية."
+},
+{
+  "id": "makhlouta",
+  "titleEn": "Lebanese Mixed-Grain Makhlouta",
+  "titleAr": "مخلوطة حبّ",
+  "category": "Mains",
+  "prep": 20,
+  "cook": 100,
+  "serves": 6,
+  "icon": "🫘",
+  "introEn": "A deeply satisfying rustic pot of lentils, chickpeas, wheat grains and beans, gently flavoured with onion and olive oil. A classic example of Lebanese pantry cooking at its best.",
+  "introAr": "مخلوطة الحبوب طبق ريفي لبناني مشبع يجمع العدس والحمص والفاصوليا والقمح مع البصل وزيت الزيتون. من أجمل وصفات المونة القديمة.",
+  "ingredients": [
+    [
+      "1 cup brown lentils",
+      "كوب عدس بني",
+      "aadas-aarid"
+    ],
+    [
+      "½ cup dried chickpeas, soaked overnight",
+      "نصف كوب حمّص يابس منقوع",
+      "humus-baladi"
+    ],
+    [
+      "½ cup dried white beans, soaked overnight",
+      "نصف كوب فاصوليا بيضاء منقوعة",
+      "fasolya-aarida"
+    ],
+    [
+      "½ cup coarse bulgur, rinsed",
+      "نصف كوب برغل خشن مغسول",
+      "burglur-asmar-kheshen"
+    ],
+    [
+      "¼ cup olive oil",
+      "ربع كوب زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "2 onions, chopped",
+      "بصلتان مفرومتان"
+    ],
+    [
+      "1 tsp ground cumin and salt",
+      "ملعقة صغيرة كمون وملح",
+      "kamoun-neeme"
+    ],
+    [
+      "7–8 cups water, as needed",
+      "٧–٨ أكواب ماء عند الحاجة"
+    ]
+  ],
+  "stepsEn": [
+    "Soak dried chickpeas and beans overnight in separate bowls, then drain. Check all grains for small stones.",
+    "Simmer chickpeas and beans in fresh water for 50–75 minutes until nearly tender; add water as required.",
+    "Add rinsed lentils and cook another 20 minutes, then stir in coarse bulgur and simmer 15–20 minutes until everything is tender.",
+    "Meanwhile brown chopped onions slowly in olive oil for 15–20 minutes and stir in cumin briefly.",
+    "Fold most onions into the grains, season with salt, and cook 5 more minutes to marry the flavours.",
+    "Serve in bowls with the remaining onions on top and lemon wedges on the side."
+  ],
+  "stepsAr": [
+    "انقع الحمص والفاصوليا اليابسة طوال الليل في وعاءين منفصلين ثم صفّهما ونقّ الحبوب من أي حصى.",
+    "اسلق الحمص والفاصوليا بماء جديد ٥٠–٧٥ دقيقة حتى يقاربا النضج مع إضافة ماء عند الحاجة.",
+    "أضف العدس المغسول ٢٠ دقيقة ثم البرغل الخشن واطبخ ١٥–٢٠ دقيقة أخرى حتى تلين جميع الحبوب.",
+    "حمّر البصل المفروم في زيت الزيتون ببطء ١٥–٢٠ دقيقة وأضف الكمون قليلاً.",
+    "اخلط معظم البصل مع الحبوب وتبّل بالملح واطبخ ٥ دقائق لتتداخل النكهات.",
+    "قدّم المخلوطة في أطباق وزيّنها ببقية البصل مع قطع الحامض."
+  ],
+  "tipEn": "Start with the slowest-cooking legumes; adding everything at once makes some grains mushy.",
+  "tipAr": "ابدأ بالحبوب التي تحتاج وقتاً أطول؛ طهي الجميع معاً قد يهرّي بعضها.",
+  "storageEn": "Refrigerate up to 3 days or freeze portions for 2 months.",
+  "storageAr": "تحفظ ٣ أيام بالثلاجة أو شهرين بالمجمّد.",
+  "allergensEn": "Contains wheat/gluten (bulgur).",
+  "allergensAr": "تحتوي على القمح والغلوتين (البرغل)."
+},
+{
+  "id": "labneh-breakfast",
+  "titleEn": "Lebanese Labneh Breakfast Board",
+  "titleAr": "صينية فطور لبنة لبنانية",
+  "category": "Breakfast",
+  "prep": 15,
+  "cook": 0,
+  "serves": 4,
+  "icon": "🫒",
+  "introEn": "A leisurely Lebanese breakfast spread with cool labneh, good olives, za’atar, olive oil and crisp vegetables. More of an artful assembly than a recipe, and perfect for sharing.",
+  "introAr": "فطور لبناني للمشاركة مع لبنة باردة وزيتون وزعتر وزيت زيتون وخضار طازجة. بسيط في التحضير وغني بطعم البيت.",
+  "ingredients": [
+    [
+      "¼ cup manakish za’atar",
+      "ربع كوب زعتر مناقيش",
+      "zaatar-manakish"
+    ],
+    [
+      "⅓ cup extra-virgin olive oil",
+      "ثلث كوب زيت زيتون",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "1 cup local green olives",
+      "كوب زيتون أخضر بلدي",
+      "zaytoun-akhdar-baladi"
+    ],
+    [
+      "500 g fresh labneh",
+      "٥٠٠ غ لبنة طازجة"
+    ],
+    [
+      "2 cucumbers and 3 tomatoes",
+      "خيارتان و٣ بندورات"
+    ],
+    [
+      "Fresh mint leaves, optional",
+      "أوراق نعنع طازج اختيارية"
+    ],
+    [
+      "Warm pita or other flatbread",
+      "خبز عربي دافئ"
+    ]
+  ],
+  "stepsEn": [
+    "Chill the labneh until serving and wash and dry all fresh vegetables.",
+    "Spoon labneh onto a wide platter, spread into a thick swirl and make a shallow well for olive oil.",
+    "Wash or drain olives if especially salty and place them in a separate little bowl.",
+    "Slice tomatoes and cucumbers; arrange with fresh mint around the labneh so colours stay distinct.",
+    "Sprinkle za’atar over part of the labneh, pour olive oil into the well and serve immediately with warm flatbread."
+  ],
+  "stepsAr": [
+    "برّد اللبنة حتى وقت التقديم واغسل الخضار الطازجة وجفّفها.",
+    "افرد اللبنة في طبق واسع بشكل دوائر سميكة واصنع فجوة صغيرة للزيت.",
+    "صفّ الزيتون من محلوله أو اغسله إن كان مالحاً كثيراً وضعه في وعاء صغير.",
+    "اقطع البندورة والخيار ورتبهما مع النعنع حول اللبنة لتبقى الألوان واضحة.",
+    "رشّ الزعتر على جزء من اللبنة واسكب زيت الزيتون في الوسط وقدّم فوراً مع الخبز الدافئ."
+  ],
+  "tipEn": "Offer za’atar and oil on the side too, so guests can season to taste.",
+  "tipAr": "قدّم الزعتر والزيت جانباً أيضاً ليضبط كل شخص النكهة كما يحب.",
+  "storageEn": "Return labneh to the refrigerator promptly; keep vegetables separate and eat within 2 days.",
+  "storageAr": "أعد اللبنة إلى الثلاجة سريعاً واحفظ الخضار منفصلة وتناولها خلال يومين.",
+  "allergensEn": "Contains dairy, wheat/gluten in bread and possibly sesame in za’atar.",
+  "allergensAr": "يحتوي على الحليب والغلوتين في الخبز وقد يحتوي الزعتر على السمسم."
 }];

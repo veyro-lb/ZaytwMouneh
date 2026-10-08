@@ -69,6 +69,7 @@ function availabilityLabel(p){
   const value=productAvailability(p);
   const labels=lang==="ar"
     ?{in_stock:"متوفر",low_stock:"مخزون منخفض",seasonal:"موسمي",available_on_request:"متوفر عند الطلب",out_of_stock:"غير متوفر",coming_soon:"قريباً"}
+    :lang==="fr"?{in_stock:"En stock",low_stock:"Stock limité",seasonal:"Saisonnier",available_on_request:"Sur demande",out_of_stock:"Épuisé",coming_soon:"Bientôt disponible"}
     :{in_stock:"In stock",low_stock:"Low stock",seasonal:"Seasonal",available_on_request:"Available on request",out_of_stock:"Out of stock",coming_soon:"Coming soon"};
   return labels[value]||labels.in_stock;
 }
@@ -408,6 +409,159 @@ const EXTRA_UI={
   }
 };
 
+/* French cart, navigation and gift labels must be available to all storefront actions. */
+const UI_FR_OVERRIDES={
+  "skipLink": "Aller au catalogue",
+  "announcementText": "Épicerie libanaise authentique · Depuis 2006",
+  "announcementOrder": "Acheter en ligne",
+  "navHome": "Accueil",
+  "navShop": "Boutique",
+  "navCategories": "Catégories",
+  "navAbout": "Notre histoire",
+  "navContact": "Contact",
+  "cartLabel": "Mon panier",
+  "searchPlaceholder": "Rechercher zaatar, lentilles, miel, céréales, épices…",
+  "categorySelectLabel": "Catégorie",
+  "resultLabel": "produits",
+  "categoryAll": "Toutes les catégories",
+  "emptyTitle": "Aucun résultat.",
+  "emptyCopy": "Essayez un autre nom ou une autre catégorie.",
+  "clearFilters": "Effacer les filtres",
+  "loadMore": "Voir plus de produits",
+  "shopEyebrow": "Catalogue actuel",
+  "shopNote": "Choisissez une catégorie, cherchez un produit et sélectionnez le format souhaité avant de l’ajouter au panier.",
+  "cartEyebrow": "Votre panier",
+  "cartTitle": "Panier",
+  "cartSaved": "Enregistré sur cet appareil",
+  "cartEmptyTitle": "Votre panier est vide.",
+  "cartEmptyCopy": "Ajoutez des produits depuis la boutique : ils apparaîtront ici.",
+  "browseProducts": "Voir les produits",
+  "total": "Total estimé",
+  "orderDetailsTitle": "Prêt à commander",
+  "orderDetailsNote": "Les frais de livraison, les récompenses et le total définitif seront confirmés à la commande.",
+  "yourName": "Votre nom",
+  "namePlaceholder": "Nom",
+  "phone": "Numéro WhatsApp (facultatif)",
+  "phonePlaceholder": "ex. 961 70 123 456",
+  "area": "Région / localisation",
+  "areaPlaceholder": "ex. Baabda",
+  "notes": "Notes de commande",
+  "notesPlaceholder": "Livraison, remplacement de produits, précisions…",
+  "sendOrder": "Passer commande <span>→</span>",
+  "priceNote": "Les prix et la disponibilité sont vérifiés avant la création de la commande.",
+  "what": "À propos de cette catégorie de produits",
+  "use": "Utilisations courantes",
+  "nutritionLabel": "Informations vérifiées sur le produit",
+  "nutritionBadge": "Informations vérifiées",
+  "chooseSize": "Choisir le format",
+  "add": "Ajouter au panier",
+  "update": "Actualiser le panier",
+  "view": "Voir",
+  "from": "À partir de",
+  "sizeOptions": "formats disponibles",
+  "remove": "Retirer",
+  "details": "Voir les détails",
+  "qty": "Qté",
+  "unitPrice": "Prix unitaire",
+  "subtotal": "Sous-total",
+  "standard": "Format standard",
+  "added": "Ajouté au panier",
+  "updated": "Panier actualisé",
+  "removed": "Retiré",
+  "orderHello": "Bonjour Zayt w Mouneh 👋",
+  "orderIntro": "Je souhaite passer commande :",
+  "customer": "Nom",
+  "orderPhone": "WhatsApp",
+  "orderArea": "Région / localisation",
+  "orderNotes": "Notes",
+  "orderTotal": "Total estimé",
+  "orderConfirm": "Merci de confirmer la disponibilité et le montant final de la commande."
+};
+UI_FR_OVERRIDES.cartProducts=n=>n+" "+(n===1?"produit":"produits");
+UI_FR_OVERRIDES.cartItems=n=>n+" "+(n===1?"article":"articles");
+const EXTRA_FR_OVERRIDES={
+  "navGift": "Offrir un cadeau",
+  "menuLabel": "Menu",
+  "menuHeading": "Découvrez Zayt w Mouneh",
+  "menuSubheading": "Chaque chose à sa place.",
+  "menuLocation": "Sebline · Itinéraire",
+  "favorites": "Favoris",
+  "favorite": "Ajouter aux favoris",
+  "favorited": "Enregistré",
+  "favoritesEmpty": "Aucun produit favori pour le moment.",
+  "recentEyebrow": "Consultés récemment",
+  "recentTitle": "Reprenez votre découverte.",
+  "clearRecent": "Effacer",
+  "giftEyebrow": "Créer un cadeau",
+  "giftTitle": "Composez votre coffret gourmand libanais.",
+  "giftCopy": "Choisissez des produits, préparez votre cadeau et indiquez destinataire, occasion et message avant de valider la livraison et le paiement.",
+  "giftPerk1": "Tous les produits au choix",
+  "giftPerk2": "Présentation personnalisée",
+  "giftPerk3": "Livraison dans tout le Liban",
+  "giftBrowse": "Parcourir la boutique ↗",
+  "giftBuilderLabel": "Votre cadeau",
+  "giftEmpty": "Sélectionnez des produits ci-dessus pour les ajouter ici.",
+  "giftProductsLabel": "Choisissez les produits",
+  "giftProductsHint": "Recherchez dans tout le catalogue et ajoutez les produits de votre choix au cadeau.",
+  "giftProductPlaceholder": "Rechercher un produit pour le cadeau…",
+  "giftUseCart": "Ajouter les articles du panier",
+  "giftSelectedTitle": "Contenu du cadeau",
+  "giftClear": "Effacer",
+  "giftAdd": "Ajouter",
+  "giftRemove": "Retirer",
+  "giftAllCategories": "Toutes les catégories",
+  "giftMore": "Voir plus de produits",
+  "giftRecipient": "Nom du destinataire",
+  "giftRecipientPlaceholder": "À qui est destiné le cadeau ?",
+  "giftOccasion": "Occasion",
+  "giftPackaging": "Présentation souhaitée",
+  "giftArea": "Zone de livraison",
+  "giftAreaPlaceholder": "Région au Liban",
+  "giftMessage": "Message cadeau",
+  "giftMessagePlaceholder": "Écrivez un petit mot…",
+  "giftSender": "Votre nom",
+  "giftSenderPlaceholder": "Votre nom",
+  "giftSend": "Continuer vers le paiement sécurisé →",
+  "giftNote": "Les préférences du cadeau sont transmises à la commande. Le montant final et la livraison seront confirmés au paiement.",
+  "giftOccasions": [
+    "Anniversaire",
+    "Remerciement",
+    "Visite / invitation",
+    "Fête",
+    "Juste pour le plaisir",
+    "Autre"
+  ],
+  "giftPackings": [
+    "Coffret mouneh classique",
+    "Emballage festif",
+    "Présentation personnalisée"
+  ],
+  "giftNeedItems": "Choisissez au moins un produit pour votre cadeau.",
+  "footerDelivery": "Livraison dans tout le Liban · Paiement sécurisé sur le site",
+  "footerExploreTitle": "Découvrir",
+  "footerGift": "Offrir un cadeau",
+  "footerContactTitle": "Contact",
+  "mobileReview": "Vérifier et commander",
+  "related": "Vous aimerez aussi",
+  "badgeMulti": "Plusieurs formats",
+  "badgeTraditional": "Mouneh traditionnelle",
+  "badgeClassic": "Classique libanais",
+  "badgeBaking": "Pour la pâtisserie",
+  "badgeBreakfast": "Petit-déjeuner",
+  "searchNoSuggestions": "Aucune suggestion proche"
+};
+function frenchStorefrontLabels(base,overrides){
+  return new Proxy(base,{get:function(target,key){
+    if(Object.prototype.hasOwnProperty.call(overrides,key))return overrides[key];
+    var value=target[key];
+    if(typeof value==="string"&&typeof window.ZWM_FR_TRANSLATE==="function")return window.ZWM_FR_TRANSLATE(value);
+    if(Array.isArray(value)&&typeof window.ZWM_FR_TRANSLATE==="function")return value.map(function(v){return typeof v==="string"?window.ZWM_FR_TRANSLATE(v):v});
+    return value;
+  }});
+}
+UI.fr=frenchStorefrontLabels(UI.en,UI_FR_OVERRIDES);
+EXTRA_UI.fr=frenchStorefrontLabels(EXTRA_UI.en,EXTRA_FR_OVERRIDES);
+
 const PAGE_I18N={
   home:{
     en:{title:"Zayt w Mouneh | Lebanese Pantry & Mouneh",description:"Authentic Lebanese pantry essentials, mouneh and gifts since 2006, with clear prices and delivery across Lebanon.",skip:"Skip to catalogue"},
@@ -441,6 +595,74 @@ const PAGE_I18N={
     en:{title:"Privacy Policy | Zayt w Mouneh",description:"How Zayt w Mouneh collects, uses, protects and shares customer, account, order and Mouneh Points information.",skip:"Skip to privacy policy"},
     ar:{title:"سياسة الخصوصية | زيت ومونة",description:"كيفية جمع زيت ومونة لبيانات العملاء والحسابات والطلبات ونقاط المونة واستخدامها وحمايتها ومشاركتها.",skip:"الانتقال إلى سياسة الخصوصية"}
   }
+};
+
+/* Complete French SEO, accessibility and catalogue category copy. */
+const PAGE_FR_COPY={
+  "home": {
+    "title": "Zayt w Mouneh | Épicerie libanaise et mouneh",
+    "description": "Épicerie libanaise authentique, mouneh et cadeaux depuis 2006, avec des prix transparents et une livraison dans tout le Liban.",
+    "skip": "Aller au catalogue"
+  },
+  "shop": {
+    "title": "Acheter des produits d’épicerie libanaise | Zayt w Mouneh",
+    "description": "Découvrez plus de 300 produits d’épicerie libanaise avec formats et prix clairement indiqués, favoris et commande sécurisée.",
+    "skip": "Aller au catalogue"
+  },
+  "about": {
+    "title": "Notre histoire et nos origines | Zayt w Mouneh",
+    "description": "Découvrez l’histoire de Zayt w Mouneh depuis 2006 et les origines de nos produits : Bekaa, Koura, Mont-Liban et Chouf.",
+    "skip": "Aller à notre histoire"
+  },
+  "contact": {
+    "title": "Contact, livraison et visite | Zayt w Mouneh",
+    "description": "Contactez Zayt w Mouneh à Sebline et découvrez la commande sécurisée et la livraison dans tout le Liban.",
+    "skip": "Aller à la page contact"
+  },
+  "gift": {
+    "title": "Cadeaux d’épicerie libanaise | Zayt w Mouneh",
+    "description": "Choisissez un cadeau de mouneh libanaise prêt à offrir ou composez le vôtre avec nos produits, livrés partout au Liban.",
+    "skip": "Aller au configurateur de cadeaux"
+  },
+  "recipes": {
+    "title": "30 recettes libanaises | Zayt w Mouneh",
+    "description": "Découvrez 30 recettes libanaises détaillées en français, arabe et anglais et ajoutez les ingrédients de notre épicerie directement à votre panier.",
+    "skip": "Aller aux recettes"
+  },
+  "terms": {
+    "title": "Conditions d’utilisation | Zayt w Mouneh",
+    "description": "Les conditions d’utilisation du site Zayt w Mouneh, des commandes, livraisons, comptes, cadeaux et points de fidélité.",
+    "skip": "Aller aux conditions d’utilisation"
+  },
+  "privacy": {
+    "title": "Politique de confidentialité | Zayt w Mouneh",
+    "description": "Comment Zayt w Mouneh collecte, utilise, protège et partage les informations relatives aux clients, comptes, commandes et points de fidélité.",
+    "skip": "Aller à la politique de confidentialité"
+  }
+};
+Object.keys(PAGE_FR_COPY).forEach(function(page){if(PAGE_I18N[page])PAGE_I18N[page].fr=PAGE_FR_COPY[page]});
+const CATEGORY_FR={
+  "Condiments": "Condiments et aides culinaires",
+  "Dates": "Dattes",
+  "Debsy Carob": "Produits à la caroube",
+  "Distillates + Syrups": "Eaux florales et sirops",
+  "Dried Foods": "Aliments séchés",
+  "Flour": "Farines",
+  "Grains": "Céréales",
+  "Herbs": "Herbes",
+  "Honey": "Miels",
+  "Molasses": "Mélasses",
+  "Mouneh": "Mouneh et conserves",
+  "Nuts + Seeds": "Fruits secs et graines",
+  "Oils": "Huiles",
+  "Olive Oil": "Huiles d’olive",
+  "Olives": "Olives",
+  "Pickles": "Légumes marinés",
+  "Pulses": "Légumineuses",
+  "Soap": "Savons",
+  "Spices": "Épices",
+  "Sweets + Candy": "Confiseries",
+  "Vinegars": "Vinaigres"
 };
 
 let lang=window.ZWM_LOCALE?.get?.()||(safeStorageGet(LANG_KEY)==="ar"?"ar":"en");
@@ -564,7 +786,7 @@ function currentSize(v){
   if(lang==="fr")return v?.sizeFr||v?.sizeEn||v?.sizeAr||"";
   return v?.sizeEn||v?.sizeAr||"";
 }
-function categoryName(cat){return lang==="ar"?(CATEGORY_AR[cat]||cat):cat}
+function categoryName(cat){return lang==="ar"?(CATEGORY_AR[cat]||cat):lang==="fr"?(CATEGORY_FR[cat]||cat):cat}
 const VERIFIED_PRODUCT_KEYS={
   origin:{en:["originEn","origin","sourceEn","source"],ar:["originAr","sourceAr","originEn","origin","sourceEn","source"],fr:["originFr","sourceFr","originEn","origin","sourceEn","source"]},
   ingredients:{en:["ingredientsEn","ingredients"],ar:["ingredientsAr","ingredientsEn","ingredients"],fr:["ingredientsFr","ingredientsEn","ingredients"]},
@@ -900,13 +1122,13 @@ function applyPageMetadata(){
   const md=document.querySelector('meta[name="description"]');if(md)md.content=copy.description;
   const ogTitle=document.querySelector('meta[property="og:title"]');if(ogTitle)ogTitle.content=copy.title;
   const ogDesc=document.querySelector('meta[property="og:description"]');if(ogDesc)ogDesc.content=copy.description;
-  const ogLocale=document.querySelector('meta[property="og:locale"]');if(ogLocale)ogLocale.content=lang==="ar"?"ar_LB":"en_LB";
+  const ogLocale=document.querySelector('meta[property="og:locale"]');if(ogLocale)ogLocale.content=lang==="ar"?"ar_LB":lang==="fr"?"fr_LB":"en_LB";
   const skip=$("#skipLink");if(skip)skip.textContent=copy.skip;
 }
 
 function applyAccessibleLanguage(){
   const ar=lang==="ar";
-  const aria=(selector,en,arText)=>{const el=document.querySelector(selector);if(el)el.setAttribute("aria-label",ar?arText:en)};
+  const aria=(selector,en,arText)=>{const el=document.querySelector(selector);if(el)el.setAttribute("aria-label",ar?arText:lang==="fr"&&typeof window.ZWM_FR_TRANSLATE==="function"?window.ZWM_FR_TRANSLATE(en):en)};
   aria(".nav","Primary navigation","التنقل الرئيسي");
   aria(".brand","Zayt w Mouneh home","الصفحة الرئيسية لزيت ومونة");
   const brandLogo=document.querySelector(".brand-logo img");if(brandLogo)brandLogo.alt=ar?"شعار زيت ومونة":"Zayt w Mouneh logo";

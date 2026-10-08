@@ -662,8 +662,8 @@ window.ZWM_RECIPE_LIBRARY = [
     "introAr": "بامية طرية مطبوخة بالثوم والبندورة وزيت الزيتون مع لمسة حامض في النهاية. أكلة بيتية محبوبة تؤكل مع الأرز أو الخبز الطازج.",
     "ingredients": [
       [
-        "400 g dried okra, rehydrated according to pack, or 600 g fresh okra",
-        "٤٠٠ غ بامية مجففة منقوعة بحسب العبوة أو ٦٠٠ غ طازجة",
+        "130 g dried okra, rehydrated according to pack, or 600 g fresh okra",
+        "١٣٠ غ بامية مجففة منقوعة بحسب العبوة أو ٦٠٠ غ طازجة",
         "bemye-yebse"
       ],
       [

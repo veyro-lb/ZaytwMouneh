@@ -60,8 +60,10 @@ async function run(){
   assert(bought.length>=2,"Quick Add to Pantry must call the existing cart");
   assert(bought.every(b=>byId.has(b.id)),"Only real products may be added");
   bought.length=0;
+  await new Promise(resolve=>w.setTimeout(resolve,1350)); // Quick-add intentionally guards rapid double taps.
   w.location.hash="#recipe/mujadara";
   w.dispatchEvent(new w.Event("hashchange"));
+  await new Promise(resolve=>w.setTimeout(resolve,20)); // Allow jsdom's queued hashchange to settle.
   const detail=w.document.querySelector("#zwmRecipeDetail");
   assert(detail&&detail.querySelectorAll(".zwm-recipe-method li").length>=5,"Details must contain full cooking instructions");
   const checkbox=detail.querySelector('[data-item]');

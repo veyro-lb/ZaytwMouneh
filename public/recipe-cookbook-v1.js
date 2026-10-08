@@ -104,7 +104,7 @@
     state.selected=new Set(recipeRows(r).filter(function(x){return orderable(x.product)}).map(function(x){return x.index}));
     var rows=recipeRows(r),fresh=rows.filter(function(row){return !row.product}),unavailable=rows.filter(function(row){return row.product&&!orderable(row.product)}),available=rows.filter(function(row){return orderable(row.product)});
     return '<article class="zwm-cookbook-detail" id="zwmRecipeDetail" tabindex="-1" data-current="'+escape(r.id)+'">'+
-      '<div class="zwm-detail-back"><a href="'+escape(backUrl())+'" data-back>← '+escape(t("back"))+'</a><button type="button" data-print>⎙ '+escape(t("print"))+'</button></div>'+
+      '<div class="zwm-detail-back"><a href="'+escape(backUrl())+'" data-back>'+(ar()?"→ ":"← ")+escape(t("back"))+'</a><button type="button" data-print>⎙ '+escape(t("print"))+'</button></div>'+
       '<div class="zwm-detail-hero">'+art(r)+'<div class="zwm-detail-hero-copy"><span class="zwm-category">'+escape(categoryName(r.category))+'</span>'+
       '<h1>'+escape(translated(r,"title"))+'</h1><p>'+escape(translated(r,"intro"))+'</p>'+
       '<div class="zwm-detail-stats"><span>'+escape(t("prep"))+' <b>'+r.prep+' '+escape(t("time"))+'</b></span><span>'+escape(t("cook"))+' <b>'+r.cook+' '+escape(t("time"))+'</b></span><span>'+escape(t("serves"))+' <b>'+r.serves+'</b></span></div></div></div>'+

@@ -32,7 +32,7 @@
     choose:["Choose package","اختر العبوة"],all:["All","الكل"]
   };
   var root=document.createElement("div");root.className="zwm-cookbook";root.id="zwmCookbook";
-  host.replaceWith(root);
+  host.replaceWith(root);document.body.classList.add("zwm-cookbook-ready");
   var lastFocus=null;
   function ar(){return document.documentElement.lang==="ar"||document.documentElement.dir==="rtl"}
   function t(key){return (ui[key]||[key,key])[ar()?1:0]}
@@ -74,7 +74,7 @@
     state.selected.clear();
     root.innerHTML='<div class="zwm-cookbook-list">'+
       '<div class="zwm-cookbook-intro"><span class="zwm-kicker">'+escape(ar()?"من مطبخنا إلى سفرتك":"From our kitchen to yours")+'</span>'+
-      '<h2>'+escape(ar()?"صُنعت بحبّ، وتُشارك بمحبة.":"Made with tradition. Shared with love.")+'</h2>'+
+      '<h1>'+escape(ar()?"صُنعت بحبّ، وتُشارك بمحبة.":"Made with tradition. Shared with love.")+'</h1>'+
       '<p>'+escape(ar()?"٣٠ وصفة لبنانية من أكل البيت اليومي إلى حلويات المناسبات. اختر الوصفة وجهّز مكونات المونة من متجرنا.":"Discover 30 Lebanese recipes, from everyday comfort dishes to festive family favourites. Choose a dish, then shop the pantry ingredients from our store.")+'</p></div>'+
       '<div class="zwm-cookbook-tools"><label class="zwm-search-label" for="zwmRecipeSearch">'+escape(t("search"))+
       '<input id="zwmRecipeSearch" type="search" value="'+escape(state.query)+'" placeholder="'+escape(t("search"))+'" autocomplete="off"></label>'+
@@ -96,7 +96,7 @@
     return '<article class="zwm-cookbook-detail" id="zwmRecipeDetail" tabindex="-1" data-current="'+escape(r.id)+'">'+
       '<div class="zwm-detail-back"><a href="#recipes" data-back>← '+escape(t("back"))+'</a><button type="button" data-print>⎙ '+escape(t("print"))+'</button></div>'+
       '<div class="zwm-detail-hero">'+art(r)+'<div class="zwm-detail-hero-copy"><span class="zwm-category">'+escape(categoryName(r.category))+'</span>'+
-      '<h2>'+escape(text(r.titleEn,r.titleAr))+'</h2><p>'+escape(text(r.introEn,r.introAr))+'</p>'+
+      '<h1>'+escape(text(r.titleEn,r.titleAr))+'</h1><p>'+escape(text(r.introEn,r.introAr))+'</p>'+
       '<div class="zwm-detail-stats"><span>'+escape(t("prep"))+' <b>'+r.prep+' '+escape(t("time"))+'</b></span><span>'+escape(t("cook"))+' <b>'+r.cook+' '+escape(t("time"))+'</b></span><span>'+escape(t("serves"))+' <b>'+r.serves+'</b></span></div></div></div>'+
       '<div class="zwm-detail-columns"><div class="zwm-detail-main">'+
       '<section class="zwm-cooking-ingredients"><h3>'+escape(t("ingredients"))+'</h3><ul>'+rows.map(function(row){return '<li>'+escape(row.amount)+'</li>'}).join("")+'</ul></section>'+

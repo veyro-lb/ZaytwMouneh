@@ -53,3 +53,22 @@ html[dir="rtl"] .zwm-product-lightbox .zwm-zoom-close{right:auto;left:10px}
   body[data-page="shop"] .zwm-zoom-trigger{top:10px;left:10px;font-size:.75rem}
   .zwm-product-lightbox{padding:56px 10px 16px;border-radius:16px}
 }
+
+/* Only cart-add confirmations receive a CTA; ordinary notices stay compact. */
+body[data-page="shop"] .toast.zwm-cart-confirm-toast{
+  display:flex;align-items:center;gap:12px;max-width:min(93vw,560px);
+  width:max-content;border-radius:18px;line-height:1.45;text-align:start;
+}
+body[data-page="shop"] .toast.zwm-cart-confirm-toast #toastText{min-width:0;overflow-wrap:anywhere}
+body[data-page="shop"] .zwm-toast-cart-action{
+  flex:0 0 auto;min-height:44px;padding:8px 12px;border:1px solid rgba(255,255,255,.8);
+  border-radius:999px;background:#fffaf0;color:#174526;font:inherit;font-size:.82rem;font-weight:800;cursor:pointer;
+}
+body[data-page="shop"] .zwm-toast-cart-action:focus-visible{outline:3px solid #d3a323;outline-offset:3px}
+@media(max-width:760px){
+  body[data-page="shop"] .toast.zwm-cart-confirm-toast{
+    width:min(93vw,440px);bottom:calc(86px + env(safe-area-inset-bottom));flex-wrap:wrap;justify-content:center;
+    padding:14px 16px;text-align:center;
+  }
+  body[data-page="shop"] .toast.zwm-cart-confirm-toast #toastText{flex:1 1 100%}
+}

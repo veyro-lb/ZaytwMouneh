@@ -98,3 +98,9 @@ body[data-page="recipes"].zwm-cookbook-ready #recipes>.shell>.premium-head{displ
 html[dir="rtl"] .zwm-detail-back a{direction:rtl}
 @media(prefers-reduced-motion:reduce){.zwm-cookbook *,.zwm-cookbook *:before,.zwm-cookbook *:after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 @media print{header.site-header,.footer,.order-strip,.page-intro,.page-progress,.zwm-detail-back,.zwm-pantry-panel,.zwm-cookbook-tools,.zwm-recipe-results,.zwm-cookbook-intro{display:none!important}body,#recipes,.premium-recipes{background:#fff!important;box-shadow:none!important}.zwm-detail-columns{display:block}.zwm-detail-main section,.zwm-recipe-note{border:0;padding:0;box-shadow:none;break-inside:avoid}.zwm-detail-hero{border:0;box-shadow:none;display:block}.zwm-detail-hero>.zwm-food-art{display:none}.zwm-detail-hero-copy{padding:0}.zwm-recipe-method li{break-inside:avoid}}
+
+/* Arabic cookbook: true RTL reading order and Arabic typography. */
+html[lang="ar"] #recipes .zwm-cookbook{font-family:"Noto Kufi Arabic","DM Sans",sans-serif}
+html[lang="ar"] #recipes .zwm-cookbook :is(h1,h2,h3,h4){font-family:"Noto Kufi Arabic",sans-serif;line-height:1.48;font-weight:700}
+html[dir="rtl"] #recipes .zwm-cookbook :is(.zwm-cookbook-intro,.zwm-recipe-card-body,.zwm-detail-hero-copy,.zwm-detail-main,.zwm-pantry-panel){text-align:right}
+html[dir="rtl"] #recipes .zwm-cookbook .zwm-search-label{text-align:right}

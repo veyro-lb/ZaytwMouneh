@@ -15,14 +15,16 @@ async function run(){
   w.addToCart=(p,v,qty)=>bought.push({id:p.id,variant:v.id,qty});
   w.productCanOrder=()=>true;
   w.openCart=()=>cartOpened++;
-  w.eval(read("products-data.js"));
+  // jsdom window.eval does not expose top-level const from a separate eval invocation.
+  // Publish only the test fixture catalogue on window; the production file stays unchanged.
+  w.eval(read("products-data.js").replace(/^const PRODUCTS_DATA=/,"window.PRODUCTS_DATA="));
   w.eval(read("recipe-library-v1.js"));
   const all=w.ZWM_RECIPE_LIBRARY;
   assert.equal(all.length,30,"Cookbook must contain exactly 30 recipes");
   assert.equal(new Set(all.map(r=>r.id)).size,30,"Recipe IDs must be unique");
   const preserved=["mujadara","manoushe","fattoush","hummus","tabbouleh","kibbeh"];
   preserved.forEach(id=>assert(all.some(r=>r.id===id),"Original recipe missing: "+id));
-  const catalogue=w.eval("PRODUCTS_DATA");
+  const catalogue=w.PRODUCTS_DATA;
   const byId=new Map(catalogue.map(p=>[p.id,p]));
   let links=0;
   for(const r of all){

@@ -92,7 +92,7 @@
   }
   function detail(r){
     state.selected=new Set(recipeRows(r).filter(function(x){return orderable(x.product)}).map(function(x){return x.index}));
-    var rows=recipeRows(r),fresh=rows.filter(function(row){return !orderable(row.product)}),available=rows.filter(function(row){return orderable(row.product)});
+    var rows=recipeRows(r),fresh=rows.filter(function(row){return !row.product}),unavailable=rows.filter(function(row){return row.product&&!orderable(row.product)}),available=rows.filter(function(row){return orderable(row.product)});
     return '<article class="zwm-cookbook-detail" id="zwmRecipeDetail" tabindex="-1" data-current="'+escape(r.id)+'">'+
       '<div class="zwm-detail-back"><a href="#recipes" data-back>← '+escape(t("back"))+'</a><button type="button" data-print>⎙ '+escape(t("print"))+'</button></div>'+
       '<div class="zwm-detail-hero">'+art(r)+'<div class="zwm-detail-hero-copy"><span class="zwm-category">'+escape(categoryName(r.category))+'</span>'+
@@ -111,7 +111,8 @@
       '<button type="button" id="zwmAddPantry" data-add-bundle '+(!available.length?"disabled":"")+'>'+escape(t("add"))+'</button>'+
       '<p id="zwmBundleStatus" class="zwm-bundle-status" role="status" aria-live="polite"></p>'+
       '<button class="zwm-view-pantry" type="button" data-view-cart>'+escape(t("cart"))+' →</button>'+
-      '<div class="zwm-fresh-panel"><h4>'+escape(t("fresh"))+'</h4><ul>'+fresh.map(function(row){return '<li>'+escape(row.amount)+'</li>'}).join("")+'</ul><p>'+escape(t("atHome"))+'</p></div></aside></div></article>';
+      '<div class="zwm-fresh-panel"><h4>'+escape(t("fresh"))+'</h4><ul>'+fresh.map(function(row){return '<li>'+escape(row.amount)+'</li>'}).join("")+'</ul><p>'+escape(t("atHome"))+'</p></div>'+
+      (unavailable.length?'<div class="zwm-fresh-panel"><h4>'+escape(t("unavailable"))+'</h4><ul>'+unavailable.map(function(row){return '<li>'+escape(row.amount)+'</li>'}).join("")+'</ul></div>':'')+'</aside></div></article>';
   }
   function applyStructuredData(r){
     var old=document.getElementById("zwmRecipeStructuredData");if(old)old.remove();

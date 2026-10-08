@@ -56,7 +56,7 @@ html[dir="rtl"] .zwm-product-lightbox .zwm-zoom-close{right:auto;left:10px}
 
 /* Only cart-add confirmations receive a CTA; ordinary notices stay compact. */
 body[data-page="shop"] .toast.zwm-cart-confirm-toast{
-  display:flex;align-items:center;gap:12px;max-width:min(93vw,560px);
+  display:flex;align-items:center;gap:12px;max-width:min(93vw,560px);pointer-events:auto;
   width:max-content;border-radius:18px;line-height:1.45;text-align:start;
 }
 body[data-page="shop"] .toast.zwm-cart-confirm-toast #toastText{min-width:0;overflow-wrap:anywhere}

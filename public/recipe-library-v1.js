@@ -1745,4 +1745,372 @@ window.ZWM_RECIPE_LIBRARY = [
   "storageAr": "أعد اللبنة إلى الثلاجة سريعاً واحفظ الخضار منفصلة وتناولها خلال يومين.",
   "allergensEn": "Contains dairy, wheat/gluten in bread and possibly sesame in za’atar.",
   "allergensAr": "يحتوي على الحليب والغلوتين في الخبز وقد يحتوي الزعتر على السمسم."
+},
+{
+  "id": "fatayer-sabanekh",
+  "titleEn": "Spinach Fatayer",
+  "titleAr": "فطاير سبانخ",
+  "category": "Breakfast",
+  "prep": 45,
+  "cook": 20,
+  "serves": 8,
+  "icon": "🥟",
+  "introEn": "Little triangular pastries filled with lemony spinach, onions and sumac are a Lebanese bakery staple. The key is squeezing the spinach dry so the delicate dough bakes crisp, not soggy.",
+  "introAr": "فطاير سبانخ مثلثة بحشوة الحامض والبصل والسماق من أشهى المخبوزات اللبنانية. تجفيف السبانخ جيداً يمنع تبلل العجين ويعطي قرمشة لطيفة.",
+  "ingredients": [
+    [
+      "3 cups all-purpose flour",
+      "٣ أكواب طحين",
+      "all-use-flour"
+    ],
+    [
+      "2 tsp instant yeast",
+      "ملعقتان صغيرتان خميرة فورية",
+      "yeast"
+    ],
+    [
+      "3 tbsp olive oil, plus 1 tbsp for filling",
+      "٣ ملاعق زيت زيتون وملعقة للحشوة",
+      "extra-virgin-olive-oil"
+    ],
+    [
+      "1½ tbsp sumac",
+      "ملعقة ونصف كبيرة سماق",
+      "semaq"
+    ],
+    [
+      "1 tsp salt",
+      "ملعقة صغيرة ملح",
+      "sea-salt"
+    ],
+    [
+      "600 g fresh spinach, finely chopped",
+      "٦٠٠ غ سبانخ طازجة مفرومة"
+    ],
+    [
+      "2 onions, very finely chopped",
+      "بصلتان مفرومتان ناعماً"
+    ],
+    [
+      "Juice of 2 lemons, 1 cup warm water",
+      "عصير حامضتين وكوب ماء دافئ"
+    ]
+  ],
+  "stepsEn": [
+    "Mix flour, yeast and half the salt, then knead with 3 tablespoons olive oil and warm water for 8 minutes until smooth. Cover and rise 45–60 minutes.",
+    "Salt chopped spinach lightly and leave 10 minutes, then squeeze firmly in a cloth to remove as much moisture as possible.",
+    "Mix squeezed spinach with onions, sumac, lemon juice, remaining salt and 1 tablespoon olive oil; taste for a tangy filling.",
+    "Heat oven to 210°C. Divide dough into about 16 pieces and roll each into a 12 cm circle.",
+    "Place a spoonful of filling in the centre; pinch three edges together firmly to form a triangle, leaving a small opening if desired.",
+    "Bake on parchment-lined trays 17–20 minutes until golden underneath and edges lightly browned. Cool briefly before eating."
+  ],
+  "stepsAr": [
+    "اخلط الطحين والخميرة ونصف الملح ثم اعجن مع ٣ ملاعق زيت وماء دافئ لمدة ٨ دقائق حتى تنعم العجينة، وغطّها لتختمر ٤٥–٦٠ دقيقة.",
+    "رش السبانخ المفرومة بقليل من الملح واتركها ١٠ دقائق ثم اعصرها بقوة بقطعة قماش لإزالة أكبر قدر من الماء.",
+    "اخلط السبانخ المعصورة مع البصل والسماق والحامض وباقي الملح وملعقة زيت، وذق الحشوة لتكون حامضة لذيذة.",
+    "سخّن الفرن إلى ٢١٠°م وقسّم العجين نحو ١٦ قطعة وافرد كل قطعة دائرة قطرها ١٢ سم.",
+    "ضع ملعقة حشوة في الوسط واجمع ثلاثة أطراف واثنها بإحكام لتشكيل مثلث مع فتحة صغيرة حسب الرغبة.",
+    "اخبز على صوانٍ بورق خبز لمدة ١٧–٢٠ دقيقة حتى يشقرّ القاع والأطراف واتركها تبرد قليلاً قبل الأكل."
+  ],
+  "tipEn": "Really squeeze the spinach—wet filling is the main reason fatayer open during baking.",
+  "tipAr": "اعصر السبانخ جيداً جداً؛ الحشوة المبللة تفتح أطراف الفطاير في الفرن.",
+  "storageEn": "Refrigerate baked pastries 3 days; reheat in oven. Freeze fully cooled pastries up to 2 months.",
+  "storageAr": "تحفظ الفطاير المخبوزة ٣ أيام بالثلاجة أو شهرين بالمجمّد وتسخّن في الفرن.",
+  "allergensEn": "Contains wheat/gluten.",
+  "allergensAr": "تحتوي على القمح والغلوتين."
+},
+{
+  "id": "sfouf",
+  "titleEn": "Golden Lebanese Sfouf",
+  "titleAr": "صفوف بالكركم",
+  "category": "Desserts",
+  "prep": 15,
+  "cook": 35,
+  "serves": 12,
+  "icon": "🍰",
+  "introEn": "Sunny yellow semolina cake scented with turmeric and anise, often topped with sesame or pine nuts. A simple, tender Lebanese sweet that is excellent with afternoon coffee.",
+  "introAr": "صفوف لبناني أصفر بالكركم واليانسون، يُزيّن بالسمسم أو الصنوبر ويقدّم مع القهوة. حلوى بيتية سهلة بطراوة محببة.",
+  "ingredients": [
+    [
+      "2 cups (330 g) semolina",
+      "كوبان (٣٣٠ غ) سميد",
+      "smeed"
+    ],
+    [
+      "1 cup (125 g) all-purpose flour",
+      "كوب (١٢٥ غ) طحين",
+      "all-use-flour"
+    ],
+    [
+      "1 cup (200 g) white sugar",
+      "كوب (٢٠٠ غ) سكر",
+      "white-sugar"
+    ],
+    [
+      "2 tsp turmeric",
+      "ملعقتان صغيرتان كركم",
+      "kurkum"
+    ],
+    [
+      "2 tsp baking powder",
+      "ملعقتان صغيرتان بيكنغ باودر",
+      "baking-powder"
+    ],
+    [
+      "1 tsp ground anise or crushed seeds",
+      "ملعقة صغيرة يانسون مطحون أو مهروس",
+      "yansoun-hab"
+    ],
+    [
+      "⅔ cup (160 ml) neutral vegetable oil",
+      "ثلثا كوب (١٦٠ مل) زيت نباتي"
+    ],
+    [
+      "1½ cups milk or water and 2 tbsp sesame seeds",
+      "كوب ونصف حليب أو ماء وملعقتان كبيرتان سمسم",
+      "somsom-nay"
+    ]
+  ],
+  "stepsEn": [
+    "Heat oven to 180°C and grease a 23 × 33 cm baking pan; line the base if you prefer easy removal.",
+    "Whisk semolina, flour, sugar, turmeric, baking powder and anise in a large bowl until evenly coloured.",
+    "Stir in oil and milk or water just until no dry pockets remain; avoid vigorous beating.",
+    "Pour batter into the pan, level the surface and scatter sesame seeds across the top.",
+    "Bake 30–35 minutes until golden and a skewer from the middle comes out clean; cool completely before cutting into diamonds or squares."
+  ],
+  "stepsAr": [
+    "سخّن الفرن إلى ١٨٠°م وادهَن صينية نحو ٢٣ × ٣٣ سم ويمكن تبطين قاعها بورق خبز.",
+    "اخفق السميد والطحين والسكر والكركم والبيكنغ باودر واليانسون حتى يتوزع اللون بالتساوي.",
+    "أضف الزيت والحليب أو الماء وقلّب فقط حتى تختفي المكونات الجافة دون خفق زائد.",
+    "اسكب الخليط في الصينية وسوِّ السطح ورش السمسم.",
+    "اخبز ٣٠–٣٥ دقيقة حتى يصبح ذهبياً ويخرج عود الاختبار نظيفاً من الوسط ثم برّده تماماً قبل تقطيعه."
+  ],
+  "tipEn": "Do not overmix after adding liquid; gentle mixing makes a softer crumb.",
+  "tipAr": "لا تكثر الخلط بعد السوائل حتى يبقى قوام الصفوف طرياً.",
+  "storageEn": "Keep covered at cool room temperature 2 days or refrigerate up to 5 days.",
+  "storageAr": "يحفظ مغطى يومين بحرارة الغرفة المعتدلة أو ٥ أيام بالثلاجة.",
+  "allergensEn": "Contains wheat/gluten and sesame; dairy if using milk.",
+  "allergensAr": "يحتوي على القمح والغلوتين والسمسم والحليب إذا استُخدم."
+},
+{
+  "id": "meghli",
+  "titleEn": "Meghli Spiced Rice Pudding",
+  "titleAr": "مغلي لبناني",
+  "category": "Desserts",
+  "prep": 15,
+  "cook": 35,
+  "serves": 8,
+  "icon": "🍮",
+  "introEn": "A warmly spiced Lebanese rice pudding traditionally shared for a new baby's arrival. Cinnamon, caraway and anise give it its unmistakable fragrance, finished with coconut and toasted nuts.",
+  "introAr": "المغلي حلوى لبنانية معطّرة بالقرفة والكراوية واليانسون، تُقدّم تقليدياً عند ولادة طفل وتُزيّن بجوز الهند والمكسرات.",
+  "ingredients": [
+    [
+      "¾ cup (100 g) rice flour or finely ground rice",
+      "ثلاثة أرباع كوب (١٠٠ غ) دقيق أرز أو أرز مطحون ناعماً",
+      "rice-neeme"
+    ],
+    [
+      "¾ cup (150 g) sugar",
+      "ثلاثة أرباع كوب (١٥٠ غ) سكر",
+      "white-sugar"
+    ],
+    [
+      "2 tsp ground caraway",
+      "ملعقتان صغيرتان كراوية مطحونة",
+      "krawya"
+    ],
+    [
+      "2 tsp cinnamon",
+      "ملعقتان صغيرتان قرفة",
+      "korfa"
+    ],
+    [
+      "½ tsp ground anise",
+      "نصف ملعقة صغيرة يانسون مطحون",
+      "yansoun-hab"
+    ],
+    [
+      "⅓ cup grated coconut",
+      "ثلث كوب جوز هند مبشور",
+      "grated-coconut"
+    ],
+    [
+      "¼ cup walnuts and ¼ cup pistachios for topping",
+      "ربع كوب جوز وربع كوب فستق للتزيين",
+      "joz-farashe"
+    ],
+    [
+      "6 cups cold water",
+      "٦ أكواب ماء بارد"
+    ]
+  ],
+  "stepsEn": [
+    "If using whole fine rice, grind into flour first; commercial rice flour gives the smoothest pudding.",
+    "Whisk rice flour, sugar, caraway, cinnamon and anise with 2 cups cold water until there are no lumps.",
+    "Add remaining 4 cups water to a heavy saucepan, then pour in spiced rice mixture while whisking.",
+    "Cook over medium-low heat for 25–35 minutes, stirring frequently and scraping the bottom, until thick enough to coat a spoon and the rice flour tastes fully cooked.",
+    "Pour into individual bowls and cool briefly, then refrigerate at least 2 hours to set.",
+    "Sprinkle with coconut and chopped walnuts and pistachios just before serving."
+  ],
+  "stepsAr": [
+    "إذا استعملت أرزاً حباً ناعماً فاطحنه إلى دقيق أولاً؛ دقيق الأرز الجاهز يعطي قواماً أنعم.",
+    "اخفق دقيق الأرز والسكر والكراوية والقرفة واليانسون مع كوبين ماء بارد حتى تختفي الكتل.",
+    "أضف ٤ أكواب الماء الباقية إلى قدر سميك ثم اسكب خليط الأرز المتبّل مع الخفق.",
+    "اطبخ على نار متوسطة إلى هادئة ٢٥–٣٥ دقيقة مع التحريك المتكرر وكشط القاع حتى يثخن ويزول طعم الدقيق النيّئ.",
+    "اسكب المغلي في كاسات واتركه يبرد قليلاً ثم ضعها بالثلاجة ساعتين على الأقل ليتماسك.",
+    "زيّن بجوز الهند والجوز والفستق المفروم قبل التقديم."
+  ],
+  "tipEn": "Keep stirring the bottom: rice flour can catch and scorch quickly.",
+  "tipAr": "حرّك قاع القدر باستمرار لأن دقيق الأرز قد يلتصق ويحترق بسرعة.",
+  "storageEn": "Refrigerate covered for 3 days; add nuts just before serving.",
+  "storageAr": "يحفظ مغطى بالثلاجة ٣ أيام وتضاف المكسرات عند التقديم.",
+  "allergensEn": "Contains tree nuts in the topping.",
+  "allergensAr": "يحتوي على مكسرات في الزينة."
+},
+{
+  "id": "maamoul",
+  "titleEn": "Date-Stuffed Maamoul",
+  "titleAr": "معمول بالتمر",
+  "category": "Desserts",
+  "prep": 60,
+  "cook": 18,
+  "serves": 12,
+  "icon": "🍪",
+  "introEn": "Tender semolina cookies shaped around a fragrant date filling are a Lebanese festive tradition. A short dough rest and careful shaping give maamoul its delicate sandy texture.",
+  "introAr": "معمول بالتمر من حلويات الأعياد اللبنانية، عجينة سميد ناعمة تحضن حشوة تمر معطرة. راحة العجين والتشكيل الهادئ سرّ القوام الهش.",
+  "ingredients": [
+    [
+      "2 cups (330 g) fine semolina",
+      "كوبان (٣٣٠ غ) سميد ناعم",
+      "smeed"
+    ],
+    [
+      "1 cup (125 g) all-purpose flour",
+      "كوب (١٢٥ غ) طحين",
+      "all-use-flour"
+    ],
+    [
+      "300 g date paste",
+      "٣٠٠ غ عجوة تمر",
+      "date-paste"
+    ],
+    [
+      "2 tbsp orange blossom water",
+      "ملعقتان كبيرتان ماء زهر",
+      "maa-zaher"
+    ],
+    [
+      "1 tbsp rose water",
+      "ملعقة كبيرة ماء ورد",
+      "maa-ward"
+    ],
+    [
+      "1 tbsp icing sugar, optional",
+      "ملعقة كبيرة سكر بودرة اختيارية",
+      "icing-sugar"
+    ],
+    [
+      "200 g unsalted melted butter or ghee",
+      "٢٠٠ غ زبدة غير مملحة مذابة أو سمنة"
+    ],
+    [
+      "¼ cup milk or water, as needed",
+      "ربع كوب حليب أو ماء عند الحاجة"
+    ]
+  ],
+  "stepsEn": [
+    "Rub melted butter or ghee into semolina and flour until every grain is coated. Cover and rest at cool room temperature 2 hours or refrigerate overnight.",
+    "Stir orange blossom and rose water through the dough, adding milk or water a spoon at a time until it holds when pressed. Do not knead like bread.",
+    "Divide date paste into 24 small balls. Divide dough into 24 portions; flatten each and cup it around one date ball.",
+    "Seal edges well and press gently into a lightly floured maamoul mould, or mark the tops with a fork; arrange on a lined tray.",
+    "Heat oven to 180°C and bake 15–18 minutes until bottoms are lightly golden while tops remain pale.",
+    "Cool completely before moving because warm cookies are fragile; dust lightly with icing sugar if desired."
+  ],
+  "stepsAr": [
+    "افرك الزبدة المذابة أو السمنة مع السميد والطحين حتى تتغطى كل حبة بالدهن، وغطّ المزيج واتركه ساعتين بحرارة معتدلة أو ليلة في الثلاجة.",
+    "أضف ماء الزهر والورد ثم الحليب أو الماء ملعقة ملعقة حتى تتماسك العجينة عند ضغطها؛ لا تعجنها كعجين الخبز.",
+    "شكّل العجوة ٢٤ كرة صغيرة وقسّم العجين ٢٤ قطعة وافرد كل قطعة حول كرة تمر.",
+    "أغلق الأطراف جيداً واضغطها برفق في قالب معمول مرشوش قليلاً بالطحين أو زخرف السطح بالشوكة وضعها على صينية مبطنة.",
+    "سخّن الفرن إلى ١٨٠°م واخبز ١٥–١٨ دقيقة حتى يصبح القاع ذهبياً فاتحاً بينما يبقى الوجه شاحباً.",
+    "برّد الحبات تماماً قبل نقلها لأنها هشة وهي ساخنة ورش السكر البودرة اختيارياً."
+  ],
+  "tipEn": "The dough should hold together when squeezed but not be elastic; add liquid slowly.",
+  "tipAr": "يجب أن تتماسك العجينة عند الضغط من دون مطاطية؛ أضف السوائل تدريجياً.",
+  "storageEn": "Store airtight 5 days in a cool spot or freeze up to 2 months.",
+  "storageAr": "يحفظ في علبة محكمة ٥ أيام بمكان بارد أو شهرين بالمجمّد.",
+  "allergensEn": "Contains wheat/gluten and dairy if butter or milk is used.",
+  "allergensAr": "يحتوي على القمح والغلوتين والحليب عند استعمال الزبدة أو الحليب."
+},
+{
+  "id": "namoura",
+  "titleEn": "Lebanese Namoura Semolina Cake",
+  "titleAr": "نمّورة لبنانية",
+  "category": "Desserts",
+  "prep": 20,
+  "cook": 35,
+  "serves": 12,
+  "icon": "🍯",
+  "introEn": "Golden semolina squares soaked in fragrant orange blossom syrup are a Lebanese teatime favourite. Pour cooled syrup over the hot cake so every square becomes tender and glossy.",
+  "introAr": "نمّورة ذهبية من السميد تتشرّب القطر المعطّر بماء الزهر لتصبح طرية ولامعة. من ألذ الحلويات اللبنانية مع الشاي والقهوة.",
+  "ingredients": [
+    [
+      "2 cups (330 g) semolina",
+      "كوبان (٣٣٠ غ) سميد",
+      "smeed"
+    ],
+    [
+      "¾ cup sugar for cake + 1 cup for syrup",
+      "ثلاثة أرباع كوب سكر للكعكة وكوب للقطر",
+      "white-sugar"
+    ],
+    [
+      "1 tbsp baking powder",
+      "ملعقة كبيرة بيكنغ باودر",
+      "baking-powder"
+    ],
+    [
+      "2 tbsp orange blossom water",
+      "ملعقتان كبيرتان ماء زهر",
+      "maa-zaher"
+    ],
+    [
+      "¼ cup sliced almonds",
+      "ربع كوب لوز شرائح",
+      "loz-mkataa"
+    ],
+    [
+      "1 cup plain yogurt",
+      "كوب لبن طبيعي"
+    ],
+    [
+      "½ cup melted butter or neutral oil",
+      "نصف كوب زبدة مذابة أو زيت نباتي"
+    ],
+    [
+      "1 cup water, 1 tsp lemon juice for syrup",
+      "كوب ماء وملعقة صغيرة عصير حامض للقطر"
+    ]
+  ],
+  "stepsEn": [
+    "First make syrup: simmer 1 cup sugar with 1 cup water for 8–10 minutes, add lemon juice and orange blossom water, then cool completely.",
+    "Heat oven to 180°C and grease a 23 cm square baking pan with butter or oil.",
+    "Mix semolina, ¾ cup sugar and baking powder. Stir in yogurt and melted butter or oil just until combined, then rest the batter 10 minutes.",
+    "Spread evenly in the pan, score into squares or diamonds and place a few almond slices on each portion.",
+    "Bake 30–35 minutes until deeply golden and firm in the centre. Recut the lines gently while still hot.",
+    "Immediately pour cool syrup slowly over the hot cake. Rest at least 1 hour to absorb before cutting and serving."
+  ],
+  "stepsAr": [
+    "حضّر القطر أولاً: اغْلِ كوب سكر مع كوب ماء ٨–١٠ دقائق ثم أضف الحامض وماء الزهر واتركه يبرد تماماً.",
+    "سخّن الفرن إلى ١٨٠°م وادهَن صينية مربعة قطرها نحو ٢٣ سم بالزبدة أو الزيت.",
+    "اخلط السميد وثلاثة أرباع كوب سكر والبيكنغ باودر ثم أضف اللبن والزبدة أو الزيت وقلّب فقط حتى يمتزج واترك الخليط يرتاح ١٠ دقائق.",
+    "افرد الخليط بالتساوي وحدّد مربعات أو معينات وضع شرائح لوز على كل قطعة.",
+    "اخبز ٣٠–٣٥ دقيقة حتى يصبح ذهبياً داكناً ويتماسك الوسط ثم أعد تحديد خطوط التقطيع وهو ساخن.",
+    "اسكب القطر البارد ببطء على الكعكة الساخنة واتركها ساعة على الأقل حتى تتشرّب قبل التقديم."
+  ],
+  "tipEn": "Hot cake and cool syrup are the reliable combination for even absorption.",
+  "tipAr": "الكعكة الساخنة والقطر البارد يساعدان على تشرب النمّورة بالتساوي.",
+  "storageEn": "Cover and keep at cool room temperature up to 2 days or refrigerate 5 days.",
+  "storageAr": "تحفظ مغطاة يومين بحرارة معتدلة أو ٥ أيام بالثلاجة.",
+  "allergensEn": "Contains wheat/gluten, dairy and almonds.",
+  "allergensAr": "تحتوي على القمح والغلوتين والحليب واللوز."
 }];

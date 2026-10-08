@@ -1270,7 +1270,7 @@ function addToCart(p,v,qty){
   const deliveryCopy=remaining>0
     ?(lang==="ar"?"باقي "+money(remaining)+" للتوصيل المجاني":money(remaining)+" away from free delivery")
     :(lang==="ar"?"التوصيل المجاني أصبح متاحاً ✓":"Free delivery unlocked ✓");
-  toast(`${currentName(p)} · ${currentSize(v)} — ${UI[lang].added} · ${deliveryCopy}`);
+  toast(`${currentName(p)} · ${currentSize(v)} — ${UI[lang].added} · ${deliveryCopy}`,{cartAction:true});
 }
 
 function changeCartQty(key,delta){
@@ -2065,11 +2065,31 @@ function setupProgress(){
   addEventListener("scroll",update,{passive:true});
 }
 
-function toast(message){
-  $("#toastText").textContent=message;
-  $("#toast").classList.add("is-visible");
+function toast(message,{cartAction=false}={}){
+  const panel=$("#toast"),label=$("#toastText");
+  if(!panel||!label)return;
+  label.textContent=message;
+  if(CURRENT_PAGE==="shop"){
+    let action=panel.querySelector(".zwm-toast-cart-action");
+    if(cartAction&&!action){
+      action=document.createElement("button");
+      action.type="button";
+      action.className="zwm-toast-cart-action";
+      action.addEventListener("click",()=>{
+        panel.classList.remove("is-visible");
+        openCart();
+      });
+      panel.appendChild(action);
+    }
+    if(action){
+      action.hidden=!cartAction;
+      action.textContent=lang==="ar"?"عرض السلة":lang==="fr"?"Voir le panier":"View cart";
+    }
+    panel.classList.toggle("zwm-cart-confirm-toast",cartAction);
+  }
+  panel.classList.add("is-visible");
   clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>$("#toast").classList.remove("is-visible"),1800);
+  toastTimer=setTimeout(()=>panel.classList.remove("is-visible"),cartAction?4800:1800);
 }
 function initials(name){
   const parts=String(name).replace(/[^\p{L}\p{N}\s]/gu,"").split(/\s+/).filter(Boolean);

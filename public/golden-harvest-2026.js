@@ -1,7 +1,4 @@
-/* Golden Harvest 2026 — isolated seasonal collection and first-visit popup.
-   Seasonal Picks belongs to the normal homepage, independent of login state.
-   The exact Cloudflare review hostname automatically shows it even after auth
-   redirects remove ?harvestPreview=1. Production remains off until approved. */
+/* Permanent Seasonal Picks on Home, with a separately gated first-visit film. Product collection never depends on the campaign popup or authentication. */
 (function(){
   "use strict";
   var ENABLED=false;
@@ -9,9 +6,10 @@
   var REVIEW_HOST="campaign-golden-harvest-2026-review-zaytwmouneh.veyro-202.workers.dev";
   var IS_REVIEW_HOST=location.hostname===REVIEW_HOST;
   var PREVIEW=IS_REVIEW_HOST||params.get("harvestPreview")==="1";
-  if(!ENABLED&&!PREVIEW)return;
+  var PROMO_ACTIVE=ENABLED||PREVIEW;
   var page=document.body&&document.body.dataset.page;
   if(page!=="home"&&page!=="shop")return;
+  if(page==="shop"&&!PROMO_ACTIVE)return;
   var PHOTO="/assets/harvest-2026/";
   var OIL_ID="extra-virgin-olive-oil";
   var POPUP_KEY="zwm-golden-harvest-2026-popup-seen-v1";
@@ -140,7 +138,12 @@
     var anchor=document.querySelector("body[data-page='home'] #featured");
     if(!anchor)return;
     var stage=document.getElementById("ghPicksStage");
-    if(!stage){stage=document.createElement("div");stage.id="ghPicksStage";anchor.parentNode.insertBefore(stage,anchor)}
+    if(!stage){
+      stage=document.createElement("div");stage.id="ghPicksStage";stage.dataset.ghPermanent="1";
+      anchor.parentNode.insertBefore(stage,anchor);
+    }else if(stage.parentNode!==anchor.parentNode||stage.nextElementSibling!==anchor){
+      anchor.parentNode.insertBefore(stage,anchor);
+    }
     stage.innerHTML=collectionMarkup();
     stage.querySelectorAll(".gh-pick-figure img").forEach(imageFallback);
     revealCards(stage);
@@ -156,7 +159,9 @@
     cards.forEach(function(card){revealObserver.observe(card)});
   }
   function setupCart(){
-    var stage=document.getElementById("ghPicksStage");if(!stage)return;
+    var stage=document.getElementById("ghPicksStage");
+    if(!stage||stage.dataset.ghCartReady==="1")return;
+    stage.dataset.ghCartReady="1";
     stage.addEventListener("click",function(event){
       var btn=event.target.closest("[data-gh-add]");
       if(!btn||!stage.contains(btn))return;
@@ -310,26 +315,44 @@
   function init(){
     if(document.body.dataset.page!=="home"&&document.body.dataset.page!=="shop")return;
     document.body.classList.add("zwm-harvest-active");
-    if(page==="home"){renderPicks();setupCart();setupPopup()}
+    if(page==="home"){renderPicks();setupCart();if(PROMO_ACTIVE)setupPopup()}
     else renderShop();
-    announcement();
+    if(PROMO_ACTIVE)announcement();
     var oldLang=language();
     if("MutationObserver" in window)new MutationObserver(function(){
       var next=language();if(next===oldLang)return;oldLang=next;
-      if(page==="home"){renderPicks();updatePopupText()}else renderShop();
-      announcement();
+      if(page==="home"){renderPicks();if(PROMO_ACTIVE)updatePopupText()}else renderShop();
+      if(PROMO_ACTIVE)announcement();
     }).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
     document.addEventListener("zwm:localechange",function(){
       if(language()===oldLang)return;oldLang=language();
-      if(page==="home"){renderPicks();updatePopupText()}else renderShop();
-      announcement();
+      if(page==="home"){renderPicks();if(PROMO_ACTIVE)updatePopupText()}else renderShop();
+      if(PROMO_ACTIVE)announcement();
     });
     window.addEventListener("zwm:catalog-cache-updated",function(){if(page==="home")renderPicks()});
     // Browsers can restore Home from back-forward cache after signing in/out.
     // Reattach the seasonal collection if another page transition replaced it.
     window.addEventListener("pageshow",function(){
-      if(page==="home"&&!document.getElementById("ghPicksStage")){renderPicks();setupCart()}
+      if(page==="home"){
+        var stage=document.getElementById("ghPicksStage");
+        var anchor=document.getElementById("featured");
+        if(!stage||anchor&&stage.nextElementSibling!==anchor){renderPicks();setupCart()}
+      }
     });
+    if(page==="home"&&"MutationObserver" in window){
+      var featured=document.getElementById("featured");
+      if(featured&&featured.parentNode){
+        // Watch direct children only, preventing an observer loop when live
+        // catalogue prices rerender the collection's internal product cards.
+        var parent=featured.parentNode;
+        new MutationObserver(function(){
+          var stage=document.getElementById("ghPicksStage");
+          if(!stage||stage.parentNode!==parent||stage.nextElementSibling!==featured){
+            renderPicks();setupCart();
+          }
+        }).observe(parent,{childList:true});
+      }
+    }
     var text=document.getElementById("announcementText");
     if(text&&"MutationObserver" in window)new MutationObserver(function(){if(!announcementBusy)announcement()}).observe(text,{childList:true,characterData:true,subtree:true});
   }

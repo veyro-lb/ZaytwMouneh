@@ -21,3 +21,14 @@
   .wholesale-admin-summary article{padding:12px}
   .wholesale-admin-summary small{font-size:.61rem;overflow-wrap:anywhere}
 }
+
+/* Owner Wholesale Arabic: maintain natural RTL alignment and readable long labels. */
+html[dir="rtl"] [data-view-panel="wholesale"],html[dir="rtl"] .wholesale-lead-modal{text-align:right}
+html[dir="rtl"] .wholesale-leads-table th,html[dir="rtl"] .wholesale-leads-table td{text-align:right}
+html[dir="rtl"] .wholesale-admin-summary small,html[dir="rtl"] .wholesale-leads-table th,html[dir="rtl"] .wholesale-detail-card>span{letter-spacing:0;text-transform:none}
+html[dir="rtl"] .wholesale-lead-hero,html[dir="rtl"] .wholesale-mobile-card-head{text-align:right}
+.wholesale-status{max-width:100%;white-space:normal;text-align:center;line-height:1.4;padding-block:5px;overflow-wrap:anywhere}
+.wholesale-lead-hero>div,.wholesale-mobile-card-head>h4{min-width:0}
+[data-view-panel="wholesale"]>.section-intro>div{min-width:0}
+[data-view-panel="wholesale"]>.section-intro>span{max-width:75ch;overflow-wrap:break-word;white-space:normal;line-height:1.6}
+@media(max-width:700px){html[dir="rtl"] .wholesale-lead-modal{width:100%;max-width:100%}}

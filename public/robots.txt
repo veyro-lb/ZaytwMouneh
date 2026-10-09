@@ -1,8 +1,9 @@
-# PRE-LAUNCH: No sitemap advertised until the verified custom domain is live.
-# Crawlers must be allowed to read pages to obey the site-wide X-Robots-Tag: noindex.
-# This file does not make the website private; use Cloudflare Access for that.
+# Public launch: allow search engines to discover public storefront and localized product pages.
+# Private customer pages have noindex response/meta tags; do not disallow their crawls here.
 User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /admin.html
 Disallow: /admin-config.js
+
+Sitemap: https://zaytwmouneh.com/sitemap.xml

@@ -43,11 +43,12 @@ for(const file of ["account.html","checkout.html","order.html"]){
  assert(/name=["']robots["'][^>]+content=["'][^"']*noindex/i.test(read(file)),file+" must stay noindex");
 }
 const productHtml=read("product.html");
-assert(/name=["']robots["'][^>]+content=["'][^"']*noindex/i.test(productHtml),"generic product shell must be noindex");
+assert(/name=["']robots["'][^>]+content=["']index,follow/i.test(productHtml),"product shell must be indexable before JavaScript rendering");
 assert(!/rel=["']canonical["'][^>]+product\.html/i.test(productHtml),"generic product shell must not canonicalize to product.html");
 
 const productJs=read("product-page-v1.js");
 assert(productJs.includes('robots.content="index,follow,max-image-preview:large"'),"resolved product must become indexable");
+assert(productJs.includes('robots.content="noindex,follow"'),"missing product must become noindex");
 for(const lang of ["en-LB","ar-LB","fr-LB","x-default"])assert(productJs.includes('setAlternate("'+lang+'"'),"product missing "+lang+" alternate");
 assert(productJs.includes("productPath(p.id,state.locale)"),"product localized URL state missing");
 assert(productJs.includes('"@type":"Product"'),"Product structured data missing");
@@ -78,8 +79,13 @@ assert(css.includes("100dvh"),"Quick View mobile dynamic viewport bound missing"
 
 const robots=read("robots.txt");
 assert(robots.includes("Disallow: /admin"),"robots must block clean admin route");
+const responseHeaders=read("_headers");
+for(const route of ["/admin","/account","/checkout","/order"]){
+ const block=responseHeaders.split("\n"+route+"\n")[1]?.split(/\n\/(?=\S)/)[0]||"";
+ assert(block.includes("X-Robots-Tag: noindex"),"private route missing explicit noindex: "+route);
+}
 const prelaunchHeaders=read("_headers");
-if(prelaunchHeaders.includes("X-Robots-Tag: noindex, nofollow, noarchive")){
+if(prelaunchHeaders.includes("/*\n  X-Robots-Tag: noindex, nofollow, noarchive")){
  assert(!/^Sitemap:/mi.test(robots),"prelaunch robots must not advertise a sitemap");
 }else{
  assert(robots.includes("Sitemap: "+origin+"/sitemap.xml"),"launch robots sitemap URL missing");

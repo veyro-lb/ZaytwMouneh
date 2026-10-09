@@ -83,6 +83,7 @@ body.zwm-harvest-active[data-page="shop"] .seasonal-story-card.gh-shop-spotlight
 .gh-shop-all{color:#fff1d8;border:1px solid rgba(248,224,178,.6)}
 .gh-shop-spotlight-image{width:min(29%,300px);max-height:250px;object-fit:contain;filter:drop-shadow(0 10px 13px rgba(2,28,16,.2));flex:0 0 auto}
 html[dir="rtl"] .gh-popup-shade{background:linear-gradient(270deg,rgba(8,30,19,.92) 0%,rgba(8,30,19,.84) 26%,rgba(8,30,19,.57) 49%,rgba(8,30,19,.13) 76%,rgba(8,30,19,.12) 100%)}
+html[dir="rtl"] .gh-popup-video{object-position:35% 50%}
 html[lang="ar"] .gh-picks-intro h2,html[lang="ar"] .gh-popup-content h2,html[lang="ar"] .gh-shop-spotlight-copy h2{font-family:"Amiri","Noto Kufi Arabic",serif;letter-spacing:0;line-height:1.4}
 html[lang="ar"] .gh-picks-kicker,html[lang="ar"] .gh-pick-badge,html[lang="ar"] .gh-popup-kicker{letter-spacing:0;line-height:1.7;text-transform:none}
 html[lang="ar"] .gh-pick-buy,html[lang="ar"] .gh-pick-inquire{line-height:1.7}

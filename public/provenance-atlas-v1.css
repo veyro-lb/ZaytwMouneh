@@ -381,3 +381,66 @@ html[dir="rtl"] #premiumProvenance .zwm-atlas-label {letter-spacing:0}
   #premiumProvenance .zwm-atlas-zone,
   #premiumProvenance .zwm-atlas-products .provenance-product {transition:none!important}
 }
+
+
+/* Atlas v2: containment fixes after review on real desktop/mobile layouts. */
+#premiumProvenance.premium-provenance-atlas,
+#premiumProvenance.premium-provenance-atlas *,
+#premiumProvenance.premium-provenance-atlas *::before,
+#premiumProvenance.premium-provenance-atlas *::after {box-sizing:border-box}
+#premiumProvenance.premium-provenance-atlas .zwm-atlas {min-width:0;max-width:100%}
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-mapcard,
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-detail {
+  max-width:100%;
+  min-width:0;
+}
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-pin {
+  font-size:0!important;
+  line-height:0!important;
+  color:transparent!important;
+  white-space:nowrap;
+  text-indent:0!important;
+  font-family:inherit;
+}
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-pin::after {
+  font-size:12px!important;
+  line-height:1.3!important;
+  color:#fff!important;
+  font-family:"DM Sans","Noto Kufi Arabic",sans-serif;
+  text-indent:0!important;
+}
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-product-header[hidden],
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-products[hidden],
+#premiumProvenance.premium-provenance-atlas [hidden] {display:none!important}
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-product-header,
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-products {min-width:0;max-width:100%}
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-products .provenance-product {white-space:normal!important}
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-empty,
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-description,
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-map-note,
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-select {
+  min-width:0;
+  max-width:100%;
+  overflow-wrap:break-word!important;
+  white-space:normal!important;
+  word-break:normal!important;
+}
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-detail {
+  align-items:stretch;
+  justify-content:center;
+}
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-shop {
+  align-self:flex-start;
+  white-space:normal!important;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+#premiumProvenance.premium-provenance-atlas .zwm-atlas-maparea svg {max-width:100%}
+@media(max-width:400px) {
+  #premiumProvenance.premium-provenance-atlas .zwm-atlas-options {gap:8px}
+  #premiumProvenance.premium-provenance-atlas .zwm-atlas-select {
+    padding:8px 10px;
+    font-size:.76rem;
+  }
+  #premiumProvenance.premium-provenance-atlas .zwm-atlas-maparea {width:100%}
+}

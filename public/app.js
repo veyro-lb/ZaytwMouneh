@@ -93,7 +93,8 @@ function liveCmsSettings(){
 }
 function currentWhatsAppNumber(){
   const value=String(liveCmsSettings()?.contact?.whatsapp||"").replace(/\D/g,"");
-  return value||WA;
+  // Previously cached CMS settings must not reactivate the old business number.
+  return !value||value==="96181581230"?WA:value;
 }
 function deliveryQuoteFor(subtotal,area=""){
   if(window.ZWM_CMS?.deliveryQuote)return window.ZWM_CMS.deliveryQuote(subtotal,area);

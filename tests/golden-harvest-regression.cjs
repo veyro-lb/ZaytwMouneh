@@ -143,7 +143,8 @@ assert.ok(!Object.values(COPY.ar).some(v=>/حصاد/.test(v)),"Do not use حصا
 assert.match(COPY.ar.popupDescription,/زيت زيتون بكر ممتاز معصور على البارد/);
 assert.match(COPY.fr.description,/vierge extra libanaise, pressée à froid/);
 assert.equal(COPY.fr.title,"La récolte 2026 est arrivée");
-assert.equal(COPY.en.popupDiscover,"Discover the Harvest");
+assert.equal(COPY.en.popupDiscover,"Order Now");
+assert.equal(COPY.fr.popupDiscover,"Commander maintenant");
 assert.equal(COPY.en.popupContinue,"Continue to Website");
 assert.ok(!("popupSubtitle" in COPY.ar)&&!("popupSubtitle" in COPY.en)&&!("popupSubtitle" in COPY.fr),"The title should not be repeated as a popup subtitle");
 assert.doesNotMatch(js,/gh-popup-subtitle|gh-popup-film-label/,"No redundant subtitle or film badge should be rendered");
@@ -151,7 +152,7 @@ assert.equal(COPY.ar.popupTitle.replace(/<[^>]*>/g,""),"٢٠٢٦زيت السن�
 assert.equal(COPY.ar.popupKicker,"زيت ومونة");
 assert.ok(!COPY.ar.popupDescription.includes("موسم الزيتون ٢٠٢٦"),"Season year belongs only to the popup overline");
 assert.equal(COPY.ar.popupDescription,"زيت زيتون بكر ممتاز معصور على البارد.");
-assert.equal(COPY.ar.popupDiscover,"اكتشفوا صفائح الزيت");
+assert.equal(COPY.ar.popupDiscover,"اطلب الآن");
 assert.equal(COPY.en.popupTitle.replace(/<[^>]*>/g,""),"2026The Golden Harvest");
 assert.ok(!COPY.en.popupKicker.includes("2026")&&!COPY.en.popupDescription.includes("2026"),"English popup should only state year in its title");
 assert.ok(!COPY.fr.popupKicker.includes("2026")&&!COPY.fr.popupDescription.includes("2026"),"French popup should only state year in its title");

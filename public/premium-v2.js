@@ -784,7 +784,7 @@
     if(q("#premiumBusinessSchema"))return;
     var data={
       "@context":"https://schema.org","@type":"Store","name":"Zayt w Mouneh",
-      "url":"https://zaytwmouneh.veyro-202.workers.dev/",
+      "url":"https://zaytwmouneh.com/",
       "telephone":"+96181581230","currenciesAccepted":"USD",
       "address":{"@type":"PostalAddress","addressLocality":"Sebline","addressCountry":"LB"},
       "sameAs":["https://instagram.com/zaytwmouneh"]

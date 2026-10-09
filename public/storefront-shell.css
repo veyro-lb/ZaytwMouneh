@@ -515,3 +515,14 @@ html[dir="rtl"] .site-header .nav .brand-wordmark,html[lang="ar"] .site-header .
     padding-inline:9px!important;
   }
 }
+
+/* Phone digits and the leading + must stay in their natural left-to-right order in Arabic. */
+a[href^="tel:"][dir="ltr"],
+a[href*="wa.me/"][dir="ltr"][translate="no"],
+.contact-links strong[dir="ltr"],
+.contact-intro-links strong[dir="ltr"],
+bdi[dir="ltr"][translate="no"] {
+  direction:ltr!important;
+  unicode-bidi:isolate!important;
+  white-space:nowrap;
+}

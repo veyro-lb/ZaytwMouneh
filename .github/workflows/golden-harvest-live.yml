@@ -1,0 +1,33 @@
+name: Golden Harvest 2026 live release gate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - "public/golden-harvest-2026.js"
+      - "public/golden-harvest-2026.css"
+      - "public/assets/harvest-2026/**"
+      - "public/products-data.js"
+      - "public/product-photos.js"
+      - "tests/golden-harvest-live-smoke.cjs"
+  workflow_dispatch:
+
+jobs:
+  harvest:
+    name: Harvest launch smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install free locked dependencies
+        run: npm ci --ignore-scripts
+      - name: Check public campaign JavaScript syntax
+        run: node --check public/golden-harvest-2026.js && node --check tests/golden-harvest-live-smoke.cjs
+      - name: Verify five size images, prices, announcement and cart
+        run: node tests/golden-harvest-live-smoke.cjs

@@ -154,12 +154,12 @@ const checkedPhoneFiles=[
 ];
 for(const name of checkedPhoneFiles){
  const body=read("public/"+name);
- assert.doesNotMatch(body,/96181581230|81\\s+581\\s+230/,"Old phone must not appear in "+name);
+ assert.doesNotMatch(body,/96181581230|81\s+581\s+230/,"Old phone must not appear in "+name);
 }
 for(const name of ["index.html","shop.html","contact.html","about.html"]){
  const html=read("public/"+name);
- assert.match(html,/tel:\\+96170381412/,"Correct callable phone link needed on "+name);
- assert.match(html,/https:\\/\\/wa\\.me\\/96170381412/,"Correct WhatsApp link needed on "+name);
- assert.match(html,/\\+961 70 381 412/,"Correct visible phone text needed on "+name);
+ assert.match(html,/tel:\+96170381412/,"Correct callable phone link needed on "+name);
+ assert.match(html,/https:\/\/wa\.me\/96170381412/,"Correct WhatsApp link needed on "+name);
+ assert.match(html,/\+961 70 381 412/,"Correct visible phone text needed on "+name);
 }
 console.log("Golden Harvest 2026 campaign gate passed: five genuine media files, normal hero preserved, popup and first collection, 3 sizes, safe existing cart bridge, complete EN/AR/FR.");

@@ -866,9 +866,9 @@
     if(m)return `${m[1]} عنصر`;
     m=text.match(/^(\d+) avg \/ day$/);
     if(m)return `متوسط ${m[1]} يومياً`;
-    m=text.match(/^([\\d.]+) visits \\/ visitor$/);
+    m=text.match(/^([\d.]+) visits \/ visitor$/);
     if(m)return `${m[1]} زيارة لكل زائر`;
-    m=text.match(/^([\\d.]+) views \\/ session$/);
+    m=text.match(/^([\d.]+) views \/ session$/);
     if(m)return `${m[1]} مشاهدة / جلسة`;
     m=text.match(/^(\d+) hidden or draft$/);
     if(m)return `${m[1]} مخفي أو مسودة`;

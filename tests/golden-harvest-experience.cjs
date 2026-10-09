@@ -85,9 +85,9 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
 
  const second=makePage("ar");
  assert.equal(second.w.document.querySelector("#ghPicksTitle").textContent,"زيت السنة وصل");
- assert.equal(second.w.document.querySelector(".gh-pick-badge").textContent,"موسم ٢٠٢٦");
- assert.equal(second.w.document.querySelector(".gh-picks-arrival").textContent.trim(),"وصل جديد · موسم ٢٠٢٦");
- assert.equal(second.w.document.querySelector(".gh-picks-intro>p").textContent,"زيت زيتون بكر ممتاز معصور على البارد، من موسم الزيتون ٢٠٢٦.");
+ assert.equal(second.w.document.querySelector(".gh-pick-badge").textContent,"موسم الزيتون ٢٠٢٦");
+ assert.equal(second.w.document.querySelector(".gh-picks-arrival").textContent.trim(),"وصل جديد · موسم الزيتون ٢٠٢٦");
+ assert.equal(second.w.document.querySelector(".gh-picks-intro>p").textContent,"زيت زيتون بكر ممتاز معصور على البارد.");
  assert.match(second.w.document.querySelector("#ghPopupDescription").textContent,/معصور على البارد/);
  assert.equal(second.w.document.querySelector("#harvest-picks").dir,"rtl");
  assert.equal(second.w.document.getElementById("ghCampaignPopup").hidden,false);

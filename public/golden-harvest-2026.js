@@ -77,7 +77,7 @@
       imageAlt:"Bidon d’huile d’olive Zayt w Mouneh",storyImageAlt:"Saison de la récolte des olives au Liban",shopImageAlt:"Bidon d’huile d’olive Zayt w Mouneh"
     }
   };
-  function language(){var s=window.ZWM_LOCALE&&window.ZWM_LOCALE.get?window.ZWM_LOCALE.get():document.documentElement.lang;return s==="ar"?"ar":s==="fr"?"fr":"en"}
+  function language(){var s=document.documentElement.lang;return s==="ar"?"ar":s==="fr"?"fr":"en"}
   function dir(){return language()==="ar"?"rtl":"ltr"}
   function sectionLocale(){return ' lang="'+language()+'" dir="'+dir()+'"'}
   function t(){return COPY[language()]||COPY.en}

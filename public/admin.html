@@ -851,9 +851,9 @@
   <script src="products-data.js?v=20261007-catalogue3"></script>
   <script src="product-photos.js?v=20261004-cachefix2"></script>
 
-  <script src="admin.js?v=20261007-orderdetails2"></script>
+  <script src="admin.js?v=20261009-wholesale-i18n2"></script>
   <script src="admin-rewards.js?v=20261005-account-deletefix2"></script>
-  <script src="admin-wholesale.js?v=20261009-admin-ar1"></script>
+  <script src="admin-wholesale.js?v=20261009-wholesale-i18n2"></script>
   <!-- mobilebottom-fallback -->
   <script>
   (function(){
@@ -870,7 +870,7 @@
       qa(".admin-nav button[data-view]").forEach(function(b){b.classList.toggle("is-active",b.dataset.view===view)});
       qa("#mobileAdminNav [data-mobile-view]").forEach(function(b){b.classList.toggle("is-active",b.dataset.mobileView===view)});
       var titles={overview:"Overview",products:"Products",orders:"Orders & history",returns:"Returns & Issues",wholesale:"Wholesale Leads",customers:"Customers",rewards:"Mouneh Points",content:"Website content",analytics:"Analytics",activity:"Activity",settings:"Settings"};
-      var title=q("#viewTitle"); if(title)title.textContent=titles[view]||"Owner Console";
+      var title=q("#viewTitle"); if(title)title.textContent=(document.documentElement.lang==="ar"&&view==="wholesale"?"طلبات الجملة":titles[view]||"Owner Console");
       var side=q("#adminSidebar"); if(side)side.classList.remove("is-open");
       var sideBack=q("#sidebarBackdrop"); if(sideBack)sideBack.hidden=true;
       document.body.classList.remove("admin-menu-open");

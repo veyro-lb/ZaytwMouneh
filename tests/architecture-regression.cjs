@@ -24,6 +24,12 @@ for(const name of htmlFiles){
     assert.ok(styles.at(-1)?.includes("storefront-shell.css"),name+" canonical storefront shell must be the final stylesheet");
   }
 }
+// Guard against accidental Windows-1252 decoding of the Our Story HTML.
+const storyHtml=read("public/about.html");
+assert.match(storyHtml,/قصتنا/, "Our Story Arabic heading must be UTF-8");
+assert.match(storyHtml,/المونة قريبة من البيت/, "Our Story Arabic hero copy must remain readable");
+assert.doesNotMatch(storyHtml,/(?:Ø§|Ø¹|Ù„|Ù…|Â·|â€)/u, "Our Story must not contain UTF-8 mojibake");
+
 for(const name of ["product.html","checkout.html","order.html"]){
   const html=read("public/"+name);
   for(const route of ["/terms","/privacy","/returns","/contact"])assert.ok(html.includes('href="'+route+'"'),name+" missing "+route);

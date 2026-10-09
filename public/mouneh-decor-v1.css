@@ -38,7 +38,7 @@ body[data-page="shop"] .shop-trust-grid>div>span svg{
 }
 /* The footer ornament has its own reserved height and will not overlap links. */
 .footer .zwm-mouneh-footer-art{
-  width:min(100% - 40px,500px);padding:0 0 15px;
+  width:min(calc(100% - 40px),500px);padding:0 0 15px;
   margin:0 auto clamp(9px,2vw,20px);
   border-bottom:1px solid rgba(154,118,48,.19);
 }
@@ -60,7 +60,7 @@ body[data-page="shop"] .seasonal-story-card::before{
   body[data-page="shop"] .botanical-divider.zwm-brand-divider>span{display:none}
   body[data-page="shop"] .zwm-mouneh-divider-art{width:min(100%,360px)}
   .zwm-mouneh-script{font-size:1.4rem;margin-top:0}
-  .footer .zwm-mouneh-footer-art{width:min(100% - 32px,340px);padding-bottom:12px}
+  .footer .zwm-mouneh-footer-art{width:min(calc(100% - 32px),340px);padding-bottom:12px}
   body[data-page="shop"] .seasonal-story-card::before{font-size:7rem;opacity:.06;inset:auto 3% 15% auto}
 }
 @media(prefers-reduced-motion:reduce){

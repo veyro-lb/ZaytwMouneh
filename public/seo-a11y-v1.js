@@ -3,7 +3,7 @@
 if(window.__ZWM_SEO_A11Y_V1__)return;
 window.__ZWM_SEO_A11Y_V1__=true;
 
-var ORIGIN="https://zaytwmouneh.veyro-202.workers.dev";
+var ORIGIN="https://zaytwmouneh.com";
 var LOCALE_KEY="zwm-locale-v3";
 var LANG_KEY="zwm-lang-v2";
 var FR_KEY="zwm:french:v1";

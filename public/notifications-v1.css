@@ -235,3 +235,15 @@
     display:grid!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important
   }
 }
+
+/* Owner bell: ask for push permission only after an explicit tap. */
+.zwm-admin-bell-permission{padding:13px 14px 15px;border-bottom:1px solid #e3e9e1;background:#f5f8f1}
+.zwm-admin-bell-permission[hidden]{display:none!important}
+.zwm-admin-bell-permission p{margin:0 0 11px;color:#295239;font:600 12px/1.6 "DM Sans",sans-serif;overflow-wrap:anywhere}
+.zwm-admin-bell-permission [data-bell-enable]{width:100%;max-width:100%;min-height:42px;padding:9px 13px;border-radius:10px;white-space:normal;line-height:1.4}
+.zwm-admin-bell-permission [data-bell-enable][hidden]{display:none!important}
+.zwm-admin-bell-permission [data-bell-enable]:disabled{opacity:.6;cursor:wait}
+@media(max-width:560px){
+ .zwm-admin-bell-permission{padding:12px}
+ .zwm-notification-popover{max-width:calc(100vw - 20px)}
+}

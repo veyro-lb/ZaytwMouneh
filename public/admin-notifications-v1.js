@@ -1,14 +1,14 @@
 (function(){
 "use strict";
-const CFG="/admin-config.js?v=20261006-notificationhardening1", KEY="zwm:owner-session:v3";
-let cfg,user,client,channel,rows=[];
+const CFG="/admin-config.js?v=20261009-owner-multidevice1", KEY="zwm:owner-session:v3";
+let cfg,user,client,channel,rows=[],booting=false,started=false,pollTimer=null,refreshInFlight=null;
 const $=(s,r=document)=>r.querySelector(s), esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const lang=()=>{try{if(localStorage.getItem("zwm:french:v1")==="1")return"fr";return localStorage.getItem("zwm-lang-v2")==="ar"||localStorage.getItem("zwm:admin-lang:v1")==="ar"?"ar":"en"}catch{return"en"}};
 const copy={en:{n:"Notifications",all:"Mark all as read",empty:"No notifications yet.",enable:"Enable notifications",enabled:"Notifications enabled",blocked:"Browser blocked notifications",test:"Send test notification",orders:"New orders",wholesale:"Wholesale / Jemle inquiries",payments:"Important payment issues",requests:"Customer requests",low:"Low stock",out:"Out of stock",reviews:"Reviews",routine:"Routine activity",devices:"Your notification devices",disable:"Disable notifications on this device",remove:"Remove device",note:"Your phone or computer controls notification sounds, vibration, Focus and Do Not Disturb.",ios:"On iPhone, add Zayt w Mouneh to your Home Screen, open it there, then tap Enable notifications."},ar:{n:"الإشعارات",all:"تحديد الكل كمقروء",empty:"لا توجد إشعارات بعد.",enable:"تفعيل الإشعارات",enabled:"الإشعارات مفعّلة",blocked:"المتصفح حظر الإشعارات",test:"إرسال إشعار تجريبي",orders:"الطلبات الجديدة",wholesale:"استفسارات الجملة",payments:"مشاكل الدفع المهمة",requests:"طلبات العملاء",low:"مخزون منخفض",out:"نفاد المخزون",reviews:"التقييمات",routine:"النشاط العادي",devices:"أجهزة الإشعارات",disable:"إيقاف الإشعارات على هذا الجهاز",remove:"إزالة الجهاز",note:"الهاتف أو الكمبيوتر هو الذي يتحكم بالصوت والاهتزاز ووضع التركيز وعدم الإزعاج.",ios:"على iPhone، أضف زيت ومونة إلى الشاشة الرئيسية، افتحه منها، ثم اضغط تفعيل الإشعارات."},fr:{n:"Notifications",all:"Tout marquer comme lu",empty:"Aucune notification.",enable:"Activer les notifications",enabled:"Notifications activées",blocked:"Notifications bloquées par le navigateur",test:"Envoyer une notification test",orders:"Nouvelles commandes",wholesale:"Demandes de gros / Jemle",payments:"Problèmes de paiement importants",requests:"Demandes clients",low:"Stock faible",out:"Rupture de stock",reviews:"Avis",routine:"Activité courante",devices:"Vos appareils de notification",disable:"Désactiver les notifications sur cet appareil",remove:"Supprimer l’appareil",note:"Votre téléphone ou ordinateur contrôle les sons, vibrations, Concentration et Ne pas déranger.",ios:"Sur iPhone, ajoutez Zayt w Mouneh à l’écran d’accueil, ouvrez-la depuis cet écran, puis touchez Activer les notifications."}};
 const tr=k=>(copy[lang()]||copy.en)[k]||k;
 function sess(){
   try{
-    const raw=sessionStorage.getItem(KEY)||localStorage.getItem(KEY);
+    const raw=sessionStorage.getItem(KEY);
     return raw?JSON.parse(raw):null;
   }catch{return null}
 }
@@ -17,7 +17,7 @@ function headers(extra={}){const s=sess();return{"apikey":cfg.supabasePublishabl
 async function api(path,opt={}){const r=await fetch(cfg.supabaseUrl.replace(/\/$/,"")+"/rest/v1/"+path,{...opt,headers:{...headers(),...(opt.headers||{})}}),d=await r.json().catch(()=>null);if(!r.ok)throw new Error(d?.message||"Request failed");return d}
 async function me(){const s=sess();if(!s?.access_token)return null;const r=await fetch(cfg.supabaseUrl.replace(/\/$/,"")+"/auth/v1/user",{headers:headers()});return r.ok?r.json():null}
 function b64(s){const p="=".repeat((4-s.length%4)%4),raw=atob((s+p).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
-async function reg(){return navigator.serviceWorker.register("/admin-sw.js?v=20261006-notificationhardening1",{scope:"/",updateViaCache:"none"})}
+async function reg(){return navigator.serviceWorker.register("/admin-sw.js?v=20261009-owner-multidevice1",{scope:"/",updateViaCache:"none"})}
 async function subscribe(){
  if(!("Notification"in window)||!("PushManager"in window)||!("serviceWorker"in navigator))throw Error("Push unsupported");
  if(Notification.permission==="denied")throw Error(tr("blocked"));
@@ -46,25 +46,55 @@ async function disable(remove){const s=await currentSub();if(!s)return;const q="
 function title(n){const m=n.metadata||{};if(String(n.notification_type||"").startsWith("RETURN_")){const ref=m.reference||"";if(n.notification_type==="RETURN_SAFETY_ISSUE")return (lang()==="ar"?"مشكلة جودة أو سلامة تحتاج مراجعة":lang()==="fr"?"Problème qualité / sécurité à examiner":"Quality / safety issue needs review")+(ref?" · "+ref:"");if(n.notification_type==="RETURN_CUSTOMER_UPDATE")return (lang()==="ar"?"أضاف العميل معلومات لطلب الإرجاع":lang()==="fr"?"Le client a ajouté des informations":"Customer added return information")+(ref?" · "+ref:"");if(n.notification_type==="RETURN_REFUND_FAILED")return (lang()==="ar"?"استرداد يحتاج إلى متابعة":lang()==="fr"?"Remboursement à vérifier":"Refund needs attention")+(ref?" · "+ref:"");return (lang()==="ar"?"طلب إرجاع / مشكلة منتج":lang()==="fr"?"Retour / problème produit":"Return / product issue")+(ref?" · "+ref:"");}if(n.notification_type==="ORDER_ITEM_ATTENTION"){const ref=m.reference||n.entity_id||"";const item=String(m.item||"").trim();return (lang()==="ar"?"صنف يحتاج إلى متابعة":lang()==="fr"?"Article nécessitant une attention":"Item needs attention")+(ref?" · "+ref:"")+(item?" · "+item:"");}if(n.notification_type==="ORDER_CREATED")return "New order · "+(m.reference||n.entity_id);if(n.notification_type==="WHOLESALE_INQUIRY_CREATED"){const name=String(m.business_name||"").trim();return (lang()==="ar"?"استفسار جملة جديد":lang()==="fr"?"Nouvelle demande de gros":"New wholesale inquiry")+(name?" · "+name:"");}if(n.notification_type==="PAYMENT_ISSUE"||n.notification_type==="PAYMENT_FAILED")return tr("payments");if(n.notification_type==="REVIEW_CREATED")return tr("reviews");if(n.notification_type==="TEST_PUSH")return lang()==="ar"?"إشعار تجريبي":lang()==="fr"?"Notification test":"Test notification";return tr("n")}
 function iconFor(n){if(String(n.notification_type||"").startsWith("RETURN_"))return n.notification_type==="RETURN_SAFETY_ISSUE"||n.notification_type==="RETURN_REFUND_FAILED"?"⚠️":"↩";if(n.notification_type==="ORDER_ITEM_ATTENTION")return "⚠️";if(n.notification_type==="ORDER_CREATED")return "🛒";if(n.notification_type==="WHOLESALE_INQUIRY_CREATED")return "📦";if(n.notification_type==="PAYMENT_ISSUE"||n.notification_type==="PAYMENT_FAILED")return "⚠️";if(n.notification_type==="REVIEW_CREATED")return "★";return "🔔"}
 function timeLabel(v){const t=new Date(v),s=Math.max(0,Math.floor((Date.now()-t.getTime())/1000));if(s<60)return lang()==="ar"?"الآن":lang()==="fr"?"À l’instant":"Now";if(s<3600)return Math.floor(s/60)+(lang()==="ar"?" د":lang()==="fr"?" min":" min");if(s<86400)return Math.floor(s/3600)+(lang()==="ar"?" س":lang()==="fr"?" h":" h");return t.toLocaleDateString(lang()==="ar"?"ar-LB":lang()==="fr"?"fr-LB":"en-LB",{month:"short",day:"numeric"})}
-async function refresh(){rows=await api("notifications?select=*&user_id=eq."+user.id+"&audience=eq.admin&order=created_at.desc&limit=40");const unread=rows.filter(x=>!x.read_at).length,b=$("#zwmNotificationBadge"),list=$("#zwmNotificationList");if(b){b.textContent=unread;b.hidden=!unread}if(list)list.innerHTML=rows.length?rows.slice(0,25).map(n=>'<button type="button" class="zwm-notification-item '+(!n.read_at?"is-unread":"")+'" data-id="'+n.id+'"><span class="zwm-notification-icon" aria-hidden="true">'+iconFor(n)+'</span><span class="zwm-notification-copy"><strong>'+esc(title(n))+'</strong><small>'+esc(timeLabel(n.created_at))+'</small></span>'+(!n.read_at?'<span class="zwm-unread-dot" aria-label="Unread"></span>':'')+'</button>').join(""):'<p class="zwm-notification-empty">'+esc(tr("empty"))+'</p>'}
-async function mark(id){await api("notifications?id=eq."+id,{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})})}
+async function refresh(){
+ if(!started||!user)return;
+ if(refreshInFlight)return refreshInFlight;
+ const work=(async()=>{
+  const latest=await api("notifications?select=*&user_id=eq."+encodeURIComponent(user.id)+"&audience=eq.admin&order=created_at.desc&limit=40");
+  if(!started)return;
+  rows=latest||[];
+  const unread=rows.filter(x=>!x.read_at).length,b=$("#zwmNotificationBadge"),list=$("#zwmNotificationList");
+  if(b){b.textContent=unread;b.hidden=!unread}
+  if(list)list.innerHTML=rows.length?rows.slice(0,25).map(n=>'<button type="button" class="zwm-notification-item '+(!n.read_at?"is-unread":"")+'" data-id="'+n.id+'"><span class="zwm-notification-icon" aria-hidden="true">'+iconFor(n)+'</span><span class="zwm-notification-copy"><strong>'+esc(title(n))+'</strong><small>'+esc(timeLabel(n.created_at))+'</small></span>'+(!n.read_at?'<span class="zwm-unread-dot" aria-label="Unread"></span>':'')+'</button>').join(""):'<p class="zwm-notification-empty">'+esc(tr("empty"))+'</p>';
+ })();refreshInFlight=work;
+ try{return await work}finally{if(refreshInFlight===work)refreshInFlight=null}
+}
+async function mark(id){await api("notifications?id=eq."+encodeURIComponent(id)+"&user_id=eq."+encodeURIComponent(user.id)+"&audience=eq.admin",{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})})}
 async function markAll(){await api("notifications?user_id=eq."+user.id+"&audience=eq.admin&read_at=is.null",{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})});refresh()}
 function safeRoute(r){try{const u=new URL(r,location.origin);return u.origin===location.origin?u.pathname+u.search+u.hash:"/admin"}catch{return"/admin"}}
+const bellText={
+ en:{prompt:"Get new orders and customer alerts on this device, even when Admin is closed.",allow:"Allow alerts on this device",denied:"Notifications are blocked. Allow them in this browser's site settings.",unsupported:"Push alerts are unavailable in this browser or on this connection.",ios:"On iPhone/iPad, add the website to your Home Screen and open it there to enable alerts."},
+ ar:{prompt:"فعّل تنبيهات الطلبات والعملاء على هذا الجهاز حتى عند إغلاق لوحة الإدارة.",allow:"السماح بالتنبيهات على هذا الجهاز",denied:"الإشعارات محظورة. اسمح بها من إعدادات الموقع في المتصفح.",unsupported:"تنبيهات الجهاز غير متاحة في هذا المتصفح أو الاتصال.",ios:"على iPhone أو iPad، أضف الموقع إلى الشاشة الرئيسية وافتحه منها لتفعيل التنبيهات."},
+ fr:{prompt:"Recevez les commandes et demandes clients sur cet appareil, même si l'administration est fermée.",allow:"Autoriser les alertes sur cet appareil",denied:"Notifications bloquées. Autorisez-les dans les réglages du site du navigateur.",unsupported:"Notifications push indisponibles sur ce navigateur ou cette connexion.",ios:"Sur iPhone/iPad, ajoutez le site à l'écran d'accueil et ouvrez-le depuis cet écran avant d'autoriser les alertes."}
+};
+const bt=k=>(bellText[lang()]||bellText.en)[k];
+const iosNotInstalled=()=>/iPhone|iPad|iPod/i.test(navigator.userAgent)&&!matchMedia("(display-mode: standalone)").matches;
+async function renderBellPermission(){
+ const wrap=$("[data-bell-prompt]");if(!wrap||!user)return;
+ const unsupported=!window.isSecureContext||!("Notification"in window)||!("PushManager"in window)||!("serviceWorker"in navigator);
+ const denied=!unsupported&&Notification.permission==="denied";
+ const ios=!unsupported&&iosNotInstalled();
+ const device=!unsupported&&!denied&&!ios?await registeredAdminDevice():null;
+ wrap.hidden=!!device;
+ const message=$("[data-bell-help]",wrap),button=$("[data-bell-enable]",wrap);
+ if(message)message.textContent=unsupported?bt("unsupported"):denied?bt("denied"):ios?bt("ios"):bt("prompt");
+ if(button){button.hidden=unsupported||denied||ios;button.textContent=bt("allow")}
+}
 function shell(){
- if(!$("#zwmNotificationBell")){const b=document.createElement("button");b.id="zwmNotificationBell";b.className="icon-button zwm-notification-bell";b.type="button";b.innerHTML='🔔<span id="zwmNotificationBadge" hidden>0</span>';b.setAttribute("aria-label",tr("n"));$(".topbar-right")?.insertBefore(b,$(".owner-pill"));const p=document.createElement("section");p.id="zwmNotificationPopover";p.className="zwm-notification-popover";p.hidden=true;p.innerHTML='<header><strong>'+esc(tr("n"))+'</strong><button type="button" class="zwm-mark-all" data-all>'+esc(tr("all"))+'</button></header><div id="zwmNotificationList"></div>';document.body.appendChild(p);b.onclick=e=>{e.stopPropagation();p.hidden=!p.hidden;if(!p.hidden)refresh()};document.addEventListener("click",e=>{if(!p.hidden&&!e.target.closest("#zwmNotificationPopover")&&!e.target.closest("#zwmNotificationBell"))p.hidden=true});p.onclick=e=>{if(e.target.closest("[data-all]"))return markAll();const el=e.target.closest("[data-id]");if(!el)return;const n=rows.find(x=>x.id===el.dataset.id);if(n){mark(n.id).catch(()=>{});location.href=safeRoute(n.route)}}}
- const grid=$("[data-view-panel='settings'] .settings-grid");if(grid&&!$("#zwmAdminNotificationSettings")){const c=document.createElement("article");c.id="zwmAdminNotificationSettings";c.className="panel zwm-notification-settings zwm-admin-notification-card";c.innerHTML='<div class="zwm-admin-notification-head"><div><p class="zwm-admin-notification-kicker">'+esc(tr("n"))+'</p><h3>'+esc(at("headline"))+'</h3><p>'+esc(at("lead"))+'</p></div><span class="zwm-admin-notification-state" data-status></span></div><div class="zwm-admin-notification-toolbar"><div class="zwm-notification-actions"><button class="button-primary" type="button" data-enable>'+esc(tr("enable"))+'</button><button class="button-secondary" type="button" data-test>'+esc(tr("test"))+'</button></div><p class="field-help" data-help></p></div><div data-prefs class="zwm-admin-pref-grid"></div><section class="zwm-admin-device-section"><div class="zwm-admin-device-heading"><div><h4>'+esc(tr("devices"))+'</h4><p>'+esc(at("deviceHint"))+'</p></div></div><div data-devices></div></section><p class="field-help zwm-admin-notification-note">'+esc(tr("note"))+'</p>';grid.prepend(c);c.onclick=actions;renderSettings(c)}
+ if(!$("#zwmNotificationBell")){const b=document.createElement("button");b.id="zwmNotificationBell";b.className="icon-button zwm-notification-bell";b.type="button";b.innerHTML='🔔<span id="zwmNotificationBadge" hidden>0</span>';b.setAttribute("aria-label",tr("n"));$(".topbar-right")?.insertBefore(b,$(".owner-pill"));const p=document.createElement("section");p.id="zwmNotificationPopover";p.className="zwm-notification-popover";p.hidden=true;p.innerHTML='<header><strong>'+esc(tr("n"))+'</strong><button type="button" class="zwm-mark-all" data-all>'+esc(tr("all"))+'</button></header><div class="zwm-admin-bell-permission" data-bell-prompt hidden><p data-bell-help></p><button class="button-primary" type="button" data-bell-enable></button></div><div id="zwmNotificationList"></div>';document.body.appendChild(p);b.onclick=e=>{e.stopPropagation();p.hidden=!p.hidden;if(!p.hidden){refresh().catch(()=>{});renderBellPermission().catch(()=>{})}};document.addEventListener("click",e=>{if(!p.hidden&&!e.target.closest("#zwmNotificationPopover")&&!e.target.closest("#zwmNotificationBell"))p.hidden=true});p.onclick=async e=>{const allow=e.target.closest("[data-bell-enable]");if(allow){e.stopPropagation();allow.disabled=true;const h=$("[data-bell-help]",p);try{await subscribe();if(h)h.textContent=tr("enabled");await renderBellPermission();const settings=$("#zwmAdminNotificationSettings");if(settings)renderSettings(settings).catch(()=>{})}catch(err){if(h)h.textContent=err.message||tr("blocked")}finally{allow.disabled=false}return}if(e.target.closest("[data-all]"))return markAll();const el=e.target.closest("[data-id]");if(!el)return;const n=rows.find(x=>x.id===el.dataset.id);if(n){mark(n.id).catch(()=>{});location.href=safeRoute(n.route)}}}
+ const grid=$("[data-view-panel='settings'] .settings-grid");if(grid&&!$("#zwmAdminNotificationSettings")){const c=document.createElement("article");c.id="zwmAdminNotificationSettings";c.className="panel zwm-notification-settings zwm-admin-notification-card";c.innerHTML='<div class="zwm-admin-notification-head"><div><p class="zwm-admin-notification-kicker">'+esc(tr("n"))+'</p><h3>'+esc(at("headline"))+'</h3><p>'+esc(at("lead"))+'</p></div><span class="zwm-admin-notification-state" data-status></span></div><div class="zwm-admin-notification-toolbar"><div class="zwm-notification-actions"><button class="button-primary" type="button" data-enable>'+esc(tr("enable"))+'</button><button class="button-secondary" type="button" data-test>'+esc(tr("test"))+'</button></div><p class="field-help" data-help></p></div><div data-prefs class="zwm-admin-pref-grid"></div><section class="zwm-admin-device-section"><div class="zwm-admin-device-heading"><div><h4>'+esc(tr("devices"))+'</h4><p>'+esc(at("deviceHint"))+'</p></div></div><div data-devices></div></section><p class="field-help zwm-admin-notification-note">'+esc(tr("note"))+'</p>';grid.prepend(c);c.onclick=actions;renderSettings(c).catch(err=>console.warn("Notification settings unavailable:",err))}
 }
 async function actions(e){const root=e.currentTarget,h=$("[data-help]",root);try{if(e.target.closest("[data-enable]")){await subscribe();h.textContent=tr("enabled");await renderSettings(root)}if(e.target.closest("[data-test]")){const s=await currentSub();if(!s)throw Error("Enable notifications first");const devices=await api("push_subscriptions?select=id&user_id=eq."+user.id+"&audience=eq.admin&endpoint=eq."+encodeURIComponent(s.endpoint)+"&enabled=eq.true&revoked_at=is.null&limit=1");const device=devices?.[0];if(!device)throw Error("This device is not registered");h.textContent=lang()==="ar"?"جارٍ إرسال الإشعار التجريبي…":lang()==="fr"?"Envoi de la notification test…":"Sending test notification…";const notificationId=await api("rpc/notification_create_test",{method:"POST",body:JSON.stringify({p_subscription_id:device.id})});let status=null;for(let i=0;i<8;i++){await new Promise(x=>setTimeout(x,500));status=await api("rpc/notification_test_status",{method:"POST",body:JSON.stringify({p_notification_id:notificationId})}).catch(()=>null);if(status&&["sent","dead","no_subscriptions","disabled"].includes(status.status))break}if(status?.status==="sent"&&status?.delivery_state==="accepted"){h.textContent=lang()==="ar"?"تم تسليم الإشعار التجريبي إلى هذا الجهاز.":lang()==="fr"?"Notification test livrée à cet appareil.":"Test notification delivered to this device.";await api("notifications?id=eq."+notificationId,{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})}).catch(()=>{});refresh().catch(()=>{})}else if(status?.status==="retry"){h.textContent=lang()==="ar"?"تعذّر التسليم مؤقتاً وسيتم إعادة المحاولة تلقائياً.":lang()==="fr"?"Échec temporaire; une nouvelle tentative sera faite automatiquement.":"Temporary delivery failure; it will retry automatically."}else if(status){throw Error("Test push failed: "+(status.error_category||status.last_error||status.status))}else{h.textContent=lang()==="ar"?"تم وضع الاختبار في قائمة الإرسال.":lang()==="fr"?"Test mis en file d’attente.":"Test queued for delivery."}}if(e.target.closest("[data-disable]")){await disable(false);renderSettings(root)}if(e.target.closest("[data-remove]")){await disable(true);renderSettings(root)}const t=e.target.closest("[data-pref]");if(t)await api("notification_preferences?user_id=eq."+user.id+"&category=eq."+t.dataset.pref,{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({push_enabled:t.checked,updated_at:new Date().toISOString()})})}catch(x){h.textContent=x.message}}
 async function renderSettings(root){
  const st=$("[data-status]",root),en=$("[data-enable]",root),test=$("[data-test]",root),h=$("[data-help]",root);
- const unsupported=!window.Notification||!("PushManager"in window)||!("serviceWorker"in navigator);
+ const unsupported=!window.isSecureContext||!window.Notification||!("PushManager"in window)||!("serviceWorker"in navigator);
  const denied=!unsupported&&Notification.permission==="denied";
  const device=unsupported||denied?null:await registeredAdminDevice();
  st.classList.toggle("is-on",!!device);st.classList.toggle("is-off",!device);
  st.textContent=unsupported?"Push unsupported":denied?tr("blocked"):device?tr("enabled"):at("off");
  en.hidden=unsupported||denied||!!device;
  test.disabled=!device;test.setAttribute("aria-disabled",String(!device));
- if(/iPhone|iPad/i.test(navigator.userAgent)&&!matchMedia("(display-mode: standalone)").matches&&!device)h.textContent=tr("ios");
+ if(iosNotInstalled()&&!device)h.textContent=tr("ios");
 
  const prefs=await api("notification_preferences?select=*&user_id=eq."+encodeURIComponent(user.id));
  const map=[["new_order","orders"],["wholesale","wholesale"],["payment_issue","payments"],["customer_requests","requests"],["reviews","reviews"]],m=new Map((prefs||[]).map(x=>[x.category,x]));
@@ -79,9 +109,51 @@ async function renderSettings(root){
  }).join(""):'<p class="field-help zwm-admin-no-devices">'+esc(at("none"))+'</p>';
  if(device)devices.insertAdjacentHTML("beforeend",'<div class="zwm-admin-device-actions"><button class="button-secondary" data-disable type="button">'+esc(tr("disable"))+'</button><button class="button-secondary" data-remove type="button">'+esc(tr("remove"))+'</button></div>');
 }
-async function realtime(){client=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey,{accessToken:async()=>sess()?.access_token||"",auth:{persistSession:false,autoRefreshToken:false}});channel=client.channel("zwm-admin-notifications").on("postgres_changes",{event:"INSERT",schema:"public",table:"notifications",filter:"user_id=eq."+user.id},()=>refresh()).subscribe()}
-function cleanupRealtime(){try{if(client&&channel)client.removeChannel(channel)}catch{}channel=null}
+async function realtime(){
+ if(!window.supabase?.createClient)return;
+ client=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey,{accessToken:async()=>sess()?.access_token||"",auth:{persistSession:false,autoRefreshToken:false}});
+ try{client.realtime.setAuth(sess()?.access_token||"")}catch{}
+ channel=client.channel("zwm-admin-notifications")
+  .on("postgres_changes",{event:"*",schema:"public",table:"notifications",filter:"user_id=eq."+user.id},()=>refresh().catch(()=>{}))
+  .subscribe(status=>{if(status==="SUBSCRIBED")refresh().catch(()=>{})});
+}
+function cleanupRealtime(){try{if(client&&channel)client.removeChannel(channel)}catch{}channel=null;client=null}
+function cleanup(){
+ started=false;user=null;rows=[];cleanupRealtime();
+ if(pollTimer){clearInterval(pollTimer);pollTimer=null}
+ $("#zwmNotificationBell")?.remove();$("#zwmNotificationPopover")?.remove();
+ $("#zwmAdminNotificationSettings")?.remove();
+}
 async function deep(){const u=new URL(location.href),r=u.searchParams.get("ref"),type=u.searchParams.get("notification");if(type==="order"&&r){document.querySelector('[data-view="orders"]')?.click();let n=0,t=setInterval(()=>{const b=[...document.querySelectorAll("[data-view-order]")].find(x=>x.dataset.viewOrder===r);if(b||n++>30){clearInterval(t);b?.click()}},250)}}
-async function boot(){if(!document.body.classList.contains("admin-body"))return;await setup();user=await me();if(!user)return;const a=await api("admin_users?select=user_id&user_id=eq."+user.id+"&limit=1").catch(()=>[]);if(!a.length)return;await bootstrapPrefs();shell();await refresh();await realtime();deep();window.addEventListener("pagehide",cleanupRealtime,{once:true});new MutationObserver(shell).observe(document.body,{subtree:true,childList:true})}
+async function boot(){
+ if(!document.body.classList.contains("admin-body")||started||booting)return;
+ booting=true;
+ try{
+  await setup();
+  const candidate=await me();
+  if(!candidate?.id)return;
+  const admins=await api("admin_users?select=user_id&user_id=eq."+encodeURIComponent(candidate.id)+"&limit=1");
+  if(!admins?.length)return;
+  user=candidate;started=true;
+  await bootstrapPrefs();
+  shell();
+  await refresh().catch(err=>console.warn("Notification read unavailable:",err));
+  await realtime().catch(err=>console.warn("Notification realtime unavailable:",err));
+  deep();
+  if(pollTimer)clearInterval(pollTimer);
+  pollTimer=setInterval(()=>{if(!document.hidden&&started){refresh().catch(()=>{});if(!$("#zwmNotificationPopover")?.hidden)renderBellPermission().catch(()=>{})}},45000);
+ }catch(err){console.warn("Owner notifications will retry:",err)}
+ finally{booting=false}
+}
+window.addEventListener("zwm:owner-ready",()=>boot().catch(()=>{}));
+window.addEventListener("zwm:owner-signed-out",cleanup);
+window.addEventListener("zwm:owner-token-updated",()=>{if(client){try{client.realtime.setAuth(sess()?.access_token||"")}catch{}}if(started)refresh().catch(()=>{})});
+window.addEventListener("focus",()=>{if(started)refresh().catch(()=>{});else boot().catch(()=>{})});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){if(started)refresh().catch(()=>{});else boot().catch(()=>{})}});
+window.addEventListener("pageshow",()=>{if(!started)boot().catch(()=>{});else if(!channel)realtime().catch(()=>{})});
+window.addEventListener("pagehide",cleanupRealtime);
+const observer=new MutationObserver(()=>{if(started)shell()});
+if(document.body)observer.observe(document.body,{subtree:true,childList:true});
+else document.addEventListener("DOMContentLoaded",()=>observer.observe(document.body,{subtree:true,childList:true}),{once:true});
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(boot,0),{once:true});else setTimeout(boot,0);
 })();

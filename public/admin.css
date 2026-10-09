@@ -2031,3 +2031,179 @@ html[dir="rtl"] .auth-language-toggle{
     padding-bottom:calc(18px + env(safe-area-inset-bottom))!important;
   }
 }
+
+
+/* ===== Owner navigation: independently scrollable menu, fixed actions =====
+   Keep the brand and website/sign-out links accessible on both short
+   desktops and phones. This intentionally overrides legacy drawer rules. */
+.admin-sidebar{
+  height:100vh;
+  height:100dvh;
+  max-height:100dvh;
+  bottom:auto;
+  min-height:0;
+  overflow:hidden;
+}
+.sidebar-head{
+  flex:0 0 auto;
+  min-width:0;
+  gap:8px;
+}
+.sidebar-brand,
+.sidebar-brand span{
+  min-width:0;
+}
+.admin-nav{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior-y:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(226,239,226,.42) transparent;
+  scrollbar-gutter:stable;
+  margin-top:18px;
+  padding:4px 4px 12px 0;
+}
+.admin-nav::-webkit-scrollbar{width:5px}
+.admin-nav::-webkit-scrollbar-thumb{
+  background:rgba(226,239,226,.42);
+  border-radius:12px;
+}
+.admin-nav button{
+  width:100%;
+  min-height:44px;
+  grid-template-columns:26px minmax(0,1fr) auto;
+  column-gap:6px;
+}
+.admin-nav button b{
+  min-width:0;
+  line-height:1.45;
+  overflow-wrap:anywhere;
+}
+.sidebar-foot{
+  flex:0 0 auto;
+  margin-top:0;
+  padding-top:10px;
+  padding-bottom:max(4px,env(safe-area-inset-bottom));
+  background:#0e321d;
+}
+.sidebar-foot .sidebar-website-link{
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  justify-content:space-between;
+  padding:11px 12px;
+  border-radius:11px;
+  background:rgba(255,255,255,.11);
+  color:#fff;
+  font-weight:800;
+}
+.sidebar-foot .sidebar-website-link:hover,
+.sidebar-foot .sidebar-website-link:focus-visible{
+  background:rgba(255,255,255,.2);
+}
+.sidebar-foot .sidebar-website-link span{font-size:18px}
+.sidebar-close{flex:0 0 auto;cursor:pointer}
+.admin-nav button:focus-visible,
+.sidebar-close:focus-visible,
+.mobile-menu-button:focus-visible,
+.sidebar-foot a:focus-visible{
+  outline:2px solid #e0c37b;
+  outline-offset:2px;
+}
+
+@media(max-width:900px){
+  .admin-sidebar{
+    height:100dvh;
+    max-height:100dvh;
+    overflow:hidden;
+  }
+  .admin-topbar .topbar-left{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    min-width:0;
+  }
+  .topbar-title{min-width:0;flex:1 1 auto}
+  .topbar-title h1{min-width:0}
+  .admin-topbar .mobile-menu-button{
+    display:grid;
+    place-items:center;
+    flex:0 0 40px;
+    width:40px;
+    height:40px;
+    min-width:40px;
+    min-height:40px;
+    font-size:21px;
+    line-height:1;
+  }
+  .sidebar-close{
+    display:grid;
+    place-items:center;
+    width:44px;
+    height:44px;
+    min-width:44px;
+    min-height:44px;
+    border-radius:12px;
+    background:rgba(255,255,255,.09);
+    color:#fff;
+  }
+}
+
+@media(max-width:760px){
+  /* Five actual navigation buttons must occupy ONE row, not two. */
+  .mobile-admin-nav{
+    grid-template-columns:repeat(5,minmax(0,1fr));
+  }
+  /* Older compact-header rule hides the hamburger: restore the drawer entry. */
+  .admin-topbar .mobile-menu-button{
+    display:grid!important;
+    flex:0 0 40px;
+  }
+  .admin-topbar .topbar-left{
+    display:flex!important;
+    align-items:center;
+    gap:7px;
+  }
+  .admin-topbar .topbar-title{
+    flex:1 1 auto;
+    min-width:0;
+    overflow:hidden;
+  }
+  .admin-sidebar .admin-nav{
+    margin-top:12px;
+    padding-bottom:8px;
+  }
+  .admin-sidebar .sidebar-foot{
+    padding-top:8px;
+    padding-bottom:max(8px,env(safe-area-inset-bottom));
+  }
+  body.admin-menu-open .mobile-admin-nav{
+    visibility:hidden;
+    pointer-events:none;
+  }
+  .mobile-more-site-link{
+    display:flex;
+    min-height:48px;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:12px;
+    padding:12px 15px;
+    border:1px solid #cbdccc;
+    border-radius:13px;
+    background:#eaf1e8;
+    color:var(--green);
+    font-weight:800;
+    font-size:13px;
+    text-decoration:none;
+  }
+  .mobile-more-site-link span{font-size:19px}
+  .mobile-more-site-link:focus-visible{
+    outline:2px solid var(--green);
+    outline-offset:2px;
+  }
+}

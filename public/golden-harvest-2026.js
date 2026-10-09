@@ -30,7 +30,7 @@
       unavailable:"Price and online ordering not yet available for this size.",
       viewAll:"See all olive oil sizes",notes:"Lebanese olive oil · Fresh harvest · Three featured sizes",
       imageAlt:"Zayt w Mouneh olive oil tin",
-      popupKicker:"ZAYT W MOUNEH · 2026 OLIVE HARVEST",
+      popupKicker:"ZAYT W MOUNEH · LEBANESE OLIVE OIL",
       popupTitle:"The 2026 Harvest<br><em>Has Arrived</em>",
       popupDescription:"Cold-pressed Lebanese extra virgin olive oil. Explore our featured tins and choose the right size for your table.",
       popupDiscover:"Discover the Harvest",popupContinue:"Continue to Website",popupClose:"Close harvest announcement",
@@ -59,7 +59,7 @@
       shopCta:"اكتشفوا مختارات الموسم",shopAll:"كل أحجام زيت الزيتون"
     },
     fr:{
-      kicker:"SÉLECTIONS DE SAISON · RÉCOLTE 2026",
+      kicker:"SÉLECTIONS DE SAISON",
       title:"La récolte 2026 est arrivée",
       description:"Découvrez notre huile d’olive vierge extra libanaise, pressée à froid, de la saison 2026.",
       badge:"NOUVEAU · RÉCOLTE 2026",
@@ -68,7 +68,7 @@
       unavailable:"Prix et commande en ligne indisponibles pour ce format actuellement.",
       viewAll:"Voir tous les formats d’huile d’olive",notes:"Huile d’olive libanaise · Nouvelle récolte · Trois formats",
       imageAlt:"Bidon d’huile d’olive Zayt w Mouneh",
-      popupKicker:"ZAYT W MOUNEH · RÉCOLTE DES OLIVES 2026",
+      popupKicker:"ZAYT W MOUNEH · HUILE D’OLIVE DU LIBAN",
       popupTitle:"La récolte 2026<br><em>est arrivée</em>",
       popupDescription:"Huile d’olive vierge extra libanaise, pressée à froid. Découvrez nos bidons et choisissez le format qui vous convient.",
       popupDiscover:"Découvrir la récolte",popupContinue:"Continuer vers le site",popupClose:"Fermer l’annonce de la récolte",

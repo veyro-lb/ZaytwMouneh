@@ -1,101 +1,137 @@
-/* Golden Harvest 2026. Isolated from the normal storefront; inert until JS activates. */
-body.zwm-harvest-active { --gh-forest:#183e29; --gh-gold:#d1ab59; --gh-ivory:#f6f0e2; }
-body.zwm-harvest-active[data-page="home"] .home-pantry-hero {display:none!important}
-.zwm-gh { color:var(--gh-forest,#183e29); font-family:"DM Sans",sans-serif; }
-.zwm-gh *, .zwm-gh *::before, .zwm-gh *::after { box-sizing:border-box }
-.zwm-gh a {text-decoration:none}
-.zwm-gh .gh-shell { width:min(1240px,calc(100% - 48px));margin-inline:auto }
-.zwm-gh .gh-overline {display:block;font-size:.72rem;letter-spacing:.21em;text-transform:uppercase;font-weight:700;color:#b69455}
-.zwm-gh-hero { isolation:isolate;position:relative;min-height:560px;background:#173724;color:#fff;overflow:hidden;display:grid;align-items:center }
-.zwm-gh-hero .gh-film { position:absolute;inset:0;z-index:-2 }
-.zwm-gh-hero .gh-film video {display:block;width:100%;height:100%;object-fit:cover;background:#365342 url('/assets/videos/home-pantry.jpg') center/cover no-repeat;}
-.zwm-gh-hero .gh-shade {position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(12,34,23,.94) 0%,rgba(18,46,30,.86) 39%,rgba(18,46,30,.40) 65%,rgba(12,34,23,.13) 100%)}
-.zwm-gh-hero .gh-hero-inner {width:100%;padding-block:90px 94px}
-.zwm-gh-hero .gh-hero-copy {max-width:620px}
-.zwm-gh-hero .gh-hero-topline {display:flex;align-items:center;flex-wrap:wrap;column-gap:18px;row-gap:9px}
-.zwm-gh-hero .gh-hero-topline .gh-overline {color:#ead39d}
-.zwm-gh-hero .gh-locale-indicator {display:inline-flex;align-items:center;justify-content:center;min-height:25px;padding:3px 10px;border:1px solid rgba(239,220,170,.55);border-radius:99px;color:#f8e5bc;font:700 .63rem/1.35 "DM Sans","Noto Kufi Arabic",sans-serif;letter-spacing:.08em;white-space:nowrap}
-.zwm-gh-hero h1 {font-family:"DM Serif Display",Georgia,serif;font-weight:400;letter-spacing:-.045em;line-height:.97;font-size:clamp(3.2rem,6.3vw,6.6rem);margin:20px 0 16px;color:#fff}
-.zwm-gh-hero h1 em {font-style:italic;color:#ebd5a7}
-.zwm-gh-hero .gh-season-line {font-family:"DM Serif Display",Georgia,serif;font-size:clamp(1.35rem,2.5vw,2.1rem);line-height:1.4;margin:0;color:#f6e9c9;text-align:start}
-.zwm-gh-hero .gh-desc {font-size:clamp(.99rem,1.5vw,1.15rem);line-height:1.8;color:#e4e7d8;max-width:440px;margin:8px 0 26px}
-.zwm-gh .gh-action {display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:48px;padding:13px 23px;border-radius:999px;background:#d5b268;color:#173826;font-size:.87rem;font-weight:800;transition:transform .22s,background .22s;white-space:normal;text-align:center}
-.zwm-gh .gh-action:hover {transform:translateY(-2px);background:#ead29b}
-.zwm-gh .gh-action:focus-visible,.zwm-gh a:focus-visible {outline:3px solid #d9b76b;outline-offset:4px}
-.zwm-gh-hero .gh-subaction {display:inline-flex;margin-inline-start:18px;color:#fff;text-decoration:underline;text-underline-offset:5px;font-size:.89rem}
-.zwm-gh-hero .gh-hero-caption {position:absolute;inset-inline-end:30px;bottom:22px;font-size:.66rem;letter-spacing:.08em;color:#fff9}
-.zwm-gh-collection {background:linear-gradient(180deg,#f6f0e2 0%,#fffaf1 95%);padding:80px 0 88px}
-.zwm-gh .gh-section-heading {max-width:700px;text-align:center;margin:0 auto 43px}
-.zwm-gh .gh-section-heading h2 {font-family:"DM Serif Display",Georgia,serif;font-size:clamp(2.55rem,4vw,4.3rem);font-weight:400;line-height:1.1;letter-spacing:-.03em;color:#183e29;margin:10px 0 8px}
-.zwm-gh .gh-section-heading p {font-size:1rem;line-height:1.7;color:#5d685c;margin:8px 0}
-.zwm-gh .gh-tins {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:stretch}
-.zwm-gh .gh-card {position:relative;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:18px 17px 27px;border:1px solid rgba(87,90,58,.15);border-radius:20px;background:rgba(255,254,249,.72);box-shadow:0 13px 30px rgba(54,48,23,.045)}
-.zwm-gh .gh-card-figure {width:100%;aspect-ratio:4/4.7;display:flex;align-items:flex-end;justify-content:center;overflow:visible;margin:0 0 5px}
-.zwm-gh .gh-card-figure img {display:block;max-width:100%;height:auto;max-height:100%;width:auto;object-fit:contain;filter:drop-shadow(0 13px 13px rgba(65,47,15,.10));transition:transform .35s ease}
-.zwm-gh .gh-card[data-size="4"] .gh-card-figure img {height:79%}
-.zwm-gh .gh-card[data-size="8.77"] .gh-card-figure img {height:90%}
-.zwm-gh .gh-card[data-size="17.54"] .gh-card-figure img {height:100%}
-.zwm-gh .gh-capacity {font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:2rem;color:#244a31;direction:ltr;unicode-bidi:isolate;margin:6px 0}
-.zwm-gh .gh-card .gh-caption {font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#90733a;margin:0 0 13px}
-.zwm-gh .gh-price {min-height:30px;font-size:1.2rem;font-weight:700;color:#1c3c28;margin:0 0 14px;font-variant-numeric:tabular-nums;direction:ltr}
-.zwm-gh .gh-card .gh-action {margin-top:auto;min-width:170px;background:#1d4a30;color:white;max-width:100%}
-.zwm-gh .gh-card .gh-action:hover {background:#306b45}
-.zwm-gh .gh-card .gh-unavailable {margin:auto 0 15px;font-size:.86rem;color:#776d56;line-height:1.5}
-.zwm-gh .gh-bottom-note {max-width:690px;text-align:center;margin:25px auto 0;color:#60705e;font-size:.78rem;line-height:1.7}
-.zwm-gh-story {background:#fffaf1;padding:65px 0}
-.zwm-gh-story .gh-story-grid {display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,5vw,90px);align-items:center}
-.zwm-gh-story .gh-story-photo {margin:0;aspect-ratio:1.45;overflow:hidden;border-radius:19px;background:#d9ccae}
-.zwm-gh-story .gh-story-photo img {width:100%;height:100%;object-fit:cover}
-.zwm-gh-story h2,.zwm-gh-table h2 {font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:clamp(2rem,3.2vw,3.5rem);line-height:1.16;letter-spacing:-.025em;margin:14px 0;color:#183e29}
-.zwm-gh-story p,.zwm-gh-table p {font-size:1rem;line-height:1.85;color:#516252}
-.zwm-gh-table {background:#eae0ca;padding:55px 0}
-.zwm-gh-table .gh-table-grid {display:flex;justify-content:space-between;align-items:center;gap:35px}
-.zwm-gh-table .gh-table-grid>div {max-width:720px}
-.zwm-gh-table .gh-table-links {display:flex;gap:12px;flex-wrap:wrap}
-.zwm-gh-table .gh-table-links a {color:#173e29;border:1px solid #bca96d;background:#fbf4e6;padding:12px 19px;border-radius:999px;font-size:.84rem;font-weight:700}
-body.zwm-harvest-active[data-page="shop"] .seasonal-story {margin:42px 0 15px}
-body.zwm-harvest-active[data-page="shop"] .seasonal-story-card {display:flex!important;align-items:center;justify-content:space-between;gap:24px;background:linear-gradient(100deg,#183e29,#34573b)!important;color:#fff;border-radius:22px!important;padding:32px clamp(20px,4vw,58px)!important;max-width:1180px}
-.zwm-gh-shop-copy {max-width:630px}
-.zwm-gh-shop-copy .gh-overline {color:#dcc38a}
-.zwm-gh-shop-copy h2 {font:400 clamp(2rem,3.6vw,3.6rem)/1.1 "DM Serif Display",Georgia,serif!important;color:#fff!important;margin:12px 0!important}
-.zwm-gh-shop-copy p {color:#e6eddd;font-size:.96rem;line-height:1.75}
-.zwm-gh-shop-copy .gh-action {margin-top:8px}
-.zwm-gh-shop-photo {flex:0 0 32%;max-width:340px;align-self:stretch;min-height:160px;border-radius:16px;background-color:#cfc1a4;background-image:url('/assets/harvest-2026/17-54l.webp'),url('/assets/products/originals/extra-virgin-olive-oil.jpg');background-position:center,center;background-repeat:no-repeat,no-repeat;background-size:contain,cover}
-body.zwm-harvest-active .announcement a {text-decoration:underline;text-underline-offset:3px}
-html[dir="rtl"] .zwm-gh-hero .gh-shade {background:linear-gradient(270deg,rgba(12,34,23,.94) 0%,rgba(18,46,30,.86) 39%,rgba(18,46,30,.40) 65%,rgba(12,34,23,.13) 100%)}
-html[dir="rtl"] .zwm-gh-hero .gh-hero-copy {margin-inline-start:0;text-align:start}
-html[dir="rtl"] .zwm-gh-hero .gh-season-line {text-align:start}
-html[dir="rtl"] .zwm-gh-hero .gh-subaction {margin-inline-start:18px}
-html[lang="ar"] .zwm-gh h1,html[lang="ar"] .zwm-gh h2 {font-family:"Amiri","Noto Kufi Arabic",serif;letter-spacing:0;line-height:1.32}
-html[lang="ar"] .zwm-gh .gh-overline,html[lang="ar"] .zwm-gh .gh-caption {letter-spacing:0;text-transform:none;line-height:1.7}
-html[lang="ar"] .zwm-gh-hero .gh-season-line {font-family:"Amiri","Noto Kufi Arabic",serif;font-size:clamp(1.65rem,3vw,2.6rem);line-height:1.5}
-html[lang="ar"] .zwm-gh-hero .gh-locale-indicator {letter-spacing:0}
-html[lang="ar"] .zwm-gh .gh-action {line-height:1.6}
-html[lang="ar"] .zwm-gh .gh-card .gh-unavailable {line-height:1.75}
-@media (hover:hover) and (pointer:fine){.zwm-gh .gh-card:hover .gh-card-figure img{transform:translateY(-7px)}}
-@media (max-width:900px){.zwm-gh-hero{min-height:470px}.zwm-gh .gh-tins{gap:13px}.zwm-gh .gh-card{padding:13px 9px 24px}.zwm-gh .gh-card-figure{aspect-ratio:4/5}}
-@media (max-width:690px){
- .zwm-gh .gh-shell{width:calc(100% - 32px)}
- .zwm-gh-hero{min-height:0}
- .zwm-gh-hero .gh-hero-inner{padding-block:62px 76px}
- .zwm-gh-hero .gh-hero-copy{max-width:100%}
- .zwm-gh-hero h1{font-size:clamp(2.8rem,11vw,4.6rem);line-height:1.03}
- .zwm-gh-hero .gh-desc{font-size:.98rem;max-width:360px;line-height:1.7}
- .zwm-gh-hero .gh-hero-topline{gap:8px 12px}
- .zwm-gh-hero .gh-locale-indicator{font-size:.58rem;padding:3px 8px}
- .zwm-gh-hero .gh-shade{background:linear-gradient(0deg,rgba(12,34,23,.93) 0%,rgba(12,34,23,.80) 60%,rgba(12,34,23,.52) 100%)!important}
- .zwm-gh-hero .gh-subaction{display:block;width:max-content;margin:17px 0 0}
- .zwm-gh-hero .gh-hero-caption{display:none}
- .zwm-gh-collection{padding:55px 0 62px}
- .zwm-gh .gh-tins{grid-template-columns:1fr;max-width:440px;margin:auto;gap:20px}
- .zwm-gh .gh-card{padding:17px 24px 25px}
- .zwm-gh .gh-card-figure{aspect-ratio:1.07;max-height:460px}
- .zwm-gh .gh-card[data-size="4"] .gh-card-figure img{height:85%}
- .zwm-gh-story{padding:55px 0}
- .zwm-gh-story .gh-story-grid{grid-template-columns:1fr;gap:23px}
- .zwm-gh-table .gh-table-grid{display:block}
- .zwm-gh-table .gh-table-links{margin-top:18px}
- body.zwm-harvest-active[data-page="shop"] .seasonal-story-card{display:block!important}
- .zwm-gh-shop-photo{display:none}
+/* Golden Harvest 2026: isolated preview-only seasonal experience.
+   Preserves the existing homepage hero, welcome language dialog and Pantry Favourites.
+   Full-width seasonal product collection is inserted before #featured. */
+body.zwm-harvest-active{--gh-forest:#173b2b;--gh-deep:#0f2d21;--gh-gold:#e4c27a;--gh-ivory:#fbf5e9;--gh-harvest-red:#a53d35}
+.zwm-gh{font-family:"DM Sans","Noto Kufi Arabic",sans-serif}
+.zwm-gh *, .zwm-gh *::before, .zwm-gh *::after{box-sizing:border-box}
+.zwm-gh .gh-shell{width:min(1220px,calc(100% - 48px));margin-inline:auto}
+.zwm-gh .gh-sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.zwm-gh a,.zwm-gh button{font:inherit}
+.zwm-gh :is(a,button):focus-visible,.gh-popup :is(button,a):focus-visible{outline:3px solid #e7c67e;outline-offset:4px}
+/* Premium first shopping collection: AFTER the ordinary homepage hero and BEFORE Pantry Favourites. */
+body.zwm-harvest-active #ghPicksStage{display:block;position:relative}
+body.zwm-harvest-active .gh-picks{position:relative;isolation:isolate;overflow:hidden;padding:clamp(57px,7.5vw,100px) 0 clamp(59px,7.5vw,105px);color:#f9f1de;background:radial-gradient(ellipse at 92% 7%,rgba(217,189,119,.14),transparent 32%),radial-gradient(ellipse at 10% 89%,rgba(238,213,162,.08),transparent 35%),linear-gradient(135deg,#1c4934 0%,#123626 53%,#0d2d21 100%)}
+.gh-picks:before{content:"";pointer-events:none;position:absolute;width:400px;height:400px;inset-inline-end:-240px;top:-170px;border:1px solid rgba(228,194,122,.12);border-radius:50%;box-shadow:0 0 0 55px rgba(228,194,122,.025),0 0 0 115px rgba(228,194,122,.018)}
+.gh-picks{scroll-margin-top:90px}
+.gh-picks-intro{display:flex;align-items:end;justify-content:space-between;gap:35px;position:relative;margin:0 0 clamp(26px,4vw,46px)}
+.gh-picks-kicker{display:block;margin-bottom:13px;color:#e4c27a;font-size:clamp(.66rem,.93vw,.79rem);font-weight:750;letter-spacing:.17em;line-height:1.65;text-transform:uppercase}
+.gh-picks-intro h2{margin:0;font-family:"DM Serif Display","Amiri",Georgia,serif;font-size:clamp(2.75rem,5.35vw,5.7rem);font-weight:400;line-height:1.07;letter-spacing:-.035em;color:#fffbf2;max-width:930px;text-wrap:balance}
+.gh-picks-intro p{font-size:clamp(.94rem,1.2vw,1.08rem);line-height:1.8;color:#e5e2d2;margin:18px 0 0;max-width:630px}
+.gh-picks-symbol{align-self:center;font-family:"DM Serif Display",Georgia,serif;color:#d2af6c;border:1px solid rgba(228,194,122,.44);width:105px;height:105px;min-width:105px;display:flex;align-items:center;justify-content:center;gap:5px;border-radius:50%;font-size:1rem;opacity:.9}
+.gh-picks-symbol span{font-size:1.2rem}
+.gh-picks-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:clamp(13px,2vw,25px)}
+.gh-pick-card{position:relative;min-width:0;display:flex;flex-direction:column;align-items:center;overflow:hidden;text-align:center;border:1px solid rgba(238,223,181,.7);border-radius:21px;background:linear-gradient(150deg,#fffcf3 0%,#f8eed9 88%);box-shadow:0 12px 32px rgba(0,0,0,.12);color:#183c2b;transform:translateY(16px);opacity:0;transition:transform .48s ease,opacity .48s ease,box-shadow .28s ease,border-color .28s ease}
+.gh-pick-card.gh-visible{opacity:1;transform:translateY(0)}
+.gh-pick-card.gh-visible:hover{transform:translateY(-5px);box-shadow:0 23px 43px rgba(1,23,15,.24);border-color:#e7c67e}
+.gh-pick-badge{position:absolute;top:15px;inset-inline-start:14px;z-index:1;max-width:calc(100% - 28px);padding:9px 13px;background:#a53d35;border-radius:999px;color:#fff8ef;font:750 clamp(.59rem,.68vw,.69rem)/1.45 "DM Sans","Noto Kufi Arabic",sans-serif;letter-spacing:.06em;text-align:center;box-shadow:0 4px 13px rgba(120,35,28,.15)}
+.gh-pick-figure{display:flex;align-items:end;justify-content:center;width:100%;height:clamp(245px,30vw,375px);margin:0;padding:58px 15px 0;overflow:hidden}
+.gh-pick-figure img{display:block;max-width:100%;height:auto;max-height:100%;width:auto;object-fit:contain;filter:drop-shadow(0 13px 12px rgba(83,57,20,.10));transition:transform .35s ease}
+.gh-pick-card[data-gh-size="4"] .gh-pick-figure img{height:79%;max-width:85%}
+.gh-pick-card[data-gh-size="8.77"] .gh-pick-figure img{height:90%;max-width:94%}
+.gh-pick-card[data-gh-size="17.54"] .gh-pick-figure img{height:100%}
+.gh-pick-card:hover .gh-pick-figure img{transform:translateY(-3px)}
+.gh-pick-information{display:flex;flex-direction:column;align-items:center;flex:1;width:100%;padding:9px 17px 26px}
+.gh-pick-capacity{font-family:"DM Serif Display",Georgia,serif;font-size:clamp(2.15rem,3vw,3.0rem);line-height:1.15;font-weight:400;letter-spacing:-.025em;color:#1f4632;margin:4px 0 7px}
+.gh-pick-price{font-weight:800;font-size:clamp(1.05rem,1.5vw,1.28rem);color:#193d2a;margin:0 0 19px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.gh-pick-price-gh-unset{display:flex;align-items:center;justify-content:center;min-height:41px;margin:0 0 12px;color:#785d51;font-size:.79rem;line-height:1.6;max-width:260px}
+.gh-pick-buy,.gh-pick-inquire{display:inline-flex;align-items:center;justify-content:center;gap:12px;width:min(100%,250px);min-height:49px;margin-top:auto;padding:12px 15px;border:1px solid #204832!important;border-radius:999px;background:#1b4b33!important;color:#fff8e9!important;text-decoration:none!important;cursor:pointer;line-height:1.45;font-size:.87rem;font-weight:750;transition:background .2s,transform .2s}
+.gh-pick-buy:hover,.gh-pick-inquire:hover{background:#2d6345!important;transform:translateY(-2px)}
+.gh-pick-buy:disabled{cursor:wait;opacity:.75}
+.gh-pick-inquire{background:transparent!important;color:#26543a!important}
+.gh-pick-inquire:hover{color:white!important}
+.gh-pick-added{background:#476b3e!important}
+.gh-picks-footer{display:flex;align-items:center;justify-content:space-between;gap:22px;margin-top:24px;font-size:.83rem;line-height:1.7;color:#d8e0ce}
+.gh-picks-footer p{margin:0;max-width:730px}
+.gh-picks-footer a{display:inline-block;color:#ffe0a3;text-decoration:underline;text-underline-offset:5px;font-weight:750;text-align:end}
+/* Existing top bar — one subtle seasonal red accent, never a second bar. */
+body.zwm-harvest-active .announcement.gh-announcement{border-top:2px solid #a53d35}
+body.zwm-harvest-active .announcement.gh-announcement #announcementText{font-weight:720}
+/* Full-bleed first-visit cinematic dialog; existing language welcome runs first. */
+#ghCampaignPopup[hidden]{display:none!important}
+.gh-popup{position:fixed;inset:0;z-index:30000;display:flex;align-items:center;justify-content:center;padding:clamp(10px,3vw,42px);font-family:"DM Sans","Noto Kufi Arabic",sans-serif}
+.gh-popup *{box-sizing:border-box}
+.gh-popup-backdrop{position:absolute;inset:0;background:rgba(10,27,19,.78);-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px)}
+.gh-popup-panel{position:relative;isolation:isolate;display:flex;align-items:center;overflow:hidden;width:min(1060px,100%);height:min(730px,83vh);min-height:480px;border:1px solid rgba(236,211,158,.55);border-radius:22px;background:#1f3c29 url('/assets/harvest-2026/hero-poster.jpg') center/cover no-repeat;color:#fffaf0;box-shadow:0 30px 120px rgba(0,0,0,.45)}
+.gh-popup-video{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover}
+.gh-popup-shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(11,32,21,.97) 0%,rgba(11,32,21,.86) 42%,rgba(13,37,24,.30) 100%)}
+.gh-popup-content{position:relative;width:min(625px,72%);padding:clamp(32px,5vw,72px)}
+.gh-popup-logo{display:block;width:76px;height:76px;object-fit:contain;margin-bottom:21px;border-radius:50%;background:#faf3e8}
+.gh-popup-kicker{display:block;font-size:.72rem;letter-spacing:.16em;line-height:1.8;font-weight:750;color:#ebcb88;text-transform:uppercase}
+.gh-popup-content h2{font:400 clamp(2.6rem,5vw,5.6rem)/1.08 "DM Serif Display","Amiri",Georgia,serif;letter-spacing:-.035em;color:white;margin:14px 0;text-wrap:balance}
+.gh-popup-content h2 em{font-style:italic;color:#f1d69d}
+.gh-popup-subtitle{margin:0;color:#f1dba9;font:400 clamp(1.28rem,2.5vw,2rem)/1.38 "DM Serif Display","Amiri",Georgia,serif}
+.gh-popup-description{max-width:485px;color:#f1f0e4;font-size:clamp(.91rem,1.25vw,1.04rem);line-height:1.85;margin:16px 0 29px}
+.gh-popup-actions{display:flex;align-items:center;flex-wrap:wrap;gap:17px}
+.gh-popup-discover{display:inline-flex;align-items:center;justify-content:center;gap:13px;min-height:52px;padding:13px 22px;border:1px solid #e5c47d;border-radius:999px;background:#e5c47d;color:#183c2b;font:800 .92rem/1.4 "DM Sans","Noto Kufi Arabic",sans-serif;cursor:pointer}
+.gh-popup-discover:hover{background:#f4d99e}
+.gh-popup-continue{min-height:45px;padding:10px 6px;border:0;border-bottom:1px solid rgba(255,255,255,.65);border-radius:0;background:transparent;color:#fff8e9;font:650 .87rem/1.5 "DM Sans","Noto Kufi Arabic",sans-serif;cursor:pointer}
+.gh-popup-dismiss{position:absolute;top:17px;inset-inline-end:18px;z-index:5;width:41px;height:41px;border:1px solid rgba(246,229,185,.52);border-radius:50%;background:rgba(15,43,30,.7);color:white;font:400 1.7rem/1 Georgia,serif;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.gh-popup-film-label{position:absolute;inset-inline-end:32px;bottom:20px;color:#f5dda8;font-size:.72rem;letter-spacing:.12em}
+body.gh-popup-open{overflow:hidden}
+/* Shop teaser is a secondary pointer to the real homepage collection. */
+body.zwm-harvest-active[data-page="shop"] .seasonal-story-card.gh-shop-spotlight{display:flex!important;gap:24px;align-items:center;justify-content:space-between;max-width:1220px;margin-inline:auto;background:linear-gradient(110deg,#173c2b,#2d563c)!important;color:#fff;padding:clamp(24px,4vw,50px)!important;border-radius:21px;overflow:hidden}
+.gh-shop-spotlight-copy{max-width:730px}
+.gh-shop-spotlight-copy h2{font:400 clamp(2rem,3.5vw,3.4rem)/1.15 "DM Serif Display","Amiri",Georgia,serif;color:#fff!important;letter-spacing:-.02em;margin:8px 0}
+.gh-shop-spotlight-copy p{color:#e9e9d8;line-height:1.75;font-size:.95rem;margin:8px 0 19px}
+.gh-shop-cta,.gh-shop-all{display:inline-flex;align-items:center;min-height:43px;padding:10px 16px;margin:3px 9px 3px 0;border-radius:999px;font-weight:750;font-size:.84rem;text-decoration:none}
+.gh-shop-cta{background:#e4c27a;color:#193c2b}
+.gh-shop-all{color:#fff1d8;border:1px solid rgba(248,224,178,.6)}
+.gh-shop-spotlight-image{width:min(29%,300px);max-height:250px;object-fit:contain;filter:drop-shadow(0 10px 13px rgba(2,28,16,.2));flex:0 0 auto}
+html[dir="rtl"] .gh-popup-shade{background:linear-gradient(270deg,rgba(11,32,21,.97) 0%,rgba(11,32,21,.86) 42%,rgba(13,37,24,.30) 100%)}
+html[lang="ar"] .gh-picks-intro h2,html[lang="ar"] .gh-popup-content h2,html[lang="ar"] .gh-shop-spotlight-copy h2{font-family:"Amiri","Noto Kufi Arabic",serif;letter-spacing:0;line-height:1.4}
+html[lang="ar"] .gh-popup-subtitle{font-family:"Amiri","Noto Kufi Arabic",serif}
+html[lang="ar"] .gh-picks-kicker,html[lang="ar"] .gh-pick-badge,html[lang="ar"] .gh-popup-kicker,html[lang="ar"] .gh-popup-film-label{letter-spacing:0;line-height:1.7;text-transform:none}
+html[lang="ar"] .gh-pick-buy,html[lang="ar"] .gh-pick-inquire{line-height:1.7}
+@media(max-width:900px){
+ .gh-picks-grid{gap:12px}
+ .gh-pick-badge{font-size:.57rem;padding:8px}
+ .gh-pick-figure{height:290px}
+ .gh-pick-information{padding:8px 10px 19px}
+ .gh-pick-buy,.gh-pick-inquire{font-size:.79rem}
+ .gh-popup-panel{height:min(680px,88dvh)}
+ .gh-popup-content{width:77%;padding:clamp(28px,5vw,45px)}
 }
-@media (prefers-reduced-motion:reduce){.zwm-gh .gh-action,.zwm-gh .gh-card-figure img{transition:none!important;transform:none!important}}
+@media(max-width:680px){
+ .zwm-gh .gh-shell{width:calc(100% - 32px)}
+ body.zwm-harvest-active .gh-picks{padding:55px 0 61px}
+ .gh-picks-intro{gap:12px;margin-bottom:27px}
+ .gh-picks-intro h2{font-size:clamp(2.45rem,10vw,3.8rem)}
+ .gh-picks-intro p{font-size:.97rem;margin-top:11px}
+ .gh-picks-symbol{display:none}
+ .gh-picks-grid{grid-template-columns:1fr;max-width:440px;margin:0 auto;gap:20px}
+ .gh-pick-card{border-radius:20px}
+ .gh-pick-badge{font-size:.68rem;padding:9px 13px;top:15px;inset-inline-start:15px}
+ .gh-pick-figure{height:clamp(325px,92vw,475px);padding:54px 20px 0}
+ .gh-pick-information{padding:12px 20px 25px}
+ .gh-pick-capacity{font-size:2.6rem}
+ .gh-pick-price{font-size:1.23rem}
+ .gh-pick-buy,.gh-pick-inquire{width:100%;max-width:285px;min-height:52px;font-size:.92rem}
+ .gh-picks-footer{flex-direction:column;align-items:start;gap:10px}
+ .gh-picks-footer a{text-align:start}
+ .gh-popup{padding:0}
+ .gh-popup-panel{width:100%;min-height:100dvh;height:100dvh;max-height:none;border:0;border-radius:0;align-items:end;background-position:center}
+ .gh-popup-shade{background:linear-gradient(0deg,rgba(10,32,21,.97) 0%,rgba(10,32,21,.92) 48%,rgba(10,32,21,.32) 100%)!important}
+ .gh-popup-content{width:100%;padding:30px 24px max(53px,env(safe-area-inset-bottom))}
+ .gh-popup-logo{width:63px;height:63px;margin-bottom:12px}
+ .gh-popup-content h2{font-size:clamp(2.5rem,11vw,4.1rem);margin:12px 0}
+ .gh-popup-kicker{font-size:.67rem}
+ .gh-popup-subtitle{font-size:1.4rem}
+ .gh-popup-description{font-size:.92rem;line-height:1.75;margin:12px 0 23px}
+ .gh-popup-actions{gap:12px;align-items:stretch}
+ .gh-popup-discover{width:100%;min-height:51px}
+ .gh-popup-continue{margin:0 auto}
+ .gh-popup-film-label{top:23px;bottom:auto;inset-inline-start:20px;inset-inline-end:auto}
+ .gh-popup-dismiss{inset-inline-end:16px;top:17px}
+ body.zwm-harvest-active[data-page="shop"] .seasonal-story-card.gh-shop-spotlight{display:block!important}
+ .gh-shop-spotlight-image{display:none}
+ .gh-shop-cta,.gh-shop-all{margin-inline-end:8px}
+}
+@media(max-width:360px){
+ .gh-popup-content{padding-inline:18px}
+ .gh-popup-content h2{font-size:2.4rem}
+ .gh-pick-badge{font-size:.59rem}
+}
+@media(prefers-reduced-motion:reduce){
+ .gh-pick-card,.gh-pick-card.gh-visible,.gh-pick-card:hover,.gh-pick-figure img,.gh-pick-buy,.gh-pick-inquire{transform:none!important;opacity:1!important;transition:none!important}
+ .gh-popup-discover,.gh-popup-continue{transition:none!important}
+}

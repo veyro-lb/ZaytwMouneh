@@ -13,7 +13,7 @@ const product={
  ]
 };
 const pause=()=>new Promise(resolve=>setImmediate(resolve));
-function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false}={}){
+function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,missingBridge=false}={}){
  const html='<!doctype html><html lang="'+locale+'" dir="'+(locale==="ar"?"rtl":"ltr")+'"><head></head>'+
   '<body data-page="'+(shop?"shop":"home")+'">'+
   '<div id="languageWelcome" '+(showWelcome?"":"hidden")+'></div>'+
@@ -30,7 +30,7 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false}={}
  w.HTMLElement.prototype.scrollIntoView=function(){this.dataset.scrolled="yes"};
  w.PRODUCTS_DATA=JSON.parse(JSON.stringify([product]));
  const added=[];
- w.ZWM_HARVEST_CART={
+ if(!missingBridge)w.ZWM_HARVEST_CART={
   offer(id,variant){
    const p=w.PRODUCTS_DATA.find(p=>p.id===id),v=p?.variants.find(v=>v.id===variant);
    return v?{price:v.price,available:p.availability==="in_stock"}:null;
@@ -85,8 +85,10 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false}={}
 
  const second=makePage("ar");
  assert.equal(second.w.document.querySelector("#ghPicksTitle").textContent,"زيت السنة وصل");
- assert.equal(second.w.document.querySelector(".gh-pick-badge").textContent,"حصاد ٢٠٢٦");
- assert.equal(second.w.document.querySelector(".gh-picks-arrival").textContent.trim(),"وصل جديد · حصاد ٢٠٢٦");
+ assert.equal(second.w.document.querySelector(".gh-pick-badge").textContent,"موسم ٢٠٢٦");
+ assert.equal(second.w.document.querySelector(".gh-picks-arrival").textContent.trim(),"وصل جديد · موسم ٢٠٢٦");
+ assert.equal(second.w.document.querySelector(".gh-picks-intro>p").textContent,"زيت زيتون بكر ممتاز معصور على البارد، من موسم الزيتون ٢٠٢٦.");
+ assert.match(second.w.document.querySelector("#ghPopupDescription").textContent,/معصور على البارد/);
  assert.equal(second.w.document.querySelector("#harvest-picks").dir,"rtl");
  assert.equal(second.w.document.getElementById("ghCampaignPopup").hidden,false);
  second.w.document.querySelector('[data-gh-close="continue"]').click();
@@ -99,5 +101,9 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false}={}
  assert.ok(shop.w.document.querySelector(".gh-shop-cta").getAttribute("href").includes("#harvest-picks"));
  assert.equal(shop.w.document.getElementById("ghCampaignPopup"),null,"No first-visit popup on shop route");
  shop.dom.window.close();
+ const cached=makePage("en",{missingBridge:true});
+ assert.equal(cached.w.document.querySelector('.gh-pick-card[data-gh-size="8.77"] .gh-pick-price').textContent.includes("85"),true,"Keep verified catalogue price visible while old cart API is missing");
+ assert.equal(cached.w.document.querySelectorAll("[data-gh-add]").length,0,"Never allow ordering until validated cart bridge is available");
+ cached.dom.window.close();
  console.log("Golden Harvest experience passed: original hero/order, welcome→film→collection, continue dismissal, EN/AR/FR, exact variant cart actions, live price refresh, shop navigation.");
 })().catch(e=>{console.error(e);process.exitCode=1});

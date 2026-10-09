@@ -59,4 +59,42 @@ for(const page of ["index","shop"]){
  assert.ok(html.indexOf("products-data.js")<html.indexOf("golden-harvest-2026.js"),page+" campaign must load after catalogue data");
  assert.ok(html.indexOf("app.js")<html.indexOf("golden-harvest-2026.js"),page+" campaign must load after app");
 }
+// Explicitly validate the selected language throughout the seasonal presentation.
+const vm=require("node:vm");
+const copyStart=js.indexOf("  var COPY={");
+const copyEnd=js.indexOf(";\n  function language()",copyStart);
+assert.ok(copyStart>=0&&copyEnd>copyStart,"Localization catalogue must be readable");
+const copy=vm.runInNewContext("(function(){"+js.slice(copyStart,copyEnd)+"; return COPY;})()");
+const copyKeys=["overline","title","tagline","localeDisplay","localeAria","heroFooter","desc",
+  "discover","pantry","choose","chooseText","season","chooseSize","unavailable","inquire",
+  "note","storyOverline","story","storyCopy","table","tableCopy","shopZaatar","shopOlives",
+  "announcement","announcementLink","shopDesc","allOil","shopPromo","shopJump",
+  "imageAlt","storyImageAlt","shopImageAlt"];
+for(const locale of ["en","ar","fr"]){
+  assert.ok(copy[locale],locale+" translation missing");
+  for(const key of copyKeys){
+    assert.ok(typeof copy[locale][key]==="string"&&copy[locale][key].trim().length>0,locale+" campaign copy missing "+key);
+  }
+}
+assert.match(copy.en.title,/GOLDEN/i);
+assert.match(copy.ar.title,/[\u0600-\u06ff]/);
+assert.match(copy.fr.title,/RÉCOLTE/);
+assert.match(copy.ar.tagline,/زيت السنة وصل/);
+assert.doesNotMatch(copy.en.tagline,/[\u0600-\u06ff]/,"English presentation must not force an Arabic tagline");
+assert.doesNotMatch(copy.fr.tagline,/[\u0600-\u06ff]/,"French presentation must not force an Arabic tagline");
+assert.equal(copy.en.localeDisplay,"ENGLISH");
+assert.equal(copy.ar.localeDisplay,"العربية");
+assert.equal(copy.fr.localeDisplay,"FRANÇAIS");
+assert.match(js,/function language\(\)\{var s=document\.documentElement\.lang/,"Campaign must follow chosen page language");
+assert.match(js,/function sectionLocale\(\)/,"Campaign must carry semantic lang/dir tags");
+assert.match(js,/gh-locale-indicator/,"Selected language must be visible");
+assert.match(js,/gh-season-line/,"Tagline must follow active locale");
+assert.doesNotMatch(js,/gh-ar-line/,"No hardcoded Arabic-only line across all language modes");
+assert.match(js,/card\.lang=language\(\);card\.dir=dir\(\)/,"Shop teaser language/direction not synced");
+assert.match(js,/esc\(c\.heroFooter\)/,"Hero caption must be translated");
+assert.match(js,/esc\(c\.shopImageAlt\)/,"Shop image accessible label must be translated");
+assert.match(css,/gh-locale-indicator/);
+assert.match(css,/html\[lang="ar"\] \.zwm-gh h1/,"Arabic display heading needs adequate leading");
+console.log("Seasonal locale checks passed: EN / AR / FR are complete and matched to the active storefront language.");
+
 console.log("Golden Harvest 2026 standalone gate passed: five authentic media files, three capacities, EN/AR/FR, gated launch, script syntax, preserved storefront load order.");

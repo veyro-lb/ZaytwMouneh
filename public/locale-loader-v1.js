@@ -8,7 +8,7 @@ var LANG_KEY="zwm-lang-v2";
 var ADMIN_LANG_KEY="zwm:admin-lang:v1";
 var FR_KEY="zwm:french:v1";
 var WELCOME_KEY="zwm-welcome-seen-v3";
-var HEAVY_SRC="/fr-runtime-v1.js?v=20261007-contenttrust1-content7";
+var HEAVY_SRC="/fr-runtime-v1.js?v=20261009-returnpolicy24h1";
 
 function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
 function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}

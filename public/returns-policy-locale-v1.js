@@ -34,11 +34,11 @@ function sectionHtml(section){
 
 var COPY={
   "en": {
-    "title": "Returns & Product Issues Policy | Zayt w Mouneh",
+    "title": "Return Policy | Zayt w Mouneh",
     "description": "Zayt w Mouneh accepts return requests only for products with a genuine problem, reported within 24 hours of delivery. Contact us for further help.",
     "skip": "Skip to content",
     "eyebrow": "Customer care",
-    "heading": "Returns & Product Issues Policy",
+    "heading": "Return Policy",
     "updated": "Last updated: 9 October 2026",
     "intro": "Returns are accepted only when something is wrong with the product or order. Please report the problem within 24 hours of delivery. We will review your request and explain the next steps.",
     "primary": "Report a product problem",
@@ -97,11 +97,11 @@ var COPY={
     ]
   },
   "ar": {
-    "title": "سياسة الإرجاع ومشاكل المنتجات | زيت ومونة",
+    "title": "سياسة الإرجاع | زيت ومونة",
     "description": "الإرجاع لدى زيت ومونة يقتصر على وجود مشكلة فعلية في المنتج مع الإبلاغ خلال 24 ساعة من التسليم. تواصل معنا للمساعدة.",
     "skip": "الانتقال إلى المحتوى",
     "eyebrow": "خدمة العملاء",
-    "heading": "سياسة الإرجاع ومشاكل المنتجات",
+    "heading": "سياسة الإرجاع",
     "updated": "آخر تحديث: 9 أكتوبر 2026",
     "intro": "يُقبل الإرجاع فقط عند وجود مشكلة فعلية في المنتج أو الطلب. يرجى الإبلاغ خلال 24 ساعة من التسليم. نراجع الطلب ونوضح الخطوات التالية.",
     "primary": "الإبلاغ عن مشكلة في منتج",
@@ -160,11 +160,11 @@ var COPY={
     ]
   },
   "fr": {
-    "title": "Politique de retours et problèmes produits | Zayt w Mouneh",
+    "title": "Politique de retour | Zayt w Mouneh",
     "description": "Les retours sont réservés aux vrais problèmes de produit signalés dans les 24 heures suivant la livraison. Contactez-nous pour toute aide.",
     "skip": "Aller au contenu",
     "eyebrow": "Service client",
-    "heading": "Politique de retours et problèmes produits",
+    "heading": "Politique de retour",
     "updated": "Dernière mise à jour : 9 octobre 2026",
     "intro": "Un retour n’est possible que si le produit ou la commande présente un réel problème. Signalez-le dans les 24 heures suivant la livraison ; nous examinerons la demande et vous expliquerons la suite.",
     "primary": "Signaler un problème produit",

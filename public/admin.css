@@ -2116,6 +2116,10 @@ html[dir="rtl"] .auth-language-toggle{
 }
 
 @media(max-width:900px){
+  /* Lock background scrolling without blocking touch scrolling in the menu. */
+  body.admin-menu-open{touch-action:auto!important}
+  body.admin-menu-open .admin-sidebar,
+  body.admin-menu-open .admin-nav{touch-action:pan-y}
   .admin-sidebar{
     height:100dvh;
     max-height:100dvh;

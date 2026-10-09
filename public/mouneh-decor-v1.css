@@ -36,6 +36,16 @@ body[data-page="shop"] .shop-trust-grid>div>span svg{
   display:block;width:20px;height:20px;stroke:currentColor;stroke-width:1.8;fill:none;
   stroke-linecap:round;stroke-linejoin:round;
 }
+/* Homepage transition: botanical art has its own full-height slot. */
+body[data-page="home"] .zwm-home-divider{
+  display:flex;align-items:center;justify-content:center;
+  width:min(calc(100% - 32px),840px);min-width:0;
+  padding:12px 0 20px;margin:0 auto;
+}
+body[data-page="home"] .zwm-home-divider img{
+  display:block;width:min(100%,600px);height:auto;max-width:100%;
+  object-fit:contain;object-position:center;
+}
 /* The footer ornament has its own reserved height and will not overlap links. */
 .footer .zwm-mouneh-footer-art{
   width:min(calc(100% - 40px),500px);padding:0 0 15px;

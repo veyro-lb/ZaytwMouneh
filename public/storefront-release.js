@@ -4,7 +4,7 @@
   const RELEASE_PARAM="__zwm_release";
   const FRESH_PARAM="__zwm_fresh";
   const PROBE_PARAM="__zwm_probe";
-  const SHELL_ASSET_VERSION="20261008-mobilemenugrid1";
+  const SHELL_ASSET_VERSION="20261009-oliveheader1";
   const meta=document.querySelector('meta[name="zwm-release"]');
   const current=String(meta?.content||"").trim();
   let checkPromise=null;

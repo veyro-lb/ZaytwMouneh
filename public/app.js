@@ -1478,7 +1478,7 @@ function renderProducts(){
       const visual=sel.closest(".product-card")?.querySelector(".product-visual .product-image");
       if(visual)visual.outerHTML=productVisualMarkup(p,"product-image",sel.value);
       const price=sel.closest(".product-card")?.querySelector(".product-price .money");
-      const variant=variantById(p,sel.value);
+      const variant=viewVariantById(p,sel.value);
       if(price&&variant)price.textContent=viewPrice(viewVariantById(p,sel.value));
       const card=sel.closest(".product-card");
       const button=card?.querySelector("[data-add]");

@@ -386,7 +386,7 @@ using (
 insert into public.site_settings(key,value)
 values
   ('announcement','{"enabled":true,"en":"Authentic Lebanese pantry essentials · Since 2006","ar":"مونة لبنانية أصيلة · منذ 2006"}'::jsonb),
-  ('contact','{"whatsapp":"96181581230"}'::jsonb),
+  ('contact','{"whatsapp":"96170381412"}'::jsonb),
   ('promo','{"enabled":false,"titleEn":"","titleAr":"","bodyEn":"","bodyAr":""}'::jsonb)
 on conflict(key) do nothing;
 ),
@@ -618,6 +618,6 @@ using (
 insert into public.site_settings(key,value)
 values
   ('announcement','{"enabled":true,"en":"Authentic Lebanese pantry essentials · Since 2006","ar":"مونة لبنانية أصيلة · منذ 2006"}'::jsonb),
-  ('contact','{"whatsapp":"96181581230"}'::jsonb),
+  ('contact','{"whatsapp":"96170381412"}'::jsonb),
   ('promo','{"enabled":false,"titleEn":"","titleAr":"","bodyEn":"","bodyAr":""}'::jsonb)
 on conflict(key) do nothing;

@@ -57,7 +57,7 @@ var COPY={
     sideIntro:"Only genuine product or order problems qualify. Report within 24 hours of delivery.",
     items:["Damaged, broken or leaking products","Missing or incorrect products","Quality, spoilage or safety problems","24 hours to report after delivery"],
     sideOutro:"No change-of-mind returns. For late reports or anything else, contact us directly.",
-    policy:"Read the Returns & Product Issues Policy"
+    policy:"Read the Return Policy"
   },
   ar:{
     title:"الإرجاع ومشاكل المنتجات | زيت ومونة",
@@ -84,7 +84,7 @@ var COPY={
     sideIntro:"فقط المشاكل الفعلية في المنتج أو الطلب مؤهلة للإرجاع. يرجى الإبلاغ خلال 24 ساعة من التسليم.",
     items:["منتجات متضررة أو مكسورة أو تسرّب","منتجات ناقصة أو خاطئة","مشاكل الجودة أو التلف أو السلامة","مهلة الإبلاغ 24 ساعة من التسليم"],
     sideOutro:"لا نقبل الإرجاع بسبب تغيير الرأي. للبلاغات المتأخرة أو المساعدة الإضافية تواصل معنا مباشرةً.",
-    policy:"اقرأ سياسة الإرجاع ومشاكل المنتجات"
+    policy:"اقرأ سياسة الإرجاع"
   },
   fr:{
     title:"Retours et problèmes produits | Zayt w Mouneh",
@@ -111,7 +111,7 @@ var COPY={
     sideIntro:"Seuls les vrais problèmes de produit ou de commande sont éligibles. Signalez-les dans les 24 heures suivant la livraison.",
     items:["Produits endommagés, cassés ou fuyants","Produits manquants ou incorrects","Problèmes de qualité, d’altération ou de sécurité","24 heures pour signaler après livraison"],
     sideOutro:"Pas de retour pour changement d’avis. Pour tout signalement tardif ou autre question, contactez-nous directement.",
-    policy:"Lire la politique de retours et problèmes produits"
+    policy:"Lire la politique de retour"
   }
 };
 

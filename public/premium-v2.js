@@ -212,7 +212,7 @@
     if(q("#premiumProvenance"))return;
     var page=document.body.dataset.page||"home";
     if(page!=="home"&&page!=="about")return;
-    var anchor=page==="about"?q(".provenance-section"):q(".about-section");if(!anchor)return;
+    var anchor=page==="about"?q(".page-intro-about"):q(".about-section");if(!anchor)return;
     var sec=document.createElement("section");sec.id="premiumProvenance";sec.className="premium-section premium-provenance";
     sec.innerHTML='<div class="shell"><div class="premium-head"><div><p class="premium-kicker">'+esc(txt("A pantry rooted in place","مونة مرتبطة بأرضها"))+'</p><h2>'+esc(txt("Follow the pantry","تتبّع المونة"))+' <em>'+esc(txt("across Lebanon.","في لبنان."))+'</em></h2></div><p>'+esc(txt("Explore the places behind the pantry and the products whose regional origin is identified in the catalogue.","اكتشف الأماكن التي تقف وراء المونة والمنتجات التي يظهر مصدرها الإقليمي بوضوح في الكتالوج."))+'</p></div><div class="provenance-experience"><div class="lebanon-map-card"><div class="lebanon-silhouette" aria-hidden="true"></div><button class="region-pin" data-region="Koura" type="button">'+esc(txt("Koura","الكورة"))+'</button><button class="region-pin" data-region="Mount Lebanon" type="button">'+esc(txt("Mount Lebanon","جبل لبنان"))+'</button><button class="region-pin" data-region="Bekaa" type="button">'+esc(txt("Bekaa","البقاع"))+'</button><button class="region-pin" data-region="Chouf" type="button">'+esc(txt("Chouf","الشوف"))+'</button></div><div class="provenance-detail"></div></div></div>';
     anchor.after(sec);

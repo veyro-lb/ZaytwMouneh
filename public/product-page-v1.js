@@ -109,6 +109,7 @@ function valueFor(p,key){
   description:{en:["descriptionEn","description"],ar:["descriptionAr","descriptionEn","description"],fr:["descriptionFr","descriptionEn","description"]},
    usage:{en:["usageEn","usage"],ar:["usageAr","usageEn","usage"],fr:["usageFr","usageEn","usage"]},
    details:{en:["detailsEn","details"],ar:["detailsAr","detailsEn","details"],fr:["detailsFr","detailsEn","details"]},
+  notes:{en:["notesEn","notes"],ar:["notesAr","notesEn","notes"],fr:["notesFr","notesEn","notes"]},
   nutrition:{en:["nutritionEn","nutrition"],ar:["nutritionAr","nutritionEn","nutrition"],fr:["nutritionFr","nutritionEn","nutrition"]}
  };
  var list=(keys[key]&&keys[key][state.locale])||[];
@@ -155,7 +156,7 @@ async function loadData(){
   var byOverride=new Map((overrides||[]).map(function(row){return [row.product_id,row]}));
   state.products=state.products.map(function(p){
    var row=byOverride.get(p.id);if(!row)return p;
-   if(row.action==="hide")return null;
+   if(row.action==="hide"||row.payload?.status==="hidden"||row.payload?.status==="draft")return null;
    return Object.assign({},p,row.payload||{}, {id:p.id});
   }).filter(Boolean);
  }catch(e){}
@@ -244,7 +245,7 @@ function photoMarkup(p,variantId){
  return '<div class="c6-product-placeholder" aria-hidden="true">'+esc((productName(p)||"ZW").slice(0,2).toUpperCase())+'</div>';
 }
 function factsMarkup(p){
- var fields=[["origin",t("origin")],["ingredients",t("ingredients")],["allergens",t("allergens")],["storage",t("storage")],["nutrition",t("nutrition")],["details",t("details")]];
+ var fields=[["origin",t("origin")],["ingredients",t("ingredients")],["allergens",t("allergens")],["storage",t("storage")],["nutrition",t("nutrition")],["notes",state.locale==="ar"?"ملاحظات مهمة":state.locale==="fr"?"Notes importantes":"Important notes"],["details",t("details")]];
  var rows=fields.map(function(x){var v=valueFor(p,x[0]);return v?'<div class="c6-info-card"><span>'+esc(x[1])+'</span><p>'+esc(v)+'</p></div>':""}).join("");
  if(!rows)return '<p class="c6-data-note">'+esc(t("factsNote"))+'</p>';
  return '<div class="c6-info-grid">'+rows+'</div><p class="c6-data-note">'+esc(t("factsNote"))+'</p>';

@@ -63,10 +63,11 @@
     "quality": "original-supplied"
   },
   "kameh-habe-kamle": {
-    "url": "assets/products/originals/kameh-habe-kamle.jpg",
-    "width": 1024,
-    "height": 1474,
-    "quality": "original-supplied"
+    "url": "assets/products/cutouts/kameh-habe-kamle.svg",
+    "width": 550,
+    "height": 722,
+    "quality": "source-faithful-transparent-cutout",
+    "originalUrl": "assets/products/originals/kameh-habe-kamle.jpg"
   },
   "freeke": {
     "url": "assets/products/originals/freeke.jpg",
@@ -555,10 +556,11 @@
     "quality": "original-supplied"
   },
   "zaatar-manakish": {
-    "url": "assets/products/originals/zaatar-manakish.jpg",
-    "width": 1024,
-    "height": 1536,
-    "quality": "original-supplied"
+    "url": "assets/products/cutouts/zaatar-manakish.svg",
+    "width": 810,
+    "height": 986,
+    "quality": "source-faithful-transparent-cutout",
+    "originalUrl": "assets/products/originals/zaatar-manakish.jpg"
   },
   "rice-neeme": {
     "url": "assets/products/originals/rice-neeme.jpg",
@@ -1035,10 +1037,11 @@
     "quality": "original-supplied"
   },
   "white-honey-blend": {
-    "url": "assets/products/originals/white-honey-blend.jpg",
-    "width": 1023,
-    "height": 1486,
-    "quality": "original-supplied"
+    "url": "assets/products/cutouts/white-honey-blend.svg",
+    "width": 590,
+    "height": 755,
+    "quality": "source-faithful-transparent-cutout",
+    "originalUrl": "assets/products/originals/white-honey-blend.jpg"
   },
   "immune-boosting-honey-blend": {
     "url": "assets/products/originals/immune-boosting-honey-blend.jpg",
@@ -1737,10 +1740,11 @@
     "quality": "original-supplied-shared"
   },
   "zayt-w-mouneh-white-honey-blend": {
-    "url": "assets/products/originals/white-honey-blend.jpg",
-    "width": 1023,
-    "height": 1486,
-    "quality": "original-supplied-shared"
+    "url": "assets/products/cutouts/white-honey-blend.svg",
+    "width": 590,
+    "height": 755,
+    "quality": "source-faithful-transparent-cutout",
+    "originalUrl": "assets/products/originals/white-honey-blend.jpg"
   }
 };
   const sourceFor = id => map[id] || null;

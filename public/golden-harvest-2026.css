@@ -6,6 +6,12 @@ body.zwm-harvest-active{--gh-forest:#173b2b;--gh-deep:#0f2d21;--gh-gold:#e4c27a;
 .zwm-gh *, .zwm-gh *::before, .zwm-gh *::after{box-sizing:border-box}
 .zwm-gh .gh-shell{width:min(1220px,calc(100% - 48px));margin-inline:auto}
 .zwm-gh .gh-sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+/* The permanent HTML collection must be readable in EN / AR / FR
+   even when the catalog/popup script does not execute after authentication. */
+#ghPicksStage .gh-fallback-fr{display:none!important}
+html[lang="fr"] #ghPicksStage .only-en,html[lang="fr"] #ghPicksStage .only-ar{display:none!important}
+html[lang="fr"] #ghPicksStage .gh-fallback-fr{display:inline!important}
+html[lang="fr"] #ghPicksStage p.gh-fallback-fr,html[lang="fr"] #ghPicksStage .gh-picks-kicker.gh-fallback-fr{display:block!important}
 .zwm-gh a,.zwm-gh button{font:inherit}
 .zwm-gh :is(a,button):focus-visible,.gh-popup :is(button,a):focus-visible{outline:3px solid #e7c67e;outline-offset:4px}
 /* Premium first shopping collection: AFTER the ordinary homepage hero and BEFORE Pantry Favourites. */

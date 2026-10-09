@@ -1,0 +1,383 @@
+/* Zayt w Mouneh | provenance atlas | scoped, no dependency or external map tiles.
+   Country outline: Natural Earth public-domain geometry, projected inline by premium-v2.js.
+   Pins show approximate regions, never a producer's exact address. */
+#premiumProvenance.premium-provenance-atlas {
+  background:radial-gradient(ellipse at 8% 12%,rgba(215,165,55,.09),transparent 33%),linear-gradient(146deg,#082c1b 0%,#123e28 58%,#0a3020 100%);
+  overflow:hidden;
+}
+#premiumProvenance .zwm-atlas {
+  display:grid;
+  grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);
+  align-items:stretch;
+  gap:clamp(16px,2.2vw,30px);
+}
+#premiumProvenance .zwm-atlas-mapcard,
+#premiumProvenance .zwm-atlas-detail {
+  position:relative;
+  min-width:0;
+  border-radius:clamp(22px,2.8vw,34px);
+  border:1px solid rgba(222,182,99,.27);
+  overflow:hidden;
+  box-shadow:0 24px 56px rgba(0,15,8,.2),inset 0 1px rgba(255,255,255,.055);
+}
+#premiumProvenance .zwm-atlas-mapcard {
+  display:flex;
+  flex-direction:column;
+  padding:clamp(18px,2.5vw,32px);
+  background:radial-gradient(circle at 50% 42%,rgba(66,119,84,.35),transparent 59%),linear-gradient(145deg,#0e3825,#082c1d);
+}
+#premiumProvenance .zwm-atlas-map-top {z-index:2;position:relative}
+#premiumProvenance .zwm-atlas-kicker,
+#premiumProvenance .zwm-atlas-label {
+  color:#ecca78;
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+#premiumProvenance .zwm-atlas-map-title {
+  color:#fff8e6;
+  font-size:clamp(1.42rem,2.25vw,2.15rem);
+  line-height:1.22;
+  margin:10px 0 6px;
+  font-family:"DM Serif Display",Georgia,serif;
+  font-weight:400;
+  letter-spacing:-.02em;
+}
+#premiumProvenance .zwm-atlas-map-note {
+  margin:0;
+  color:#c7d9cb;
+  font-size:.89rem;
+  line-height:1.65;
+}
+#premiumProvenance .zwm-atlas-maparea {
+  position:relative;
+  width:min(100%,440px);
+  aspect-ratio:440/520;
+  margin:5px auto 0;
+  isolation:isolate;
+}
+#premiumProvenance .zwm-atlas-maparea::before {
+  content:"";
+  position:absolute;
+  inset:12% 7% 9%;
+  background:radial-gradient(ellipse,rgba(215,172,82,.12) 0%,transparent 68%);
+  filter:blur(18px);
+  pointer-events:none;
+}
+#premiumProvenance .zwm-atlas-maparea svg {display:block;width:100%;height:100%;overflow:visible}
+#premiumProvenance .zwm-atlas-country {
+  fill:url(#zwmAtlasLand);
+  stroke:#efcf83;
+  stroke-width:1.65;
+  stroke-linejoin:round;
+  filter:drop-shadow(0 13px 14px rgba(0,0,0,.26));
+}
+#premiumProvenance .zwm-atlas-coastline {
+  fill:none;
+  stroke:rgba(255,242,195,.65);
+  stroke-width:1.2;
+  stroke-linejoin:round;
+}
+#premiumProvenance .zwm-atlas-contour {
+  fill:none;
+  stroke:rgba(110,85,37,.28);
+  stroke-width:1.7;
+}
+#premiumProvenance .zwm-atlas-sea-label {
+  fill:rgba(181,209,195,.55);
+  font-size:12px;
+  font-family:"DM Sans",sans-serif;
+  letter-spacing:2px;
+}
+#premiumProvenance .zwm-atlas-compass {
+  fill:#e7c275;
+  font:700 12px "DM Sans",sans-serif;
+}
+#premiumProvenance .zwm-atlas-zone {
+  fill:rgba(236,190,93,.12);
+  stroke:rgba(250,224,158,.45);
+  stroke-width:1.4;
+  transition:fill .25s ease,stroke .25s ease,filter .25s ease;
+}
+#premiumProvenance .zwm-atlas-zone.is-active {
+  fill:rgba(255,232,164,.35);
+  stroke:#fff1c2;
+  stroke-width:2.8;
+  filter:drop-shadow(0 0 13px rgba(247,200,104,.8));
+}
+#premiumProvenance .zwm-atlas-pin {
+  position:absolute;
+  z-index:3;
+  transform:translate(-50%,-50%);
+  display:grid;
+  place-items:center;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  padding:0;
+  border:1px solid rgba(255,247,205,.74);
+  background:rgba(6,38,24,.89);
+  box-shadow:0 0 0 5px rgba(5,37,23,.35),0 7px 14px rgba(0,0,0,.27);
+  cursor:pointer;
+  transition:transform .2s ease,background .2s ease,box-shadow .2s ease;
+}
+#premiumProvenance .zwm-atlas-pin::before {
+  content:"";
+  height:10px;
+  width:10px;
+  border-radius:50%;
+  background:#f8db96;
+}
+#premiumProvenance .zwm-atlas-pin.is-active {
+  background:#edb943;
+  border-color:#ffe19c;
+  box-shadow:0 0 0 7px rgba(239,185,67,.26),0 0 24px rgba(239,185,67,.3);
+}
+#premiumProvenance .zwm-atlas-pin.is-active::before{background:#092f1e}
+#premiumProvenance .zwm-atlas-pin:hover {transform:translate(-50%,-50%) scale(1.14)}
+#premiumProvenance .zwm-atlas-pin:focus-visible,
+#premiumProvenance .zwm-atlas-select:focus-visible,
+#premiumProvenance .provenance-product:focus-visible,
+#premiumProvenance .zwm-atlas-shop:focus-visible {
+  outline:3px solid #ffe2a0;
+  outline-offset:4px;
+}
+#premiumProvenance .zwm-atlas-pin::after {
+  content:attr(data-label);
+  position:absolute;
+  inset:auto auto calc(100% + 11px) 50%;
+  transform:translateX(-50%);
+  border-radius:10px;
+  padding:7px 12px;
+  background:#072919;
+  border:1px solid rgba(255,231,173,.4);
+  color:white;
+  font-size:.74rem;
+  white-space:nowrap;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .16s ease;
+}
+#premiumProvenance .zwm-atlas-pin:hover::after,
+#premiumProvenance .zwm-atlas-pin:focus-visible::after {opacity:1}
+#premiumProvenance .zwm-atlas-options {
+  position:relative;
+  z-index:4;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:auto;
+}
+#premiumProvenance .zwm-atlas-select {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:9px;
+  min-width:0;
+  min-height:51px;
+  padding:10px 14px;
+  border-radius:14px;
+  border:1px solid rgba(243,217,154,.24);
+  background:rgba(6,33,20,.62);
+  color:#f6f2e7;
+  font-family:"DM Sans","Noto Kufi Arabic",sans-serif;
+  font-size:clamp(.79rem,.96vw,.95rem);
+  font-weight:700;
+  text-align:start;
+  transition:background .2s ease,border-color .2s ease,transform .2s ease;
+  cursor:pointer;
+}
+#premiumProvenance .zwm-atlas-select::after {
+  content:"";
+  flex:0 0 auto;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#d0b375;
+}
+#premiumProvenance .zwm-atlas-select:hover {background:rgba(255,255,255,.09)}
+#premiumProvenance .zwm-atlas-select.is-active {
+  background:linear-gradient(145deg,#f6ce75,#dca332);
+  color:#12321f;
+  border-color:#f6d382;
+  box-shadow:0 8px 22px rgba(0,0,0,.12);
+}
+#premiumProvenance .zwm-atlas-select.is-active::after {background:#13442b}
+#premiumProvenance .zwm-atlas-map-caption {
+  color:rgba(213,230,215,.58);
+  font-size:.72rem;
+  line-height:1.5;
+  margin:14px 0 0;
+}
+#premiumProvenance .zwm-atlas-detail {
+  display:flex;
+  flex-direction:column;
+  padding:clamp(22px,3vw,43px);
+  background:linear-gradient(147deg,rgba(255,255,255,.085),rgba(255,255,255,.033)),#103c29;
+}
+#premiumProvenance .zwm-atlas-detail-top {display:flex;align-items:center;gap:14px}
+#premiumProvenance .zwm-atlas-detail-top::before {
+  content:"";
+  display:block;
+  flex:0 0 auto;
+  width:33px;
+  height:1px;
+  background:#dfb45a;
+}
+#premiumProvenance .zwm-atlas-name {
+  margin:19px 0 12px;
+  color:#fffef8;
+  font:400 clamp(2.9rem,5.4vw,5.3rem)/1.09 "DM Serif Display",Georgia,serif;
+  overflow-wrap:anywhere;
+  text-wrap:balance;
+}
+#premiumProvenance .zwm-atlas-description {
+  color:#e4e9e2;
+  font-size:clamp(.97rem,1.3vw,1.16rem);
+  line-height:1.9;
+  max-width:54ch;
+  margin:0;
+}
+#premiumProvenance .zwm-atlas-divider {width:100%;height:1px;background:linear-gradient(90deg,rgba(229,189,110,.4),rgba(229,189,110,.06));margin:28px 0}
+#premiumProvenance .zwm-atlas-detail-heading {
+  margin:0 0 13px;
+  color:#e8c57c;
+  text-transform:uppercase;
+  font-size:.76rem;
+  font-weight:800;
+  letter-spacing:.11em;
+}
+#premiumProvenance .zwm-atlas-tags {display:flex;flex-wrap:wrap;gap:9px}
+#premiumProvenance .zwm-atlas-tag {
+  display:inline-flex;
+  align-items:center;
+  min-height:34px;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(226,189,115,.115);
+  border:1px solid rgba(226,189,115,.26);
+  color:#faedd0;
+  font-size:.81rem;
+  font-weight:700;
+}
+#premiumProvenance .zwm-atlas-product-header {
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  justify-content:space-between;
+  margin:23px 0 12px;
+}
+#premiumProvenance .zwm-atlas-product-header .zwm-atlas-detail-heading {margin:0}
+#premiumProvenance .zwm-atlas-count {
+  color:rgba(240,239,221,.56);
+  font-size:.75rem;
+  white-space:nowrap;
+}
+#premiumProvenance .zwm-atlas-products {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin:0;
+}
+#premiumProvenance .zwm-atlas-products .provenance-product {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  width:100%;
+  min-height:77px;
+  min-width:0;
+  margin:0;
+  padding:12px 14px;
+  background:rgba(1,26,15,.24)!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:15px;
+  text-align:start;
+  transition:background .2s ease,border-color .2s ease,transform .2s ease;
+}
+#premiumProvenance .zwm-atlas-products .provenance-product:hover {
+  background:rgba(255,255,255,.12)!important;
+  border-color:rgba(231,189,98,.55);
+  transform:translateY(-2px);
+}
+#premiumProvenance .zwm-atlas-products .provenance-product small {
+  color:#e8ca85!important;
+  font-size:.7rem;
+  line-height:1.3;
+}
+#premiumProvenance .zwm-atlas-products .provenance-product strong {
+  color:white;
+  font-size:.86rem;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+}
+#premiumProvenance .zwm-atlas-empty {
+  grid-column:1/-1;
+  border-radius:13px;
+  border:1px dashed rgba(242,209,140,.3);
+  color:rgba(239,239,231,.77);
+  background:rgba(6,32,20,.26);
+  padding:14px 16px;
+  line-height:1.7;
+  font-size:.84rem;
+}
+#premiumProvenance .zwm-atlas-shop {
+  display:inline-flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  width:max-content;
+  max-width:100%;
+  min-height:45px;
+  margin-top:23px;
+  padding:10px 18px;
+  border-radius:999px;
+  text-decoration:none;
+  background:#e7b94d;
+  color:#10311e!important;
+  border:1px solid #f2cf7b;
+  font-size:.81rem;
+  line-height:1.3;
+  font-weight:900;
+}
+#premiumProvenance .zwm-atlas-shop:hover {background:#f5cf79}
+html[dir="rtl"] #premiumProvenance .zwm-atlas-detail,
+html[dir="rtl"] #premiumProvenance .zwm-atlas-mapcard {text-align:right}
+html[dir="rtl"] #premiumProvenance .zwm-atlas-name {
+  font-family:"Amiri","Noto Kufi Arabic",serif;
+  font-weight:700;
+  line-height:1.26;
+}
+html[dir="rtl"] #premiumProvenance .zwm-atlas-select {text-align:right}
+html[dir="rtl"] #premiumProvenance .zwm-atlas-description {
+  line-height:2;
+  font-family:"Noto Kufi Arabic",sans-serif;
+  font-size:clamp(.88rem,1.13vw,1.02rem);
+}
+html[dir="rtl"] #premiumProvenance .zwm-atlas-detail-heading,
+html[dir="rtl"] #premiumProvenance .zwm-atlas-kicker,
+html[dir="rtl"] #premiumProvenance .zwm-atlas-label {letter-spacing:0}
+@media(max-width:1020px) {
+  #premiumProvenance .zwm-atlas {grid-template-columns:minmax(0,1fr)}
+  #premiumProvenance .zwm-atlas-maparea {max-width:390px}
+}
+@media(max-width:640px) {
+  #premiumProvenance .zwm-atlas-mapcard,
+  #premiumProvenance .zwm-atlas-detail {border-radius:22px}
+  #premiumProvenance .zwm-atlas-mapcard {padding:20px 16px}
+  #premiumProvenance .zwm-atlas-detail {padding:23px 20px}
+  #premiumProvenance .zwm-atlas-map-title {font-size:1.6rem}
+  #premiumProvenance .zwm-atlas-maparea {max-width:340px}
+  #premiumProvenance .zwm-atlas-pin {width:30px;height:30px}
+  #premiumProvenance .zwm-atlas-select {padding:9px 11px;min-height:49px;font-size:.81rem}
+  #premiumProvenance .zwm-atlas-name {font-size:clamp(2.65rem,13vw,4rem)}
+  #premiumProvenance .zwm-atlas-products {grid-template-columns:1fr}
+  #premiumProvenance .zwm-atlas-products .provenance-product {min-height:67px}
+}
+@media(prefers-reduced-motion:reduce) {
+  #premiumProvenance .zwm-atlas-pin,
+  #premiumProvenance .zwm-atlas-select,
+  #premiumProvenance .zwm-atlas-zone,
+  #premiumProvenance .zwm-atlas-products .provenance-product {transition:none!important}
+}

@@ -28,10 +28,10 @@
       smallBadge:"2026 HARVEST",
       price:"Price",add:"Add to cart",inquire:"Ask about availability",
       unavailable:"Price and online ordering not yet available for this size.",
-      viewAll:"See all olive oil sizes",notes:"All displayed prices come from the current catalogue. No seasonal discount is implied.",
+      viewAll:"See all olive oil sizes",notes:"Lebanese olive oil · Fresh harvest · Three featured sizes",
       imageAlt:"Zayt w Mouneh olive oil tin",
       popupKicker:"ZAYT W MOUNEH · 2026 OLIVE HARVEST",
-      popupTitle:"THE GOLDEN <em>HARVEST</em>",
+      popupTitle:"The 2026 Harvest<br><em>Has Arrived</em>",
       popupSubtitle:"The olive oil of the season has arrived.",
       popupDescription:"Fresh Lebanese olive oil from the 2026 harvest. Discover the tins made for your table.",
       popupDiscover:"Discover the Harvest",popupContinue:"Continue to Website",popupClose:"Close harvest announcement",
@@ -48,10 +48,10 @@
       smallBadge:"حصاد ٢٠٢٦",
       price:"السعر",add:"أضف إلى السلة",inquire:"استفسر عن التوفّر",
       unavailable:"السعر والطلب عبر الموقع غير متاحين لهذا الحجم حالياً.",
-      viewAll:"تصفّح كل أحجام زيت الزيتون",notes:"الأسعار المعروضة مأخوذة من الكتالوج الحالي. لا يوجد خصم موسمي.",
+      viewAll:"تصفّح كل أحجام زيت الزيتون",notes:"زيت زيتون لبناني · حصاد جديد · ثلاثة أحجام مميّزة",
       imageAlt:"صفيحة زيت زيتون من زيت ومونة",
       popupKicker:"زيت ومونة · موسم زيتون ٢٠٢٦",
-      popupTitle:"الحصاد <em>الذهبي</em>",
+      popupTitle:"حصاد ٢٠٢٦ <em>وصل</em>",
       popupSubtitle:"زيت السنة وصل",
       popupDescription:"زيت زيتون لبناني طازج من حصاد ٢٠٢٦. اكتشفوا صفائح الزيت واختاروا الأنسب لسفرتكم.",
       popupDiscover:"اكتشفوا حصاد الزيتون",popupContinue:"المتابعة إلى الموقع",popupClose:"إغلاق إعلان موسم الزيتون",
@@ -68,10 +68,10 @@
       smallBadge:"RÉCOLTE 2026",
       price:"Prix",add:"Ajouter au panier",inquire:"Demander la disponibilité",
       unavailable:"Prix et commande en ligne indisponibles pour ce format actuellement.",
-      viewAll:"Voir tous les formats d’huile d’olive",notes:"Les prix affichés proviennent du catalogue actuel. Aucune remise saisonnière n’est annoncée.",
+      viewAll:"Voir tous les formats d’huile d’olive",notes:"Huile d’olive libanaise · Nouvelle récolte · Trois formats",
       imageAlt:"Bidon d’huile d’olive Zayt w Mouneh",
       popupKicker:"ZAYT W MOUNEH · RÉCOLTE DES OLIVES 2026",
-      popupTitle:"LA RÉCOLTE <em>DORÉE</em>",
+      popupTitle:"La récolte 2026<br><em>est arrivée</em>",
       popupSubtitle:"L’huile d’olive de la saison est arrivée.",
       popupDescription:"Découvrez l’huile d’olive libanaise de la récolte 2026 et choisissez le bidon idéal pour votre table.",
       popupDiscover:"Découvrir la récolte",popupContinue:"Continuer vers le site",popupClose:"Fermer l’annonce de la récolte",
@@ -108,7 +108,7 @@
   function card(size){
     var t=tr(),v=variantFor(size),o=offer(size),orderable=!!(o&&o.available);
     return '<article class="gh-pick-card" data-gh-size="'+esc(size.size)+'">'+
-      '<span class="gh-pick-badge">'+esc(t.badge)+'</span>'+
+      '<span class="gh-pick-badge">'+esc(t.smallBadge)+'</span>'+
       '<div class="gh-pick-figure"><img src="'+PHOTO+size.file+'" loading="lazy" decoding="async" width="640" height="800" alt="'+esc(t.imageAlt+" — "+size.size+" L")+'"></div>'+
       '<div class="gh-pick-information"><h3 class="gh-pick-capacity" dir="ltr">'+esc(size.size)+' L</h3>'+
       (o?'<p class="gh-pick-price"><span class="gh-sr-only">'+esc(t.price)+': </span>'+esc(formatUSD(o.price))+'</p>':
@@ -121,9 +121,14 @@
   function collectionMarkup(){
     var t=tr();
     return '<section class="zwm-gh gh-picks" lang="'+language()+'" dir="'+dir()+'" id="harvest-picks" aria-labelledby="ghPicksTitle">'+
-      '<div class="gh-shell"><div class="gh-picks-intro"><div><span class="gh-picks-kicker">'+esc(t.kicker)+'</span>'+
-      '<h2 id="ghPicksTitle">'+esc(t.title)+'</h2><p>'+esc(t.description)+'</p></div>'+
-      '<div class="gh-picks-symbol" aria-hidden="true">✦ <span>2026</span> ✦</div></div>'+
+      '<div class="gh-shell"><header class="gh-picks-intro">'+
+      '<div class="gh-picks-arrival"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M18 3c-3 1-7 5-9 11M6 9c3 1 5 4 6 7M9 14l-2 6M14 8l6 1" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/><path d="M16 4c4-2 5 1 3 4-2 2-4 2-5 1M5 8c-2 3-1 5 2 6 2 1 3 0 4-1" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>'+
+      '<span>'+esc(t.badge)+'</span></div>'+
+      '<span class="gh-picks-kicker">'+esc(t.kicker)+'</span>'+
+      '<h2 id="ghPicksTitle">'+esc(t.title)+'</h2>'+
+      '<p>'+esc(t.description)+'</p>'+
+      '<div class="gh-picks-divider" aria-hidden="true"><i></i><span>✦</span><i></i></div>'+
+      '</header>'+
       '<div class="gh-picks-grid">'+SIZES.map(card).join("")+'</div>'+
       '<div class="gh-picks-footer"><p>'+esc(t.notes)+'</p><a href="/shop?category=Olive%20Oil#shop">'+esc(t.viewAll)+' <span aria-hidden="true">↗</span></a></div></div></section>';
   }

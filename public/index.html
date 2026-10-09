@@ -207,6 +207,33 @@
     }
   </style>
 
+
+  <style id="home-mouneh-copy-fit">
+    /* Scoped to the homepage: keep the longer Arabic brand message legible across widths. */
+    html[lang="ar"] body[data-page="home"] .home-pantry-hero h1,
+    html[dir="rtl"] body[data-page="home"] .home-pantry-hero h1{
+      width:100%!important;max-width:100%!important;
+    }
+    body[data-page="home"] .home-pantry-hero h1 .home-hero-ar-title{
+      display:block;max-width:100%;font-size:clamp(2.8rem,5vw,5rem);
+      line-height:1.18;letter-spacing:0;white-space:normal;
+      overflow-wrap:normal;word-break:normal;text-wrap:balance;
+    }
+    @media(max-width:980px){
+      body[data-page="home"] .home-pantry-hero h1 .home-hero-ar-title{
+        font-size:clamp(2.55rem,6vw,4.1rem);line-height:1.2;
+      }
+    }
+    @media(max-width:560px){
+      body[data-page="home"] .home-pantry-hero h1 .home-hero-ar-title{
+        font-size:clamp(2rem,8.5vw,3rem);line-height:1.25;
+      }
+      body[data-page="home"] .home-pantry-hero .eyebrow.only-ar{
+        max-width:100%;white-space:normal;line-height:1.6!important;
+      }
+    }
+  </style>
+
   <link rel="alternate" hreflang="en-LB" href="https://zaytwmouneh.com/">
   <link rel="alternate" hreflang="ar-LB" href="https://zaytwmouneh.com/ar/">
   <link rel="alternate" hreflang="fr-LB" href="https://zaytwmouneh.com/fr/">
@@ -337,13 +364,13 @@
       <div class="shop-hero-video-shade" aria-hidden="true"></div>
       <div class="shell page-intro-grid">
         <div class="page-intro-copy-wrap">
-          <p class="eyebrow only-en">Natural &nbsp;·&nbsp; Authentic &nbsp;·&nbsp; Lebanese</p><p class="eyebrow only-ar" lang="ar">أصيل &nbsp;·&nbsp; محلي &nbsp;·&nbsp; طبيعي</p>
-          <h1><span class="only-en">Pantry<br>essentials,<br><em>ready to<br>browse.</em></span><span class="only-ar" lang="ar">أساسيات المونة،<br><em>جاهزة للتصفّح.</em></span></h1>
-          <p class="page-intro-copy only-en">Search the full catalogue, choose the exact pack size and add it directly to your pantry.</p>
-          <p class="page-intro-copy only-ar" lang="ar">ابحث في كامل المنتجات، واختر الحجم المناسب وأضفه مباشرة إلى لائحة المونة.</p>
+          <p class="eyebrow only-en">Village-made &nbsp;·&nbsp; No preservatives</p><p class="eyebrow only-ar" lang="ar">منتجات بلدية من دون مواد حافظة</p>
+          <h1><span class="only-en">Village-made<br>mouneh,<br><em>with love<br>and care.</em></span><span class="only-ar home-hero-ar-title" lang="ar">مونة بلدية<br><em>محضّرة بكل<br>عناية ومحبة</em></span></h1>
+          <p class="page-intro-copy only-en">Prepared with care to bring the taste of the Lebanese village to your table.</p>
+          <p class="page-intro-copy only-ar" lang="ar">لتضلّ نكهة الضيعة حاضرة ع سفرتكن.</p>
           <div class="page-intro-actions">
-            <a class="intro-primary only-en home-hero-cta" href="/shop#shop"><span class="home-cta-text">Browse all products</span><span class="home-cta-arrow" aria-hidden="true">↘</span></a>
-            <a class="intro-primary only-ar home-hero-cta" lang="ar" href="/shop#shop"><span class="home-cta-text">تصفّح كل المنتجات</span><span class="home-cta-arrow" aria-hidden="true">↙</span></a>
+            <a class="intro-primary only-en home-hero-cta" href="/shop#shop"><span class="home-cta-text">Shop &amp; order now</span><span class="home-cta-arrow" aria-hidden="true">↘</span></a>
+            <a class="intro-primary only-ar home-hero-cta" lang="ar" href="/shop#shop"><span class="home-cta-text">ابدأ التسوق واطلب الآن</span><span class="home-cta-arrow" aria-hidden="true">↙</span></a>
             <a class="intro-secondary only-en home-hero-cta" href="/shop#categories"><span class="home-cta-text">Shop by category</span></a>
             <a class="intro-secondary only-ar home-hero-cta" lang="ar" href="/shop#categories"><span class="home-cta-text">تسوّق حسب القسم</span></a>
           </div>

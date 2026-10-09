@@ -24,14 +24,11 @@
   white-space:nowrap;
 }
 body[data-page="shop"] .botanical-divider.zwm-brand-divider{
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,470px) minmax(0,1fr);
-  align-items:center;gap:clamp(12px,2vw,24px);
+  display:flex;flex-direction:column;justify-content:center;
+  align-items:center;gap:0;
   width:min(calc(100% - 40px),960px);
   padding-block:clamp(16px,2.8vw,30px);
   color:var(--zwm-decor-olive);overflow:visible;
-}
-body[data-page="shop"] .botanical-divider.zwm-brand-divider>span{
-  display:block;height:1px;background:linear-gradient(90deg,transparent,rgba(154,118,48,.42),transparent);
 }
 body[data-page="shop"] .zwm-mouneh-divider-art{width:100%;max-width:470px}
 body[data-page="shop"] .zwm-mouneh-divider-art img{aspect-ratio:860/117}
@@ -59,8 +56,7 @@ body[data-page="recipes"] .zwm-recipes-divider img{
   display:block;width:100%;height:auto;aspect-ratio:880/117;
   object-fit:contain;object-position:center;
 }
-/* Footer art is a small accent, never a second oversized brand header.
-   The normal footer logo/wordmark follows below, so hide duplicated script here. */
+/* Keep one restrained footer photo, above the existing brand and link columns. */
 .footer .zwm-mouneh-footer-art{
   width:min(calc(100% - 48px),460px);
   padding:0;
@@ -68,7 +64,6 @@ body[data-page="recipes"] .zwm-recipes-divider img{
   border:0;
 }
 .footer .zwm-mouneh-footer-art img{aspect-ratio:970/122}
-.footer .zwm-mouneh-footer-art .zwm-mouneh-script{display:none}
 body[data-page="shop"] .seasonal-story-card::before{
   content:"مونة";position:absolute;inset:auto 10% 8% auto;
   color:#f0d58a;opacity:.045;pointer-events:none;z-index:0;
@@ -79,10 +74,8 @@ body[data-page="shop"] .seasonal-story-card::before{
 @media(max-width:560px){
   body[data-page="shop"] .botanical-divider.zwm-brand-divider{
     width:min(calc(100% - 48px),340px);
-    grid-template-columns:minmax(0,1fr);gap:0;
     padding-block:14px 20px;
   }
-  body[data-page="shop"] .botanical-divider.zwm-brand-divider>span{display:none}
   body[data-page="shop"] .zwm-mouneh-divider-art{width:min(100%,330px)}
   body[data-page="shop"] .zwm-mouneh-divider-art .zwm-mouneh-script{
     margin-top:10px;font-size:1.07rem;line-height:1.45;

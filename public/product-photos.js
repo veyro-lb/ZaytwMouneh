@@ -45,11 +45,10 @@
     "quality": "original-supplied"
   },
   "kabees-left": {
-    "url": "assets/products/cutouts/kabees-left.svg",
-    "width": 597,
-    "height": 895,
-    "quality": "source-faithful-transparent-cutout",
-    "originalUrl": "assets/products/originals/kabees-left.jpg"
+    "url": "assets/products/originals/kabees-left.jpg",
+    "width": 1024,
+    "height": 1536,
+    "quality": "original-supplied"
   },
   "makatar-zaatar": {
     "url": "assets/products/originals/makatar-zaatar.jpg",
@@ -64,11 +63,10 @@
     "quality": "original-supplied"
   },
   "kameh-habe-kamle": {
-    "url": "assets/products/cutouts/kameh-habe-kamle.svg",
-    "width": 550,
-    "height": 722,
-    "quality": "source-faithful-transparent-cutout",
-    "originalUrl": "assets/products/originals/kameh-habe-kamle.jpg"
+    "url": "assets/products/originals/kameh-habe-kamle.jpg",
+    "width": 1024,
+    "height": 1474,
+    "quality": "original-supplied"
   },
   "freeke": {
     "url": "assets/products/originals/freeke.jpg",
@@ -527,11 +525,10 @@
     "quality": "original-supplied"
   },
   "all-use-flour": {
-    "url": "assets/products/cutouts/all-use-flour.svg",
-    "width": 755,
-    "height": 982,
-    "quality": "source-faithful-transparent-cutout",
-    "originalUrl": "assets/products/originals/all-use-flour.jpg"
+    "url": "assets/products/originals/all-use-flour.jpg",
+    "width": 1024,
+    "height": 1536,
+    "quality": "original-supplied"
   },
   "barley-flour": {
     "url": "assets/products/originals/barley-flour.jpg",
@@ -558,11 +555,10 @@
     "quality": "original-supplied"
   },
   "zaatar-manakish": {
-    "url": "assets/products/cutouts/zaatar-manakish.svg",
-    "width": 810,
-    "height": 986,
-    "quality": "source-faithful-transparent-cutout",
-    "originalUrl": "assets/products/originals/zaatar-manakish.jpg"
+    "url": "assets/products/originals/zaatar-manakish.jpg",
+    "width": 1024,
+    "height": 1536,
+    "quality": "original-supplied"
   },
   "rice-neeme": {
     "url": "assets/products/originals/rice-neeme.jpg",
@@ -847,11 +843,10 @@
     "quality": "original-supplied"
   },
   "kamoun-neeme": {
-    "url": "assets/products/cutouts/kamoun-neeme.svg",
-    "width": 557,
-    "height": 860,
-    "quality": "source-faithful-transparent-cutout",
-    "originalUrl": "assets/products/originals/kamoun-neeme.jpg"
+    "url": "assets/products/originals/kamoun-neeme.jpg",
+    "width": 848,
+    "height": 1413,
+    "quality": "original-supplied"
   },
   "kary-har": {
     "url": "assets/products/originals/kary-har.jpg",
@@ -1040,11 +1035,10 @@
     "quality": "original-supplied"
   },
   "white-honey-blend": {
-    "url": "assets/products/cutouts/white-honey-blend.svg",
-    "width": 590,
-    "height": 755,
-    "quality": "source-faithful-transparent-cutout",
-    "originalUrl": "assets/products/originals/white-honey-blend.jpg"
+    "url": "assets/products/originals/white-honey-blend.jpg",
+    "width": 1023,
+    "height": 1486,
+    "quality": "original-supplied"
   },
   "immune-boosting-honey-blend": {
     "url": "assets/products/originals/immune-boosting-honey-blend.jpg",
@@ -1743,11 +1737,10 @@
     "quality": "original-supplied-shared"
   },
   "zayt-w-mouneh-white-honey-blend": {
-    "url": "assets/products/cutouts/white-honey-blend.svg",
-    "width": 590,
-    "height": 755,
-    "quality": "source-faithful-transparent-cutout",
-    "originalUrl": "assets/products/originals/white-honey-blend.jpg"
+    "url": "assets/products/originals/white-honey-blend.jpg",
+    "width": 1023,
+    "height": 1486,
+    "quality": "original-supplied-shared"
   }
 };
   const sourceFor = id => map[id] || null;

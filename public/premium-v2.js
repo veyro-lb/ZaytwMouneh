@@ -201,7 +201,8 @@
   // The cartographic outline comes from Natural Earth public-domain country geometry
   // (johan/world.geo.json countries/LBN.geo.json). Region dots are approximate, not
   // individual supplier addresses or surveyed administrative boundaries.
-  var atlasShape=[[35.821101,33.277426],[35.552797,33.264275],[35.460709,33.08904],[35.126053,33.0909],[35.482207,33.90545],[35.979592,34.610058],[35.998403,34.644914],[36.448194,34.593935],[36.61175,34.201789],[36.06646,33.824912],[35.821101,33.277426]];
+  // Lebanon Natural Earth 1:10m boundary (public domain), preprojected to SVG.
+  var atlasCountryPath="M91.0 457.6L91.0 457.2L91.2 456.1L90.4 456.2L90.1 455.9L90.1 455.3L90.0 454.5L91.1 451.6L92.6 448.8L94.4 446.5L98.2 444.5L99.4 442.0L100.4 439.1L101.6 436.9L100.6 435.2L101.6 435.0L102.1 435.3L102.8 436.9L107.9 423.0L108.6 415.4L105.1 408.9L108.7 405.5L111.3 400.8L114.5 389.6L114.9 386.3L115.0 379.4L115.6 375.8L118.7 370.0L119.8 366.9L119.1 363.7L128.0 355.1L132.4 349.3L134.3 341.7L134.7 338.5L141.2 316.3L140.1 314.6L142.8 311.7L144.7 301.2L147.6 298.9L147.5 295.9L154.2 275.3L154.9 270.3L155.2 259.7L155.2 257.8L154.7 254.8L153.6 252.4L153.0 250.3L154.0 248.3L155.8 247.5L158.0 248.0L160.0 249.0L161.0 250.2L162.2 250.2L163.8 249.0L166.2 249.2L167.8 249.4L170.3 248.3L171.4 246.6L173.0 241.5L173.9 239.4L173.9 238.4L173.7 238.0L172.6 237.8L174.1 235.7L176.1 229.6L177.4 227.1L178.5 226.6L181.3 226.5L182.0 225.5L181.9 223.1L181.1 221.9L180.2 221.2L179.7 220.3L179.6 214.0L182.4 202.9L183.2 194.9L182.6 192.0L180.2 186.4L179.7 182.8L179.7 174.0L180.2 172.2L182.6 170.0L183.2 168.7L183.3 160.7L184.1 152.7L186.2 145.9L190.1 141.6L193.1 144.6L195.8 139.3L198.4 131.2L200.7 125.9L210.1 119.5L213.1 114.5L210.0 108.4L210.0 106.8L213.1 107.8L226.6 103.4L235.7 92.7L238.5 90.2L240.2 88.0L241.2 84.4L241.3 72.4L240.8 67.0L239.8 62.5L237.9 59.6L240.1 59.5L241.6 60.0L242.9 60.8L245.8 63.7L249.5 65.1L253.4 65.2L257.9 64.4L262.1 64.8L269.6 65.5L270.3 65.2L272.3 63.6L273.4 63.3L274.2 63.8L276.2 65.6L277.3 66.1L287.5 65.4L289.2 64.4L290.8 62.3L291.4 60.0L291.5 55.0L292.1 53.1L295.6 50.0L298.1 52.1L302.1 61.1L305.5 64.9L309.6 66.6L313.8 66.5L317.9 64.8L317.2 72.9L316.0 74.1L314.2 72.2L311.7 71.3L309.2 73.3L308.8 76.3L309.0 80.1L308.3 84.1L304.9 87.3L300.3 90.5L297.4 94.2L299.1 98.2L299.6 99.3L300.1 99.5L300.6 99.5L301.0 99.5L301.5 99.3L304.8 98.1L309.8 97.8L314.4 98.2L316.8 99.3L316.8 99.3L317.8 103.6L319.5 106.9L321.8 109.2L324.7 110.8L327.2 114.6L328.4 115.6L329.6 115.1L332.3 117.5L333.3 119.7L333.1 122.5L332.5 126.7L332.1 128.5L331.5 129.7L330.9 131.0L330.8 133.1L331.2 135.1L332.1 137.1L335.7 143.5L337.6 146.0L338.8 146.7L340.0 146.5L341.1 146.9L342.0 148.9L341.7 152.2L340.0 155.0L338.7 158.3L339.5 163.1L340.6 166.7L344.8 171.8L345.7 174.3L345.8 174.6L341.0 181.1L337.0 189.4L329.4 197.5L326.1 202.7L325.1 206.3L324.8 209.3L323.9 211.7L321.1 213.4L318.7 213.6L315.1 211.9L313.1 211.6L309.6 213.9L303.9 222.9L297.1 230.3L294.5 234.4L292.1 239.0L288.5 248.2L288.8 249.1L289.9 251.5L290.9 253.1L296.0 258.0L302.6 259.4L305.6 261.7L305.9 266.9L303.8 270.3L300.6 270.9L294.2 269.0L285.4 263.6L282.5 262.9L279.9 264.1L277.5 266.6L274.8 268.6L271.2 268.7L269.9 267.6L267.7 264.2L266.6 263.4L260.5 268.1L257.5 269.7L254.4 270.7L251.6 272.1L250.0 274.9L247.7 280.3L242.0 286.3L239.7 290.7L238.7 293.6L235.6 297.2L234.3 299.5L234.1 301.6L234.5 306.2L234.1 308.7L233.3 309.7L231.1 310.7L230.4 311.6L229.7 317.0L232.0 318.8L235.7 319.7L239.7 322.5L242.1 323.3L245.3 325.3L248.1 327.9L249.6 330.8L249.1 335.5L246.4 339.4L242.9 342.3L239.7 344.2L235.7 344.1L231.7 345.7L229.8 349.1L232.1 354.3L229.4 362.4L224.1 368.0L221.0 370.4L216.7 373.5L212.7 376.6L210.0 380.5L206.6 389.1L203.9 393.0L201.8 394.6L199.5 395.9L197.1 396.7L194.8 397.0L191.8 398.0L185.3 406.6L183.9 409.8L180.4 410.3L178.5 411.6L178.1 415.0L175.8 418.0L175.8 418.0L175.7 419.0L175.7 419.1L174.7 418.0L174.7 418.0L174.7 418.0L172.5 416.0L169.4 409.9L168.5 408.4L166.5 408.7L165.3 411.1L164.3 414.6L162.8 418.0L161.5 423.7L161.1 436.2L160.2 442.7L158.7 447.0L155.5 454.2L154.7 458.0L149.5 458.6L141.3 463.0L131.7 466.2L129.5 465.7L127.9 463.1L126.7 460.1L125.0 457.5L123.2 455.6L122.2 455.0L121.3 454.5L119.2 454.5L112.9 457.1L111.7 457.0L109.3 456.2L108.3 456.2L107.2 456.7L105.3 458.5L104.6 458.9L91.0 457.6Z";
   var atlasSpots={
     "Koura":[35.82,34.31],
     "Mount Lebanon":[35.65,33.93],
@@ -246,14 +247,12 @@
   };
 
   function atlasProject(coords){
-    return {x:Math.round((120+(coords[0]-35.126053)*141)*10)/10,
-      y:Math.round((70+(34.644914-coords[1])*245)*10)/10};
+    return {x:Math.round((90+(coords[0]-35.099619988)*170)*10)/10,
+      y:Math.round((50+(34.687547913-coords[1])*255)*10)/10};
   }
 
   function atlasMapSvg(){
-    var path=atlasShape.map(function(c,i){
-      var p=atlasProject(c);return (i?"L":"M")+p.x+" "+p.y;
-    }).join(" ")+" Z";
+    var path=atlasCountryPath;
     var zones=atlasOrder.map(function(region){
       var pt=atlasProject(atlasSpots[region]);
       return '<circle class="zwm-atlas-zone" data-region="'+esc(region)+'" cx="'+pt.x+'" cy="'+pt.y+'" r="22"/>';
@@ -281,7 +280,7 @@
     var label=atlasT(name[0],name[1],name[2]);
     return '<button class="zwm-atlas-pin" type="button" data-atlas-select data-region="'+esc(region)+'"'+
       ' style="left:'+(pt.x/440*100).toFixed(3)+'%;top:'+(pt.y/520*100).toFixed(3)+'%"'+
-      ' data-label="'+esc(label)+'" aria-label="'+esc(atlasT("Explore ","استكشف ","Explorer ")+label)+'" aria-pressed="false"><span class="sr-only">'+esc(label)+'</span></button>';
+      ' data-label="'+esc(label)+'" aria-label="'+esc(atlasT("Explore ","استكشف ","Explorer ")+label)+'" aria-pressed="false"></button>';
   }
 
   function renderRegion(region,root){
@@ -303,11 +302,15 @@
     detail.querySelector(".zwm-atlas-tags").innerHTML=meta.tags.map(function(tag){
       return '<span class="zwm-atlas-tag">'+esc(tag[index])+'</span>';
     }).join("");
-    detail.querySelector(".zwm-atlas-count").textContent=items.length?atlasT("Catalogue matches: ","منتجات مطابقة: ","Produits correspondants : ")+items.length:"";
+    var productHeader=q(".zwm-atlas-product-header",detail);
+    if(productHeader)productHeader.hidden=items.length===0;
     var featured=q(".zwm-atlas-products",detail);
-    featured.innerHTML=items.length?items.map(function(p){
+    featured.hidden=items.length===0;
+    var count=q(".zwm-atlas-count",detail);
+    if(count)count.textContent=items.length?atlasT("Matching products: ","منتجات مطابقة: ","Produits correspondants : ")+items.length:"";
+    featured.innerHTML=items.map(function(p){
       return '<button class="provenance-product" type="button" data-origin-product="'+esc(p.id)+'"><small>'+esc(pcategory(p))+'</small><strong>'+esc(pname(p))+'</strong></button>';
-    }).join(""):'<p class="zwm-atlas-empty">'+esc(atlasT("No products are currently marked with this regional origin in the catalogue.","لا توجد حالياً منتجات محدّد مصدرها من هذه المنطقة في الكتالوج.","Aucun produit du catalogue ne porte actuellement cette indication d’origine régionale."))+'</p>';
+    }).join("");
     qa("[data-origin-product]",featured).forEach(function(btn){
       btn.addEventListener("click",function(){
         if(typeof openProduct==="function")openProduct(btn.dataset.originProduct);

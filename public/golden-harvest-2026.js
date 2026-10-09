@@ -111,7 +111,7 @@
     var t=tr(),v=variantFor(size),o=offer(size),orderable=!!(o&&o.available);
     return '<article class="gh-pick-card" data-gh-size="'+esc(size.size)+'">'+
       '<span class="gh-pick-badge">'+esc(t.smallBadge)+'</span>'+
-      '<div class="gh-pick-figure"><img src="'+PHOTO+size.file+"?v=20261009-four-photos"+'" loading="lazy" decoding="async" width="640" height="800" alt="'+esc(t.imageAlt+" — "+size.size+" L")+'"></div>'+
+      '<div class="gh-pick-figure"><img src="'+PHOTO+size.file+"?v=20261009-owner-images-v3"+'" loading="lazy" decoding="async" width="640" height="800" alt="'+esc(t.imageAlt+" — "+size.size+" L")+'"></div>'+
       '<div class="gh-pick-information"><h3 class="gh-pick-capacity" dir="ltr">'+esc(size.size)+' L</h3>'+
       (o?'<p class="gh-pick-price"><span class="gh-sr-only">'+esc(t.price)+': </span>'+esc(formatUSD(o.price))+'</p>':
           '<p class="gh-pick-price-gh-unset">'+esc(t.unavailable)+'</p>')+
@@ -299,7 +299,7 @@
       '<h2>'+esc(t.shopTitle)+'</h2><p>'+esc(t.shopText)+'</p>'+
       '<a class="gh-shop-cta" href="/'+(PREVIEW?"?harvestPreview=1":"")+'#harvest-picks">'+esc(t.shopCta)+' ↗</a>'+
       ' <a class="gh-shop-all" href="/shop?category=Olive%20Oil#shop">'+esc(t.shopAll)+' ↗</a></div>'+
-      '<img class="gh-shop-spotlight-image" loading="lazy" decoding="async" src="'+PHOTO+'17-54l.webp?v=20261009-four-photos" alt="'+esc(t.imageAlt+" — 17.54 L")+'">';
+      '<img class="gh-shop-spotlight-image" loading="lazy" decoding="async" src="'+PHOTO+'17-54l.webp?v=20261009-owner-images-v3" alt="'+esc(t.imageAlt+" — 17.54 L")+'">';
   }
   var announcementBusy=false;
   function announcement(){

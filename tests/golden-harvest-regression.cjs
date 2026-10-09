@@ -46,6 +46,7 @@ assert.match(js,/scrollIntoView/);
 assert.match(js,/gh-pick-badge/);
 assert.match(js,/data-gh-add/);
 assert.match(js,/window\.ZWM_HARVEST_CART/,"Must use existing cart API bridge");
+assert.match(js,/price:linked&&Number\.isFinite/,"Catalogue price must remain visible even when client still has an old app bridge cached");
 assert.doesNotMatch(js,/cartKey\(|zwm-cart-v5|localStorage\.setItem\(.+cart/i,"No direct cart storage mutation from campaign");
 assert.match(js,/function variantFor\(size\)/);
 assert.match(js,/v\.id===size\.id/,"Do not mistake 500ml for missing 4L tin");
@@ -83,6 +84,7 @@ for(const page of ["index","shop"]){
   assert.equal((html.match(/golden-harvest-2026\.js/g)||[]).length,1,page+" exactly one campaign JS");
   assert.ok(html.indexOf("products-data.js")<html.indexOf("golden-harvest-2026.js"),page+" campaign must load after catalogue");
   assert.ok(html.indexOf("app.js")<html.indexOf("golden-harvest-2026.js"),page+" campaign must load after app");
+  assert.match(html,/app\.js\?v=20261009-harvest-cart1/,"Use fresh asset version so bridge cannot be silently lost to older browser cache");
 }
 const home=read("public/index.html");
 assert.ok(home.includes('<section class="page-intro page-intro-shop home-pantry-hero"'),"Existing homepage hero must be untouched");
@@ -111,11 +113,15 @@ for(const l of ["en","ar","fr"]){
 }
 assert.equal(COPY.en.kicker,"SEASONAL PICKS · HARVEST 2026");
 assert.equal(COPY.en.title,"Fresh From the Harvest");
-assert.equal(COPY.en.description,"Discover our freshly harvested 2026 Lebanese olive oil.");
+assert.equal(COPY.en.description,"Discover our 2026 Lebanese cold-pressed extra virgin olive oil.");
 assert.equal(COPY.en.badge,"JUST ARRIVED · 2026 HARVEST");
-assert.equal(COPY.ar.badge,"وصل جديد · حصاد ٢٠٢٦");
+assert.equal(COPY.ar.badge,"وصل جديد · موسم ٢٠٢٦");
 assert.equal(COPY.fr.badge,"NOUVEAU · RÉCOLTE 2026");
 assert.equal(COPY.ar.title,"زيت السنة وصل");
+assert.equal(COPY.ar.description,"زيت زيتون بكر ممتاز معصور على البارد، من موسم الزيتون ٢٠٢٦.");
+assert.ok(!Object.values(COPY.ar).some(v=>/حصاد/.test(v)),"Do not use حصاد in Arabic campaign; use موسم الزيتون");
+assert.match(COPY.ar.popupDescription,/زيت زيتون بكر ممتاز معصور على البارد/);
+assert.match(COPY.fr.description,/vierge extra libanaise, pressée à froid/);
 assert.equal(COPY.fr.title,"La récolte 2026 est arrivée");
 assert.equal(COPY.en.popupDiscover,"Discover the Harvest");
 assert.equal(COPY.en.popupContinue,"Continue to Website");

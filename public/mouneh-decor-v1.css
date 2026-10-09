@@ -34,7 +34,7 @@ body[data-page="shop"] .botanical-divider.zwm-brand-divider>span{
   display:block;height:1px;background:linear-gradient(90deg,transparent,rgba(154,118,48,.42),transparent);
 }
 body[data-page="shop"] .zwm-mouneh-divider-art{width:100%;max-width:390px}
-body[data-page="shop"] .zwm-mouneh-divider-art img{aspect-ratio:60/11}
+body[data-page="shop"] .zwm-mouneh-divider-art img{aspect-ratio:430/93}
 body[data-page="shop"] .shop-trust-grid>div>span svg{
   display:block;width:20px;height:20px;stroke:currentColor;stroke-width:1.8;fill:none;
   stroke-linecap:round;stroke-linejoin:round;
@@ -57,7 +57,7 @@ body[data-page="home"] .zwm-home-divider img{
   margin:0 auto clamp(26px,3vw,34px);
   border:0;
 }
-.footer .zwm-mouneh-footer-art img{aspect-ratio:60/11}
+.footer .zwm-mouneh-footer-art img{aspect-ratio:430/93}
 .footer .zwm-mouneh-footer-art .zwm-mouneh-script{display:none}
 body[data-page="shop"] .seasonal-story-card::before{
   content:"مونة";position:absolute;inset:auto 10% 8% auto;

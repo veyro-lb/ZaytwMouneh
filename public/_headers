@@ -24,6 +24,9 @@
   Cache-Control: public, max-age=2592000, immutable
 
 /*
+  # PRE-LAUNCH: Keep all public origins (custom domain and workers.dev) unindexed until owner approves launch.
+  # X-Robots-Tag works only when crawlers can fetch the page; it is not an access-control mechanism.
+  X-Robots-Tag: noindex, nofollow, noarchive
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()

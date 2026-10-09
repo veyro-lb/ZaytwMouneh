@@ -104,7 +104,7 @@
     var api=window.ZWM_HARVEST_CART;
     return api&&typeof api.offer==="function"?api.offer(OIL_ID,v.id):null;
   }
-  function fallback(img){img.addEventListener("error",function(){if(img.dataset.ghFallback)return;img.dataset.ghFallback="1";img.src="/assets/videos/home-pantry.jpg"},{once:true})}
+  function imageFallback(img){img.addEventListener("error",function(){img.hidden=true;var note=document.createElement("span");note.className="gh-image-fallback";note.textContent=tr().imageAlt;img.parentNode.appendChild(note)},{once:true})}
   function card(size){
     var t=tr(),v=variantFor(size),o=offer(size),orderable=!!(o&&o.available);
     return '<article class="gh-pick-card" data-gh-size="'+esc(size.size)+'">'+
@@ -133,7 +133,7 @@
     var stage=document.getElementById("ghPicksStage");
     if(!stage){stage=document.createElement("div");stage.id="ghPicksStage";anchor.parentNode.insertBefore(stage,anchor)}
     stage.innerHTML=collectionMarkup();
-    stage.querySelectorAll(".gh-pick-figure img").forEach(fallback);
+    stage.querySelectorAll(".gh-pick-figure img").forEach(imageFallback);
     revealCards(stage);
   }
   var revealObserver=null;

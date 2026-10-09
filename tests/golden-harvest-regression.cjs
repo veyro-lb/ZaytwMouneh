@@ -112,7 +112,7 @@ for(const page of ["index","shop"]){
   assert.equal((html.match(/golden-harvest-2026\.js/g)||[]).length,1,page+" exactly one campaign JS");
   assert.ok(html.indexOf("products-data.js")<html.indexOf("golden-harvest-2026.js"),page+" campaign must load after catalogue");
   assert.ok(html.indexOf("app.js")<html.indexOf("golden-harvest-2026.js"),page+" campaign must load after app");
-  assert.match(html,/app\.js\?v=20261009-contact2/,"Use fresh asset version so the correct support number and validated cart API are served");
+  assert.match(html,/app\.js\?v=20261009-4l40-cart2/,"Serve validated updated cart and 4L price without stale app cache");
 }
 const staticHome=read("public/index.html");
 const heroStart=staticHome.indexOf('class="page-intro page-intro-shop home-pantry-hero"');
@@ -127,7 +127,7 @@ for(const [size,file] of [["1","1l.webp"],["4","4l.webp"],["8.77","8-77l.webp"],
  assert.ok(staticHome.includes('/assets/harvest-2026/'+file),"Permanent product image missing "+file);
 }
 assert.match(staticHome,/href="\/shop\?category=Olive%20Oil#shop"/,"Static collection must have functional shop fallbacks");
-assert.match(staticHome,/href="\/contact"/,"Missing 4 L variant remains inquiry-only");
+assert.match(staticHome,/4 L<\/h3><a class="gh-pick-inquire" href="\/shop\?category=Olive%20Oil#shop"/,"4 L static card must link to the priced shop variant");
 const home=read("public/index.html");
 assert.ok(home.includes('<section class="page-intro page-intro-shop home-pantry-hero"'),"Existing homepage hero must be untouched");
 assert.ok(home.includes('id="featured"'),"Pantry Favourites must remain");
@@ -142,6 +142,13 @@ assert.doesNotMatch(app.slice(app.indexOf("window.ZWM_HARVEST_CART={"),app.index
 
 // Verify all selected-language copies and announced badge text are complete.
 const vm=require("node:vm");
+const ownerCatalogue=vm.runInNewContext(read("public/products-data.js")+";PRODUCTS_DATA.find(p=>p.id==='extra-virgin-olive-oil')",{window:{}});
+assert.ok(ownerCatalogue,"Missing olive oil catalogue product");
+const owner4L=ownerCatalogue.variants.find(v=>v.id==="extra-virgin-olive-oil-4-l");
+assert.ok(owner4L,"The 4 L tin must be an actual orderable catalogue variant");
+assert.equal(owner4L.price,40,"Owner-confirmed 4 L price must be exactly USD 40");
+assert.equal(owner4L.sizeEn,"4 L");
+assert.match(read("public/checkout.js"),/productPhoto\(r\.p,r\.v\.id\)/,"Checkout must use correct photo for selected tin size");
 /* Olive-oil variants must use the exact 2026 photographs in the catalogue,
    quick view and full product page, not only in the campaign collection. */
 const ownerPhotos={window:{}};

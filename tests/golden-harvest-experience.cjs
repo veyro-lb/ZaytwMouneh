@@ -51,12 +51,16 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  assert.ok(d.getElementById("normalHero")&&!d.getElementById("normalHero").hidden,"Original hero must be visible");
  assert.equal(d.getElementById("normalHero").nextElementSibling.id,"ghPicksStage","Harvest picks immediately after normal hero");
  assert.equal(d.getElementById("ghPicksStage").nextElementSibling.id,"featured","Pantry Favourites remains after Seasonal Picks");
- assert.equal(d.querySelectorAll(".gh-pick-card").length,4,"Four promoted products");
- assert.deepEqual(Array.from(d.querySelectorAll(".gh-pick-capacity")).map(el=>el.textContent.trim()),["1 L","4 L","8.77 L","17.54 L"]);
- assert.equal(d.querySelectorAll(".gh-pick-badge").length,4);
+ assert.equal(d.querySelectorAll(".gh-pick-card").length,5,"Five promoted products");
+ assert.deepEqual(Array.from(d.querySelectorAll(".gh-pick-capacity")).map(el=>el.textContent.trim()),["500 ml","1 L","4 L","8.77 L","17.54 L"]);
+ assert.equal(d.querySelectorAll(".gh-pick-badge").length,5);
  assert.equal(d.querySelector(".gh-pick-badge").textContent,"2026 HARVEST");
  assert.equal(d.querySelector("#ghPicksTitle").textContent,"Fresh From the Harvest");
- assert.equal(d.querySelectorAll("button[data-gh-add]").length,4,"Every priced harvest variant must be orderable");
+ assert.equal(d.querySelectorAll("button[data-gh-add]").length,5,"Every priced harvest variant must be orderable");
+ assert.ok(d.querySelector('.gh-pick-card[data-gh-size="500 ml"] button[data-gh-add="extra-virgin-olive-oil-500-ml"]'));
+ assert.ok(d.querySelector('.gh-pick-card[data-gh-size="500 ml"] .gh-pick-price').textContent.includes("6"));
+ assert.ok(d.querySelector('.gh-pick-card[data-gh-size="500 ml"] .gh-pick-figure img').src.includes("500ml.avif"));
+ assert.equal(d.querySelector('.gh-pick-card[data-gh-size="500 ml"] .gh-pick-capacity').textContent.trim(),"500 ml");
  assert.ok(d.querySelector('.gh-pick-card[data-gh-size="4"] button[data-gh-add="extra-virgin-olive-oil-4-l"]'));
  assert.ok(d.querySelector('.gh-pick-card[data-gh-size="4"] .gh-pick-price').textContent.includes("40"));
  assert.ok(d.querySelector('.gh-pick-card[data-gh-size="1"] .gh-pick-price').textContent.includes("12"));
@@ -77,13 +81,14 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  assert.ok(d.querySelector("[data-gh-discover]").textContent.includes("Order Now"),"English ordering CTA");
  d.querySelector("[data-gh-discover]").click();
  assert.equal(d.getElementById("ghCampaignPopup").hidden,true,"Discover closes popup");
- assert.equal(d.getElementById("harvest-picks").dataset.scrolled,"yes","Discover navigates directly to four formats");
+ assert.equal(d.getElementById("harvest-picks").dataset.scrolled,"yes","Discover navigates directly to five formats");
  assert.equal(w.localStorage.getItem("zwm-golden-harvest-2026-popup-seen-v1"),"1");
+ d.querySelector('[data-gh-add="extra-virgin-olive-oil-500-ml"]').click();
  d.querySelector('[data-gh-add="extra-virgin-olive-oil-1-l"]').click();
  d.querySelector('[data-gh-add="extra-virgin-olive-oil-4-l"]').click();
  d.querySelector('[data-gh-add="extra-virgin-olive-oil-8-77-l"]').click();
  d.querySelector('[data-gh-add="extra-virgin-olive-oil-17-54-l"]').click();
- assert.deepEqual(added.map(x=>x.variant),["extra-virgin-olive-oil-1-l","extra-virgin-olive-oil-4-l","extra-virgin-olive-oil-8-77-l","extra-virgin-olive-oil-17-54-l"],"Buttons use real variant IDs");
+ assert.deepEqual(added.map(x=>x.variant),["extra-virgin-olive-oil-500-ml","extra-virgin-olive-oil-1-l","extra-virgin-olive-oil-4-l","extra-virgin-olive-oil-8-77-l","extra-virgin-olive-oil-17-54-l"],"Buttons use real variant IDs");
  w.PRODUCTS_DATA[0].variants[3].price=87.5;
  w.dispatchEvent(new w.Event("zwm:catalog-cache-updated"));
  assert.ok(d.querySelector('.gh-pick-card[data-gh-size="8.77"] .gh-pick-price').textContent.includes("87.50"),"Current catalogue price updates");
@@ -131,21 +136,21 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  signedDoc.body.dataset.authenticated="true";
  assert.equal(signedDoc.getElementById("normalHero").nextElementSibling.id,"ghPicksStage","Signing in must not remove Seasonal Picks from Home");
  assert.equal(signedDoc.getElementById("ghPicksStage").nextElementSibling.id,"featured","Collection still precedes Pantry Favourites after login");
- assert.equal(signedDoc.querySelectorAll(".gh-pick-card").length,4,"Signed-in visitor sees all four oil sizes without ?harvestPreview");
+ assert.equal(signedDoc.querySelectorAll(".gh-pick-card").length,5,"Signed-in visitor sees all five olive oil sizes without ?harvestPreview");
  assert.equal(signedDoc.querySelector("#ghPicksTitle").textContent,"زيت السنة وصل");
  assert.equal(signedDoc.getElementById("ghCampaignPopup").hidden,true,"Popup dismissed earlier must not reappear after sign-in");
  signedDoc.querySelector('[data-gh-add="extra-virgin-olive-oil-8-77-l"]').click();
  assert.equal(signedIn.added[0].variant,"extra-virgin-olive-oil-8-77-l","Ordering remains available after authentication");
  signedDoc.getElementById("ghPicksStage").remove();
  signedIn.w.dispatchEvent(new signedIn.w.Event("pageshow"));
- assert.equal(signedDoc.querySelectorAll(".gh-pick-card").length,4,"BFCache restore reattaches Seasonal Picks after account navigation");
+ assert.equal(signedDoc.querySelectorAll(".gh-pick-card").length,5,"BFCache restore reattaches Seasonal Picks after account navigation");
  signedDoc.querySelector('[data-gh-add="extra-virgin-olive-oil-1-l"]').click();
  assert.equal(signedIn.added.at(-1).variant,"extra-virgin-olive-oil-1-l","Reattached collection keeps cart actions working");
  // Simulate a sign-in widget replacing the collection directly, without
  // navigation or pageshow. A bounded DOM observer should restore it.
  signedDoc.getElementById("ghPicksStage").remove();
  await pause();
- assert.equal(signedDoc.querySelectorAll(".gh-pick-card").length,4,"Homepage collection must self-heal after auth DOM updates");
+ assert.equal(signedDoc.querySelectorAll(".gh-pick-card").length,5,"Homepage collection must self-heal after auth DOM updates");
  signedDoc.querySelector('[data-gh-add="extra-virgin-olive-oil-17-54-l"]').click();
  assert.equal(signedIn.added.at(-1).variant,"extra-virgin-olive-oil-17-54-l","Reinserted card still uses existing cart");
  signedIn.dom.window.close();
@@ -155,7 +160,7 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  signedShop.dom.window.close();
 
  const production=makePage("en",{url:"https://www.zaytw-mouneh.example/"});
- assert.equal(production.w.document.querySelectorAll(".gh-pick-card").length,4,"Permanent olive oil collection must appear even on public domain after merging");
+ assert.equal(production.w.document.querySelectorAll(".gh-pick-card").length,5,"Permanent olive oil collection must appear even on public domain after merging");
  assert.equal(production.w.document.getElementById("normalHero").nextElementSibling.id,"ghPicksStage","Permanent collection must precede Pantry Favourites for all visitors");
  assert.equal(production.w.document.getElementById("ghCampaignPopup"),null,"Cinematic popup stays off on public domain until separately launched");
  assert.equal(production.w.document.getElementById("announcementText").textContent,"","Normal public announcement must not be overwritten before promo launch");

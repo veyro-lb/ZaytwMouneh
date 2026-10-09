@@ -1,0 +1,4055 @@
+{
+  "branch": "content/unique-product-descriptions-20261009",
+  "originalRecords": 332,
+  "canonicalRecords": 329,
+  "aliasesRemoved": [
+    "barly-flour",
+    "bezer-el-kettan",
+    "sekar-nabet"
+  ],
+  "verificationSummary": {
+    "reviewRequired": 88
+  },
+  "items": [
+    {
+      "id": "baking-powder",
+      "category": "Condiments",
+      "nameEn": "Baking Powder",
+      "nameAr": "بيكنغ باودر",
+      "variants": [
+        "baking-powder-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "brown-sugar",
+      "category": "Condiments",
+      "nameEn": "Brown Sugar",
+      "nameAr": "سكر بين",
+      "variants": [
+        "brown-sugar-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "carbonate",
+      "category": "Condiments",
+      "nameEn": "Carbonate",
+      "nameAr": "كربونات",
+      "variants": [
+        "carbonate-200-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "chinese-salt",
+      "category": "Condiments",
+      "nameEn": "Chinese Salt",
+      "nameAr": "صيين ملح",
+      "variants": [
+        "chinese-salt-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "hamod-el-laymoun",
+      "category": "Condiments",
+      "nameEn": "Citric Acid (Lemon Salt)",
+      "nameAr": "حامض ال ليمون",
+      "variants": [
+        "hamod-el-laymoun-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "himalaya-salt",
+      "category": "Condiments",
+      "nameEn": "Himalayan Salt",
+      "nameAr": "ملح الهيمااليا",
+      "variants": [
+        "himalaya-salt-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "icing-sugar",
+      "category": "Condiments",
+      "nameEn": "Icing Sugar",
+      "nameAr": "سكر بودرة",
+      "variants": [
+        "icing-sugar-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "iodized-salt",
+      "category": "Condiments",
+      "nameEn": "Iodized Salt",
+      "nameAr": "ملح معالج باليود",
+      "variants": [
+        "iodized-salt-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "pakmaya-yeast",
+      "category": "Condiments",
+      "nameEn": "Pakmaya Yeast",
+      "nameAr": "باكمايا خمرية",
+      "variants": [
+        "pakmaya-yeast-450-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "sea-salt",
+      "category": "Condiments",
+      "nameEn": "Sea Salt",
+      "nameAr": "بحري ملح",
+      "variants": [
+        "sea-salt-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "secar-nabat",
+      "category": "Condiments",
+      "nameEn": "Rock Sugar",
+      "nameAr": "سكر نبات",
+      "variants": [
+        "secar-nabat-200-g",
+        "secar-nabat-400-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "white-sugar",
+      "category": "Condiments",
+      "nameEn": "White Sugar",
+      "nameAr": "سكر أبيض",
+      "variants": [
+        "white-sugar-1-kg",
+        "white-sugar-2-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "date-paste",
+      "category": "Dates",
+      "nameEn": "Date Paste",
+      "nameAr": "معجون تمر",
+      "variants": [
+        "date-paste-900-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bisco-choco",
+      "category": "Debsy Carob",
+      "nameEn": "Bisco Choco",
+      "nameAr": "بيسكو شوكوالتة",
+      "variants": [
+        "bisco-choco-300-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "caramel-craze",
+      "category": "Debsy Carob",
+      "nameEn": "Caramel Craze",
+      "nameAr": "كراميل كريز",
+      "variants": [
+        "caramel-craze-size-not-listed"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "carob-biscuit",
+      "category": "Debsy Carob",
+      "nameEn": "Carob Biscuit",
+      "nameAr": "خروب بسكويت",
+      "variants": [
+        "carob-biscuit-260-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "carob-cookies",
+      "category": "Debsy Carob",
+      "nameEn": "Carob Cookies",
+      "nameAr": "خروب كوكزي",
+      "variants": [
+        "carob-cookies-260-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "carob-date-bites",
+      "category": "Debsy Carob",
+      "nameEn": "Carob Date Bites",
+      "nameAr": "خروب تمر لقيمات",
+      "variants": [
+        "carob-date-bites-250-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "carob-maacroun",
+      "category": "Debsy Carob",
+      "nameEn": "Carob Maacroun",
+      "nameAr": "خروب معكرون",
+      "variants": [
+        "carob-maacroun-250-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "carob-molasses-glass-jar",
+      "category": "Debsy Carob",
+      "nameEn": "Carob Molasses Glass Jar",
+      "nameAr": "دبس الخروب زجاج مرطبان",
+      "variants": [
+        "carob-molasses-glass-jar-1-kg",
+        "carob-molasses-glass-jar-500-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "carob-molasses-plastic-jar",
+      "category": "Debsy Carob",
+      "nameEn": "Carob Molasses Plastic Jar",
+      "nameAr": "دبس الخروب بالستيك مرطبان",
+      "variants": [
+        "carob-molasses-plastic-jar-1-kg"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "carobella",
+      "category": "Debsy Carob",
+      "nameEn": "Carobella",
+      "nameAr": "كاروبيال",
+      "variants": [
+        "carobella-260-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "cherry-craze",
+      "category": "Debsy Carob",
+      "nameEn": "Cherry Craze",
+      "nameAr": "كرز كريز",
+      "variants": [
+        "cherry-craze-size-not-listed"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "choco-cookies",
+      "category": "Debsy Carob",
+      "nameEn": "Choco Cookies",
+      "nameAr": "شوكوالتة كوكزي",
+      "variants": [
+        "choco-cookies-260-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "choco-peanut-cookies",
+      "category": "Debsy Carob",
+      "nameEn": "Choco Peanut Cookies",
+      "nameAr": "شوكوالتة فول سوداني كوكزي",
+      "variants": [
+        "choco-peanut-cookies-370-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "chocopeas",
+      "category": "Debsy Carob",
+      "nameEn": "Chocopeas",
+      "nameAr": "شوكوبزي",
+      "variants": [
+        "chocopeas-300-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "coconut-cookies",
+      "category": "Debsy Carob",
+      "nameEn": "Coconut Cookies",
+      "nameAr": "جوز هند كوكزي",
+      "variants": [
+        "coconut-cookies-260-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "cocount-carob-balls",
+      "category": "Debsy Carob",
+      "nameEn": "Coconut Carob Balls",
+      "nameAr": "جوز هند خروب كرات",
+      "variants": [
+        "cocount-carob-balls-270-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "craze-control",
+      "category": "Debsy Carob",
+      "nameEn": "Craze Control",
+      "nameAr": "كريز كنرتول",
+      "variants": [
+        "craze-control-size-not-listed"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "crunchy-craze",
+      "category": "Debsy Carob",
+      "nameEn": "Crunchy Craze",
+      "nameAr": "مقرمش كريز",
+      "variants": [
+        "crunchy-craze-size-not-listed"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "crunchy-seeds",
+      "category": "Debsy Carob",
+      "nameEn": "Crunchy Seeds",
+      "nameAr": "مقرمش بذور",
+      "variants": [
+        "crunchy-seeds-210-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "debsy-pretzy",
+      "category": "Debsy Carob",
+      "nameEn": "Debsy Pretzy",
+      "nameAr": "دبيس بريزتي",
+      "variants": [
+        "debsy-pretzy-size-not-listed"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "ginger-biscuit",
+      "category": "Debsy Carob",
+      "nameEn": "Ginger Biscuit",
+      "nameAr": "زنجبيل بسكويت",
+      "variants": [
+        "ginger-biscuit-240-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "hazelnut-craze",
+      "category": "Debsy Carob",
+      "nameEn": "Hazelnut Craze",
+      "nameAr": "بندق كريز",
+      "variants": [
+        "hazelnut-craze-size-not-listed"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "mix-and-eat-chickpeas",
+      "category": "Debsy Carob",
+      "nameEn": "Mix and Eat Chickpeas",
+      "nameAr": "خلطة و أكل حمص",
+      "variants": [
+        "mix-and-eat-chickpeas-300-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "nutty-bites",
+      "category": "Debsy Carob",
+      "nameEn": "Nutty Bites",
+      "nameAr": "مكسرات لقيمات",
+      "variants": [
+        "nutty-bites-size-not-listed"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "oat-kaak-with-cheese",
+      "category": "Debsy Carob",
+      "nameEn": "Oat Kaak with Cheese",
+      "nameAr": "شوفان كعك مع جبنة",
+      "variants": [
+        "oat-kaak-with-cheese-220-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "oat-kaak-with-sesame",
+      "category": "Debsy Carob",
+      "nameEn": "Oat Kaak with Sesame",
+      "nameAr": "شوفان كعك مع سمسم",
+      "variants": [
+        "oat-kaak-with-sesame-210-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "oat-kaak-with-sunflower-seeds",
+      "category": "Debsy Carob",
+      "nameEn": "Oat Kaak with Sunflower Seeds",
+      "nameAr": "شوفان كعك مع بذور دوار الشمس",
+      "variants": [
+        "oat-kaak-with-sunflower-seeds-240-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "oat-kaak-with-thyme",
+      "category": "Debsy Carob",
+      "nameEn": "Oat Kaak with Thyme",
+      "nameAr": "شوفان كعك مع زعرت",
+      "variants": [
+        "oat-kaak-with-thyme-220-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "oatmeal-cookies",
+      "category": "Debsy Carob",
+      "nameEn": "Oatmeal Cookies",
+      "nameAr": "شوفان كوكزي",
+      "variants": [
+        "oatmeal-cookies-150-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "peanut-butter-and-molasses",
+      "category": "Debsy Carob",
+      "nameEn": "Peanut Butter and Molasses",
+      "nameAr": "زبدة الفول السوداني و دبس",
+      "variants": [
+        "peanut-butter-and-molasses-360-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "peanuts-carob-bar",
+      "category": "Debsy Carob",
+      "nameEn": "Peanuts Carob Bar",
+      "nameAr": "فول سوداني خروب لوح",
+      "variants": [
+        "peanuts-carob-bar-300-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "raisin-cookies",
+      "category": "Debsy Carob",
+      "nameEn": "Raisin Cookies",
+      "nameAr": "زبيب كوكزي",
+      "variants": [
+        "raisin-cookies-260-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "ricky-ricardo",
+      "category": "Debsy Carob",
+      "nameEn": "Ricky Ricardo",
+      "nameAr": "ريكي ريكاردو",
+      "variants": [
+        "ricky-ricardo-190-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "sesame-carob-bar",
+      "category": "Debsy Carob",
+      "nameEn": "Sesame Carob Bar",
+      "nameAr": "سمسم خروب لوح",
+      "variants": [
+        "sesame-carob-bar-250-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "sesame-cookies",
+      "category": "Debsy Carob",
+      "nameEn": "Sesame Cookies",
+      "nameAr": "سمسم كوكزي",
+      "variants": [
+        "sesame-cookies-260-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "tahini",
+      "category": "Debsy Carob",
+      "nameEn": "Tahini",
+      "nameAr": "طحينة",
+      "variants": [
+        "tahini-600-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "jeleb",
+      "category": "Distillates + Syrups",
+      "nameEn": "Jallab Syrup",
+      "nameAr": "جالب",
+      "variants": [
+        "jeleb-1-l",
+        "jeleb-500-ml"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "maa-ward",
+      "category": "Distillates + Syrups",
+      "nameEn": "Rose Water",
+      "nameAr": "ماء ورد",
+      "variants": [
+        "maa-ward-500-ml"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "maa-zaher",
+      "category": "Distillates + Syrups",
+      "nameEn": "Orange Blossom Water",
+      "nameAr": "ماء زهر",
+      "variants": [
+        "maa-zaher-500-ml"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "makatar-asiin",
+      "category": "Distillates + Syrups",
+      "nameEn": "Myrtle Distillate",
+      "nameAr": "مقطر آس",
+      "variants": [
+        "makatar-asiin-500-ml"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "makatar-zaarour",
+      "category": "Distillates + Syrups",
+      "nameEn": "Hawthorn Distillate",
+      "nameAr": "مقطر زعرور",
+      "variants": [
+        "makatar-zaarour-500-ml"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "makatar-zaatar",
+      "category": "Distillates + Syrups",
+      "nameEn": "Thyme Distillate",
+      "nameAr": "مقطر زعرت",
+      "variants": [
+        "makatar-zaatar-500-ml"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "sharab-el-tout",
+      "category": "Distillates + Syrups",
+      "nameEn": "Mulberry Syrup",
+      "nameAr": "شراب ال توت",
+      "variants": [
+        "sharab-el-tout-500-ml"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "sharab-el-ward",
+      "category": "Distillates + Syrups",
+      "nameEn": "Rose Syrup",
+      "nameAr": "شراب ال ورد",
+      "variants": [
+        "sharab-el-ward-500-ml"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "sugar-free-jeleb",
+      "category": "Distillates + Syrups",
+      "nameEn": "Sugar-Free Jeleb",
+      "nameAr": "خالي جالب-سكر",
+      "variants": [
+        "sugar-free-jeleb-500-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "suger-free-mulberry",
+      "category": "Distillates + Syrups",
+      "nameEn": "Sugar-Free Mulberry Syrup",
+      "nameAr": "خالي توت-سكر",
+      "variants": [
+        "suger-free-mulberry-250-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "aamar-el-din-kotaa",
+      "category": "Dried Foods",
+      "nameEn": "Apricot Fruit Leather Pieces",
+      "nameAr": "قمر ال الدين قطع",
+      "variants": [
+        "aamar-el-din-kotaa-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "barkouk-mjafaf",
+      "category": "Dried Foods",
+      "nameEn": "Prunes",
+      "nameAr": "برقوق مجفف",
+      "variants": [
+        "barkouk-mjafaf-200-g",
+        "barkouk-mjafaf-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "cranberries",
+      "category": "Dried Foods",
+      "nameEn": "Cranberries",
+      "nameAr": "توت بري",
+      "variants": [
+        "cranberries-250-g",
+        "cranberries-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "goji-berries",
+      "category": "Dried Foods",
+      "nameEn": "Goji Berries",
+      "nameAr": "غوجي توت",
+      "variants": [
+        "goji-berries-200-g",
+        "goji-berries-250-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "grated-coconut",
+      "category": "Dried Foods",
+      "nameEn": "Grated Coconut",
+      "nameAr": "جوز هند مبشور",
+      "variants": [
+        "grated-coconut-200-g",
+        "grated-coconut-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "meshmosh-mojafaf",
+      "category": "Dried Foods",
+      "nameEn": "Dried Apricots",
+      "nameAr": "مشمش مجفف",
+      "variants": [
+        "meshmosh-mojafaf-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "moshmosh-mojafaf",
+      "category": "Dried Foods",
+      "nameEn": "Dried Apricots",
+      "nameAr": "مشمش مجفف",
+      "variants": [
+        "moshmosh-mojafaf-250-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "sun-dried-tomatoes",
+      "category": "Dried Foods",
+      "nameEn": "Sun-Dried Tomatoes",
+      "nameAr": "طماطم مجففة بالشمس",
+      "variants": [
+        "sun-dried-tomatoes-250-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "teen-hibal",
+      "category": "Dried Foods",
+      "nameEn": "String-Dried Figs",
+      "nameAr": "تني حبال",
+      "variants": [
+        "teen-hibal-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "teen-mjafaf",
+      "category": "Dried Foods",
+      "nameEn": "Dried Figs",
+      "nameAr": "تني مجفف",
+      "variants": [
+        "teen-mjafaf-200-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zarshak",
+      "category": "Dried Foods",
+      "nameEn": "Barberries",
+      "nameAr": "زرشك",
+      "variants": [
+        "zarshak-250-g",
+        "zarshak-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zbeeb-ashlamish",
+      "category": "Dried Foods",
+      "nameEn": "Ashlamish Raisins",
+      "nameAr": "زبيب أشلميش",
+      "variants": [
+        "zbeeb-ashlamish-200-g",
+        "zbeeb-ashlamish-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zbeeb-aswad",
+      "category": "Dried Foods",
+      "nameEn": "Black Raisins",
+      "nameAr": "زبيب أسود",
+      "variants": [
+        "zbeeb-aswad-200-g",
+        "zbeeb-aswad-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zbeeb-chile",
+      "category": "Dried Foods",
+      "nameEn": "Chilean Raisins",
+      "nameAr": "زبيب تشيلي",
+      "variants": [
+        "zbeeb-chile-200-g",
+        "zbeeb-chile-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "all-use-flour",
+      "category": "Flour",
+      "nameEn": "All-Purpose Flour",
+      "nameAr": "طحني متعدد االستعماالت",
+      "variants": [
+        "all-use-flour-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "almond-flour",
+      "category": "Flour",
+      "nameEn": "Almond Flour",
+      "nameAr": "طحني لوز",
+      "variants": [
+        "almond-flour-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "barley-flour",
+      "category": "Flour",
+      "nameEn": "Barley Flour",
+      "nameAr": "طحني شعري",
+      "variants": [
+        "barley-flour-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "corn-flour",
+      "category": "Flour",
+      "nameEn": "Corn Flour",
+      "nameAr": "طحني ذرة",
+      "variants": [
+        "corn-flour-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "dora-flour",
+      "category": "Flour",
+      "nameEn": "Corn Flour",
+      "nameAr": "ذرة طحني",
+      "variants": [
+        "dora-flour-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "shoufen-flour",
+      "category": "Flour",
+      "nameEn": "Oat Flour",
+      "nameAr": "شوفان طحني",
+      "variants": [
+        "shoufen-flour-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "theen-farkha",
+      "category": "Flour",
+      "nameEn": "Farina Flour",
+      "nameAr": "طحني فرخة",
+      "variants": [
+        "theen-farkha-1-kg",
+        "theen-farkha-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "whole-wheat-flour",
+      "category": "Flour",
+      "nameEn": "Whole Wheat Flour",
+      "nameAr": "طحني قمح كامل",
+      "variants": [
+        "whole-wheat-flour-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "yeast",
+      "category": "Flour",
+      "nameEn": "Yeast",
+      "nameAr": "خمرية",
+      "variants": [
+        "yeast-450-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zero-flour",
+      "category": "Flour",
+      "nameEn": "Zero Flour",
+      "nameAr": "زيرو طحني",
+      "variants": [
+        "zero-flour-1-kg",
+        "zero-flour-2-kg",
+        "zero-flour-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "american-rice",
+      "category": "Grains",
+      "nameEn": "American Rice",
+      "nameAr": "أرز أمريكي",
+      "variants": [
+        "american-rice-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "baldo-italian-rice",
+      "category": "Grains",
+      "nameEn": "Baldo Italian Rice",
+      "nameAr": "أرز بالدو إيطالي",
+      "variants": [
+        "baldo-italian-rice-1-kg",
+        "baldo-italian-rice-2-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "barley",
+      "category": "Grains",
+      "nameEn": "Barley",
+      "nameAr": "بارليي",
+      "variants": [
+        "barley-1-kg",
+        "barley-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "burglur-abyad-faksh",
+      "category": "Grains",
+      "nameEn": "Extra-Coarse White Bulgur",
+      "nameAr": "برغل أبيض فكش",
+      "variants": [
+        "burglur-abyad-faksh-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "burglur-abyad-kheshen",
+      "category": "Grains",
+      "nameEn": "Coarse White Bulgur",
+      "nameAr": "برغل أبيض خشن",
+      "variants": [
+        "burglur-abyad-kheshen-1-kg",
+        "burglur-abyad-kheshen-2-kg",
+        "burglur-abyad-kheshen-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "burglur-abyad-neeme",
+      "category": "Grains",
+      "nameEn": "Fine White Bulgur",
+      "nameAr": "برغل أبيض نعمة",
+      "variants": [
+        "burglur-abyad-neeme-1-kg",
+        "burglur-abyad-neeme-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "burglur-asmar-faksh",
+      "category": "Grains",
+      "nameEn": "Extra-Coarse Brown Bulgur",
+      "nameAr": "برغل أسمر فكش",
+      "variants": [
+        "burglur-asmar-faksh-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "burglur-asmar-kheshen",
+      "category": "Grains",
+      "nameEn": "Coarse Brown Bulgur",
+      "nameAr": "برغل أسمر خشن",
+      "variants": [
+        "burglur-asmar-kheshen-1-kg",
+        "burglur-asmar-kheshen-2-kg",
+        "burglur-asmar-kheshen-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "burglur-asmar-neeme",
+      "category": "Grains",
+      "nameEn": "Fine Brown Bulgur",
+      "nameAr": "برغل أسمر نعمة",
+      "variants": [
+        "burglur-asmar-neeme-1-kg",
+        "burglur-asmar-neeme-2-kg",
+        "burglur-asmar-neeme-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "dried-moghrabieh",
+      "category": "Grains",
+      "nameEn": "Dried Moghrabieh",
+      "nameAr": "مجفف مغربية",
+      "variants": [
+        "dried-moghrabieh-900-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "egyptian-rice",
+      "category": "Grains",
+      "nameEn": "Egyptian Rice",
+      "nameAr": "مصري أرز",
+      "variants": [
+        "egyptian-rice-1-kg",
+        "egyptian-rice-2-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "freeke",
+      "category": "Grains",
+      "nameEn": "Freekeh",
+      "nameAr": "فريكة",
+      "variants": [
+        "freeke-500-g",
+        "freeke-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "golden-sila-basmati-rice",
+      "category": "Grains",
+      "nameEn": "Golden Sila Basmati Rice",
+      "nameAr": "ذهيب سيال بسميت أرز",
+      "variants": [
+        "golden-sila-basmati-rice-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kameh-habe-kamle",
+      "category": "Grains",
+      "nameEn": "Whole Wheat Berries",
+      "nameAr": "كاميه حبة كاملة",
+      "variants": [
+        "kameh-habe-kamle-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kameh-makshour",
+      "category": "Grains",
+      "nameEn": "Cracked Wheat",
+      "nameAr": "كاميه ماكشور",
+      "variants": [
+        "kameh-makshour-1-kg",
+        "kameh-makshour-2-kg",
+        "kameh-makshour-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kinwa-bayda",
+      "category": "Grains",
+      "nameEn": "White Quinoa",
+      "nameAr": "كينوا بيضاء",
+      "variants": [
+        "kinwa-bayda-200-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "long-grain-brown-rice",
+      "category": "Grains",
+      "nameEn": "Long Grain Brown Rice",
+      "nameAr": "حبة طويلة بين أرز",
+      "variants": [
+        "long-grain-brown-rice-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "makhlotet-hboub",
+      "category": "Grains",
+      "nameEn": "Mixed Grains",
+      "nameAr": "مخلوطة حبوب",
+      "variants": [
+        "makhlotet-hboub-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "popcorn",
+      "category": "Grains",
+      "nameEn": "Popcorn",
+      "nameAr": "فشار",
+      "variants": [
+        "popcorn-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "popcorn-jumbo",
+      "category": "Grains",
+      "nameEn": "Popcorn Jumbo",
+      "nameAr": "فشار جومبو",
+      "variants": [
+        "popcorn-jumbo-1-kg",
+        "popcorn-jumbo-2-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "rice-neeme",
+      "category": "Grains",
+      "nameEn": "Fine Rice",
+      "nameAr": "أرز نعمة",
+      "variants": [
+        "rice-neeme-1-kg",
+        "rice-neeme-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "shaariye",
+      "category": "Grains",
+      "nameEn": "Vermicelli",
+      "nameAr": "شعريية",
+      "variants": [
+        "shaariye-1-kg",
+        "shaariye-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "shoufen",
+      "category": "Grains",
+      "nameEn": "Oats",
+      "nameAr": "شوفان",
+      "variants": [
+        "shoufen-1-kg",
+        "shoufen-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "sila-rice-xxl",
+      "category": "Grains",
+      "nameEn": "Sila Rice Xxl",
+      "nameAr": "سيال أرز إكس إكس إل",
+      "variants": [
+        "sila-rice-xxl-1-kg",
+        "sila-rice-xxl-2-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "smeed",
+      "category": "Grains",
+      "nameEn": "Semolina",
+      "nameAr": "سميد",
+      "variants": [
+        "smeed-1-kg",
+        "smeed-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "aasfor",
+      "category": "Herbs",
+      "nameEn": "Safflower",
+      "nameAr": "عصفور",
+      "variants": [
+        "aasfor-50-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "chamomile",
+      "category": "Herbs",
+      "nameEn": "Chamomile",
+      "nameAr": "بابونج",
+      "variants": [
+        "chamomile-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "dried-rose-petals",
+      "category": "Herbs",
+      "nameEn": "Dried Rose Petals",
+      "nameAr": "مجفف ورد بتالت",
+      "variants": [
+        "dried-rose-petals-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "dried-rosemary",
+      "category": "Herbs",
+      "nameEn": "Dried Rosemary",
+      "nameAr": "مجفف إكليل الجبل",
+      "variants": [
+        "dried-rosemary-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "green-tea",
+      "category": "Herbs",
+      "nameEn": "Green Tea",
+      "nameAr": "أخضر شاي",
+      "variants": [
+        "green-tea-200-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "habaa",
+      "category": "Herbs",
+      "nameEn": "Habaa Herb",
+      "nameAr": "حبة",
+      "variants": [
+        "habaa-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "karkadeh",
+      "category": "Herbs",
+      "nameEn": "Hibiscus",
+      "nameAr": "كركديه",
+      "variants": [
+        "karkadeh-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "khaltet-el-manaa",
+      "category": "Herbs",
+      "nameEn": "Immunity Herbal Blend",
+      "nameAr": "خلطة ال مناعة",
+      "variants": [
+        "khaltet-el-manaa-100-g",
+        "khaltet-el-manaa-200-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "khaltet-el-unoutha",
+      "category": "Herbs",
+      "nameEn": "Women's Herbal Blend",
+      "nameAr": "خلطة ال أنوثة",
+      "variants": [
+        "khaltet-el-unoutha-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "mardakoush",
+      "category": "Herbs",
+      "nameEn": "Marjoram",
+      "nameAr": "مردقوش",
+      "variants": [
+        "mardakoush-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "molokhiya",
+      "category": "Herbs",
+      "nameEn": "Dried Molokhia",
+      "nameAr": "ملوخية",
+      "variants": [
+        "molokhiya-200-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "moringa-tea",
+      "category": "Herbs",
+      "nameEn": "Moringa Tea",
+      "nameAr": "مورينغا شاي",
+      "variants": [
+        "moringa-tea-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "naanaa-yebes",
+      "category": "Herbs",
+      "nameEn": "Dried Mint",
+      "nameAr": "نعناع يابس",
+      "variants": [
+        "naanaa-yebes-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "oregano",
+      "category": "Herbs",
+      "nameEn": "Oregano",
+      "nameAr": "أوريغانو",
+      "variants": [
+        "oregano-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "oshrok",
+      "category": "Herbs",
+      "nameEn": "Oshrok Herb",
+      "nameAr": "أشرق",
+      "variants": [
+        "oshrok-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "salamki",
+      "category": "Herbs",
+      "nameEn": "Senna",
+      "nameAr": "سنامكي",
+      "variants": [
+        "salamki-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "sheeh",
+      "category": "Herbs",
+      "nameEn": "Wormwood",
+      "nameAr": "شيح",
+      "variants": [
+        "sheeh-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "silani-tea",
+      "category": "Herbs",
+      "nameEn": "Ceylon Tea",
+      "nameAr": "سيالني شاي",
+      "variants": [
+        "silani-tea-250-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "waraq-ghar",
+      "category": "Herbs",
+      "nameEn": "Bay Leaves",
+      "nameAr": "ورق غار",
+      "variants": [
+        "waraq-ghar-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "zhourat",
+      "category": "Herbs",
+      "nameEn": "Mixed Herbal Infusion",
+      "nameAr": "زهورات",
+      "variants": [
+        "zhourat-100-g",
+        "zhourat-200-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "zoufah",
+      "category": "Herbs",
+      "nameEn": "Hyssop",
+      "nameAr": "زوفا",
+      "variants": [
+        "zoufah-100-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "zayt-w-mouneh-white-honey-blend",
+      "category": "Honey",
+      "nameEn": "Zayt w Mouneh White Honey Blend",
+      "nameAr": "\"زيت و مونة\" أبيض عسل خلطة",
+      "variants": [
+        "zayt-w-mouneh-white-honey-blend-30-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "aasal-bshahdo",
+      "category": "Honey",
+      "nameEn": "Honey with Honeycomb",
+      "nameAr": "عسل بشهده",
+      "variants": [
+        "aasal-bshahdo-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "avocado-orange-blossom-honey",
+      "category": "Honey",
+      "nameEn": "Avocado & Orange Blossom Honey",
+      "nameAr": "أفوكادو & برتقال زهر عسل",
+      "variants": [
+        "avocado-orange-blossom-honey-500-g",
+        "avocado-orange-blossom-honey-900-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bee-pollen",
+      "category": "Honey",
+      "nameEn": "Bee Pollen",
+      "nameAr": "حبوب لقاح النحل",
+      "variants": [
+        "bee-pollen-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "cedar-honey",
+      "category": "Honey",
+      "nameEn": "Cedar Honey",
+      "nameAr": "أرز عسل",
+      "variants": [
+        "cedar-honey-500-g",
+        "cedar-honey-900-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "flower-honey",
+      "category": "Honey",
+      "nameEn": "Flower Honey",
+      "nameAr": "زهور عسل",
+      "variants": [
+        "flower-honey-500-g",
+        "flower-honey-900-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "immune-boosting-honey-blend",
+      "category": "Honey",
+      "nameEn": "Immune Boosting Honey Blend",
+      "nameAr": "مناعة تعزيز عسل خلطة",
+      "variants": [
+        "immune-boosting-honey-blend-500-g",
+        "immune-boosting-honey-blend-900-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "lokmet-el-nahel",
+      "category": "Honey",
+      "nameEn": "Bee Bite",
+      "nameAr": "لقمة ال النحل",
+      "variants": [
+        "lokmet-el-nahel-size-not-listed"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "mounet-el-nahel-honey-blend",
+      "category": "Honey",
+      "nameEn": "Mounet El Nahel Honey Blend",
+      "nameAr": "مونة ال النحل عسل خلطة",
+      "variants": [
+        "mounet-el-nahel-honey-blend-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "oak-honey",
+      "category": "Honey",
+      "nameEn": "Oak Honey",
+      "nameAr": "سنديان عسل",
+      "variants": [
+        "oak-honey-500-g",
+        "oak-honey-900-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "proplis-with-ethanol",
+      "category": "Honey",
+      "nameEn": "Propolis with Ethanol",
+      "nameAr": "بروبوليس مع إيثانول",
+      "variants": [
+        "proplis-with-ethanol-30-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "propolis-with-olive-oil",
+      "category": "Honey",
+      "nameEn": "Propolis with Olive Oil",
+      "nameAr": "بروبوليس مع زيتون زيت",
+      "variants": [
+        "propolis-with-olive-oil-30-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "raw-proplis",
+      "category": "Honey",
+      "nameEn": "Raw Propolis",
+      "nameAr": "نيء بروبوليس",
+      "variants": [
+        "raw-proplis-size-not-listed"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "white-honey-blend",
+      "category": "Honey",
+      "nameEn": "White Honey Blend",
+      "nameAr": "أبيض عسل خلطة",
+      "variants": [
+        "white-honey-blend-500-g",
+        "white-honey-blend-900-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "wild-thistle-honey",
+      "category": "Honey",
+      "nameEn": "Wild Thistle Honey",
+      "nameAr": "بري شوك عسل",
+      "variants": [
+        "wild-thistle-honey-500-g",
+        "wild-thistle-honey-900-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "debes-el-enab",
+      "category": "Molasses",
+      "nameEn": "Grape Molasses",
+      "nameAr": "دبس ال عنب",
+      "variants": [
+        "debes-el-enab-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "debes-el-remen",
+      "category": "Molasses",
+      "nameEn": "Pomegranate Molasses",
+      "nameAr": "دبس ال رمان",
+      "variants": [
+        "debes-el-remen-500-ml"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bandoura-mujafafeh",
+      "category": "Mouneh",
+      "nameEn": "Sun-Dried Tomatoes",
+      "nameAr": "بندورة مجففة",
+      "variants": [
+        "bandoura-mujafafeh-300-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bemye-yebse",
+      "category": "Mouneh",
+      "nameEn": "Dried Okra",
+      "nameAr": "بامية يابسة",
+      "variants": [
+        "bemye-yebse-200-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "debes-el-fleyfleh",
+      "category": "Mouneh",
+      "nameEn": "Sweet Red Pepper Paste",
+      "nameAr": "دبس ال فليفلة",
+      "variants": [
+        "debes-el-fleyfleh-360-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "debes-el-fleyfleh-har",
+      "category": "Mouneh",
+      "nameEn": "Spicy Red Pepper Paste",
+      "nameAr": "دبس ال فليفلة حار",
+      "variants": [
+        "debes-el-fleyfleh-har-360-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kishek-akhdar-bil-joz",
+      "category": "Mouneh",
+      "nameEn": "Green Kishk with Walnuts",
+      "nameAr": "كشك أخضر بال جوز",
+      "variants": [
+        "kishek-akhdar-bil-joz-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kishek-bakari-beqaa",
+      "category": "Mouneh",
+      "nameEn": "Cow's-Milk Kishk - Bekaa",
+      "nameAr": "كشك بقري البقاع",
+      "variants": [
+        "kishek-bakari-beqaa-1-kg",
+        "kishek-bakari-beqaa-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kishek-meeza-beqaa",
+      "category": "Mouneh",
+      "nameEn": "Goat's-Milk Kishk - Bekaa",
+      "nameAr": "كشك مزية البقاع",
+      "variants": [
+        "kishek-meeza-beqaa-1-kg",
+        "kishek-meeza-beqaa-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kishek-zayt-w-mouneh",
+      "category": "Mouneh",
+      "nameEn": "Zayt w Mouneh Kishk",
+      "nameAr": "كشك زيت و مونة",
+      "variants": [
+        "kishek-zayt-w-mouneh-1-kg",
+        "kishek-zayt-w-mouneh-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "labneh-mkaazleh-habet-barakeh",
+      "category": "Mouneh",
+      "nameEn": "Labneh Balls with Nigella Seeds",
+      "nameAr": "لبنة مكازلة حبة بركة",
+      "variants": [
+        "labneh-mkaazleh-habet-barakeh-360-g",
+        "labneh-mkaazleh-habet-barakeh-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "labneh-mkaazleh-har",
+      "category": "Mouneh",
+      "nameEn": "Spicy Labneh Balls",
+      "nameAr": "لبنة مكازلة حار",
+      "variants": [
+        "labneh-mkaazleh-har-360-g",
+        "labneh-mkaazleh-har-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "labneh-mkaazleh-naanaa",
+      "category": "Mouneh",
+      "nameEn": "Labneh Balls with Mint",
+      "nameAr": "لبنة مكازلة نعناع",
+      "variants": [
+        "labneh-mkaazleh-naanaa-360-g",
+        "labneh-mkaazleh-naanaa-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "labneh-mkaazleh-seda",
+      "category": "Mouneh",
+      "nameEn": "Plain Labneh Balls",
+      "nameAr": "لبنة مكازلة سادة",
+      "variants": [
+        "labneh-mkaazleh-seda-1-kg",
+        "labneh-mkaazleh-seda-360-g",
+        "labneh-mkaazleh-seda-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "labneh-mkaazleh-zaatar",
+      "category": "Mouneh",
+      "nameEn": "Labneh Balls with Za’atar",
+      "nameAr": "لبنة مكازلة زعرت",
+      "variants": [
+        "labneh-mkaazleh-zaatar-360-g",
+        "labneh-mkaazleh-zaatar-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "makdous-el-beqaa-har",
+      "category": "Mouneh",
+      "nameEn": "Spicy Bekaa Makdous",
+      "nameAr": "مكدوس ال البقاع حار",
+      "variants": [
+        "makdous-el-beqaa-har-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "makdous-el-beqaa-seda",
+      "category": "Mouneh",
+      "nameEn": "Plain Bekaa Makdous",
+      "nameAr": "مكدوس ال البقاع سادة",
+      "variants": [
+        "makdous-el-beqaa-seda-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "makdous-el-loz",
+      "category": "Mouneh",
+      "nameEn": "Almond Makdous",
+      "nameAr": "مكدوس ال لوز",
+      "variants": [
+        "makdous-el-loz-400-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "maraba-el-meshmosh",
+      "category": "Mouneh",
+      "nameEn": "Apricot Jam",
+      "nameAr": "مربى ال مشمش",
+      "variants": [
+        "maraba-el-meshmosh-400-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "mraba-el-fraise",
+      "category": "Mouneh",
+      "nameEn": "Strawberry Jam",
+      "nameAr": "مربى ال فراولة",
+      "variants": [
+        "mraba-el-fraise-800-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "mraba-el-karaz",
+      "category": "Mouneh",
+      "nameEn": "Cherry Jam",
+      "nameAr": "مربى ال كرز",
+      "variants": [
+        "mraba-el-karaz-800-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "mraba-el-tin-mamrout",
+      "category": "Mouneh",
+      "nameEn": "Mamrout Fig Jam",
+      "nameAr": "مربى ال تني ممرود",
+      "variants": [
+        "mraba-el-tin-mamrout-800-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "mraba-el-tin-yebes",
+      "category": "Mouneh",
+      "nameEn": "Dried Fig Jam",
+      "nameAr": "مربى ال تني يابس",
+      "variants": [
+        "mraba-el-tin-yebes-800-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "mraba-el-tout",
+      "category": "Mouneh",
+      "nameEn": "Mulberry Jam",
+      "nameAr": "مربى ال توت",
+      "variants": [
+        "mraba-el-tout-800-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "mraba-el-ward",
+      "category": "Mouneh",
+      "nameEn": "Rose Jam",
+      "nameAr": "مربى ال ورد",
+      "variants": [
+        "mraba-el-ward-450-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "mraba-el-yaqtin",
+      "category": "Mouneh",
+      "nameEn": "Pumpkin Jam",
+      "nameAr": "مربى ال يقطني",
+      "variants": [
+        "mraba-el-yaqtin-800-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "mraba-sfarjel",
+      "category": "Mouneh",
+      "nameEn": "Quince Jam",
+      "nameAr": "مربى سفرجل",
+      "variants": [
+        "mraba-sfarjel-400-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "qawerma",
+      "category": "Mouneh",
+      "nameEn": "Qawarma Preserved Meat",
+      "nameAr": "قورما",
+      "variants": [
+        "qawerma-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "rub-el-bandoura",
+      "category": "Mouneh",
+      "nameEn": "Tomato Paste",
+      "nameAr": "رب ال بندورة",
+      "variants": [
+        "rub-el-bandoura-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "shankleesh-bil-zaatar",
+      "category": "Mouneh",
+      "nameEn": "Za’atar Shanklish",
+      "nameAr": "شنكليش بال زعرت",
+      "variants": [
+        "shankleesh-bil-zaatar-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "shankleesh-har",
+      "category": "Mouneh",
+      "nameEn": "Spicy Shanklish",
+      "nameAr": "شنكليش حار",
+      "variants": [
+        "shankleesh-har-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "sugar-free-rose-jam",
+      "category": "Mouneh",
+      "nameEn": "Sugar-Free Rose Jam",
+      "nameAr": "خالي ورد مربى-سكر",
+      "variants": [
+        "sugar-free-rose-jam-250-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "sugar-free-strawberry-jam",
+      "category": "Mouneh",
+      "nameEn": "Sugar-Free Strawberry Jam",
+      "nameAr": "خالي فراولة مربى-سكر",
+      "variants": [
+        "sugar-free-strawberry-jam-250-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "warak-enab-bil-labneh",
+      "category": "Mouneh",
+      "nameEn": "Grape Leaves with Labneh",
+      "nameAr": "ورق عنب بال لبنة",
+      "variants": [
+        "warak-enab-bil-labneh-660-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "waraq-enab",
+      "category": "Mouneh",
+      "nameEn": "Grape Leaves",
+      "nameAr": "ورق عنب",
+      "variants": [
+        "waraq-enab-400-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "waraq-enab-bel-may",
+      "category": "Mouneh",
+      "nameEn": "Grape Leaves in Water",
+      "nameAr": "ورق عنب بال ماء",
+      "variants": [
+        "waraq-enab-bel-may-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zaatar-baladi-extra",
+      "category": "Mouneh",
+      "nameEn": "Extra Baladi Za’atar",
+      "nameAr": "زعرت بلدي إكسرتا",
+      "variants": [
+        "zaatar-baladi-extra-1-kg",
+        "zaatar-baladi-extra-250-g",
+        "zaatar-baladi-extra-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zaatar-halabi",
+      "category": "Mouneh",
+      "nameEn": "Aleppo Za’atar",
+      "nameAr": "زعرت حليب",
+      "variants": [
+        "zaatar-halabi-1-kg",
+        "zaatar-halabi-250-g",
+        "zaatar-halabi-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zaatar-jordanian-mix",
+      "category": "Mouneh",
+      "nameEn": "Jordanian Za'atar Blend",
+      "nameAr": "زعرت أردني خلطة",
+      "variants": [
+        "zaatar-jordanian-mix-250-g",
+        "zaatar-jordanian-mix-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zaatar-manakish",
+      "category": "Mouneh",
+      "nameEn": "Manakish Za’atar",
+      "nameAr": "زعرت مناقيش",
+      "variants": [
+        "zaatar-manakish-1-kg",
+        "zaatar-manakish-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zaatar-with-nuts",
+      "category": "Mouneh",
+      "nameEn": "Za’atar with Nuts",
+      "nameAr": "زعرت مع مكسرات",
+      "variants": [
+        "zaatar-with-nuts-1-unit-not-listed",
+        "zaatar-with-nuts-250-g",
+        "zaatar-with-nuts-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zaatar-zahra-mathoun",
+      "category": "Mouneh",
+      "nameEn": "Ground Wild Thyme Flowers",
+      "nameAr": "زعرت زاهرا مطحون",
+      "variants": [
+        "zaatar-zahra-mathoun-100-g",
+        "zaatar-zahra-mathoun-250-g",
+        "zaatar-zahra-mathoun-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bezer-al-ketan",
+      "category": "Nuts + Seeds",
+      "nameEn": "Flax Seeds",
+      "nameAr": "بزر ال كتان",
+      "variants": [
+        "bezer-al-ketan-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bezer-dwar-el-shames",
+      "category": "Nuts + Seeds",
+      "nameEn": "Sunflower Seeds",
+      "nameAr": "بزر دوار ال الشمس",
+      "variants": [
+        "bezer-dwar-el-shames-250-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bezer-el-yaqtin",
+      "category": "Nuts + Seeds",
+      "nameEn": "Pumpkin Seeds",
+      "nameAr": "بزر ال يقطني",
+      "variants": [
+        "bezer-el-yaqtin-250-g",
+        "bezer-el-yaqtin-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "elixir",
+      "category": "Nuts + Seeds",
+      "nameEn": "Elixir",
+      "nameAr": "إليكسري",
+      "variants": [
+        "elixir-770-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "fustuq-halabi-hab",
+      "category": "Nuts + Seeds",
+      "nameEn": "Whole Pistachios",
+      "nameAr": "فستق حليب حب",
+      "variants": [
+        "fustuq-halabi-hab-1-kg",
+        "fustuq-halabi-hab-200-g",
+        "fustuq-halabi-hab-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "fustuq-halabi-kasr",
+      "category": "Nuts + Seeds",
+      "nameEn": "Shelled Pistachios",
+      "nameAr": "فستق حليب كاسر",
+      "variants": [
+        "fustuq-halabi-kasr-200-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "hab-el-rashad",
+      "category": "Nuts + Seeds",
+      "nameEn": "Garden Cress Seeds",
+      "nameAr": "حب ال رشاد",
+      "variants": [
+        "hab-el-rashad-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "habet-el-barakeh",
+      "category": "Nuts + Seeds",
+      "nameEn": "Nigella Seeds (Black Seed)",
+      "nameAr": "حبة ال بركة",
+      "variants": [
+        "habet-el-barakeh-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "joz-farashe",
+      "category": "Nuts + Seeds",
+      "nameEn": "Walnuts",
+      "nameAr": "جوز فاراشي",
+      "variants": [
+        "joz-farashe-200-g",
+        "joz-farashe-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kajo-falkat",
+      "category": "Nuts + Seeds",
+      "nameEn": "Cashew Halves",
+      "nameAr": "كاجو فلقة",
+      "variants": [
+        "kajo-falkat-200-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "krikri",
+      "category": "Nuts + Seeds",
+      "nameEn": "Krikri",
+      "nameAr": "كريكري",
+      "variants": [
+        "krikri-250-g",
+        "krikri-500-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "loz-hab-be-qeshroh",
+      "category": "Nuts + Seeds",
+      "nameEn": "Almonds in Shell",
+      "nameAr": "لوز حب بي قيشروه",
+      "variants": [
+        "loz-hab-be-qeshroh-200-g",
+        "loz-hab-be-qeshroh-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "loz-makshour",
+      "category": "Nuts + Seeds",
+      "nameEn": "Shelled Almonds",
+      "nameAr": "لوز ماكشور",
+      "variants": [
+        "loz-makshour-200-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "loz-mkataa",
+      "category": "Nuts + Seeds",
+      "nameEn": "Sliced Almonds",
+      "nameAr": "لوز مقطع",
+      "variants": [
+        "loz-mkataa-200-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "qlobet-naye",
+      "category": "Nuts + Seeds",
+      "nameEn": "Raw Nut Kernels",
+      "nameAr": "قلوبيت نايي",
+      "variants": [
+        "qlobet-naye-250-g",
+        "qlobet-naye-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "raw-pecans",
+      "category": "Nuts + Seeds",
+      "nameEn": "Raw Pecans",
+      "nameAr": "نيء بيكان",
+      "variants": [
+        "raw-pecans-250-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "raw-peeled-peanuts",
+      "category": "Nuts + Seeds",
+      "nameEn": "Raw Peeled Peanuts",
+      "nameAr": "نيء مقشر فول سوداني",
+      "variants": [
+        "raw-peeled-peanuts-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "roasted-cheese-corn",
+      "category": "Nuts + Seeds",
+      "nameEn": "Roasted Cheese Corn",
+      "nameAr": "محمص جبنة ذرة",
+      "variants": [
+        "roasted-cheese-corn-250-g",
+        "roasted-cheese-corn-400-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "roasted-salted-corn",
+      "category": "Nuts + Seeds",
+      "nameEn": "Roasted Salted Corn",
+      "nameAr": "محمص مملح ذرة",
+      "variants": [
+        "roasted-salted-corn-250-g",
+        "roasted-salted-corn-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "shea-seeds",
+      "category": "Nuts + Seeds",
+      "nameEn": "Chia Seeds",
+      "nameAr": "شيا بذور",
+      "variants": [
+        "shea-seeds-200-g",
+        "shea-seeds-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "snoubar",
+      "category": "Nuts + Seeds",
+      "nameEn": "Pine Nuts",
+      "nameAr": "صنوبر",
+      "variants": [
+        "snoubar-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "somsom-be-kshroh",
+      "category": "Nuts + Seeds",
+      "nameEn": "Unhulled Sesame Seeds",
+      "nameAr": "سمسم بي قشره",
+      "variants": [
+        "somsom-be-kshroh-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "somsom-mhamas",
+      "category": "Nuts + Seeds",
+      "nameEn": "Toasted Sesame",
+      "nameAr": "سمسم محمص",
+      "variants": [
+        "somsom-mhamas-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "somsom-nay",
+      "category": "Nuts + Seeds",
+      "nameEn": "Raw Sesame",
+      "nameAr": "سمسم نيء",
+      "variants": [
+        "somsom-nay-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "argan-oil",
+      "category": "Oils",
+      "nameEn": "Argan Oil",
+      "nameAr": "زيت األرغان",
+      "variants": [
+        "argan-oil-30-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "bitter-almond-oil",
+      "category": "Oils",
+      "nameEn": "Bitter Almond Oil",
+      "nameAr": "مر لوز زيت",
+      "variants": [
+        "bitter-almond-oil-30-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "blackseed-oil",
+      "category": "Oils",
+      "nameEn": "Black Seed Oil",
+      "nameAr": "زيت الحبة السوداء",
+      "variants": [
+        "blackseed-oil-30-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "castor-seeds-oil",
+      "category": "Oils",
+      "nameEn": "Castor Seed Oil",
+      "nameAr": "كاستور بذور زيت",
+      "variants": [
+        "castor-seeds-oil-30-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "coconut-oil",
+      "category": "Oils",
+      "nameEn": "Coconut Oil",
+      "nameAr": "جوز هند زيت",
+      "variants": [
+        "coconut-oil-30-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "pumpkin-seed-oil",
+      "category": "Oils",
+      "nameEn": "Pumpkin Seed Oil",
+      "nameAr": "بومبكني سيد زيت",
+      "variants": [
+        "pumpkin-seed-oil-30-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "rose-oil",
+      "category": "Oils",
+      "nameEn": "Rose Oil",
+      "nameAr": "ورد زيت",
+      "variants": [
+        "rose-oil-30-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "rosemary-oil",
+      "category": "Oils",
+      "nameEn": "Rosemary Oil",
+      "nameAr": "إكليل الجبل زيت",
+      "variants": [
+        "rosemary-oil-30-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "saad-oil",
+      "category": "Oils",
+      "nameEn": "Saad Oil",
+      "nameAr": "ساد زيت",
+      "variants": [
+        "saad-oil-30-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "sweet-almond-oil",
+      "category": "Oils",
+      "nameEn": "Sweet Almond Oil",
+      "nameAr": "حلو لوز زيت",
+      "variants": [
+        "sweet-almond-oil-30-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "viventia-rosemary-oil",
+      "category": "Oils",
+      "nameEn": "Viventia Rosemary Oil",
+      "nameAr": "فيفينتيا إكليل الجبل زيت",
+      "variants": [
+        "viventia-rosemary-oil-30-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "extra-virgin-olive-oil",
+      "category": "Olive Oil",
+      "nameEn": "Extra Virgin Olive Oil",
+      "nameAr": "زيت زيتون بكر ممتاز",
+      "variants": [
+        "extra-virgin-olive-oil-1-l",
+        "extra-virgin-olive-oil-4-l",
+        "extra-virgin-olive-oil-17-54-l",
+        "extra-virgin-olive-oil-500-ml",
+        "extra-virgin-olive-oil-8-77-l"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "zaytoun-akhdar-baladi",
+      "category": "Olives",
+      "nameEn": "Local Green Olives",
+      "nameAr": "زيتون أخضر بلدي",
+      "variants": [
+        "zaytoun-akhdar-baladi-1-kg",
+        "zaytoun-akhdar-baladi-2-5-kg",
+        "zaytoun-akhdar-baladi-3-75-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zaytoun-akhdar-beqaa",
+      "category": "Olives",
+      "nameEn": "Bekaa Green Olives",
+      "nameAr": "زيتون أخضر البقاع",
+      "variants": [
+        "zaytoun-akhdar-beqaa-3-75-kg",
+        "zaytoun-akhdar-beqaa-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zaytoun-akhdar-koura",
+      "category": "Olives",
+      "nameEn": "Koura Green Olives",
+      "nameAr": "زيتون أخضر الكورة",
+      "variants": [
+        "zaytoun-akhdar-koura-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zaytoun-akhdar-mahshe-har",
+      "category": "Olives",
+      "nameEn": "Spicy Stuffed Green Olives",
+      "nameAr": "زيتون أخضر ماهيش حار",
+      "variants": [
+        "zaytoun-akhdar-mahshe-har-360-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zaytoun-akhdar-mehshe-har",
+      "category": "Olives",
+      "nameEn": "Spicy Stuffed Green Olives",
+      "nameAr": "زيتون أخضر ميهيش حار",
+      "variants": [
+        "zaytoun-akhdar-mehshe-har-2-5-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zaytoun-aswad-baladi",
+      "category": "Olives",
+      "nameEn": "Local Black Olives",
+      "nameAr": "زيتون أسود بلدي",
+      "variants": [
+        "zaytoun-aswad-baladi-3-75-kg",
+        "zaytoun-aswad-baladi-2-5-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zaytoun-aswad-beqaa",
+      "category": "Olives",
+      "nameEn": "Bekaa Black Olives",
+      "nameAr": "زيتون أسود البقاع",
+      "variants": [
+        "zaytoun-aswad-beqaa-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zaytoun-jarjir",
+      "category": "Olives",
+      "nameEn": "Jarjir Olives",
+      "nameAr": "زيتون جرجري",
+      "variants": [
+        "zaytoun-jarjir-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "ardi-shawki",
+      "category": "Pickles",
+      "nameEn": "Pickled Artichoke",
+      "nameAr": "اردي شاوكي",
+      "variants": [
+        "ardi-shawki-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "cornichon",
+      "category": "Pickles",
+      "nameEn": "Gherkins",
+      "nameAr": "كورنيتشون",
+      "variants": [
+        "cornichon-800-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kabees-el-loz",
+      "category": "Pickles",
+      "nameEn": "Pickled Almonds",
+      "nameAr": "كبيس ال لوز",
+      "variants": [
+        "kabees-el-loz-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kabees-khyar",
+      "category": "Pickles",
+      "nameEn": "Pickled Cucumber",
+      "nameAr": "كبيس خيار",
+      "variants": [
+        "kabees-khyar-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kabees-left",
+      "category": "Pickles",
+      "nameEn": "Pickled Turnip",
+      "nameAr": "كبيس ليفت",
+      "variants": [
+        "kabees-left-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kabees-meete",
+      "category": "Pickles",
+      "nameEn": "Meete Pickles",
+      "nameAr": "كبيس مييت",
+      "variants": [
+        "kabees-meete-660-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kabees-meshakal",
+      "category": "Pickles",
+      "nameEn": "Mixed Pickles",
+      "nameAr": "كبيس ميشاكال",
+      "variants": [
+        "kabees-meshakal-size-not-listed"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kabes-har",
+      "category": "Pickles",
+      "nameEn": "Spicy Pickles",
+      "nameAr": "كبيس حار",
+      "variants": [
+        "kabes-har-1-35-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "aadas-aarid",
+      "category": "Pulses",
+      "nameEn": "Large Lentils",
+      "nameAr": "عدس اريد",
+      "variants": [
+        "aadas-aarid-1-kg",
+        "aadas-aarid-2-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "aadas-majroush",
+      "category": "Pulses",
+      "nameEn": "Split Lentils",
+      "nameAr": "عدس ماجروش",
+      "variants": [
+        "aadas-majroush-1-kg",
+        "aadas-majroush-2-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "austrailian-aadas",
+      "category": "Pulses",
+      "nameEn": "Australian Lentils",
+      "nameAr": "اوسرتايليان عدس",
+      "variants": [
+        "austrailian-aadas-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bazela-yebsa",
+      "category": "Pulses",
+      "nameEn": "Dried Peas",
+      "nameAr": "بازالء يابسة",
+      "variants": [
+        "bazela-yebsa-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "fasolya-aarida",
+      "category": "Pulses",
+      "nameEn": "Broad White Beans",
+      "nameAr": "فاصوليا عريضة",
+      "variants": [
+        "fasolya-aarida-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "fasolya-snoubareye",
+      "category": "Pulses",
+      "nameEn": "Pine-Shaped Beans",
+      "nameAr": "فاصوليا صنوبرية",
+      "variants": [
+        "fasolya-snoubareye-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "foul-aarid",
+      "category": "Pulses",
+      "nameEn": "Large Fava Beans",
+      "nameAr": "فول اريد",
+      "variants": [
+        "foul-aarid-1-kg",
+        "foul-aarid-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "foul-mdamas",
+      "category": "Pulses",
+      "nameEn": "Fava Beans for Foul Mdammas",
+      "nameAr": "فول مداماس",
+      "variants": [
+        "foul-mdamas-1-kg",
+        "foul-mdamas-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "humus-amreeki",
+      "category": "Pulses",
+      "nameEn": "American Chickpeas",
+      "nameAr": "حمص امريكي",
+      "variants": [
+        "humus-amreeki-1-kg",
+        "humus-amreeki-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "humus-baladi",
+      "category": "Pulses",
+      "nameEn": "Local Chickpeas",
+      "nameAr": "حمص بلدي",
+      "variants": [
+        "humus-baladi-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "humus-fahle",
+      "category": "Pulses",
+      "nameEn": "Large Chickpeas",
+      "nameAr": "حمص فحلة",
+      "variants": [
+        "humus-fahle-2-kg",
+        "humus-fahle-1-kg"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "termos-helo",
+      "category": "Pulses",
+      "nameEn": "Sweet Lupini Beans",
+      "nameAr": "تريموس هيلو",
+      "variants": [
+        "termos-helo-1-kg",
+        "termos-helo-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "termos-morr",
+      "category": "Pulses",
+      "nameEn": "Bitter Lupini Beans",
+      "nameAr": "تريموس مر",
+      "variants": [
+        "termos-morr-1-kg"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "bee-pollen-soap",
+      "category": "Soap",
+      "nameEn": "Bee Pollen Soap",
+      "nameAr": "حبوب لقاح النحل صابون",
+      "variants": [
+        "bee-pollen-soap-size-not-listed"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "coal-soap",
+      "category": "Soap",
+      "nameEn": "Charcoal Soap",
+      "nameAr": "فحم صابون",
+      "variants": [
+        "coal-soap-size-not-listed"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "hive-soap",
+      "category": "Soap",
+      "nameEn": "Hive Soap",
+      "nameAr": "خلية صابون",
+      "variants": [
+        "hive-soap-size-not-listed"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "honey-soap",
+      "category": "Soap",
+      "nameEn": "Honey Soap",
+      "nameAr": "عسل صابون",
+      "variants": [
+        "honey-soap-size-not-listed"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "olive-oil-soap",
+      "category": "Soap",
+      "nameEn": "Olive Oil Soap",
+      "nameAr": "زيتون زيت صابون",
+      "variants": [
+        "olive-oil-soap-size-not-listed"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "arabic-gum",
+      "category": "Spices",
+      "nameEn": "Arabic Gum",
+      "nameAr": "عربي صمغ",
+      "variants": [
+        "arabic-gum-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bahar-maghrabiya",
+      "category": "Spices",
+      "nameEn": "Moghrabieh Seasoning",
+      "nameAr": "بهار مغربية",
+      "variants": [
+        "bahar-maghrabiya-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bahar-maklouba",
+      "category": "Spices",
+      "nameEn": "Maqluba Seasoning",
+      "nameAr": "بهار مقلوبة",
+      "variants": [
+        "bahar-maklouba-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bahar-ouzi",
+      "category": "Spices",
+      "nameEn": "Ouzi Seasoning",
+      "nameAr": "بهار أوزي",
+      "variants": [
+        "bahar-ouzi-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-abyad",
+      "category": "Spices",
+      "nameEn": "White Pepper",
+      "nameAr": "بهار أبيض",
+      "variants": [
+        "bhar-abyad-50-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-aswad-hab",
+      "category": "Spices",
+      "nameEn": "Whole Black Pepper",
+      "nameAr": "بهار أسود حب",
+      "variants": [
+        "bhar-aswad-hab-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-aswad-har",
+      "category": "Spices",
+      "nameEn": "Hot Black Pepper",
+      "nameAr": "بهار أسود حار",
+      "variants": [
+        "bhar-aswad-har-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-batata",
+      "category": "Spices",
+      "nameEn": "Potato Seasoning",
+      "nameAr": "بهار بطاطا",
+      "variants": [
+        "bhar-batata-1-kg",
+        "bhar-batata-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-crispy",
+      "category": "Spices",
+      "nameEn": "Crispy Seasoning",
+      "nameAr": "بهار مقرمش",
+      "variants": [
+        "bhar-crispy-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-dajaj",
+      "category": "Spices",
+      "nameEn": "Chicken Seasoning",
+      "nameAr": "بهار دجاج",
+      "variants": [
+        "bhar-dajaj-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-el-escalope",
+      "category": "Spices",
+      "nameEn": "Escalope Seasoning",
+      "nameAr": "بهار ال إسكالوب",
+      "variants": [
+        "bhar-el-escalope-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-el-riz",
+      "category": "Spices",
+      "nameEn": "Rice Seasoning",
+      "nameAr": "بهار ال رز",
+      "variants": [
+        "bhar-el-riz-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-el-salek",
+      "category": "Spices",
+      "nameEn": "Swiss Chard Seasoning",
+      "nameAr": "بهار ال سلق",
+      "variants": [
+        "bhar-el-salek-200-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-el-tawouk",
+      "category": "Spices",
+      "nameEn": "Shish Tawook Seasoning",
+      "nameAr": "بهار ال طاووق",
+      "variants": [
+        "bhar-el-tawouk-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-fahita",
+      "category": "Spices",
+      "nameEn": "Fajita Seasoning",
+      "nameAr": "بهار فاهيتا",
+      "variants": [
+        "bhar-fahita-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-helo",
+      "category": "Spices",
+      "nameEn": "Allspice",
+      "nameAr": "بهار هيلو",
+      "variants": [
+        "bhar-helo-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-kabse",
+      "category": "Spices",
+      "nameEn": "Kabsa Seasoning",
+      "nameAr": "بهار كبسة",
+      "variants": [
+        "bhar-kabse-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-lahme",
+      "category": "Spices",
+      "nameEn": "Meat Seasoning",
+      "nameAr": "بهار لحمة",
+      "variants": [
+        "bhar-lahme-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-lahme-baajeen",
+      "category": "Spices",
+      "nameEn": "Lahm bi Ajeen Seasoning",
+      "nameAr": "بهار لحمة بعجني",
+      "variants": [
+        "bhar-lahme-baajeen-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-maggi",
+      "category": "Spices",
+      "nameEn": "Maggi Seasoning",
+      "nameAr": "بهار ماجي",
+      "variants": [
+        "bhar-maggi-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-mansaf",
+      "category": "Spices",
+      "nameEn": "Mansaf Seasoning",
+      "nameAr": "بهار منسف",
+      "variants": [
+        "bhar-mansaf-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-mashawe",
+      "category": "Spices",
+      "nameEn": "Grilling Seasoning",
+      "nameAr": "بهار مشاوي",
+      "variants": [
+        "bhar-mashawe-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-philadelphia",
+      "category": "Spices",
+      "nameEn": "Philadelphia Seasoning",
+      "nameAr": "بهار فيالدلفيا",
+      "variants": [
+        "bhar-philadelphia-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-samak",
+      "category": "Spices",
+      "nameEn": "Fish Seasoning",
+      "nameAr": "بهار سمك",
+      "variants": [
+        "bhar-samak-200-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-shawarma-djej",
+      "category": "Spices",
+      "nameEn": "Chicken Shawarma Seasoning",
+      "nameAr": "بهار شاورما دجاج",
+      "variants": [
+        "bhar-shawarma-djej-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bhar-shawarma-lahme",
+      "category": "Spices",
+      "nameEn": "Meat Shawarma Seasoning",
+      "nameAr": "بهار شاورما لحمة",
+      "variants": [
+        "bhar-shawarma-lahme-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bodret-el-basal",
+      "category": "Spices",
+      "nameEn": "Onion Powder",
+      "nameAr": "بودريت ال بصل",
+      "variants": [
+        "bodret-el-basal-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bodret-el-thoumm",
+      "category": "Spices",
+      "nameEn": "Garlic Powder",
+      "nameAr": "بودريت ال ثوم",
+      "variants": [
+        "bodret-el-thoumm-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "daqet-el-kaek",
+      "category": "Spices",
+      "nameEn": "Kaak Spice Mix",
+      "nameAr": "داقيت ال كعك",
+      "variants": [
+        "daqet-el-kaek-50-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "daqet-el-kebbe-hab",
+      "category": "Spices",
+      "nameEn": "Whole Kibbeh Spice",
+      "nameAr": "داقيت ال كبة حب",
+      "variants": [
+        "daqet-el-kebbe-hab-200-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "daqet-el-kebbe-nehme",
+      "category": "Spices",
+      "nameEn": "Ground Kibbeh Spice",
+      "nameAr": "داقيت ال كبة نعمة",
+      "variants": [
+        "daqet-el-kebbe-nehme-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "daqet-kaak-el-abas",
+      "category": "Spices",
+      "nameEn": "Abbas Kaak Spice Mix",
+      "nameAr": "داقيت كعك ال عباس",
+      "variants": [
+        "daqet-kaak-el-abas-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "hail-hab",
+      "category": "Spices",
+      "nameEn": "Whole Cardamom",
+      "nameAr": "هيل حب",
+      "variants": [
+        "hail-hab-50-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "hail-naem",
+      "category": "Spices",
+      "nameEn": "Ground Cardamom",
+      "nameAr": "هيل ناعم",
+      "variants": [
+        "hail-naem-50-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "har-kheshen",
+      "category": "Spices",
+      "nameEn": "Coarse Hot Pepper",
+      "nameAr": "حار خشن",
+      "variants": [
+        "har-kheshen-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "har-neeme",
+      "category": "Spices",
+      "nameEn": "Fine Hot Pepper",
+      "nameAr": "حار نعمة",
+      "variants": [
+        "har-neeme-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "helbah-hab",
+      "category": "Spices",
+      "nameEn": "Fenugreek Seeds",
+      "nameAr": "حلبة حب",
+      "variants": [
+        "helbah-hab-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "jozet-el-teeb-hab",
+      "category": "Spices",
+      "nameEn": "Whole Nutmeg",
+      "nameAr": "جوزة ال طيب حب",
+      "variants": [
+        "jozet-el-teeb-hab-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "jozet-el-teeb-nameeh",
+      "category": "Spices",
+      "nameEn": "Ground Nutmeg",
+      "nameAr": "جوزة ال طيب ناعمة",
+      "variants": [
+        "jozet-el-teeb-nameeh-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kamoun-hab",
+      "category": "Spices",
+      "nameEn": "Cumin Seeds",
+      "nameAr": "كمون حب",
+      "variants": [
+        "kamoun-hab-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kamoun-neeme",
+      "category": "Spices",
+      "nameEn": "Ground Cumin",
+      "nameAr": "كمون نعمة",
+      "variants": [
+        "kamoun-neeme-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kary-har",
+      "category": "Spices",
+      "nameEn": "Hot Curry",
+      "nameAr": "كاري حار",
+      "variants": [
+        "kary-har-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kary-helo",
+      "category": "Spices",
+      "nameEn": "Mild Curry",
+      "nameAr": "كاري هيلو",
+      "variants": [
+        "kary-helo-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "korfa",
+      "category": "Spices",
+      "nameEn": "Cinnamon",
+      "nameAr": "قرفة",
+      "variants": [
+        "korfa-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "korfa-cigar",
+      "category": "Spices",
+      "nameEn": "Cinnamon Sticks",
+      "nameAr": "قرفة سيجار",
+      "variants": [
+        "korfa-cigar-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "korfa-oud",
+      "category": "Spices",
+      "nameEn": "Cinnamon Sticks",
+      "nameAr": "قرفة عود",
+      "variants": [
+        "korfa-oud-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "korfa-silani",
+      "category": "Spices",
+      "nameEn": "Ceylon Cinnamon",
+      "nameAr": "قرفة سيالني",
+      "variants": [
+        "korfa-silani-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "koronfol",
+      "category": "Spices",
+      "nameEn": "Cloves",
+      "nameAr": "قرنفل",
+      "variants": [
+        "koronfol-50-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kozbara-yebse-hab",
+      "category": "Spices",
+      "nameEn": "Coriander Seeds",
+      "nameAr": "كزبرة يابسة حب",
+      "variants": [
+        "kozbara-yebse-hab-50-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kozbara-yebse-neeme",
+      "category": "Spices",
+      "nameEn": "Ground Coriander",
+      "nameAr": "كزبرة يابسة نعمة",
+      "variants": [
+        "kozbara-yebse-neeme-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "krawya",
+      "category": "Spices",
+      "nameEn": "Caraway",
+      "nameAr": "كراوية",
+      "variants": [
+        "krawya-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kurkum",
+      "category": "Spices",
+      "nameEn": "Turmeric",
+      "nameAr": "كركم",
+      "variants": [
+        "kurkum-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "kurkum-hab",
+      "category": "Spices",
+      "nameEn": "Whole Turmeric",
+      "nameAr": "كركم حب",
+      "variants": [
+        "kurkum-hab-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "louban-el-dakar",
+      "category": "Spices",
+      "nameEn": "Frankincense",
+      "nameAr": "لبان ال ذكر",
+      "variants": [
+        "louban-el-dakar-50-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "loumi",
+      "category": "Spices",
+      "nameEn": "Dried Lime",
+      "nameAr": "لومي",
+      "variants": [
+        "loumi-50-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "loumi-mathoun",
+      "category": "Spices",
+      "nameEn": "Ground Dried Lime",
+      "nameAr": "لومي مطحون",
+      "variants": [
+        "loumi-mathoun-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "mahlab",
+      "category": "Spices",
+      "nameEn": "Mahleb",
+      "nameAr": "محلب",
+      "variants": [
+        "mahlab-50-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "paprika",
+      "category": "Spices",
+      "nameEn": "Paprika",
+      "nameAr": "بابريكا",
+      "variants": [
+        "paprika-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "paprika-mdakhane",
+      "category": "Spices",
+      "nameEn": "Paprika Mdakhane",
+      "nameAr": "بابريكا مدخنة",
+      "variants": [
+        "paprika-mdakhane-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "sabaa-bharat",
+      "category": "Spices",
+      "nameEn": "Seven Spice",
+      "nameAr": "سبع بهارات",
+      "variants": [
+        "sabaa-bharat-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "semaq",
+      "category": "Spices",
+      "nameEn": "Sumac",
+      "nameAr": "سماق",
+      "variants": [
+        "semaq-1-kg",
+        "semaq-250-g",
+        "semaq-500-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "shoumar-hab",
+      "category": "Spices",
+      "nameEn": "Fennel Seeds",
+      "nameAr": "شومر حب",
+      "variants": [
+        "shoumar-hab-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "shoumar-neeme",
+      "category": "Spices",
+      "nameEn": "Ground Fennel",
+      "nameAr": "شومر نعمة",
+      "variants": [
+        "shoumar-neeme-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "vanilla",
+      "category": "Spices",
+      "nameEn": "Vanilla",
+      "nameAr": "فانيال",
+      "variants": [
+        "vanilla-25-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "yansoun-hab",
+      "category": "Spices",
+      "nameEn": "Anise Seeds",
+      "nameAr": "يانسون حب",
+      "variants": [
+        "yansoun-hab-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "yansoun-najmeh",
+      "category": "Spices",
+      "nameEn": "Star Anise",
+      "nameAr": "يانسون نجمة",
+      "variants": [
+        "yansoun-najmeh-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "zanjabeel",
+      "category": "Spices",
+      "nameEn": "Ginger",
+      "nameAr": "زنجبيل",
+      "variants": [
+        "zanjabeel-100-g"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "bonbon",
+      "category": "Sweets + Candy",
+      "nameEn": "Bonbon",
+      "nameAr": "بونبون",
+      "variants": [
+        "bonbon-1-kg",
+        "bonbon-200-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "sabo",
+      "category": "Sweets + Candy",
+      "nameEn": "Sabo",
+      "nameAr": "سابو",
+      "variants": [
+        "sabo-100-g",
+        "sabo-500-g"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "hamod-el-hosrum-beqaa",
+      "category": "Vinegars",
+      "nameEn": "Bekaa Verjuice",
+      "nameAr": "حامض ال حصرم البقاع",
+      "variants": [
+        "hamod-el-hosrum-beqaa-500-ml"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "hamod-el-hosrum-koura",
+      "category": "Vinegars",
+      "nameEn": "Koura Verjuice",
+      "nameAr": "حامض ال حصرم الكورة",
+      "variants": [
+        "hamod-el-hosrum-koura-500-ml"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "honey-vingar",
+      "category": "Vinegars",
+      "nameEn": "Honey Vinegar",
+      "nameAr": "عسل خل",
+      "variants": [
+        "honey-vingar-250-ml"
+      ],
+      "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
+      "source": "public/products-data.js (identity only)",
+      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+    },
+    {
+      "id": "khal-el-enab",
+      "category": "Vinegars",
+      "nameEn": "Grape Vinegar",
+      "nameAr": "خل ال عنب",
+      "variants": [
+        "khal-el-enab-500-ml"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    },
+    {
+      "id": "khal-el-tefeh",
+      "category": "Vinegars",
+      "nameEn": "Apple Vinegar",
+      "nameAr": "خل ال تفاح",
+      "variants": [
+        "khal-el-tefeh-500-ml"
+      ],
+      "verificationStatus": "CATEGORY_AND_CATALOGUE_NAME_ONLY",
+      "source": "public/products-data.js (identity only)",
+      "questions": ""
+    }
+  ]
+}

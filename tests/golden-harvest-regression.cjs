@@ -137,7 +137,7 @@ for(const [variant,file] of [
 }
 assert.equal(oilPhoto(oilId).url,"/assets/harvest-2026/1l.webp","Default olive oil photo must show the 1 L bottle");
 assert.equal(oilPhoto(oilId,"extra-virgin-olive-oil-500-ml").url,
- "assets/products/originals/extra-virgin-olive-oil.jpg","Keep legacy 500 ml fallback until 500 ml photo is provided");
+ "/assets/products/originals/extra-virgin-olive-oil.jpg","Keep legacy 500 ml fallback until 500 ml photo is provided");
 assert.match(app,/sourceFor\(p\.id,variantId\)/,"Shop and quick view must resolve selected variant photo");
 assert.match(app,/productVisualMarkup\(p,"product-image",selected\.id\)/,"Shop card must render selected variant");
 assert.match(app,/productVisualMarkup\(p,"product-modal-image",v\.id\)/,"Quick view must render selected variant");

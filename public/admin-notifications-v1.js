@@ -150,7 +150,7 @@ window.addEventListener("zwm:owner-signed-out",cleanup);
 window.addEventListener("zwm:owner-token-updated",()=>{if(client){try{client.realtime.setAuth(sess()?.access_token||"")}catch{}}if(started)refresh().catch(()=>{})});
 window.addEventListener("focus",()=>{if(started)refresh().catch(()=>{});else boot().catch(()=>{})});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden){if(started)refresh().catch(()=>{});else boot().catch(()=>{})}});
-window.addEventListener("pageshow",()=>{if(!started)boot().catch(()=>{})});
+window.addEventListener("pageshow",()=>{if(!started)boot().catch(()=>{});else if(!channel)realtime().catch(()=>{})});
 window.addEventListener("pagehide",cleanupRealtime);
 const observer=new MutationObserver(()=>{if(started)shell()});
 if(document.body)observer.observe(document.body,{subtree:true,childList:true});

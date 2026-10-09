@@ -1,0 +1,29 @@
+name: Golden Harvest 2026 review gate
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - public/assets/harvest-2026/**
+      - public/golden-harvest-2026.js
+      - public/golden-harvest-2026.css
+      - public/index.html
+      - public/shop.html
+      - tests/golden-harvest-regression.cjs
+      - tests/golden-harvest-experience.cjs
+      - .github/workflows/golden-harvest-review.yml
+  workflow_dispatch:
+
+jobs:
+  harvest:
+    name: Verify harvest campaign and media
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts
+      - run: node tests/golden-harvest-regression.cjs
+      - run: node tests/golden-harvest-experience.cjs

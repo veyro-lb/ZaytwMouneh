@@ -2489,6 +2489,25 @@ window.addEventListener("zwm:catalog-cache-updated",syncLiveCatalogFromCache);
 window.chooseWelcomeLanguage=chooseWelcomeLanguage;
 window.applyLanguage=applyLanguage;
 window.applyPageMetadata=applyPageMetadata;
+/* Isolated seasonal merchandising API. Uses the normal validated storefront cart.
+   It never creates variants, invents prices, or writes cart storage directly. */
+window.ZWM_HARVEST_CART={
+  offer(productId,variantId){
+    const p=productById(productId);
+    const v=p?.variants?.find(row=>row.id===variantId);
+    if(!p||!v||!Number.isFinite(Number(v.price))||Number(v.price)<0)return null;
+    return {price:Number(v.price),available:productCanOrder(p),currency:"USD",sizeEn:v.sizeEn||""};
+  },
+  add(productId,variantId){
+    const p=productById(productId);
+    const v=p?.variants?.find(row=>row.id===variantId);
+    if(!p||!v||!productCanOrder(p)||!Number.isFinite(Number(v.price))||Number(v.price)<0)return false;
+    const key=cartKey(p.id,v.id);
+    addToCart(p,v,(cart[key]?.qty||0)+1);
+    return true;
+  }
+};
+
 document.addEventListener("DOMContentLoaded",init);
 
 /* Load exactly one owner CMS/analytics bridge without delaying the storefront.

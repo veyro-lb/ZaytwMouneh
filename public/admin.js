@@ -2571,7 +2571,7 @@
     $("announcementEnabled").checked = announcement.enabled !== false;
     $("announcementEn").value = announcement.en || "Authentic Lebanese pantry essentials · Since 2006";
     $("announcementAr").value = announcement.ar || "";
-    $("contentWhatsApp").value = contact.whatsapp || "96181581230";
+    $("contentWhatsApp").value = contact.whatsapp || "96170381412";
     $("promoEnabled").checked = !!promo.enabled;
     $("promoTitleEn").value = promo.titleEn || "";
     $("promoTitleAr").value = promo.titleAr || "";

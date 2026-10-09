@@ -12,15 +12,18 @@ body.zwm-harvest-active[data-page="home"] .home-pantry-hero {display:none!import
 .zwm-gh-hero .gh-shade {position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(12,34,23,.94) 0%,rgba(18,46,30,.86) 39%,rgba(18,46,30,.40) 65%,rgba(12,34,23,.13) 100%)}
 .zwm-gh-hero .gh-hero-inner {width:100%;padding-block:90px 94px}
 .zwm-gh-hero .gh-hero-copy {max-width:620px}
+.zwm-gh-hero .gh-hero-topline {display:flex;align-items:center;flex-wrap:wrap;column-gap:18px;row-gap:9px}
+.zwm-gh-hero .gh-hero-topline .gh-overline {color:#ead39d}
+.zwm-gh-hero .gh-locale-indicator {display:inline-flex;align-items:center;justify-content:center;min-height:25px;padding:3px 10px;border:1px solid rgba(239,220,170,.55);border-radius:99px;color:#f8e5bc;font:700 .63rem/1.35 "DM Sans","Noto Kufi Arabic",sans-serif;letter-spacing:.08em;white-space:nowrap}
 .zwm-gh-hero h1 {font-family:"DM Serif Display",Georgia,serif;font-weight:400;letter-spacing:-.045em;line-height:.97;font-size:clamp(3.2rem,6.3vw,6.6rem);margin:20px 0 16px;color:#fff}
 .zwm-gh-hero h1 em {font-style:italic;color:#ebd5a7}
-.zwm-gh-hero .gh-ar-line {font-family:"Amiri","Noto Kufi Arabic",serif;font-size:clamp(1.8rem,3.3vw,3rem);line-height:1.6;margin:0;color:#f6e9c9;direction:rtl;unicode-bidi:isolate;text-align:start}
+.zwm-gh-hero .gh-season-line {font-family:"DM Serif Display",Georgia,serif;font-size:clamp(1.35rem,2.5vw,2.1rem);line-height:1.4;margin:0;color:#f6e9c9;text-align:start}
 .zwm-gh-hero .gh-desc {font-size:clamp(.99rem,1.5vw,1.15rem);line-height:1.8;color:#e4e7d8;max-width:440px;margin:8px 0 26px}
 .zwm-gh .gh-action {display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:48px;padding:13px 23px;border-radius:999px;background:#d5b268;color:#173826;font-size:.87rem;font-weight:800;transition:transform .22s,background .22s;white-space:normal;text-align:center}
 .zwm-gh .gh-action:hover {transform:translateY(-2px);background:#ead29b}
 .zwm-gh .gh-action:focus-visible,.zwm-gh a:focus-visible {outline:3px solid #d9b76b;outline-offset:4px}
 .zwm-gh-hero .gh-subaction {display:inline-flex;margin-inline-start:18px;color:#fff;text-decoration:underline;text-underline-offset:5px;font-size:.89rem}
-.zwm-gh-hero .gh-hero-caption {position:absolute;inset-inline-end:30px;bottom:22px;font-size:.66rem;letter-spacing:.14em;color:#fff9;direction:ltr}
+.zwm-gh-hero .gh-hero-caption {position:absolute;inset-inline-end:30px;bottom:22px;font-size:.66rem;letter-spacing:.08em;color:#fff9}
 .zwm-gh-collection {background:linear-gradient(180deg,#f6f0e2 0%,#fffaf1 95%);padding:80px 0 88px}
 .zwm-gh .gh-section-heading {max-width:700px;text-align:center;margin:0 auto 43px}
 .zwm-gh .gh-section-heading h2 {font-family:"DM Serif Display",Georgia,serif;font-size:clamp(2.55rem,4vw,4.3rem);font-weight:400;line-height:1.1;letter-spacing:-.03em;color:#183e29;margin:10px 0 8px}
@@ -61,9 +64,14 @@ body.zwm-harvest-active[data-page="shop"] .seasonal-story-card {display:flex!imp
 body.zwm-harvest-active .announcement a {text-decoration:underline;text-underline-offset:3px}
 html[dir="rtl"] .zwm-gh-hero .gh-shade {background:linear-gradient(270deg,rgba(12,34,23,.94) 0%,rgba(18,46,30,.86) 39%,rgba(18,46,30,.40) 65%,rgba(12,34,23,.13) 100%)}
 html[dir="rtl"] .zwm-gh-hero .gh-hero-copy {margin-inline-start:0;text-align:start}
-html[dir="rtl"] .zwm-gh-hero .gh-ar-line {text-align:start}
+html[dir="rtl"] .zwm-gh-hero .gh-season-line {text-align:start}
 html[dir="rtl"] .zwm-gh-hero .gh-subaction {margin-inline-start:18px}
-html[lang="ar"] .zwm-gh h1,html[lang="ar"] .zwm-gh h2 {font-family:"Amiri","Noto Kufi Arabic",serif;letter-spacing:0}
+html[lang="ar"] .zwm-gh h1,html[lang="ar"] .zwm-gh h2 {font-family:"Amiri","Noto Kufi Arabic",serif;letter-spacing:0;line-height:1.32}
+html[lang="ar"] .zwm-gh .gh-overline,html[lang="ar"] .zwm-gh .gh-caption {letter-spacing:0;text-transform:none;line-height:1.7}
+html[lang="ar"] .zwm-gh-hero .gh-season-line {font-family:"Amiri","Noto Kufi Arabic",serif;font-size:clamp(1.65rem,3vw,2.6rem);line-height:1.5}
+html[lang="ar"] .zwm-gh-hero .gh-locale-indicator {letter-spacing:0}
+html[lang="ar"] .zwm-gh .gh-action {line-height:1.6}
+html[lang="ar"] .zwm-gh .gh-card .gh-unavailable {line-height:1.75}
 @media (hover:hover) and (pointer:fine){.zwm-gh .gh-card:hover .gh-card-figure img{transform:translateY(-7px)}}
 @media (max-width:900px){.zwm-gh-hero{min-height:470px}.zwm-gh .gh-tins{gap:13px}.zwm-gh .gh-card{padding:13px 9px 24px}.zwm-gh .gh-card-figure{aspect-ratio:4/5}}
 @media (max-width:690px){
@@ -73,6 +81,8 @@ html[lang="ar"] .zwm-gh h1,html[lang="ar"] .zwm-gh h2 {font-family:"Amiri","Noto
  .zwm-gh-hero .gh-hero-copy{max-width:100%}
  .zwm-gh-hero h1{font-size:clamp(2.8rem,11vw,4.6rem);line-height:1.03}
  .zwm-gh-hero .gh-desc{font-size:.98rem;max-width:360px;line-height:1.7}
+ .zwm-gh-hero .gh-hero-topline{gap:8px 12px}
+ .zwm-gh-hero .gh-locale-indicator{font-size:.58rem;padding:3px 8px}
  .zwm-gh-hero .gh-shade{background:linear-gradient(0deg,rgba(12,34,23,.93) 0%,rgba(12,34,23,.80) 60%,rgba(12,34,23,.52) 100%)!important}
  .zwm-gh-hero .gh-subaction{display:block;width:max-content;margin:17px 0 0}
  .zwm-gh-hero .gh-hero-caption{display:none}

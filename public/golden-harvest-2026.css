@@ -141,6 +141,72 @@ html[lang="ar"] .gh-pick-buy,html[lang="ar"] .gh-pick-inquire{line-height:1.7}
  .gh-popup-content h2{font-size:clamp(2rem,10vw,2.5rem)}
  .gh-pick-badge{font-size:.59rem}
 }
+/* Mobile overflow protection (Golden Harvest): fluid type, wrapped badges,
+   safe touch targets and internally scrollable popup on short phones. */
+@media(max-width:680px){
+ body.zwm-harvest-active #ghPicksStage,body.zwm-harvest-active .gh-picks{max-width:100%;min-width:0}
+ .zwm-gh .gh-shell{width:min(100% - 32px,440px);min-width:0}
+ .gh-picks-intro,.gh-picks-grid,.gh-picks-footer{min-width:0;max-width:100%}
+ .gh-picks-arrival{max-width:100%;white-space:normal;flex-wrap:wrap;gap:5px 8px;padding:9px 14px;margin-bottom:15px;font-size:clamp(.66rem,2.8vw,.78rem);line-height:1.6;overflow-wrap:break-word;text-wrap:balance}
+ .gh-picks-kicker{max-width:100%;font-size:clamp(.68rem,2.9vw,.79rem);letter-spacing:.09em;white-space:normal;overflow-wrap:break-word}
+ .gh-picks-intro h2{max-width:100%;font-size:clamp(2.05rem,8.8vw,3.4rem);line-height:1.17;overflow-wrap:break-word}
+ .gh-picks-intro p{max-width:100%;line-height:1.65}
+ .gh-pick-card{width:100%;max-width:100%;min-width:0}
+ .gh-pick-badge{width:max-content;max-width:calc(100% - 28px);min-width:0;white-space:normal;overflow-wrap:break-word;text-wrap:balance;font-size:clamp(.62rem,2.75vw,.75rem);line-height:1.55;padding:7px 12px}
+ .gh-pick-figure{height:clamp(272px,88vw,420px);width:100%;max-width:100%;padding:55px 12px 0}
+ .gh-pick-figure img{max-width:100%!important;max-height:100%;object-fit:contain}
+ .gh-pick-information{max-width:100%;min-width:0;padding:11px 18px 23px}
+ .gh-pick-price{font-size:clamp(1.05rem,4.5vw,1.3rem);max-width:100%}
+ .gh-pick-price-gh-unset{max-width:100%;overflow-wrap:break-word}
+ .gh-pick-buy,.gh-pick-inquire{width:100%;max-width:300px;min-width:0;min-height:48px;padding:11px 12px;line-height:1.55;white-space:normal;overflow-wrap:break-word}
+ .gh-picks-footer a{max-width:100%;overflow-wrap:break-word}
+ .gh-popup{padding:10px;padding-top:max(10px,env(safe-area-inset-top));padding-bottom:max(10px,env(safe-area-inset-bottom))}
+ .gh-popup-panel{width:100%;max-width:510px;height:auto;min-height:0;max-height:calc(100dvh - 20px);overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;align-items:flex-end}
+ .gh-popup-content{flex:0 0 auto;width:100%;min-width:0;max-width:100%;margin-top:0;padding:clamp(58px,15dvh,126px) clamp(16px,5.2vw,26px) max(22px,env(safe-area-inset-bottom));align-items:center;text-align:center}
+ .gh-popup-logo{width:clamp(54px,15vw,70px);height:clamp(54px,15vw,70px);margin:0 auto 12px}
+ .gh-popup-kicker{max-width:100%;font-size:clamp(.63rem,2.6vw,.74rem);line-height:1.6;letter-spacing:.08em;white-space:normal;overflow-wrap:break-word}
+ .gh-popup-content h2{max-width:100%;font-size:clamp(2rem,9vw,3.45rem);line-height:1.12;letter-spacing:-.02em;overflow-wrap:break-word;margin:12px 0 13px}
+ .gh-popup-description{max-width:34ch;font-size:clamp(.86rem,3.5vw,.98rem);line-height:1.62;margin:0 auto 17px;overflow-wrap:break-word}
+ .gh-popup-actions{width:min(100%,340px);min-width:0;max-width:100%;gap:7px}
+ .gh-popup-discover{width:100%;min-width:0;min-height:50px;padding:11px 15px;line-height:1.45;text-align:center;white-space:normal;overflow-wrap:break-word;touch-action:manipulation}
+ .gh-popup-continue{align-self:center;min-width:0;min-height:44px;max-width:100%;padding:9px 12px;line-height:1.5;text-align:center;white-space:normal;touch-action:manipulation}
+ .gh-popup-dismiss{inset-inline-end:12px;top:12px;width:44px;height:44px;min-width:44px;min-height:44px;touch-action:manipulation}
+ .gh-shop-spotlight-copy,.gh-shop-spotlight-copy h2,.gh-shop-spotlight-copy p{max-width:100%;min-width:0;overflow-wrap:break-word}
+ .gh-shop-cta,.gh-shop-all{max-width:100%;white-space:normal;line-height:1.6;overflow-wrap:break-word}
+}
+@media(max-width:680px) and (max-height:680px){
+ .gh-popup-panel{max-height:calc(100dvh - 12px)}
+ .gh-popup-content{padding-top:clamp(28px,7dvh,50px);padding-bottom:max(14px,env(safe-area-inset-bottom))}
+ .gh-popup-logo{width:52px;height:52px;margin-bottom:8px}
+ .gh-popup-content h2{font-size:clamp(1.85rem,7.5vw,2.75rem);margin:8px 0 10px}
+ .gh-popup-description{font-size:.84rem;line-height:1.5;margin-bottom:12px}
+ .gh-popup-discover{min-height:46px}
+}
+@media(max-width:360px){
+ .gh-picks-arrival{padding-inline:10px;font-size:.64rem}
+ .gh-picks-intro h2{font-size:clamp(1.95rem,9vw,2.5rem)}
+ .gh-popup-content{padding-inline:16px}
+ .gh-popup-content h2{font-size:clamp(1.83rem,8.7vw,2.5rem)}
+ .gh-popup-kicker{font-size:.62rem;letter-spacing:.03em}
+ .gh-pick-badge{font-size:.61rem;padding:7px 10px}
+}
+@media(max-height:550px) and (min-width:681px){
+ .gh-popup-panel{min-height:0;max-height:calc(100dvh - 18px);overflow-y:auto;align-items:center}
+ .gh-popup-content{padding-block:18px}
+ .gh-popup-logo{width:55px;height:55px;margin-bottom:8px}
+ .gh-popup-content h2{font-size:clamp(2.1rem,4vw,3rem);margin:6px 0 9px}
+ .gh-popup-description{font-size:.84rem;line-height:1.5;margin-bottom:12px}
+ .gh-popup-discover{min-height:45px}
+}
+/* Arabic and French must remain legible when text scales or wraps. */
+@media(max-width:680px){
+ html[lang="ar"] .gh-popup-content h2{font-size:clamp(1.95rem,8.4vw,3.25rem);line-height:1.32;letter-spacing:0}
+ html[lang="ar"] .gh-picks-intro h2{line-height:1.38;letter-spacing:0}
+ html[lang="ar"] .gh-popup-kicker,html[lang="ar"] .gh-pick-badge,html[lang="ar"] .gh-picks-arrival{line-height:1.75;letter-spacing:0}
+ html[lang="ar"] .gh-popup-description{line-height:1.75}
+ html[lang="ar"] .gh-popup-discover,html[lang="ar"] .gh-popup-continue{line-height:1.7}
+ html[lang="fr"] .gh-popup-content h2{font-size:clamp(1.94rem,8.25vw,3.1rem);line-height:1.18;overflow-wrap:break-word}
+}
 @media(prefers-reduced-motion:reduce){
  .gh-pick-card,.gh-pick-card.gh-visible,.gh-pick-card:hover,.gh-pick-figure img,.gh-pick-buy,.gh-pick-inquire{transform:none!important;opacity:1!important;transition:none!important}
  .gh-popup-discover,.gh-popup-continue{transition:none!important}

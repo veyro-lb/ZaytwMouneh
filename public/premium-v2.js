@@ -702,7 +702,7 @@
     var copy=q(".product-modal-copy");if(!copy)return;
     var extras=q(".premium-product-extras",copy);
     if(!extras){extras=document.createElement("div");extras.className="premium-product-extras";var actions=q(".product-modal-actions",copy);if(actions)actions.before(extras);else copy.appendChild(extras)}
-    var feedbackUrl="https://wa.me/96181581230?text="+encodeURIComponent(txt("Feedback about ","ملاحظات حول ")+pname(p)+": ");
+    var feedbackUrl="https://wa.me/96170381412?text="+encodeURIComponent(txt("Feedback about ","ملاحظات حول ")+pname(p)+": ");
     var storage=storageGuidance(p);
     var storageBlock=storage?'<div class="premium-product-extra"><span>'+esc(txt("Verified storage information","معلومات الحفظ الموثّقة"))+'</span><p>'+esc(storage)+'</p></div>':"";
     extras.innerHTML=storageBlock+'<div class="premium-product-extra"><span>'+esc(txt("General pairing ideas","أفكار عامة للتقديم"))+'</span><p>'+esc(pairingText(p))+'</p></div><div class="premium-product-extra premium-feedback"><div><span>'+esc(txt("Availability","التوفر"))+'</span><p>'+esc(txt("Availability is rechecked when you place the order through website checkout.","يُعاد التحقق من التوفر عند تقديم الطلب عبر إتمام الطلب في الموقع."))+'</p></div><div class="premium-product-toolbar"><button type="button" data-share-product="'+esc(p.id)+'">'+esc(txt("Share product","شارك المنتج"))+'</button><a href="'+esc(feedbackUrl)+'" target="_blank" rel="noopener">'+esc(txt("Send feedback","أرسل ملاحظتك"))+'</a></div></div>';
@@ -785,7 +785,7 @@
     var data={
       "@context":"https://schema.org","@type":"Store","name":"Zayt w Mouneh",
       "url":"https://zaytwmouneh.com/",
-      "telephone":"+96181581230","currenciesAccepted":"USD",
+      "telephone":"+96170381412","currenciesAccepted":"USD",
       "address":{"@type":"PostalAddress","addressLocality":"Sebline","addressCountry":"LB"},
       "sameAs":["https://instagram.com/zaytwmouneh"]
     };

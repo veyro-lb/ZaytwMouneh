@@ -27,24 +27,26 @@ This seasonal change is isolated from the main Zayt w Mouneh experience. Do not 
 
 - The live `extra-virgin-olive-oil` product provides the real variant data.
 - Campaign prices are read from `PRODUCTS_DATA` after owner admin overrides, never hardcoded.
-- 8.77 L and 17.54 L buttons open existing shop quick-view with the matching variant preselected.
-- 4 L intentionally links to contact until a distinct real variant appears in the catalogue. It must **never** be mapped to the legacy 500 ml variant.
-- The existing cart, checkout, authentication, rewards, inventory security and Supabase authorization remain unchanged.
+- 8.77 L and 17.54 L **Add to cart** buttons use a validated bridge to the existing storefront cart, with the exact confirmed variant IDs. The original cart, totals, checkout and stock rules remain in charge.
+- 4 L intentionally provides an **inquiry** action (not a fake price or order button) until a distinct 4 L variant with owner-confirmed price and availability appears in the catalogue. It must **never** be mapped to the legacy 500 ml variant.
+- The existing checkout, authentication, rewards, inventory security and Supabase authorization remain unchanged. A small safe storefront-cart method is exposed solely to let the campaign call the existing add-to-cart routine, never to bypass it.
 - Existing remaining sizes (1 L, 500 ml) continue in the regular shop.
 
 ## Reversibility and runtime
 
-- Campaign HTML is added only when enabled or preview is requested.
+- Campaign HTML is added only when enabled or preview is requested. **The original homepage hero remains unchanged.** The campaign inserts the Seasonal Picks product collection directly after that hero and before Pantry Favourites.
+- The separate **first-visit cinematic popup** (video, logo, bilingual/translated campaign copy) waits until the existing welcome-language dialog has finished. Dismissal is remembered locally; the preview-only `?harvestPreview=1&harvestPopup=1` forces it open for review.
+- **Discover the Harvest** closes the popup and scrolls to the first product collection; **Continue to Website** only closes the popup without scrolling.
 - Scoped styles: `public/golden-harvest-2026.css`.
 - Campaign runtime: `public/golden-harvest-2026.js`.
 - Homepage/shop links: one CSS and one JS reference added to each HTML page.
 - Live CMS announcement text and other global page behavior remain unchanged outside campaign mode.
 - The current site-wide language switcher handles EN/AR/FR; this module updates itself on locale changes.
-- Video is muted, plays inline, pauses when hidden/offscreen and respects reduced motion.
+- Popup video is muted, plays inline, pauses when hidden or closed and respects reduced motion; the normal homepage hero video remains managed by the existing website.
 
 ## Build checks as of October 9
 
-- `Verify harvest campaign and media`: **PASS** — optimized media, size mapping, translations and integration.
+- `Verify harvest campaign and media`: **PASS** — genuine media signatures, size mapping, full translations, preservation of existing sections, product/cart bridge, and a separate jsdom interaction test of the welcome → popup → collection journey, language switching, catalogue refresh, and variant-specific Add to cart actions.
 - `Production regression gate`: **PASS** after four exact stylesheet order fixes (About, Contact, Gift and Recipes) and alignment of three outdated admin asset-version assertions with the current October 9 files. No check was bypassed.
 - `Workers Builds: zaytwmouneh`: **PASS** — Cloudflare branch preview deployment after adding the required empty `previews` configuration to both Wrangler files.
 - Preview URL reported by Cloudflare GitHub integration: `https://campaign-golden-harvest-2026-review-zaytwmouneh.veyro-202.workers.dev/?harvestPreview=1`. This is a preview, not the production store.
@@ -52,6 +54,6 @@ This seasonal change is isolated from the main Zayt w Mouneh experience. Do not 
 
 ## QA still required before launch
 
-Preview browser across screen sizes and Arabic RTL; confirm real tin images load without clipping; film poster and autoplay work; test all links; verify dynamic owner prices, inventory and actual ordering; inspect console and keyboard navigation; verify CMS announcement interaction; test 4 L once added by admin.
+Review the real Cloudflare preview manually across desktop and mobile (including short phones) and Arabic RTL; confirm the five media files load visually, full tin photography is never cropped, film poster/autoplay work, and navigation/keyboard access is intact. In the actual shop, independently verify the 8.77 L and 17.54 L cart totals and checkout; confirm any updated owner prices/availability and test 4 L only after its new variant is configured. The automated jsdom interaction test passes, but it does not replace visual browser acceptance.
 
 No unrelated site files or database rows should be changed for this campaign.

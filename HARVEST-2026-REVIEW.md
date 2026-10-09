@@ -7,7 +7,7 @@ This seasonal change is isolated from the main Zayt w Mouneh experience. Do not 
 - Review the draft PR branch `campaign/golden-harvest-2026-review` in the successfully deployed Cloudflare preview environment. Add `?harvestPreview=1` to the homepage or shop URL.
 - Check the desktop/mobile layout and switch EN / AR / FR.
 - Confirm the six campaign assets shown below exist at these exact paths (uploaded and validated October 9).
-- Configure and verify the **4 L** olive-oil variant through the existing admin/catalogue, only when its actual current price and inventory are confirmed. The campaign intentionally keeps it non-orderable until then.
+- **4 L is now owner-priced at $40.00 USD (confirmed October 9).** Its distinct catalogue variant `extra-virgin-olive-oil-4-l` is present, and the regular Add to Cart flow validates this size. Confirm current inventory and checkout behavior before public launch.
 - After media, catalogue and checkout review, change `var ENABLED=false;` to `var ENABLED=true;` in `public/golden-harvest-2026.js`. Merge the reviewed PR and deploy only on the intended date.
 - After the season ends, set `ENABLED=false` again. Existing homepage/shop sections return automatically.
 
@@ -28,8 +28,8 @@ This seasonal change is isolated from the main Zayt w Mouneh experience. Do not 
 
 - The live `extra-virgin-olive-oil` product provides the real variant data.
 - Campaign prices are read from `PRODUCTS_DATA` after owner admin overrides, never hardcoded.
-- 1 L, 8.77 L and 17.54 L **Add to cart** buttons use a validated bridge to the existing storefront cart, with the exact confirmed variant IDs. The original cart, totals, checkout and stock rules remain in charge.
-- 4 L intentionally provides an **inquiry** action (not a fake price or order button) until a distinct 4 L variant with owner-confirmed price and availability appears in the catalogue. It must **never** be mapped to the legacy 500 ml variant.
+- 1 L, **4 L ($40)**, 8.77 L and 17.54 L **Add to cart** buttons use the validated original storefront cart, each with its exact catalogue variant ID; pricing remains subject to owner admin overrides and normal stock rules.
+- 4 L is now a separate real **$40** priced variant, with the exact `4l.webp` owner-supplied photograph; never map it to the legacy 500 ml variant. The remaining 500 ml photo still uses a temporary original fallback pending a verified size-specific image.
 - The existing checkout, authentication, rewards, inventory security and Supabase authorization remain unchanged. A small safe storefront-cart method is exposed solely to let the campaign call the existing add-to-cart routine, never to bypass it.
 - The 1 L bottle also remains in the regular shop; the 500 ml size stays there as before.
 
@@ -65,7 +65,7 @@ This seasonal change is isolated from the main Zayt w Mouneh experience. Do not 
 
 ## QA still required before launch
 
-Review the real Cloudflare preview manually across desktop and mobile (including short phones) and Arabic RTL; confirm the five media files load visually, full tin photography is never cropped, film poster/autoplay work, and navigation/keyboard access is intact. In the actual shop, independently verify the 8.77 L and 17.54 L cart totals and checkout; confirm any updated owner prices/availability and test 4 L only after its new variant is configured. The automated jsdom interaction test passes, but it does not replace visual browser acceptance.
+Review the real Cloudflare preview manually across desktop and mobile (including short phones) and Arabic RTL; confirm the five media files load visually, full tin photography is never cropped, film poster/autoplay work, and navigation/keyboard access is intact. In the actual shop, independently verify the 1 L, **4 L ($40)**, 8.77 L and 17.54 L totals, cart and checkout; verify size switching and corresponding enlarged and checkout photos before public launch. The automated jsdom interaction test passes, but it does not replace visual browser acceptance.
 
 No unrelated site files or database rows should be changed for this campaign.
 
@@ -74,3 +74,10 @@ No unrelated site files or database rows should be changed for this campaign.
 - Four new user-supplied photographs: 1 L bottle, 4 L, 8.77 L, and 17.54 L tins. WebP files were uploaded as verified Git blobs; no labels were edited.
 - The 1 L featured card uses the existing `extra-virgin-olive-oil-1-l` catalogue variant. Its current base price is $12, subject to the existing owner overrides; it uses the normal cart bridge and inventory rules.
 - Responsive collection now uses four columns on large desktop, two on tablet and one on narrow mobile. Campaign is still preview-only until launch approval.
+
+## October 9: 4 L price and variant-specific photos
+
+- Owner explicitly confirmed **4 L = $40.00 USD**. Added catalogue variant `extra-virgin-olive-oil-4-l` (not a synthetic display-only option); main checkout, cart and harvest use real catalogue data.
+- Variant-to-image mapping is exact: 1 L `1l.webp`, 4 L `4l.webp`, 8.77 L `8-77l.webp`, 17.54 L `17-54l.webp`. Verified each uploaded WebP blob SHA against the owner-provided ZIP derivatives.
+- Variant images update in shop cards, quick view, enlarged modal (reads the current quick-view image), product page, and checkout summary. 500 ml is intentionally kept on its old photo until a genuine 500 ml picture is supplied.
+- Fresh query versions on catalogue scripts across pages prevent stale 4 L variants; related regression tests assert price, photo mapping and cart integration. Cloudflare review-branch build succeeded at head revision; manual graphical browser and checkout acceptance are still required before live release.

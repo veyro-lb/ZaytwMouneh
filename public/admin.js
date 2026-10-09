@@ -775,7 +775,57 @@
     "Driver note, follow-up, customer preference…":"ملاحظة للسائق أو متابعة أو تفضيل للعميل…",
     "Remove customer account":"إزالة حساب العميل",
     "Deletes this customer’s sign-in, Mouneh Points profile, points, vouchers, reviews and saved addresses. Historical orders stay in Orders & history for business records.":"يحذف تسجيل دخول هذا العميل وملف نقاط المونة والنقاط والقسائم والمراجعات والعناوين المحفوظة. تبقى الطلبات السابقة في قسم الطلبات والسجل لأغراض السجلات التجارية.",
-    "Remove account":"إزالة الحساب"
+    "Remove account":"إزالة الحساب",
+    // Wholesale admin labels (shared with the separately loaded CRM module).
+    "Wholesale Leads":"طلبات الجملة",
+    "Wholesale":"الجملة",
+    "Wholesale & business":"الجملة والأعمال",
+    "Qualify and follow up on business enquiries without mixing them into retail orders.":"راجع طلبات الشركات وتابعها بعيداً عن طلبات البيع بالتجزئة.",
+    "Requests are enquiries for quotation. Availability, pricing, packaging, delivery and payment arrangements remain subject to owner review.":"طلبات الجملة هي استفسارات للحصول على عرض سعر؛ ويخضع التوفر والتسعير والتغليف والتوصيل والدفع لمراجعة المالك.",
+    "All leads":"جميع طلبات الجملة",
+    "Quote activity":"نشاط عروض الأسعار",
+    "Converted":"تم التحويل إلى عميل",
+    "Filter wholesale leads by status":"تصفية طلبات الجملة حسب الحالة",
+    "Business, contact, location…":"ابحث باسم الشركة أو جهة الاتصال أو المنطقة…",
+    "Contacted":"تم التواصل",
+    "Needs information":"بحاجة إلى معلومات",
+    "Quote preparing":"جارٍ إعداد عرض السعر",
+    "Quote sent":"أُرسل عرض السعر",
+    "Negotiating":"قيد التفاوض",
+    "Lost":"لم يكتمل الاتفاق",
+    "Archived":"مؤرشف",
+    "Open Wholesale Leads to load enquiries.":"افتح قسم طلبات الجملة لتحميل الاستفسارات.",
+    "No wholesale enquiries match this view.":"لا توجد طلبات جملة تطابق هذه التصفية.",
+    "Loading wholesale enquiries…":"جارٍ تحميل طلبات الجملة…",
+    "Could not load wholesale enquiries.":"تعذّر تحميل طلبات الجملة.",
+    "Lead details":"تفاصيل طلب الجملة",
+    "Wholesale CRM":"إدارة طلبات الجملة",
+    "Close wholesale lead":"إغلاق تفاصيل طلب الجملة",
+    "Open lead":"فتح الطلب",
+    "Website / Instagram":"الموقع / إنستغرام",
+    "Approx. volume":"الكمية التقريبية",
+    "First order timing":"موعد الطلب الأول",
+    "Preferred contact":"طريقة التواصل المفضّلة",
+    "Submission language":"لغة تقديم الطلب",
+    "Requested products":"المنتجات المطلوبة",
+    "Catalogue format not specified":"لم يُحدّد حجم المنتج",
+    "No catalogue products selected.":"لم تُحدّد منتجات من القائمة.",
+    "Products not listed:":"منتجات غير مدرجة:",
+    "Commercial context":"التفاصيل التجارية",
+    "Priorities":"الأولويات",
+    "Current supplier":"المورّد الحالي",
+    "Switch reason":"سبب تغيير المورّد",
+    "Customer notes:":"ملاحظات العميل:",
+    "CRM follow-up":"المتابعة الإدارية",
+    "Next follow-up":"موعد المتابعة القادمة",
+    "Mark contacted now":"تسجيل التواصل الآن",
+    "Save CRM changes":"حفظ تغييرات المتابعة",
+    "Delete enquiry":"حذف الاستفسار",
+    "Could not save changes.":"تعذّر حفظ التغييرات.",
+    "Could not update contact time.":"تعذّر تحديث وقت التواصل.",
+    "Deleting enquiry…":"جارٍ حذف الاستفسار…",
+    "Could not delete this enquiry.":"تعذّر حذف هذا الاستفسار."
+
   });
 
   function translatePhrase(value) {
@@ -852,6 +902,10 @@
     if(m)return `تم استيراد ${m[1]} منتج بنجاح.`;
     m=text.match(/^(\d+) views · (\d+) sessions · Last tracked event (.+)$/);
     if(m)return `${m[1]} مشاهدة · ${m[2]} جلسة · آخر نشاط مسجّل ${translatePhrase(m[3])}`;
+    m=text.match(/^(\d+) leads?$/);
+    if(m)return m[1]+" طلب جملة";
+    m=text.match(/^(\d+) requested products? · (.+)$/);
+    if(m)return m[1]+" منتج مطلوب · "+m[2];
     return text;
   }
 

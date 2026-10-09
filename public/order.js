@@ -236,7 +236,10 @@ function render(){
   $("cancelOrderButton").hidden=!o.can_cancel;
   $("reorderButton").hidden=o.status!=="delivered";
 
-  var phone=String(o.support_phone||"96170381412").replace(/\D/g,"");
+  var livePhone=String(window.ZWM_CMS?.getSettings?.()?.contact?.whatsapp||"").replace(/\D/g,"");
+  var savedPhone=String(o.support_phone||"").replace(/\D/g,"");
+  // Old order snapshots can carry the superseded support number; prefer today's CMS contact.
+  var phone=livePhone&&livePhone!=="96181581230"?livePhone:(savedPhone&&savedPhone!=="96181581230"?savedPhone:"96170381412");
   var msg=tr("Hi, I need help with order ","مرحباً، أحتاج مساعدة بخصوص الطلب ","Bonjour, j’ai besoin d’aide concernant la commande ")+o.reference+".";
   $("orderSupport").href="https://wa.me/"+phone+"?text="+encodeURIComponent(msg);
   $("orderSupport").textContent=tr("Need help? WhatsApp us","تحتاج مساعدة؟ تواصل عبر واتساب","Besoin d’aide ? Contactez-nous sur WhatsApp");

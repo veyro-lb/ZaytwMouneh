@@ -83,7 +83,7 @@ window.addEventListener("zwm-product-photos-ready",()=>{
   renderGiftPickerResults();
   if(currentModalProduct)renderModal(currentModalProduct.id,currentModalVariant?.id);
 });
-const WA="96181581230";
+const WA="96170381412";
 function liveCmsSettings(){
   try{
     const connected=window.ZWM_CMS?.getSettings?.();

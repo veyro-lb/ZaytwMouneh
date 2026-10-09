@@ -78,7 +78,12 @@ assert(css.includes("100dvh"),"Quick View mobile dynamic viewport bound missing"
 
 const robots=read("robots.txt");
 assert(robots.includes("Disallow: /admin"),"robots must block clean admin route");
-assert(robots.includes(origin+"/sitemap.xml"),"robots sitemap URL missing");
+const prelaunchHeaders=read("_headers");
+if(prelaunchHeaders.includes("X-Robots-Tag: noindex, nofollow, noarchive")){
+ assert(!/^Sitemap:/mi.test(robots),"prelaunch robots must not advertise a sitemap");
+}else{
+ assert(robots.includes("Sitemap: "+origin+"/sitemap.xml"),"launch robots sitemap URL missing");
+}
 
 const sitemap=read("sitemap.xml");
 assert(sitemap.includes('xmlns:xhtml="http://www.w3.org/1999/xhtml"'),"sitemap hreflang namespace missing");

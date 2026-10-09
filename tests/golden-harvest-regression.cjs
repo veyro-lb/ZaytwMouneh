@@ -115,6 +115,6 @@ assert.equal(COPY.fr.title,"La récolte 2026 est arrivée");
 assert.equal(COPY.en.popupDiscover,"Discover the Harvest");
 assert.equal(COPY.en.popupContinue,"Continue to Website");
 assert.match(js,/function language\(\)\{var l=document\.documentElement\.lang/);
-assert.match(js,/lang="'+"\'+language\(\)/,"Seasonal section follows chosen language");
-assert.match(js,/dir="'+"\'+dir\(\)/,"Seasonal section follows RTL");
+assert.ok(js.includes("lang=\"\'+language()+\'\""),"Seasonal section follows chosen language");
+assert.ok(js.includes("dir=\"\'+dir()+\'\""),"Seasonal section follows RTL");
 console.log("Golden Harvest 2026 campaign gate passed: five genuine media files, normal hero preserved, popup and first collection, 3 sizes, safe existing cart bridge, complete EN/AR/FR.");

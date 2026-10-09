@@ -1,6 +1,9 @@
 name = "zaytwmouneh"
 compatibility_date = "2026-10-03"
 
+# Enable branch-only Worker previews. No production deployment is triggered by this setting.
+previews = { }
+
 [assets]
 directory = "./public"
 html_handling = "drop-trailing-slash"

@@ -6,6 +6,7 @@
   const PRODUCT_CACHE = "zwm:cms:product-overrides:v1";
   const SETTINGS_CACHE = "zwm:cms:settings:v1";
   const SESSION_KEY = "zwm:analytics:session:v1";
+  const VISITOR_KEY = "zwm:analytics:visitor:v1";
   const ANALYTICS_OWNER_OPT_OUT_KEY = "zwm:analytics:owner-opt-out:v1";
   const RELOAD_KEY = "zwm:cms:last-reload:v1";
   const PREVIEW_RELOAD_KEY = "zwm:cms:preview-last-reload:v1";
@@ -312,6 +313,20 @@
     try{localStorage.setItem(SESSION_KEY,JSON.stringify(record))}catch{}
     return String(record.id).slice(0,80);
   }
+  // A random first-party browser ID identifies repeat visits without IP,
+  // fingerprinting, account identifiers, or cross-site tracking.
+  // If storage is unavailable, omit the ID rather than falsely counting
+  // every page load as a new person.
+  function visitorId(){
+    try{
+      const saved=localStorage.getItem(VISITOR_KEY);
+      if(saved&&/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(saved))return saved;
+      const id=globalThis.crypto?.randomUUID?.();
+      if(!id)return null;
+      localStorage.setItem(VISITOR_KEY,id);
+      return id;
+    }catch{return null;}
+  }
   function referrerHost(){
     if(!document.referrer)return "";
     try{return new URL(document.referrer).hostname.slice(0,180)}catch{return ""}
@@ -337,6 +352,11 @@
   function track(eventName,meta={}){
     const c=config();if(PREVIEW_MODE||analyticsOptedOut()||!enabled()||c.analytics?.enabled===false)return;
     const row={event_name:eventName,page_path:(location.pathname+location.search).slice(0,300),session_id:sessionId(),referrer_host:referrerHost(),meta:eventMeta(meta)};
+    // Associate only page views with a visitor ID; customer actions remain unlinked.
+    if(eventName==="page_view"){
+      const id=visitorId();
+      if(id)row.visitor_id=id;
+    }
     api(encodeURIComponent(c.tables?.events||"site_events"),{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify(row)}).catch(()=>{});
   }
 

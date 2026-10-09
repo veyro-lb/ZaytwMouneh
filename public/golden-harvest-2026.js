@@ -1,12 +1,14 @@
-/* Golden Harvest 2026 — isolated, preview-gated seasonal launch.
-   Main homepage hero and all existing collections remain intact.
-   Preview on the branch with ?harvestPreview=1; force popup for QA with &harvestPopup=1.
-   Set ENABLED=true only when the owner approves the planned public launch. */
+/* Golden Harvest 2026 — isolated seasonal collection and first-visit popup.
+   Seasonal Picks belongs to the normal homepage, independent of login state.
+   The exact Cloudflare review hostname automatically shows it even after auth
+   redirects remove ?harvestPreview=1. Production remains off until approved. */
 (function(){
   "use strict";
   var ENABLED=false;
   var params=new URLSearchParams(location.search);
-  var PREVIEW=params.get("harvestPreview")==="1";
+  var REVIEW_HOST="campaign-golden-harvest-2026-review-zaytwmouneh.veyro-202.workers.dev";
+  var IS_REVIEW_HOST=location.hostname===REVIEW_HOST;
+  var PREVIEW=IS_REVIEW_HOST||params.get("harvestPreview")==="1";
   if(!ENABLED&&!PREVIEW)return;
   var page=document.body&&document.body.dataset.page;
   if(page!=="home"&&page!=="shop")return;
@@ -323,6 +325,11 @@
       announcement();
     });
     window.addEventListener("zwm:catalog-cache-updated",function(){if(page==="home")renderPicks()});
+    // Browsers can restore Home from back-forward cache after signing in/out.
+    // Reattach the seasonal collection if another page transition replaced it.
+    window.addEventListener("pageshow",function(){
+      if(page==="home"&&!document.getElementById("ghPicksStage")){renderPicks();setupCart()}
+    });
     var text=document.getElementById("announcementText");
     if(text&&"MutationObserver" in window)new MutationObserver(function(){if(!announcementBusy)announcement()}).observe(text,{childList:true,characterData:true,subtree:true});
   }

@@ -33,195 +33,196 @@ function sectionHtml(section){
 }
 
 var COPY={
-  ar:{
-    title:"سياسة الإرجاع ومشاكل المنتجات | زيت ومونة",
-    description:"سياسة زيت ومونة للإرجاع والاستبدال والاسترداد ومشاكل المنتجات.",
-    skip:"الانتقال إلى المحتوى",
-    eyebrow:"خدمة العملاء",
-    heading:"سياسة الإرجاع والاستبدال ومشاكل المنتجات",
-    updated:"آخر تحديث: 7 أكتوبر 2026",
-    intro:"نريد في زيت ومونة أن يكون كل عميل راضياً عن طلبه. إذا وصل منتج متضرراً أو خاطئاً أو ناقصاً، أو ظهرت فيه مشكلة حقيقية تتعلق بالجودة أو السلامة، يمكنك إرسال طلب للمراجعة من خلال الطلب المرتبط به.",
-    primary:"ابدأ طلب إرجاع أو أبلغ عن مشكلة",
-    secondary:"عرض طلباتي",
-    summaryTitle:"باختصار",
-    summary:[
-      "طلبات تغيير الرأي للمنتجات غير المفتوحة: عادةً خلال 10 أيام تقويمية من التسليم.",
-      "مشاكل التسليم الظاهرة: يُفضّل الإبلاغ خلال 48 ساعة متى كان ذلك ممكناً بشكل معقول؛ ويمكن مراجعة البلاغات المتأخرة أيضاً.",
-      "يمكن الإبلاغ عن مشاكل الجودة أو التلف أو السلامة حتى بعد فتح المنتج.",
-      "إرسال الطلب يبدأ المراجعة؛ ويعتمد الحل على ظروف الحالة."
+  "en": {
+    "title": "Returns & Product Issues Policy | Zayt w Mouneh",
+    "description": "Zayt w Mouneh accepts return requests only for products with a genuine problem, reported within 24 hours of delivery. Contact us for further help.",
+    "skip": "Skip to content",
+    "eyebrow": "Customer care",
+    "heading": "Returns & Product Issues Policy",
+    "updated": "Last updated: 9 October 2026",
+    "intro": "Returns are accepted only when something is wrong with the product or order. Please report the problem within 24 hours of delivery. We will review your request and explain the next steps.",
+    "primary": "Report a product problem",
+    "secondary": "Contact us",
+    "summaryTitle": "At a glance",
+    "summary": [
+      "Returns are only for damaged, defective, leaking, spoiled, incorrect or missing products.",
+      "Report the problem within 24 hours of delivery.",
+      "No returns for a change of mind, personal taste or simply because an item is unopened.",
+      "For further help or reports after 24 hours, contact us directly. Your statutory rights remain protected."
     ],
-    sections:[
+    "sections": [
       {
-        title:"1. المنتجات غير المفتوحة وتغيير الرأي",
-        paragraphs:[
-          "قد تكون المنتجات غير المستخدمة وغير المفتوحة مؤهلة للإرجاع أو الاستبدال إذا قُدّم الطلب خلال <strong>10 أيام تقويمية من التسليم</strong>، شرط أن يبقى المنتج مختوماً وغير مستخدم وفي حالته وعبوته الأصليتين ومناسباً للفحص والإرجاع.",
-          "تُحتسب مهلة الأيام العشرة من تاريخ التسليم، وليس من تاريخ الطلب أو الدفع. وإذا لم يتوافر تاريخ تسليم موثوق، نراجع التوقيت بالاستناد إلى المعلومات المتاحة بدلاً من افتراض تاريخ.",
-          "المنتجات التي فُتحت أو استُخدمت لا تكون عادةً مؤهلة لإرجاع أو استبدال بسبب تغيير الرأي. ويمكنك مع ذلك الإبلاغ عن عيب حقيقي أو مشكلة جودة أو سلامة أو منتج خاطئ أو ناقص أو أي حالة أخرى تحميها القوانين النافذة."
+        "title": "1. When a return is possible",
+        "paragraphs": [
+          "We accept return or replacement requests <strong>only if something is wrong with the product or the order</strong>, such as a damaged or leaking item, a genuine quality or safety defect, a spoiled product, or an incorrect or missing item.",
+          "We do not accept returns or exchanges just because you changed your mind, no longer need the item, dislike its taste, or want to return an otherwise correct, undamaged product. Being unopened does not, by itself, make a product returnable."
         ]
       },
       {
-        title:"2. المنتجات المتضررة أو الخاطئة أو الناقصة",
-        paragraphs:[
-          "في حال وجود مشكلة ظاهرة عند التسليم، مثل الكسر أو التسريب أو نقص منتج أو استلام منتج خاطئ، يرجى الإبلاغ عنها <strong>خلال 48 ساعة متى كان ذلك ممكناً بشكل معقول</strong> حتى نراجعها بسرعة.",
-          "فترة الـ48 ساعة هي مدة موصى بها وليست مهلة رفض تلقائية. ويمكن إرسال البلاغ بعد ذلك أيضاً ومراجعته.",
-          "قد نطلب معلومات داعمة معقولة، مثل صور المنتج المتأثر أو العبوة والملصق ورقم التشغيلة/الدفعة أو تاريخ الصلاحية عندما تكون هذه التفاصيل ذات صلة."
+        "title": "2. Report within 24 hours",
+        "paragraphs": [
+          "Please submit your product-problem request <strong>within 24 hours after delivery</strong>, using the delivery time as the starting point—not the order or payment time.",
+          "If more than 24 hours have passed, or the recorded delivery time is incorrect, please <a href=\"/contact\">contact us</a> so we can advise you. This reporting procedure does not limit any rights you have under applicable law."
         ]
       },
       {
-        title:"3. مشاكل جودة المنتج أو سلامته",
-        paragraphs:[
-          "تختلف مشكلة الجودة أو التلف أو السلامة الحقيقية عن الإرجاع بسبب تغيير الرأي. ويمكنك الإبلاغ عنها حتى لو فُتح المنتج أو انتهت مهلة الأيام العشرة العادية.",
-          "إذا كنت تعتقد أن المنتج قد يكون غير آمن، فتوقف عن استخدامه أو استهلاكه. ولا يلزم الاحتفاظ بمنتج أو نقله أو إعادته عندما يكون ذلك غير آمن أو غير عملي.",
-          "عند الحاجة، قد نسأل متى تم اكتشاف المشكلة ونطلب معلومات عن المنتج أو العبوة أو تاريخ الأفضل قبل/الصلاحية أو رقم التشغيلة/الدفعة أو التخزين أو طريقة الاستخدام حتى نراجع الحالة بشكل مسؤول."
+        "title": "3. How to report a problem",
+        "paragraphs": [
+          "Go to <strong>Returns &amp; Product Issues</strong>, verify your order code and order contact information, then select the affected product, describe what is wrong and submit the request. Add photographs where helpful.",
+          "Please keep the item and packaging for review when safe to do so. If you suspect a food-safety problem, stop using or consuming the product; do not keep or transport anything unsafe."
         ]
       },
       {
-        title:"4. الذوق الشخصي والمشاكل الناتجة عن العميل",
-        paragraphs:[
-          "<strong>الذوق أو التفضيل الشخصي وحده لا يُعتبر عيباً في المنتج</strong> عندما يكون المنتج آمناً وموصوفاً بشكل صحيح ومطابقاً لما تم شراؤه. فعدم الإعجاب بالنكهة أو اكتشاف أن المنتج المفتوح أقوى أو أحلى من المتوقع لا يجعله عادةً معيباً.",
-          "قد يُرفض الطلب عندما تُظهر المعلومات المتاحة بشكل معقول أن المشكلة نتجت عن تخزين غير مناسب أو سوء استخدام أو عبث أو ضرر تسبب به العميل."
+        "title": "4. Review and possible outcomes",
+        "paragraphs": [
+          "Submitting a request does not automatically approve a return or refund. We review the problem and may ask for photos or more information.",
+          "If the issue is confirmed, we will agree on an appropriate solution, which may be a replacement, exchange or a partial or full refund for the <strong>affected item(s)</strong>. A problem with one item does not automatically qualify the entire order for a refund."
         ]
       },
       {
-        title:"5. الأدلة والاحتفاظ بالمنتج",
-        paragraphs:[
-          "يرجى الاحتفاظ بالمنتج المتأثر وعبوته الأصلية إلى أن تتم مراجعة الطلب، إلا إذا كان الاحتفاظ بهما غير آمن أو غير عملي.",
-          "قد نطلب صوراً أو معلومات أخرى معقولة عندما تساعدنا على فهم المشكلة. وما نطلبه يعتمد على نوع الحالة."
+        "title": "5. Refunds and arrangements",
+        "paragraphs": [
+          "Any approved refund is based on the amount actually paid for the affected item(s), accounting for discounts and any previous refunds. We will explain the refund method and timing after reviewing the case.",
+          "If collection, return or redelivery is needed, we will confirm the arrangements before asking you to send anything back. For a mistake on our side, we will arrange reasonable corrective steps."
         ]
       },
       {
-        title:"6. ماذا يحدث بعد إرسال الطلب",
-        paragraphs:[
-          "إرسال الطلب يبدأ المراجعة ولا يعني بحد ذاته تأكيد استرداد أو استبدال. نراجع الطلب المرتبط والمنتج أو الكمية المتأثرة ووصفك وأي معلومات داعمة تكون مطلوبة بشكل معقول.",
-          "إذا احتجنا إلى معلومات إضافية، سنطلبها ضمن الطلب. وبعد ذلك نطلعك على نتيجة المراجعة والخطوات المتاحة."
-        ]
-      },
-      {
-        title:"7. الحلول الممكنة والاستبدال",
-        paragraphs:[
-          "بحسب ظروف الحالة، قد يشمل الحل المعتمد استبدال المنتج بمنتج مماثل أو التبديل أو استرداداً جزئياً أو استرداداً كاملاً لقيمة المنتج أو المنتجات المتأثرة. وجود مشكلة في منتج واحد لا يجعل كامل الطلب قابلاً للاسترداد تلقائياً.",
-          "إذا لزم استبدال أو إرجاع فعلي، نؤكد الخطوات التالية قبل إرسال أو تسليم أي شيء. ويتم تقييم المواد الغذائية المُعادة قبل أي تعامل لاحق، مع إعطاء سلامة الغذاء الأولوية."
-        ]
-      },
-      {
-        title:"8. المبالغ المستردة وتكاليف الاستلام أو التوصيل",
-        paragraphs:[
-          "إذا تمت الموافقة على استرداد، فيقتصر على المبلغ المدفوع فعلياً مقابل المنتج أو الكمية المتأثرة بعد احتساب الخصومات والعروض وأي مبالغ سبق استردادها.",
-          "لا ينشر الموقع حالياً طريقة موحدة لإعادة المبالغ أو مدة معالجة ثابتة. وإذا تمت الموافقة على استرداد، يتم تأكيد طريقة إعادة المبلغ وأي مدة معالجة تنطبق معك ضمن الحل.",
-          "في حالات الإرجاع أو الاستبدال العادية بسبب تغيير الرأي، قد تكون تكاليف التوصيل أو الاستلام على عاتق العميل حيثما يسمح بذلك. أما إذا كان الخطأ من زيت ومونة، مثل إرسال منتج غير صحيح، فسنتحمل عادةً التكاليف المعقولة اللازمة للحل. وإذا لزم الاستلام أو إعادة التوصيل، نؤكد الترتيب بعد المراجعة."
-        ]
-      },
-      {
-        title:"9. كيفية إرسال الطلب ومتابعته",
-        paragraphs:[
-          "افتح <strong>الإرجاع والمشاكل</strong> من الموقع وأدخل رمز الطلب الظاهر في تأكيد الطلب أو الإيصال. نتحقق من أن الطلب يعود إليك قبل إظهار تفاصيله الخاصة. وللطلب المؤهل بعد التسليم، اختر المنتج المتأثر ونوع المشكلة وأضف التفاصيل المناسبة وأرفق الصور عند الحاجة.",
-          "بعد الإرسال، ستحصل على رقم مرجعي للطلب. ويمكن للعملاء المسجلين الدخول متابعة الحالة والتحديثات من حسابهم. وإذا طلبنا معلومات إضافية، يرجى الرد ضمن الطلب الحالي بدلاً من فتح طلب مكرر."
-        ]
-      },
-      {
-        title:"10. حقوق المستهلك",
-        legal:true,
-        paragraphs:[
-          "<strong>لا يحد أي شيء في هذه السياسة من حقوق المستهلك التي يقرها القانون اللبناني النافذ.</strong> تشرح هذه السياسة آلية زيت ومونة للإرجاع ومشاكل المنتجات ولا تستبدل أو تلغي الحماية القانونية المقررة للمستهلك."
+        "title": "6. More help and consumer rights",
+        "legal": true,
+        "paragraphs": [
+          "For other questions, late reports or anything not covered above, <strong>please contact Zayt w Mouneh</strong> through our <a href=\"/contact\">contact page</a> or <a href=\"https://wa.me/96170381412\" target=\"_blank\" rel=\"noopener\">WhatsApp (+961 70 381 412)</a>.",
+          "<strong>Nothing in this policy removes or limits rights granted by applicable Lebanese consumer-protection law.</strong> We will consider any issue that must be addressed under the law even outside our usual 24-hour reporting process."
         ]
       }
     ]
   },
-  fr:{
-    title:"Politique de retours et problèmes produits | Zayt w Mouneh",
-    description:"Politique Zayt w Mouneh concernant les retours, échanges, remboursements et problèmes produits.",
-    skip:"Aller au contenu",
-    eyebrow:"Service client",
-    heading:"Politique de retours, échanges et problèmes produits",
-    updated:"Dernière mise à jour : 7 octobre 2026",
-    intro:"Zayt w Mouneh souhaite que chaque client soit satisfait de sa commande. Si un article arrive endommagé, incorrect ou manquant, ou présente un véritable problème de qualité ou de sécurité, vous pouvez envoyer une demande liée à la commande afin qu’elle soit examinée.",
-    primary:"Commencer un retour ou signaler un problème",
-    secondary:"Voir mes commandes",
-    summaryTitle:"En bref",
-    summary:[
-      "Retours pour changement d’avis sur un article non ouvert : normalement dans les 10 jours calendaires suivant la livraison.",
-      "Problèmes visibles à la livraison : merci de les signaler dans les 48 heures lorsque cela est raisonnablement possible ; les signalements plus tardifs peuvent aussi être examinés.",
-      "Les problèmes de qualité, d’altération ou de sécurité peuvent être signalés même après ouverture.",
-      "L’envoi d’une demande déclenche un examen ; la solution dépend des circonstances."
+  "ar": {
+    "title": "سياسة الإرجاع ومشاكل المنتجات | زيت ومونة",
+    "description": "الإرجاع لدى زيت ومونة يقتصر على وجود مشكلة فعلية في المنتج مع الإبلاغ خلال 24 ساعة من التسليم. تواصل معنا للمساعدة.",
+    "skip": "الانتقال إلى المحتوى",
+    "eyebrow": "خدمة العملاء",
+    "heading": "سياسة الإرجاع ومشاكل المنتجات",
+    "updated": "آخر تحديث: 9 أكتوبر 2026",
+    "intro": "يُقبل الإرجاع فقط عند وجود مشكلة فعلية في المنتج أو الطلب. يرجى الإبلاغ خلال 24 ساعة من التسليم. نراجع الطلب ونوضح الخطوات التالية.",
+    "primary": "الإبلاغ عن مشكلة في منتج",
+    "secondary": "تواصل معنا",
+    "summaryTitle": "باختصار",
+    "summary": [
+      "يُقبل الإرجاع فقط للمنتجات المتضررة أو المعيبة أو المسرّبة أو الفاسدة أو الخاطئة أو الناقصة.",
+      "يجب الإبلاغ عن المشكلة خلال 24 ساعة من التسليم.",
+      "لا نقبل الإرجاع بسبب تغيير الرأي أو عدم الإعجاب بالطعم أو لمجرد أن المنتج غير مفتوح.",
+      "للمساعدة أو للإبلاغ بعد 24 ساعة، تواصل معنا مباشرةً. تبقى حقوقك القانونية محفوظة."
     ],
-    sections:[
+    "sections": [
       {
-        title:"1. Produits non ouverts et changement d’avis",
-        paragraphs:[
-          "Les produits non utilisés et non ouverts peuvent être éligibles à un retour ou à un échange si la demande est faite dans les <strong>10 jours calendaires suivant la livraison</strong>, à condition que le produit reste scellé, non utilisé, dans son état et son emballage d’origine, et qu’il puisse être inspecté et retourné.",
-          "Le délai de 10 jours est calculé à partir de la livraison, et non de la date de commande ou de paiement. Si aucune date de livraison fiable n’est disponible, nous examinons le délai à partir des informations disponibles plutôt que de supposer une date.",
-          "Les produits ouverts ou utilisés ne sont normalement pas éligibles à un retour ou à un échange pour simple changement d’avis. Vous pouvez néanmoins signaler un défaut réel, un problème de qualité ou de sécurité, un produit incorrect ou manquant, ou toute autre situation protégée par la loi applicable."
+        "title": "1. متى يُقبل الإرجاع؟",
+        "paragraphs": [
+          "نقبل طلب الإرجاع أو الاستبدال <strong>فقط عند وجود مشكلة فعلية في المنتج أو الطلب</strong>، مثل التلف أو التسريب أو عيب في الجودة أو السلامة أو فساد المنتج أو استلام منتج خاطئ أو ناقص.",
+          "لا نقبل الإرجاع أو التبديل بسبب تغيير الرأي أو عدم الحاجة إلى المنتج أو عدم الإعجاب بالطعم أو الرغبة بإرجاع منتج سليم ومطابق للطلب. كون المنتج غير مفتوح لا يجعله مؤهلاً للإرجاع بحد ذاته."
         ]
       },
       {
-        title:"2. Articles endommagés, incorrects ou manquants",
-        paragraphs:[
-          "Pour les problèmes visibles à la livraison, tels qu’une casse, une fuite, un article manquant ou un article incorrect, merci de les signaler <strong>dans les 48 heures lorsque cela est raisonnablement possible</strong> afin que nous puissions les examiner rapidement.",
-          "Le délai de 48 heures est recommandé ; il ne constitue pas une limite entraînant un refus automatique. Un signalement plus tardif peut toujours être envoyé et examiné.",
-          "Nous pouvons demander des éléments justificatifs raisonnables, comme des photos de l’article concerné ou de l’emballage et de l’étiquette, ainsi que le numéro de lot ou la date d’expiration lorsque ces informations sont pertinentes."
+        "title": "2. الإبلاغ خلال 24 ساعة",
+        "paragraphs": [
+          "يرجى إرسال طلب الإبلاغ عن المشكلة <strong>خلال 24 ساعة من تسلّم الطلب</strong>، وتُحتسب المدة من وقت التسليم وليس من وقت الطلب أو الدفع.",
+          "إذا مرّت أكثر من 24 ساعة، أو كان وقت التسليم المسجّل غير صحيح، يرجى <a href=\"/contact\">التواصل معنا</a> لنساعدك. لا تحد هذه الإجراءات من أي حقوق يضمنها القانون النافذ."
         ]
       },
       {
-        title:"3. Qualité ou sécurité du produit",
-        paragraphs:[
-          "Un véritable problème de qualité, d’altération ou de sécurité est différent d’un retour pour changement d’avis. Vous pouvez le signaler même si le produit a été ouvert ou si le délai ordinaire de 10 jours est dépassé.",
-          "Si vous pensez qu’un produit peut être dangereux, cessez de l’utiliser ou de le consommer. Vous n’avez pas à conserver, transporter ou retourner un produit lorsque cela serait dangereux ou impraticable.",
-          "Lorsque cela est pertinent, nous pouvons demander quand le problème a été découvert ainsi que des informations sur le produit, son emballage, la date de durabilité minimale ou d’expiration, le numéro de lot, le stockage ou l’utilisation afin d’examiner la situation de manière responsable."
+        "title": "3. كيف تُبلّغ عن المشكلة؟",
+        "paragraphs": [
+          "افتح صفحة <strong>الإرجاع ومشاكل المنتجات</strong>، وتحقق من طلبك باستخدام رمزه وبيانات التواصل المرتبطة به، ثم اختر المنتج المتأثر واشرح المشكلة وأرسل الطلب. يمكنك إرفاق صور عند الحاجة.",
+          "يرجى الاحتفاظ بالمنتج وعبوته للمراجعة إذا كان ذلك آمناً. إذا شككت بسلامة منتج غذائي فتوقف عن استهلاكه، ولا تحتفظ به أو تنقله إذا كان ذلك غير آمن."
         ]
       },
       {
-        title:"4. Goût personnel et problèmes causés par le client",
-        paragraphs:[
-          "<strong>Le goût ou la préférence personnelle, à eux seuls, ne constituent pas un défaut du produit</strong> lorsque le produit est sûr, correctement décrit et conforme à ce qui a été acheté. Ne pas aimer une saveur ou trouver, après ouverture, qu’un produit est plus fort ou plus sucré que prévu ne le rend normalement pas défectueux.",
-          "Une demande peut être refusée lorsque les informations disponibles montrent raisonnablement que le problème résulte d’un mauvais stockage, d’une mauvaise utilisation, d’une altération volontaire ou d’un dommage causé par le client."
+        "title": "4. المراجعة والحلول الممكنة",
+        "paragraphs": [
+          "إرسال البلاغ لا يعني الموافقة تلقائياً على الإرجاع أو استرداد المال. نراجع المشكلة وقد نطلب صوراً أو معلومات إضافية.",
+          "عند التأكد من المشكلة، نتفق معك على حل مناسب، مثل استبدال المنتج أو تبديله أو استرداد جزء من المبلغ أو كامل قيمة <strong>المنتج أو المنتجات المتأثرة</strong>. وجود مشكلة في منتج واحد لا يعني استرداد قيمة الطلب كاملاً تلقائياً."
         ]
       },
       {
-        title:"5. Preuves et conservation du produit",
-        paragraphs:[
-          "Merci de conserver le produit concerné et son emballage d’origine jusqu’à l’examen de la demande, sauf si cela est dangereux ou impraticable.",
-          "Nous pouvons demander des photos ou d’autres informations raisonnables lorsqu’elles nous aident à comprendre le problème. Ce qui est demandé dépend du type de situation."
+        "title": "5. المبالغ المستردة والترتيبات",
+        "paragraphs": [
+          "تُحتسب أي مبالغ مستردة معتمدة وفق المبلغ المدفوع فعلياً مقابل المنتج المتأثر، بعد احتساب الخصومات وأي مبالغ سبق استردادها. نوضح طريقة وموعد الاسترداد بعد مراجعة الحالة.",
+          "إذا لزم استلام المنتج أو إرجاعه أو إعادة توصيله، نؤكد الترتيبات قبل إرسال أي شيء. وفي حال كان الخطأ من طرفنا، نتولى خطوات التصحيح المعقولة."
         ]
       },
       {
-        title:"6. Après l’envoi de votre demande",
-        paragraphs:[
-          "L’envoi d’une demande déclenche un examen ; il ne confirme pas à lui seul un remboursement ou un échange. Nous examinons la commande concernée, l’article ou la quantité touchés, votre description et les éléments justificatifs raisonnablement nécessaires.",
-          "Si nous avons besoin d’informations supplémentaires, nous les demanderons dans la demande. Nous vous communiquerons ensuite le résultat de l’examen et les prochaines étapes disponibles."
+        "title": "6. المساعدة الإضافية وحقوق المستهلك",
+        "legal": true,
+        "paragraphs": [
+          "للاستفسارات الأخرى أو البلاغات بعد انتهاء المدة أو أي موضوع غير مذكور هنا، <strong>يرجى التواصل مع زيت ومونة</strong> عبر <a href=\"/contact\">صفحة التواصل</a> أو <a href=\"https://wa.me/96170381412\" target=\"_blank\" rel=\"noopener\">واتساب (+961 70 381 412)</a>.",
+          "<strong>لا تُلغي هذه السياسة ولا تُقيّد حقوق المستهلك التي يكفلها القانون اللبناني النافذ.</strong> وسنراجع أي حالة يجب معالجتها قانوناً حتى لو كانت خارج مهلة الإبلاغ المعتادة البالغة 24 ساعة."
+        ]
+      }
+    ]
+  },
+  "fr": {
+    "title": "Politique de retours et problèmes produits | Zayt w Mouneh",
+    "description": "Les retours sont réservés aux vrais problèmes de produit signalés dans les 24 heures suivant la livraison. Contactez-nous pour toute aide.",
+    "skip": "Aller au contenu",
+    "eyebrow": "Service client",
+    "heading": "Politique de retours et problèmes produits",
+    "updated": "Dernière mise à jour : 9 octobre 2026",
+    "intro": "Un retour n’est possible que si le produit ou la commande présente un réel problème. Signalez-le dans les 24 heures suivant la livraison ; nous examinerons la demande et vous expliquerons la suite.",
+    "primary": "Signaler un problème produit",
+    "secondary": "Nous contacter",
+    "summaryTitle": "En bref",
+    "summary": [
+      "Les retours concernent uniquement les produits endommagés, défectueux, qui fuient, altérés, incorrects ou manquants.",
+      "Signalez le problème dans les 24 heures suivant la livraison.",
+      "Pas de retour pour changement d’avis, préférence gustative ou simplement parce qu’un produit est non ouvert.",
+      "Après 24 heures ou pour toute autre aide, contactez-nous. Vos droits légaux restent protégés."
+    ],
+    "sections": [
+      {
+        "title": "1. Dans quels cas un retour est-il possible ?",
+        "paragraphs": [
+          "Nous acceptons les demandes de retour ou de remplacement <strong>uniquement lorsqu’il existe un véritable problème avec le produit ou la commande</strong> : dommage, fuite, défaut de qualité ou de sécurité, altération, article incorrect ou manquant.",
+          "Nous n’acceptons pas les retours pour simple changement d’avis, parce que le produit n’est plus nécessaire, parce que son goût ne plaît pas ou lorsqu’il est conforme et en bon état. Un produit non ouvert n’est pas automatiquement éligible."
         ]
       },
       {
-        title:"7. Solutions possibles et échanges",
-        paragraphs:[
-          "Selon les circonstances, une solution approuvée peut comprendre un remplacement, un échange, un remboursement partiel ou un remboursement intégral de l’article ou des articles concernés. Un problème touchant un seul article ne rend pas automatiquement toute la commande remboursable.",
-          "Si un échange ou un retour physique est nécessaire, nous confirmerons les étapes avant que vous n’envoyiez ou ne remettiez quoi que ce soit. Les denrées alimentaires retournées sont évaluées avant toute autre manipulation, la sécurité alimentaire restant prioritaire."
+        "title": "2. Signalement dans les 24 heures",
+        "paragraphs": [
+          "Veuillez envoyer votre signalement <strong>dans les 24 heures suivant la livraison</strong>. Le délai commence au moment de la livraison, et non lors de la commande ou du paiement.",
+          "Si plus de 24 heures se sont écoulées, ou si l’heure de livraison enregistrée est incorrecte, veuillez <a href=\"/contact\">nous contacter</a> pour obtenir de l’aide. Cette procédure ne limite aucun droit reconnu par la loi applicable."
         ]
       },
       {
-        title:"8. Remboursements et frais de collecte ou de livraison",
-        paragraphs:[
-          "Si un remboursement est approuvé, il est limité au montant effectivement payé pour l’article ou la quantité concernés, après prise en compte des remises, promotions et remboursements antérieurs.",
-          "Le site ne publie actuellement ni méthode de remboursement unique ni délai de traitement standard. Si un remboursement est approuvé, la méthode de remboursement et tout délai applicable vous seront confirmés dans le cadre de la solution.",
-          "Pour un retour ou un échange ordinaire lié à un changement d’avis, les frais de livraison ou de collecte peuvent être à la charge du client lorsque cela est permis. Lorsque l’erreur vient de Zayt w Mouneh, par exemple si un produit incorrect a été fourni, nous prenons normalement en charge les frais raisonnables nécessaires à la résolution. Si une collecte ou une nouvelle livraison est nécessaire, nous confirmerons l’organisation après examen."
+        "title": "3. Comment signaler le problème",
+        "paragraphs": [
+          "Ouvrez la page <strong>Retours et problèmes produits</strong>, vérifiez votre commande avec son code et les coordonnées associées, puis sélectionnez le produit concerné, décrivez le problème et envoyez la demande. Joignez des photos si cela peut aider.",
+          "Conservez le produit et son emballage pour examen lorsque cela ne présente pas de danger. Si vous soupçonnez un problème de sécurité alimentaire, cessez toute consommation et ne conservez ni ne transportez un article dangereux."
         ]
       },
       {
-        title:"9. Envoyer et suivre une demande",
-        paragraphs:[
-          "Ouvrez <strong>Retours &amp; problèmes</strong> sur le site et saisissez le code figurant sur votre confirmation ou votre reçu. Nous vérifions que la commande vous appartient avant d’afficher ses informations privées. Pour une commande livrée éligible, sélectionnez le produit concerné, choisissez le type de problème, ajoutez les informations utiles et joignez des photos lorsque cela est approprié.",
-          "Après l’envoi, vous recevrez une référence de demande. Les clients connectés peuvent suivre le statut et les mises à jour depuis leur compte. Si nous demandons des informations supplémentaires, répondez dans la demande existante plutôt que d’en ouvrir une autre."
+        "title": "4. Examen et solutions possibles",
+        "paragraphs": [
+          "L’envoi d’une demande ne garantit pas un retour ou un remboursement. Nous examinons la situation et pouvons demander des photos ou des renseignements complémentaires.",
+          "Si le problème est confirmé, nous conviendrons d’une solution appropriée : remplacement, échange, remboursement partiel ou intégral du ou des <strong>articles concernés</strong>. Un problème concernant un seul produit n’entraîne pas automatiquement le remboursement de toute la commande."
         ]
       },
       {
-        title:"10. Droits des consommateurs",
-        legal:true,
-        paragraphs:[
-          "<strong>Rien dans cette politique ne limite les droits des consommateurs prévus par la législation libanaise applicable.</strong> Cette politique explique le processus de Zayt w Mouneh concernant les retours et problèmes produits et ne remplace ni ne réduit les protections légales des consommateurs."
+        "title": "5. Remboursements et organisation",
+        "paragraphs": [
+          "Tout remboursement approuvé tient compte du montant réellement payé pour les articles concernés, des remises et des remboursements précédents. Nous préciserons la méthode et le délai après examen.",
+          "Si une collecte, un retour ou une nouvelle livraison s’avère nécessaire, nous confirmerons les modalités avant tout renvoi. En cas d’erreur de notre part, nous organiserons les mesures correctives raisonnables."
+        ]
+      },
+      {
+        "title": "6. Aide complémentaire et droits des consommateurs",
+        "legal": true,
+        "paragraphs": [
+          "Pour les autres questions, les signalements tardifs ou tout cas non mentionné ici, <strong>contactez Zayt w Mouneh</strong> via notre <a href=\"/contact\">page de contact</a> ou <a href=\"https://wa.me/96170381412\" target=\"_blank\" rel=\"noopener\">WhatsApp (+961 70 381 412)</a>.",
+          "<strong>Cette politique ne supprime ni ne limite les droits des consommateurs prévus par la législation libanaise applicable.</strong> Nous examinerons tout cas devant être pris en charge légalement, même au-delà du délai habituel de 24 heures."
         ]
       }
     ]
   }
-}
+};
 
 function render(){
   var locale=currentLocale();
@@ -244,7 +245,7 @@ function render(){
   root.dataset.policyLocale=locale;
 
   var returnsHref=localePath("/returns",locale);
-  var ordersHref=localePath("/account",locale)+"#orders";
+  var ordersHref=localePath("/contact",locale);
   root.innerHTML=
     '<section class="policy-hero">'+
       '<p>'+copy.eyebrow+'</p>'+

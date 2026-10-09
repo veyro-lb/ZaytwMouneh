@@ -72,6 +72,7 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  assert.ok(d.querySelector(".gh-picks-arrival"),"Seasonal collection must have a prominent red arrival badge");
  assert.equal(d.querySelector(".gh-picks-arrival").textContent.trim(),"JUST ARRIVED · 2026 HARVEST");
  assert.equal(d.querySelector(".gh-pick-badge").textContent.trim(),"2026 HARVEST");
+ assert.ok(d.querySelector("[data-gh-discover]").textContent.includes("Order Now"),"English ordering CTA");
  d.querySelector("[data-gh-discover]").click();
  assert.equal(d.getElementById("ghCampaignPopup").hidden,true,"Discover closes popup");
  assert.equal(d.getElementById("harvest-picks").dataset.scrolled,"yes","Discover navigates directly to four formats");
@@ -100,7 +101,7 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  assert.equal((arabicPopup.match(/زيت السنة وصل/g)||[]).length,1,"زيت السنة وصل must appear only once");
  assert.equal((arabicPopup.match(/٢٠٢٦/g)||[]).length,1,"Arabic popup shows a single large ٢٠٢٦ headline");
  assert.equal(second.w.document.querySelector("#ghPopupTitle").textContent,"٢٠٢٦زيت السنة وصل");
- assert.equal(second.w.document.querySelector("[data-gh-discover]").textContent.trim().includes("اكتشفوا صفائح الزيت"),true,"Use a distinct Arabic CTA");
+ assert.equal(second.w.document.querySelector("[data-gh-discover]").textContent.trim().includes("اطلب الآن"),true,"Arabic Order Now CTA");
 
  assert.equal(second.w.document.querySelector("#harvest-picks").dir,"rtl");
  assert.equal(second.w.document.getElementById("ghCampaignPopup").hidden,false);

@@ -196,8 +196,10 @@
     if(shouldScroll){
       var target=document.getElementById("harvest-picks");
       if(target){target.scrollIntoView({behavior:reduceMotion()?"auto":"smooth",block:"start"});target.setAttribute("tabindex","-1");target.focus({preventScroll:true})}
-    }else if(previousFocus&&previousFocus.isConnected){
-      previousFocus.focus({preventScroll:true});
+    }else{
+      var restore=previousFocus&&previousFocus.isConnected&&!previousFocus.closest("#languageWelcome")?previousFocus:
+        document.querySelector(".home-pantry-hero h1, main h1, main");
+      if(restore){if(!restore.hasAttribute("tabindex")&&!/^(A|BUTTON|INPUT|SELECT|TEXTAREA)$/.test(restore.tagName))restore.setAttribute("tabindex","-1");restore.focus({preventScroll:true})}
     }
   }
   function popupKeydown(event){

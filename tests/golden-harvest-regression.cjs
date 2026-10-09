@@ -30,7 +30,11 @@ assert.match(js,/var ENABLED=false/,"Campaign must stay off until explicit launc
 assert.match(js,/harvestPreview/,"Explicit preview query remains supported");
 assert.match(js,/var REVIEW_HOST="campaign-golden-harvest-2026-review-zaytwmouneh\.veyro-202\.workers\.dev"/,"Only the exact isolated review hostname may auto-enable the campaign");
 assert.match(js,/var PREVIEW=IS_REVIEW_HOST\|\|params\.get\("harvestPreview"\)==="1"/,"Preview must survive authentication redirects without URL parameters");
-assert.match(js,/if\(!ENABLED&&!PREVIEW\)return/,"Public launch must remain disabled");
+assert.doesNotMatch(js,/if\(!ENABLED&&!PREVIEW\)return/,"Permanent homepage collection must not depend on popup preview gate");
+assert.match(js,/var PROMO_ACTIVE=ENABLED\|\|PREVIEW/,"Only the cinematic promotion is gated");
+assert.match(js,/if\(page==="home"\)\{renderPicks\(\);setupCart\(\);if\(PROMO_ACTIVE\)setupPopup\(\)\}/,"Permanent collection must render for every signed-in or signed-out visitor");
+assert.match(js,/if\(PROMO_ACTIVE\)announcement\(\)/,"Normal announcement must be preserved until seasonal popup launch");
+assert.match(js,/MutationObserver\(function\(\)\{/,"Collection must recover if another module replaces homepage sections");
 assert.match(js,/window\.addEventListener\("pageshow"/,"Returning from sign-in must recover the homepage collection");
 assert.match(js,/harvestPopup/,"Explicit popup QA override required");
 assert.match(js,/zwm-golden-harvest-2026-popup-seen-v1/,"Persist first-visit dismissal");
@@ -110,6 +114,20 @@ for(const page of ["index","shop"]){
   assert.ok(html.indexOf("app.js")<html.indexOf("golden-harvest-2026.js"),page+" campaign must load after app");
   assert.match(html,/app\.js\?v=20261009-contact2/,"Use fresh asset version so the correct support number and validated cart API are served");
 }
+const staticHome=read("public/index.html");
+const heroStart=staticHome.indexOf('class="page-intro page-intro-shop home-pantry-hero"');
+const permanentStage=staticHome.indexOf('id="ghPicksStage"');
+const normalFavourites=staticHome.indexOf('id="featured"');
+assert.ok(heroStart>=0&&heroStart<permanentStage&&permanentStage<normalFavourites,
+ "Permanent collection must be in the HTML between normal hero and Pantry Favourites");
+assert.match(staticHome,/<div id="ghPicksStage" data-gh-permanent="1">/,"Collection must exist without running JavaScript");
+assert.match(staticHome,/<body[^>]*class="zwm-harvest-active"/,"Fallback collection must be styled even if campaign JavaScript fails");
+for(const [size,file] of [["1","1l.webp"],["4","4l.webp"],["8.77","8-77l.webp"],["17.54","17-54l.webp"]]){
+ assert.ok(staticHome.includes('data-gh-size="'+size+'"'),"Permanent static card missing "+size+" L");
+ assert.ok(staticHome.includes('/assets/harvest-2026/'+file),"Permanent product image missing "+file);
+}
+assert.match(staticHome,/href="\/shop\?category=Olive%20Oil#shop"/,"Static collection must have functional shop fallbacks");
+assert.match(staticHome,/href="\/contact"/,"Missing 4 L variant remains inquiry-only");
 const home=read("public/index.html");
 assert.ok(home.includes('<section class="page-intro page-intro-shop home-pantry-hero"'),"Existing homepage hero must be untouched");
 assert.ok(home.includes('id="featured"'),"Pantry Favourites must remain");

@@ -120,6 +120,32 @@ assert.doesNotMatch(app.slice(app.indexOf("window.ZWM_HARVEST_CART={"),app.index
 
 // Verify all selected-language copies and announced badge text are complete.
 const vm=require("node:vm");
+/* Olive-oil variants must use the exact 2026 photographs in the catalogue,
+   quick view and full product page, not only in the campaign collection. */
+const ownerPhotos={window:{}};
+vm.runInNewContext(read("public/product-photos.js"),ownerPhotos);
+const oilPhoto=ownerPhotos.window.ZWM_PRODUCT_PHOTOS.sourceFor;
+const oilId="extra-virgin-olive-oil";
+for(const [variant,file] of [
+ ["extra-virgin-olive-oil-1-l","1l.webp"],
+ ["extra-virgin-olive-oil-4-l","4l.webp"],
+ ["extra-virgin-olive-oil-8-77-l","8-77l.webp"],
+ ["extra-virgin-olive-oil-17-54-l","17-54l.webp"]
+]){
+ assert.equal(oilPhoto(oilId,variant).url,"/assets/harvest-2026/"+file,"Incorrect owner photo for "+variant);
+ assert.equal(oilPhoto(oilId,variant).fit,"contain","Do not crop owner photo "+variant);
+}
+assert.equal(oilPhoto(oilId).url,"/assets/harvest-2026/1l.webp","Default olive oil photo must show the 1 L bottle");
+assert.equal(oilPhoto(oilId,"extra-virgin-olive-oil-500-ml").url,
+ "assets/products/originals/extra-virgin-olive-oil.jpg","Keep legacy 500 ml fallback until 500 ml photo is provided");
+assert.match(app,/sourceFor\(p\.id,variantId\)/,"Shop and quick view must resolve selected variant photo");
+assert.match(app,/productVisualMarkup\(p,"product-image",selected\.id\)/,"Shop card must render selected variant");
+assert.match(app,/productVisualMarkup\(p,"product-modal-image",v\.id\)/,"Quick view must render selected variant");
+assert.match(app,/visual\.outerHTML=productVisualMarkup\(p,"product-image",sel\.value\)/,"Card image must change on select");
+const productPage=read("public/product-page-v1.js");
+assert.match(productPage,/photoMarkup\(state\.product,state\.selectedVariant&&state\.selectedVariant\.id\)/,"Product page must change image on select");
+assert.match(productPage,/price\.textContent=money\(state\.selectedVariant\.price\)/,"Product page must change price on select");
+
 const begin=js.indexOf("  var COPY={");
 const finish=js.indexOf(";\n  function language()",begin);
 assert.ok(begin>=0&&finish>begin,"Translated campaign copy must exist");

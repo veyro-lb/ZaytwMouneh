@@ -1,15 +1,19 @@
-/* Zayt w Mouneh Golden Harvest 2026 — campaign-only code, no checkout or catalogue mutation.
-   LAUNCH: change ENABLED to true only after approval and Monday Oct 12 deployment.
-   Review on a staging deployment with ?harvestPreview=1 (no changes to public settings).
-*/
+/* Golden Harvest 2026 — isolated, preview-gated seasonal launch.
+   Main homepage hero and all existing collections remain intact.
+   Preview on the branch with ?harvestPreview=1; force popup for QA with &harvestPopup=1.
+   Set ENABLED=true only when the owner approves the planned public launch. */
 (function(){
   "use strict";
   var ENABLED=false;
-  var PREVIEW=new URLSearchParams(location.search).get("harvestPreview")==="1";
+  var params=new URLSearchParams(location.search);
+  var PREVIEW=params.get("harvestPreview")==="1";
   if(!ENABLED&&!PREVIEW)return;
-  if(document.body&&document.body.dataset.page!=="home"&&document.body.dataset.page!=="shop")return;
+  var page=document.body&&document.body.dataset.page;
+  if(page!=="home"&&page!=="shop")return;
   var PHOTO="/assets/harvest-2026/";
   var OIL_ID="extra-virgin-olive-oil";
+  var POPUP_KEY="zwm-golden-harvest-2026-popup-seen-v1";
+  var SHOW_POPUP_AGAIN=params.get("harvestPopup")==="1"&&PREVIEW;
   var SIZES=[
     {size:"4",id:"extra-virgin-olive-oil-4-l",file:"4l.webp"},
     {size:"8.77",id:"extra-virgin-olive-oil-8-77-l",file:"8-77l.webp"},
@@ -17,227 +21,304 @@
   ];
   var COPY={
     en:{
-      overline:"ZAYT W MOUNEH · OLIVE HARVEST 2026",
-      title:"THE GOLDEN <em>HARVEST</em>",
-      tagline:"The season’s olive oil has arrived.",
-      localeDisplay:"ENGLISH",localeAria:"Selected language: English",
-      heroFooter:"LEBANON · OLIVE HARVEST 2026",
-      desc:"Lebanese olive oil from the 2026 harvest is here. Explore the tins and find the right size for your table.",
-      discover:"Explore the 2026 harvest",pantry:"Shop the full pantry",
-      choose:"CHOOSE YOUR TIN",chooseText:"Three featured tin sizes from the 2026 olive oil harvest.",
-      season:"2026 olive harvest",chooseSize:"Choose this size",unavailable:"Not currently available to order online",inquire:"Ask about availability",
-      note:"Prices and availability are shown from our current catalogue. Other olive oil sizes are also available in the shop.",
-      storyOverline:"OLIVE SEASON IN LEBANON",story:"FROM OLIVE SEASON TO YOUR TABLE",
-      storyCopy:"In Lebanon, olive season is a time for gathering, sharing and bringing a fresh harvest to the table. Celebrate the 2026 harvest with Zayt w Mouneh.",
-      table:"A TASTE OF HOME",tableCopy:"Fresh bread, za’atar, table olives and olive oil: the simple traditions we love to share.",
-      shopZaatar:"Explore za’atar",shopOlives:"Explore olives",
-      announcement:"🫒 The 2026 olive oil harvest has arrived",announcementLink:"Discover the harvest",
-      shopDesc:"Explore our three featured tin sizes from the new olive oil harvest, and choose from the current catalogue.",
-      allOil:"Shop all olive oil",shopPromo:"THE GOLDEN HARVEST · 2026",shopJump:"See the featured tins",
-      imageAlt:"Zayt w Mouneh olive oil tin",storyImageAlt:"Olive harvest season in Lebanon",shopImageAlt:"Zayt w Mouneh olive oil tin"
+      kicker:"SEASONAL PICKS · HARVEST 2026",
+      title:"Fresh From the Harvest",
+      description:"Discover our freshly harvested 2026 Lebanese olive oil.",
+      badge:"JUST ARRIVED · 2026 HARVEST",
+      smallBadge:"2026 HARVEST",
+      price:"Price",add:"Add to cart",inquire:"Ask about availability",
+      unavailable:"Price and online ordering not yet available for this size.",
+      viewAll:"See all olive oil sizes",notes:"All displayed prices come from the current catalogue. No seasonal discount is implied.",
+      imageAlt:"Zayt w Mouneh olive oil tin",
+      popupKicker:"ZAYT W MOUNEH · 2026 OLIVE HARVEST",
+      popupTitle:"THE GOLDEN <em>HARVEST</em>",
+      popupSubtitle:"The olive oil of the season has arrived.",
+      popupDescription:"Fresh Lebanese olive oil from the 2026 harvest. Discover the tins made for your table.",
+      popupDiscover:"Discover the Harvest",popupContinue:"Continue to Website",popupClose:"Close harvest announcement",
+      popupFilm:"2026 olive harvest announcement film",
+      announcement:"🫒 THE 2026 HARVEST HAS ARRIVED",announcementLink:"Explore the harvest",
+      shopTitle:"The 2026 harvest is here",shopText:"See our three featured olive oil tins, then choose the right size for your table.",
+      shopCta:"Explore Seasonal Picks",shopAll:"Shop all olive oil"
     },
     ar:{
-      overline:"زيت ومونة · موسم الزيتون ٢٠٢٦",
-      title:"الحصاد <em>الذهبي</em>",
-      tagline:"زيت السنة وصل",
-      localeDisplay:"العربية",localeAria:"اللغة المختارة: العربية",
-      heroFooter:"لبنان · موسم الزيتون ٢٠٢٦",
-      desc:"زيت الزيتون اللبناني من حصاد ٢٠٢٦ وصل. اكتشفوا صفائح الزيت واختاروا الحجم المناسب لسفرتكم.",
-      discover:"اكتشفوا حصاد ٢٠٢٦",pantry:"تصفّحوا جميع المنتجات",
-      choose:"اختاروا حجم صفيحة الزيت",chooseText:"ثلاثة أحجام مميّزة من زيت الزيتون، من حصاد ٢٠٢٦.",
-      season:"حصاد الزيتون ٢٠٢٦",chooseSize:"اختاروا هذا الحجم",unavailable:"غير متاح للطلب عبر الموقع حالياً",inquire:"استفسروا عن التوفّر",
-      note:"الأسعار والتوفّر بحسب الكتالوج الحالي. يمكنكم أيضاً تصفّح باقي أحجام زيت الزيتون في المتجر.",
-      storyOverline:"موسم الزيتون في لبنان",story:"من موسم الزيتون إلى سفرتكم",
-      storyCopy:"موسم الزيتون في لبنان هو موسم اللمة والمشاركة وزيت السنة الجديد. احتفلوا معنا بحصاد ٢٠٢٦ مع زيت ومونة.",
-      table:"طعم من بيتنا",tableCopy:"خبز طازج وزعتر وزيتون وزيت زيتون: طقوس بسيطة بتجمعنا على السفرة.",
-      shopZaatar:"اكتشفوا الزعتر",shopOlives:"اكتشفوا الزيتون",
+      kicker:"مختارات الموسم · حصاد ٢٠٢٦",
+      title:"زيت السنة وصل",
+      description:"اكتشفوا زيت الزيتون اللبناني الطازج من حصاد ٢٠٢٦.",
+      badge:"وصل جديد · حصاد ٢٠٢٦",
+      smallBadge:"حصاد ٢٠٢٦",
+      price:"السعر",add:"أضف إلى السلة",inquire:"استفسر عن التوفّر",
+      unavailable:"السعر والطلب عبر الموقع غير متاحين لهذا الحجم حالياً.",
+      viewAll:"تصفّح كل أحجام زيت الزيتون",notes:"الأسعار المعروضة مأخوذة من الكتالوج الحالي. لا يوجد خصم موسمي.",
+      imageAlt:"صفيحة زيت زيتون من زيت ومونة",
+      popupKicker:"زيت ومونة · موسم زيتون ٢٠٢٦",
+      popupTitle:"الحصاد <em>الذهبي</em>",
+      popupSubtitle:"زيت السنة وصل",
+      popupDescription:"زيت زيتون لبناني طازج من حصاد ٢٠٢٦. اكتشفوا صفائح الزيت واختاروا الأنسب لسفرتكم.",
+      popupDiscover:"اكتشفوا حصاد الزيتون",popupContinue:"المتابعة إلى الموقع",popupClose:"إغلاق إعلان موسم الزيتون",
+      popupFilm:"فيديو حصاد الزيتون ٢٠٢٦",
       announcement:"🫒 زيت السنة وصل — حصاد ٢٠٢٦",announcementLink:"اكتشفوا الحصاد",
-      shopDesc:"اكتشفوا ثلاثة أحجام مميّزة من صفائح زيت الزيتون من الحصاد الجديد، واختاروا من الكتالوج الحالي.",
-      allOil:"تصفّحوا كل أحجام زيت الزيتون",shopPromo:"الحصاد الذهبي · ٢٠٢٦",shopJump:"شاهدوا صفائح الزيت",
-      imageAlt:"صفيحة زيت زيتون من زيت ومونة",storyImageAlt:"موسم قطاف الزيتون في لبنان",shopImageAlt:"صفيحة زيت زيتون من زيت ومونة"
+      shopTitle:"زيت السنة وصل",shopText:"ثلاث صفائح مميّزة من حصاد زيت الزيتون ٢٠٢٦، لتختاروا الحجم المناسب لسفرتكم.",
+      shopCta:"اكتشفوا مختارات الموسم",shopAll:"كل أحجام زيت الزيتون"
     },
     fr:{
-      overline:"ZAYT W MOUNEH · RÉCOLTE DES OLIVES 2026",
-      title:"LA RÉCOLTE <em>DORÉE</em>",
-      tagline:"L’huile de la saison est arrivée.",
-      localeDisplay:"FRANÇAIS",localeAria:"Langue sélectionnée : français",
-      heroFooter:"LIBAN · RÉCOLTE DES OLIVES 2026",
-      desc:"L’huile d’olive libanaise de la récolte 2026 est arrivée. Découvrez nos bidons et choisissez le format idéal pour votre table.",
-      discover:"Découvrir la récolte 2026",pantry:"Explorer toute l’épicerie",
-      choose:"CHOISISSEZ VOTRE FORMAT",chooseText:"Trois formats de bidons à découvrir pour la récolte d’huile d’olive 2026.",
-      season:"Récolte des olives 2026",chooseSize:"Choisir ce format",unavailable:"Non disponible à la commande en ligne pour le moment",inquire:"Se renseigner sur la disponibilité",
-      note:"Les prix et disponibilités proviennent du catalogue actuel. D’autres formats sont proposés dans la boutique.",
-      storyOverline:"LA SAISON DES OLIVES AU LIBAN",story:"DE LA RÉCOLTE À VOTRE TABLE",
-      storyCopy:"Au Liban, la saison des olives est un moment de partage et de retrouvailles autour de la nouvelle récolte. Célébrez la récolte 2026 avec Zayt w Mouneh.",
-      table:"LE GOÛT DE CHEZ NOUS",tableCopy:"Du pain frais, du zaatar, des olives et de l’huile d’olive : ces plaisirs simples que l’on aime partager.",
-      shopZaatar:"Découvrir le zaatar",shopOlives:"Découvrir les olives",
-      announcement:"🫒 La récolte d’huile d’olive 2026 est arrivée",announcementLink:"Découvrir la récolte",
-      shopDesc:"Découvrez trois formats de bidons de la nouvelle récolte et choisissez parmi les produits de notre catalogue actuel.",
-      allOil:"Voir toutes les huiles d’olive",shopPromo:"LA RÉCOLTE DORÉE · 2026",shopJump:"Voir les bidons",
-      imageAlt:"Bidon d’huile d’olive Zayt w Mouneh",storyImageAlt:"Saison de la récolte des olives au Liban",shopImageAlt:"Bidon d’huile d’olive Zayt w Mouneh"
+      kicker:"SÉLECTIONS DE SAISON · RÉCOLTE 2026",
+      title:"La récolte 2026 est arrivée",
+      description:"Découvrez notre huile d’olive libanaise fraîchement récoltée en 2026.",
+      badge:"NOUVEAU · RÉCOLTE 2026",
+      smallBadge:"RÉCOLTE 2026",
+      price:"Prix",add:"Ajouter au panier",inquire:"Demander la disponibilité",
+      unavailable:"Prix et commande en ligne indisponibles pour ce format actuellement.",
+      viewAll:"Voir tous les formats d’huile d’olive",notes:"Les prix affichés proviennent du catalogue actuel. Aucune remise saisonnière n’est annoncée.",
+      imageAlt:"Bidon d’huile d’olive Zayt w Mouneh",
+      popupKicker:"ZAYT W MOUNEH · RÉCOLTE DES OLIVES 2026",
+      popupTitle:"LA RÉCOLTE <em>DORÉE</em>",
+      popupSubtitle:"L’huile d’olive de la saison est arrivée.",
+      popupDescription:"Découvrez l’huile d’olive libanaise de la récolte 2026 et choisissez le bidon idéal pour votre table.",
+      popupDiscover:"Découvrir la récolte",popupContinue:"Continuer vers le site",popupClose:"Fermer l’annonce de la récolte",
+      popupFilm:"Film de la récolte des olives 2026",
+      announcement:"🫒 LA RÉCOLTE 2026 EST ARRIVÉE",announcementLink:"Découvrir la récolte",
+      shopTitle:"La récolte 2026 est arrivée",shopText:"Découvrez nos trois bidons d’huile d’olive de la nouvelle récolte, et choisissez le format adapté à votre table.",
+      shopCta:"Découvrir les sélections de saison",shopAll:"Toutes les huiles d’olive"
     }
   };
-  function language(){var s=document.documentElement.lang;return s==="ar"?"ar":s==="fr"?"fr":"en"}
+  function language(){var l=document.documentElement.lang;return l==="ar"?"ar":l==="fr"?"fr":"en"}
+  function tr(){return COPY[language()]}
   function dir(){return language()==="ar"?"rtl":"ltr"}
-  function sectionLocale(){return ' lang="'+language()+'" dir="'+dir()+'"'}
-  function t(){return COPY[language()]||COPY.en}
-  function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-  function catalog(){try{return typeof PRODUCTS_DATA!=="undefined"&&Array.isArray(PRODUCTS_DATA)?PRODUCTS_DATA:[]}catch(e){return []}}
-  function oil(){return catalog().find(function(p){return p.id===OIL_ID})}
+  function esc(value){return String(value==null?"":value).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+  function formatUSD(value){return new Intl.NumberFormat(language()==="fr"?"fr-LB":"en-LB",{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}).format(value)}
+  function reduceMotion(){return !!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)}
+  function getFlag(){try{return localStorage.getItem(POPUP_KEY)==="1"}catch(e){return Boolean(window.__ZWM_GH_POPUP_SEEN__)}}
+  function setFlag(){try{localStorage.setItem(POPUP_KEY,"1")}catch(e){window.__ZWM_GH_POPUP_SEEN__=true}}
+  function catalogueProduct(){try{return typeof PRODUCTS_DATA!=="undefined"&&Array.isArray(PRODUCTS_DATA)?PRODUCTS_DATA.find(function(p){return p.id===OIL_ID}):null}catch(e){return null}}
   function variantFor(size){
-    var p=oil();if(!p||!Array.isArray(p.variants))return null;
+    var p=catalogueProduct();
+    if(!p||!Array.isArray(p.variants))return null;
     return p.variants.find(function(v){
-      var a=String(v.sizeEn||"").replace(/\s+/g,"").toLowerCase();
-      return a===size.size.toLowerCase()+"l"&&Number.isFinite(Number(v.price))&&Number(v.price)>=0;
+      return v.id===size.id&&String(v.sizeEn||"").replace(/\s+/g,"").toLowerCase()===size.size.toLowerCase()+"l"&&
+        Number.isFinite(Number(v.price))&&Number(v.price)>=0;
     })||null;
   }
-  function available(p){
-    var a=String(p&&p.availability||"").toLowerCase();
-    return !(/out.of.stock|coming.soon|draft|hidden|discontinued|unavailable/.test(a)||p&&p.status==="hidden");
+  function offer(size){
+    var v=variantFor(size);
+    if(!v)return null;
+    var api=window.ZWM_HARVEST_CART;
+    return api&&typeof api.offer==="function"?api.offer(OIL_ID,v.id):null;
   }
-  function money(n){return "$"+Number(n).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}
-  function shopUrl(variant){return "/shop?category=Olive%20Oil"+(PREVIEW?"&harvestPreview=1":"")+(variant?"&harvestVariant="+encodeURIComponent(variant):"")+"#shop"}
-  function photo(img,fallback){
-    img.addEventListener("error",function(){if(img.dataset.ghFallback)return;img.dataset.ghFallback="1";img.src=fallback},{once:true});
+  function fallback(img){img.addEventListener("error",function(){if(img.dataset.ghFallback)return;img.dataset.ghFallback="1";img.src="/assets/videos/home-pantry.jpg"},{once:true})}
+  function card(size){
+    var t=tr(),v=variantFor(size),o=offer(size),orderable=!!(o&&o.available);
+    return '<article class="gh-pick-card" data-gh-size="'+esc(size.size)+'">'+
+      '<span class="gh-pick-badge">'+esc(t.badge)+'</span>'+
+      '<div class="gh-pick-figure"><img src="'+PHOTO+size.file+'" loading="lazy" decoding="async" width="640" height="800" alt="'+esc(t.imageAlt+" — "+size.size+" L")+'"></div>'+
+      '<div class="gh-pick-information"><h3 class="gh-pick-capacity" dir="ltr">'+esc(size.size)+' L</h3>'+
+      (o?'<p class="gh-pick-price"><span class="gh-sr-only">'+esc(t.price)+': </span>'+esc(formatUSD(o.price))+'</p>':
+          '<p class="gh-pick-price-gh-unset">'+esc(t.unavailable)+'</p>')+
+      (orderable?
+        '<button class="gh-pick-buy" type="button" data-gh-add="'+esc(size.id)+'">'+esc(t.add)+' <span aria-hidden="true">↗</span></button>':
+        '<a class="gh-pick-inquire" href="/contact">'+esc(t.inquire)+' <span aria-hidden="true">↗</span></a>')+
+      '</div></article>';
   }
-  function hero(){
-    var c=t();
-    return '<section class="zwm-gh zwm-gh-hero"'+sectionLocale()+' aria-labelledby="ghHeroTitle">'+
-      '<div class="gh-film" aria-hidden="true"><video id="ghFilm" muted playsinline preload="none" poster="'+PHOTO+'hero-poster.jpg">'+
-      '<source src="'+PHOTO+'harvest-film.mp4" type="video/mp4"></video></div><div class="gh-shade"></div>'+
-      '<div class="gh-shell gh-hero-inner"><div class="gh-hero-copy">'+
-      '<div class="gh-hero-topline"><span class="gh-overline">'+esc(c.overline)+'</span><span class="gh-locale-indicator" aria-label="'+esc(c.localeAria)+'">'+esc(c.localeDisplay)+'</span></div>'+
-      '<h1 id="ghHeroTitle">'+c.title+'</h1>'+
-      '<p class="gh-season-line">'+esc(c.tagline)+'</p>'+
-      '<p class="gh-desc">'+esc(c.desc)+'</p>'+
-      '<a class="gh-action" href="#harvest-collection">'+esc(c.discover)+' <span aria-hidden="true">↗</span></a>'+
-      '<a class="gh-subaction" href="/shop#shop">'+esc(c.pantry)+'</a>'+
-      '</div></div><span class="gh-hero-caption">'+esc(c.heroFooter)+'</span></section>';
+  function collectionMarkup(){
+    var t=tr();
+    return '<section class="zwm-gh gh-picks" lang="'+language()+'" dir="'+dir()+'" id="harvest-picks" aria-labelledby="ghPicksTitle">'+
+      '<div class="gh-shell"><div class="gh-picks-intro"><div><span class="gh-picks-kicker">'+esc(t.kicker)+'</span>'+
+      '<h2 id="ghPicksTitle">'+esc(t.title)+'</h2><p>'+esc(t.description)+'</p></div>'+
+      '<div class="gh-picks-symbol" aria-hidden="true">✦ <span>2026</span> ✦</div></div>'+
+      '<div class="gh-picks-grid">'+SIZES.map(card).join("")+'</div>'+
+      '<div class="gh-picks-footer"><p>'+esc(t.notes)+'</p><a href="/shop?category=Olive%20Oil#shop">'+esc(t.viewAll)+' <span aria-hidden="true">↗</span></a></div></div></section>';
   }
-  function card(s){
-    var c=t(),p=oil(),v=variantFor(s),orderable=!!(p&&v&&available(p));
-    var href=orderable?shopUrl(v.id):"/"+(PREVIEW?"?harvestPreview=1":"")+"#contact";
-    var pic=PHOTO+s.file;
-    return '<article class="gh-card" data-size="'+s.size+'">'+
-      '<figure class="gh-card-figure"><img src="'+pic+'" loading="lazy" decoding="async" width="640" height="800" alt="'+esc(c.imageAlt+" — "+s.size+" L")+'"></figure>'+
-      '<h3 class="gh-capacity" dir="ltr">'+s.size+' L</h3><p class="gh-caption">'+esc(c.season)+'</p>'+
-      (orderable?'<p class="gh-price">'+money(v.price)+'</p>':'<p class="gh-unavailable">'+esc(c.unavailable)+'</p>')+
-      '<a class="gh-action" href="'+href+'"'+(!orderable?' data-gh-inquire="1"':'')+'>'+
-      esc(orderable?c.chooseSize:c.inquire)+' <span aria-hidden="true">↗</span></a></article>';
+  function renderPicks(){
+    var anchor=document.querySelector("body[data-page='home'] #featured");
+    if(!anchor)return;
+    var stage=document.getElementById("ghPicksStage");
+    if(!stage){stage=document.createElement("div");stage.id="ghPicksStage";anchor.parentNode.insertBefore(stage,anchor)}
+    stage.innerHTML=collectionMarkup();
+    stage.querySelectorAll(".gh-pick-figure img").forEach(fallback);
+    revealCards(stage);
   }
-  function collection(){
-    var c=t();
-    return '<section class="zwm-gh zwm-gh-collection"'+sectionLocale()+' id="harvest-collection" aria-labelledby="ghChooseTitle">'+
-      '<div class="gh-shell"><div class="gh-section-heading"><span class="gh-overline">'+esc(c.shopPromo)+'</span>'+
-      '<h2 id="ghChooseTitle">'+esc(c.choose)+'</h2><p>'+esc(c.chooseText)+'</p></div>'+
-      '<div class="gh-tins">'+SIZES.map(card).join("")+'</div>'+
-      '<p class="gh-bottom-note">'+esc(c.note)+'</p></div></section>';
+  var revealObserver=null;
+  function revealCards(stage){
+    if(revealObserver){revealObserver.disconnect();revealObserver=null}
+    var cards=stage.querySelectorAll(".gh-pick-card");
+    if(reduceMotion()||!("IntersectionObserver" in window)){cards.forEach(function(card){card.classList.add("gh-visible")});return}
+    revealObserver=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add("gh-visible");revealObserver.unobserve(entry.target)}});
+    },{threshold:.08,rootMargin:"0px 0px 50px 0px"});
+    cards.forEach(function(card){revealObserver.observe(card)});
   }
-  function story(){
-    var c=t();
-    return '<section class="zwm-gh zwm-gh-story"'+sectionLocale()+' aria-labelledby="ghStoryTitle"><div class="gh-shell gh-story-grid">'+
-      '<figure class="gh-story-photo"><img loading="lazy" decoding="async" width="960" height="540" src="'+PHOTO+'hero-poster.jpg" alt="'+esc(c.storyImageAlt)+'"></figure>'+
-      '<div><span class="gh-overline">'+esc(c.storyOverline)+'</span><h2 id="ghStoryTitle">'+esc(c.story)+'</h2><p>'+esc(c.storyCopy)+'</p></div>'+
-      '</div></section>';
+  function setupCart(){
+    var stage=document.getElementById("ghPicksStage");if(!stage)return;
+    stage.addEventListener("click",function(event){
+      var btn=event.target.closest("[data-gh-add]");
+      if(!btn||!stage.contains(btn))return;
+      event.preventDefault();
+      if(btn.disabled)return;
+      var size=SIZES.find(function(s){return s.id===btn.dataset.ghAdd});
+      var o=size&&offer(size);
+      var api=window.ZWM_HARVEST_CART;
+      if(!o||!o.available||!api||typeof api.add!=="function"){renderPicks();return}
+      btn.disabled=true;
+      try{
+        if(!api.add(OIL_ID,size.id)){renderPicks();return}
+        btn.classList.add("gh-pick-added");
+      }finally{setTimeout(function(){if(btn.isConnected)btn.disabled=false},450)}
+    });
   }
-  function table(){
-    var c=t();
-    return '<section class="zwm-gh zwm-gh-table"'+sectionLocale()+'><div class="gh-shell gh-table-grid"><div>'+
-      '<span class="gh-overline">ZAYT W MOUNEH</span><h2>'+esc(c.table)+'</h2><p>'+esc(c.tableCopy)+'</p></div>'+
-      '<div class="gh-table-links"><a href="/shop?q=zaatar#shop">'+esc(c.shopZaatar)+' ↗</a>'+
-      '<a href="/shop?category=Olives#shop">'+esc(c.shopOlives)+' ↗</a></div>'+
-      '</div></section>';
+  var popup,previousFocus,film,modalReady=false,welcomeObserver=null;
+  function popupMarkup(){
+    var t=tr();
+    return '<div class="gh-popup-backdrop" data-gh-close="backdrop"></div>'+
+      '<section class="gh-popup-panel" role="dialog" aria-modal="true" aria-labelledby="ghPopupTitle" aria-describedby="ghPopupDescription" lang="'+language()+'" dir="'+dir()+'">'+
+        '<video class="gh-popup-video" id="ghPopupFilm" aria-label="'+esc(t.popupFilm)+'" muted playsinline loop preload="none" poster="'+PHOTO+'hero-poster.jpg" aria-hidden="true">'+
+          '<source src="'+PHOTO+'harvest-film.mp4" type="video/mp4"></video>'+
+        '<div class="gh-popup-shade" aria-hidden="true"></div>'+
+        '<button class="gh-popup-dismiss" type="button" data-gh-close="button" aria-label="'+esc(t.popupClose)+'">×</button>'+
+        '<div class="gh-popup-content">'+
+          '<img class="gh-popup-logo" src="/assets/logo.svg" alt="Zayt w Mouneh" width="94" height="94">'+
+          '<span class="gh-popup-kicker">'+esc(t.popupKicker)+'</span>'+
+          '<h2 id="ghPopupTitle">'+t.popupTitle+'</h2>'+
+          '<p class="gh-popup-subtitle">'+esc(t.popupSubtitle)+'</p>'+
+          '<p id="ghPopupDescription" class="gh-popup-description">'+esc(t.popupDescription)+'</p>'+
+          '<div class="gh-popup-actions"><button class="gh-popup-discover" type="button" data-gh-discover>'+
+             esc(t.popupDiscover)+' <span aria-hidden="true">↗</span></button>'+
+             '<button class="gh-popup-continue" type="button" data-gh-close="continue">'+esc(t.popupContinue)+'</button></div>'+
+        '</div>'+
+        '<span class="gh-popup-film-label" aria-hidden="true">'+esc(t.smallBadge)+'</span>'+
+      '</section>';
   }
-  function manageVideo(){
-    var video=document.getElementById("ghFilm");if(!video)return;
-    var poster=PHOTO+"hero-poster.jpg";
-    var still=new Image();still.onerror=function(){video.poster="/assets/videos/home-pantry.jpg"};still.src=poster;
-    var reduced=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var observer,visible=true;
-    var fallback=false;
-    function play(){if(reduced||!visible||document.hidden)return;var promise=video.play();if(promise&&promise.catch)promise.catch(function(){})}
-    function switchToFallback(){
-      if(fallback)return;fallback=true;video.pause();video.src="/assets/videos/home-pantry.mp4";video.poster="/assets/videos/home-pantry.jpg";if(!reduced)play();
+  function closePopup(shouldScroll){
+    if(!popup||popup.hidden)return;
+    popup.hidden=true;
+    popup.classList.remove("gh-is-open");
+    document.body.classList.remove("gh-popup-open");
+    setFlag();
+    if(film){film.pause();film.removeAttribute("autoplay")}
+    if(shouldScroll){
+      var target=document.getElementById("harvest-picks");
+      if(target){target.scrollIntoView({behavior:reduceMotion()?"auto":"smooth",block:"start"});target.setAttribute("tabindex","-1");target.focus({preventScroll:true})}
+    }else if(previousFocus&&previousFocus.isConnected){
+      previousFocus.focus({preventScroll:true});
     }
-    video.addEventListener("error",switchToFallback);
-    video.addEventListener("ended",function(){video.pause()});
-    video.muted=true;video.defaultMuted=true;video.playsInline=true;
-    if(reduced){video.pause();return}
-    if("IntersectionObserver" in window){
-      observer=new IntersectionObserver(function(entries){visible=entries[0].isIntersecting;if(visible)play();else video.pause()},{threshold:.08});
-      observer.observe(video);
-    }
-    document.addEventListener("visibilitychange",function(){if(document.hidden)video.pause();else play()});
-    video.preload="metadata";video.load();play();
   }
-  function renderHome(){
-    var old=document.querySelector(".home-pantry-hero");if(!old||!old.parentNode)return;
-    if(!document.getElementById("ghHeroTitle")){
-      var stage=document.createElement("div");stage.id="ghHomeStage";
-      stage.innerHTML=hero()+collection()+story()+table();
-      old.insertAdjacentElement("beforebegin",stage);
-      old.setAttribute("aria-hidden","true");old.inert=true;
-      var oldVideo=document.getElementById("shopHeroVideo");
-      if(oldVideo){oldVideo.pause();oldVideo.removeAttribute("autoplay");oldVideo.id="inactiveShopHeroVideo";}
-    } else {
-      document.getElementById("ghHomeStage").innerHTML=hero()+collection()+story()+table();
+  function popupKeydown(event){
+    if(!popup||popup.hidden)return;
+    if(event.key==="Escape"){event.preventDefault();closePopup(false);return}
+    if(event.key!=="Tab")return;
+    var focusables=Array.from(popup.querySelectorAll('button:not([disabled]),a[href],[tabindex]:not([tabindex="-1"])')).filter(function(el){return el.getClientRects().length>0});
+    if(!focusables.length)return;
+    var first=focusables[0],last=focusables[focusables.length-1];
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
+  }
+  function updatePopupText(){
+    if(!popup||popup.hidden)return;
+    var isActive=document.activeElement&&popup.contains(document.activeElement);
+    var focusKey=isActive?(document.activeElement.dataset.ghClose|| (document.activeElement.hasAttribute("data-gh-discover")?"discover":"")):"";
+    if(film)film.pause();
+    popup.innerHTML=popupMarkup();
+    film=popup.querySelector("#ghPopupFilm");
+    setupPopupFilm();
+    var focused=focusKey==="discover"?popup.querySelector("[data-gh-discover]"):popup.querySelector('[data-gh-close="'+focusKey+'"]');
+    if(focused)focused.focus({preventScroll:true});
+  }
+  function setupPopupFilm(){
+    if(!film)return;
+    film.muted=true;film.defaultMuted=true;film.playsInline=true;
+    if(reduceMotion())return;
+    film.preload="metadata";
+    var play=film.play();if(play&&play.catch)play.catch(function(){});
+  }
+  function openPopup(){
+    if(!popup||!popup.hidden)return;
+    if(document.body.classList.contains("welcome-open"))return;
+    previousFocus=document.activeElement;
+    popup.hidden=false;
+    popup.classList.add("gh-is-open");
+    popup.innerHTML=popupMarkup();
+    film=popup.querySelector("#ghPopupFilm");
+    document.body.classList.add("gh-popup-open");
+    setupPopupFilm();
+    var first=popup.querySelector("[data-gh-discover]");
+    if(first)first.focus({preventScroll:true});
+  }
+  function startPopupAfterLanguageWelcome(){
+    if(page!=="home"||getFlag()&&!SHOW_POPUP_AGAIN)return;
+    var welcome=document.getElementById("languageWelcome");
+    function ready(){
+      if(welcome&&(!welcome.hidden||document.body.classList.contains("welcome-open")))return false;
+      openPopup();return true;
     }
-    document.querySelectorAll("#ghHomeStage .gh-card-figure img").forEach(function(img){photo(img,"/assets/products/originals/extra-virgin-olive-oil.jpg")});
-    var storyImg=document.querySelector("#ghHomeStage .gh-story-photo img");if(storyImg)photo(storyImg,"/assets/videos/home-pantry.jpg");
-    manageVideo();
+    if(ready())return;
+    if(welcome&&"MutationObserver" in window){
+      welcomeObserver=new MutationObserver(function(){if(ready()){welcomeObserver.disconnect();welcomeObserver=null}});
+      welcomeObserver.observe(welcome,{attributes:true,attributeFilter:["hidden","class","aria-hidden"]});
+    }
+  }
+  function setupPopup(){
+    if(page!=="home"||modalReady)return;
+    modalReady=true;
+    popup=document.createElement("div");
+    popup.id="ghCampaignPopup";
+    popup.className="gh-popup";
+    popup.hidden=true;
+    document.body.appendChild(popup);
+    popup.addEventListener("click",function(event){
+      if(event.target.closest("[data-gh-discover]")){closePopup(true);return}
+      if(event.target.closest("[data-gh-close]"))closePopup(false);
+    });
+    document.addEventListener("keydown",popupKeydown);
+    document.addEventListener("visibilitychange",function(){
+      if(!film||!popup||popup.hidden)return;
+      if(document.hidden)film.pause();
+      else if(!reduceMotion()){var p=film.play();if(p&&p.catch)p.catch(function(){})}
+    });
+    startPopupAfterLanguageWelcome();
   }
   function renderShop(){
     var section=document.querySelector("body[data-page='shop'] .seasonal-story");
     if(!section)return;
-    var c=t(),card=section.querySelector(".seasonal-story-card");
-    if(!card)return;
-    card.classList.add("zwm-gh");
+    var card=section.querySelector(".seasonal-story-card");if(!card)return;
+    var t=tr();
+    card.classList.add("zwm-gh","gh-shop-spotlight");
     card.lang=language();card.dir=dir();
-    card.innerHTML='<div class="zwm-gh-shop-copy"><span class="gh-overline">'+esc(c.shopPromo)+'</span>'+
-      '<h2>'+esc(c.choose)+'</h2><p>'+esc(c.shopDesc)+'</p>'+
-      '<a class="gh-action" href="/'+(PREVIEW?"?harvestPreview=1":"")+'#harvest-collection">'+esc(c.shopJump)+' ↗</a> '+
-      '<a style="color:#f4e3b2;margin-inline-start:18px" href="'+shopUrl("")+'">'+esc(c.allOil)+' ↗</a></div>'+
-      '<div class="zwm-gh-shop-photo" role="img" aria-label="'+esc(c.shopImageAlt)+'"></div>';
-    var main=document.querySelector("body[data-page='shop'] main");
-    var categories=main&&main.querySelector(".shop-category-hub");
-    if(main&&categories&&section.nextElementSibling!==categories)main.insertBefore(section,categories);
-    var featured=new URLSearchParams(location.search).get("harvestVariant");
-    if(featured&&!window.__ZWM_HARVEST_VARIANT_OPENED__){
-      var p=oil(),v=p&&p.variants&&p.variants.find(function(x){return x.id===featured});
-      if(v&&available(p)){
-        var sel=document.querySelector('select[data-card-variant="'+OIL_ID+'"]');
-        if(sel){sel.value=v.id;sel.dispatchEvent(new Event("change",{bubbles:true}));var btn=document.querySelector('button[data-view="'+OIL_ID+'"]');
-          if(btn){window.__ZWM_HARVEST_VARIANT_OPENED__=true;btn.click();}
-        }
-      }
-    }
+    card.innerHTML='<div class="gh-shop-spotlight-copy"><span class="gh-picks-kicker">'+esc(t.kicker)+'</span>'+
+      '<h2>'+esc(t.shopTitle)+'</h2><p>'+esc(t.shopText)+'</p>'+
+      '<a class="gh-shop-cta" href="/'+(PREVIEW?"?harvestPreview=1":"")+'#harvest-picks">'+esc(t.shopCta)+' ↗</a>'+
+      ' <a class="gh-shop-all" href="/shop?category=Olive%20Oil#shop">'+esc(t.shopAll)+' ↗</a></div>'+
+      '<img class="gh-shop-spotlight-image" loading="lazy" decoding="async" src="'+PHOTO+'17-54l.webp" alt="'+esc(t.imageAlt+" — 17.54 L")+'">';
   }
   var announcementBusy=false;
-  function setAnnouncement(){
-    var text=document.getElementById("announcementText"),link=document.getElementById("announcementOrder");
-    if(!text||!link)return;
-    var c=t(),value=c.announcement+" — "+c.announcementLink;
-    if(text.textContent!==value){announcementBusy=true;text.textContent=value;announcementBusy=false}
-    link.textContent=c.announcementLink;
-    link.href="/"+(PREVIEW?"?harvestPreview=1":"")+"#harvest-collection";
+  function announcement(){
+    var label=document.getElementById("announcementText");
+    var action=document.getElementById("announcementOrder");
+    if(!label||!action)return;
+    var t=tr(),value=t.announcement;
+    if(label.textContent!==value){announcementBusy=true;label.textContent=value;announcementBusy=false}
+    action.textContent=t.announcementLink;
+    action.href="/"+(PREVIEW?"?harvestPreview=1":"")+"#harvest-picks";
+    label.closest(".announcement")?.classList.add("gh-announcement");
   }
   function init(){
-    if(!document.body||!["home","shop"].includes(document.body.dataset.page))return;
+    if(document.body.dataset.page!=="home"&&document.body.dataset.page!=="shop")return;
     document.body.classList.add("zwm-harvest-active");
-    if(document.body.dataset.page==="home")renderHome();else renderShop();
-    setAnnouncement();
-    var text=document.getElementById("announcementText");
-    if(text&&"MutationObserver" in window)new MutationObserver(function(){if(!announcementBusy)setAnnouncement()}).observe(text,{childList:true,characterData:true,subtree:true});
-    var lc=language();
+    if(page==="home"){renderPicks();setupCart();setupPopup()}
+    else renderShop();
+    announcement();
+    var oldLang=language();
     if("MutationObserver" in window)new MutationObserver(function(){
-      var next=language();if(next===lc)return;lc=next;
-      if(document.body.dataset.page==="home")renderHome();else renderShop();
-      setAnnouncement();
+      var next=language();if(next===oldLang)return;oldLang=next;
+      if(page==="home"){renderPicks();updatePopupText()}else renderShop();
+      announcement();
     }).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
-    window.addEventListener("zwm:catalog-cache-updated",function(){
-      if(document.body.dataset.page==="home")renderHome();else renderShop();
+    document.addEventListener("zwm:localechange",function(){
+      if(language()===oldLang)return;oldLang=language();
+      if(page==="home"){renderPicks();updatePopupText()}else renderShop();
+      announcement();
     });
+    window.addEventListener("zwm:catalog-cache-updated",function(){if(page==="home")renderPicks()});
+    var text=document.getElementById("announcementText");
+    if(text&&"MutationObserver" in window)new MutationObserver(function(){if(!announcementBusy)announcement()}).observe(text,{childList:true,characterData:true,subtree:true});
   }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});
   else init();
 })();

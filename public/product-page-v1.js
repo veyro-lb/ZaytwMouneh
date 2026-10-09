@@ -309,6 +309,9 @@ function render(){
  updateCartCount();
 }
 function renderNotFound(){
+ // Avoid indexing nonexistent or owner-hidden catalogue products.
+ var robots=qs('meta[name="robots"]');if(robots)robots.content="noindex,follow";
+ document.title="Product not found | Zayt w Mouneh";
  state.locale=locale();document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==="ar"?"rtl":"ltr";
  qs("#c6ProductRoot").innerHTML='<main class="c6-product-main"><div class="c6-shell"><div class="c6-purchase-box" style="max-width:720px;margin:70px auto;text-align:center"><h1 class="c6-product-title">'+esc(t("notFound"))+'</h1><p>'+esc(t("notFoundCopy"))+'</p><a class="c6-button" href="'+localePrefix(state.locale)+'/shop">'+esc(t("allProducts"))+'</a></div></div></main>';
 }

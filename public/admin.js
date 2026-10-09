@@ -2876,7 +2876,7 @@
     $("sidebarBackdrop").hidden=true;
     document.body.classList.remove("admin-menu-open");
     $("mobileMenuButton")?.setAttribute("aria-expanded","false");
-    $("adminSidebar")?.setAttribute("aria-hidden","true");
+    $("adminSidebar")?.setAttribute("aria-hidden",window.matchMedia("(max-width: 900px)").matches?"true":"false");
   }
 
   async function handleLogin(e) {
@@ -4188,7 +4188,7 @@
     $("settingsSignOut")?.addEventListener("click",signOut);
     $("refreshButton")?.addEventListener("click",()=>refreshAll().then(()=>toast("Dashboard refreshed.")));
     $("mobileMenuButton")?.setAttribute("aria-expanded","false");
-    $("adminSidebar")?.setAttribute("aria-hidden",window.matchMedia("(max-width: 760px)").matches?"true":"false");
+    $("adminSidebar")?.setAttribute("aria-hidden",window.matchMedia("(max-width: 900px)").matches?"true":"false");
     $("mobileMenuButton")?.addEventListener("click",e=>{
       e.preventDefault();
       if($("adminSidebar").classList.contains("is-open"))closeSidebar();
@@ -4354,8 +4354,8 @@
       if($("adminSidebar")?.classList.contains("is-open")){closeSidebar();return;}
     });
     window.addEventListener("resize",()=>{
-      if(window.innerWidth>760&&$("adminSidebar")?.classList.contains("is-open"))closeSidebar();
-      if(window.innerWidth>760)$("adminSidebar")?.setAttribute("aria-hidden","false");
+      if(window.innerWidth>900&&$("adminSidebar")?.classList.contains("is-open"))closeSidebar();
+      if(window.innerWidth>900)$("adminSidebar")?.setAttribute("aria-hidden","false");
       else if(!$("adminSidebar")?.classList.contains("is-open"))$("adminSidebar")?.setAttribute("aria-hidden","true");
     });
     window.addEventListener("beforeunload",e=>{

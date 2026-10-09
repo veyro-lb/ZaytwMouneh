@@ -161,10 +161,10 @@ for(const [variant,file] of [
  ["extra-virgin-olive-oil-8-77-l","8-77l.webp"],
  ["extra-virgin-olive-oil-17-54-l","17-54l.webp"]
 ]){
- assert.equal(oilPhoto(oilId,variant).url,"/assets/harvest-2026/"+file,"Incorrect owner photo for "+variant);
+ assert.equal(oilPhoto(oilId,variant).url,"/assets/harvest-2026/"+file+"?v=20261009-oil-ownerset3","Incorrect owner photo for "+variant);
  assert.equal(oilPhoto(oilId,variant).fit,"contain","Do not crop owner photo "+variant);
 }
-assert.equal(oilPhoto(oilId).url,"/assets/harvest-2026/1l.webp","Default olive oil photo must show the 1 L bottle");
+assert.equal(oilPhoto(oilId).url,"/assets/harvest-2026/1l.webp?v=20261009-oil-ownerset3","Default olive oil photo must show the 1 L bottle");
 assert.equal(oilPhoto(oilId,"extra-virgin-olive-oil-500-ml").url,
  "/assets/products/originals/extra-virgin-olive-oil.jpg","Keep legacy 500 ml fallback until 500 ml photo is provided");
 assert.match(app,/sourceFor\(p\.id,variantId\)/,"Shop and quick view must resolve selected variant photo");

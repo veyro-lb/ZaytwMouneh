@@ -45,10 +45,11 @@
     "quality": "original-supplied"
   },
   "kabees-left": {
-    "url": "assets/products/originals/kabees-left.jpg",
-    "width": 1024,
-    "height": 1536,
-    "quality": "original-supplied"
+    "url": "assets/products/cutouts/kabees-left.svg",
+    "width": 597,
+    "height": 895,
+    "quality": "source-faithful-transparent-cutout",
+    "originalUrl": "assets/products/originals/kabees-left.jpg"
   },
   "makatar-zaatar": {
     "url": "assets/products/originals/makatar-zaatar.jpg",
@@ -846,10 +847,11 @@
     "quality": "original-supplied"
   },
   "kamoun-neeme": {
-    "url": "assets/products/originals/kamoun-neeme.jpg",
-    "width": 848,
-    "height": 1413,
-    "quality": "original-supplied"
+    "url": "assets/products/cutouts/kamoun-neeme.svg",
+    "width": 557,
+    "height": 860,
+    "quality": "source-faithful-transparent-cutout",
+    "originalUrl": "assets/products/originals/kamoun-neeme.jpg"
   },
   "kary-har": {
     "url": "assets/products/originals/kary-har.jpg",

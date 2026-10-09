@@ -61,7 +61,10 @@ assert.match(css,/object-fit:contain/,"Full product photos must remain visible")
 assert.match(css,/@media\(max-width:680px\)/,"Mobile must have one-column layout");
 assert.match(css,/grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/,"Desktop must show all tins side by side");
 assert.match(css,/#a53d35/,"Badge must be a tasteful harvest red");
-assert.match(css,/\.gh-popup-panel\{[^}]*width:min\(515px,100%\)/,"Popup should be a centered floating dialog, not a homepage takeover");
+assert.match(css,/\.gh-popup-panel\{[^}]*width:min\(940px,/,"Desktop popup must be a wide 940px cinematic viewport");
+assert.match(css,/\.gh-popup-video\{[^}]*object-fit:cover/,"Video must fill cinematic frame");
+assert.match(css,/\.gh-popup-shade\{[^}]*linear-gradient\(90deg/,"Soft horizontal gradient preserves visible harvest film");
+assert.match(css,/\.gh-popup-continue\{[^}]*background:transparent/,"Continue must be visually secondary");
 assert.match(css,/\.gh-popup-discover\{[^}]*background:#a53d35/,"Popup CTA must be harvest red");
 assert.match(css,/\.gh-picks-arrival\{[^}]*background:#a53d35/,"Section must have a prominent harvest red new-arrival badge");
 assert.match(js,/gh-picks-arrival/,"Section heading must render the red badge");
@@ -127,11 +130,12 @@ assert.equal(COPY.en.popupDiscover,"Discover the Harvest");
 assert.equal(COPY.en.popupContinue,"Continue to Website");
 assert.ok(!("popupSubtitle" in COPY.ar)&&!("popupSubtitle" in COPY.en)&&!("popupSubtitle" in COPY.fr),"The title should not be repeated as a popup subtitle");
 assert.doesNotMatch(js,/gh-popup-subtitle|gh-popup-film-label/,"No redundant subtitle or film badge should be rendered");
-assert.equal(COPY.ar.popupTitle.replace(/<[^>]*>/g,""),"زيت السنة وصل");
-assert.equal(COPY.ar.popupKicker,"زيت ومونة · موسم الزيتون ٢٠٢٦");
+assert.equal(COPY.ar.popupTitle.replace(/<[^>]*>/g,""),"٢٠٢٦زيت السنة وصل");
+assert.equal(COPY.ar.popupKicker,"زيت ومونة");
 assert.ok(!COPY.ar.popupDescription.includes("موسم الزيتون ٢٠٢٦"),"Season year belongs only to the popup overline");
-assert.equal(COPY.ar.popupDescription,"زيت زيتون بكر ممتاز معصور على البارد. اختاروا حجم الصفيحة الأنسب لسفرتكم.");
+assert.equal(COPY.ar.popupDescription,"زيت زيتون بكر ممتاز معصور على البارد.");
 assert.equal(COPY.ar.popupDiscover,"اكتشفوا صفائح الزيت");
+assert.equal(COPY.en.popupTitle.replace(/<[^>]*>/g,""),"2026The Golden Harvest");
 assert.ok(!COPY.en.popupKicker.includes("2026")&&!COPY.en.popupDescription.includes("2026"),"English popup should only state year in its title");
 assert.ok(!COPY.fr.popupKicker.includes("2026")&&!COPY.fr.popupDescription.includes("2026"),"French popup should only state year in its title");
 assert.equal(COPY.fr.kicker,"SÉLECTIONS DE SAISON");
@@ -139,4 +143,23 @@ assert.equal(COPY.fr.kicker,"SÉLECTIONS DE SAISON");
 assert.match(js,/function language\(\)\{var l=document\.documentElement\.lang/);
 assert.ok(js.includes("lang=\"\'+language()+\'\""),"Seasonal section follows chosen language");
 assert.ok(js.includes("dir=\"\'+dir()+\'\""),"Seasonal section follows RTL");
+// Check every public-facing preview route and shared shopping script for the
+// previously incorrect business number, including structured data and WhatsApp links.
+const checkedPhoneFiles=[
+ "index.html","shop.html","contact.html","about.html","gift.html","recipes.html",
+ "account.html","wholesale.html","checkout.html","returns.html","product.html",
+ "privacy.html","terms.html","privacy-policy.html","privacy-and-data.html",
+ "terms-of-service.html","terms-and-rewards.html","returns-policy.html",
+ "admin.html","order.js","app.js","premium-v2.js","admin.js","checkout.js","conversion-v1.js"
+];
+for(const name of checkedPhoneFiles){
+ const body=read("public/"+name);
+ assert.doesNotMatch(body,/96181581230|81\\s+581\\s+230/,"Old phone must not appear in "+name);
+}
+for(const name of ["index.html","shop.html","contact.html","about.html"]){
+ const html=read("public/"+name);
+ assert.match(html,/tel:\\+96170381412/,"Correct callable phone link needed on "+name);
+ assert.match(html,/https:\\/\\/wa\\.me\\/96170381412/,"Correct WhatsApp link needed on "+name);
+ assert.match(html,/\\+961 70 381 412/,"Correct visible phone text needed on "+name);
+}
 console.log("Golden Harvest 2026 campaign gate passed: five genuine media files, normal hero preserved, popup and first collection, 3 sizes, safe existing cart bridge, complete EN/AR/FR.");

@@ -141,6 +141,13 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  assert.equal(signedDoc.querySelectorAll(".gh-pick-card").length,4,"BFCache restore reattaches Seasonal Picks after account navigation");
  signedDoc.querySelector('[data-gh-add="extra-virgin-olive-oil-1-l"]').click();
  assert.equal(signedIn.added.at(-1).variant,"extra-virgin-olive-oil-1-l","Reattached collection keeps cart actions working");
+ // Simulate a sign-in widget replacing the collection directly, without
+ // navigation or pageshow. A bounded DOM observer should restore it.
+ signedDoc.getElementById("ghPicksStage").remove();
+ await pause();
+ assert.equal(signedDoc.querySelectorAll(".gh-pick-card").length,4,"Homepage collection must self-heal after auth DOM updates");
+ signedDoc.querySelector('[data-gh-add="extra-virgin-olive-oil-17-54-l"]').click();
+ assert.equal(signedIn.added.at(-1).variant,"extra-virgin-olive-oil-17-54-l","Reinserted card still uses existing cart");
  signedIn.dom.window.close();
 
  const signedShop=makePage("fr",{url:previewHost+"/shop",shop:true,seenPopup:true});
@@ -148,8 +155,10 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  signedShop.dom.window.close();
 
  const production=makePage("en",{url:"https://www.zaytw-mouneh.example/"});
- assert.equal(production.w.document.getElementById("ghPicksStage"),null,"Campaign stays disabled on public domain until release");
- assert.equal(production.w.document.getElementById("ghCampaignPopup"),null,"No accidental campaign popup on public domain");
+ assert.equal(production.w.document.querySelectorAll(".gh-pick-card").length,4,"Permanent olive oil collection must appear even on public domain after merging");
+ assert.equal(production.w.document.getElementById("normalHero").nextElementSibling.id,"ghPicksStage","Permanent collection must precede Pantry Favourites for all visitors");
+ assert.equal(production.w.document.getElementById("ghCampaignPopup"),null,"Cinematic popup stays off on public domain until separately launched");
+ assert.equal(production.w.document.getElementById("announcementText").textContent,"","Normal public announcement must not be overwritten before promo launch");
  assert.ok(production.w.document.getElementById("normalHero"),"Normal public homepage remains intact");
  production.dom.window.close();
 

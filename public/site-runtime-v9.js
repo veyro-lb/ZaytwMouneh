@@ -100,7 +100,9 @@
     }
 
     const contact=settings.contact||{};
-    const number=String(contact.whatsapp||"").replace(/\D/g,"");
+    const configuredNumber=String(contact.whatsapp||"").replace(/\D/g,"");
+    // Normalize a saved legacy contact value so cached settings cannot restore an obsolete WhatsApp link on language changes.
+    const number=configuredNumber==="96181581230"?"96170381412":configuredNumber;
     if(number){
       const displayNumber=number.startsWith("961")&&number.length>=10
         ?"+961 "+number.slice(3,5)+" "+number.slice(5,8)+" "+number.slice(8)

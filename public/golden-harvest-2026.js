@@ -23,7 +23,7 @@
     en:{
       kicker:"SEASONAL PICKS · HARVEST 2026",
       title:"Fresh From the Harvest",
-      description:"Discover our freshly harvested 2026 Lebanese olive oil.",
+      description:"Discover our 2026 Lebanese cold-pressed extra virgin olive oil.",
       badge:"JUST ARRIVED · 2026 HARVEST",
       smallBadge:"2026 HARVEST",
       price:"Price",add:"Add to cart",inquire:"Ask about availability",
@@ -33,7 +33,7 @@
       popupKicker:"ZAYT W MOUNEH · 2026 OLIVE HARVEST",
       popupTitle:"The 2026 Harvest<br><em>Has Arrived</em>",
       popupSubtitle:"The olive oil of the season has arrived.",
-      popupDescription:"Fresh Lebanese olive oil from the 2026 harvest. Discover the tins made for your table.",
+      popupDescription:"Discover our Lebanese extra virgin olive oil, cold-pressed for the 2026 season. Find the right tin for your table.",
       popupDiscover:"Discover the Harvest",popupContinue:"Continue to Website",popupClose:"Close harvest announcement",
       popupFilm:"2026 olive harvest announcement film",
       announcement:"🫒 THE 2026 HARVEST HAS ARRIVED",announcementLink:"Explore the harvest",
@@ -41,29 +41,29 @@
       shopCta:"Explore Seasonal Picks",shopAll:"Shop all olive oil"
     },
     ar:{
-      kicker:"مختارات الموسم · حصاد ٢٠٢٦",
+      kicker:"مختارات الموسم · موسم الزيتون ٢٠٢٦",
       title:"زيت السنة وصل",
-      description:"اكتشفوا زيت الزيتون اللبناني الطازج من حصاد ٢٠٢٦.",
-      badge:"وصل جديد · حصاد ٢٠٢٦",
-      smallBadge:"حصاد ٢٠٢٦",
+      description:"زيت زيتون بكر ممتاز معصور على البارد، من موسم الزيتون ٢٠٢٦.",
+      badge:"وصل جديد · موسم ٢٠٢٦",
+      smallBadge:"موسم ٢٠٢٦",
       price:"السعر",add:"أضف إلى السلة",inquire:"استفسر عن التوفّر",
       unavailable:"السعر والطلب عبر الموقع غير متاحين لهذا الحجم حالياً.",
-      viewAll:"تصفّح كل أحجام زيت الزيتون",notes:"زيت زيتون لبناني · حصاد جديد · ثلاثة أحجام مميّزة",
+      viewAll:"تصفّح كل أحجام زيت الزيتون",notes:"زيت زيتون بكر ممتاز معصور على البارد · موسم الزيتون ٢٠٢٦ · ثلاثة أحجام",
       imageAlt:"صفيحة زيت زيتون من زيت ومونة",
-      popupKicker:"زيت ومونة · موسم زيتون ٢٠٢٦",
-      popupTitle:"حصاد ٢٠٢٦ <em>وصل</em>",
+      popupKicker:"زيت ومونة · موسم الزيتون ٢٠٢٦",
+      popupTitle:"زيت السنة <em>وصل</em>",
       popupSubtitle:"زيت السنة وصل",
-      popupDescription:"زيت زيتون لبناني طازج من حصاد ٢٠٢٦. اكتشفوا صفائح الزيت واختاروا الأنسب لسفرتكم.",
-      popupDiscover:"اكتشفوا حصاد الزيتون",popupContinue:"المتابعة إلى الموقع",popupClose:"إغلاق إعلان موسم الزيتون",
-      popupFilm:"فيديو حصاد الزيتون ٢٠٢٦",
-      announcement:"🫒 زيت السنة وصل — حصاد ٢٠٢٦",announcementLink:"اكتشفوا الحصاد",
-      shopTitle:"زيت السنة وصل",shopText:"ثلاث صفائح مميّزة من حصاد زيت الزيتون ٢٠٢٦، لتختاروا الحجم المناسب لسفرتكم.",
+      popupDescription:"زيت زيتون بكر ممتاز معصور على البارد، من موسم الزيتون ٢٠٢٦. اكتشفوا صفائح الزيت واختاروا الحجم المناسب لسفرتكم.",
+      popupDiscover:"اكتشفوا زيت الموسم",popupContinue:"المتابعة إلى الموقع",popupClose:"إغلاق إعلان موسم الزيتون",
+      popupFilm:"فيديو موسم الزيتون ٢٠٢٦",
+      announcement:"🫒 زيت السنة وصل — موسم الزيتون ٢٠٢٦",announcementLink:"اكتشفوا زيت الموسم",
+      shopTitle:"زيت السنة وصل",shopText:"زيت زيتون بكر ممتاز معصور على البارد من موسم الزيتون ٢٠٢٦، متوفّر بثلاثة أحجام مميّزة لسفرتكم.",
       shopCta:"اكتشفوا مختارات الموسم",shopAll:"كل أحجام زيت الزيتون"
     },
     fr:{
       kicker:"SÉLECTIONS DE SAISON · RÉCOLTE 2026",
       title:"La récolte 2026 est arrivée",
-      description:"Découvrez notre huile d’olive libanaise fraîchement récoltée en 2026.",
+      description:"Découvrez notre huile d’olive vierge extra libanaise, pressée à froid, de la saison 2026.",
       badge:"NOUVEAU · RÉCOLTE 2026",
       smallBadge:"RÉCOLTE 2026",
       price:"Prix",add:"Ajouter au panier",inquire:"Demander la disponibilité",
@@ -73,7 +73,7 @@
       popupKicker:"ZAYT W MOUNEH · RÉCOLTE DES OLIVES 2026",
       popupTitle:"La récolte 2026<br><em>est arrivée</em>",
       popupSubtitle:"L’huile d’olive de la saison est arrivée.",
-      popupDescription:"Découvrez l’huile d’olive libanaise de la récolte 2026 et choisissez le bidon idéal pour votre table.",
+      popupDescription:"Découvrez notre huile d’olive vierge extra libanaise, pressée à froid, de la saison 2026. Choisissez le bidon idéal pour votre table.",
       popupDiscover:"Découvrir la récolte",popupContinue:"Continuer vers le site",popupClose:"Fermer l’annonce de la récolte",
       popupFilm:"Film de la récolte des olives 2026",
       announcement:"🫒 LA RÉCOLTE 2026 EST ARRIVÉE",announcementLink:"Découvrir la récolte",
@@ -101,8 +101,12 @@
   function offer(size){
     var v=variantFor(size);
     if(!v)return null;
+    // Prices always come directly from the current catalogue; the cart bridge only
+    // determines whether the existing storefront can safely accept an order.
     var api=window.ZWM_HARVEST_CART;
-    return api&&typeof api.offer==="function"?api.offer(OIL_ID,v.id):null;
+    var linked=api&&typeof api.offer==="function"?api.offer(OIL_ID,v.id):null;
+    return {price:linked&&Number.isFinite(Number(linked.price))?Number(linked.price):Number(v.price),
+      available:!!(linked&&linked.available&&typeof api.add==="function")};
   }
   function imageFallback(img){img.addEventListener("error",function(){img.hidden=true;var note=document.createElement("span");note.className="gh-image-fallback";note.textContent=tr().imageAlt;img.parentNode.appendChild(note)},{once:true})}
   function card(size){

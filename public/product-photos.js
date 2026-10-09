@@ -1753,7 +1753,7 @@
   };
   const sourceFor = (id, variantId) => {
     if(id === "extra-virgin-olive-oil") {
-      if(variantId === "extra-virgin-olive-oil-500-ml") return map[id] || null;
+      if(variantId === "extra-virgin-olive-oil-500-ml") { const fallback=map[id]; return fallback ? {...fallback,url:"/"+fallback.url.replace(/^\/+/, "")} : null; }
       const file = oliveOilVariants[variantId] || oliveOilVariants["extra-virgin-olive-oil-1-l"];
       return {url:"/assets/harvest-2026/" + file, width:1122, height:1402,
         fit:"contain", quality:"2026-owner-supplied"};

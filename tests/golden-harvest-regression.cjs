@@ -75,6 +75,20 @@ assert.match(css,/gh-popup/);
 assert.match(css,/gh-picks/);
 assert.match(css,/html\[dir="rtl"\]/);
 assert.match(css,/prefers-reduced-motion/);
+// Mobile layout guard: ensure narrow-phone badges cannot overlay tins, 44px
+// touch targets stay reachable and short landscape/portrait screens scroll safely.
+assert.match(css,/\/\* Mobile overflow protection \(Golden Harvest\) \*\//,"Mobile layout rules must be present");
+assert.match(css,/@media\(max-width:680px\) and \(max-height:680px\)/,"Short portrait phones must have compact spacing");
+assert.match(css,/@media\(max-height:550px\) and \(min-width:681px\)/,"Landscape and short desktop screens must be scrollable");
+assert.match(css,/\.gh-pick-badge\{position:relative;top:auto;left:auto;/,"Mobile badges must stay in card flow, not overlay photographs");
+assert.match(css,/\.gh-pick-figure\{height:clamp\(272px,88vw,420px\);width:100%;max-width:100%;padding:12px 12px 0\}/,"Mobile product photos need separate space from badges");
+assert.match(css,/\.gh-popup-panel\{width:100%;max-width:510px;height:auto;min-height:0;max-height:calc\(100dvh - 20px\);overflow-x:hidden;overflow-y:auto;/,"Popup must scroll within phone viewport");
+assert.match(css,/\.gh-popup-dismiss\{inset-inline-end:12px;top:12px;width:44px;height:44px/,"Mobile dismissal control must have an accessible tap target");
+assert.match(css,/\.gh-popup-discover\{width:100%;min-width:0;min-height:50px/,"Primary CTA must stay readable and finger-friendly");
+assert.match(css,/html\[lang="ar"\] \.gh-popup-content h2\{font-size:clamp\(1\.95rem,8\.4vw,3\.25rem\);line-height:1\.32/,"Arabic headline needs mobile wrapping and generous leading");
+assert.match(css,/html\[lang="fr"\] \.gh-popup-content h2/,"French title must fit narrow phones");
+assert.match(css,/\.gh-pick-figure img\{max-width:100%!important;max-height:100%;object-fit:contain\}/,"Product pictures must never be cropped on mobile");
+
 assert.doesNotMatch(css,/body\.zwm-harvest-active\[data-page="home"\] \.home-pantry-hero\s*{display:none/i,"Never hide normal homepage hero");
 for(const [size,id,file] of [
  ["4","extra-virgin-olive-oil-4-l","4l.webp"],

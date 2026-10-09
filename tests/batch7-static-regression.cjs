@@ -43,11 +43,12 @@ for(const file of ["account.html","checkout.html","order.html"]){
  assert(/name=["']robots["'][^>]+content=["'][^"']*noindex/i.test(read(file)),file+" must stay noindex");
 }
 const productHtml=read("product.html");
-assert(/name=["']robots["'][^>]+content=["'][^"']*noindex/i.test(productHtml),"generic product shell must be noindex");
+assert(/name=["']robots["'][^>]+content=["']index,follow/i.test(productHtml),"product shell must be indexable before JavaScript rendering");
 assert(!/rel=["']canonical["'][^>]+product\.html/i.test(productHtml),"generic product shell must not canonicalize to product.html");
 
 const productJs=read("product-page-v1.js");
 assert(productJs.includes('robots.content="index,follow,max-image-preview:large"'),"resolved product must become indexable");
+assert(productJs.includes('robots.content="noindex,follow"'),"missing product must become noindex");
 for(const lang of ["en-LB","ar-LB","fr-LB","x-default"])assert(productJs.includes('setAlternate("'+lang+'"'),"product missing "+lang+" alternate");
 assert(productJs.includes("productPath(p.id,state.locale)"),"product localized URL state missing");
 assert(productJs.includes('"@type":"Product"'),"Product structured data missing");

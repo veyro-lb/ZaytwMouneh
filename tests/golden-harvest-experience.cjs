@@ -63,7 +63,7 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  d.body.classList.remove("welcome-open");
  await pause();
  assert.equal(d.getElementById("ghCampaignPopup").hidden,false,"Cinematic popup opens after choosing language");
- assert.match(d.querySelector("#ghPopupTitle").textContent,/The 2026 Harvest/,"Popup title follows the reference launch headline");
+ assert.equal(d.querySelector("#ghPopupTitle").textContent,"2026The Golden Harvest","2026 is the large title and Golden Harvest is the secondary line");
  assert.equal(d.querySelector(".gh-popup-subtitle"),null,"English popup must not duplicate its main headline");
  assert.equal(d.querySelector(".gh-popup-film-label"),null,"Do not repeat the harvest year in a film label");
 
@@ -95,7 +95,8 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  assert.equal(second.w.document.querySelector(".gh-popup-subtitle"),null,"Arabic popup must have a single title");
  const arabicPopup=second.w.document.querySelector(".gh-popup-content").textContent;
  assert.equal((arabicPopup.match(/زيت السنة وصل/g)||[]).length,1,"زيت السنة وصل must appear only once");
- assert.equal((arabicPopup.match(/موسم الزيتون ٢٠٢٦/g)||[]).length,1,"Mention the season only once in the Arabic popup");
+ assert.equal((arabicPopup.match(/٢٠٢٦/g)||[]).length,1,"Arabic popup shows a single large ٢٠٢٦ headline");
+ assert.equal(second.w.document.querySelector("#ghPopupTitle").textContent,"٢٠٢٦زيت السنة وصل");
  assert.equal(second.w.document.querySelector("[data-gh-discover]").textContent.trim().includes("اكتشفوا صفائح الزيت"),true,"Use a distinct Arabic CTA");
 
  assert.equal(second.w.document.querySelector("#harvest-picks").dir,"rtl");
@@ -108,6 +109,7 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  const frenchPopup=makePage("fr");
  assert.equal(frenchPopup.w.document.querySelector(".gh-popup-subtitle"),null,"French popup must not repeat the launch heading");
  assert.equal((frenchPopup.w.document.querySelector(".gh-popup-content").textContent.match(/2026/g)||[]).length,1,"French popup uses year only once");
+ assert.equal(frenchPopup.w.document.querySelector("#ghPopupTitle").textContent,"2026La récolte dorée");
  frenchPopup.dom.window.close();
  const shop=makePage("fr",{shop:true});
  assert.equal(shop.w.document.querySelector(".gh-shop-spotlight h2").textContent,"La récolte 2026 est arrivée");

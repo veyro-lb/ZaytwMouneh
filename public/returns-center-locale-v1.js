@@ -34,11 +34,11 @@ function setAttr(selector,name,value){var el=q(selector);if(el)el.setAttribute(n
 var COPY={
   en:{
     title:"Returns & Product Issues | Zayt w Mouneh",
-    description:"Verify a Zayt w Mouneh order and submit a secure return, exchange or product issue request.",
+    description:"Report a genuine product or order problem within 24 hours of delivery. Contact Zayt w Mouneh for further help.",
     skip:"Skip to content",
     eyebrow:"Customer care",
     heading:"Returns & Product Issues",
-    intro:"Have a problem with an order? Enter the order code from your receipt or order confirmation. We verify that the order belongs to you before showing private order details.",
+    intro:"Returns are only for genuine product or order problems and must be reported within 24 hours of delivery. Verify your order to report an issue, or contact us for further help.",
     cardTitle:"Find your order securely",
     cardIntro:"Enter your order code and the contact information used for the order. We verify ownership before showing private order details.",
     codeLabel:"Order code",
@@ -54,9 +54,9 @@ var COPY={
     ],
     verify:"Verify order",
     sideTitle:"What you can report",
-    sideIntro:"Return and product-issue requests can be opened for verified orders after delivery.",
-    items:["Damaged, broken or leaking products","Missing or incorrect products","Quality, spoilage or safety concerns","Return or exchange of an eligible unopened product"],
-    sideOutro:"We’ll review your request and any supporting information, then update you with the available resolution.",
+    sideIntro:"Only genuine product or order problems qualify. Report within 24 hours of delivery.",
+    items:["Damaged, broken or leaking products","Missing or incorrect products","Quality, spoilage or safety problems","24 hours to report after delivery"],
+    sideOutro:"No change-of-mind returns. For late reports or anything else, contact us directly.",
     policy:"Read the Returns & Product Issues Policy"
   },
   ar:{
@@ -65,7 +65,7 @@ var COPY={
     skip:"الانتقال إلى المحتوى",
     eyebrow:"خدمة العملاء",
     heading:"الإرجاع ومشاكل المنتجات",
-    intro:"هل لديك مشكلة في طلب؟ أدخل رمز الطلب الموجود على الإيصال أو تأكيد الطلب. نتحقق من أن الطلب يعود إليك قبل إظهار تفاصيله الخاصة.",
+    intro:"يُقبل الإرجاع فقط عند وجود مشكلة فعلية في المنتج أو الطلب، ويجب الإبلاغ خلال 24 ساعة من التسليم. تحقّق من طلبك للإبلاغ عن المشكلة أو تواصل معنا للمساعدة.",
     cardTitle:"اعثر على طلبك بأمان",
     cardIntro:"أدخل رمز الطلب وبيانات التواصل المستخدمة فيه. نتحقق من ملكية الطلب قبل إظهار تفاصيله الخاصة.",
     codeLabel:"رمز الطلب",
@@ -81,9 +81,9 @@ var COPY={
     ],
     verify:"تحقق من الطلب",
     sideTitle:"ما يمكنك الإبلاغ عنه",
-    sideIntro:"يمكن فتح طلب إرجاع أو مشكلة منتج للطلبات التي تم التحقق منها بعد التسليم.",
-    items:["منتجات متضررة أو مكسورة أو تسرّب","منتجات ناقصة أو خاطئة","مشاكل الجودة أو التلف أو السلامة","إرجاع أو استبدال منتج مؤهل غير مفتوح"],
-    sideOutro:"سنراجع طلبك وأي معلومات داعمة، ثم نطلعك على الحل المتاح.",
+    sideIntro:"فقط المشاكل الفعلية في المنتج أو الطلب مؤهلة للإرجاع. يرجى الإبلاغ خلال 24 ساعة من التسليم.",
+    items:["منتجات متضررة أو مكسورة أو تسرّب","منتجات ناقصة أو خاطئة","مشاكل الجودة أو التلف أو السلامة","مهلة الإبلاغ 24 ساعة من التسليم"],
+    sideOutro:"لا نقبل الإرجاع بسبب تغيير الرأي. للبلاغات المتأخرة أو المساعدة الإضافية تواصل معنا مباشرةً.",
     policy:"اقرأ سياسة الإرجاع ومشاكل المنتجات"
   },
   fr:{
@@ -92,7 +92,7 @@ var COPY={
     skip:"Aller au contenu",
     eyebrow:"Service client",
     heading:"Retours et problèmes produits",
-    intro:"Un problème avec une commande ? Saisissez le code figurant sur votre reçu ou votre confirmation. Nous vérifions qu’elle vous appartient avant d’afficher ses informations privées.",
+    intro:"Les retours sont réservés aux vrais problèmes de produit ou de commande signalés dans les 24 heures suivant la livraison. Vérifiez votre commande ou contactez-nous pour toute aide.",
     cardTitle:"Retrouvez votre commande en toute sécurité",
     cardIntro:"Saisissez le code de commande et les coordonnées utilisées pour la commande. Nous vérifions qu’elle vous appartient avant d’afficher ses informations privées.",
     codeLabel:"Code de commande",
@@ -108,9 +108,9 @@ var COPY={
     ],
     verify:"Vérifier la commande",
     sideTitle:"Ce que vous pouvez signaler",
-    sideIntro:"Les demandes de retour ou de problème produit peuvent être ouvertes pour les commandes vérifiées après livraison.",
-    items:["Produits endommagés, cassés ou fuyants","Produits manquants ou incorrects","Problèmes de qualité, d’altération ou de sécurité","Retour ou échange d’un produit non ouvert éligible"],
-    sideOutro:"Nous examinerons votre demande et les informations utiles, puis nous vous indiquerons la solution disponible.",
+    sideIntro:"Seuls les vrais problèmes de produit ou de commande sont éligibles. Signalez-les dans les 24 heures suivant la livraison.",
+    items:["Produits endommagés, cassés ou fuyants","Produits manquants ou incorrects","Problèmes de qualité, d’altération ou de sécurité","24 heures pour signaler après livraison"],
+    sideOutro:"Pas de retour pour changement d’avis. Pour tout signalement tardif ou autre question, contactez-nous directement.",
     policy:"Lire la politique de retours et problèmes produits"
   }
 };

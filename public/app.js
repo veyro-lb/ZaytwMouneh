@@ -793,6 +793,7 @@ const VERIFIED_PRODUCT_KEYS={
   allergens:{en:["allergensEn","allergens"],ar:["allergensAr","allergensEn","allergens"],fr:["allergensFr","allergensEn","allergens"]},
   storage:{en:["storageEn","storage"],ar:["storageAr","storageEn","storage"],fr:["storageFr","storageEn","storage"]},
   details:{en:["detailsEn","details"],ar:["detailsAr","detailsEn","details"],fr:["detailsFr","detailsEn","details"]},
+  notes:{en:["notesEn","notes"],ar:["notesAr","notesEn","notes"],fr:["notesFr","notesEn","notes"]},
   nutrition:{en:["nutritionEn","nutrition"],ar:["nutritionAr","nutritionEn","nutrition"],fr:["nutritionFr","nutritionEn","nutrition"]}
 };
 function verifiedProductValue(p,key){
@@ -814,11 +815,11 @@ function verifiedProductValue(p,key){
 function verifiedProductFacts(p){
   const locale=lang==="ar"?"ar":lang==="fr"?"fr":"en";
   const labels={
-    en:{origin:"Origin",ingredients:"Ingredients",allergens:"Allergens",storage:"Storage",details:"Product-specific details",nutrition:"Nutrition"},
-    ar:{origin:"المنشأ",ingredients:"المكونات",allergens:"مسببات الحساسية",storage:"الحفظ",details:"تفاصيل خاصة بالمنتج",nutrition:"معلومات غذائية"},
-    fr:{origin:"Origine",ingredients:"Ingrédients",allergens:"Allergènes",storage:"Conservation",details:"Détails spécifiques au produit",nutrition:"Informations nutritionnelles"}
+    en:{origin:"Origin",ingredients:"Ingredients",allergens:"Allergens",storage:"Storage",details:"Product-specific details",notes:"Important notes",nutrition:"Nutrition"},
+    ar:{origin:"المنشأ",ingredients:"المكونات",allergens:"مسببات الحساسية",storage:"الحفظ",details:"تفاصيل خاصة بالمنتج",notes:"ملاحظات مهمة",nutrition:"معلومات غذائية"},
+    fr:{origin:"Origine",ingredients:"Ingrédients",allergens:"Allergènes",storage:"Conservation",details:"Détails spécifiques au produit",notes:"Notes importantes",nutrition:"Informations nutritionnelles"}
   }[locale];
-  return ["origin","ingredients","allergens","storage","details","nutrition"].map(key=>{
+  return ["origin","ingredients","allergens","storage","notes","details","nutrition"].map(key=>{
     const value=verifiedProductValue(p,key);
     return value?{key,label:labels[key],value}:null;
   }).filter(Boolean);

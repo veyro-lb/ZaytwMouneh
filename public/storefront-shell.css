@@ -229,6 +229,103 @@ html[dir="rtl"] .site-header .nav .brand-wordmark,html[lang="ar"] .site-header .
   }
 }
 
+/* Arabic mobile header: separate brand row to prevent clipping with the bell. */
+@media(max-width:760px){
+  /* The notification stylesheet and legacy brand stylesheet both use :has(#bell).
+     Match that specificity here rather than allowing either to collapse the wordmark. */
+  html:is([lang="ar"],[dir="rtl"]) body .site-header .nav.shell{
+    direction:ltr!important;
+    height:112px!important;
+    min-height:112px!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    grid-template-rows:64px 46px!important;
+    column-gap:0!important;
+    row-gap:0!important;
+    align-content:center!important;
+    align-items:center!important;
+  }
+  html:is([lang="ar"],[dir="rtl"]) body .site-header .nav.shell>.brand,
+  html:is([lang="ar"],[dir="rtl"]) body .site-header .nav.shell:has(#zwmCustomerNotificationBell)>.brand{
+    position:relative!important;
+    inset:auto!important;
+    transform:none!important;
+    grid-column:1/-1!important;
+    grid-row:1!important;
+    justify-self:center!important;
+    align-self:center!important;
+    display:flex!important;
+    direction:rtl!important;
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    align-items:center!important;
+    justify-content:center!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    margin:0!important;
+    padding:2px 12px!important;
+    gap:9px!important;
+    overflow:visible!important;
+  }
+  html:is([lang="ar"],[dir="rtl"]) body .site-header .nav.shell>.brand .brand-logo,
+  html:is([lang="ar"],[dir="rtl"]) body .site-header .nav.shell:has(#zwmCustomerNotificationBell)>.brand .brand-logo{
+    flex:0 0 38px!important;
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    max-width:38px!important;
+  }
+  html:is([lang="ar"],[dir="rtl"]) body .site-header .nav.shell>.brand .brand-wordmark,
+  html:is([lang="ar"],[dir="rtl"]) body .site-header .nav.shell:has(#zwmCustomerNotificationBell)>.brand .brand-wordmark{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    flex:0 1 auto!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:calc(100% - 56px)!important;
+    height:auto!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    white-space:nowrap!important;
+    font-family:"Noto Kufi Arabic","DM Sans",system-ui,sans-serif!important;
+    font-size:clamp(16px,4.5vw,20px)!important;
+    font-weight:600!important;
+    line-height:1.6!important;
+    letter-spacing:0!important;
+    text-align:center!important;
+  }
+  html:is([lang="ar"],[dir="rtl"]) body .site-header .nav.shell>.nav-toggle{
+    position:relative!important;
+    inset:auto!important;
+    transform:none!important;
+    grid-column:2!important;
+    grid-row:2!important;
+    justify-self:end!important;
+    align-self:center!important;
+    margin:0!important;
+  }
+  html:is([lang="ar"],[dir="rtl"]) body .site-header .nav.shell>.nav-actions,
+  html:is([lang="ar"],[dir="rtl"]) body .site-header .nav.shell>.nav-actions:has(#zwmCustomerNotificationBell){
+    position:relative!important;
+    inset:auto!important;
+    transform:none!important;
+    grid-column:1!important;
+    grid-row:2!important;
+    justify-self:start!important;
+    align-self:center!important;
+    display:flex!important;
+    width:88px!important;
+    min-width:88px!important;
+    max-width:88px!important;
+    height:46px!important;
+    margin:0!important;
+    padding:0!important;
+    gap:4px!important;
+  }
+}
+
 /* ===== shell3 canonical footer ===== */
 .footer{
   padding:44px 0 24px!important;

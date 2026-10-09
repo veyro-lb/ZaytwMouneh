@@ -133,7 +133,7 @@
 
           <div class="metric-grid">
             <article class="metric-card"><span class="metric-icon">◉</span><div><small>Page views · 7 days</small><strong id="metricViews">—</strong><em id="metricViewsHint">Loading</em></div></article>
-            <article class="metric-card"><span class="metric-icon">⌁</span><div><small>Unique sessions · 7 days</small><strong id="metricSessions">—</strong><em id="metricSessionsHint">Loading</em></div></article>
+            <article class="metric-card"><span class="metric-icon">⌁</span><div><small>Unique visitors · 7 days</small><strong id="metricSessions">—</strong><em id="metricSessionsHint">Loading</em></div></article>
             <article class="metric-card"><span class="metric-icon">↗</span><div><small>WhatsApp clicks · 7 days</small><strong id="metricWhatsApp">—</strong><em>High-intent customer action</em></div></article>
             <article class="metric-card"><span class="metric-icon">▦</span><div><small>Live catalogue</small><strong id="metricProducts">—</strong><em id="metricProductsHint">Products visible</em></div></article>
           </div>
@@ -441,6 +441,20 @@
             <div><p>Website analytics</p><h2>Live traffic and customer activity from one synchronized event stream.</h2><span class="analytics-freshness" id="analyticsFreshness">Loading analytics…</span></div>
             <select id="analyticsRange"><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select>
           </div>
+          <section class="panel website-visits-panel" aria-labelledby="websiteVisitsHeading">
+            <div class="panel-head">
+              <div><p>Visitor insights</p><h3 id="websiteVisitsHeading">Website Visits</h3></div>
+              <span class="website-visits-mark" aria-hidden="true">↗</span>
+            </div>
+            <div class="website-visits-grid">
+              <article class="website-visit-stat"><small>Unique visitors</small><strong id="websiteUniqueVisitors">—</strong></article>
+              <article class="website-visit-stat"><small>Total visits</small><strong id="websiteTotalVisits">—</strong></article>
+              <article class="website-visit-stat"><small>Average visits / visitor</small><strong id="websiteAverageVisits">—</strong></article>
+              <article class="website-visit-stat"><small>Repeat visits</small><strong id="websiteRepeatVisits">—</strong></article>
+            </div>
+            <p class="website-visits-caption">One visit is a browsing session; a new visit begins after 30 minutes of inactivity.</p>
+            <p class="website-visits-footnote">Unique visitors are counted once per browser/device during the selected period. Counts start with the new tracking; older page views are excluded from these figures.</p>
+          </section>
           <div class="metric-grid analytics-metrics">
             <article class="metric-card"><div><small>Page views</small><strong id="analyticsViews">—</strong><em id="analyticsViewsSub">Selected period</em></div></article>
             <article class="metric-card"><div><small>Unique sessions</small><strong id="analyticsSessions">—</strong><em id="analyticsSessionsSub">Selected period</em></div></article>
@@ -856,7 +870,7 @@
   <script src="products-data.js?v=20261009-harvest-live1"></script>
   <script src="product-photos.js?v=20261009-harvest-live1"></script>
 
-  <script src="admin.js?v=20261009-analytics-ownerexclude1"></script>
+  <script src="admin.js?v=20261009-website-visits1"></script>
   <script src="admin-notifications-v1.js?v=20261009-owner-multidevice1"></script>
   <script src="admin-rewards.js?v=20261005-account-deletefix2"></script>
   <script src="admin-wholesale.js?v=20261009-wholesale-i18n2"></script>

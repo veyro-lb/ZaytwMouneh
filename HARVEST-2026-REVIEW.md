@@ -6,7 +6,7 @@ This seasonal change is isolated from the main Zayt w Mouneh experience. Do not 
 
 - Review the draft PR branch `campaign/golden-harvest-2026-review` in a Cloudflare preview deployment (if a preview deployment is available). Add `?harvestPreview=1` to the homepage or shop URL.
 - Check the desktop/mobile layout and switch EN / AR / FR.
-- Upload the five campaign assets shown below, using the exact paths.
+- Confirm the five campaign assets shown below exist at these exact paths (uploaded and validated October 9).
 - Configure and verify the **4 L** olive-oil variant through the existing admin/catalogue, only when its actual current price and inventory are confirmed. The campaign intentionally keeps it non-orderable until then.
 - After media, catalogue and checkout review, change `var ENABLED=false;` to `var ENABLED=true;` in `public/golden-harvest-2026.js`. Merge the reviewed PR and deploy only on the intended date.
 - After the season ends, set `ENABLED=false` again. Existing homepage/shop sections return automatically.
@@ -21,7 +21,7 @@ This seasonal change is isolated from the main Zayt w Mouneh experience. Do not 
 | 8-second supplied harvest film, muted/recompressed | `public/assets/harvest-2026/harvest-film.mp4` |
 | Poster extracted from film | `public/assets/harvest-2026/hero-poster.jpg` |
 
-The supplied media was optimized outside GitHub. **The GitHub connector in this session does not accept local binary-file uploads; asset paths have not been populated. Do not launch until all files exist in the repository.** The campaign has fallback media for reviewing layout only. The user-supplied tin labels must remain unaltered.
+**All five optimized media assets were uploaded and verified in the review branch on October 9.** The image formats, nonempty files, and exact filenames passed the independent `Golden Harvest 2026 review gate` GitHub Actions check. The user-supplied tin labels remain unaltered. Browser playback and full visual QA are still required before public launch.
 
 ## Shopping behavior
 
@@ -41,6 +41,12 @@ The supplied media was optimized outside GitHub. **The GitHub connector in this 
 - Live CMS announcement text and other global page behavior remain unchanged outside campaign mode.
 - The current site-wide language switcher handles EN/AR/FR; this module updates itself on locale changes.
 - Video is muted, plays inline, pauses when hidden/offscreen and respects reduced motion.
+
+## Build checks as of October 9
+
+- `Verify harvest campaign and media`: **PASS** — dedicated, free GitHub Actions gate on the PR branch.
+- `Production regression gate`: **FAIL** due to an existing `about.html canonical storefront shell must be the final stylesheet` assertion. That problem is present in baseline `main` and outside this campaign's scope. Do not bypass the gate or edit unrelated pages from this review branch; coordinate with the other storefront architecture work.
+- Cloudflare Workers preview/build: an earlier branch check reported **FAILURE**, with detailed build logs only available through the Cloudflare dashboard. Recheck the final review build before deploying. A preview URL has not been verified.
 
 ## QA still required before launch
 

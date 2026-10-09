@@ -1008,10 +1008,10 @@
 (function(){
   function label(){
     try{
-      if(document.documentElement.lang==="ar"||document.documentElement.dir==="rtl"||localStorage.getItem("zwm-lang-v2")==="ar")return "سياسة الإرجاع ومشاكل المنتجات";
-      if(document.documentElement.lang==="fr"||localStorage.getItem("zwm:french:v1")==="1")return "Politique de retours et problèmes produit";
+      if(document.documentElement.lang==="ar"||document.documentElement.dir==="rtl"||localStorage.getItem("zwm-lang-v2")==="ar")return "سياسة الإرجاع";
+      if(document.documentElement.lang==="fr"||localStorage.getItem("zwm:french:v1")==="1")return "Politique de retour";
     }catch{}
-    return "Returns & Product Issues Policy";
+    return "Return Policy";
   }
   function add(){
     document.querySelectorAll(".footer-legal-bar").forEach(function(bar){

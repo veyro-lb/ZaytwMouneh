@@ -57,7 +57,7 @@ body.zwm-harvest-active[data-page="shop"] .seasonal-story-card {display:flex!imp
 .zwm-gh-shop-copy h2 {font:400 clamp(2rem,3.6vw,3.6rem)/1.1 "DM Serif Display",Georgia,serif!important;color:#fff!important;margin:12px 0!important}
 .zwm-gh-shop-copy p {color:#e6eddd;font-size:.96rem;line-height:1.75}
 .zwm-gh-shop-copy .gh-action {margin-top:8px}
-.zwm-gh-shop-photo {flex:0 0 32%;max-width:340px;align-self:stretch;min-height:160px;border-radius:16px;background:#cfc1a4 url('/assets/products/originals/extra-virgin-olive-oil.jpg') center/cover no-repeat}
+.zwm-gh-shop-photo {flex:0 0 32%;max-width:340px;align-self:stretch;min-height:160px;border-radius:16px;background-color:#cfc1a4;background-image:url('/assets/harvest-2026/17-54l.webp'),url('/assets/products/originals/extra-virgin-olive-oil.jpg');background-position:center,center;background-repeat:no-repeat,no-repeat;background-size:contain,cover}
 body.zwm-harvest-active .announcement a {text-decoration:underline;text-underline-offset:3px}
 html[dir="rtl"] .zwm-gh-hero .gh-shade {background:linear-gradient(270deg,rgba(12,34,23,.94) 0%,rgba(18,46,30,.86) 39%,rgba(18,46,30,.40) 65%,rgba(12,34,23,.13) 100%)}
 html[dir="rtl"] .zwm-gh-hero .gh-hero-copy {margin-inline-start:0;text-align:start}

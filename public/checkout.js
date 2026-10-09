@@ -247,14 +247,14 @@ function renderRewards(){
     (wallet.length?'<label class="commerce-field"><span>'+esc(t("Use a reward voucher","استخدم قسيمة مكافأة","Utiliser un bon de récompense"))+'</span><select id="checkoutWallet"><option value="">'+esc(t("No voucher","بدون قسيمة","Aucun bon"))+'</option>'+wallet.map(function(w){return '<option value="'+esc(w.id)+'" '+(w.id===state.walletId?"selected":"")+">"+esc(money(w.value)+" "+t("off · min ","خصم · حد أدنى ","de réduction · min. ")+money(w.minimum))+"</option>"}).join("")+'</select></label>':'<small class="checkout-help">'+esc(t("No reward voucher is available for this basket yet.","لا توجد قسيمة متاحة لهذه السلة حالياً.","Aucun bon de récompense n’est disponible pour ce panier."))+'</small>');
   var select=$("checkoutWallet");if(select)select.onchange=function(){state.walletId=select.value;if(state.walletId)write(WALLET_KEY,state.walletId);else remove(WALLET_KEY);renderSummary()}
 }
-function productPhoto(p){
-  try{var source=window.ZWM_PRODUCT_PHOTOS&&window.ZWM_PRODUCT_PHOTOS.sourceFor&&window.ZWM_PRODUCT_PHOTOS.sourceFor(p.id);return source&&source.url?source:null}catch{return null}
+function productPhoto(p,variantId){
+  try{var source=window.ZWM_PRODUCT_PHOTOS&&window.ZWM_PRODUCT_PHOTOS.sourceFor&&window.ZWM_PRODUCT_PHOTOS.sourceFor(p.id,variantId);return source&&source.url?source:null}catch{return null}
 }
 function renderSummary(){
   var box=$("summaryItems"),sub=subtotal(),disc=roundMoney(rewardDiscount()),q=quote(),total=roundMoney(Math.max(0,sub-disc)+q.fee),qty=state.rows.reduce(function(n,r){return n+r.qty},0),issueBox=$("cartIssueBox"),giftBox=$("summaryGift");
   $("summaryCount").textContent=t(qty+" item"+(qty===1?"":"s"),qty+" "+(qty===1?"قطعة":"قطع"),qty+" article"+(qty===1?"":"s"));
   box.innerHTML=state.rows.map(function(r){
-    var name=state.lang==="ar"?(r.p.nameAr||r.p.nameEn):(r.p.nameEn||r.p.nameAr),size=state.lang==="ar"?(r.v.sizeAr||r.v.sizeEn):(r.v.sizeEn||r.v.sizeAr),photo=productPhoto(r.p),line=roundMoney(Number(r.v.price)*r.qty),unit=roundMoney(r.v.price);
+    var name=state.lang==="ar"?(r.p.nameAr||r.p.nameEn):(r.p.nameEn||r.p.nameAr),size=state.lang==="ar"?(r.v.sizeAr||r.v.sizeEn):(r.v.sizeEn||r.v.sizeAr),photo=productPhoto(r.p,r.v.id),line=roundMoney(Number(r.v.price)*r.qty),unit=roundMoney(r.v.price);
     return '<div class="summary-item '+(photo?"":"no-photo")+'">'+(photo?'<img class="summary-item-photo" src="'+esc(photo.url)+'" alt="" loading="lazy" decoding="async">':"")+'<div><strong>'+esc(name)+'</strong><small>'+esc(size)+" · "+t("Qty ","الكمية ","Qté ")+r.qty+" · "+money(unit)+" "+t("each","للوحدة","l’unité")+(r.available?"":(" · "+t("Unavailable","غير متوفر","Indisponible")))+'</small></div><b>'+money(line)+'</b></div>'
   }).join("");
   if(issueBox){

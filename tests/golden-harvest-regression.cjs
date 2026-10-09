@@ -62,6 +62,8 @@ assert.match(css,/@media\(max-width:680px\)/,"Mobile must have one-column layout
 assert.match(css,/grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/,"Desktop must show all tins side by side");
 assert.match(css,/#a53d35/,"Badge must be a tasteful harvest red");
 assert.match(css,/\.gh-popup-panel\{[^}]*width:min\(940px,/,"Desktop popup must be a wide 940px cinematic viewport");
+assert.match(js,/popupTitle:"2026<br><em>The Golden Harvest<\/em>"/,"2026 must be the prominent English title");
+assert.match(js,/popupTitle:"٢٠٢٦<br><em>زيت السنة وصل<\/em>"/,"Arabic must feature a large ٢٠٢٦ title");
 assert.match(css,/\.gh-popup-video\{[^}]*object-fit:cover/,"Video must fill cinematic frame");
 assert.match(css,/\.gh-popup-shade\{[^}]*linear-gradient\(90deg/,"Soft horizontal gradient preserves visible harvest film");
 assert.match(css,/\.gh-popup-continue\{[^}]*background:transparent/,"Continue must be visually secondary");
@@ -87,7 +89,7 @@ for(const page of ["index","shop"]){
   assert.equal((html.match(/golden-harvest-2026\.js/g)||[]).length,1,page+" exactly one campaign JS");
   assert.ok(html.indexOf("products-data.js")<html.indexOf("golden-harvest-2026.js"),page+" campaign must load after catalogue");
   assert.ok(html.indexOf("app.js")<html.indexOf("golden-harvest-2026.js"),page+" campaign must load after app");
-  assert.match(html,/app\.js\?v=20261009-harvest-cart1/,"Use fresh asset version so bridge cannot be silently lost to older browser cache");
+  assert.match(html,/app\.js\?v=20261009-contact2/,"Use fresh asset version so the correct support number and validated cart API are served");
 }
 const home=read("public/index.html");
 assert.ok(home.includes('<section class="page-intro page-intro-shop home-pantry-hero"'),"Existing homepage hero must be untouched");

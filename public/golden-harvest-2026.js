@@ -16,47 +16,70 @@
     {size:"17.54",id:"extra-virgin-olive-oil-17-54-l",file:"17-54l.webp"}
   ];
   var COPY={
-    en:{overline:"ZAYT W MOUNEH PRESENTS",title:"THE GOLDEN <em>HARVEST</em>",ar:"زيت السنة وصل",
-      desc:"Fresh from the 2026 harvest. Lebanese olive oil, ready for your table.",
-      discover:"Discover the 2026 Harvest",pantry:"Browse the pantry",
-      choose:"CHOOSE YOUR HARVEST",chooseText:"Fresh 2026 harvest olive oil, available in three featured tin sizes.",
-      season:"2026 harvest",chooseSize:"Choose this size",unavailable:"Not yet available to order online",inquire:"Ask about this size",
-      note:"Prices and order availability come from the current catalogue. Other olive oil sizes remain available in the shop.",
-      storyOverline:"THE OLIVE SEASON",story:"FROM THE OLIVE TREE TO YOUR TABLE",
-      storyCopy:"Every olive season brings a familiar moment — the harvest, the golden oil, and the first taste shared around the Lebanese table. Celebrate the arrival of the 2026 harvest with Zayt w Mouneh.",
-      table:"THE HARVEST TABLE",tableCopy:"Made for the little rituals we love: Lebanese bread, za’atar, table olives and olive oil around the family table.",
+    en:{
+      overline:"ZAYT W MOUNEH · OLIVE HARVEST 2026",
+      title:"THE GOLDEN <em>HARVEST</em>",
+      tagline:"The season’s olive oil has arrived.",
+      localeDisplay:"ENGLISH",localeAria:"Selected language: English",
+      heroFooter:"LEBANON · OLIVE HARVEST 2026",
+      desc:"Lebanese olive oil from the 2026 harvest is here. Explore the tins and find the right size for your table.",
+      discover:"Explore the 2026 harvest",pantry:"Shop the full pantry",
+      choose:"CHOOSE YOUR TIN",chooseText:"Three featured tin sizes from the 2026 olive oil harvest.",
+      season:"2026 olive harvest",chooseSize:"Choose this size",unavailable:"Not currently available to order online",inquire:"Ask about availability",
+      note:"Prices and availability are shown from our current catalogue. Other olive oil sizes are also available in the shop.",
+      storyOverline:"OLIVE SEASON IN LEBANON",story:"FROM OLIVE SEASON TO YOUR TABLE",
+      storyCopy:"In Lebanon, olive season is a time for gathering, sharing and bringing a fresh harvest to the table. Celebrate the 2026 harvest with Zayt w Mouneh.",
+      table:"A TASTE OF HOME",tableCopy:"Fresh bread, za’atar, table olives and olive oil: the simple traditions we love to share.",
       shopZaatar:"Explore za’atar",shopOlives:"Explore olives",
-      announcement:"🫒 Fresh 2026 Olive Oil Harvest Has Arrived",announcementLink:"Discover the collection",
-      shopDesc:"A new harvest, three beautifully presented tin sizes. Choose the right size and shop using our existing catalogue.",
-      allOil:"Shop all olive oil",shopPromo:"THE GOLDEN HARVEST 2026",shopJump:"Explore featured tins"},
-    ar:{overline:"تقدّم لكم زيت ومونة",title:"حصاد <em>الذهب</em> ٢٠٢٦",ar:"زيت السنة وصل",
-      desc:"زيت زيتون لبناني طازج من حصاد ٢٠٢٦، صار جاهز لسفرتكم.",
-      discover:"اكتشفوا حصاد ٢٠٢٦",pantry:"تصفّحوا كل المونة",
-      choose:"اختار حجم زيتك",chooseText:"زيت زيتون من حصاد ٢٠٢٦ الطازج، بثلاثة أحجام مميّزة.",
-      season:"حصاد ٢٠٢٦",chooseSize:"اختار هالحجم",unavailable:"غير متاح للطلب على الموقع حالياً",inquire:"اسأل عن هالحجم",
-      note:"الأسعار والتوفّر حسب الكتالوج الحالي. باقي أحجام زيت الزيتون موجودة في المتجر.",
-      storyOverline:"موسم الزيتون",story:"من شجرة الزيتون لسفرتنا",
-      storyCopy:"كل موسم زيتون بيرجّع إلنا لحظة منعرفها: القطاف، والزيت الذهبي، وأول لقمة مع العيلة. احتفلوا معنا بوصول زيت حصاد ٢٠٢٦ من زيت ومونة.",
-      table:"سفرة الزيت والمونة",tableCopy:"للّمة اللبنانية الطيّبة: خبز وزعتر وزيتون وزيت زيتون على السفرة.",
+      announcement:"🫒 The 2026 olive oil harvest has arrived",announcementLink:"Discover the harvest",
+      shopDesc:"Explore our three featured tin sizes from the new olive oil harvest, and choose from the current catalogue.",
+      allOil:"Shop all olive oil",shopPromo:"THE GOLDEN HARVEST · 2026",shopJump:"See the featured tins",
+      imageAlt:"Zayt w Mouneh olive oil tin",storyImageAlt:"Olive harvest season in Lebanon",shopImageAlt:"Zayt w Mouneh olive oil tin"
+    },
+    ar:{
+      overline:"زيت ومونة · موسم الزيتون ٢٠٢٦",
+      title:"الحصاد <em>الذهبي</em>",
+      tagline:"زيت السنة وصل",
+      localeDisplay:"العربية",localeAria:"اللغة المختارة: العربية",
+      heroFooter:"لبنان · موسم الزيتون ٢٠٢٦",
+      desc:"زيت الزيتون اللبناني من حصاد ٢٠٢٦ وصل. اكتشفوا صفائح الزيت واختاروا الحجم المناسب لسفرتكم.",
+      discover:"اكتشفوا حصاد ٢٠٢٦",pantry:"تصفّحوا جميع المنتجات",
+      choose:"اختاروا حجم صفيحة الزيت",chooseText:"ثلاثة أحجام مميّزة من زيت الزيتون، من حصاد ٢٠٢٦.",
+      season:"حصاد الزيتون ٢٠٢٦",chooseSize:"اختاروا هذا الحجم",unavailable:"غير متاح للطلب عبر الموقع حالياً",inquire:"استفسروا عن التوفّر",
+      note:"الأسعار والتوفّر بحسب الكتالوج الحالي. يمكنكم أيضاً تصفّح باقي أحجام زيت الزيتون في المتجر.",
+      storyOverline:"موسم الزيتون في لبنان",story:"من موسم الزيتون إلى سفرتكم",
+      storyCopy:"موسم الزيتون في لبنان هو موسم اللمة والمشاركة وزيت السنة الجديد. احتفلوا معنا بحصاد ٢٠٢٦ مع زيت ومونة.",
+      table:"طعم من بيتنا",tableCopy:"خبز طازج وزعتر وزيتون وزيت زيتون: طقوس بسيطة بتجمعنا على السفرة.",
       shopZaatar:"اكتشفوا الزعتر",shopOlives:"اكتشفوا الزيتون",
-      announcement:"🫒 زيت السنة وصل — حصاد ٢٠٢٦",announcementLink:"اكتشفوا الأحجام",
-      shopDesc:"حصاد جديد وثلاثة أحجام من صفائح الزيت. اختاروا الحجم المناسب وتسوقوا من الكتالوج الحالي.",
-      allOil:"كل أحجام زيت الزيتون",shopPromo:"حصاد الزيتون ٢٠٢٦",shopJump:"اكتشفوا صفائح الزيت"},
-    fr:{overline:"ZAYT W MOUNEH PRÉSENTE",title:"LA RÉCOLTE <em>DORÉE</em>",ar:"زيت السنة وصل",
-      desc:"Huile d’olive libanaise fraîche de la récolte 2026, prête pour votre table.",
-      discover:"Découvrir la récolte 2026",pantry:"Explorer l’épicerie",
-      choose:"CHOISISSEZ VOTRE RÉCOLTE",chooseText:"L’huile d’olive fraîche de 2026 en trois formats de bidons sélectionnés.",
-      season:"Récolte 2026",chooseSize:"Choisir ce format",unavailable:"Pas encore commandable en ligne",inquire:"Se renseigner sur ce format",
-      note:"Les prix et disponibilités viennent du catalogue actuel. Les autres formats restent accessibles en boutique.",
-      storyOverline:"LA SAISON DES OLIVES",story:"DE L’OLIVIER À VOTRE TABLE",
-      storyCopy:"Chaque saison des olives ravive un moment familier : la récolte, l’huile dorée et la première dégustation autour d’une table libanaise. Célébrez la récolte 2026 avec Zayt w Mouneh.",
-      table:"LA TABLE DE LA RÉCOLTE",tableCopy:"Les plaisirs simples d’une table libanaise : pain, zaatar, olives et huile d’olive à partager.",
+      announcement:"🫒 زيت السنة وصل — حصاد ٢٠٢٦",announcementLink:"اكتشفوا الحصاد",
+      shopDesc:"اكتشفوا ثلاثة أحجام مميّزة من صفائح زيت الزيتون من الحصاد الجديد، واختاروا من الكتالوج الحالي.",
+      allOil:"تصفّحوا كل أحجام زيت الزيتون",shopPromo:"الحصاد الذهبي · ٢٠٢٦",shopJump:"شاهدوا صفائح الزيت",
+      imageAlt:"صفيحة زيت زيتون من زيت ومونة",storyImageAlt:"موسم قطاف الزيتون في لبنان",shopImageAlt:"صفيحة زيت زيتون من زيت ومونة"
+    },
+    fr:{
+      overline:"ZAYT W MOUNEH · RÉCOLTE DES OLIVES 2026",
+      title:"LA RÉCOLTE <em>DORÉE</em>",
+      tagline:"L’huile de la saison est arrivée.",
+      localeDisplay:"FRANÇAIS",localeAria:"Langue sélectionnée : français",
+      heroFooter:"LIBAN · RÉCOLTE DES OLIVES 2026",
+      desc:"L’huile d’olive libanaise de la récolte 2026 est arrivée. Découvrez nos bidons et choisissez le format idéal pour votre table.",
+      discover:"Découvrir la récolte 2026",pantry:"Explorer toute l’épicerie",
+      choose:"CHOISISSEZ VOTRE FORMAT",chooseText:"Trois formats de bidons à découvrir pour la récolte d’huile d’olive 2026.",
+      season:"Récolte des olives 2026",chooseSize:"Choisir ce format",unavailable:"Non disponible à la commande en ligne pour le moment",inquire:"Se renseigner sur la disponibilité",
+      note:"Les prix et disponibilités proviennent du catalogue actuel. D’autres formats sont proposés dans la boutique.",
+      storyOverline:"LA SAISON DES OLIVES AU LIBAN",story:"DE LA RÉCOLTE À VOTRE TABLE",
+      storyCopy:"Au Liban, la saison des olives est un moment de partage et de retrouvailles autour de la nouvelle récolte. Célébrez la récolte 2026 avec Zayt w Mouneh.",
+      table:"LE GOÛT DE CHEZ NOUS",tableCopy:"Du pain frais, du zaatar, des olives et de l’huile d’olive : ces plaisirs simples que l’on aime partager.",
       shopZaatar:"Découvrir le zaatar",shopOlives:"Découvrir les olives",
-      announcement:"🫒 La récolte d’huile d’olive 2026 est arrivée",announcementLink:"Découvrir la collection",
-      shopDesc:"Une nouvelle récolte et trois beaux formats. Choisissez le vôtre dans notre catalogue actuel.",
-      allOil:"Toutes les huiles d’olive",shopPromo:"LA RÉCOLTE DORÉE 2026",shopJump:"Voir les bidons"}
+      announcement:"🫒 La récolte d’huile d’olive 2026 est arrivée",announcementLink:"Découvrir la récolte",
+      shopDesc:"Découvrez trois formats de bidons de la nouvelle récolte et choisissez parmi les produits de notre catalogue actuel.",
+      allOil:"Voir toutes les huiles d’olive",shopPromo:"LA RÉCOLTE DORÉE · 2026",shopJump:"Voir les bidons",
+      imageAlt:"Bidon d’huile d’olive Zayt w Mouneh",storyImageAlt:"Saison de la récolte des olives au Liban",shopImageAlt:"Bidon d’huile d’olive Zayt w Mouneh"
+    }
   };
-  function language(){var s=document.documentElement.lang;return s==="ar"?"ar":s==="fr"?"fr":"en"}
+  function language(){var s=window.ZWM_LOCALE&&window.ZWM_LOCALE.get?window.ZWM_LOCALE.get():document.documentElement.lang;return s==="ar"?"ar":s==="fr"?"fr":"en"}
+  function dir(){return language()==="ar"?"rtl":"ltr"}
+  function sectionLocale(){return ' lang="'+language()+'" dir="'+dir()+'"'}
   function t(){return COPY[language()]||COPY.en}
   function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
   function catalog(){try{return typeof PRODUCTS_DATA!=="undefined"&&Array.isArray(PRODUCTS_DATA)?PRODUCTS_DATA:[]}catch(e){return []}}
@@ -79,24 +102,24 @@
   }
   function hero(){
     var c=t();
-    return '<section class="zwm-gh zwm-gh-hero" aria-labelledby="ghHeroTitle">'+
+    return '<section class="zwm-gh zwm-gh-hero"'+sectionLocale()+' aria-labelledby="ghHeroTitle">'+
       '<div class="gh-film" aria-hidden="true"><video id="ghFilm" muted playsinline preload="none" poster="'+PHOTO+'hero-poster.jpg">'+
       '<source src="'+PHOTO+'harvest-film.mp4" type="video/mp4"></video></div><div class="gh-shade"></div>'+
       '<div class="gh-shell gh-hero-inner"><div class="gh-hero-copy">'+
-      '<span class="gh-overline">'+esc(c.overline)+'</span>'+
+      '<div class="gh-hero-topline"><span class="gh-overline">'+esc(c.overline)+'</span><span class="gh-locale-indicator" aria-label="'+esc(c.localeAria)+'">'+esc(c.localeDisplay)+'</span></div>'+
       '<h1 id="ghHeroTitle">'+c.title+'</h1>'+
-      '<p class="gh-ar-line" lang="ar" dir="rtl">'+esc(c.ar)+'</p>'+
+      '<p class="gh-season-line">'+esc(c.tagline)+'</p>'+
       '<p class="gh-desc">'+esc(c.desc)+'</p>'+
       '<a class="gh-action" href="#harvest-collection">'+esc(c.discover)+' <span aria-hidden="true">↗</span></a>'+
       '<a class="gh-subaction" href="/shop#shop">'+esc(c.pantry)+'</a>'+
-      '</div></div><span class="gh-hero-caption">LEBANON · HARVEST 2026</span></section>';
+      '</div></div><span class="gh-hero-caption">'+esc(c.heroFooter)+'</span></section>';
   }
   function card(s){
     var c=t(),p=oil(),v=variantFor(s),orderable=!!(p&&v&&available(p));
-    var href=orderable?shopUrl(v.id):"/#contact";
+    var href=orderable?shopUrl(v.id):"/"+(PREVIEW?"?harvestPreview=1":"")+"#contact";
     var pic=PHOTO+s.file;
     return '<article class="gh-card" data-size="'+s.size+'">'+
-      '<figure class="gh-card-figure"><img src="'+pic+'" loading="lazy" decoding="async" width="640" height="800" alt="'+esc((language()==="ar"?"صفيحة زيت زيتون من زيت ومونة، ":language()==="fr"?"Bidon d’huile d’olive Zayt w Mouneh, ":"Zayt w Mouneh olive oil tin, ")+s.size+" L")+'"></figure>'+
+      '<figure class="gh-card-figure"><img src="'+pic+'" loading="lazy" decoding="async" width="640" height="800" alt="'+esc(c.imageAlt+" — "+s.size+" L")+'"></figure>'+
       '<h3 class="gh-capacity" dir="ltr">'+s.size+' L</h3><p class="gh-caption">'+esc(c.season)+'</p>'+
       (orderable?'<p class="gh-price">'+money(v.price)+'</p>':'<p class="gh-unavailable">'+esc(c.unavailable)+'</p>')+
       '<a class="gh-action" href="'+href+'"'+(!orderable?' data-gh-inquire="1"':'')+'>'+
@@ -104,7 +127,7 @@
   }
   function collection(){
     var c=t();
-    return '<section class="zwm-gh zwm-gh-collection" id="harvest-collection" aria-labelledby="ghChooseTitle">'+
+    return '<section class="zwm-gh zwm-gh-collection"'+sectionLocale()+' id="harvest-collection" aria-labelledby="ghChooseTitle">'+
       '<div class="gh-shell"><div class="gh-section-heading"><span class="gh-overline">'+esc(c.shopPromo)+'</span>'+
       '<h2 id="ghChooseTitle">'+esc(c.choose)+'</h2><p>'+esc(c.chooseText)+'</p></div>'+
       '<div class="gh-tins">'+SIZES.map(card).join("")+'</div>'+
@@ -112,14 +135,14 @@
   }
   function story(){
     var c=t();
-    return '<section class="zwm-gh zwm-gh-story" aria-labelledby="ghStoryTitle"><div class="gh-shell gh-story-grid">'+
-      '<figure class="gh-story-photo"><img loading="lazy" decoding="async" width="960" height="540" src="'+PHOTO+'hero-poster.jpg" alt="'+esc(language()==="ar"?"قطاف الزيتون اللبناني ٢٠٢٦":language()==="fr"?"Récolte des olives au Liban, 2026":"Lebanese olive harvest, 2026")+'"></figure>'+
+    return '<section class="zwm-gh zwm-gh-story"'+sectionLocale()+' aria-labelledby="ghStoryTitle"><div class="gh-shell gh-story-grid">'+
+      '<figure class="gh-story-photo"><img loading="lazy" decoding="async" width="960" height="540" src="'+PHOTO+'hero-poster.jpg" alt="'+esc(c.storyImageAlt)+'"></figure>'+
       '<div><span class="gh-overline">'+esc(c.storyOverline)+'</span><h2 id="ghStoryTitle">'+esc(c.story)+'</h2><p>'+esc(c.storyCopy)+'</p></div>'+
       '</div></section>';
   }
   function table(){
     var c=t();
-    return '<section class="zwm-gh zwm-gh-table"><div class="gh-shell gh-table-grid"><div>'+
+    return '<section class="zwm-gh zwm-gh-table"'+sectionLocale()+'><div class="gh-shell gh-table-grid"><div>'+
       '<span class="gh-overline">ZAYT W MOUNEH</span><h2>'+esc(c.table)+'</h2><p>'+esc(c.tableCopy)+'</p></div>'+
       '<div class="gh-table-links"><a href="/shop?q=zaatar#shop">'+esc(c.shopZaatar)+' ↗</a>'+
       '<a href="/shop?category=Olives#shop">'+esc(c.shopOlives)+' ↗</a></div>'+
@@ -169,11 +192,12 @@
     var c=t(),card=section.querySelector(".seasonal-story-card");
     if(!card)return;
     card.classList.add("zwm-gh");
+    card.lang=language();card.dir=dir();
     card.innerHTML='<div class="zwm-gh-shop-copy"><span class="gh-overline">'+esc(c.shopPromo)+'</span>'+
       '<h2>'+esc(c.choose)+'</h2><p>'+esc(c.shopDesc)+'</p>'+
       '<a class="gh-action" href="/'+(PREVIEW?"?harvestPreview=1":"")+'#harvest-collection">'+esc(c.shopJump)+' ↗</a> '+
       '<a style="color:#f4e3b2;margin-inline-start:18px" href="'+shopUrl("")+'">'+esc(c.allOil)+' ↗</a></div>'+
-      '<div class="zwm-gh-shop-photo" role="img" aria-label="Olive oil from Zayt w Mouneh"></div>';
+      '<div class="zwm-gh-shop-photo" role="img" aria-label="'+esc(c.shopImageAlt)+'"></div>';
     var main=document.querySelector("body[data-page='shop'] main");
     var categories=main&&main.querySelector(".shop-category-hub");
     if(main&&categories&&section.nextElementSibling!==categories)main.insertBefore(section,categories);

@@ -30,8 +30,8 @@ function uiIcon(name,active=false){
   if(name==="eye")return `<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-5.6 9.5-5.6S21.5 12 21.5 12 18.1 17.6 12 17.6 2.5 12 2.5 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>`;
   return "";
 }
-function productPhotoMarkup(p,cls="product-image"){
-  const source=window.ZWM_PRODUCT_PHOTOS?.sourceFor(p.id);
+function productPhotoMarkup(p,cls="product-image",variantId){
+  const source=window.ZWM_PRODUCT_PHOTOS?.sourceFor(p.id,variantId);
   if(!source)return "";
   const posX=Math.max(0,Math.min(100,Number(source.positionX??50)));
   const posY=Math.max(0,Math.min(100,Number(source.positionY??50)));
@@ -52,8 +52,8 @@ function renderStaticProductPhotos(root=document){
 function productPlaceholderMarkup(p,cls="product-image"){
   return `<span class="${escapeHtml(cls)} product-photo-placeholder" role="img" aria-label="${escapeHtml(currentName(p))}"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M19 18h26l-2.5 34h-21L19 18Z"/><path d="M23 18V12h18v6"/><path d="M27 33c5-6 12-8 18-7-2 7-7 12-15 13"/><path d="M31 39v8"/></svg><small>${escapeHtml(categoryName(p.category))}</small></span>`;
 }
-function productVisualMarkup(p,cls="product-image"){
-  const photo=productPhotoMarkup(p,cls);
+function productVisualMarkup(p,cls="product-image",variantId){
+  const photo=productPhotoMarkup(p,cls,variantId);
   if(photo)return photo;
   return productPlaceholderMarkup(p,cls);
 }
@@ -1410,7 +1410,7 @@ function renderProducts(){
 
     return `<article class="product-card product-card-animated" style="--card-i:${index%8}" data-product="${escapeHtml(p.id)}">
       <div class="product-top">
-        <div class="product-visual">${productVisualMarkup(p)}<span class="quick-view-hint">${lang==="ar"?"عرض سريع ↗":"Quick view ↗"}</span></div>
+        <div class="product-visual">${productVisualMarkup(p,"product-image",selected.id)}<span class="quick-view-hint">${lang==="ar"?"عرض سريع ↗":"Quick view ↗"}</span></div>
         <div class="product-top-actions">
           <button class="product-favorite ${isFav?"is-active":""}" type="button" data-fav="${escapeHtml(p.id)}" aria-pressed="${isFav}" aria-label="${escapeHtml(EXTRA_UI[lang].favorite)}">${uiIcon("heart",isFav)}</button>
           <button class="product-view" type="button" data-view="${escapeHtml(p.id)}" aria-label="${escapeHtml(t.view+" "+currentName(p))}">${uiIcon("eye")}</button>
@@ -1421,7 +1421,7 @@ function renderProducts(){
       <p class="product-description"><strong>${escapeHtml(t.what)}:</strong> ${escapeHtml(info.what)}</p>
       <p class="product-use"><strong>${escapeHtml(t.use)}:</strong> ${escapeHtml(info.use)}</p>
       <div class="product-price-row">
-        <div class="product-price"><small>${p.variants.length>1?escapeHtml(t.from):""}</small><strong class="money">${money(ps.min)}</strong></div>
+        <div class="product-price"><small>${p.variants.length>1&&p.id!=="extra-virgin-olive-oil"?escapeHtml(t.from):""}</small><strong class="money">${money(p.id==="extra-virgin-olive-oil"?selected.price:ps.min)}</strong></div>
         <div class="product-size-summary">${p.variants.length>1?`${p.variants.length} ${escapeHtml(t.sizeOptions)}`:escapeHtml(currentSize(selected))}</div>
       </div>
       <div class="product-actions">
@@ -1456,6 +1456,14 @@ function renderProducts(){
   $$("[data-card-variant]").forEach(sel=>sel.addEventListener("change",e=>{
     e.stopPropagation();
     cardVariant[sel.dataset.cardVariant]=sel.value;
+    const p=productById(sel.dataset.cardVariant);
+    if(p?.id==="extra-virgin-olive-oil"){
+      const visual=sel.closest(".product-card")?.querySelector(".product-visual .product-image");
+      if(visual)visual.outerHTML=productVisualMarkup(p,"product-image",sel.value);
+      const price=sel.closest(".product-card")?.querySelector(".product-price .money");
+      const variant=variantById(p,sel.value);
+      if(price&&variant)price.textContent=money(variant.price);
+    }
   }));
   $$("[data-card-q]").forEach(btn=>btn.addEventListener("click",e=>{
     e.stopPropagation();
@@ -1660,7 +1668,7 @@ function renderModal(productId,variantId){
   currentModalProduct=p;
   currentModalVariant=v;
   const t=UI[lang],info=infoFor(p),facts=verifiedProductFacts(p),badges=badgesFor(p);
-  $("#productModalMark").innerHTML=productVisualMarkup(p,"product-modal-image");
+  $("#productModalMark").innerHTML=productVisualMarkup(p,"product-modal-image",v.id);
   $("#productModalCategory").textContent=categoryName(p.category);
   $("#productModalTitle").textContent=currentName(p);
   $("#productModalOriginal").textContent=lang==="en"&&normalize(p.nameEn)!==normalize(p.original)?`Catalogue name: ${p.original}`:"";

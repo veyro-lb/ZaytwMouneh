@@ -90,7 +90,7 @@ var COPY={
         "title": "6. More help and consumer rights",
         "legal": true,
         "paragraphs": [
-          "For other questions, late reports or anything not covered above, <strong>please contact Zayt w Mouneh</strong> through our <a href=\"/contact\">contact page</a> or <a href=\"https://wa.me/96170381412\" target=\"_blank\" rel=\"noopener\">WhatsApp (+961 70 381 412)</a>.",
+          "For other questions, late reports or anything not covered above, <strong>please contact Zayt w Mouneh</strong> through our <a href=\"/contact\">contact page</a> or <a href=\"https://wa.me/96170381412\" target=\"_blank\" rel=\"noopener\">WhatsApp (<bdi dir=\"ltr\" translate=\"no\">+961 70 381 412</bdi>)</a>.",
           "<strong>Nothing in this policy removes or limits rights granted by applicable Lebanese consumer-protection law.</strong> We will consider any issue that must be addressed under the law even outside our usual 24-hour reporting process."
         ]
       }
@@ -153,7 +153,7 @@ var COPY={
         "title": "6. المساعدة الإضافية وحقوق المستهلك",
         "legal": true,
         "paragraphs": [
-          "للاستفسارات الأخرى أو البلاغات بعد انتهاء المدة أو أي موضوع غير مذكور هنا، <strong>يرجى التواصل مع زيت ومونة</strong> عبر <a href=\"/contact\">صفحة التواصل</a> أو <a href=\"https://wa.me/96170381412\" target=\"_blank\" rel=\"noopener\">واتساب (+961 70 381 412)</a>.",
+          "للاستفسارات الأخرى أو البلاغات بعد انتهاء المدة أو أي موضوع غير مذكور هنا، <strong>يرجى التواصل مع زيت ومونة</strong> عبر <a href=\"/contact\">صفحة التواصل</a> أو <a href=\"https://wa.me/96170381412\" target=\"_blank\" rel=\"noopener\">واتساب (<bdi dir=\"ltr\" translate=\"no\">+961 70 381 412</bdi>)</a>.",
           "<strong>لا تُلغي هذه السياسة ولا تُقيّد حقوق المستهلك التي يكفلها القانون اللبناني النافذ.</strong> وسنراجع أي حالة يجب معالجتها قانوناً حتى لو كانت خارج مهلة الإبلاغ المعتادة البالغة 24 ساعة."
         ]
       }
@@ -216,7 +216,7 @@ var COPY={
         "title": "6. Aide complémentaire et droits des consommateurs",
         "legal": true,
         "paragraphs": [
-          "Pour les autres questions, les signalements tardifs ou tout cas non mentionné ici, <strong>contactez Zayt w Mouneh</strong> via notre <a href=\"/contact\">page de contact</a> ou <a href=\"https://wa.me/96170381412\" target=\"_blank\" rel=\"noopener\">WhatsApp (+961 70 381 412)</a>.",
+          "Pour les autres questions, les signalements tardifs ou tout cas non mentionné ici, <strong>contactez Zayt w Mouneh</strong> via notre <a href=\"/contact\">page de contact</a> ou <a href=\"https://wa.me/96170381412\" target=\"_blank\" rel=\"noopener\">WhatsApp (<bdi dir=\"ltr\" translate=\"no\">+961 70 381 412</bdi>)</a>.",
           "<strong>Cette politique ne supprime ni ne limite les droits des consommateurs prévus par la législation libanaise applicable.</strong> Nous examinerons tout cas devant être pris en charge légalement, même au-delà du délai habituel de 24 heures."
         ]
       }

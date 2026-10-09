@@ -233,8 +233,8 @@ function updateSeo(){
  var script=qs("#c6ProductSchema");if(!script){script=document.createElement("script");script.type="application/ld+json";script.id="c6ProductSchema";document.head.appendChild(script)}script.textContent=JSON.stringify(ld);
  document.dispatchEvent(new CustomEvent("zwm:seo-refresh"));
 }
-function photoMarkup(p){
- var source=window.ZWM_PRODUCT_PHOTOS&&window.ZWM_PRODUCT_PHOTOS.sourceFor?window.ZWM_PRODUCT_PHOTOS.sourceFor(p.id):null;
+function photoMarkup(p,variantId){
+ var source=window.ZWM_PRODUCT_PHOTOS&&window.ZWM_PRODUCT_PHOTOS.sourceFor?window.ZWM_PRODUCT_PHOTOS.sourceFor(p.id,variantId):null;
  if(source&&source.url)return '<img src="'+esc(source.url)+'" width="'+esc(source.width||700)+'" height="'+esc(source.height||700)+'" alt="'+esc(productName(p))+'">';
  return '<div class="c6-product-placeholder" aria-hidden="true">'+esc((productName(p)||"ZW").slice(0,2).toUpperCase())+'</div>';
 }
@@ -303,7 +303,7 @@ function render(){
  var min=(p.variants||[]).length?Math.min.apply(null,p.variants.map(function(v){return Number(v.price)||0})):0;
  var av=availability(p),badgeClass=av==="out_of_stock"||av==="coming_soon"?" is-unavailable":av==="low_stock"?" is-low":"";
  qs("#c6ProductRoot").innerHTML=
- '<main class="c6-product-main"><div class="c6-shell"><nav class="c6-breadcrumb"><a href="'+localePrefix(state.locale)+'/shop">'+esc(t("back"))+'</a><span>›</span><span>'+esc(productName(p))+'</span></nav><div class="c6-product-grid"><div class="c6-product-visual">'+photoMarkup(p)+'</div><div class="c6-product-copy"><p class="c6-eyebrow">'+esc(p.category||t("category"))+'</p><h1 class="c6-product-title">'+esc(productName(p))+'</h1>'+(p.original?'<p class="c6-original">'+esc(p.original)+'</p>':"")+'<div class="c6-badges"><span class="c6-badge'+badgeClass+'">'+esc(t(av))+'</span></div><div class="c6-price">'+esc(t("from"))+' '+money(min)+'</div><div class="c6-purchase-box"><div class="c6-purchase-row"><label class="c6-field"><span>'+esc(t("size"))+'</span><select id="c6Variant">'+variantsMarkup(p)+'</select></label><label class="c6-field"><span>'+esc(t("qty"))+'</span><input id="c6Qty" type="number" min="1" max="99" value="1"></label></div><div class="c6-purchase-actions"><button class="c6-button" id="c6Add" type="button"'+(isOrderable(p)?"":" disabled")+'>'+esc(isOrderable(p)?t("add"):t("unavailable"))+'</button><button class="c6-button is-secondary" id="c6Share" type="button">'+esc(t("share"))+'</button></div>'+alertMarkup(p)+'</div><div style="margin-top:25px"><p class="c6-eyebrow">'+esc(t("facts"))+'</p>'+factsMarkup(p)+'</div><div class="c6-service-grid"><div class="c6-service-card"><strong>'+esc(t("payment"))+'</strong><div style="margin-top:7px">'+paymentMarkup()+'</div><p>'+esc(t("paymentNote"))+'</p></div>'+deliveryMarkup()+'</div></div></div></div></main>'+
+ '<main class="c6-product-main"><div class="c6-shell"><nav class="c6-breadcrumb"><a href="'+localePrefix(state.locale)+'/shop">'+esc(t("back"))+'</a><span>›</span><span>'+esc(productName(p))+'</span></nav><div class="c6-product-grid"><div class="c6-product-visual">'+photoMarkup(p,state.selectedVariant&&state.selectedVariant.id)+'</div><div class="c6-product-copy"><p class="c6-eyebrow">'+esc(p.category||t("category"))+'</p><h1 class="c6-product-title">'+esc(productName(p))+'</h1>'+(p.original?'<p class="c6-original">'+esc(p.original)+'</p>':"")+'<div class="c6-badges"><span class="c6-badge'+badgeClass+'">'+esc(t(av))+'</span></div><div class="c6-price" id="c6SelectedPrice">'+(p.id==="extra-virgin-olive-oil"?money(state.selectedVariant?state.selectedVariant.price:min):esc(t("from"))+' '+money(min))+'</div><div class="c6-purchase-box"><div class="c6-purchase-row"><label class="c6-field"><span>'+esc(t("size"))+'</span><select id="c6Variant">'+variantsMarkup(p)+'</select></label><label class="c6-field"><span>'+esc(t("qty"))+'</span><input id="c6Qty" type="number" min="1" max="99" value="1"></label></div><div class="c6-purchase-actions"><button class="c6-button" id="c6Add" type="button"'+(isOrderable(p)?"":" disabled")+'>'+esc(isOrderable(p)?t("add"):t("unavailable"))+'</button><button class="c6-button is-secondary" id="c6Share" type="button">'+esc(t("share"))+'</button></div>'+alertMarkup(p)+'</div><div style="margin-top:25px"><p class="c6-eyebrow">'+esc(t("facts"))+'</p>'+factsMarkup(p)+'</div><div class="c6-service-grid"><div class="c6-service-card"><strong>'+esc(t("payment"))+'</strong><div style="margin-top:7px">'+paymentMarkup()+'</div><p>'+esc(t("paymentNote"))+'</p></div>'+deliveryMarkup()+'</div></div></div></div></main>'+
  bundleMarkup()+recipeMarkup()+relatedProducts()+reviewsMarkup();
  bind();
  updateCartCount();
@@ -346,7 +346,15 @@ async function submitAlert(e){
  finally{btn.disabled=false}
 }
 function bind(){
- var sel=qs("#c6Variant");if(sel){sel.addEventListener("change",function(){state.selectedVariant=(state.product.variants||[]).find(function(v){return v.id===sel.value})||state.selectedVariant})}
+ var sel=qs("#c6Variant");if(sel){sel.addEventListener("change",function(){
+   state.selectedVariant=(state.product.variants||[]).find(function(v){return v.id===sel.value})||state.selectedVariant;
+   if(state.product.id==="extra-virgin-olive-oil"){
+     var visual=qs(".c6-product-visual");
+     if(visual)visual.innerHTML=photoMarkup(state.product,state.selectedVariant&&state.selectedVariant.id);
+     var price=qs("#c6SelectedPrice");
+     if(price&&state.selectedVariant)price.textContent=money(state.selectedVariant.price);
+   }
+ })}
  var qty=qs("#c6Qty");if(qty){qty.addEventListener("change",function(){state.qty=Math.max(1,Math.min(99,Number(qty.value)||1));qty.value=state.qty})}
  var add=qs("#c6Add");if(add)add.addEventListener("click",function(){if(isOrderable(state.product)&&addProduct(state.product,state.selectedVariant,state.qty))toast(t("added"))});
  var share=qs("#c6Share");if(share)share.addEventListener("click",async function(){var url=canonical();try{if(navigator.share){await navigator.share({title:productName(state.product),url:url})}else{await navigator.clipboard.writeText(url);toast(t("copied"))}}catch(e){}});

@@ -1743,7 +1743,25 @@
     "quality": "original-supplied-shared"
   }
 };
-  const sourceFor = id => map[id] || null;
+  // Exact owner-supplied 2026 harvest photography, indexed by catalogue variant.
+  // The 500 ml bottle has its own supplied photo, not the older generic fallback.
+  const oliveOilVariants = {
+    "extra-virgin-olive-oil-500-ml": "500ml.avif",
+    "extra-virgin-olive-oil-1-l": "1l.webp",
+    "extra-virgin-olive-oil-4-l": "4l.webp",
+    "extra-virgin-olive-oil-8-77-l": "8-77l.webp",
+    "extra-virgin-olive-oil-17-54-l": "17-54l.webp"
+  };
+  const sourceFor = (id, variantId) => {
+    if(id === "extra-virgin-olive-oil") {
+      const file = oliveOilVariants[variantId] || oliveOilVariants["extra-virgin-olive-oil-1-l"];
+      return {url:"/assets/harvest-2026/" + file + "?v=20261009-five-oil-photos1",
+        width:variantId==="extra-virgin-olive-oil-500-ml"?400:1122,
+        height:variantId==="extra-virgin-olive-oil-500-ml"?501:1402,
+        fit:"contain", quality:"2026-owner-supplied"};
+    }
+    return map[id] || null;
+  };
   window.ZWM_PRODUCT_PHOTOS = {
     map, sourceFor, cardSourceFor: sourceFor, tile: sourceFor,
     load(){ return Promise.resolve(true); }

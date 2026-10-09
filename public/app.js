@@ -30,8 +30,8 @@ function uiIcon(name,active=false){
   if(name==="eye")return `<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-5.6 9.5-5.6S21.5 12 21.5 12 18.1 17.6 12 17.6 2.5 12 2.5 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>`;
   return "";
 }
-function productPhotoMarkup(p,cls="product-image"){
-  const source=window.ZWM_PRODUCT_PHOTOS?.sourceFor(p.id);
+function productPhotoMarkup(p,cls="product-image",variantId){
+  const source=window.ZWM_PRODUCT_PHOTOS?.sourceFor(p.id,variantId);
   if(!source)return "";
   const posX=Math.max(0,Math.min(100,Number(source.positionX??50)));
   const posY=Math.max(0,Math.min(100,Number(source.positionY??50)));
@@ -52,8 +52,8 @@ function renderStaticProductPhotos(root=document){
 function productPlaceholderMarkup(p,cls="product-image"){
   return `<span class="${escapeHtml(cls)} product-photo-placeholder" role="img" aria-label="${escapeHtml(currentName(p))}"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M19 18h26l-2.5 34h-21L19 18Z"/><path d="M23 18V12h18v6"/><path d="M27 33c5-6 12-8 18-7-2 7-7 12-15 13"/><path d="M31 39v8"/></svg><small>${escapeHtml(categoryName(p.category))}</small></span>`;
 }
-function productVisualMarkup(p,cls="product-image"){
-  const photo=productPhotoMarkup(p,cls);
+function productVisualMarkup(p,cls="product-image",variantId){
+  const photo=productPhotoMarkup(p,cls,variantId);
   if(photo)return photo;
   return productPlaceholderMarkup(p,cls);
 }
@@ -93,7 +93,6 @@ function liveCmsSettings(){
 }
 function currentWhatsAppNumber(){
   const value=String(liveCmsSettings()?.contact?.whatsapp||"").replace(/\D/g,"");
-  // Previously cached CMS settings must not reactivate the old business number.
   return !value||value==="96181581230"?WA:value;
 }
 function deliveryQuoteFor(subtotal,area=""){
@@ -940,7 +939,23 @@ function searchScore(p,rawQuery){
 function productById(id){const canonical=window.ZWM_PRODUCT_ALIASES?.[id]||id;return PRODUCTS_DATA.find(p=>p.id===canonical)}
 function variantById(p,id){return p?.variants.find(v=>v.id===id)||p?.variants[0]}
 function defaultVariant(p){return p.variants[0]}
-function cardVariantFor(p){return variantById(p,cardVariant[p.id])||defaultVariant(p)}
+// The 4 L tin is visible for inquiry only until an owner-priced catalogue variant exists.
+const HARVEST_4L_ID="extra-virgin-olive-oil-4-l";
+function viewVariants(p){
+  const existing=p?.variants||[];
+  if(p?.id!=="extra-virgin-olive-oil"||existing.some(v=>v.id===HARVEST_4L_ID))return existing;
+  const four={id:HARVEST_4L_ID,sizeEn:"4 L",sizeAr:"4 لتر",sizeFr:"4 L",price:null,quoteOnly:true};
+  const copy=existing.slice();
+  const after=copy.findIndex(v=>v.id==="extra-virgin-olive-oil-1-l");
+  copy.splice(after<0?0:after+1,0,four);
+  return copy;
+}
+function viewVariantById(p,id){return viewVariants(p).find(v=>v.id===id)||defaultVariant(p)}
+function harvestQuotePrice(){return lang==="ar"?"السعر عند الاستفسار":lang==="fr"?"Prix sur demande":"Price on request"}
+function harvestQuoteAction(){return lang==="ar"?"اسأل عن سعر ٤ لتر":lang==="fr"?"Demander le prix du 4 L":"Ask for 4 L price"}
+function harvestQuoteUrl(){return "https://wa.me/96170381412?text="+encodeURIComponent("Hello, I would like the price and availability of the 2026 harvest extra virgin olive oil 4 L tin.")}
+function viewPrice(v){return v?.quoteOnly?harvestQuotePrice():money(v?.price)}
+function cardVariantFor(p){return viewVariantById(p,cardVariant[p.id])||defaultVariant(p)}
 function qtyFor(key){return Math.max(1,Number(draftQty[key]||1))}
 function cartKey(productId,variantId){return `${productId}::${variantId}`}
 
@@ -1405,13 +1420,14 @@ function renderProducts(){
     const listingNote=lang==="en"?repeatedListingNote(p):"";
     const availability=productAvailability(p);
     const canOrder=availability==="in_stock";
-    const sizeOptions=p.variants.length>1
-      ? `<select class="card-variant-select" data-card-variant="${p.id}" aria-label="${escapeHtml(t.chooseSize)}">${p.variants.map(v=>`<option value="${escapeHtml(v.id)}"${v.id===selected.id?" selected":""}>${escapeHtml(currentSize(v))} · ${money(v.price)}</option>`).join("")}</select>`
+    const variants=viewVariants(p);
+    const sizeOptions=variants.length>1
+      ? `<select class="card-variant-select" data-card-variant="${p.id}" aria-label="${escapeHtml(t.chooseSize)}">${variants.map(v=>`<option value="${escapeHtml(v.id)}"${v.id===selected.id?" selected":""}>${escapeHtml(currentSize(v))} · ${escapeHtml(viewPrice(v))}</option>`).join("")}</select>`
       : `<div class="single-size">${escapeHtml(currentSize(selected))}</div>`;
 
     return `<article class="product-card product-card-animated" style="--card-i:${index%8}" data-product="${escapeHtml(p.id)}">
       <div class="product-top">
-        <div class="product-visual">${productVisualMarkup(p)}<span class="quick-view-hint">${lang==="ar"?"عرض سريع ↗":"Quick view ↗"}</span></div>
+        <div class="product-visual">${productVisualMarkup(p,"product-image",selected.id)}<span class="quick-view-hint">${lang==="ar"?"عرض سريع ↗":"Quick view ↗"}</span></div>
         <div class="product-top-actions">
           <button class="product-favorite ${isFav?"is-active":""}" type="button" data-fav="${escapeHtml(p.id)}" aria-pressed="${isFav}" aria-label="${escapeHtml(EXTRA_UI[lang].favorite)}">${uiIcon("heart",isFav)}</button>
           <button class="product-view" type="button" data-view="${escapeHtml(p.id)}" aria-label="${escapeHtml(t.view+" "+currentName(p))}">${uiIcon("eye")}</button>
@@ -1422,18 +1438,18 @@ function renderProducts(){
       <p class="product-description"><strong>${escapeHtml(t.what)}:</strong> ${escapeHtml(info.what)}</p>
       <p class="product-use"><strong>${escapeHtml(t.use)}:</strong> ${escapeHtml(info.use)}</p>
       <div class="product-price-row">
-        <div class="product-price"><small>${p.variants.length>1?escapeHtml(t.from):""}</small><strong class="money">${money(ps.min)}</strong></div>
-        <div class="product-size-summary">${p.variants.length>1?`${p.variants.length} ${escapeHtml(t.sizeOptions)}`:escapeHtml(currentSize(selected))}</div>
+        <div class="product-price"><small>${p.variants.length>1&&p.id!=="extra-virgin-olive-oil"?escapeHtml(t.from):""}</small><strong class="money">${escapeHtml(p.id==="extra-virgin-olive-oil"?viewPrice(selected):money(ps.min))}</strong></div>
+        <div class="product-size-summary">${p.variants.length>1?`${variants.length} ${escapeHtml(t.sizeOptions)}`:escapeHtml(currentSize(selected))}</div>
       </div>
       <div class="product-actions">
         ${sizeOptions}
         <div class="product-buy-row">
           <div class="card-qty">
-            <button type="button" data-card-q="-1" data-id="${escapeHtml(p.id)}" ${canOrder?"":"disabled"} aria-label="${escapeHtml(lang==="ar"?"تقليل الكمية":"Decrease quantity")}">−</button>
+            <button type="button" data-card-q="-1" data-id="${escapeHtml(p.id)}" ${canOrder&&!selected.quoteOnly?"":"disabled"} aria-label="${escapeHtml(lang==="ar"?"تقليل الكمية":"Decrease quantity")}">−</button>
             <span data-card-qty="${escapeHtml(p.id)}">${q}</span>
-            <button type="button" data-card-q="1" data-id="${escapeHtml(p.id)}" ${canOrder?"":"disabled"} aria-label="${escapeHtml(lang==="ar"?"زيادة الكمية":"Increase quantity")}">+</button>
+            <button type="button" data-card-q="1" data-id="${escapeHtml(p.id)}" ${canOrder&&!selected.quoteOnly?"":"disabled"} aria-label="${escapeHtml(lang==="ar"?"زيادة الكمية":"Increase quantity")}">+</button>
           </div>
-          <button class="add-button" type="button" data-add="${escapeHtml(p.id)}" ${canOrder?"":"disabled"}>${escapeHtml(canOrder?t.add:availabilityLabel(p))}</button>
+          <button class="add-button" type="button" data-add="${escapeHtml(p.id)}" ${canOrder||selected.quoteOnly?"":"disabled"}>${escapeHtml(selected.quoteOnly?harvestQuoteAction():canOrder?t.add:availabilityLabel(p))}</button>
         </div>
       </div>
     </article>`;
@@ -1457,6 +1473,18 @@ function renderProducts(){
   $$("[data-card-variant]").forEach(sel=>sel.addEventListener("change",e=>{
     e.stopPropagation();
     cardVariant[sel.dataset.cardVariant]=sel.value;
+    const p=productById(sel.dataset.cardVariant);
+    if(p?.id==="extra-virgin-olive-oil"){
+      const visual=sel.closest(".product-card")?.querySelector(".product-visual .product-image");
+      if(visual)visual.outerHTML=productVisualMarkup(p,"product-image",sel.value);
+      const price=sel.closest(".product-card")?.querySelector(".product-price .money");
+      const variant=viewVariantById(p,sel.value);
+      if(price&&variant)price.textContent=viewPrice(viewVariantById(p,sel.value));
+      const card=sel.closest(".product-card");
+      const button=card?.querySelector("[data-add]");
+      if(button){button.disabled=!variant?.quoteOnly&&!productCanOrder(p);button.textContent=variant?.quoteOnly?harvestQuoteAction():productCanOrder(p)?t.add:availabilityLabel(p);}
+      card?.querySelectorAll("[data-card-q]").forEach(btn=>{btn.disabled=!!variant?.quoteOnly||!productCanOrder(p)});
+    }
   }));
   $$("[data-card-q]").forEach(btn=>btn.addEventListener("click",e=>{
     e.stopPropagation();
@@ -1470,7 +1498,9 @@ function renderProducts(){
     if(!acceptSingleTap(btn,320))return;
     const p=productById(btn.dataset.add);
     if(!p)return;
-    addToCart(p,cardVariantFor(p),qtyFor("card:"+p.id));
+    const chosen=cardVariantFor(p);
+    if(chosen?.quoteOnly){location.href=harvestQuoteUrl();return}
+    addToCart(p,chosen,qtyFor("card:"+p.id));
     animateAddToCart(btn,p);
   }));
   $$("[data-view]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,260))return;openProduct(btn.dataset.view,btn)}));
@@ -1481,6 +1511,7 @@ function renderProducts(){
 }
 
 function addToCart(p,v,qty){
+  if(!v||v.quoteOnly||!p?.variants?.some(row=>row.id===v.id&&row.price!=null&&Number.isFinite(Number(row.price))))return;
   if(!productCanOrder(p)){toast(availabilityLabel(p));return;}
   const key=cartKey(p.id,v.id);
   cart[key]={productId:p.id,variantId:v.id,qty:Math.max(1,Number(qty)||1)};
@@ -1656,12 +1687,12 @@ function trapQuickViewFocus(event){
 function renderModal(productId,variantId){
   const p=productById(productId);
   if(!p)return false;
-  const v=variantById(p,variantId)||defaultVariant(p);
+  const v=viewVariantById(p,variantId)||defaultVariant(p);
   if(!v)return false;
   currentModalProduct=p;
   currentModalVariant=v;
   const t=UI[lang],info=infoFor(p),facts=verifiedProductFacts(p),badges=badgesFor(p);
-  $("#productModalMark").innerHTML=productVisualMarkup(p,"product-modal-image");
+  $("#productModalMark").innerHTML=productVisualMarkup(p,"product-modal-image",v.id);
   $("#productModalCategory").textContent=categoryName(p.category);
   $("#productModalTitle").textContent=currentName(p);
   $("#productModalOriginal").textContent=lang==="en"&&normalize(p.nameEn)!==normalize(p.original)?`Catalogue name: ${p.original}`:"";
@@ -1676,14 +1707,14 @@ function renderModal(productId,variantId){
   $("#productModalUse").textContent=info.use;
   $("#nutritionPanel").hidden=!facts.length;
   $("#productNutrition").textContent=facts.map(item=>`${item.label}: ${item.value}`).join(" · ");
-  $("#modalPrice").textContent=money(v.price);
+  $("#modalPrice").textContent=viewPrice(v);
   $("#productModalQty").textContent=qtyFor("modal");
   const modalCanOrder=productCanOrder(p);
-  $("#productModalAdd").textContent=modalCanOrder?t.add:availabilityLabel(p);
-  $("#productModalAdd").disabled=!modalCanOrder;
-  $("#variantOptions").innerHTML=p.variants.map(option=>`<button type="button" class="variant-option ${option.id===v.id?"is-active":""}" data-modal-variant="${escapeHtml(option.id)}">${escapeHtml(currentSize(option))} · ${money(option.price)}</button>`).join("");
+  $("#productModalAdd").textContent=v.quoteOnly?harvestQuoteAction():modalCanOrder?t.add:availabilityLabel(p);
+  $("#productModalAdd").disabled=!modalCanOrder&&!v.quoteOnly;
+  $("#variantOptions").innerHTML=viewVariants(p).map(option=>`<button type="button" class="variant-option ${option.id===v.id?"is-active":""}" data-modal-variant="${escapeHtml(option.id)}">${escapeHtml(currentSize(option))} · ${escapeHtml(viewPrice(option))}</button>`).join("");
   $$("[data-modal-variant]").forEach(btn=>btn.addEventListener("click",()=>{
-    const next=variantById(p,btn.dataset.modalVariant);
+    const next=viewVariantById(p,btn.dataset.modalVariant);
     if(!next)return;
     currentModalVariant=next;
     renderModal(p.id,currentModalVariant.id);
@@ -2435,7 +2466,7 @@ function init(){
   if($("#productModalClose"))$("#productModalClose").addEventListener("click",closeProduct);
   if($("#modalQtyMinus"))$("#modalQtyMinus").addEventListener("click",()=>{draftQty.modal=Math.max(1,qtyFor("modal")-1);$("#productModalQty").textContent=draftQty.modal});
   if($("#modalQtyPlus"))$("#modalQtyPlus").addEventListener("click",()=>{draftQty.modal=qtyFor("modal")+1;$("#productModalQty").textContent=draftQty.modal});
-  if($("#productModalAdd"))$("#productModalAdd").addEventListener("click",e=>{const btn=e.currentTarget;if(!acceptSingleTap(btn,320))return;if(currentModalProduct&&currentModalVariant){addToCart(currentModalProduct,currentModalVariant,qtyFor("modal"));animateAddToCart(btn,currentModalProduct)}});
+  if($("#productModalAdd"))$("#productModalAdd").addEventListener("click",e=>{const btn=e.currentTarget;if(!acceptSingleTap(btn,320))return;if(currentModalProduct&&currentModalVariant){if(currentModalVariant.quoteOnly){location.href=harvestQuoteUrl();return}addToCart(currentModalProduct,currentModalVariant,qtyFor("modal"));animateAddToCart(btn,currentModalProduct)}});
   if($("#modalFavorite"))$("#modalFavorite").addEventListener("click",e=>{if(!acceptSingleTap(e.currentTarget,300))return;if(currentModalProduct)toggleFavorite(currentModalProduct.id)});
 
   $$("[data-scene-dot]").forEach(btn=>btn.addEventListener("click",()=>showScene(Number(btn.dataset.sceneDot),true)));
@@ -2489,6 +2520,25 @@ window.addEventListener("zwm:catalog-cache-updated",syncLiveCatalogFromCache);
 window.chooseWelcomeLanguage=chooseWelcomeLanguage;
 window.applyLanguage=applyLanguage;
 window.applyPageMetadata=applyPageMetadata;
+/* Isolated seasonal merchandising API. Uses the normal validated storefront cart.
+   It never creates variants, invents prices, or writes cart storage directly. */
+window.ZWM_HARVEST_CART={
+  offer(productId,variantId){
+    const p=productById(productId);
+    const v=p?.variants?.find(row=>row.id===variantId);
+    if(!p||!v||!Number.isFinite(Number(v.price))||Number(v.price)<0)return null;
+    return {price:Number(v.price),available:productCanOrder(p),currency:"USD",sizeEn:v.sizeEn||""};
+  },
+  add(productId,variantId){
+    const p=productById(productId);
+    const v=p?.variants?.find(row=>row.id===variantId);
+    if(!p||!v||!productCanOrder(p)||!Number.isFinite(Number(v.price))||Number(v.price)<0)return false;
+    const key=cartKey(p.id,v.id);
+    addToCart(p,v,(cart[key]?.qty||0)+1);
+    return true;
+  }
+};
+
 document.addEventListener("DOMContentLoaded",init);
 
 /* Load exactly one owner CMS/analytics bridge without delaying the storefront.

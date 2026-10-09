@@ -1388,6 +1388,9 @@
     }
 
     state.membership = data;
+    // Only an owner verified against admin_users marks this browser as internal.
+    // Keep the device excluded when the owner signs out of the dashboard.
+    try{localStorage.setItem("zwm:analytics:owner-opt-out:v1","1");}catch{}
     $("ownerName").textContent = data.label || "Owner";
     $("ownerEmail").textContent = user.email || "Owner";
     $("ownerInitial").textContent = (data.label || user.email || "O").charAt(0).toUpperCase();

@@ -19,7 +19,7 @@ jobs:
           set -euo pipefail
           sleep 12
           base="https://zaytwmouneh.veyro-202.workers.dev"
-          expected="storefront-shell.css?v=20261009-wordmarkfit1"
+          expected="storefront-shell.css?v=20261009-arabicbrand2"
           html="$(curl -fsSL --max-time 20 "$base/")"
           token="$(printf '%s' "$html" | grep -oE 'storefront-shell\.css\?v=[^" >]+' | head -1 || true)"
           release="$(printf '%s' "$html" | grep -oE 'name="zwm-release" content="[^"]+"' | head -1 || true)"
@@ -27,7 +27,7 @@ jobs:
           echo "EXPECTED_SHELL_TOKEN=$expected"
           echo "LIVE_RELEASE=$release"
           release_js="$(curl -fsSL --max-time 20 "$base/storefront-release.js?t=$(date +%s)")"
-          if printf '%s' "$release_js" | grep -q 'SHELL_ASSET_VERSION="20261009-wordmarkfit1"'; then
+          if printf '%s' "$release_js" | grep -q 'SHELL_ASSET_VERSION="20261009-arabicbrand2"'; then
             echo "LIVE_RELEASE_HELPER_SHELL_PIN=present"
           else
             echo "LIVE_RELEASE_HELPER_SHELL_PIN=missing"

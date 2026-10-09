@@ -240,6 +240,25 @@ async function submit(ctx){
     d.dispatchEvent(new w.KeyboardEvent("keydown",{key:"Escape",bubbles:true}));assert(modal.hidden,"Escape did not close CRM modal");d.querySelector("#wholesaleLeadCards .wholesale-lead-open").click();
     let mark=d.getElementById("markWholesaleContacted");mark.click();assert.equal(mark.disabled,true,"Mark contacted must disable during save");await wait(20);assert(requests.some(r=>r.opts.method==="PATCH"&&JSON.parse(r.opts.body||"{}").last_contacted_at),"Mark contacted did not persist contact time");assert.equal(row.status,"contacted","new lead did not transition to contacted");
     d.getElementById("wholesaleDetailStatus").value="quote_preparing";d.getElementById("wholesaleDetailNotes").value="Prepare a quote.";let save=d.getElementById("saveWholesaleLead");save.click();assert.equal(save.disabled,true,"Save CRM changes must disable during save");await wait(20);assert.equal(row.status,"quote_preparing","CRM status did not persist");assert.equal(row.internal_notes,"Prepare a quote.","internal notes did not persist");
+    // Regression: both owner admin languages, static labels, enum values and modal must switch without mutating CRM records.
+    d.documentElement.lang="ar";
+    d.documentElement.dir="rtl";
+    d.dispatchEvent(new w.Event("zwm:admin-language"));
+    assert.equal(d.querySelector('[data-view="wholesale"]').textContent,"الجملة","Wholesale desktop nav must localize");
+    assert.equal(d.getElementById("wholesaleLeadStatus").querySelector('[value="quote_preparing"]').textContent,"جارٍ إعداد عرض السعر","Wholesale dropdown must localize");
+    assert(d.getElementById("wholesaleLeadTableBody").textContent.includes("مطعم"),"Wholesale business type must be Arabic");
+    assert(d.getElementById("wholesaleLeadTableBody").textContent.includes("أسبوعياً"),"Wholesale frequency must be Arabic");
+    assert.equal(d.querySelector("#wholesaleLeadModal h2").textContent,"تفاصيل طلب الجملة","Wholesale modal heading must be Arabic");
+    assert.equal(d.getElementById("wholesaleDetailStatus").value,"quote_preparing","Changing language must never change saved status codes");
+    assert.equal(d.getElementById("wholesaleDetailNotes").value,"Prepare a quote.","Changing language must preserve internal notes");
+    d.documentElement.lang="en";
+    d.documentElement.dir="ltr";
+    d.dispatchEvent(new w.Event("zwm:admin-language"));
+    assert.equal(d.querySelector('[data-view="wholesale"]').textContent,"Wholesale","Wholesale desktop nav must restore English");
+    assert.equal(d.getElementById("wholesaleLeadStatus").querySelector('[value="quote_preparing"]').textContent,"Quote preparing","Wholesale dropdown must restore English");
+    assert.equal(d.querySelector("#wholesaleLeadModal h2").textContent,"Lead details","Wholesale modal must restore English");
+    assert(d.getElementById("wholesaleLeadTableBody").textContent.includes("Restaurant"),"Business type must restore English");
+    assert.equal(d.getElementById("wholesaleDetailStatus").value,"quote_preparing","Restoring English must retain status code");
     d.getElementById("deleteWholesaleLead").click();await wait(20);assert(requests.some(r=>r.url.includes("/rpc/admin_delete_wholesale_enquiry")),"Delete enquiry did not call protected RPC");assert(!d.getElementById("wholesaleLeadCards").textContent.includes("Cedar Kitchen"),"deleted lead remained visible");
     dom.window.close();
   }

@@ -56,12 +56,12 @@ assert(!siteRuntime.includes('observer.observe(document.documentElement,{subtree
 assert(!customerNotifications.includes('obs.observe(document.body,{subtree:true,childList:true})'),"Customer notifications must not observe the entire body subtree");
 
 assert(read("wholesale.html").includes("/wholesale-v1.css?v=20261006-wholesaleqa1"),"Wholesale CSS cache token stale");
-assert(read("admin.html").includes("admin-wholesale.css?v=20261006-wholesaleqa1"),"Admin Wholesale CSS cache token stale");
-assert(read("admin.html").includes("admin-wholesale.js?v=20261006-wholesaleqa1"),"Admin Wholesale JS cache token stale");
+assert(read("admin.html").includes("admin-wholesale.css?v=20261009-admin-ar1"),"Admin Wholesale CSS cache token stale");
+assert(read("admin.html").includes("admin-wholesale.js?v=20261009-wholesale-i18n2"),"Admin Wholesale JS cache token stale");
 assert(read("account.html").includes("/notifications-v1.css?v=20261006-mobileaudit1"),"Customer notification CSS cache token stale");
 assert(read("admin-config.js").includes("/notifications-v1.css?v=20261006-mobileaudit1"),"Admin notification CSS loader cache token stale");
 assert(read("admin-config.js").includes("/admin-notifications-v1.js?v=20261006-transactionalemail1"),"Admin notification JS cache token stale");
-assert(read("admin.html").includes("admin-config.js?v=20261007-orderdetails2"),"Admin notification loader cache token stale");
+assert(read("admin.html").includes("admin-config.js?v=20261009-returnsar1"),"Admin notification loader cache token stale");
 assert(read("account.html").includes("/customer-notifications-v1.js?v=20261006-transactionalemail1"),"Customer notification JS cache token stale");
 for(const file of ["account.html","product.html","gift.html","shop.html","recipes.html"]){
   assert(read(file).includes("/conversion-v1.css?v=20261006-mobileaudit1"),file+" conversion CSS cache token stale");

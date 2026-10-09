@@ -2213,3 +2213,7 @@ html[dir="rtl"] .auth-language-toggle{
     outline-offset:2px;
   }
 }
+
+/* Visible exit to storefront on the owner sign-in screen. */
+.auth-back-site{margin-top:16px}
+@media(max-width:560px){.auth-back-site{width:100%}}

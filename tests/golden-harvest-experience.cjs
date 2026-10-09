@@ -64,6 +64,9 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  await pause();
  assert.equal(d.getElementById("ghCampaignPopup").hidden,false,"Cinematic popup opens after choosing language");
  assert.match(d.querySelector("#ghPopupTitle").textContent,/The 2026 Harvest/,"Popup title follows the reference launch headline");
+ assert.equal(d.querySelector(".gh-popup-subtitle"),null,"English popup must not duplicate its main headline");
+ assert.equal(d.querySelector(".gh-popup-film-label"),null,"Do not repeat the harvest year in a film label");
+
  assert.ok(d.querySelector(".gh-picks-arrival"),"Seasonal collection must have a prominent red arrival badge");
  assert.equal(d.querySelector(".gh-picks-arrival").textContent.trim(),"JUST ARRIVED · 2026 HARVEST");
  assert.equal(d.querySelector(".gh-pick-badge").textContent.trim(),"2026 HARVEST");
@@ -89,6 +92,12 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  assert.equal(second.w.document.querySelector(".gh-picks-arrival").textContent.trim(),"وصل جديد · موسم الزيتون ٢٠٢٦");
  assert.equal(second.w.document.querySelector(".gh-picks-intro>p").textContent,"زيت زيتون بكر ممتاز معصور على البارد.");
  assert.match(second.w.document.querySelector("#ghPopupDescription").textContent,/معصور على البارد/);
+ assert.equal(second.w.document.querySelector(".gh-popup-subtitle"),null,"Arabic popup must have a single title");
+ const arabicPopup=second.w.document.querySelector(".gh-popup-content").textContent;
+ assert.equal((arabicPopup.match(/زيت السنة وصل/g)||[]).length,1,"زيت السنة وصل must appear only once");
+ assert.equal((arabicPopup.match(/موسم الزيتون ٢٠٢٦/g)||[]).length,1,"Mention the season only once in the Arabic popup");
+ assert.equal(second.w.document.querySelector("[data-gh-discover]").textContent.trim().includes("اكتشفوا صفائح الزيت"),true,"Use a distinct Arabic CTA");
+
  assert.equal(second.w.document.querySelector("#harvest-picks").dir,"rtl");
  assert.equal(second.w.document.getElementById("ghCampaignPopup").hidden,false);
  second.w.document.querySelector('[data-gh-close="continue"]').click();
@@ -96,6 +105,10 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  assert.equal(second.w.document.getElementById("harvest-picks").dataset.scrolled,undefined,"Continue leaves visitor at normal homepage");
  second.dom.window.close();
 
+ const frenchPopup=makePage("fr");
+ assert.equal(frenchPopup.w.document.querySelector(".gh-popup-subtitle"),null,"French popup must not repeat the launch heading");
+ assert.equal((frenchPopup.w.document.querySelector(".gh-popup-content").textContent.match(/2026/g)||[]).length,1,"French popup uses year only once");
+ frenchPopup.dom.window.close();
  const shop=makePage("fr",{shop:true});
  assert.equal(shop.w.document.querySelector(".gh-shop-spotlight h2").textContent,"La récolte 2026 est arrivée");
  assert.ok(shop.w.document.querySelector(".gh-shop-cta").getAttribute("href").includes("#harvest-picks"));

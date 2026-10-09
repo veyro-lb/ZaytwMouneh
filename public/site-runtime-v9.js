@@ -6,6 +6,7 @@
   const PRODUCT_CACHE = "zwm:cms:product-overrides:v1";
   const SETTINGS_CACHE = "zwm:cms:settings:v1";
   const SESSION_KEY = "zwm:analytics:session:v1";
+  const ANALYTICS_OWNER_OPT_OUT_KEY = "zwm:analytics:owner-opt-out:v1";
   const RELOAD_KEY = "zwm:cms:last-reload:v1";
   const PREVIEW_RELOAD_KEY = "zwm:cms:preview-last-reload:v1";
   const ADMIN_SYNC_KEY = "zwm:cms:admin-sync:v1";
@@ -322,8 +323,19 @@
     }
     return out;
   }
+  // Owner devices opt out after a verified dashboard login. Owners can also opt
+  // out before login with ?zwm_analytics=off (and opt back in with =on).
+  function analyticsOptedOut(){
+    if(document.body?.classList.contains("admin-body"))return true;
+    try{
+      const choice=new URLSearchParams(location.search).get("zwm_analytics");
+      if(choice==="off")localStorage.setItem(ANALYTICS_OWNER_OPT_OUT_KEY,"1");
+      if(choice==="on")localStorage.removeItem(ANALYTICS_OWNER_OPT_OUT_KEY);
+      return localStorage.getItem(ANALYTICS_OWNER_OPT_OUT_KEY)==="1";
+    }catch{return false;}
+  }
   function track(eventName,meta={}){
-    const c=config();if(PREVIEW_MODE||!enabled()||c.analytics?.enabled===false)return;
+    const c=config();if(PREVIEW_MODE||analyticsOptedOut()||!enabled()||c.analytics?.enabled===false)return;
     const row={event_name:eventName,page_path:(location.pathname+location.search).slice(0,300),session_id:sessionId(),referrer_host:referrerHost(),meta:eventMeta(meta)};
     api(encodeURIComponent(c.tables?.events||"site_events"),{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify(row)}).catch(()=>{});
   }

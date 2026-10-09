@@ -41,4 +41,25 @@ const cleanup = read("supabase/migrations/20261006153000_release_notification_pr
 assert.match(cleanup, /alter table public\.notification_delivery_attempts set schema private/);
 assert.match(cleanup, /drop function public\.notification_create_test\(uuid, uuid\)/);
 
+
+const ownerHtml=read("public/admin.html");
+const ownerJs=read("public/admin.js");
+const bellCss=read("public/notifications-v1.css");
+assert.match(ownerHtml, /href="\/notifications-v1\.css\?v=20261009-owner-multidevice1"/, "owner notification styling must actually load");
+assert.match(ownerHtml, /src="admin-notifications-v1\.js\?v=20261009-owner-multidevice1"/, "the owner bell must load on Admin");
+assert(ownerHtml.indexOf('src="admin.js?') < ownerHtml.indexOf('src="admin-notifications-v1.js?'), "owner login must load before its notification listener");
+assert.match(admin, /zwm:owner-ready/, "notification module must boot after owner authentication");
+assert.match(admin, /zwm:owner-signed-out/, "bell must clean up on owner logout");
+assert.match(admin, /data-bell-enable/, "the bell must expose a device-specific Allow button");
+assert.match(admin, /Notification\.requestPermission\(\)/, "permission must use the native device prompt");
+assert.match(admin, /await subscribe\(\)/, "permission must be requested from a user action");
+assert.match(admin, /setInterval\(\(\)=>\{if\(!document\.hidden&&started\)/, "owner notifications need a disconnected-device polling fallback");
+assert.match(admin, /event:"\*",schema:"public",table:"notifications"/, "another device's read state must sync via Realtime");
+assert.match(bellCss, /zwm-admin-bell-permission/, "allow control must remain usable on mobile");
+assert.match(ownerJs, /saveOwnerSession\(next\)/, "refresh tokens must persist after rotation");
+assert.match(ownerJs, /accessToken: async \(\) => state\.session\?\.access_token/, "admin data must use the current login token");
+assert.match(ownerJs, /syncDashboardOnResume\(\)/, "sleeping dashboards must refresh on focus");
+assert.match(ownerJs, /workspaceSyncTimer=setInterval/, "two owners must get periodic data reconciliation");
+assert.match(ownerJs, /if\(!ordersRes\.error\)state\.orders/, "transient backend errors should not erase order history");
+
 console.log("Notification security/release regression checks passed.");

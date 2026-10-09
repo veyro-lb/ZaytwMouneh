@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="admin.css?v=20261007-orderdetails2" />
+  <link rel="stylesheet" href="admin.css?v=20261009-sidebarlayout1" />
   <link rel="stylesheet" href="admin-rewards.css?v=20261005-admin-batch5-1" />
   <link rel="stylesheet" href="admin-wholesale.css?v=20261009-admin-ar1" />
   <link rel="stylesheet" href="/notifications-v1.css?v=20261009-owner-multidevice1">
@@ -69,10 +69,11 @@
   <div id="adminApp" class="admin-app" hidden>
     <aside class="admin-sidebar" id="adminSidebar">
       <div class="sidebar-head">
-        <a class="sidebar-brand" href="index.html" aria-label="Back to Zayt w Mouneh website">
+        <a class="sidebar-brand" href="/" aria-label="Back to Zayt w Mouneh website">
           <img src="assets/logo.svg?v=20261002-1005" alt="" />
           <span><strong>Zayt w Mouneh</strong><small>Owner Console</small></span>
         </a>
+        <button type="button" class="sidebar-close" id="sidebarClose" aria-label="Close menu">×</button>
       </div>
 
       <nav class="admin-nav" id="adminNav" aria-label="Owner dashboard">
@@ -89,7 +90,7 @@
       </nav>
 
       <div class="sidebar-foot">
-        <a href="index.html" target="_blank" rel="noopener">View live site <span>↗</span></a>
+        <a class="sidebar-website-link" href="/" target="_blank" rel="noopener noreferrer">View live site <span aria-hidden="true">↗</span></a>
         <button id="signOutButton" type="button">Sign out</button>
       </div>
     </aside>
@@ -97,7 +98,8 @@
     <div class="admin-main">
       <header class="admin-topbar">
         <div class="topbar-left">
-          <div><p id="viewEyebrow">Owner workspace</p><h1 id="viewTitle">Overview</h1></div>
+          <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-label="Open dashboard menu" aria-controls="adminSidebar" aria-expanded="false">☰</button>
+          <div class="topbar-title"><p id="viewEyebrow">Owner workspace</p><h1 id="viewTitle">Overview</h1></div>
         </div>
         <div class="topbar-right">
           <div class="admin-language-switch topbar-language-toggle" data-no-i18n role="group" aria-label="Admin language">
@@ -532,6 +534,7 @@
       <button type="button" data-mobile-view="activity"><span>◷</span><b>Activity</b><small>Recent owner changes</small></button>
       <button type="button" data-mobile-view="settings"><span>⚙</span><b>Settings</b><small>Security, backend and backup</small></button>
     </div>
+    <a class="mobile-more-site-link" href="/" target="_blank" rel="noopener noreferrer">View live site <span aria-hidden="true">↗</span></a>
   </section>
 
   <div class="quick-action-backdrop" id="quickActionBackdrop" hidden></div>
@@ -852,7 +855,7 @@
   <script src="products-data.js?v=20261009-harvest-live1"></script>
   <script src="product-photos.js?v=20261009-harvest-live1"></script>
 
-  <script src="admin.js?v=20261009-wholesale-i18n2"></script>
+  <script src="admin.js?v=20261009-sidebarlayout1"></script>
   <script src="admin-notifications-v1.js?v=20261009-owner-multidevice1"></script>
   <script src="admin-rewards.js?v=20261005-account-deletefix2"></script>
   <script src="admin-wholesale.js?v=20261009-wholesale-i18n2"></script>

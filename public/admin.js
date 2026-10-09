@@ -186,6 +186,7 @@
     "Manage products":"إدارة المنتجات",
     "Page views · 7 days":"مشاهدات الصفحات · 7 أيام",
     "Unique sessions · 7 days":"الجلسات الفريدة · 7 أيام",
+    "Unique visitors · 7 days":"الزوّار الفريدون · 7 أيام",
     "WhatsApp clicks · 7 days":"نقرات واتساب · 7 أيام",
     "High-intent customer action":"تفاعل يدل على نية طلب عالية",
     "Live catalogue":"المنتجات المنشورة",
@@ -330,6 +331,17 @@
     "Last 90 days":"آخر 90 يوماً",
     "Page views":"مشاهدات الصفحات",
     "Unique sessions":"الجلسات الفريدة",
+    "Website Visits":"زيارات الموقع",
+    "Visitor insights":"إحصاءات الزوّار",
+    "Unique visitors":"الزوّار الفريدون",
+    "Total visits":"إجمالي الزيارات",
+    "Average visits / visitor":"متوسط الزيارات لكل زائر",
+    "Repeat visits":"الزيارات المتكررة",
+    "One visit is a browsing session; a new visit begins after 30 minutes of inactivity.":"الزيارة هي جلسة تصفّح، وتبدأ زيارة جديدة بعد 30 دقيقة من عدم النشاط.",
+    "Unique visitors are counted once per browser/device during the selected period. Counts start with the new tracking; older page views are excluded from these figures.":"يُحتسب كل متصفّح أو جهاز مرة واحدة خلال الفترة المحددة. يبدأ العدّ مع التتبع الجديد، ولا تدخل مشاهدات الصفحات السابقة في هذه الأرقام.",
+    "Tracking new visitors":"بدأ تتبع الزوّار الجدد",
+    "No identified visitors yet":"لم تُسجّل زيارات معرّفة بعد",
+    "visits / visitor":"زيارة لكل زائر",
     "Selected period":"الفترة المحددة",
     "Add to pantry":"إضافة إلى المونة",
     "Product intent":"اهتمام بالمنتج",
@@ -854,7 +866,9 @@
     if(m)return `${m[1]} عنصر`;
     m=text.match(/^(\d+) avg \/ day$/);
     if(m)return `متوسط ${m[1]} يومياً`;
-    m=text.match(/^([\d.]+) views \/ session$/);
+    m=text.match(/^([\\d.]+) visits \\/ visitor$/);
+    if(m)return `${m[1]} زيارة لكل زائر`;
+    m=text.match(/^([\\d.]+) views \\/ session$/);
     if(m)return `${m[1]} مشاهدة / جلسة`;
     m=text.match(/^(\d+) hidden or draft$/);
     if(m)return `${m[1]} مخفي أو مسودة`;
@@ -2457,11 +2471,11 @@
   function renderOverview() {
     const stats=analyticsSnapshot(7);
     $("metricViews").textContent=stats.views.length.toLocaleString();
-    $("metricSessions").textContent=stats.sessions.size.toLocaleString();
+    $("metricSessions").textContent=stats.websiteVisits.visitors.toLocaleString();
     $("metricWhatsApp").textContent=stats.whats.length.toLocaleString();
     $("metricProducts").textContent=visibleProducts().length.toLocaleString();
     $("metricViewsHint").textContent=`${(stats.views.length/7).toFixed(1)} avg / day`;
-    $("metricSessionsHint").textContent=stats.sessions.size?`${(stats.views.length/stats.sessions.size).toFixed(1)} views / session`:"No session data yet";
+    $("metricSessionsHint").textContent=stats.websiteVisits.visitors?`${stats.websiteVisits.average.toFixed(1)} visits / visitor`:"No identified visitors yet";
     $("metricProductsHint").textContent=`${state.products.length-visibleProducts().length} hidden or draft`;
 
     const todayOrders=state.orders.filter(o=>isToday(o.submitted_at));
@@ -2547,10 +2561,27 @@
         fullLabel:d.toLocaleDateString(undefined,{month:"short",day:"numeric"}),
         views:views.length,
         sessions:sessions.size,
+        websiteVisits:websiteVisitMetrics(views),
         date:d
       });
     }
     return out;
+  }
+
+  // Aggregate identifiable browser visits, not page views. Old rows without a
+  // visitor ID remain in the existing page-view/session charts, but are not
+  // mixed into the new unique-visitor metrics.
+  function websiteVisitMetrics(pageViews){
+    const byVisitor=new Map();
+    for(const event of pageViews){
+      const id=event.visitor_id, session=event.session_id;
+      if(!id||!session)continue;
+      if(!byVisitor.has(id))byVisitor.set(id,new Set());
+      byVisitor.get(id).add(session);
+    }
+    const visitors=byVisitor.size;
+    const visits=[...byVisitor.values()].reduce((total,sessions)=>total+sessions.size,0);
+    return {visitors,visits,repeatVisits:visits-visitors,average:visitors?visits/visitors:0};
   }
 
   function analyticsSnapshot(days){
@@ -2561,7 +2592,7 @@
     const whats=events.filter(e=>e.event_name==="whatsapp_click");
     const productViews=events.filter(e=>e.event_name==="product_view");
     const searches=events.filter(e=>e.event_name==="search");
-    return {days,events,views,sessions,adds,whats,productViews,searches,daily:dailyTraffic(events,days)};
+    return {days,events,views,sessions,adds,whats,productViews,searches,websiteVisits:websiteVisitMetrics(views),daily:dailyTraffic(events,days)};
   }
 
   function rankBy(list,keyFn) {
@@ -2780,6 +2811,10 @@
     const stats=analyticsSnapshot(days);
     $("analyticsViews").textContent=stats.views.length.toLocaleString();
     $("analyticsSessions").textContent=stats.sessions.size.toLocaleString();
+    $("websiteUniqueVisitors").textContent=stats.websiteVisits.visitors.toLocaleString();
+    $("websiteTotalVisits").textContent=stats.websiteVisits.visits.toLocaleString();
+    $("websiteAverageVisits").textContent=stats.websiteVisits.visitors?stats.websiteVisits.average.toFixed(2):"—";
+    $("websiteRepeatVisits").textContent=stats.websiteVisits.repeatVisits.toLocaleString();
     $("analyticsAdds").textContent=stats.adds.length.toLocaleString();
     $("analyticsWhatsApp").textContent=stats.whats.length.toLocaleString();
     $("analyticsViewsSub").textContent=`${days} day period`;
@@ -3488,6 +3523,10 @@
         "Date":day.date.toLocaleDateString(undefined,{year:"numeric",month:"2-digit",day:"2-digit"}),
         "Page Views":day.views,
         "Sessions":day.sessions,
+        "Unique Visitors":day.websiteVisits.visitors,
+        "Website Visits":day.websiteVisits.visits,
+        "Average Visits per Visitor":Number(day.websiteVisits.average.toFixed(2)),
+        "Repeat Visits":day.websiteVisits.repeatVisits,
         "WhatsApp Clicks":dayEvents.filter(e=>e.event_name==="whatsapp_click").length,
         "Add to Pantry":dayEvents.filter(e=>e.event_name==="add_to_cart").length,
         "Product Views":dayEvents.filter(e=>e.event_name==="product_view").length,
@@ -3522,6 +3561,11 @@
       {"Metric":"Orders · delivered","Value":state.orders.filter(o=>o.status==="delivered").length},
       {"Metric":"Customers","Value":customerGroups().length},
       {"Metric":"Page views · 7 days","Value":s7.views.length},
+      {"Metric":"Unique visitors · 7 days","Value":s7.websiteVisits.visitors},
+      {"Metric":"Website visits · 7 days","Value":s7.websiteVisits.visits},
+      {"Metric":"Average visits per visitor · 7 days","Value":Number(s7.websiteVisits.average.toFixed(2))},
+      {"Metric":"Unique visitors · 30 days","Value":s30.websiteVisits.visitors},
+      {"Metric":"Website visits · 30 days","Value":s30.websiteVisits.visits},
       {"Metric":"Sessions · 7 days","Value":s7.sessions.size},
       {"Metric":"WhatsApp clicks · 7 days","Value":s7.whats.length},
       {"Metric":"Page views · 30 days","Value":s30.views.length},

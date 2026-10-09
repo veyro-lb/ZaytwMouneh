@@ -23,9 +23,9 @@
 /assets/*
   Cache-Control: public, max-age=2592000, immutable
 
+# PRE-LAUNCH: Keep public hosts unindexed until owner approves search launch.
+# Noindex is not access control; protect hosts via Cloudflare Access for real privacy.
 /*
-  # PRE-LAUNCH: Keep all public origins (custom domain and workers.dev) unindexed until owner approves launch.
-  # X-Robots-Tag works only when crawlers can fetch the page; it is not an access-control mechanism.
   X-Robots-Tag: noindex, nofollow, noarchive
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin

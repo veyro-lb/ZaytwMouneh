@@ -10,7 +10,7 @@ const read=file=>fs.readFileSync(path.join(root,file),"utf8");
 const admin=read("public/admin.js");
 const runtime=read("public/site-runtime-v9.js");
 const html=read("public/admin.html");
-const migration=read("supabase/migrations/20261009231000_website_unique_visitors.sql");
+const migration=read("supabase/migrations/20261009200519_website_unique_visitors_20261009.sql");
 
 const begin=admin.indexOf("  function websiteVisitMetrics(pageViews){");
 const end=admin.indexOf("\n  function analyticsSnapshot(days){",begin);

@@ -14,7 +14,7 @@ const product={
  ]
 };
 const pause=()=>new Promise(resolve=>setImmediate(resolve));
-function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,missingBridge=false}={}){
+function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,missingBridge=false,url=null,seenPopup=false}={}){
  const html='<!doctype html><html lang="'+locale+'" dir="'+(locale==="ar"?"rtl":"ltr")+'"><head></head>'+
   '<body data-page="'+(shop?"shop":"home")+'">'+
   '<div id="languageWelcome" '+(showWelcome?"":"hidden")+'></div>'+
@@ -22,13 +22,14 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
   '<main><section class="home-pantry-hero" id="normalHero"><h1>Normal home hero stays</h1></section>'+
   (shop?'<section class="seasonal-story"><div class="seasonal-story-card"></div></section>':
    '<section id="featured"><h2>Pantry Favourites stays</h2></section>')+'</main></body></html>';
- const url="https://preview.example/"+(forcePopup?"?harvestPreview=1&harvestPopup=1":"?harvestPreview=1");
- const dom=new JSDOM(html,{url,runScripts:"outside-only",pretendToBeVisual:true});
+ const pageUrl=url||"https://preview.example/"+(forcePopup?"?harvestPreview=1&harvestPopup=1":"?harvestPreview=1");
+ const dom=new JSDOM(html,{url:pageUrl,runScripts:"outside-only",pretendToBeVisual:true});
  const w=dom.window;
  w.matchMedia=()=>({matches:false,addListener(){},removeListener(){}});
  w.HTMLMediaElement.prototype.play=function(){this.dataset.played="yes";return Promise.resolve()};
  w.HTMLMediaElement.prototype.pause=function(){this.dataset.paused="yes"};
  w.HTMLElement.prototype.scrollIntoView=function(){this.dataset.scrolled="yes"};
+ if(seenPopup)w.localStorage.setItem("zwm-golden-harvest-2026-popup-seen-v1","1");
  w.PRODUCTS_DATA=JSON.parse(JSON.stringify([product]));
  const added=[];
  if(!missingBridge)w.ZWM_HARVEST_CART={
@@ -120,6 +121,36 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  assert.ok(shop.w.document.querySelector(".gh-shop-cta").getAttribute("href").includes("#harvest-picks"));
  assert.equal(shop.w.document.getElementById("ghCampaignPopup"),null,"No first-visit popup on shop route");
  shop.dom.window.close();
+ // Returning from account sign-in removes the query string: collection must stay
+ // permanently visible on the exact Cloudflare campaign preview domain.
+ const previewHost="https://campaign-golden-harvest-2026-review-zaytwmouneh.veyro-202.workers.dev";
+ const signedIn=makePage("ar",{url:previewHost+"/",seenPopup:true});
+ const signedDoc=signedIn.w.document;
+ signedDoc.body.dataset.authenticated="true";
+ assert.equal(signedDoc.getElementById("normalHero").nextElementSibling.id,"ghPicksStage","Signing in must not remove Seasonal Picks from Home");
+ assert.equal(signedDoc.getElementById("ghPicksStage").nextElementSibling.id,"featured","Collection still precedes Pantry Favourites after login");
+ assert.equal(signedDoc.querySelectorAll(".gh-pick-card").length,4,"Signed-in visitor sees all four oil sizes without ?harvestPreview");
+ assert.equal(signedDoc.querySelector("#ghPicksTitle").textContent,"زيت السنة وصل");
+ assert.equal(signedDoc.getElementById("ghCampaignPopup").hidden,true,"Popup dismissed earlier must not reappear after sign-in");
+ signedDoc.querySelector('[data-gh-add="extra-virgin-olive-oil-8-77-l"]').click();
+ assert.equal(signedIn.added[0].variant,"extra-virgin-olive-oil-8-77-l","Ordering remains available after authentication");
+ signedDoc.getElementById("ghPicksStage").remove();
+ signedIn.w.dispatchEvent(new signedIn.w.Event("pageshow"));
+ assert.equal(signedDoc.querySelectorAll(".gh-pick-card").length,4,"BFCache restore reattaches Seasonal Picks after account navigation");
+ signedDoc.querySelector('[data-gh-add="extra-virgin-olive-oil-1-l"]').click();
+ assert.equal(signedIn.added.at(-1).variant,"extra-virgin-olive-oil-1-l","Reattached collection keeps cart actions working");
+ signedIn.dom.window.close();
+
+ const signedShop=makePage("fr",{url:previewHost+"/shop",shop:true,seenPopup:true});
+ assert.ok(signedShop.w.document.querySelector(".gh-shop-spotlight"),"Shop seasonal feature remains after login without preview query");
+ signedShop.dom.window.close();
+
+ const production=makePage("en",{url:"https://www.zaytw-mouneh.example/"});
+ assert.equal(production.w.document.getElementById("ghPicksStage"),null,"Campaign stays disabled on public domain until release");
+ assert.equal(production.w.document.getElementById("ghCampaignPopup"),null,"No accidental campaign popup on public domain");
+ assert.ok(production.w.document.getElementById("normalHero"),"Normal public homepage remains intact");
+ production.dom.window.close();
+
  const cached=makePage("en",{missingBridge:true});
  assert.equal(cached.w.document.querySelector('.gh-pick-card[data-gh-size="8.77"] .gh-pick-price').textContent.includes("85"),true,"Keep verified catalogue price visible while old cart API is missing");
  assert.equal(cached.w.document.querySelectorAll("[data-gh-add]").length,0,"Never allow ordering until validated cart bridge is available");

@@ -44,6 +44,16 @@ This seasonal change is isolated from the main Zayt w Mouneh experience. Do not 
 - The current site-wide language switcher handles EN/AR/FR; this module updates itself on locale changes.
 - Popup video is muted, plays inline, pauses when hidden or closed and respects reduced motion; the normal homepage hero video remains managed by the existing website.
 
+## Visual revision — October 9 (reference-matched)
+
+- The normal homepage hero is **not replaced**. The cinematic first-visit announcement is a **compact centered floating dialog**, layered over a dimmed and softly blurred homepage background, with the Zayt w Mouneh logo, harvest video, a **deep harvest-red primary CTA** and an outlined Continue button.
+- The first product collection stays **immediately after the hero and before Pantry Favourites**. It now has a centered headline, a large burgundy/red **JUST ARRIVED · 2026 HARVEST** pill, gold **SEASONAL PICKS · HARVEST 2026** overline, delicate gold divider, and the three cream photo cards with smaller red season badges.
+- Product images remain the genuine uploaded WebP photographs, using `object-fit: contain` to avoid cropping; exact 4 L / 8.77 L / 17.54 L variant mapping, verified live catalogue prices and original cart flow remain unchanged.
+- Language-aware EN / AR / FR headline and badges; Arabic layout stays RTL. Mobile keeps the popup as a centered dialog rather than a forced full-screen replacement.
+- `public/index.html` and `public/shop.html` reference **versioned campaign CSS/JS (`20261009-harvest-launch2`)** to avoid stale Cloudflare/browser caches.
+- Visual QA can be repeated without changing first-visit storage by adding `?harvestPreview=1&harvestPopup=1` to the branch preview URL.
+- Browser screenshot QA in an actual graphical browser is still required before public release; free CI tests ensure dialogue/collection actions and variant selection, but cannot replace manual visual checks.
+
 ## Build checks as of October 9
 
 - `Verify harvest campaign and media`: **PASS** — genuine media signatures, size mapping, full translations, preservation of existing sections, product/cart bridge, and a separate jsdom interaction test of the welcome → popup → collection journey, language switching, catalogue refresh, and variant-specific Add to cart actions.

@@ -79,8 +79,10 @@ assert(css.includes("100dvh"),"Quick View mobile dynamic viewport bound missing"
 
 const robots=read("robots.txt");
 assert(robots.includes("Disallow: /admin"),"robots must block clean admin route");
+const responseHeaders=read("_headers");
 for(const route of ["/admin","/account","/checkout","/order"]){
- assert(read("_headers").includes("\n"+route+"\n  X-Robots-Tag: noindex"),"private route missing explicit noindex: "+route);
+ const block=responseHeaders.split("\n"+route+"\n")[1]?.split(/\n\/(?=\S)/)[0]||"";
+ assert(block.includes("X-Robots-Tag: noindex"),"private route missing explicit noindex: "+route);
 }
 const prelaunchHeaders=read("_headers");
 if(prelaunchHeaders.includes("/*\n  X-Robots-Tag: noindex, nofollow, noarchive")){

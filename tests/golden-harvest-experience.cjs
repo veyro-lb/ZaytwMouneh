@@ -8,6 +8,7 @@ const product={
  id:"extra-virgin-olive-oil",category:"Olive Oil",availability:"in_stock",
  variants:[
   {id:"extra-virgin-olive-oil-1-l",sizeEn:"1 L",price:12},
+  {id:"extra-virgin-olive-oil-4-l",sizeEn:"4 L",price:40},
   {id:"extra-virgin-olive-oil-500-ml",sizeEn:"500 ml",price:6},
   {id:"extra-virgin-olive-oil-8-77-l",sizeEn:"8.77 L",price:85},
   {id:"extra-virgin-olive-oil-17-54-l",sizeEn:"17.54 L",price:169}
@@ -55,9 +56,9 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  assert.equal(d.querySelectorAll(".gh-pick-badge").length,4);
  assert.equal(d.querySelector(".gh-pick-badge").textContent,"2026 HARVEST");
  assert.equal(d.querySelector("#ghPicksTitle").textContent,"Fresh From the Harvest");
- assert.equal(d.querySelectorAll("button[data-gh-add]").length,3,"Missing 4L variant must not be addable");
- assert.ok(d.querySelector('.gh-pick-card[data-gh-size="4"] .gh-pick-inquire'));
- assert.ok(!d.querySelector('.gh-pick-card[data-gh-size="4"] .gh-pick-price'));
+ assert.equal(d.querySelectorAll("button[data-gh-add]").length,4,"Every priced harvest variant must be orderable");
+ assert.ok(d.querySelector('.gh-pick-card[data-gh-size="4"] button[data-gh-add="extra-virgin-olive-oil-4-l"]'));
+ assert.ok(d.querySelector('.gh-pick-card[data-gh-size="4"] .gh-pick-price').textContent.includes("40"));
  assert.ok(d.querySelector('.gh-pick-card[data-gh-size="1"] .gh-pick-price').textContent.includes("12"));
  assert.ok(d.querySelector('.gh-pick-card[data-gh-size="8.77"] .gh-pick-price').textContent.includes("85"));
  assert.ok(d.querySelector('.gh-pick-card[data-gh-size="17.54"] .gh-pick-price').textContent.includes("169"));
@@ -79,10 +80,11 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false,mis
  assert.equal(d.getElementById("harvest-picks").dataset.scrolled,"yes","Discover navigates directly to four formats");
  assert.equal(w.localStorage.getItem("zwm-golden-harvest-2026-popup-seen-v1"),"1");
  d.querySelector('[data-gh-add="extra-virgin-olive-oil-1-l"]').click();
+ d.querySelector('[data-gh-add="extra-virgin-olive-oil-4-l"]').click();
  d.querySelector('[data-gh-add="extra-virgin-olive-oil-8-77-l"]').click();
  d.querySelector('[data-gh-add="extra-virgin-olive-oil-17-54-l"]').click();
- assert.deepEqual(added.map(x=>x.variant),["extra-virgin-olive-oil-1-l","extra-virgin-olive-oil-8-77-l","extra-virgin-olive-oil-17-54-l"],"Buttons use real variant IDs");
- w.PRODUCTS_DATA[0].variants[2].price=87.5;
+ assert.deepEqual(added.map(x=>x.variant),["extra-virgin-olive-oil-1-l","extra-virgin-olive-oil-4-l","extra-virgin-olive-oil-8-77-l","extra-virgin-olive-oil-17-54-l"],"Buttons use real variant IDs");
+ w.PRODUCTS_DATA[0].variants[3].price=87.5;
  w.dispatchEvent(new w.Event("zwm:catalog-cache-updated"));
  assert.ok(d.querySelector('.gh-pick-card[data-gh-size="8.77"] .gh-pick-price').textContent.includes("87.50"),"Current catalogue price updates");
  d.documentElement.lang="fr";d.documentElement.dir="ltr";await pause();

@@ -2,9 +2,13 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import webpush from "npm:web-push@3.6.7";
 
-const ORIGIN="https://zaytwmouneh.veyro-202.workers.dev";
+const ALLOWED_ORIGINS=new Set([
+  "https://zaytwmouneh.com",
+  "https://www.zaytwmouneh.com",
+  "https://zaytwmouneh.veyro-202.workers.dev"
+]);
 const cors=(origin:string|null)=>({
-  "Access-Control-Allow-Origin": origin===ORIGIN?ORIGIN:ORIGIN,
+  "Access-Control-Allow-Origin":origin&&ALLOWED_ORIGINS.has(origin)?origin:"https://zaytwmouneh.com",
   "Access-Control-Allow-Headers":"authorization, apikey, content-type",
   "Access-Control-Allow-Methods":"POST, OPTIONS",
   "Vary":"Origin"
@@ -151,7 +155,7 @@ Deno.serve(async(req:Request)=>{
   const origin=req.headers.get("origin");
   if(req.method==="OPTIONS")return new Response(null,{status:204,headers:cors(origin)});
   if(req.method!=="POST")return json(origin,{ok:false,error:"Method not allowed"},405);
-  if(origin&&origin!==ORIGIN)return json(origin,{ok:false,error:"Origin not allowed"},403);
+  if(origin&&!ALLOWED_ORIGINS.has(origin))return json(origin,{ok:false,error:"Origin not allowed"},403);
 
   const supabaseUrl=Deno.env.get("SUPABASE_URL")||"";
   const serviceRole=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")||"";

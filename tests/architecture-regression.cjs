@@ -7,6 +7,12 @@ const read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const release=JSON.parse(read("public/release.json")).release;
 assert.match(release,/^\d{8}-[a-z0-9-]+$/);
 assert.match(read("wrangler.toml"),/directory\s*=\s*"\.\/public"/);
+// The app release marker and storefront shell asset pin have separate purposes.
+const storefrontRelease=read("public/storefront-release.js");
+const shellAssetVersion=storefrontRelease.match(/const\s+SHELL_ASSET_VERSION\s*=\s*["']([^"']+)["']/);
+assert.ok(shellAssetVersion,"storefront-release.js must declare its shell asset pin");
+const assetVersion=shellAssetVersion[1];
+
 
 const forbidden=[".nojekyll","_headers","index.html","shop.html","gift.html","about.html","contact.html","recipes.html","styles.css","premium.css","premium.js","app.js","products-data.js","product-photos.js","robots.txt","sitemap.xml","gift-v3.css","gift-v4.css","assets"];
 for(const entry of forbidden)assert.equal(fs.existsSync(path.join(root,entry)),false,"obsolete root storefront copy: "+entry);
@@ -18,10 +24,20 @@ for(const name of htmlFiles){
   const marker=html.match(/<meta\s+name=["']zwm-release["']\s+content=["']([^"']+)["']/i);
   assert.ok(marker,name+" must declare zwm-release");
   assert.equal(marker[1],release,name+" release marker must match release.json");
-  assert.ok(html.includes("storefront-release.js?v="+release),name+" must load current storefront-release");
+  assert.ok(html.includes("storefront-release.js?v="+assetVersion),name+" must load current storefront-release asset version");
   if(html.includes("storefront-shell.css")){
     const styles=[...html.matchAll(/<link\b[^>]*rel=["\']stylesheet["\'][^>]*>/gi)].map(m=>m[0]);
-    assert.ok(styles.at(-1)?.includes("storefront-shell.css"),name+" canonical storefront shell must be the final stylesheet");
+    const shellIndex=styles.findIndex(style=>style.includes("storefront-shell.css"));
+    assert.ok(shellIndex>=0,name+" missing canonical storefront shell");
+    assert.equal(styles.filter(style=>style.includes("storefront-shell.css")).length,1,name+" duplicated canonical storefront shell");
+    assert.ok(styles[shellIndex].includes("storefront-shell.css?v="+assetVersion),name+" storefront shell asset pin is stale");
+    // The decorative overlay, shop enhancements, and font stylesheet intentionally follow the shell.
+    // Reject all other unrecognized CSS additions after the canonical stylesheet.
+    for(const style of styles.slice(shellIndex+1)){
+      const href=style.match(/href=["']([^"']+)/i)?.[1]||"";
+      const allowed=/(?:^|\/)(?:mouneh-decor-v1|shop-extras-v1)\.css(?:[?#]|$)/.test(href) || href.startsWith("https://fonts.googleapis.com/");
+      assert.ok(allowed,name+" has an unexpected stylesheet after the canonical shell: "+href);
+    }
   }
 }
 // Guard against accidental Windows-1252 decoding of the Our Story HTML.

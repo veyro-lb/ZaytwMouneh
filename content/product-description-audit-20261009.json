@@ -8,7 +8,23 @@
     "sekar-nabet"
   ],
   "verificationSummary": {
-    "reviewRequired": 88
+    "reviewRequired": 88,
+    "requirePrimaryPackagingBeforePublication": true,
+    "brandClaimsNotAutoTransferredAcrossSKUs": true,
+    "originalPhotosLabelAudit": "Seven uploaded ZIP archives hold 332 images, predominantly promotional visuals rather than legible back-of-pack ingredient lists; no inferred ingredients from artwork.",
+    "highPriorityPotentialIdentityMismatch": [
+      "mix-and-eat-chickpeas"
+    ],
+    "sugarClaimConflicts": [
+      "bisco-choco",
+      "cherry-craze"
+    ],
+    "unverifiedRegulatedClaims": [
+      "sugar-free-jeleb",
+      "suger-free-mulberry",
+      "sugar-free-rose-jam",
+      "sugar-free-strawberry-jam"
+    ]
   },
   "items": [
     {
@@ -178,8 +194,8 @@
         "bisco-choco-300-g"
       ],
       "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
-      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
-      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+      "source": "https://byroots.com/lb-local/sweets/8244-debsy-bisco-choco-300g.html (provisional source; packaging authoritative)",
+      "questions": "Retailer lists dark chocolate, caramelized molasses, peanut butter and an ambiguous claim about added sugars. Individual wrapper needed for definitive ingredients, allergens and sugar status."
     },
     {
       "id": "caramel-craze",
@@ -251,8 +267,8 @@
         "carob-molasses-glass-jar-500-g"
       ],
       "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
-      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
-      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+      "source": "https://debsy.shop/ (provisional source; packaging authoritative)",
+      "questions": "Brand describes carob molasses as naturally sweet without added sugar; confirm claim against both glass-jar sizes."
     },
     {
       "id": "carob-molasses-plastic-jar",
@@ -263,8 +279,8 @@
         "carob-molasses-plastic-jar-1-kg"
       ],
       "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
-      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
-      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+      "source": "https://debsy.shop/ (provisional source; packaging authoritative)",
+      "questions": "Brand describes carob molasses as naturally sweet; verify actual plastic-jar ingredient and nutritional label before claim."
     },
     {
       "id": "carobella",
@@ -287,8 +303,8 @@
         "cherry-craze-size-not-listed"
       ],
       "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
-      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
-      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+      "source": "https://byroots.com/lb-local/sweets/8246-debsy-cherry-craze-270g.html (provisional source; packaging authoritative)",
+      "questions": "Retailer mentions dark chocolate, pistachios, cherries and 2 g added sugars, conflicting with brand-level 'no added sugar'. Do not publish the claim until the wrapper verifies it."
     },
     {
       "id": "choco-cookies",
@@ -431,8 +447,8 @@
         "mix-and-eat-chickpeas-300-g"
       ],
       "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
-      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
-      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+      "source": "https://byroots.com/lb-local/ready-mixes/8222-debsy-mix-eat-300g.html (provisional source; packaging authoritative)",
+      "questions": "HIGH PRIORITY: Retailer Debsy Mix & Eat 300 g appears to be layered peanut butter, carob, chocolate and biscuit; catalog instead calls product 'Mix and Eat Chickpeas'. Ask owner to confirm SKU, photo and product name."
     },
     {
       "id": "nutty-bites",
@@ -455,8 +471,8 @@
         "oat-kaak-with-cheese-220-g"
       ],
       "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
-      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
-      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+      "source": "https://debsy.shop/ (provisional source; packaging authoritative)",
+      "questions": "Confirm actual dairy ingredients, wheat/gluten and allergens. Brand-wide carob claims are not sufficient for cheese kaak."
     },
     {
       "id": "oat-kaak-with-sesame",
@@ -587,8 +603,8 @@
         "tahini-600-g"
       ],
       "verificationStatus": "PACKAGING_REVIEW_REQUIRED",
-      "source": "https://debsy.shop/ (brand-level context, not individual ingredients)",
-      "questions": "Confirm ingredients, allergens, intended use, pack label, and any claims."
+      "source": "https://debsy.shop/ (provisional source; packaging authoritative)",
+      "questions": "Plain tahini is a sesame food, not automatically carob-sweetened. Verify sesame ingredients and cross-contact allergens."
     },
     {
       "id": "jeleb",

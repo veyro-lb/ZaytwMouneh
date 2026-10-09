@@ -3,61 +3,63 @@
 const assert=require("node:assert/strict");
 const fs=require("node:fs");
 const path=require("node:path");
-const root=path.resolve(__dirname,"..");
-const read=p=>fs.readFileSync(path.join(root,"public",p),"utf8");
-const version="20261009-varied2";
-const footer="mouneh-olive-flourish.svg";
-const assets={
-  "index.html":"mouneh-home-olive-grove.svg",
-  "shop.html":"mouneh-shop-harvest-garland.svg",
-  "recipes.html":"mouneh-recipes-olive-blossom.svg"
+const crypto=require("node:crypto");
+const publicDir=path.resolve(__dirname,"..","public");
+const read=p=>fs.readFileSync(path.join(publicDir,p),"utf8");
+const binary=p=>fs.readFileSync(path.join(publicDir,p));
+const version="20261009-photo3";
+const footer="mouneh-footer-olive-gold.webp";
+const sections={
+  "index.html":{file:"mouneh-home-olive-grove.webp",width:700,height:144},
+  "shop.html":{file:"mouneh-shop-harvest-garland.webp",width:860,height:117},
+  "recipes.html":{file:"mouneh-recipes-olive-blossom.webp",width:880,height:117}
 };
-
-const footerArt=read("assets/decor/"+footer);
-const css=read("mouneh-decor-v1.css");
-assert.match(footerArt,/<svg\b/);
-assert.match(footerArt,/viewBox="0 0 430 93"/);
-assert.match(footerArt,/href="data:image\/webp;base64,UklGR/);
-assert(!/<script\b|<foreignObject\b|\bonload\s*=/i.test(footerArt),"Footer art must contain no executable content");
-assert((footerArt.match(/href="data:image\/webp;base64,([A-Za-z0-9+/=]+)"/)||[])[1]?.length===4968,"Keep approved detailed footer artwork intact");
-
-const unique=new Set();
-for(const file of Object.values(assets)){
-  assert(!unique.has(file),"Different sections must not reuse a design");
-  unique.add(file);
-  const svg=read("assets/decor/"+file);
-  assert.match(svg,/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" width="1200" height="260" viewBox="0 0 1200 260"/);
-  assert(svg.endsWith("</svg>"),file+": SVG not closed");
-  assert(svg.includes("linearGradient")&&svg.includes("radialGradient"),file+": detail layers missing");
-  assert(!/<script\b|<foreignObject\b|\bonload\s*=|<image\b[^>]+https?:/i.test(svg),file+": SVG has executable/external content");
+const signatures=new Set();
+function verifyWebp(name,width,height){
+  const data=binary("assets/decor/"+name);
+  assert(data.length>=12000&&data.length<100000,name+": photo asset size unexpected");
+  assert.equal(data.toString("ascii",0,4),"RIFF",name+": bad RIFF signature");
+  assert.equal(data.toString("ascii",8,12),"WEBP",name+": not a WebP image");
+  assert.equal(data.toString("ascii",12,16),"VP8X",name+": expected extended transparent WebP");
+  assert((data[20]&0x10)!==0,name+": missing transparency/alpha flag");
+  assert(data.includes(Buffer.from("ALPH")),name+": no alpha data chunk");
+  assert.equal(data.readUIntLE(24,3)+1,width,name+": intrinsic width changed");
+  assert.equal(data.readUIntLE(27,3)+1,height,name+": intrinsic height changed");
+  const digest=crypto.createHash("sha256").update(data).digest("hex");
+  assert(!signatures.has(digest),name+": photo reused instead of distinct art");
+  signatures.add(digest);
 }
-assert(css.includes("object-fit:contain")&&!css.includes("object-fit:cover"),"Never crop decorative artwork");
-assert(css.includes("width:min(calc(100% - 64px),240px)"),"Mobile footer stays compact");
-assert(css.includes("width:min(calc(100% - 48px),340px)"),"Mobile shop divider fits viewport");
-assert(css.includes("width:min(100%,270px)"),"Shop image remains compact on mobile");
-assert(css.includes('body[data-page="recipes"] .zwm-recipes-divider'),"Recipe artwork needs dedicated spacing");
-assert(css.includes(".footer .zwm-mouneh-footer-art .zwm-mouneh-script{display:none}"),"Do not double the footer brand");
-assert(css.includes("margin:0 auto 26px"),"Footer spacing must remain");
-assert(css.includes("@media(max-width:560px)")&&css.includes("prefers-reduced-motion"),"Responsive/reduced-motion support missing");
-assert(!css.includes("margin-top:-4px"),"No calligraphy overlap");
+verifyWebp(footer,970,122);
+for(const art of Object.values(sections))verifyWebp(art.file,art.width,art.height);
 
-for(const page of ["index.html","shop.html","about.html","contact.html","recipes.html","gift.html"]){
+const css=read("mouneh-decor-v1.css");
+assert(css.includes("object-fit:contain")&&!css.includes("object-fit:cover"),"Do not crop photos");
+assert(css.includes("aspect-ratio:700/144")&&css.includes("aspect-ratio:860/117")
+    &&css.includes("aspect-ratio:880/117")&&css.includes("aspect-ratio:970/122"),"Intrinsic aspect ratios must match real assets");
+assert(css.includes("width:min(calc(100% - 64px),290px)"),"Mobile footer needs safe width");
+assert(css.includes("width:min(100%,330px)"),"Mobile section ornaments should stay compact");
+assert(css.includes("padding:12px 0 18px"),"Homepage mobile spacing should stay tight");
+assert(!css.includes(".zwm-brand-divider>span"),"Fake gold divider lines must not return");
+assert(css.includes("@media(max-width:560px)")&&css.includes("prefers-reduced-motion"),"Responsive styles required");
+
+const pages=["index.html","shop.html","about.html","contact.html","recipes.html","gift.html"];
+for(const page of pages){
   const html=read(page);
-  assert(html.includes("/mouneh-decor-v1.css?v="+version),page+": refreshed CSS missing");
-  assert(html.includes('class="zwm-mouneh-footer-art"'),page+": footer wrapper missing");
-  const matches=html.match(/src="\/assets\/decor\/mouneh-olive-flourish\.svg\?v=20261009-detailed1"/g)||[];
-  assert.equal(matches.length,1,page+": footer should use one shared, stable detailed image only");
-  assert(html.includes('width="1200" height="259"'),page+": stable footer proportions lost");
-  assert(html.includes('lang="ar" dir="rtl">زيت ومونة</span>'),page+": decorative brand script missing");
-  if(assets[page]){
-    assert(html.includes('src="/assets/decor/'+assets[page]+'?v='+version+'"'),page+": unique high-resolution section asset missing");
-    assert(html.includes('width="1200" height="260"'),page+": preserve scalable art proportions");
+  assert(html.includes("/mouneh-decor-v1.css?v="+version),page+": updated styles missing");
+  assert(html.includes('class="zwm-mouneh-footer-art"'),page+": footer photo slot missing");
+  const footerRef='src="/assets/decor/'+footer+'?v='+version+'" width="970" height="122"';
+  assert.equal(html.split(footerRef).length-1,1,page+": consistent footer should appear once");
+  assert(!/src="\/assets\/decor\/[^"]+\.svg/.test(html),page+": obsolete SVG decoration still referenced");
+  if(sections[page]){
+    const a=sections[page];
+    const ref='src="/assets/decor/'+a.file+'?v='+version+'" width="'+a.width+'" height="'+a.height+'"';
+    assert(html.includes(ref),page+": unique high-resolution photo divider absent");
   }
 }
-assert(read("index.html").includes('class="zwm-home-divider shell"'),"Home art must have its own slot");
-assert(read("shop.html").includes('zwm-brand-divider'),"Shop art must have its own divider");
-assert(read("recipes.html").includes('class="zwm-recipes-divider shell"'),"Recipe blossom must sit between sections");
-assert.equal((read("shop.html").match(/<span aria-hidden="true"><svg viewBox="0 0 24 24"/g)||[]).length,4,"Trust icons changed unexpectedly");
-const photos=read("product-photos.js");
-assert(!photos.includes("source-faithful-transparent-cutout"),"Leave product photos untouched");
-console.log("PASS: three unique scalable section illustrations, one original footer ornament on six pages, spacing/RTL/accessibility and unchanged product-photo behavior");
+const shop=read("shop.html");
+const divider=shop.split('class="botanical-divider shell motion-reveal zwm-brand-divider"')[1]?.split('<section class="seasonal-story')[0]||"";
+assert(!divider.includes("<span></span>"),"Shop still contains old fake divider line");
+assert(divider.includes('lang="ar" dir="rtl">زيت ومونة</span>'),"Shop calligraphy/RTL script must remain");
+assert.equal((shop.match(/<span aria-hidden="true"><svg viewBox="0 0 24 24"/g)||[]).length,4,"Trust icons must not change");
+assert(!read("product-photos.js").includes("source-faithful-transparent-cutout"),"Product photos must stay untouched");
+console.log("PASS: four distinct transparent photo WebPs, one consistent footer across six pages, responsive placement, Arabic script and no decorative SVGs");

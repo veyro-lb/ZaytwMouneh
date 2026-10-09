@@ -106,7 +106,8 @@ function valueFor(p,key){
   ingredients:{en:["ingredientsEn","ingredients"],ar:["ingredientsAr","ingredientsEn","ingredients"],fr:["ingredientsFr","ingredientsEn","ingredients"]},
   storage:{en:["storageEn","storage"],ar:["storageAr","storageEn","storage"],fr:["storageFr","storageEn","storage"]},
   allergens:{en:["allergensEn","allergens"],ar:["allergensAr","allergensEn","allergens"],fr:["allergensFr","allergensEn","allergens"]},
-  details:{en:["descriptionEn","detailsEn","description","details"],ar:["descriptionAr","detailsAr","descriptionEn","detailsEn","description","details"],fr:["descriptionFr","detailsFr","descriptionEn","detailsEn","description","details"]},
+  description:{en:["descriptionEn","description"],ar:["descriptionAr","descriptionEn","description"],fr:["descriptionFr","descriptionEn","description"]},
+   details:{en:["detailsEn","details"],ar:["detailsAr","detailsEn","details"],fr:["detailsFr","detailsEn","details"]},
   nutrition:{en:["nutritionEn","nutrition"],ar:["nutritionAr","nutritionEn","nutrition"],fr:["nutritionFr","nutritionEn","nutrition"]}
  };
  var list=(keys[key]&&keys[key][state.locale])||[];
@@ -186,6 +187,8 @@ function updateSeo(){
  var p=state.product,name=productName(p),variants=p.variants||[],min=variants.length?Math.min.apply(null,variants.map(function(v){return Number(v.price)||0})):0;
  var title=name+" | Zayt w Mouneh";
  var desc=state.locale==="ar"?"تسوّق "+name+" من زيت ومونة. الأحجام والأسعار الحالية من الكتالوج.":state.locale==="fr"?"Achetez "+name+" chez Zayt w Mouneh. Formats et prix actuels du catalogue.":"Shop "+name+" at Zayt w Mouneh. Current catalogue sizes and prices.";
+  var individualCopy=valueFor(p,"description");
+  if(individualCopy)desc=individualCopy.length>160?individualCopy.slice(0,157).replace(/\s+\S*$/,"")+"…":individualCopy;
  document.title=title;
  var md=qs('meta[name="description"]');if(md)md.content=desc;
  var robots=qs('meta[name="robots"]');if(robots)robots.content="index,follow,max-image-preview:large";
@@ -205,6 +208,7 @@ function updateSeo(){
  setMeta('meta[name="twitter:title"]',{name:"twitter:title",content:title});
  setMeta('meta[name="twitter:description"]',{name:"twitter:description",content:desc});
  var ld={"@context":"https://schema.org","@type":"Product","name":name,"sku":p.id,"category":p.category||undefined,"url":canonical()};
+  if(individualCopy)ld.description=individualCopy;
  var photo=window.ZWM_PRODUCT_PHOTOS&&window.ZWM_PRODUCT_PHOTOS.sourceFor?window.ZWM_PRODUCT_PHOTOS.sourceFor(p.id):null;
  if(photo&&photo.url){
   var photoUrl=new URL(photo.url,location.origin).href;ld.image=[photoUrl];
@@ -303,7 +307,7 @@ function render(){
  var min=(p.variants||[]).length?Math.min.apply(null,p.variants.map(function(v){return Number(v.price)||0})):0;
  var av=availability(p),badgeClass=av==="out_of_stock"||av==="coming_soon"?" is-unavailable":av==="low_stock"?" is-low":"";
  qs("#c6ProductRoot").innerHTML=
- '<main class="c6-product-main"><div class="c6-shell"><nav class="c6-breadcrumb"><a href="'+localePrefix(state.locale)+'/shop">'+esc(t("back"))+'</a><span>›</span><span>'+esc(productName(p))+'</span></nav><div class="c6-product-grid"><div class="c6-product-visual">'+photoMarkup(p,state.selectedVariant&&state.selectedVariant.id)+'</div><div class="c6-product-copy"><p class="c6-eyebrow">'+esc(p.category||t("category"))+'</p><h1 class="c6-product-title">'+esc(productName(p))+'</h1>'+(p.original?'<p class="c6-original">'+esc(p.original)+'</p>':"")+'<div class="c6-badges"><span class="c6-badge'+badgeClass+'">'+esc(t(av))+'</span></div><div class="c6-price" id="c6SelectedPrice">'+(p.id==="extra-virgin-olive-oil"?money(state.selectedVariant?state.selectedVariant.price:min):esc(t("from"))+' '+money(min))+'</div><div class="c6-purchase-box"><div class="c6-purchase-row"><label class="c6-field"><span>'+esc(t("size"))+'</span><select id="c6Variant">'+variantsMarkup(p)+'</select></label><label class="c6-field"><span>'+esc(t("qty"))+'</span><input id="c6Qty" type="number" min="1" max="99" value="1"></label></div><div class="c6-purchase-actions"><button class="c6-button" id="c6Add" type="button"'+(isOrderable(p)?"":" disabled")+'>'+esc(isOrderable(p)?t("add"):t("unavailable"))+'</button><button class="c6-button is-secondary" id="c6Share" type="button">'+esc(t("share"))+'</button></div>'+alertMarkup(p)+'</div><div style="margin-top:25px"><p class="c6-eyebrow">'+esc(t("facts"))+'</p>'+factsMarkup(p)+'</div><div class="c6-service-grid"><div class="c6-service-card"><strong>'+esc(t("payment"))+'</strong><div style="margin-top:7px">'+paymentMarkup()+'</div><p>'+esc(t("paymentNote"))+'</p></div>'+deliveryMarkup()+'</div></div></div></div></main>'+
+ '<main class="c6-product-main"><div class="c6-shell"><nav class="c6-breadcrumb"><a href="'+localePrefix(state.locale)+'/shop">'+esc(t("back"))+'</a><span>›</span><span>'+esc(productName(p))+'</span></nav><div class="c6-product-grid"><div class="c6-product-visual">'+photoMarkup(p,state.selectedVariant&&state.selectedVariant.id)+'</div><div class="c6-product-copy"><p class="c6-eyebrow">'+esc(p.category||t("category"))+'</p><h1 class="c6-product-title">'+esc(productName(p))+'</h1>'+(p.original?'<p class="c6-original">'+esc(p.original)+'</p>':"")+'<div class="c6-badges"><span class="c6-badge'+badgeClass+'">'+esc(t(av))+'</span></div>'+(valueFor(p,"description")?'<p class="c6-product-intro" style="max-width:68ch;line-height:1.8;margin:12px 0 20px">'+esc(valueFor(p,"description"))+'</p>':"")+'<div class="c6-price" id="c6SelectedPrice">'+(p.id==="extra-virgin-olive-oil"?money(state.selectedVariant?state.selectedVariant.price:min):esc(t("from"))+' '+money(min))+'</div><div class="c6-purchase-box"><div class="c6-purchase-row"><label class="c6-field"><span>'+esc(t("size"))+'</span><select id="c6Variant">'+variantsMarkup(p)+'</select></label><label class="c6-field"><span>'+esc(t("qty"))+'</span><input id="c6Qty" type="number" min="1" max="99" value="1"></label></div><div class="c6-purchase-actions"><button class="c6-button" id="c6Add" type="button"'+(isOrderable(p)?"":" disabled")+'>'+esc(isOrderable(p)?t("add"):t("unavailable"))+'</button><button class="c6-button is-secondary" id="c6Share" type="button">'+esc(t("share"))+'</button></div>'+alertMarkup(p)+'</div><div style="margin-top:25px"><p class="c6-eyebrow">'+esc(t("facts"))+'</p>'+factsMarkup(p)+'</div><div class="c6-service-grid"><div class="c6-service-card"><strong>'+esc(t("payment"))+'</strong><div style="margin-top:7px">'+paymentMarkup()+'</div><p>'+esc(t("paymentNote"))+'</p></div>'+deliveryMarkup()+'</div></div></div></div></main>'+
  bundleMarkup()+recipeMarkup()+relatedProducts()+reviewsMarkup();
  bind();
  updateCartCount();

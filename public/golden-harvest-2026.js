@@ -32,8 +32,7 @@
       imageAlt:"Zayt w Mouneh olive oil tin",
       popupKicker:"ZAYT W MOUNEH · 2026 OLIVE HARVEST",
       popupTitle:"The 2026 Harvest<br><em>Has Arrived</em>",
-      popupSubtitle:"The olive oil of the season has arrived.",
-      popupDescription:"Discover our Lebanese extra virgin olive oil, cold-pressed for the 2026 season. Find the right tin for your table.",
+      popupDescription:"Cold-pressed Lebanese extra virgin olive oil. Explore our featured tins and choose the right size for your table.",
       popupDiscover:"Discover the Harvest",popupContinue:"Continue to Website",popupClose:"Close harvest announcement",
       popupFilm:"2026 olive harvest announcement film",
       announcement:"🫒 THE 2026 HARVEST HAS ARRIVED",announcementLink:"Explore the harvest",
@@ -41,20 +40,19 @@
       shopCta:"Explore Seasonal Picks",shopAll:"Shop all olive oil"
     },
     ar:{
-      kicker:"مختارات الموسم · موسم الزيتون ٢٠٢٦",
+      kicker:"مختارات الموسم · ٢٠٢٦",
       title:"زيت السنة وصل",
       description:"زيت زيتون بكر ممتاز معصور على البارد.",
       badge:"وصل جديد · موسم الزيتون ٢٠٢٦",
       smallBadge:"موسم الزيتون ٢٠٢٦",
       price:"السعر",add:"أضف إلى السلة",inquire:"استفسر عن التوفّر",
       unavailable:"السعر والطلب عبر الموقع غير متاحين لهذا الحجم حالياً.",
-      viewAll:"تصفّح كل أحجام زيت الزيتون",notes:"زيت زيتون بكر ممتاز معصور على البارد · موسم الزيتون ٢٠٢٦ · ثلاثة أحجام",
+      viewAll:"تصفّح كل أحجام زيت الزيتون",notes:"ثلاثة أحجام مميّزة · اختاروا الحجم المناسب لسفرتكم",
       imageAlt:"صفيحة زيت زيتون من زيت ومونة",
       popupKicker:"زيت ومونة · موسم الزيتون ٢٠٢٦",
       popupTitle:"زيت السنة <em>وصل</em>",
-      popupSubtitle:"زيت السنة وصل",
-      popupDescription:"زيت زيتون بكر ممتاز معصور على البارد، من موسم الزيتون ٢٠٢٦. اكتشفوا صفائح الزيت واختاروا الحجم المناسب لسفرتكم.",
-      popupDiscover:"اكتشفوا زيت الموسم",popupContinue:"المتابعة إلى الموقع",popupClose:"إغلاق إعلان موسم الزيتون",
+      popupDescription:"زيت زيتون بكر ممتاز معصور على البارد. اختاروا حجم الصفيحة الأنسب لسفرتكم.",
+      popupDiscover:"اكتشفوا صفائح الزيت",popupContinue:"المتابعة إلى الموقع",popupClose:"إغلاق إعلان موسم الزيتون",
       popupFilm:"فيديو موسم الزيتون ٢٠٢٦",
       announcement:"🫒 زيت السنة وصل — موسم الزيتون ٢٠٢٦",announcementLink:"اكتشفوا زيت الموسم",
       shopTitle:"زيت السنة وصل",shopText:"زيت زيتون بكر ممتاز معصور على البارد من موسم الزيتون ٢٠٢٦، متوفّر بثلاثة أحجام مميّزة لسفرتكم.",
@@ -72,8 +70,7 @@
       imageAlt:"Bidon d’huile d’olive Zayt w Mouneh",
       popupKicker:"ZAYT W MOUNEH · RÉCOLTE DES OLIVES 2026",
       popupTitle:"La récolte 2026<br><em>est arrivée</em>",
-      popupSubtitle:"L’huile d’olive de la saison est arrivée.",
-      popupDescription:"Découvrez notre huile d’olive vierge extra libanaise, pressée à froid, de la saison 2026. Choisissez le bidon idéal pour votre table.",
+      popupDescription:"Huile d’olive vierge extra libanaise, pressée à froid. Découvrez nos bidons et choisissez le format qui vous convient.",
       popupDiscover:"Découvrir la récolte",popupContinue:"Continuer vers le site",popupClose:"Fermer l’annonce de la récolte",
       popupFilm:"Film de la récolte des olives 2026",
       announcement:"🫒 LA RÉCOLTE 2026 EST ARRIVÉE",announcementLink:"Découvrir la récolte",
@@ -186,13 +183,11 @@
           '<img class="gh-popup-logo" src="/assets/logo.svg" alt="Zayt w Mouneh" width="94" height="94">'+
           '<span class="gh-popup-kicker">'+esc(t.popupKicker)+'</span>'+
           '<h2 id="ghPopupTitle">'+t.popupTitle+'</h2>'+
-          '<p class="gh-popup-subtitle">'+esc(t.popupSubtitle)+'</p>'+
           '<p id="ghPopupDescription" class="gh-popup-description">'+esc(t.popupDescription)+'</p>'+
           '<div class="gh-popup-actions"><button class="gh-popup-discover" type="button" data-gh-discover>'+
              esc(t.popupDiscover)+' <span aria-hidden="true">↗</span></button>'+
              '<button class="gh-popup-continue" type="button" data-gh-close="continue">'+esc(t.popupContinue)+'</button></div>'+
         '</div>'+
-        '<span class="gh-popup-film-label" aria-hidden="true">'+esc(t.smallBadge)+'</span>'+
       '</section>';
   }
   function closePopup(shouldScroll){

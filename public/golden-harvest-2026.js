@@ -73,7 +73,7 @@
     return !(/out.of.stock|coming.soon|draft|hidden|discontinued|unavailable/.test(a)||p&&p.status==="hidden");
   }
   function money(n){return "$"+Number(n).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}
-  function shopUrl(variant){return "/shop?category=Olive%20Oil"+(variant?"&harvestVariant="+encodeURIComponent(variant):"")+"#shop"}
+  function shopUrl(variant){return "/shop?category=Olive%20Oil"+(PREVIEW?"&harvestPreview=1":"")+(variant?"&harvestVariant="+encodeURIComponent(variant):"")+"#shop"}
   function photo(img,fallback){
     img.addEventListener("error",function(){if(img.dataset.ghFallback)return;img.dataset.ghFallback="1";img.src=fallback},{once:true});
   }
@@ -96,7 +96,7 @@
     var href=orderable?shopUrl(v.id):"/#contact";
     var pic=PHOTO+s.file;
     return '<article class="gh-card" data-size="'+s.size+'">'+
-      '<figure class="gh-card-figure"><img src="'+pic+'" loading="lazy" decoding="async" width="640" height="800" alt="'+esc("Zayt w Mouneh olive oil tin, "+s.size+" L")+'"></figure>'+
+      '<figure class="gh-card-figure"><img src="'+pic+'" loading="lazy" decoding="async" width="640" height="800" alt="'+esc((language()==="ar"?"صفيحة زيت زيتون من زيت ومونة، ":language()==="fr"?"Bidon d’huile d’olive Zayt w Mouneh, ":"Zayt w Mouneh olive oil tin, ")+s.size+" L")+'"></figure>'+
       '<h3 class="gh-capacity" dir="ltr">'+s.size+' L</h3><p class="gh-caption">'+esc(c.season)+'</p>'+
       (orderable?'<p class="gh-price">'+money(v.price)+'</p>':'<p class="gh-unavailable">'+esc(c.unavailable)+'</p>')+
       '<a class="gh-action" href="'+href+'"'+(!orderable?' data-gh-inquire="1"':'')+'>'+
@@ -113,7 +113,7 @@
   function story(){
     var c=t();
     return '<section class="zwm-gh zwm-gh-story" aria-labelledby="ghStoryTitle"><div class="gh-shell gh-story-grid">'+
-      '<figure class="gh-story-photo"><img loading="lazy" decoding="async" width="960" height="540" src="'+PHOTO+'hero-poster.jpg" alt="'+esc("Lebanese olive harvest, 2026")+'"></figure>'+
+      '<figure class="gh-story-photo"><img loading="lazy" decoding="async" width="960" height="540" src="'+PHOTO+'hero-poster.jpg" alt="'+esc(language()==="ar"?"قطاف الزيتون اللبناني ٢٠٢٦":language()==="fr"?"Récolte des olives au Liban, 2026":"Lebanese olive harvest, 2026")+'"></figure>'+
       '<div><span class="gh-overline">'+esc(c.storyOverline)+'</span><h2 id="ghStoryTitle">'+esc(c.story)+'</h2><p>'+esc(c.storyCopy)+'</p></div>'+
       '</div></section>';
   }
@@ -171,7 +171,7 @@
     card.classList.add("zwm-gh");
     card.innerHTML='<div class="zwm-gh-shop-copy"><span class="gh-overline">'+esc(c.shopPromo)+'</span>'+
       '<h2>'+esc(c.choose)+'</h2><p>'+esc(c.shopDesc)+'</p>'+
-      '<a class="gh-action" href="/?harvestPreview='+ (PREVIEW?"1":"0") +'#harvest-collection">'+esc(c.shopJump)+' ↗</a> '+
+      '<a class="gh-action" href="/'+(PREVIEW?"?harvestPreview=1":"")+'#harvest-collection">'+esc(c.shopJump)+' ↗</a> '+
       '<a style="color:#f4e3b2;margin-inline-start:18px" href="'+shopUrl("")+'">'+esc(c.allOil)+' ↗</a></div>'+
       '<div class="zwm-gh-shop-photo" role="img" aria-label="Olive oil from Zayt w Mouneh"></div>';
     var main=document.querySelector("body[data-page='shop'] main");

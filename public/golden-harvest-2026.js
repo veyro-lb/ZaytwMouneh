@@ -15,6 +15,7 @@
   var POPUP_KEY="zwm-golden-harvest-2026-popup-seen-v1";
   var SHOW_POPUP_AGAIN=params.get("harvestPopup")==="1"&&PREVIEW;
   var SIZES=[
+    {size:"1",id:"extra-virgin-olive-oil-1-l",file:"1l.webp"},
     {size:"4",id:"extra-virgin-olive-oil-4-l",file:"4l.webp"},
     {size:"8.77",id:"extra-virgin-olive-oil-8-77-l",file:"8-77l.webp"},
     {size:"17.54",id:"extra-virgin-olive-oil-17-54-l",file:"17-54l.webp"}
@@ -28,15 +29,15 @@
       smallBadge:"2026 HARVEST",
       price:"Price",add:"Add to cart",inquire:"Ask about availability",
       unavailable:"Price and online ordering not yet available for this size.",
-      viewAll:"See all olive oil sizes",notes:"Lebanese olive oil · Fresh harvest · Three featured sizes",
-      imageAlt:"Zayt w Mouneh olive oil tin",
+      viewAll:"See all olive oil sizes",notes:"Lebanese olive oil · Fresh harvest · Four featured sizes",
+      imageAlt:"Zayt w Mouneh olive oil",
       popupKicker:"ZAYT W MOUNEH",
       popupTitle:"2026<br><em>The Golden Harvest</em>",
       popupDescription:"Lebanese extra virgin olive oil, cold-pressed for your table.",
       popupDiscover:"Discover the Harvest",popupContinue:"Continue to Website",popupClose:"Close harvest announcement",
       popupFilm:"2026 olive harvest announcement film",
       announcement:"🫒 THE 2026 HARVEST HAS ARRIVED",announcementLink:"Explore the harvest",
-      shopTitle:"The 2026 harvest is here",shopText:"See our three featured olive oil tins, then choose the right size for your table.",
+      shopTitle:"The 2026 harvest is here",shopText:"Explore four fresh-harvest olive oil sizes, from the 1 L bottle to our larger tins.",
       shopCta:"Explore Seasonal Picks",shopAll:"Shop all olive oil"
     },
     ar:{
@@ -47,15 +48,15 @@
       smallBadge:"موسم الزيتون ٢٠٢٦",
       price:"السعر",add:"أضف إلى السلة",inquire:"استفسر عن التوفّر",
       unavailable:"السعر والطلب عبر الموقع غير متاحين لهذا الحجم حالياً.",
-      viewAll:"تصفّح كل أحجام زيت الزيتون",notes:"ثلاثة أحجام مميّزة · اختاروا الحجم المناسب لسفرتكم",
-      imageAlt:"صفيحة زيت زيتون من زيت ومونة",
+      viewAll:"تصفّح كل أحجام زيت الزيتون",notes:"أربعة أحجام مميّزة · اختاروا الحجم المناسب لسفرتكم",
+      imageAlt:"زيت زيتون من زيت ومونة",
       popupKicker:"زيت ومونة",
       popupTitle:"٢٠٢٦<br><em>زيت السنة وصل</em>",
       popupDescription:"زيت زيتون بكر ممتاز معصور على البارد.",
       popupDiscover:"اكتشفوا صفائح الزيت",popupContinue:"المتابعة إلى الموقع",popupClose:"إغلاق إعلان موسم الزيتون",
       popupFilm:"فيديو موسم الزيتون ٢٠٢٦",
       announcement:"🫒 زيت السنة وصل — موسم الزيتون ٢٠٢٦",announcementLink:"اكتشفوا زيت الموسم",
-      shopTitle:"زيت السنة وصل",shopText:"زيت زيتون بكر ممتاز معصور على البارد من موسم الزيتون ٢٠٢٦، متوفّر بثلاثة أحجام مميّزة لسفرتكم.",
+      shopTitle:"زيت السنة وصل",shopText:"زيت زيتون بكر ممتاز معصور على البارد من موسم الزيتون ٢٠٢٦، متوفّر بأربعة أحجام مميّزة لسفرتكم.",
       shopCta:"اكتشفوا مختارات الموسم",shopAll:"كل أحجام زيت الزيتون"
     },
     fr:{
@@ -66,15 +67,15 @@
       smallBadge:"RÉCOLTE 2026",
       price:"Prix",add:"Ajouter au panier",inquire:"Demander la disponibilité",
       unavailable:"Prix et commande en ligne indisponibles pour ce format actuellement.",
-      viewAll:"Voir tous les formats d’huile d’olive",notes:"Huile d’olive libanaise · Nouvelle récolte · Trois formats",
-      imageAlt:"Bidon d’huile d’olive Zayt w Mouneh",
+      viewAll:"Voir tous les formats d’huile d’olive",notes:"Huile d’olive libanaise · Nouvelle récolte · Quatre formats",
+      imageAlt:"Huile d’olive Zayt w Mouneh",
       popupKicker:"ZAYT W MOUNEH",
       popupTitle:"2026<br><em>La récolte dorée</em>",
       popupDescription:"Huile d’olive vierge extra libanaise, pressée à froid.",
       popupDiscover:"Découvrir la récolte",popupContinue:"Continuer vers le site",popupClose:"Fermer l’annonce de la récolte",
       popupFilm:"Film de la récolte des olives 2026",
       announcement:"🫒 LA RÉCOLTE 2026 EST ARRIVÉE",announcementLink:"Découvrir la récolte",
-      shopTitle:"La récolte 2026 est arrivée",shopText:"Découvrez nos trois bidons d’huile d’olive de la nouvelle récolte, et choisissez le format adapté à votre table.",
+      shopTitle:"La récolte 2026 est arrivée",shopText:"Découvrez nos quatre formats d’huile d’olive de la nouvelle récolte, dont la bouteille de 1 L.",
       shopCta:"Découvrir les sélections de saison",shopAll:"Toutes les huiles d’olive"
     }
   };
@@ -110,7 +111,7 @@
     var t=tr(),v=variantFor(size),o=offer(size),orderable=!!(o&&o.available);
     return '<article class="gh-pick-card" data-gh-size="'+esc(size.size)+'">'+
       '<span class="gh-pick-badge">'+esc(t.smallBadge)+'</span>'+
-      '<div class="gh-pick-figure"><img src="'+PHOTO+size.file+'" loading="lazy" decoding="async" width="640" height="800" alt="'+esc(t.imageAlt+" — "+size.size+" L")+'"></div>'+
+      '<div class="gh-pick-figure"><img src="'+PHOTO+size.file+"?v=20261009-four-photos"+'" loading="lazy" decoding="async" width="640" height="800" alt="'+esc(t.imageAlt+" — "+size.size+" L")+'"></div>'+
       '<div class="gh-pick-information"><h3 class="gh-pick-capacity" dir="ltr">'+esc(size.size)+' L</h3>'+
       (o?'<p class="gh-pick-price"><span class="gh-sr-only">'+esc(t.price)+': </span>'+esc(formatUSD(o.price))+'</p>':
           '<p class="gh-pick-price-gh-unset">'+esc(t.unavailable)+'</p>')+
@@ -291,7 +292,7 @@
       '<h2>'+esc(t.shopTitle)+'</h2><p>'+esc(t.shopText)+'</p>'+
       '<a class="gh-shop-cta" href="/'+(PREVIEW?"?harvestPreview=1":"")+'#harvest-picks">'+esc(t.shopCta)+' ↗</a>'+
       ' <a class="gh-shop-all" href="/shop?category=Olive%20Oil#shop">'+esc(t.shopAll)+' ↗</a></div>'+
-      '<img class="gh-shop-spotlight-image" loading="lazy" decoding="async" src="'+PHOTO+'17-54l.webp" alt="'+esc(t.imageAlt+" — 17.54 L")+'">';
+      '<img class="gh-shop-spotlight-image" loading="lazy" decoding="async" src="'+PHOTO+'17-54l.webp?v=20261009-four-photos" alt="'+esc(t.imageAlt+" — 17.54 L")+'">';
   }
   var announcementBusy=false;
   function announcement(){

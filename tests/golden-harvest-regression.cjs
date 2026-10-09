@@ -8,7 +8,7 @@ const read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const js=read("public/golden-harvest-2026.js");
 const css=read("public/golden-harvest-2026.css");
 const media="public/assets/harvest-2026/";
-const images=["4l.webp","8-77l.webp","17-54l.webp"];
+const images=["1l.webp","4l.webp","8-77l.webp","17-54l.webp"];
 const required=[...images,"harvest-film.mp4","hero-poster.jpg"];
 for(const name of required){
  const file=path.join(root,media,name);
@@ -59,7 +59,7 @@ assert.match(js,/prefers-reduced-motion/);
 assert.equal((css.match(/{/g)||[]).length,(css.match(/}/g)||[]).length,"CSS braces");
 assert.match(css,/object-fit:contain/,"Full product photos must remain visible");
 assert.match(css,/@media\(max-width:680px\)/,"Mobile must have one-column layout");
-assert.match(css,/grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/,"Desktop must show all tins side by side");
+assert.match(css,/grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/,"Desktop must show all tins side by side");
 assert.match(css,/#a53d35/,"Badge must be a tasteful harvest red");
 assert.match(css,/\.gh-popup-panel\{[^}]*width:min\(940px,/,"Desktop popup must be a wide 940px cinematic viewport");
 assert.match(js,/popupTitle:"2026<br><em>The Golden Harvest<\/em>"/,"2026 must be the prominent English title");
@@ -91,6 +91,7 @@ assert.match(css,/\.gh-pick-figure img\{max-width:100%!important;max-height:100%
 
 assert.doesNotMatch(css,/body\.zwm-harvest-active\[data-page="home"\] \.home-pantry-hero\s*{display:none/i,"Never hide normal homepage hero");
 for(const [size,id,file] of [
+ ["1","extra-virgin-olive-oil-1-l","1l.webp"],
  ["4","extra-virgin-olive-oil-4-l","4l.webp"],
  ["8.77","extra-virgin-olive-oil-8-77-l","8-77l.webp"],
  ["17.54","extra-virgin-olive-oil-17-54-l","17-54l.webp"]
@@ -178,4 +179,4 @@ for(const name of ["index.html","shop.html","contact.html","about.html"]){
  assert.match(html,/https:\/\/wa\.me\/96170381412/,"Correct WhatsApp link needed on "+name);
  assert.match(html,/\+961 70 381 412/,"Correct visible phone text needed on "+name);
 }
-console.log("Golden Harvest 2026 campaign gate passed: five genuine media files, normal hero preserved, popup and first collection, 3 sizes, safe existing cart bridge, complete EN/AR/FR.");
+console.log("Golden Harvest 2026 campaign gate passed: six genuine media files, normal hero preserved, popup and first collection, 4 sizes, safe existing cart bridge, complete EN/AR/FR.");

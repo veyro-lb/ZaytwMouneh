@@ -3,7 +3,7 @@ const assert=require("node:assert/strict");
 const path=require("node:path");
 const pub=path.join(process.cwd(),"public");
 const read=name=>fs.readFileSync(path.join(pub,name),"utf8");
-const origin="https://zaytwmouneh.veyro-202.workers.dev";
+const origin="https://zaytwmouneh.com";
 const count=(s,re)=>(s.match(re)||[]).length;
 
 const customerPages=[

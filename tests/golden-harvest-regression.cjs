@@ -60,6 +60,11 @@ assert.match(css,/object-fit:contain/,"Full product photos must remain visible")
 assert.match(css,/@media\(max-width:680px\)/,"Mobile must have one-column layout");
 assert.match(css,/grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/,"Desktop must show all tins side by side");
 assert.match(css,/#a53d35/,"Badge must be a tasteful harvest red");
+assert.match(css,/\.gh-popup-panel\{[^}]*width:min\(515px,100%\)/,"Popup should be a centered floating dialog, not a homepage takeover");
+assert.match(css,/\.gh-popup-discover\{[^}]*background:#a53d35/,"Popup CTA must be harvest red");
+assert.match(css,/\.gh-picks-arrival\{[^}]*background:#a53d35/,"Section must have a prominent harvest red new-arrival badge");
+assert.match(js,/gh-picks-arrival/,"Section heading must render the red badge");
+assert.match(css,/\.gh-popup-panel\{width:min\(100%,510px\)/,"Small screens should still show a floating popup");
 assert.match(css,/gh-popup/);
 assert.match(css,/gh-picks/);
 assert.match(css,/html\[dir="rtl"\]/);

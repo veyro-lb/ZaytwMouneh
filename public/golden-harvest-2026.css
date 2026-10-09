@@ -31,7 +31,7 @@ body.zwm-harvest-active .gh-picks{position:relative;isolation:isolate;overflow:h
 html[lang="ar"] .gh-picks-arrival{letter-spacing:0;line-height:1.9}
 .gh-picks-symbol{align-self:center;font-family:"DM Serif Display",Georgia,serif;color:#d2af6c;border:1px solid rgba(228,194,122,.44);width:105px;height:105px;min-width:105px;display:flex;align-items:center;justify-content:center;gap:5px;border-radius:50%;font-size:1rem;opacity:.9}
 .gh-picks-symbol span{font-size:1.2rem}
-.gh-picks-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch;gap:clamp(11px,1.6vw,22px);margin:0 auto}
+.gh-picks-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;gap:clamp(10px,1.25vw,17px);margin:0 auto}
 .gh-pick-card{position:relative;min-width:0;display:flex;flex-direction:column;align-items:center;overflow:hidden;text-align:center;border:1px solid rgba(241,227,190,.82);border-radius:18px;background:linear-gradient(155deg,#fffaf0 0%,#f4ebd8 100%);box-shadow:0 12px 35px rgba(1,19,11,.17);color:#183c2b;transform:translateY(16px);opacity:0;transition:transform .48s ease,opacity .48s ease,box-shadow .28s ease,border-color .28s ease}
 .gh-pick-card.gh-visible{opacity:1;transform:translateY(0)}
 .gh-pick-card.gh-visible:hover{transform:translateY(-5px);box-shadow:0 23px 43px rgba(1,23,15,.24);border-color:#e7c67e}
@@ -91,8 +91,16 @@ html[dir="rtl"] .gh-popup-video{object-position:35% 50%}
 html[lang="ar"] .gh-picks-intro h2,html[lang="ar"] .gh-popup-content h2,html[lang="ar"] .gh-shop-spotlight-copy h2{font-family:"Amiri","Noto Kufi Arabic",serif;letter-spacing:0;line-height:1.4}
 html[lang="ar"] .gh-picks-kicker,html[lang="ar"] .gh-pick-badge,html[lang="ar"] .gh-popup-kicker{letter-spacing:0;line-height:1.7;text-transform:none}
 html[lang="ar"] .gh-pick-buy,html[lang="ar"] .gh-pick-inquire{line-height:1.7}
+/* Compact 500 ml bottle and five sizes stay balanced without cropping. */
+.gh-pick-card[data-gh-size="500 ml"] .gh-pick-figure img{height:78%;max-width:85%}
+.gh-pick-card[data-gh-size="1"] .gh-pick-figure img{height:91%;max-width:93%}
+@media(min-width:1051px){.gh-pick-capacity{font-size:clamp(1.72rem,2.3vw,2.45rem)}}
 @media(max-width:1050px){
+ .gh-picks-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:900px) and (min-width:681px){
  .gh-picks-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .gh-pick-card:last-child{grid-column:1/-1;width:calc(50% - 6px);justify-self:center}
 }
 @media(max-width:900px){
  .gh-picks-grid{gap:12px}
@@ -111,6 +119,7 @@ html[lang="ar"] .gh-pick-buy,html[lang="ar"] .gh-pick-inquire{line-height:1.7}
  .gh-picks-intro p{font-size:.94rem;margin-top:9px}
  .gh-picks-symbol{display:none}
  .gh-picks-grid{grid-template-columns:1fr;max-width:440px;margin:0 auto;gap:20px}
+ .gh-pick-card:last-child{grid-column:auto;width:100%}
  .gh-pick-card{border-radius:20px}
  .gh-pick-badge{font-size:.68rem;padding:8px 13px;top:13px;left:50%;inset-inline-start:auto}
  .gh-pick-figure{height:clamp(325px,92vw,475px);padding:54px 20px 0}

@@ -1,7 +1,8 @@
+# PRE-LAUNCH: No sitemap advertised until the verified custom domain is live.
+# Crawlers must be allowed to read pages to obey the site-wide X-Robots-Tag: noindex.
+# This file does not make the website private; use Cloudflare Access for that.
 User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /admin.html
 Disallow: /admin-config.js
-
-Sitemap: https://zaytwmouneh.veyro-202.workers.dev/sitemap.xml

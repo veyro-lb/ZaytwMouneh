@@ -26,75 +26,95 @@ for(const name of required){
  }
 }
 assert.doesNotThrow(()=>new Function(js),"Campaign script parses");
-assert.match(js,/var ENABLED=false/,"Campaign must not launch prematurely");
-assert.match(js,/harvestPreview/,"Review must be available with preview query parameter");
-assert.match(js,/prefers-reduced-motion/);
+assert.match(js,/var ENABLED=false/,"Campaign must stay off until explicit launch approval");
+assert.match(js,/harvestPreview/,"Private preview query required");
+assert.match(js,/harvestPopup/,"Explicit popup QA override required");
+assert.match(js,/zwm-golden-harvest-2026-popup-seen-v1/,"Persist first-visit dismissal");
+assert.match(js,/languageWelcome/,"Do not hide or replace existing language welcome");
+assert.match(js,/startPopupAfterLanguageWelcome/,"Campaign popup must wait for language selection");
+assert.match(js,/var POPUP_KEY=/);
+assert.match(js,/id="ghCampaignPopup"|popup\.id="ghCampaignPopup"/);
+assert.match(js,/id="harvest-picks"/,"Campaign must have a scroll destination");
+assert.match(js,/insertBefore\(stage,anchor\)/,"Seasonal collection must immediately precede Pantry Favourites");
+assert.match(js,/querySelector\("body\[data-page='home'\] #featured"\)/,"Home placement should use existing first collection");
+assert.doesNotMatch(js,/old\.inert=true|inactiveShopHeroVideo|old\.setAttribute\("aria-hidden"/,"Normal homepage hero must remain visible");
+assert.match(js,/popupContinue/);
+assert.match(js,/popupDiscover/);
+assert.match(js,/closePopup\(true\)/,"Popup CTA must dismiss and reveal collection");
+assert.match(js,/closePopup\(false\)/,"Continue to Website must dismiss without scrolling");
+assert.match(js,/scrollIntoView/);
+assert.match(js,/gh-pick-badge/);
+assert.match(js,/data-gh-add/);
+assert.match(js,/window\.ZWM_HARVEST_CART/,"Must use existing cart API bridge");
+assert.doesNotMatch(js,/cartKey\(|zwm-cart-v5|localStorage\.setItem\(.+cart/i,"No direct cart storage mutation from campaign");
+assert.match(js,/function variantFor\(size\)/);
+assert.match(js,/v\.id===size\.id/,"Do not mistake 500ml for missing 4L tin");
+assert.match(js,/Number\.isFinite\(Number\(v.price\)\)/,"No invented price");
+assert.match(js,/PRODUCTS_DATA/,"Use actual current catalogue");
+assert.match(js,/window\.addEventListener\("zwm:catalog-cache-updated"/,"Re-render after owner catalogue refresh");
 assert.match(js,/visibilitychange/);
 assert.match(js,/IntersectionObserver/);
-assert.match(js,/localechange|MutationObserver/);
-assert.match(js,/function variantFor\(size\)/);
-assert.match(js,/function available\(p\)/);
-assert.match(js,/PRODUCTS_DATA/,"Catalogue is live-derived, not duplicated");
-assert.doesNotMatch(js,/localStorage\.setItem|sessionStorage\.setItem/,"Do not mutate commerce state");
-assert.ok(js.includes('var OIL_ID="extra-virgin-olive-oil"'));
+assert.match(js,/prefers-reduced-motion/);
+assert.equal((css.match(/{/g)||[]).length,(css.match(/}/g)||[]).length,"CSS braces");
+assert.match(css,/object-fit:contain/,"Full product photos must remain visible");
+assert.match(css,/@media\(max-width:680px\)/,"Mobile must have one-column layout");
+assert.match(css,/grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/,"Desktop must show all tins side by side");
+assert.match(css,/#a53d35/,"Badge must be a tasteful harvest red");
+assert.match(css,/gh-popup/);
+assert.match(css,/gh-picks/);
+assert.match(css,/html\[dir="rtl"\]/);
+assert.match(css,/prefers-reduced-motion/);
+assert.doesNotMatch(css,/body\.zwm-harvest-active\[data-page="home"\] \.home-pantry-hero\s*{display:none/i,"Never hide normal homepage hero");
 for(const [size,id,file] of [
  ["4","extra-virgin-olive-oil-4-l","4l.webp"],
  ["8.77","extra-virgin-olive-oil-8-77-l","8-77l.webp"],
  ["17.54","extra-virgin-olive-oil-17-54-l","17-54l.webp"]
-]){
- assert.ok(js.includes('size:"'+size+'",id:"'+id+'",file:"'+file+'"'),"Incorrect tin size or variant "+size);
-}
-for(const lang of ["en:","ar:","fr:"])assert.ok(js.includes(lang),"Missing translation "+lang);
-assert.match(js,/زيت السنة وصل/);
-assert.match(css,/prefers-reduced-motion/);
-assert.match(css,/object-fit:contain/);
-assert.match(css,/@media \(max-width:690px\)/);
-assert.match(css,/html\[dir="rtl"\]/);
+])assert.ok(js.includes('size:"'+size+'",id:"'+id+'",file:"'+file+'"'),"Incorrect tin size or variant "+size);
 for(const page of ["index","shop"]){
- const html=read("public/"+page+".html");
- const styles=[...html.matchAll(/<link\b[^>]*rel=["']stylesheet["'][^>]*>/gi)];
- assert.ok(styles.at(-1)?.[0].includes("storefront-shell.css"),page+" storefront shell stylesheet must be last");
- assert.equal((html.match(/golden-harvest-2026\.css/g)||[]).length,1,page+" exactly one CSS include");
- assert.equal((html.match(/golden-harvest-2026\.js/g)||[]).length,1,page+" exactly one JS include");
- assert.ok(html.indexOf("products-data.js")<html.indexOf("golden-harvest-2026.js"),page+" campaign must load after catalogue data");
- assert.ok(html.indexOf("app.js")<html.indexOf("golden-harvest-2026.js"),page+" campaign must load after app");
+  const html=read("public/"+page+".html");
+  const styles=[...html.matchAll(/<link\b[^>]*rel=["']stylesheet["'][^>]*>/gi)];
+  assert.ok(styles.at(-1)?.[0].includes("storefront-shell.css"),page+" shell stylesheet must load last");
+  assert.equal((html.match(/golden-harvest-2026\.css/g)||[]).length,1,page+" exactly one campaign CSS");
+  assert.equal((html.match(/golden-harvest-2026\.js/g)||[]).length,1,page+" exactly one campaign JS");
+  assert.ok(html.indexOf("products-data.js")<html.indexOf("golden-harvest-2026.js"),page+" campaign must load after catalogue");
+  assert.ok(html.indexOf("app.js")<html.indexOf("golden-harvest-2026.js"),page+" campaign must load after app");
 }
-// Explicitly validate the selected language throughout the seasonal presentation.
-const vm=require("node:vm");
-const copyStart=js.indexOf("  var COPY={");
-const copyEnd=js.indexOf(";\n  function language()",copyStart);
-assert.ok(copyStart>=0&&copyEnd>copyStart,"Localization catalogue must be readable");
-const copy=vm.runInNewContext("(function(){"+js.slice(copyStart,copyEnd)+"; return COPY;})()");
-const copyKeys=["overline","title","tagline","localeDisplay","localeAria","heroFooter","desc",
-  "discover","pantry","choose","chooseText","season","chooseSize","unavailable","inquire",
-  "note","storyOverline","story","storyCopy","table","tableCopy","shopZaatar","shopOlives",
-  "announcement","announcementLink","shopDesc","allOil","shopPromo","shopJump",
-  "imageAlt","storyImageAlt","shopImageAlt"];
-for(const locale of ["en","ar","fr"]){
-  assert.ok(copy[locale],locale+" translation missing");
-  for(const key of copyKeys){
-    assert.ok(typeof copy[locale][key]==="string"&&copy[locale][key].trim().length>0,locale+" campaign copy missing "+key);
-  }
-}
-assert.match(copy.en.title,/GOLDEN/i);
-assert.match(copy.ar.title,/[\u0600-\u06ff]/);
-assert.match(copy.fr.title,/RÉCOLTE/);
-assert.match(copy.ar.tagline,/زيت السنة وصل/);
-assert.doesNotMatch(copy.en.tagline,/[\u0600-\u06ff]/,"English presentation must not force an Arabic tagline");
-assert.doesNotMatch(copy.fr.tagline,/[\u0600-\u06ff]/,"French presentation must not force an Arabic tagline");
-assert.equal(copy.en.localeDisplay,"ENGLISH");
-assert.equal(copy.ar.localeDisplay,"العربية");
-assert.equal(copy.fr.localeDisplay,"FRANÇAIS");
-assert.match(js,/function language\(\)\{var s=document\.documentElement\.lang/,"Campaign must follow chosen page language");
-assert.match(js,/function sectionLocale\(\)/,"Campaign must carry semantic lang/dir tags");
-assert.match(js,/gh-locale-indicator/,"Selected language must be visible");
-assert.match(js,/gh-season-line/,"Tagline must follow active locale");
-assert.doesNotMatch(js,/gh-ar-line/,"No hardcoded Arabic-only line across all language modes");
-assert.match(js,/card\.lang=language\(\);card\.dir=dir\(\)/,"Shop teaser language/direction not synced");
-assert.match(js,/esc\(c\.heroFooter\)/,"Hero caption must be translated");
-assert.match(js,/esc\(c\.shopImageAlt\)/,"Shop image accessible label must be translated");
-assert.match(css,/gh-locale-indicator/);
-assert.match(css,/html\[lang="ar"\] \.zwm-gh h1/,"Arabic display heading needs adequate leading");
-console.log("Seasonal locale checks passed: EN / AR / FR are complete and matched to the active storefront language.");
+const home=read("public/index.html");
+assert.ok(home.includes('<section class="page-intro page-intro-shop home-pantry-hero"'),"Existing homepage hero must be untouched");
+assert.ok(home.includes('id="featured"'),"Pantry Favourites must remain");
+assert.ok(home.includes('id="languageWelcome"'),"Existing welcome language modal must remain");
+assert.ok(home.includes('id="productModal"'),"Existing Quick View must remain");
+const app=read("public/app.js");
+assert.match(app,/window\.ZWM_HARVEST_CART=\{/,"Safe existing cart bridge must be registered");
+assert.match(app,/productCanOrder\(p\)/,"Bridge respects current availability");
+assert.match(app,/addToCart\(p,v,\(cart\[key\]\?\.qty\|\|0\)\+1\)/,"Bridge uses original cart code and increments quantity");
+assert.match(app,/find\(row=>row\.id===variantId\)/,"No wrong-size fallback");
+assert.doesNotMatch(app.slice(app.indexOf("window.ZWM_HARVEST_CART={"),app.indexOf("window.ZWM_HARVEST_CART={")+900),/localStorage\.setItem/,"No direct cart state writes in bridge");
 
-console.log("Golden Harvest 2026 standalone gate passed: five authentic media files, three capacities, EN/AR/FR, gated launch, script syntax, preserved storefront load order.");
+// Verify all selected-language copies and announced badge text are complete.
+const vm=require("node:vm");
+const begin=js.indexOf("  var COPY={");
+const finish=js.indexOf(";\n  function language()",begin);
+assert.ok(begin>=0&&finish>begin,"Translated campaign copy must exist");
+const COPY=vm.runInNewContext("(function(){"+js.slice(begin,finish)+";return COPY;})()");
+const KEYS=["kicker","title","description","badge","smallBadge","price","add","inquire","unavailable","viewAll","notes",
+ "imageAlt","popupKicker","popupTitle","popupSubtitle","popupDescription","popupDiscover","popupContinue","popupClose",
+ "popupFilm","announcement","announcementLink","shopTitle","shopText","shopCta","shopAll"];
+for(const l of ["en","ar","fr"]){
+ assert.ok(COPY[l],"Missing campaign translation "+l);
+ for(const key of KEYS)assert.ok(typeof COPY[l][key]==="string"&&COPY[l][key].trim(),"Missing "+l+"."+key);
+}
+assert.equal(COPY.en.kicker,"SEASONAL PICKS · HARVEST 2026");
+assert.equal(COPY.en.title,"Fresh From the Harvest");
+assert.equal(COPY.en.description,"Discover our freshly harvested 2026 Lebanese olive oil.");
+assert.equal(COPY.en.badge,"JUST ARRIVED · 2026 HARVEST");
+assert.equal(COPY.ar.badge,"وصل جديد · حصاد ٢٠٢٦");
+assert.equal(COPY.fr.badge,"NOUVEAU · RÉCOLTE 2026");
+assert.equal(COPY.ar.title,"زيت السنة وصل");
+assert.equal(COPY.fr.title,"La récolte 2026 est arrivée");
+assert.equal(COPY.en.popupDiscover,"Discover the Harvest");
+assert.equal(COPY.en.popupContinue,"Continue to Website");
+assert.match(js,/function language\(\)\{var l=document\.documentElement\.lang/);
+assert.match(js,/lang="'+"\'+language\(\)/,"Seasonal section follows chosen language");
+assert.match(js,/dir="'+"\'+dir\(\)/,"Seasonal section follows RTL");
+console.log("Golden Harvest 2026 campaign gate passed: five genuine media files, normal hero preserved, popup and first collection, 3 sizes, safe existing cart bridge, complete EN/AR/FR.");

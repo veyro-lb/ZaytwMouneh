@@ -792,7 +792,7 @@ const VERIFIED_PRODUCT_KEYS={
   ingredients:{en:["ingredientsEn","ingredients"],ar:["ingredientsAr","ingredientsEn","ingredients"],fr:["ingredientsFr","ingredientsEn","ingredients"]},
   allergens:{en:["allergensEn","allergens"],ar:["allergensAr","allergensEn","allergens"],fr:["allergensFr","allergensEn","allergens"]},
   storage:{en:["storageEn","storage"],ar:["storageAr","storageEn","storage"],fr:["storageFr","storageEn","storage"]},
-  details:{en:["descriptionEn","detailsEn","description","details"],ar:["descriptionAr","detailsAr","descriptionEn","detailsEn","description","details"],fr:["descriptionFr","detailsFr","descriptionEn","detailsEn","description","details"]},
+  details:{en:["detailsEn","details"],ar:["detailsAr","detailsEn","details"],fr:["detailsFr","detailsEn","details"]},
   nutrition:{en:["nutritionEn","nutrition"],ar:["nutritionAr","nutritionEn","nutrition"],fr:["nutritionFr","nutritionEn","nutrition"]}
 };
 function verifiedProductValue(p,key){
@@ -1049,6 +1049,13 @@ function badgesFor(p){
 }
 
 function infoFor(p){
+  // Product-specific copy takes priority; owner Supabase overrides are merged before display.
+  const locale=lang==="ar"?"Ar":lang==="fr"?"Fr":"En";
+  const what=String(p?.["description"+locale]||p?.descriptionEn||"").trim();
+  if(what){
+    const use=String(p?.["usage"+locale]||p?.usageEn||"").trim();
+    return {what,use};
+  }
   const base=CATEGORY_INFO[p.category]||CATEGORY_INFO["Condiments"];
   let enWhat=base.en[0],enUse=base.en[1],arWhat=base.ar[0],arUse=base.ar[1];
   const n=p.nameEn.toLowerCase();
@@ -1436,7 +1443,7 @@ function renderProducts(){
       <div class="product-badges">${badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("")}<span class="availability-chip availability-${availability}">${escapeHtml(availabilityLabel(p))}</span></div>
       <p class="product-category">${escapeHtml(categoryName(p.category))}</p>\n      ${originFor(p)?`<p class="product-origin">${escapeHtml(originFor(p))}</p>`:""}\n      ${listingNote?`<p class="product-listing-note">${escapeHtml(listingNote)}</p>`:""}\n      <h3 class="product-name">${escapeHtml(currentName(p))}</h3>
       <p class="product-description"><strong>${escapeHtml(t.what)}:</strong> ${escapeHtml(info.what)}</p>
-      <p class="product-use"><strong>${escapeHtml(t.use)}:</strong> ${escapeHtml(info.use)}</p>
+      ${info.use?`<p class="product-use"><strong>${escapeHtml(t.use)}:</strong> ${escapeHtml(info.use)}</p>`:""}
       <div class="product-price-row">
         <div class="product-price"><small>${p.variants.length>1&&p.id!=="extra-virgin-olive-oil"?escapeHtml(t.from):""}</small><strong class="money">${escapeHtml(p.id==="extra-virgin-olive-oil"?viewPrice(selected):money(ps.min))}</strong></div>
         <div class="product-size-summary">${p.variants.length>1?`${variants.length} ${escapeHtml(t.sizeOptions)}`:escapeHtml(currentSize(selected))}</div>
@@ -1704,7 +1711,7 @@ function renderModal(productId,variantId){
   $("#relatedProducts").innerHTML=PRODUCTS_DATA.filter(x=>x.category===p.category&&x.id!==p.id).slice(0,4).map(x=>`<button type="button" data-related="${escapeHtml(x.id)}"><span>${escapeHtml(currentName(x))}</span><strong>${money(productPriceSummary(x).min)}</strong></button>`).join("");
   $$("[data-related]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.related,btn)));
   $("#productModalDescription").textContent=info.what;
-  $("#productModalUse").textContent=info.use;
+  $("#productModalUse").textContent=info.use||"";
   $("#nutritionPanel").hidden=!facts.length;
   $("#productNutrition").textContent=facts.map(item=>`${item.label}: ${item.value}`).join(" · ");
   $("#modalPrice").textContent=viewPrice(v);

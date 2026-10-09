@@ -152,8 +152,8 @@ html[lang="ar"] .gh-pick-buy,html[lang="ar"] .gh-pick-inquire{line-height:1.7}
  .gh-picks-intro h2{max-width:100%;font-size:clamp(2.05rem,8.8vw,3.4rem);line-height:1.17;overflow-wrap:break-word}
  .gh-picks-intro p{max-width:100%;line-height:1.65}
  .gh-pick-card{width:100%;max-width:100%;min-width:0}
- .gh-pick-badge{width:max-content;max-width:calc(100% - 28px);min-width:0;white-space:normal;overflow-wrap:break-word;text-wrap:balance;font-size:clamp(.62rem,2.75vw,.75rem);line-height:1.55;padding:7px 12px}
- .gh-pick-figure{height:clamp(272px,88vw,420px);width:100%;max-width:100%;padding:55px 12px 0}
+ .gh-pick-badge{position:relative;top:auto;left:auto;inset-inline-start:auto;transform:none;align-self:center;margin:14px auto 0;width:max-content;max-width:calc(100% - 28px);min-width:0;white-space:normal;overflow-wrap:break-word;text-wrap:balance;font-size:clamp(.62rem,2.75vw,.75rem);line-height:1.55;padding:7px 12px}
+ .gh-pick-figure{height:clamp(272px,88vw,420px);width:100%;max-width:100%;padding:12px 12px 0}
  .gh-pick-figure img{max-width:100%!important;max-height:100%;object-fit:contain}
  .gh-pick-information{max-width:100%;min-width:0;padding:11px 18px 23px}
  .gh-pick-price{font-size:clamp(1.05rem,4.5vw,1.3rem);max-width:100%}
@@ -188,7 +188,7 @@ html[lang="ar"] .gh-pick-buy,html[lang="ar"] .gh-pick-inquire{line-height:1.7}
  .gh-popup-content{padding-inline:16px}
  .gh-popup-content h2{font-size:clamp(1.83rem,8.7vw,2.5rem)}
  .gh-popup-kicker{font-size:.62rem;letter-spacing:.03em}
- .gh-pick-badge{font-size:.61rem;padding:7px 10px}
+ .gh-pick-badge{font-size:.61rem;padding:7px 10px;left:auto;inset-inline-start:auto}
 }
 @media(max-height:550px) and (min-width:681px){
  .gh-popup-panel{min-height:0;max-height:calc(100dvh - 18px);overflow-y:auto;align-items:center}

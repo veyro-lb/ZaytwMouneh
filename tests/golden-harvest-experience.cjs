@@ -51,7 +51,7 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false}={}
  assert.equal(d.querySelectorAll(".gh-pick-card").length,3,"Three promoted products");
  assert.deepEqual(Array.from(d.querySelectorAll(".gh-pick-capacity")).map(el=>el.textContent.trim()),["4 L","8.77 L","17.54 L"]);
  assert.equal(d.querySelectorAll(".gh-pick-badge").length,3);
- assert.equal(d.querySelector(".gh-pick-badge").textContent,"JUST ARRIVED · 2026 HARVEST");
+ assert.equal(d.querySelector(".gh-pick-badge").textContent,"2026 HARVEST");
  assert.equal(d.querySelector("#ghPicksTitle").textContent,"Fresh From the Harvest");
  assert.equal(d.querySelectorAll("button[data-gh-add]").length,2,"Missing 4L variant must not be addable");
  assert.ok(d.querySelector('.gh-pick-card[data-gh-size="4"] .gh-pick-inquire'));
@@ -63,7 +63,10 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false}={}
  d.body.classList.remove("welcome-open");
  await pause();
  assert.equal(d.getElementById("ghCampaignPopup").hidden,false,"Cinematic popup opens after choosing language");
- assert.equal(d.querySelector("#ghPopupTitle").textContent,"THE GOLDEN HARVEST");
+ assert.match(d.querySelector("#ghPopupTitle").textContent,/The 2026 Harvest/,"Popup title follows the reference launch headline");
+ assert.ok(d.querySelector(".gh-picks-arrival"),"Seasonal collection must have a prominent red arrival badge");
+ assert.equal(d.querySelector(".gh-picks-arrival").textContent.trim(),"JUST ARRIVED · 2026 HARVEST");
+ assert.equal(d.querySelector(".gh-pick-badge").textContent.trim(),"2026 HARVEST");
  d.querySelector("[data-gh-discover]").click();
  assert.equal(d.getElementById("ghCampaignPopup").hidden,true,"Discover closes popup");
  assert.equal(d.getElementById("harvest-picks").dataset.scrolled,"yes","Discover navigates directly to three tins");
@@ -76,12 +79,14 @@ function makePage(locale="en",{showWelcome=false,forcePopup=false,shop=false}={}
  assert.ok(d.querySelector('.gh-pick-card[data-gh-size="8.77"] .gh-pick-price').textContent.includes("87.50"),"Current catalogue price updates");
  d.documentElement.lang="fr";d.documentElement.dir="ltr";await pause();
  assert.equal(d.querySelector("#ghPicksTitle").textContent,"La récolte 2026 est arrivée");
- assert.equal(d.querySelector(".gh-pick-badge").textContent,"NOUVEAU · RÉCOLTE 2026");
+ assert.equal(d.querySelector(".gh-pick-badge").textContent,"RÉCOLTE 2026");
+ assert.equal(d.querySelector(".gh-picks-arrival").textContent.trim(),"NOUVEAU · RÉCOLTE 2026");
  dom.window.close();
 
  const second=makePage("ar");
  assert.equal(second.w.document.querySelector("#ghPicksTitle").textContent,"زيت السنة وصل");
- assert.equal(second.w.document.querySelector(".gh-pick-badge").textContent,"وصل جديد · حصاد ٢٠٢٦");
+ assert.equal(second.w.document.querySelector(".gh-pick-badge").textContent,"حصاد ٢٠٢٦");
+ assert.equal(second.w.document.querySelector(".gh-picks-arrival").textContent.trim(),"وصل جديد · حصاد ٢٠٢٦");
  assert.equal(second.w.document.querySelector("#harvest-picks").dir,"rtl");
  assert.equal(second.w.document.getElementById("ghCampaignPopup").hidden,false);
  second.w.document.querySelector('[data-gh-close="continue"]').click();

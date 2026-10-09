@@ -26,6 +26,7 @@ body.zwm-harvest-active .gh-picks{position:relative;isolation:isolate;overflow:h
 .gh-pick-badge{position:absolute;top:15px;inset-inline-start:14px;z-index:1;max-width:calc(100% - 28px);padding:9px 13px;background:#a53d35;border-radius:999px;color:#fff8ef;font:750 clamp(.59rem,.68vw,.69rem)/1.45 "DM Sans","Noto Kufi Arabic",sans-serif;letter-spacing:.06em;text-align:center;box-shadow:0 4px 13px rgba(120,35,28,.15)}
 .gh-pick-figure{display:flex;align-items:end;justify-content:center;width:100%;height:clamp(245px,30vw,375px);margin:0;padding:58px 15px 0;overflow:hidden}
 .gh-pick-figure img{display:block;max-width:100%;height:auto;max-height:100%;width:auto;object-fit:contain;filter:drop-shadow(0 13px 12px rgba(83,57,20,.10));transition:transform .35s ease}
+.gh-image-fallback{max-width:210px;margin:auto;color:#4c5f50;font-size:.87rem;line-height:1.7}
 .gh-pick-card[data-gh-size="4"] .gh-pick-figure img{height:79%;max-width:85%}
 .gh-pick-card[data-gh-size="8.77"] .gh-pick-figure img{height:90%;max-width:94%}
 .gh-pick-card[data-gh-size="17.54"] .gh-pick-figure img{height:100%}
@@ -109,7 +110,7 @@ html[lang="ar"] .gh-pick-buy,html[lang="ar"] .gh-pick-inquire{line-height:1.7}
  .gh-picks-footer{flex-direction:column;align-items:start;gap:10px}
  .gh-picks-footer a{text-align:start}
  .gh-popup{padding:0}
- .gh-popup-panel{width:100%;min-height:100dvh;height:100dvh;max-height:none;border:0;border-radius:0;align-items:end;background-position:center}
+ .gh-popup-panel{width:100%;min-height:100dvh;height:100dvh;max-height:none;border:0;border-radius:0;align-items:end;overflow-y:auto;overscroll-behavior:contain;background-position:center}
  .gh-popup-shade{background:linear-gradient(0deg,rgba(10,32,21,.97) 0%,rgba(10,32,21,.92) 48%,rgba(10,32,21,.32) 100%)!important}
  .gh-popup-content{width:100%;padding:30px 24px max(53px,env(safe-area-inset-bottom))}
  .gh-popup-logo{width:63px;height:63px;margin-bottom:12px}

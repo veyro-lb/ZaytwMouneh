@@ -105,7 +105,7 @@ const finish=js.indexOf(";\n  function language()",begin);
 assert.ok(begin>=0&&finish>begin,"Translated campaign copy must exist");
 const COPY=vm.runInNewContext("(function(){"+js.slice(begin,finish)+";return COPY;})()");
 const KEYS=["kicker","title","description","badge","smallBadge","price","add","inquire","unavailable","viewAll","notes",
- "imageAlt","popupKicker","popupTitle","popupSubtitle","popupDescription","popupDiscover","popupContinue","popupClose",
+ "imageAlt","popupKicker","popupTitle","popupDescription","popupDiscover","popupContinue","popupClose",
  "popupFilm","announcement","announcementLink","shopTitle","shopText","shopCta","shopAll"];
 for(const l of ["en","ar","fr"]){
  assert.ok(COPY[l],"Missing campaign translation "+l);
@@ -125,6 +125,17 @@ assert.match(COPY.fr.description,/vierge extra libanaise, pressée à froid/);
 assert.equal(COPY.fr.title,"La récolte 2026 est arrivée");
 assert.equal(COPY.en.popupDiscover,"Discover the Harvest");
 assert.equal(COPY.en.popupContinue,"Continue to Website");
+assert.ok(!("popupSubtitle" in COPY.ar)&&!("popupSubtitle" in COPY.en)&&!("popupSubtitle" in COPY.fr),"The title should not be repeated as a popup subtitle");
+assert.doesNotMatch(js,/gh-popup-subtitle|gh-popup-film-label/,"No redundant subtitle or film badge should be rendered");
+assert.equal(COPY.ar.popupTitle.replace(/<[^>]*>/g,""),"زيت السنة وصل");
+assert.equal(COPY.ar.popupKicker,"زيت ومونة · موسم الزيتون ٢٠٢٦");
+assert.ok(!COPY.ar.popupDescription.includes("موسم الزيتون ٢٠٢٦"),"Season year belongs only to the popup overline");
+assert.equal(COPY.ar.popupDescription,"زيت زيتون بكر ممتاز معصور على البارد. اختاروا حجم الصفيحة الأنسب لسفرتكم.");
+assert.equal(COPY.ar.popupDiscover,"اكتشفوا صفائح الزيت");
+assert.ok(!COPY.en.popupKicker.includes("2026")&&!COPY.en.popupDescription.includes("2026"),"English popup should only state year in its title");
+assert.ok(!COPY.fr.popupKicker.includes("2026")&&!COPY.fr.popupDescription.includes("2026"),"French popup should only state year in its title");
+assert.equal(COPY.fr.kicker,"SÉLECTIONS DE SAISON");
+
 assert.match(js,/function language\(\)\{var l=document\.documentElement\.lang/);
 assert.ok(js.includes("lang=\"\'+language()+\'\""),"Seasonal section follows chosen language");
 assert.ok(js.includes("dir=\"\'+dir()+\'\""),"Seasonal section follows RTL");

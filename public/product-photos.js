@@ -526,10 +526,11 @@
     "quality": "original-supplied"
   },
   "all-use-flour": {
-    "url": "assets/products/originals/all-use-flour.jpg",
-    "width": 1024,
-    "height": 1536,
-    "quality": "original-supplied"
+    "url": "assets/products/cutouts/all-use-flour.svg",
+    "width": 755,
+    "height": 982,
+    "quality": "source-faithful-transparent-cutout",
+    "originalUrl": "assets/products/originals/all-use-flour.jpg"
   },
   "barley-flour": {
     "url": "assets/products/originals/barley-flour.jpg",

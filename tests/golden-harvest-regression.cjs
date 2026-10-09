@@ -27,7 +27,11 @@ for(const name of required){
 }
 assert.doesNotThrow(()=>new Function(js),"Campaign script parses");
 assert.match(js,/var ENABLED=false/,"Campaign must stay off until explicit launch approval");
-assert.match(js,/harvestPreview/,"Private preview query required");
+assert.match(js,/harvestPreview/,"Explicit preview query remains supported");
+assert.match(js,/var REVIEW_HOST="campaign-golden-harvest-2026-review-zaytwmouneh\.veyro-202\.workers\.dev"/,"Only the exact isolated review hostname may auto-enable the campaign");
+assert.match(js,/var PREVIEW=IS_REVIEW_HOST\|\|params\.get\("harvestPreview"\)==="1"/,"Preview must survive authentication redirects without URL parameters");
+assert.match(js,/if\(!ENABLED&&!PREVIEW\)return/,"Public launch must remain disabled");
+assert.match(js,/window\.addEventListener\("pageshow"/,"Returning from sign-in must recover the homepage collection");
 assert.match(js,/harvestPopup/,"Explicit popup QA override required");
 assert.match(js,/zwm-golden-harvest-2026-popup-seen-v1/,"Persist first-visit dismissal");
 assert.match(js,/languageWelcome/,"Do not hide or replace existing language welcome");

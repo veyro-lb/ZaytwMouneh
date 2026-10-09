@@ -22,7 +22,7 @@ for(const expected of [
   'href="/shop" data-t="browsePantry"',
   'href="/privacy" target="_blank"',
   'href="/shop" data-t="backShop"',
-  'href="https://wa.me/96181581230"'
+  'href="https://wa.me/96170381412"'
 ])assert(html.includes(expected),"wholesale navigation/button route missing: "+expected);
 assert(js.includes('function syncSiteShell()'),"wholesale shell synchronization missing");
 assert(js.includes('localStorage.getItem("zwm-cart-v5")'),"wholesale shell cart count must reflect the saved pantry");

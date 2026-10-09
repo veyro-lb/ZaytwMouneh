@@ -23,14 +23,32 @@
 /assets/*
   Cache-Control: public, max-age=2592000, immutable
 
-# PRE-LAUNCH: Keep public hosts unindexed until owner approves search launch.
-# Noindex is not access control; protect hosts via Cloudflare Access for real privacy.
+# PUBLIC SEARCH LAUNCH: Indexable storefront pages may be discovered by search engines.
+# Keep private/admin/checkout/order routes noindex; access security is managed separately.
 /*
-  X-Robots-Tag: noindex, nofollow, noarchive
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   X-Frame-Options: SAMEORIGIN
+
+# Private customer and transaction shells remain excluded from search results.
+/account
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/account.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/checkout
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/checkout.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/order
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/order.html
+  X-Robots-Tag: noindex, nofollow, noarchive
 
 /admin
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0

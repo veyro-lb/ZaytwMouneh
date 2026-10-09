@@ -354,7 +354,7 @@
       }
     }
     var text=document.getElementById("announcementText");
-    if(text&&"MutationObserver" in window)new MutationObserver(function(){if(!announcementBusy)announcement()}).observe(text,{childList:true,characterData:true,subtree:true});
+    if(PROMO_ACTIVE&&text&&"MutationObserver" in window)new MutationObserver(function(){if(!announcementBusy)announcement()}).observe(text,{childList:true,characterData:true,subtree:true});
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});
   else init();

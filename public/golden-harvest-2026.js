@@ -121,7 +121,7 @@
     var c=t();
     return '<section class="zwm-gh zwm-gh-table"><div class="gh-shell gh-table-grid"><div>'+
       '<span class="gh-overline">ZAYT W MOUNEH</span><h2>'+esc(c.table)+'</h2><p>'+esc(c.tableCopy)+'</p></div>'+
-      '<div class="gh-table-links"><a href="/shop?category=Spices#shop">'+esc(c.shopZaatar)+' ↗</a>'+
+      '<div class="gh-table-links"><a href="/shop?q=zaatar#shop">'+esc(c.shopZaatar)+' ↗</a>'+
       '<a href="/shop?category=Olives#shop">'+esc(c.shopOlives)+' ↗</a></div>'+
       '</div></section>';
   }

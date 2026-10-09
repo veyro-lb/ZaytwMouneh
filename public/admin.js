@@ -1011,6 +1011,7 @@
     contentDirty:false,
     session:null, sessionRefreshTimer:null,
     orderChannel:null, orderSyncTimer:null, orderSyncBusy:false,
+    tokenRefreshPromise:null, workspaceSyncTimer:null, workspaceSyncBusy:false, workspaceSyncAt:0,
     lang:readAdminLanguage()
   };
 
@@ -1124,9 +1125,10 @@
     });
   }
 
-  function authenticatedClient(accessToken) {
+  function authenticatedClient() {
     return window.supabase.createClient(cfg.supabaseUrl, cfg.supabasePublishableKey, {
-      accessToken: async () => accessToken,
+      // Read the current session, not the token captured at login.
+      accessToken: async () => state.session?.access_token || "",
       auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}
     });
   }
@@ -1152,8 +1154,11 @@
       state.sessionRefreshTimer=null;
     }
     if(state.orderSyncTimer){clearInterval(state.orderSyncTimer);state.orderSyncTimer=null;}
+    if(state.workspaceSyncTimer){clearInterval(state.workspaceSyncTimer);state.workspaceSyncTimer=null;}
     if(state.orderChannel&&state.client){try{state.client.removeChannel(state.orderChannel)}catch{} state.orderChannel=null;}
     state.session=null;
+    state.user=null;
+    window.dispatchEvent(new Event("zwm:owner-signed-out"));
   }
 
   async function fetchWithTimeout(url,options={},timeoutMs=12000) {
@@ -1217,7 +1222,11 @@
       }
     );
     const result=await response.json().catch(()=>({}));
-    if(!response.ok||!result?.access_token||!result?.refresh_token)throw new Error("Your owner session expired. Please sign in again.");
+    if(!response.ok||!result?.access_token||!result?.refresh_token){
+      const error=new Error(response.status===400||response.status===401?"Your owner session expired. Please sign in again.":"Could not refresh the owner session. Retrying automatically.");
+      error.rejected=response.status===400||response.status===401;
+      throw error;
+    }
     return normalizeSession(result);
   }
 
@@ -1230,28 +1239,56 @@
     return response.json();
   }
 
+  // Keep both browser tabs and the push client on the latest owner token.
+  // A temporary network outage must not sign the owner out.
+  async function ensureOwnerFresh(force=false) {
+    const current=state.session;
+    if(!current?.refresh_token)return false;
+    if(!force&&current.expires_at&&current.expires_at>Math.floor(Date.now()/1000)+120)return true;
+    if(state.tokenRefreshPromise)return state.tokenRefreshPromise;
+    const work=(async()=>{
+      try{
+        const next=await refreshGrant(current.refresh_token);
+        if(state.session!==current)return false; // owner signed out during request
+        next.user=state.user||current.user||next.user;
+        state.session=next;
+        saveOwnerSession(next); // persist the ROTATED refresh token on every renewal
+        try{state.client?.realtime?.setAuth(next.access_token)}catch{}
+        scheduleOwnerRefresh();
+        window.dispatchEvent(new Event("zwm:owner-token-updated"));
+        return true;
+      }catch(err){
+        if(state.session!==current)return false;
+        if(err?.rejected){
+          clearOwnerSession();
+          state.client=anonymousClient();
+          showOnly("loginScreen");
+          setStatus($("loginStatus"),"Your owner session expired. Please sign in again.","error");
+        }else{
+          console.warn("Owner token renewal will retry:",err);
+          if(state.sessionRefreshTimer)clearTimeout(state.sessionRefreshTimer);
+          state.sessionRefreshTimer=setTimeout(()=>ensureOwnerFresh(true).catch(()=>{}),30000);
+        }
+        return false;
+      }
+    })();
+    state.tokenRefreshPromise=work;
+    try{return await work}finally{if(state.tokenRefreshPromise===work)state.tokenRefreshPromise=null;}
+  }
+
   function scheduleOwnerRefresh() {
     if(state.sessionRefreshTimer)clearTimeout(state.sessionRefreshTimer);
     if(!state.session?.refresh_token)return;
     const now=Math.floor(Date.now()/1000);
     const refreshIn=Math.max(30000,((state.session.expires_at||now+3600)-now-120)*1000);
-    state.sessionRefreshTimer=setTimeout(async()=>{
-      try{
-        const next=await refreshGrant(state.session.refresh_token);
-        await activateOwnerSession(next,false);
-      }catch{
-        clearOwnerSession();
-        state.client=anonymousClient();
-        showOnly("loginScreen");
-        setStatus($("loginStatus"),"Your owner session expired. Please sign in again.","error");
-      }
-    },refreshIn);
+    state.sessionRefreshTimer=setTimeout(()=>ensureOwnerFresh(true).catch(()=>{}),refreshIn);
   }
 
   async function activateOwnerSession(session,persist=true) {
     state.session=session;
     if(persist)saveOwnerSession(session);
-    state.client=authenticatedClient(session.access_token);
+    state.client=authenticatedClient();
+    try{state.client.realtime.setAuth(session.access_token)}catch{}
     scheduleOwnerRefresh();
     const user=session.user||await authUser(session.access_token);
     state.session.user=user;
@@ -1293,6 +1330,7 @@
     state.orderSyncBusy=true;
     const selected=state.selectedOrderReference;
     try{
+      if(!await ensureOwnerFresh())return;
       const ordersRes=await loadAllOrders();
       if(ordersRes.error)throw ordersRes.error;
       state.orders=ordersRes.data||[];
@@ -1313,9 +1351,24 @@
     try{
       state.orderChannel=state.client.channel("zwm-owner-orders")
         .on("postgres_changes",{event:"*",schema:"public",table:cfg.tables.orders||"orders"},()=>refreshOrdersLive())
-        .subscribe();
+        .subscribe(status=>{if(status==="SUBSCRIBED")refreshOrdersLive().catch(()=>{});});
     }catch(err){console.warn("Order realtime unavailable:",err);}
     state.orderSyncTimer=setInterval(()=>refreshOrdersLive(),30000);
+  }
+
+  // Reconcile data from the other owner's device without a page reload.
+  // Leave in-progress edits and modals alone.
+  async function syncDashboardOnResume(force=false){
+    if(!state.user||document.hidden||state.contentDirty||navigator.onLine===false)return;
+    if(["productModal","manualOrderModal","contentPreviewModal"].some(id=>$(id)?.hidden===false))return;
+    if(!force&&Date.now()-state.workspaceSyncAt<60000)return;
+    if(state.workspaceSyncBusy)return;
+    state.workspaceSyncBusy=true;
+    try{
+      if(!await ensureOwnerFresh())return;
+      await refreshAll();
+    }catch(err){console.warn("Background dashboard sync will retry:",err)}
+    finally{state.workspaceSyncBusy=false}
   }
 
   async function enterAs(user) {
@@ -1340,8 +1393,11 @@
     $("ownerInitial").textContent = (data.label || user.email || "O").charAt(0).toUpperCase();
     $("settingsEmail").textContent = user.email || "—";
     showOnly("adminApp");
+    window.dispatchEvent(new Event("zwm:owner-ready"));
     await refreshAll();
     startOrderLiveSync();
+    if(state.workspaceSyncTimer)clearInterval(state.workspaceSyncTimer);
+    state.workspaceSyncTimer=setInterval(()=>syncDashboardOnResume().catch(()=>{}),120000);
     await ensureDailyCloudBackup();
   }
 
@@ -1411,16 +1467,17 @@
     if (notesRes.error) toast("Could not load private notes.", "error");
     if (backupsRes.error) toast("Could not load cloud backups.", "error");
 
-    state.overrides = new Map((overridesRes.data || []).map(r => [r.product_id,r]));
+    if(!overridesRes.error)state.overrides = new Map((overridesRes.data || []).map(r => [r.product_id,r]));
     if(!settingsRes.error) state.settings = new Map((settingsRes.data || []).map(r => [r.key,r.value]));
-    state.events = eventsRes.data || [];
+    if(!eventsRes.error)state.events = eventsRes.data || [];
     state.analyticsError = eventsRes.error || null;
-    state.activity = activityRes.data || [];
-    state.orders = ordersRes.data || [];
-    state.notes = new Map((notesRes.data || []).map(n => [`${n.subject_type}:${n.subject_id}`,n]));
-    state.backups = backupsRes.data || [];
+    if(!activityRes.error)state.activity = activityRes.data || [];
+    if(!ordersRes.error)state.orders = ordersRes.data || [];
+    if(!notesRes.error)state.notes = new Map((notesRes.data || []).map(n => [`${n.subject_type}:${n.subject_id}`,n]));
+    if(!backupsRes.error)state.backups = backupsRes.data || [];
     rebuildProducts();
     renderEverything();
+    if(Object.values(state.loadErrors).every(error=>!error))state.workspaceSyncAt=Date.now();
     $("lastUpdated").textContent = `Updated ${new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}`;
   }
 
@@ -4073,15 +4130,15 @@
   function setupInstallPrompt(){
     window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.installPrompt=e;$("installAdminHint").textContent="Ready to install on this device.";});
     if("serviceWorker" in navigator){
-      navigator.serviceWorker.register("admin-sw.js?v=20261004-mobile-stability5",{updateViaCache:"none"})
+      navigator.serviceWorker.register("admin-sw.js?v=20261009-owner-multidevice1",{updateViaCache:"none"})
         .then(reg=>reg.update().catch(()=>{}))
         .catch(()=>{});
       navigator.serviceWorker.addEventListener("controllerchange",()=>{
-        if(document.visibilityState!=="hidden"&&state.user)refreshAll().catch(()=>{});
+        if(document.visibilityState!=="hidden"&&state.user)syncDashboardOnResume(true).catch(()=>{});
       });
     }
     window.addEventListener("pageshow",event=>{
-      if(event.persisted&&state.user)refreshAll().catch(()=>{});
+      if(state.user)syncDashboardOnResume(event.persisted).catch(()=>{});
     });
   }
   async function installAdminApp(){
@@ -4282,6 +4339,9 @@
     $("manualOrderArea")?.addEventListener("change",updateManualDeliveryFromArea);
     $("manualDeliveryFee")?.addEventListener("input",renderManualOrderTotal);
     setupInstallPrompt();
+    window.addEventListener("focus",()=>syncDashboardOnResume().catch(()=>{}));
+    document.addEventListener("visibilitychange",()=>{if(!document.hidden)syncDashboardOnResume().catch(()=>{});});
+    window.addEventListener("online",()=>syncDashboardOnResume(true).catch(()=>{}));
     document.addEventListener("keydown",e=>{
       if(e.key!=="Escape")return;
       if(!$("dataCenterModal")?.hidden){closeDataCenter();return;}

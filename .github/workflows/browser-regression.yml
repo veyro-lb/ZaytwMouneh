@@ -41,3 +41,11 @@ jobs:
           npx playwright install --with-deps chromium webkit
       - name: Run responsive browser regression
         run: npm run test:browser
+
+      - name: Save screenshots of layout failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: responsive-layout-failures
+          path: browser-artifacts/
+          if-no-files-found: ignore

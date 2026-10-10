@@ -46,3 +46,8 @@ Known source-name problems (including OCR-like reversed Arabic word order) must 
 3. Use product-label photos or supplier information to fill verified `ingredientsEn/Ar/Fr` and `allergensEn/Ar/Fr` when evidence is available.
 4. Preview each language, inspect product details and SEO tags, test owner overrides, and verify checkout and pricing remain unchanged.
 5. Remove safety holds **only after** review and merge the PR after verification. Never force-push main or delete other work.
+
+
+## Available promotional images
+
+Seven supplied WhatsApp ZIP archives contain catalogue/promotional imagery. A sampling of the first and last archives shows front-facing product advertising and packaging, **not legible back-of-pack ingredient/allergen panels**. These images cannot establish the requested “no added sugar / sweetened only with carob” statement, oil use directions or full ingredient lists. Request readable supplier label backs, specifications or original ingredient documents before clearing the applicable review flags.

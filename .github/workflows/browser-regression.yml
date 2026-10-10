@@ -5,16 +5,14 @@ on:
     branches:
       - main
     paths:
-      - public/storefront-shell.css
-      - public/site-runtime-v9.js
+      - "public/**"
       - tests/browser-regression.cjs
       - .github/workflows/browser-regression.yml
   pull_request:
     branches:
       - main
     paths:
-      - public/storefront-shell.css
-      - public/site-runtime-v9.js
+      - "public/**"
       - tests/browser-regression.cjs
       - package.json
       - .github/workflows/browser-regression.yml

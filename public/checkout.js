@@ -189,7 +189,7 @@ function setLang(next){
   renderAll()
 }
 function phoneSupport(){
-  var number="96181581230";
+  var number="96170381412";
   try{var settings=window.ZWM_CMS&&window.ZWM_CMS.getSettings&&window.ZWM_CMS.getSettings();number=String(settings&&settings.contact&&settings.contact.whatsapp||number).replace(/\D/g,"")}catch{}
   $("checkoutSupport").href="https://wa.me/"+number+"?text="+encodeURIComponent(t("Hi, I need help completing my website order.","مرحباً، أحتاج مساعدة لإتمام طلبي عبر الموقع.","Bonjour, j’ai besoin d’aide pour finaliser ma commande sur le site."))
 }

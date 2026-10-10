@@ -13,6 +13,8 @@ function setup(width,locale){
   let html=read("shop.html").replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,"");
   const dom=new JSDOM(html,{url:"https://store.example/shop",runScripts:"outside-only",pretendToBeVisual:true});
   const w=dom.window,d=w.document;
+  const observers=[];const NativeObserver=w.MutationObserver;
+  w.MutationObserver=class extends NativeObserver {constructor(callback){super(callback);observers.push(this)}};
   Object.defineProperty(w,"innerWidth",{configurable:true,value:width});
   Object.defineProperty(w,"innerHeight",{configurable:true,value:800});
   w.requestAnimationFrame=fn=>w.setTimeout(()=>fn(Date.now()),0);
@@ -38,7 +40,7 @@ function setup(width,locale){
     read("conversion-v1.js")
   ].join("\n;\n"));
   d.dispatchEvent(new w.Event("DOMContentLoaded",{bubbles:true}));
-  return {dom,w,d,errors};
+  return {dom,w,d,errors,observers};
 }
 async function assertOpen(ctx,button,label){
   const {w,d,errors}=ctx;
@@ -117,7 +119,11 @@ async function exercise(width,locale){
     await closeByButton(ctx,"multi");
     assert.equal(errors.length,0,width+" "+locale+" console errors: "+errors.join(" | "));
     console.log(width+"px "+locale+": Quick View lifecycle/search/filter/variants/repeat cycles passed");
-  } finally {dom.window.close()}
+  } finally {
+    // Stop observers before jsdom removes the document during teardown.
+    ctx.observers.forEach(observer=>observer.disconnect());
+    dom.window.close();await wait(0);
+  }
 }
 (async()=>{
   for(const width of [320,360,390,412,430,768,1280]){

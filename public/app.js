@@ -1505,8 +1505,9 @@ function renderProducts(){
   }));
   $$("[data-view]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,260))return;openProduct(btn.dataset.view,btn)}));
   $$("[data-product]").forEach(card=>{
-    card.addEventListener("click",e=>{if(!e.target.closest("button,select"))openProduct(card.dataset.product,card)});
-    card.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!e.target.closest("button,select")){e.preventDefault();openProduct(card.dataset.product,card)}});
+    // Genuine product links should navigate; the rest of the card still opens Quick View.
+    card.addEventListener("click",e=>{if(!e.target.closest("button,select,a"))openProduct(card.dataset.product,card)});
+    card.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!e.target.closest("button,select,a")){e.preventDefault();openProduct(card.dataset.product,card)}});
   });
 }
 

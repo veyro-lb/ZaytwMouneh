@@ -1290,6 +1290,9 @@
     try{return await work}finally{if(state.tokenRefreshPromise===work)state.tokenRefreshPromise=null;}
   }
 
+  // Owner-only extensions use this to avoid stale tokens on delete and remove actions.
+  window.ZWM_ENSURE_OWNER_FRESH=()=>ensureOwnerFresh();
+
   function scheduleOwnerRefresh() {
     if(state.sessionRefreshTimer)clearTimeout(state.sessionRefreshTimer);
     if(!state.session?.refresh_token)return;

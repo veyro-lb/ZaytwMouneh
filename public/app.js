@@ -1434,7 +1434,7 @@ function renderProducts(){
         </div>
       </div>
       <div class="product-badges">${badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("")}<span class="availability-chip availability-${availability}">${escapeHtml(availabilityLabel(p))}</span></div>
-      <p class="product-category">${escapeHtml(categoryName(p.category))}</p>\n      ${originFor(p)?`<p class="product-origin">${escapeHtml(originFor(p))}</p>`:""}\n      ${listingNote?`<p class="product-listing-note">${escapeHtml(listingNote)}</p>`:""}\n      <h3 class="product-name">${escapeHtml(currentName(p))}</h3>
+      <p class="product-category">${escapeHtml(categoryName(p.category))}</p>\n      ${originFor(p)?`<p class="product-origin">${escapeHtml(originFor(p))}</p>`:""}\n      ${listingNote?`<p class="product-listing-note">${escapeHtml(listingNote)}</p>`:""}\n      <h3 class="product-name"><a href="${escapeHtml((lang==="ar"?"/ar":lang==="fr"?"/fr":"")+quickViewProductUrl(p.id))}" aria-label="${escapeHtml(currentName(p))}">${escapeHtml(currentName(p))}</a></h3>
       <p class="product-description"><strong>${escapeHtml(t.what)}:</strong> ${escapeHtml(info.what)}</p>
       <p class="product-use"><strong>${escapeHtml(t.use)}:</strong> ${escapeHtml(info.use)}</p>
       <div class="product-price-row">

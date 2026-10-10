@@ -15,7 +15,7 @@ var COPY={
   language:"Language",shop:"Shop",gifts:"Gifts",recipes:"Recipes",about:"About",account:"Account",terms:"Terms",privacy:"Privacy",returns:"Returns",contactPage:"Contact",back:"Shop",pantry:"My pantry",
   category:"Pantry product",size:"Choose size",qty:"Quantity",add:"Add to cart",unavailable:"Not currently orderable",
   verified:"Verified purchase reviews",verifiedCopy:"Only reviews tied to delivered purchases are shown here.",noReviews:"No verified reviews yet.",
-  facts:"Verified product information",factsNote:"Only product-specific information supplied or configured by Zayt w Mouneh is shown here. Missing facts are intentionally left out rather than guessed.",
+  facts:"Product information",factsNote:"Descriptions reflect the catalogue listing. Please check packaging for ingredients, allergens, origin and directions; missing facts are not guessed.",
   origin:"Origin",ingredients:"Ingredients",storage:"Storage",allergens:"Allergens",details:"Product-specific details",nutrition:"Nutrition",
   payment:"Accepted payment",delivery:"Delivery estimate",deliveryPlaceholder:"Enter your area",estimate:"Check",deliveryUnknown:"Enter your area at checkout to see the delivery amount currently applied to your order. Delivery timing may not be available for every area.",
   freeAbove:"Free delivery threshold",eta:"Estimated delivery",fee:"Delivery fee",free:"Free",
@@ -31,7 +31,7 @@ var COPY={
   language:"اللغة",shop:"المتجر",gifts:"الهدايا",recipes:"الوصفات",about:"من نحن",account:"الحساب",terms:"الشروط",privacy:"الخصوصية",returns:"المرتجعات",contactPage:"تواصل معنا",back:"المتجر",pantry:"سلّتي",
   category:"منتج من المونة",size:"اختر الحجم",qty:"الكمية",add:"أضف إلى السلة",unavailable:"غير متاح للطلب حالياً",
   verified:"مراجعات شراء موثّقة",verifiedCopy:"تظهر هنا فقط المراجعات المرتبطة بطلبات تم تسليمها.",noReviews:"لا توجد مراجعات موثّقة بعد.",
-  facts:"معلومات المنتج الموثّقة",factsNote:"لا نعرض هنا إلا معلومات خاصة بالمنتج وفّرتها أو أعدّتها زيت ومونة. تُترك المعلومات الناقصة من دون عرض بدلاً من تخمينها.",
+  facts:"تفاصيل المنتج",factsNote:"تعتمد الأوصاف على بيانات الكتالوج. يُرجى مراجعة العبوة لمعرفة المكوّنات ومسبّبات الحساسية والمنشأ وتعليمات الاستخدام. لا نضيف معلومات غير مؤكدة.",
   origin:"المنشأ",ingredients:"المكونات",storage:"الحفظ",allergens:"مسببات الحساسية",details:"تفاصيل خاصة بالمنتج",nutrition:"معلومات غذائية",
   payment:"طرق الدفع المقبولة",delivery:"تقدير التوصيل",deliveryPlaceholder:"اكتب منطقتك",estimate:"تحقق",deliveryUnknown:"أدخل منطقتك عند إتمام الطلب لعرض قيمة التوصيل المطبّقة حالياً على طلبك. قد لا يتوفر وقت توصيل مقدّر لكل منطقة.",
   freeAbove:"حد التوصيل المجاني",eta:"مدة التوصيل المتوقعة",fee:"رسم التوصيل",free:"مجاني",
@@ -47,7 +47,7 @@ var COPY={
   language:"Langue",shop:"Boutique",gifts:"Cadeaux",recipes:"Recettes",about:"À propos",account:"Compte",terms:"Conditions",privacy:"Confidentialité",returns:"Retours",contactPage:"Contact",back:"Boutique",pantry:"Mon panier",
   category:"Produit de la mouneh",size:"Choisir le format",qty:"Quantité",add:"Ajouter au panier",unavailable:"Non commandable actuellement",
   verified:"Avis d’achat vérifié",verifiedCopy:"Seuls les avis liés à des commandes livrées sont affichés ici.",noReviews:"Aucun avis vérifié pour le moment.",
-  facts:"Informations produit vérifiées",factsNote:"Seules les informations propres au produit fournies ou configurées par Zayt w Mouneh sont affichées ici. Les données manquantes sont laissées absentes plutôt qu’inventées.",
+  facts:"Détails du produit",factsNote:"Les descriptions reposent sur le catalogue. Vérifiez sur l’emballage les ingrédients, allergènes, l’origine et le mode d’emploi ; aucune donnée manquante n’est inventée.",
   origin:"Origine",ingredients:"Ingrédients",storage:"Conservation",allergens:"Allergènes",details:"Détails spécifiques au produit",nutrition:"Informations nutritionnelles",
   payment:"Paiement accepté",delivery:"Estimation de livraison",deliveryPlaceholder:"Saisissez votre zone",estimate:"Vérifier",deliveryUnknown:"Indiquez votre zone lors du paiement pour voir le montant de livraison actuellement appliqué à votre commande. Un délai de livraison peut ne pas être disponible pour toutes les zones.",
   freeAbove:"Seuil de livraison gratuite",eta:"Délai estimé",fee:"Frais de livraison",free:"Gratuite",
@@ -184,19 +184,19 @@ function setAlternate(hreflang,href){
 }
 function updateSeo(){
  var p=state.product,name=productName(p),variants=p.variants||[],min=variants.length?Math.min.apply(null,variants.map(function(v){return Number(v.price)||0})):0;
- // Build relevant product-specific search copy from verified catalogue fields only.
- // Do not claim an origin, ingredient, health benefit or certification without product evidence.
+ // Build product-specific search copy from catalogue or owner-provided description fields.
+ // Editorial usage notes are not proof of ingredients, health benefits or origin.
  name=String(name||"").replace(/[\u202a-\u202e\u2066-\u2069]/g,"").trim();
  var category=String(p.category||"Pantry product");
  var categoryAr={"Olive Oil":"زيت الزيتون","Oils":"زيوت","Mouneh":"مونة لبنانية","Olives":"زيتون","Pickles":"مخللات","Honey":"عسل","Herbs":"أعشاب","Spices":"بهارات وتوابل","Nuts + Seeds":"مكسرات وبذور","Grains":"حبوب","Pulses":"بقوليات","Flour":"طحين","Debsy Carob":"خروب ودبس","Molasses":"دبس","Dates":"تمر","Vinegars":"خل","Dried Foods":"منتجات مجففة","Condiments":"مواد غذائية","Distillates + Syrups":"مقطرات وشراب","Soap":"صابون","Sweets + Candy":"حلويات"}[category]||category;
  var categoryFr={"Olive Oil":"huile d'olive","Oils":"huiles","Mouneh":"mouneh libanaise","Olives":"olives","Pickles":"pickles","Honey":"miel","Herbs":"herbes","Spices":"épices","Nuts + Seeds":"noix et graines","Grains":"céréales","Pulses":"légumineuses","Flour":"farines","Debsy Carob":"caroube","Molasses":"mélasses","Dates":"dattes","Vinegars":"vinaigres","Dried Foods":"produits séchés","Condiments":"condiments","Distillates + Syrups":"sirops et distillats","Soap":"savons","Sweets + Candy":"confiseries"}[category]||category;
  var sizes=variants.map(function(v){return String(state.locale==="ar"?(v.sizeAr||v.sizeEn):state.locale==="fr"?(v.sizeFr||v.sizeEn):(v.sizeEn||"")).trim()}).filter(Boolean).join(state.locale==="ar"?"، ":", ");
- var verifiedDetails=valueFor(p,"details").replace(/\s+/g," ").trim();
+ var catalogueDetails=valueFor(p,"details").replace(/\s+/g," ").trim();
  var title=name+" | "+(state.locale==="ar"?categoryAr:state.locale==="fr"?categoryFr:category)+" | Zayt w Mouneh";
  var intro=state.locale==="ar"?"تعرّف إلى "+name+" ضمن "+categoryAr+" لدى زيت ومونة في لبنان.":state.locale==="fr"?"Découvrez "+name+" dans la catégorie "+categoryFr+" chez Zayt w Mouneh au Liban.":"Explore "+name+" in "+category+" at Zayt w Mouneh in Lebanon.";
- var desc=verifiedDetails?(intro+" "+verifiedDetails).slice(0,240):intro;
- if(sizes)desc+=state.locale==="ar"?" الأحجام: "+sizes+".":state.locale==="fr"?" Formats : "+sizes+".":" Available sizes: "+sizes+".";
- desc=desc.slice(0,300);
+ var desc=catalogueDetails?(name+" — "+catalogueDetails):intro;
+ if(!catalogueDetails&&sizes)desc+=state.locale==="ar"?" الأحجام: "+sizes+".":state.locale==="fr"?" Formats : "+sizes+".":" Available sizes: "+sizes+".";
+ if(desc.length>300)desc=desc.slice(0,298).replace(/\s+\S*$/,"").replace(/[.,;: -]+$/,"")+"…";
  document.title=title;
  var md=qs('meta[name="description"]');if(md)md.content=desc;
  var robots=qs('meta[name="robots"]');if(robots)robots.content="index,follow,max-image-preview:large";
@@ -250,10 +250,10 @@ function photoMarkup(p,variantId){
  return '<div class="c6-product-placeholder" aria-hidden="true">'+esc((productName(p)||"ZW").slice(0,2).toUpperCase())+'</div>';
 }
 function factsMarkup(p){
- var fields=[["origin",t("origin")],["ingredients",t("ingredients")],["allergens",t("allergens")],["storage",t("storage")],["nutrition",t("nutrition")],["details",t("details")]];
+ var fields=[["origin",t("origin")],["ingredients",t("ingredients")],["allergens",t("allergens")],["storage",t("storage")],["nutrition",t("nutrition")]];
  var rows=fields.map(function(x){var v=valueFor(p,x[0]);return v?'<div class="c6-info-card"><span>'+esc(x[1])+'</span><p>'+esc(v)+'</p></div>':""}).join("");
- if(!rows)return '<p class="c6-data-note">'+esc(t("factsNote"))+'</p>';
- return '<div class="c6-info-grid">'+rows+'</div><p class="c6-data-note">'+esc(t("factsNote"))+'</p>';
+ if(!rows)return "";
+ return '<div class="c6-info-grid">'+rows+'</div>';
 }
 function paymentMarkup(){
  var methods=(state.settings.commerce&&state.settings.commerce.payment_methods)||[];
@@ -311,10 +311,12 @@ function alertMarkup(p){
 function render(){
  var p=state.product;if(!p)return;
  updateSeo();
+ var summary=valueFor(p,"details");
+ var facts=factsMarkup(p);
  var min=(p.variants||[]).length?Math.min.apply(null,p.variants.map(function(v){return Number(v.price)||0})):0;
  var av=availability(p),badgeClass=av==="out_of_stock"||av==="coming_soon"?" is-unavailable":av==="low_stock"?" is-low":"";
  qs("#c6ProductRoot").innerHTML=
- '<main class="c6-product-main"><div class="c6-shell"><nav class="c6-breadcrumb"><a href="'+localePrefix(state.locale)+'/shop">'+esc(t("back"))+'</a><span>›</span><span>'+esc(productName(p))+'</span></nav><div class="c6-product-grid"><div class="c6-product-visual">'+photoMarkup(p,state.selectedVariant&&state.selectedVariant.id)+'</div><div class="c6-product-copy"><p class="c6-eyebrow">'+esc(p.category||t("category"))+'</p><h1 class="c6-product-title">'+esc(productName(p))+'</h1>'+(p.original?'<p class="c6-original">'+esc(p.original)+'</p>':"")+'<div class="c6-badges"><span class="c6-badge'+badgeClass+'">'+esc(t(av))+'</span></div><div class="c6-price" id="c6SelectedPrice">'+(p.id==="extra-virgin-olive-oil"?money(state.selectedVariant?state.selectedVariant.price:min):esc(t("from"))+' '+money(min))+'</div><div class="c6-purchase-box"><div class="c6-purchase-row"><label class="c6-field"><span>'+esc(t("size"))+'</span><select id="c6Variant">'+variantsMarkup(p)+'</select></label><label class="c6-field"><span>'+esc(t("qty"))+'</span><input id="c6Qty" type="number" min="1" max="99" value="1"></label></div><div class="c6-purchase-actions"><button class="c6-button" id="c6Add" type="button"'+(isOrderable(p)?"":" disabled")+'>'+esc(isOrderable(p)?t("add"):t("unavailable"))+'</button><button class="c6-button is-secondary" id="c6Share" type="button">'+esc(t("share"))+'</button></div>'+alertMarkup(p)+'</div><div style="margin-top:25px"><p class="c6-eyebrow">'+esc(t("facts"))+'</p>'+factsMarkup(p)+'</div><div class="c6-service-grid"><div class="c6-service-card"><strong>'+esc(t("payment"))+'</strong><div style="margin-top:7px">'+paymentMarkup()+'</div><p>'+esc(t("paymentNote"))+'</p></div>'+deliveryMarkup()+'</div></div></div></div></main>'+
+ '<main class="c6-product-main"><div class="c6-shell"><nav class="c6-breadcrumb"><a href="'+localePrefix(state.locale)+'/shop">'+esc(t("back"))+'</a><span>›</span><span>'+esc(productName(p))+'</span></nav><div class="c6-product-grid"><div class="c6-product-visual">'+photoMarkup(p,state.selectedVariant&&state.selectedVariant.id)+'</div><div class="c6-product-copy"><p class="c6-eyebrow">'+esc(p.category||t("category"))+'</p><h1 class="c6-product-title">'+esc(productName(p))+'</h1>'+(summary?'<p class="c6-product-summary">'+esc(summary)+'</p>':"")+(av!=="in_stock"?'<div class="c6-badges"><span class="c6-badge'+badgeClass+'">'+esc(t(av))+'</span></div>':"")+'<div class="c6-price" id="c6SelectedPrice">'+(p.id==="extra-virgin-olive-oil"?money(state.selectedVariant?state.selectedVariant.price:min):esc(t("from"))+' '+money(min))+'</div><div class="c6-purchase-box"><div class="c6-purchase-row"><label class="c6-field"><span>'+esc(t("size"))+'</span><select id="c6Variant">'+variantsMarkup(p)+'</select></label><label class="c6-field"><span>'+esc(t("qty"))+'</span><input id="c6Qty" type="number" min="1" max="99" value="1"></label></div><div class="c6-purchase-actions"><button class="c6-button" id="c6Add" type="button"'+(isOrderable(p)?"":" disabled")+'>'+esc(isOrderable(p)?t("add"):t("unavailable"))+'</button><button class="c6-button is-secondary" id="c6Share" type="button">'+esc(t("share"))+'</button></div>'+alertMarkup(p)+'</div>'+(facts?'<div class="c6-product-facts"><p class="c6-eyebrow">'+esc(t("facts"))+'</p>'+facts+'</div>':"")+'<div class="c6-service-grid"><div class="c6-service-card"><strong>'+esc(t("payment"))+'</strong><div style="margin-top:7px">'+paymentMarkup()+'</div><p>'+esc(t("paymentNote"))+'</p></div>'+deliveryMarkup()+'</div></div></div></div></main>'+
  bundleMarkup()+recipeMarkup()+relatedProducts()+reviewsMarkup();
  bind();
  updateCartCount();

@@ -1,0 +1,56 @@
+/* Zayt w Mouneh product descriptions — compact storefront presentation.
+   Restrict layout changes to the product listing and product-detail surfaces. */
+.product-card .zwm-card-summary {
+  margin: 10px 0 12px;
+  color: #5f645c;
+  font-size: .82rem;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+.product-card .zwm-card-status {margin: 10px 0 0;}
+.product-card .zwm-card-status .availability-chip {font-size: .68rem;}
+.product-card .product-category {margin-top: 12px;}
+.product-card .product-name {margin-bottom: 0;}
+.product-modal .zwm-modal-description {
+  margin: 15px 0 24px;
+  color: #5c645b;
+  font-size: .96rem;
+  font-weight: 400;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.product-modal .product-origin-detail {
+  margin: 8px 0 0;
+  font-size: .78rem;
+}
+.product-modal .product-origin-detail[hidden] {display:none;}
+.product-modal .modal-badges:empty {display:none;}
+.c6-product-copy .c6-product-summary {
+  margin: 14px 0 18px;
+  max-width: 58ch;
+  color: #576257;
+  line-height: 1.8;
+  font-size: 1.01rem;
+  font-weight: 400;
+}
+.c6-product-copy .c6-product-facts {margin-top: 25px;}
+[dir="rtl"] .zwm-card-summary,
+[dir="rtl"] .zwm-modal-description,
+[dir="rtl"] .c6-product-summary {text-align:right;}
+@media (max-width: 640px) {
+  .product-card .zwm-card-summary {
+    font-size: .79rem;
+    line-height: 1.55;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+  .product-modal .zwm-modal-description {font-size: .91rem;line-height: 1.65;}
+  .c6-product-copy .c6-product-summary {font-size: .94rem;line-height: 1.7;}
+}

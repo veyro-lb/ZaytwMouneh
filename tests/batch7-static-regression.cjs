@@ -104,10 +104,12 @@ if(prelaunchHeaders.includes("/*\n  X-Robots-Tag: noindex, nofollow, noarchive")
 
 const sitemap=read("sitemap.xml");
 assert(sitemap.includes('xmlns:xhtml="http://www.w3.org/1999/xhtml"'),"sitemap hreflang namespace missing");
-assert.equal(count(sitemap,/<url>/g),1023,"sitemap URL count must cover 332 products + 9 public pages across 3 locales");
-assert.equal(count(sitemap,/hreflang="en-LB"/g),1023,"sitemap English alternates incomplete");
-assert.equal(count(sitemap,/hreflang="ar-LB"/g),1023,"sitemap Arabic alternates incomplete");
-assert.equal(count(sitemap,/hreflang="fr-LB"/g),1023,"sitemap French alternates incomplete");
+assert.equal(count(sitemap,/<url>/g),1021,"sitemap must cover 331 visible products in 3 locales, 9 public pages in 3 locales and the A–Z catalogue");
+assert.equal(count(sitemap,/hreflang="en-LB"/g),1020,"sitemap English alternates incomplete for localized public pages");
+assert.equal(count(sitemap,/hreflang="ar-LB"/g),1020,"sitemap Arabic alternates incomplete for localized public pages");
+assert.equal(count(sitemap,/hreflang="fr-LB"/g),1020,"sitemap French alternates incomplete for localized public pages");
+assert(sitemap.includes("<loc>"+origin+"/catalogue</loc>"),"public A–Z catalogue is missing from sitemap");
+assert(!sitemap.includes("/product/sekar-nabet"),"owner-hidden product must not appear in the sitemap");
 for(const id of ["baking-powder","secar-nabat","extra-virgin-olive-oil"]){
  for(const prefix of ["","/ar","/fr"])assert(sitemap.includes(origin+prefix+"/product/"+id),"sitemap missing "+prefix+"/product/"+id);
 }
@@ -120,4 +122,4 @@ assert(headers.includes("Cache-Control: public, max-age=86400, stale-while-reval
 assert(headers.includes("Cache-Control: public, max-age=2592000, immutable"),"asset immutable cache policy missing");
 assert(headers.includes("X-Content-Type-Options: nosniff"),"security headers missing");
 
-console.log("Batch 7 static production regression passed:",customerPages.length,"customer shells, 1023 sitemap URLs, Quick View guards, SEO/a11y/cache rules.");
+console.log("Batch 7 static production regression passed:",customerPages.length,"customer shells, 1021 sitemap URLs, Quick View guards, SEO/a11y/cache rules.");

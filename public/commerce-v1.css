@@ -41,7 +41,7 @@
 .checkout-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
 .checkout-fields .full{grid-column:1/-1}
 .checkout-fields label,.commerce-field{display:grid;gap:6px;color:var(--commerce-ink);font-size:.76rem;font-weight:800}
-.checkout-fields input,.checkout-fields select,.checkout-fields textarea,.commerce-field input,.commerce-field select{width:100%;min-height:47px;border:1px solid rgba(24,76,42,.2);border-radius:12px;background:#fff;color:var(--commerce-ink);padding:10px 12px;font-family:inherit;font-size:16px;font-weight:500;line-height:1.35;outline:none}
+.checkout-fields input:not([type="checkbox"]):not([type="radio"]),.checkout-fields select,.checkout-fields textarea,.commerce-field input:not([type="checkbox"]):not([type="radio"]),.commerce-field select{width:100%;min-height:47px;border:1px solid rgba(24,76,42,.2);border-radius:12px;background:#fff;color:var(--commerce-ink);padding:10px 12px;font-family:inherit;font-size:16px;font-weight:500;line-height:1.35;outline:none}
 .checkout-fields textarea{min-height:92px;resize:vertical}
 .checkout-fields input:focus,.checkout-fields select:focus,.checkout-fields textarea:focus{border-color:var(--commerce-green);box-shadow:0 0 0 3px rgba(23,76,42,.09)}
 .checkout-help{margin:6px 0 0;color:var(--commerce-muted);font-size:.72rem;line-height:1.45}
@@ -280,3 +280,7 @@ html[dir="rtl"] .order-address-row,html[dir="rtl"] .order-recipient{text-align:r
 .commerce-footer a{color:#31583c;text-decoration:none;font-weight:700}.commerce-footer a:hover{text-decoration:underline}
 html[dir="rtl"] .commerce-footer nav{justify-content:flex-start}
 @media(max-width:640px){.commerce-footer-inner{min-height:0;align-items:flex-start;flex-direction:column}.commerce-footer nav{justify-content:flex-start}}
+
+/* Compact native checkboxes; their labels provide a generous tap target. */
+.checkout-fields label:has(input[type="checkbox"])>span:first-child{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}
+.checkout-fields input[type="checkbox"]{width:20px;height:20px;min-width:20px;min-height:20px;max-width:20px;margin:0;padding:0;flex:0 0 20px;accent-color:var(--commerce-green)}

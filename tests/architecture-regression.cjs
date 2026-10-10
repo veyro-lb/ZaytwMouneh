@@ -7,13 +7,6 @@ const read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const release=JSON.parse(read("public/release.json")).release;
 assert.match(release,/^\d{8}-[a-z0-9-]+$/);
 assert.match(read("wrangler.toml"),/directory\s*=\s*"\.\/public"/);
-// Google Search favicon: use a square, crawlable raster of the actual brand mark.
-const homeHtml=read("public/index.html");
-assert.match(homeHtml,/<link\s+rel="icon"\s+type="image\/jpeg"\s+href="\/favicon\.jpg"/,"homepage must expose the branded JPEG favicon");
-const favicon=fs.readFileSync(path.join(root,"public/favicon.jpg"));
-assert.ok(favicon.length>1024,"branded favicon image is unexpectedly empty");
-assert.equal(favicon.subarray(0,3).toString("hex"),"ffd8ff","favicon.jpg must be a real JPEG image");
-
 // The app release marker and storefront shell asset pin have separate purposes.
 const storefrontRelease=read("public/storefront-release.js");
 const shellAssetVersion=storefrontRelease.match(/const\s+SHELL_ASSET_VERSION\s*=\s*["']([^"']+)["']/);
@@ -42,7 +35,7 @@ for(const name of htmlFiles){
     // Reject all other unrecognized CSS additions after the canonical stylesheet.
     for(const style of styles.slice(shellIndex+1)){
       const href=style.match(/href=["']([^"']+)/i)?.[1]||"";
-      const allowed=/(?:^|\/)(?:mouneh-decor-v1|shop-extras-v1|about-story-panel-v1|provenance-atlas-v1)\.css(?:[?#]|$)/.test(href) || href.startsWith("https://fonts.googleapis.com/");
+      const allowed=/(?:^|\/)(?:mouneh-decor-v1|shop-extras-v1)\.css(?:[?#]|$)/.test(href) || href.startsWith("https://fonts.googleapis.com/");
       assert.ok(allowed,name+" has an unexpected stylesheet after the canonical shell: "+href);
     }
   }

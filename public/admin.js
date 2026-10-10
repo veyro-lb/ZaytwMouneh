@@ -3337,10 +3337,11 @@
       if(product.image?.path){
         await state.client.storage.from(cfg.storageBucket).remove([product.image.path]).catch(()=>{});
       }
-      await logActivity("delete_product","product",id,{name:product.nameEn||product.nameAr||id});
+      await logActivity("delete_product","product",id,{name:product.nameEn||product.nameAr||id})
+        .catch(err=>console.warn("Product deletion activity log will retry on next refresh:",err));
       closeProductEditor();
       toast(state.lang==="ar"?translatePhrase("Product deleted."):"Product deleted.");
-      await refreshAll();
+      await refreshAll().catch(err=>console.warn("Refresh after successful product deletion failed:",err));
     }catch(err){
       console.warn("Product deletion failed:",err);
       toast(err?.message|| (state.lang==="ar"?translatePhrase("Could not delete product."):"Could not delete product."),"error");

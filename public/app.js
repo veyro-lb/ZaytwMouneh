@@ -1434,7 +1434,7 @@ function renderProducts(){
         </div>
       </div>
       <div class="product-badges">${badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("")}<span class="availability-chip availability-${availability}">${escapeHtml(availabilityLabel(p))}</span></div>
-      <p class="product-category">${escapeHtml(categoryName(p.category))}</p>\n      ${originFor(p)?`<p class="product-origin">${escapeHtml(originFor(p))}</p>`:""}\n      ${listingNote?`<p class="product-listing-note">${escapeHtml(listingNote)}</p>`:""}\n      <h3 class="product-name">${escapeHtml(currentName(p))}</h3>
+      <p class="product-category">${escapeHtml(categoryName(p.category))}</p>\n      ${originFor(p)?`<p class="product-origin">${escapeHtml(originFor(p))}</p>`:""}\n      ${listingNote?`<p class="product-listing-note">${escapeHtml(listingNote)}</p>`:""}\n      <h3 class="product-name"><a href="${escapeHtml((lang==="ar"?"/ar":lang==="fr"?"/fr":"")+quickViewProductUrl(p.id))}" aria-label="${escapeHtml(currentName(p))}">${escapeHtml(currentName(p))}</a></h3>
       <p class="product-description"><strong>${escapeHtml(t.what)}:</strong> ${escapeHtml(info.what)}</p>
       <p class="product-use"><strong>${escapeHtml(t.use)}:</strong> ${escapeHtml(info.use)}</p>
       <div class="product-price-row">
@@ -1505,8 +1505,9 @@ function renderProducts(){
   }));
   $$("[data-view]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,260))return;openProduct(btn.dataset.view,btn)}));
   $$("[data-product]").forEach(card=>{
-    card.addEventListener("click",e=>{if(!e.target.closest("button,select"))openProduct(card.dataset.product,card)});
-    card.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!e.target.closest("button,select")){e.preventDefault();openProduct(card.dataset.product,card)}});
+    // Genuine product links should navigate; the rest of the card still opens Quick View.
+    card.addEventListener("click",e=>{if(!e.target.closest("button,select,a"))openProduct(card.dataset.product,card)});
+    card.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!e.target.closest("button,select,a")){e.preventDefault();openProduct(card.dataset.product,card)}});
   });
 }
 

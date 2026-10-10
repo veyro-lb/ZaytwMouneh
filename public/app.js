@@ -1405,7 +1405,7 @@ function productDescriptionFor(p){
   if(code==="En")fields.push("description","details");
   for(const key of fields){
     const value=p[key];
-    if(typeof value==="string"&&value.trim())return value.replace(/\\s+/g," ").trim();
+    if(typeof value==="string"&&value.trim())return value.replace(/\s+/g," ").trim();
   }
   return "";
 }
@@ -1452,7 +1452,6 @@ function renderProducts(){
       ${summary?`<p class="zwm-card-summary" title="${escapeHtml(summary)}">${escapeHtml(summary)}</p>`:""}
       <div class="product-price-row">
         <div class="product-price"><small>${p.variants.length>1&&p.id!=="extra-virgin-olive-oil"?escapeHtml(t.from):""}</small><strong class="money">${escapeHtml(p.id==="extra-virgin-olive-oil"?viewPrice(selected):money(ps.min))}</strong></div>
-        <div class="product-size-summary">${p.variants.length>1?`${variants.length} ${escapeHtml(t.sizeOptions)}`:escapeHtml(currentSize(selected))}</div>
       </div>
       <div class="product-actions">
         ${sizeOptions}
@@ -1716,7 +1715,8 @@ function renderModal(productId,variantId){
   const origin=$("#productOrigin");if(origin){const value=originFor(p);origin.textContent=value;origin.hidden=!value;}
   $("#relatedProducts").innerHTML=PRODUCTS_DATA.filter(x=>x.category===p.category&&x.id!==p.id).slice(0,4).map(x=>`<button type="button" data-related="${escapeHtml(x.id)}"><span>${escapeHtml(currentName(x))}</span><strong>${money(productPriceSummary(x).min)}</strong></button>`).join("");
   $$("[data-related]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.related,btn)));
-  $("#productModalDescription").textContent=summary||currentName(p);
+  $("#productModalDescription").textContent=summary;
+  $("#productModalDescription").hidden=!summary;
   $("#nutritionPanel").hidden=!facts.length;
   $("#productNutrition").textContent=facts.map(item=>`${item.label}: ${item.value}`).join(" · ");
   $("#modalPrice").textContent=viewPrice(v);

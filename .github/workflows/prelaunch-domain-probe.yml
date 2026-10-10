@@ -1,0 +1,28 @@
+name: Public domain launch check
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  domain:
+    name: Custom domain serves the storefront
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Verify HTTPS homepage and catalogue on the public domain
+        shell: python
+        run: |
+          import urllib.request
+          for path, marker in [('/', 'id="main-content"'), ('/shop', 'id="productGrid"')]:
+              url = 'https://zaytwmouneh.com' + path
+              with urllib.request.urlopen(url, timeout=30) as response:
+                  html = response.read().decode('utf-8')
+                  assert response.status == 200, f'{url}: HTTP {response.status}'
+                  assert response.url.startswith('https://zaytwmouneh.com/'), f'Unexpected redirect: {response.url}'
+                  assert 'name="zwm-release"' in html, f'{url}: not a storefront release'
+                  assert marker in html, f'{url}: missing customer content'
+                  print(f'PASS: {response.url} serves the storefront over HTTPS')

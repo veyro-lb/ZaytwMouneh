@@ -1291,7 +1291,7 @@
   }
 
   // Owner-only extensions use this to avoid stale tokens on delete and remove actions.
-  window.ZWM_ENSURE_OWNER_FRESH=()=>ensureOwnerFresh();
+  window.ZWM_ENSURE_OWNER_FRESH=(force=false)=>ensureOwnerFresh(force);
 
   function scheduleOwnerRefresh() {
     if(state.sessionRefreshTimer)clearTimeout(state.sessionRefreshTimer);

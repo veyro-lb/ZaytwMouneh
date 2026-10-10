@@ -253,6 +253,41 @@
   <link rel="stylesheet" href="/mouneh-decor-v1.css?v=20261009-photo3">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&amp;display=swap">
   <link rel="stylesheet" href="/provenance-atlas-v1.css?v=20261009-atlas2fix">
+  <style id="home-film-rating-separation">
+    /* Film control at the upper corner; Google rating stays at the lower corner.
+       Scoped to Home only so the Shop film controls remain unchanged. */
+    body[data-page="home"] .home-pantry-hero #homeVideoPlayback {
+      position:absolute!important;
+      inset:14px 18px auto auto!important;
+      z-index:9!important;
+      margin:0!important;
+      min-height:44px!important;
+      white-space:nowrap!important;
+    }
+    html[dir="rtl"] body[data-page="home"] .home-pantry-hero #homeVideoPlayback,
+    html[lang="ar"] body[data-page="home"] .home-pantry-hero #homeVideoPlayback {
+      inset:14px auto auto 18px!important;
+    }
+    @media(max-width:600px) {
+      body[data-page="home"] .home-pantry-hero #homeVideoPlayback {
+        inset:8px 12px auto auto!important;
+        min-height:44px!important;
+        padding:9px 12px!important;
+        font-size:12px!important;
+        line-height:1.2!important;
+      }
+      html[dir="rtl"] body[data-page="home"] .home-pantry-hero #homeVideoPlayback,
+      html[lang="ar"] body[data-page="home"] .home-pantry-hero #homeVideoPlayback {
+        inset:8px auto auto 12px!important;
+      }
+    }
+    @media(max-width:420px) {
+      /* Reserve a clear strip for the film control on narrow screens. */
+      body[data-page="home"] .home-pantry-hero {
+        padding-top:70px!important;
+      }
+    }
+  </style>
 </head>
 <body data-page="home" data-release="pantry-icons-2" class="zwm-harvest-active">
   <a class="skip-link" href="/shop#shop" id="skipLink">Skip to catalogue</a>

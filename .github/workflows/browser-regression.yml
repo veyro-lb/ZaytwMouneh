@@ -39,6 +39,11 @@ jobs:
         run: |
           npm install --no-save --ignore-scripts playwright@1.55.0
           npx playwright install --with-deps chromium webkit
+      - name: Check the affected layouts first
+        run: npm run test:browser
+        env:
+          ZWM_ROUTES: "/product.html?product=baking-powder,/wholesale.html,/gift.html"
+          ZWM_VIEWPORTS: "360x800,tablet,desktop"
       - name: Run responsive browser regression
         run: npm run test:browser
 

@@ -1629,3 +1629,12 @@ body[data-page="gift"] .nav-search{display:none!important}
   transform:rotate(var(--zwm-photo-rotation,0deg)) scale(var(--zwm-photo-scale,1))!important;
   transform-origin:var(--zwm-photo-position,50% 50%)!important;
 }
+
+/* Fit the translated header controls in their side track. */
+@media(min-width:761px){
+ html[lang="fr"] body[data-page="gift"] .site-header .nav.shell>.nav-actions{gap:4px!important}
+}
+@media(min-width:761px) and (max-width:1180px){
+ html[lang="fr"] body[data-page="gift"] .site-header #languageSwitch .fr-globe-label{display:none!important}
+ html[lang="fr"] body[data-page="gift"] .site-header #languageSwitch .fr-globe-toggle{padding-inline:7px!important;min-width:36px!important}
+}

@@ -251,3 +251,10 @@
     flex-basis:38px!important;
   }
 }
+
+/* WebKit includes the static position of quarantined source controls in scroll width. */
+@media(max-width:760px){
+ html body .site-header .nav.shell>.nav-actions>#languageSwitch.language-switch,
+ html body .site-header .nav.shell>.nav-actions>#mounehRewardsButton,
+ html body .site-header .nav.shell>.nav-actions>#mounehAccountButton{left:0!important;top:0!important}
+}

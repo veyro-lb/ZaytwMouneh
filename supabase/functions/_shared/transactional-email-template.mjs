@@ -1,5 +1,5 @@
 const SITE_ORIGIN="https://zaytwmouneh.com";
-const LOGO_URL="https://raw.githubusercontent.com/veyro-lb/ZaytwMouneh/main/public/assets/email-logo.jpg";
+const LOGO_URL="https://zaytwmouneh.com/assets/email-logo.jpg";
 
 export function escapeHtml(value){
   return String(value??"").replace(/[&<>"']/g,(char)=>({

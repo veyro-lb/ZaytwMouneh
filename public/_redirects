@@ -1,3 +1,22 @@
+# Canonical public URLs: static asset rewrites preserve the incoming URL with html_handling=none
+/ /index.html 200
+/index / 301
+/shop /shop.html 200
+/catalogue /catalogue.html 200
+/about /about.html 200
+/contact /contact.html 200
+/gift /gift.html 200
+/recipes /recipes.html 200
+/wholesale /wholesale.html 200
+/returns /returns.html 200
+/returns-policy /returns-policy.html 200
+/privacy /privacy.html 200
+/terms /terms.html 200
+/checkout /checkout.html 200
+/order /order.html 200
+/account /account.html 200
+/admin /admin.html 200
+
 # Canonical duplicate legal routes
 /privacy-and-data.html /privacy 301
 /privacy-and-data /privacy 301

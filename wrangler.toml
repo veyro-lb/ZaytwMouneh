@@ -3,7 +3,7 @@ compatibility_date = "2026-10-03"
 
 [assets]
 directory = "./public"
-html_handling = "drop-trailing-slash"
+html_handling = "none"
 
 # PR preview builds only; production settings remain top-level.
 [previews]

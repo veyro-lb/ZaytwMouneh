@@ -41,7 +41,7 @@ jobs:
               with response:
                   html = response.read().decode('utf-8')
                   assert response.status == 200, f'{url}: HTTP {response.status}'
-                  assert response.url.startswith('https://zaytwmouneh.com/'), f'Unexpected redirect: {response.url}'
+                  assert response.url == url, f'Unexpected redirect: {url} => {response.url}'
                   if path not in ('/robots.txt', '/sitemap.xml'):
                       assert 'name="zwm-release"' in html, f'{url}: not a storefront release'
                   assert marker in html, f'{url}: missing customer content'

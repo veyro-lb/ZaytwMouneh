@@ -57,7 +57,7 @@ for(const id of ['carob-date-bites','carob-cookies','tahini']){
 assert(!/no added sugar|sweetened only (?:with|by) carob/i.test(JSON.stringify(drafts)),'Unverified sugar claim found in draft');
 for (const name of fs.readdirSync('public').filter(file => file.endsWith('.html'))) {
   const html = fs.readFileSync('public/' + name, 'utf8');
-  const icons = [...html.matchAll(/<link\\b[^>]*\\brel="(?:shortcut icon|icon)"[^>]*>/g)].map(match => match[0]);
+  const icons = [...html.matchAll(/<link\b[^>]*\brel="(?:shortcut icon|icon)"[^>]*>/g)].map(match => match[0]);
   assert(icons.every(icon => icon.includes('href="/favicon.jpg"')), name + ': favicon must match the homepage logo');
 }
 console.log('Product-description regression: PASS (332 drafts, 329 runtime records, 49 holds, 280 eligible)');

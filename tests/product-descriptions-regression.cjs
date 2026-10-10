@@ -5,6 +5,7 @@ const base = fs.readFileSync('public/products-data.js', 'utf8');
 const overlay = fs.readFileSync('public/product-descriptions-v1.js', 'utf8');
 const productHtml = fs.readFileSync('public/product.html', 'utf8');
 const shopHtml = fs.readFileSync('public/shop.html', 'utf8');
+const homeHtml = fs.readFileSync('public/index.html', 'utf8');
 const page = fs.readFileSync('public/product-page-v1.js', 'utf8');
 const sourceMatch = base.match(/const PRODUCTS_DATA\s*=\s*(\[[\s\S]*?\]);/);
 const overlayMatch = overlay.match(/var COPY=(\{[\s\S]*?\});\s+var HOLD=new Set\((\[[\s\S]*?\])\)/);
@@ -27,7 +28,7 @@ assert.equal(new Set(products.map(p=>drafts[p.id].en)).size,332,'English descrip
 const active=products.filter(p=>!aliases.has(p.id));
 assert.equal(active.length,329);
 assert.equal(active.filter(p=>!hold.has(p.id)).length,280);
-for(const [label,html,needle] of [['product',productHtml,'/products-data.js'],['shop',shopHtml,'products-data.js']]){
+for(const [label,html,needle] of [['product',productHtml,'/products-data.js'],['shop',shopHtml,'products-data.js'],['home',homeHtml,'products-data.js']]){
   const injected='/product-descriptions-v1.js?v=20261010-copyreview1';
   assert(html.includes(injected),label+': missing overlay script');
   assert(html.indexOf(needle)<html.indexOf(injected),label+': overlay must load after catalogue');
@@ -54,4 +55,9 @@ for(const id of ['carob-date-bites','carob-cookies','tahini']){
   assert(uiDrafts[id].ar.length>=45 && uiDrafts[id].fr.length>=45, 'Debsy copy missing Arabic/French specifics: '+id);
 }
 assert(!/no added sugar|sweetened only (?:with|by) carob/i.test(JSON.stringify(drafts)),'Unverified sugar claim found in draft');
+for (const name of fs.readdirSync('public').filter(file => file.endsWith('.html'))) {
+  const html = fs.readFileSync('public/' + name, 'utf8');
+  const icons = [...html.matchAll(/<link\\b[^>]*\\brel="(?:shortcut icon|icon)"[^>]*>/g)].map(match => match[0]);
+  assert(icons.every(icon => icon.includes('href="/favicon.jpg"')), name + ': favicon must match the homepage logo');
+}
 console.log('Product-description regression: PASS (332 drafts, 329 runtime records, 49 holds, 280 eligible)');

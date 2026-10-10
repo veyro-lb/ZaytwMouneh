@@ -1768,9 +1768,11 @@
     const value=$("bulkProductValue").value;
     if(!ids.length||!action)return;
     if(action==="delete"&&!confirm(`Delete ${ids.length} selected products? This cannot be undone.`))return;
-    await createCloudBackup(`before_bulk_${action}`,true);
     $("applyBulkProductAction").disabled=true;
     try{
+      if(!await ensureOwnerFresh())throw Error("Owner session unavailable. Sign in again.");
+      const backup=await createCloudBackup(`before_bulk_${action}`,true);
+      if(!backup)throw Error("Recovery backup failed. No bulk changes were made; please retry.");
       for(const id of ids){
         const product=state.products.find(p=>p.id===id);if(!product)continue;
         await saveProductRevision(product,`bulk_${action}`);

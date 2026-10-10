@@ -3301,12 +3301,14 @@
     if(!product)return;
     const question=state.lang==="ar"?translatePhrase("Delete this product permanently? This cannot be undone."):"Delete this product permanently? This cannot be undone.";
     if(!window.confirm(question))return;
-    await createCloudBackup("before_delete_product",true);
-    await saveProductRevision(product,"delete");
-
     const button=$("deleteProductButton");
+    if(button.disabled)return;
     button.disabled=true;
     try{
+      if(!await ensureOwnerFresh())throw Error("Owner session unavailable. Sign in again.");
+      const backup=await createCloudBackup("before_delete_product",true);
+      if(!backup)throw Error("Could not save a recovery backup. Deletion cancelled; please retry.");
+      await saveProductRevision(product,"delete");
       let error=null;
       if(baseById.has(id)){
         const result=await state.client.from(cfg.tables.products).upsert({
@@ -3331,7 +3333,8 @@
       toast(state.lang==="ar"?translatePhrase("Product deleted."):"Product deleted.");
       await refreshAll();
     }catch(err){
-      toast(state.lang==="ar"?translatePhrase("Could not delete product."):"Could not delete product.","error");
+      console.warn("Product deletion failed:",err);
+      toast(err?.message|| (state.lang==="ar"?translatePhrase("Could not delete product."):"Could not delete product."),"error");
     }finally{
       button.disabled=false;
     }

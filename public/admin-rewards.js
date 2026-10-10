@@ -62,7 +62,10 @@
       body:JSON.stringify({action,p})
     });
     const data=await r.json().catch(()=>({}));
-    if(r.status===401&&retry&&s.refresh_token){
+    if(r.status===401&&retry&&s.refresh_token&&typeof window.ZWM_ENSURE_OWNER_FRESH==="function"){
+      if(await window.ZWM_ENSURE_OWNER_FRESH(true))return rpc(action,p,false);
+    }
+    if(r.status===401&&retry&&s.refresh_token&&typeof window.ZWM_ENSURE_OWNER_FRESH!=="function"){
       const refreshed=await fetch(cfg.supabaseUrl+"/auth/v1/token?grant_type=refresh_token",{method:"POST",headers:{apikey:cfg.supabasePublishableKey,"Content-Type":"application/json"},body:JSON.stringify({refresh_token:s.refresh_token})});
       const next=await refreshed.json();
       if(refreshed.ok&&next.access_token){sessionStorage.setItem(SESSION_KEY,JSON.stringify({...s,...next,expires_at:Math.floor(Date.now()/1000)+next.expires_in}));return rpc(action,p,false);}

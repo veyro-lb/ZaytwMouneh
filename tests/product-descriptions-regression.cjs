@@ -48,5 +48,10 @@ assert(shopHtml.includes('class="zwm-modal-description"'), 'Show clean quick-vie
 assert(productHtml.includes('/product-copy-ui-v1.css'), 'Standalone product page is missing copy CSS');
 assert(shopHtml.includes('/product-copy-ui-v1.css'), 'Shop page is missing copy CSS');
 assert(css.includes('.zwm-card-summary') && css.includes('.zwm-modal-description'), 'Missing responsive description styles');
+const uiDrafts=JSON.parse(overlayMatch[1]);
+assert(!Object.values(uiDrafts).some(row=>/Available catalogue sizes?:|الأحجام المتاحة:|Formats proposés\s*:/.test(row.en+row.ar+row.fr)), 'Do not repeat pack sizes already visible in the size selector');
+for(const id of ['carob-date-bites','carob-cookies','tahini']){
+  assert(uiDrafts[id].ar.length>=45 && uiDrafts[id].fr.length>=45, 'Debsy copy missing Arabic/French specifics: '+id);
+}
 assert(!/no added sugar|sweetened only (?:with|by) carob/i.test(JSON.stringify(drafts)),'Unverified sugar claim found in draft');
 console.log('Product-description regression: PASS (332 drafts, 329 runtime records, 49 holds, 280 eligible)');

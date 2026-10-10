@@ -111,13 +111,13 @@
     inset:auto!important;
     transform:none!important;
     display:grid!important;
-    width:42px!important;
-    min-width:42px!important;
-    max-width:42px!important;
-    height:42px!important;
-    min-height:42px!important;
-    max-height:42px!important;
-    flex:0 0 42px!important;
+    width:44px!important;
+    min-width:44px!important;
+    max-width:44px!important;
+    height:44px!important;
+    min-height:44px!important;
+    max-height:44px!important;
+    flex:0 0 44px!important;
     margin:0!important;
     z-index:2!important;
   }
@@ -250,4 +250,11 @@
     max-height:38px!important;
     flex-basis:38px!important;
   }
+}
+
+/* WebKit includes the static position of quarantined source controls in scroll width. */
+@media(max-width:760px){
+ html body .site-header .nav.shell>.nav-actions>#languageSwitch.language-switch,
+ html body .site-header .nav.shell>.nav-actions>#mounehRewardsButton,
+ html body .site-header .nav.shell>.nav-actions>#mounehAccountButton{left:0!important;top:0!important}
 }

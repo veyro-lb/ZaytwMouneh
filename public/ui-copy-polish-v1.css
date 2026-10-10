@@ -1194,3 +1194,31 @@ html[dir="rtl"] body[data-page="home"] .home-pantry-hero h1>.only-ar{
     line-height:1.4!important;
   }
 }
+
+/* Long translated text must not widen phone contact cards or footer tracks. */
+body .contact-panel>*,body .footer .footer-grid>*{min-width:0;max-width:100%}
+body .contact-brand img{max-width:100%;height:auto}
+@media(max-width:760px){
+ body .contact-panel{grid-template-columns:minmax(0,1fr)!important}
+ html body .site-header .nav.shell>.nav-actions>#languageSwitch.fr-language-ready{overflow:hidden!important}
+}
+@media(max-width:600px){
+ body .footer .footer-grid{grid-template-columns:minmax(0,1fr)!important}
+}
+
+/* Allow translated content to wrap within its grid tracks. */
+.legal-hero-inner>*,.wholesale-hero-grid>*,.c6-product-grid>*,.c6-service-grid>*{min-width:0;overflow-wrap:anywhere}
+.c6-service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.c6-purchase-actions{flex-wrap:wrap}
+.c6-purchase-actions .c6-button{min-width:0}
+@media(max-width:600px){
+ .legal-hero-inner,.wholesale-hero-grid,.c6-product-grid,.c6-service-grid{grid-template-columns:minmax(0,1fr)!important}
+ .c6-estimator{flex-wrap:wrap}
+ .c6-estimator input{width:100%;flex-basis:100%}
+}
+@media(min-width:761px){
+ html[lang="fr"] .site-header .nav.shell{gap:12px!important}
+ html[lang="fr"] .site-header .nav.shell>.nav-actions{gap:8px!important;min-width:0!important}
+ html[lang="fr"] .site-header .nav.shell>.brand{min-width:0!important;flex-shrink:1!important}
+ html[lang="fr"] .site-header .nav.shell>.nav-actions #languageSwitch.fr-language-ready{overflow:hidden!important}
+}

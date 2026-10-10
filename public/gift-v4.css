@@ -85,18 +85,18 @@ body[data-page="gift"] .nav-toggle .menu-icon{
 body[data-page="gift"] .nav-toggle .menu-icon i{
   width:25px!important;height:2px!important;background:var(--gift-green)!important;
 }
-body[data-page="gift"] .brand{
+body[data-page="gift"] .site-header .brand{
   grid-column:2!important;
   grid-row:1!important;
   justify-self:center!important;
   gap:9px!important;
   color:var(--gift-green)!important;
 }
-body[data-page="gift"] .brand-logo{
+body[data-page="gift"] .site-header .brand-logo{
   width:40px!important;height:40px!important;
   border:0!important;background:transparent!important;box-shadow:none!important;
 }
-body[data-page="gift"] .brand-wordmark{
+body[data-page="gift"] .site-header .brand-wordmark{
   display:block!important;
   white-space:nowrap;
   color:var(--gift-green)!important;
@@ -944,9 +944,9 @@ html[dir="rtl"] .gift-v4-stamp{right:auto;left:25px}
   body[data-page="gift"] .announcement-inner{min-height:36px!important}
   body[data-page="gift"] .announcement a{font-size:.59rem!important}
   body[data-page="gift"] .nav{height:70px!important;gap:6px!important}
-  body[data-page="gift"] .brand{gap:5px!important}
-  body[data-page="gift"] .brand-logo{width:32px!important;height:32px!important}
-  body[data-page="gift"] .brand-wordmark{font-size:1.18rem!important}
+  body[data-page="gift"] .site-header .brand{gap:5px!important}
+  body[data-page="gift"] .site-header .brand-logo{width:32px!important;height:32px!important}
+  body[data-page="gift"] .site-header .brand-wordmark{font-size:1.18rem!important}
   body[data-page="gift"] .nav-toggle{width:38px!important;height:38px!important}
   body[data-page="gift"] .gift-v4-search{width:36px;height:36px}
   body[data-page="gift"] .cart-button{height:38px!important;min-height:38px!important;padding:0 9px!important}
@@ -1029,13 +1029,13 @@ html[dir="rtl"] .gift-v4-stamp{right:auto;left:25px}
 }
 @media(max-width:520px){
   body[data-page="gift"] .language-switch{display:none!important}
-  body[data-page="gift"] .brand-logo{display:none!important}
-  body[data-page="gift"] .brand-wordmark{font-size:1.08rem!important}
+  body[data-page="gift"] .site-header .brand-logo{display:none!important}
+  body[data-page="gift"] .site-header .brand-wordmark{font-size:1.08rem!important}
   .gift-v4-hero h1{font-size:clamp(2.85rem,14vw,4rem)}
   .gift-v4-basket-bar:after{opacity:.08}
 }
 @media(max-width:380px){
-  body[data-page="gift"] .brand-wordmark{font-size:.98rem!important}
+  body[data-page="gift"] .site-header .brand-wordmark{font-size:.98rem!important}
   body[data-page="gift"] .gift-v4-search{display:none}
 }
 @media(prefers-reduced-motion:reduce){
@@ -1283,7 +1283,7 @@ body[data-page="gift"] .nav-search{display:none!important}
     color:#073d1d!important;
   }
 
-  body[data-page="gift"] .brand{
+  body[data-page="gift"] .site-header .brand{
     grid-column:2!important;
     grid-row:1!important;
     justify-self:center!important;
@@ -1294,7 +1294,7 @@ body[data-page="gift"] .nav-search{display:none!important}
     min-width:max-content!important;
     color:#0b4b25!important;
   }
-  body[data-page="gift"] .brand-logo{
+  body[data-page="gift"] .site-header .brand-logo{
     width:46px!important;
     height:46px!important;
     flex:0 0 46px!important;
@@ -1302,7 +1302,7 @@ body[data-page="gift"] .nav-search{display:none!important}
     background:#fff!important;
     box-shadow:0 2px 8px rgba(31,52,35,.055)!important;
   }
-  body[data-page="gift"] .brand-wordmark{
+  body[data-page="gift"] .site-header .brand-wordmark{
     display:block!important;
     visibility:visible!important;
     opacity:1!important;
@@ -1406,10 +1406,10 @@ body[data-page="gift"] .nav-search{display:none!important}
   body[data-page="gift"] .nav-links>a strong{
     font-size:.78rem!important;
   }
-  body[data-page="gift"] .brand-wordmark{
+  body[data-page="gift"] .site-header .brand-wordmark{
     font-size:1.3rem!important;
   }
-  body[data-page="gift"] .brand-logo{
+  body[data-page="gift"] .site-header .brand-logo{
     width:42px!important;
     height:42px!important;
     flex-basis:42px!important;
@@ -1628,4 +1628,13 @@ body[data-page="gift"] .nav-search{display:none!important}
   object-fit:var(--zwm-photo-fit,cover)!important;
   transform:rotate(var(--zwm-photo-rotation,0deg)) scale(var(--zwm-photo-scale,1))!important;
   transform-origin:var(--zwm-photo-position,50% 50%)!important;
+}
+
+/* Fit the translated header controls in their side track. */
+@media(min-width:761px){
+ html[lang="fr"] body[data-page="gift"] .site-header .nav.shell>.nav-actions{gap:4px!important}
+}
+@media(min-width:761px) and (max-width:1180px){
+ html[lang="fr"] body[data-page="gift"] .site-header #languageSwitch .fr-globe-label{display:none!important}
+ html[lang="fr"] body[data-page="gift"] .site-header #languageSwitch .fr-globe-toggle{padding-inline:7px!important;min-width:36px!important}
 }

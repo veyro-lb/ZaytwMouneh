@@ -58,3 +58,17 @@
   .c6-alert select,
   .c6-alert input{font-size:16px}
 }
+
+/* Keep product controls and service cards within a small phone viewport. */
+.c6-product-grid>*,.c6-service-grid>*{min-width:0;overflow-wrap:anywhere}
+.c6-service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.c6-purchase-actions{flex-wrap:wrap}
+.c6-purchase-actions .c6-button{min-width:0}
+@media(max-width:650px){
+ .c6-product-grid,.c6-service-grid{grid-template-columns:minmax(0,1fr)!important}
+ .c6-estimator{flex-wrap:wrap}
+ .c6-estimator input{width:100%;flex-basis:100%}
+ .c6-product-nav{gap:8px}
+ .c6-nav-actions{gap:4px}
+ .c6-nav-actions .c6-button{padding-inline:12px}
+}

@@ -39,6 +39,6 @@ assert(html.includes('id="websiteAverageVisits"'),"average visit tile");
 assert(html.includes('id="websiteRepeatVisits"'),"repeat visit tile");
 assert(/add column if not exists visitor_id uuid/i.test(migration),"nullable visitor ID migration");
 for(const page of ["index","shop","about","contact","gift","wholesale","recipes","account","checkout"]){
-  assert(read("public/"+page+".html").includes("site-runtime-v9.js?v=20261009-website-visits1"),page+" must use new tracking runtime");
+  assert(read("public/"+page+".html").includes("site-runtime-v9.js?v=20261010-launchreview2"),page+" must use new tracking runtime");
 }
 console.log("Website Visits regression checks passed.");

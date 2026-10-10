@@ -5,16 +5,14 @@ on:
     branches:
       - main
     paths:
-      - public/storefront-shell.css
-      - public/site-runtime-v9.js
+      - "public/**"
       - tests/browser-regression.cjs
       - .github/workflows/browser-regression.yml
   pull_request:
     branches:
       - main
     paths:
-      - public/storefront-shell.css
-      - public/site-runtime-v9.js
+      - "public/**"
       - tests/browser-regression.cjs
       - package.json
       - .github/workflows/browser-regression.yml
@@ -41,5 +39,18 @@ jobs:
         run: |
           npm install --no-save --ignore-scripts playwright@1.55.0
           npx playwright install --with-deps chromium webkit
+      - name: Check the affected layouts first
+        run: npm run test:browser
+        env:
+          ZWM_ROUTES: "/product.html?product=baking-powder,/wholesale.html,/gift.html"
+          ZWM_VIEWPORTS: "360x800,tablet,desktop"
       - name: Run responsive browser regression
         run: npm run test:browser
+
+      - name: Save screenshots of layout failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: responsive-layout-failures
+          path: browser-artifacts/
+          if-no-files-found: ignore

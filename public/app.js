@@ -1638,6 +1638,9 @@ function cleanupQuickView({restoreFocus=true,syncUrl=true}={}){
   currentModalVariant=null;
   draftQty["modal"]=1;
   if(syncUrl)syncProductUrl(null);
+  applyPageMetadata();
+  const productSchema=document.getElementById("premiumProductSchema");
+  if(productSchema)productSchema.remove();
   backdropMaybeOff();
   currentModalTrigger=null;
   if(restoreFocus&&trigger&&trigger.isConnected&&typeof trigger.focus==="function"){

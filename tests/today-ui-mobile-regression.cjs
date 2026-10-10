@@ -55,7 +55,7 @@ assert(!siteRuntime.includes('new MutationObserver(check).observe(document.body,
 assert(!siteRuntime.includes('observer.observe(document.documentElement,{subtree:true,childList:true})'),"Returns navigation must not observe the entire document subtree");
 assert(!customerNotifications.includes('obs.observe(document.body,{subtree:true,childList:true})'),"Customer notifications must not observe the entire body subtree");
 
-assert(read("wholesale.html").includes("/wholesale-v1.css?v=20261006-wholesaleqa1"),"Wholesale CSS cache token stale");
+assert(read("wholesale.html").includes("/wholesale-v1.css?v=20261010-launchreview4"),"Wholesale CSS cache token stale");
 assert.match(read("admin.html"),/admin-wholesale\.css\?v=\d{8}-[a-z0-9-]+/,"Admin Wholesale CSS must carry a versioned asset URL");
 assert.match(read("admin.html"),/admin-wholesale\.js\?v=\d{8}-[a-z0-9-]+/,"Admin Wholesale JS must carry a versioned asset URL");
 assert(read("account.html").includes("/notifications-v1.css?v=20261006-mobileaudit1"),"Customer notification CSS cache token stale");
@@ -64,7 +64,7 @@ assert(read("admin-config.js").includes("/admin-notifications-v1.js?v=20261006-t
 assert.match(read("admin.html"),/admin-config\.js\?v=\d{8}-[a-z0-9-]+/,"Admin config must carry a versioned asset URL");
 assert(read("account.html").includes("/customer-notifications-v1.js?v=20261006-transactionalemail1"),"Customer notification JS cache token stale");
 for(const file of ["account.html","product.html","gift.html","shop.html","recipes.html"]){
-  assert(read(file).includes("/conversion-v1.css?v=20261006-mobileaudit1"),file+" conversion CSS cache token stale");
+  assert(read(file).includes("/conversion-v1.css?v=20261010-launchreview3"),file+" conversion CSS cache token stale");
 }
 // Runtime script cache token is separately versioned from release.json.
 const storefrontRuntimePin=read("index.html").match(/site-runtime-v9\.js\?v=(\d{8}-[a-z0-9-]+)/)?.[1];

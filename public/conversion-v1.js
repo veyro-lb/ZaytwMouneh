@@ -52,7 +52,7 @@ async function contactNumber(){
    if(r.ok){var rows=await r.json(),n=rows&&rows[0]&&rows[0].value&&rows[0].value.whatsapp;if(n)return String(n).replace(/\D/g,"")}
   }
  }catch(e){}
- return "96181581230";
+ return "96170381412";
 }
 async function openCorporate(){
  var name=(q("#c6CorporateName")||{}).value||"",count=(q("#c6CorporateCount")||{}).value||"",budget=(q("#c6CorporateBudget")||{}).value||"",date=(q("#c6CorporateDate")||{}).value||"",note=(q("#c6CorporateNote")||{}).value||"",status=q("#c6CorporateStatus");

@@ -168,12 +168,12 @@ function ensureSkipLink(){
   if(!link){
     link=document.createElement("a");
     link.className="zwm-skip-link";
-    link.href="#"+main.id;
+    link.href=location.pathname+location.search+"#"+main.id;
     link.textContent=activeLocale()==="ar"?"الانتقال إلى المحتوى":activeLocale()==="fr"?"Aller au contenu":"Skip to content";
     document.body.insertBefore(link,document.body.firstChild);
   }else{
     link.classList.add("zwm-skip-link");
-    link.href="#"+main.id;
+    link.href=location.pathname+location.search+"#"+main.id;
   }
 }
 function tuneMedia(){

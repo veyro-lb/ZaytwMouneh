@@ -22,7 +22,7 @@ async function run(type,label,base){
     const context=await browser.newContext({viewport:{width:w,height:h}});
     await context.addInitScript(lang=>{
      localStorage.setItem("zwm-welcome-seen-v3","1");
-     localStorage.setItem("zwm-golden-harvest-2026-popup-seen-v1","1");
+     sessionStorage.setItem("zwm-golden-harvest-2026-popup-seen-v1","1");
      localStorage.setItem("zwm-locale-v3",lang);
      localStorage.setItem("zwm-lang-v2",lang==="ar"?"ar":"en");
      localStorage.setItem("zwm:french:v1",lang==="fr"?"1":"0");

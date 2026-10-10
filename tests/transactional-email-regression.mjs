@@ -78,6 +78,8 @@ assert.match(order.html,/max-width:620px/);
 assert.match(order.html,/#082d13/);
 assert.match(order.html,/#d3a323/);
 assert.match(order.html,/email-logo\.jpg/);
+assert.match(order.html,/https:\/\/zaytwmouneh\.com\/assets\/email-logo\.jpg/,"Email logo must load from the official shop");
+assert.doesNotMatch(order.html,/raw\.githubusercontent\.com/,"Email must not embed GitHub-hosted images");
 assert.match(order.html,/Olive Oil &lt;script&gt;alert\(1\)&lt;\/script&gt;/);
 assert.doesNotMatch(order.html,/<script>/i);
 assert.doesNotMatch(order.html,/\bundefined\b|\bnull\b/);

@@ -24,7 +24,7 @@
       footerTitle: "How was your Zayt w Mouneh experience?",
       footerHint: "Tap a star to share an honest Google review.",
       starNote: "You'll choose your rating again on Google.",
-      starLabel: "star", googleReview: "Google customer reviews",
+      starLabel: "star", googleReview: "Google customer reviews", googleRating: "Google Rating",
       ratingAt: "Rating checked 10 Oct 2026", viewReviews: "See reviews on Google"
     },
     ar: {
@@ -34,7 +34,7 @@
       footerTitle: "كيف كانت تجربتك مع زيت ومونة؟",
       footerHint: "اختار عدد النجوم وشارك تقييمك الصادق على Google.",
       starNote: "ستختار تقييمك من جديد على Google.",
-      starLabel: "نجمة", googleReview: "تقييمات العملاء على Google",
+      starLabel: "نجمة", googleReview: "تقييمات العملاء على Google", googleRating: "تقييم Google",
       ratingAt: "تم التحقق في ١٠ تشرين الأول ٢٠٢٦", viewReviews: "شاهد التقييمات على Google"
     },
     fr: {
@@ -44,7 +44,7 @@
       footerTitle: "Comment s'est passée votre expérience chez Zayt w Mouneh ?",
       footerHint: "Touchez une étoile pour partager un avis sincère sur Google.",
       starNote: "Vous choisirez à nouveau votre note sur Google.",
-      starLabel: "étoile", googleReview: "Avis clients Google",
+      starLabel: "étoile", googleReview: "Avis clients Google", googleRating: "Note Google",
       ratingAt: "Note vérifiée le 10 octobre 2026", viewReviews: "Voir les avis sur Google"
     }
   };
@@ -173,15 +173,15 @@
   }
   function homeMarkup() {
     var t = tr();
-    return '<a class="zwm-gr-home-source" href="' + GOOGLE_LISTING +
-      '" target="_blank" rel="noopener noreferrer"><span class="zwm-gr-emblem" aria-hidden="true">G</span><strong>' +
-      t.googleReview + '</strong></a>' +
-      '<span class="zwm-gr-home-score" dir="ltr"><strong>' + VERIFIED_GOOGLE_RATING.score +
-      '<span> / 5</span></strong><span class="zwm-gr-home-stars" aria-hidden="true">★★★★★</span></span>' +
-      '<span class="zwm-gr-home-meta"><strong>' + VERIFIED_GOOGLE_RATING.total +
-      ' ' + t.googleReview + '</strong><small>' + t.ratingAt + '</small></span>' +
-      '<a class="zwm-gr-home-link" href="' + GOOGLE_LISTING +
-      '" target="_blank" rel="noopener noreferrer">' + t.viewReviews + ' ↗</a>';
+    // One compact, fully-clickable Google rating link; not an interactive rating control.
+    // The five stars reflect the dated verified snapshot, not the visitor's choice.
+    return '<a class="zwm-gr-home-link" href="' + GOOGLE_LISTING +
+      '" target="_blank" rel="noopener noreferrer" aria-label="' +
+      t.googleRating + ': ' + VERIFIED_GOOGLE_RATING.score + ' / 5. ' +
+      t.ratingAt + '">' +
+      '<span class="zwm-gr-home-stars" aria-hidden="true">★★★★★</span>' +
+      '<strong class="zwm-gr-home-score" dir="ltr">5/5</strong>' +
+      '<span class="zwm-gr-home-label">' + t.googleRating + '</span></a>';
   }
   function showHomeRating() {
     if (document.body.dataset.page !== "home") return;

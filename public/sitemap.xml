@@ -457,30 +457,6 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://zaytwmouneh.com/product/secar-nabat" />
   </url>
   <url>
-    <loc>https://zaytwmouneh.com/product/sekar-nabet</loc>
-    <lastmod>2026-10-05</lastmod>
-    <xhtml:link rel="alternate" hreflang="en-LB" href="https://zaytwmouneh.com/product/sekar-nabet" />
-    <xhtml:link rel="alternate" hreflang="ar-LB" href="https://zaytwmouneh.com/ar/product/sekar-nabet" />
-    <xhtml:link rel="alternate" hreflang="fr-LB" href="https://zaytwmouneh.com/fr/product/sekar-nabet" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://zaytwmouneh.com/product/sekar-nabet" />
-  </url>
-  <url>
-    <loc>https://zaytwmouneh.com/ar/product/sekar-nabet</loc>
-    <lastmod>2026-10-05</lastmod>
-    <xhtml:link rel="alternate" hreflang="en-LB" href="https://zaytwmouneh.com/product/sekar-nabet" />
-    <xhtml:link rel="alternate" hreflang="ar-LB" href="https://zaytwmouneh.com/ar/product/sekar-nabet" />
-    <xhtml:link rel="alternate" hreflang="fr-LB" href="https://zaytwmouneh.com/fr/product/sekar-nabet" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://zaytwmouneh.com/product/sekar-nabet" />
-  </url>
-  <url>
-    <loc>https://zaytwmouneh.com/fr/product/sekar-nabet</loc>
-    <lastmod>2026-10-05</lastmod>
-    <xhtml:link rel="alternate" hreflang="en-LB" href="https://zaytwmouneh.com/product/sekar-nabet" />
-    <xhtml:link rel="alternate" hreflang="ar-LB" href="https://zaytwmouneh.com/ar/product/sekar-nabet" />
-    <xhtml:link rel="alternate" hreflang="fr-LB" href="https://zaytwmouneh.com/fr/product/sekar-nabet" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://zaytwmouneh.com/product/sekar-nabet" />
-  </url>
-  <url>
     <loc>https://zaytwmouneh.com/product/white-sugar</loc>
     <lastmod>2026-10-05</lastmod>
     <xhtml:link rel="alternate" hreflang="en-LB" href="https://zaytwmouneh.com/product/white-sugar" />
@@ -8183,5 +8159,9 @@
     <xhtml:link rel="alternate" hreflang="ar-LB" href="https://zaytwmouneh.com/ar/wholesale" />
     <xhtml:link rel="alternate" hreflang="fr-LB" href="https://zaytwmouneh.com/fr/wholesale" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://zaytwmouneh.com/wholesale" />
+  </url>
+  <url>
+    <loc>https://zaytwmouneh.com/catalogue</loc>
+    <lastmod>2026-10-10</lastmod>
   </url>
 </urlset>

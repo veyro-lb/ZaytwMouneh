@@ -19,6 +19,7 @@
    item.textContent=message;root.append(item);setTimeout(()=>item.remove(),4600);
  }
  async function api(path,body,edge=false){
+   if(typeof window.ZWM_ENSURE_OWNER_FRESH==="function" && !await window.ZWM_ENSURE_OWNER_FRESH())throw Error(tr("Owner session unavailable. Sign in again or check your connection.","جلسة المالك غير متاحة. سجّل الدخول مجدداً أو تحقّق من الاتصال."));
    const s=session();if(!s?.access_token)throw Error(tr("Sign in again first.","سجّل الدخول مجدداً."));
    const base=String(cfg.supabaseUrl||"").replace(/\/$/,"");
    if(!base)throw Error("Connection unavailable");

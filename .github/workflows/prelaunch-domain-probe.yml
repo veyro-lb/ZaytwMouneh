@@ -18,7 +18,15 @@ jobs:
         run: |
           import urllib.error
           import urllib.request
-          for path, marker in [('/', 'data-page="home"'), ('/shop', 'id="productGrid"')]:
+          for path, marker in [
+              ('/', 'data-page="home"'),
+              ('/shop', 'id="productGrid"'),
+              ('/product/baking-powder', 'data-page="product"'),
+              ('/ar', 'data-page="home"'),
+              ('/fr', 'data-page="home"'),
+              ('/robots.txt', 'Sitemap: https://zaytwmouneh.com/sitemap.xml'),
+              ('/sitemap.xml', '<urlset'),
+          ]:
               url = 'https://zaytwmouneh.com' + path
               request = urllib.request.Request(url, headers={
                   'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
@@ -34,6 +42,7 @@ jobs:
                   html = response.read().decode('utf-8')
                   assert response.status == 200, f'{url}: HTTP {response.status}'
                   assert response.url.startswith('https://zaytwmouneh.com/'), f'Unexpected redirect: {response.url}'
-                  assert 'name="zwm-release"' in html, f'{url}: not a storefront release'
+                  if path not in ('/robots.txt', '/sitemap.xml'):
+                      assert 'name="zwm-release"' in html, f'{url}: not a storefront release'
                   assert marker in html, f'{url}: missing customer content'
                   print(f'PASS: {response.url} serves the storefront over HTTPS')

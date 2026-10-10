@@ -54,3 +54,15 @@ jobs:
                       assert 'name="zwm-release"' in html, f'{url}: not a storefront release'
                   assert marker in html, f'{url}: missing customer content'
                   print(f'PASS: {response.url} serves the storefront over HTTPS')
+
+          # All public links should resolve to the preferred secure hostname.
+          for alternate in ('https://www.zaytwmouneh.com/', 'http://zaytwmouneh.com/'):
+              request = urllib.request.Request(alternate, headers={
+                  'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+                  'Accept': 'text/html'
+              })
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  assert response.url == 'https://zaytwmouneh.com/', f'Alternate domain not canonical: {alternate} => {response.url}'
+                  assert response.status == 200, f'Alternate domain failed: {alternate}'
+                  print(f'PASS: {alternate} resolves to {response.url}')
+

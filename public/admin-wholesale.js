@@ -57,7 +57,15 @@ function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&l
 function session(){try{const x=JSON.parse(sessionStorage.getItem(SESSION_KEY)||"null");return x?.access_token?x:null}catch{return null}}
 function headers(prefer=""){const s=session();return{"apikey":cfg.supabasePublishableKey||"","Authorization":"Bearer "+(s?.access_token||""),"Content-Type":"application/json",...(prefer?{"Prefer":prefer}:{})}}
 function apiBase(){return String(cfg.supabaseUrl||"").replace(/\/$/,"")+"/rest/v1/"}
-async function request(path,options={}){const r=await fetch(apiBase()+path,{...options,headers:{...headers(options.prefer||""),...(options.headers||{})}}),data=await r.json().catch(()=>null);if(!r.ok)throw new Error(data?.message||data?.hint||"Wholesale CRM request failed");return data}
+async function request(path,options={}){
+ if(typeof window.ZWM_ENSURE_OWNER_FRESH==="function" && !await window.ZWM_ENSURE_OWNER_FRESH())throw new Error("Owner session unavailable. Sign in again.");
+ let r;
+ try{r=await fetch(apiBase()+path,{...options,cache:"no-store",headers:{...headers(options.prefer||""),...(options.headers||{})}})}
+ catch(err){throw new Error(whArabic()?"تعذّر الاتصال بقاعدة البيانات. تحقّق من الإنترنت وأعد المحاولة.":"Could not reach Supabase. Check your connection and retry.");}
+ const data=await r.json().catch(()=>null);
+ if(!r.ok)throw new Error(data?.message||data?.hint||"Wholesale CRM request failed");
+ return data;
+}
 function fmtDate(v){if(!v)return"—";try{return new Date(v).toLocaleString(whArabic()?"ar-LB":"en-LB",{year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}catch{return v}}
 function statusBadge(v){return `<span class="wholesale-status" data-status="${esc(v)}">${esc(whTr(LABEL[v]||v))}</span>`}
 function visible(){const q=state.query.trim().toLowerCase();return state.rows.filter(r=>(!state.status||r.status===state.status)&&(!q||[r.business_name,r.contact_name,r.business_type,r.location,r.phone,r.email].join(" ").toLowerCase().includes(q)))}

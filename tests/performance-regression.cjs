@@ -6,6 +6,12 @@ const htmls=fs.readdirSync(publicDir).filter(n=>n.endsWith(".html"));
 for(const name of htmls){
   const html=read("public/"+name);
   if(/<script\b[^>]*src=["'][^"']*fr-runtime-v1\.js/i.test(html))throw new Error(name+" directly loads the heavy French runtime");
+  // The HTML-only bilingual product index has no client localization/runtime dependency.
+  // It must contain real product links and must not load the heavy French translator.
+  if(name==="catalogue.html"){
+    if(!html.includes('lang="ar"')||!html.includes('hreflang="fr-LB"')||!html.includes('href="/product/'))throw new Error("HTML product directory lost localized content or direct links");
+    continue;
+  }
   if(!html.includes("locale-loader-v1.js"))throw new Error(name+" is missing the lightweight locale loader");
 }
 const loader=read("public/locale-loader-v1.js");

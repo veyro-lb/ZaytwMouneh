@@ -55,7 +55,7 @@ assert(!siteRuntime.includes('new MutationObserver(check).observe(document.body,
 assert(!siteRuntime.includes('observer.observe(document.documentElement,{subtree:true,childList:true})'),"Returns navigation must not observe the entire document subtree");
 assert(!customerNotifications.includes('obs.observe(document.body,{subtree:true,childList:true})'),"Customer notifications must not observe the entire body subtree");
 
-assert(read("wholesale.html").includes("/wholesale-v1.css?v=20261006-wholesaleqa1"),"Wholesale CSS cache token stale");
+assert(read("wholesale.html").includes("/wholesale-v1.css?v=20261010-launchreview4"),"Wholesale CSS cache token stale");
 assert.match(read("admin.html"),/admin-wholesale\.css\?v=\d{8}-[a-z0-9-]+/,"Admin Wholesale CSS must carry a versioned asset URL");
 assert.match(read("admin.html"),/admin-wholesale\.js\?v=\d{8}-[a-z0-9-]+/,"Admin Wholesale JS must carry a versioned asset URL");
 assert(read("account.html").includes("/notifications-v1.css?v=20261006-mobileaudit1"),"Customer notification CSS cache token stale");

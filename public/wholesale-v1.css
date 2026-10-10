@@ -40,3 +40,8 @@ html[dir="rtl"] .wholesale-page{font-family:"Noto Kufi Arabic","DM Sans",sans-se
   .product-result{min-height:46px}
   .remove-product{min-height:44px}
 }
+
+/* Long French headline words must fit small phones in WebKit as well. */
+@media(max-width:560px){
+ html[lang="fr"] body[data-page="wholesale"] .wholesale-hero h1{font-size:clamp(1.9rem,9vw,2.35rem)!important;overflow-wrap:break-word!important;word-break:break-word!important;white-space:normal!important;max-width:100%}
+}

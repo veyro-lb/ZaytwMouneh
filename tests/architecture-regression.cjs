@@ -35,7 +35,7 @@ for(const name of htmlFiles){
     // Reject all other unrecognized CSS additions after the canonical stylesheet.
     for(const style of styles.slice(shellIndex+1)){
       const href=style.match(/href=["']([^"']+)/i)?.[1]||"";
-      const allowed=/(?:^|\/)(?:mouneh-decor-v1|shop-extras-v1)\.css(?:[?#]|$)/.test(href) || href.startsWith("https://fonts.googleapis.com/");
+      const allowed=/(?:^|\/)(?:mouneh-decor-v1|shop-extras-v1|about-story-panel-v1|provenance-atlas-v1)\.css(?:[?#]|$)/.test(href) || href.startsWith("https://fonts.googleapis.com/");
       assert.ok(allowed,name+" has an unexpected stylesheet after the canonical shell: "+href);
     }
   }

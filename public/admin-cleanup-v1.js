@@ -159,8 +159,8 @@
      const response=kind==="account"
        ?await api("admin-remove-customer",{user_id:id},true)
        :await api("zwm_admin_remove_record",{p_kind:kind,p_id:id,p_confirmation:phrase});
-     if(response===false)throw Error(tr("Record was already removed. Refresh the page.","السجل محذوف بالفعل. حدّث الصفحة."));
-     notify(tr("Deletion completed.","اكتمل الحذف."));
+     if(response===false)notify(tr("Record was already removed. Dashboard is refreshing.","السجل محذوف بالفعل. يجري تحديث لوحة الإدارة."));
+     else notify(tr("Deletion completed.","اكتمل الحذف."));
      if(kind==="order"){$("closeOrderModal")?.click();$("zwmDeleteOrder")?.blur();}
      if(kind==="activity"||kind==="analytics"||kind==="order")$("refreshButton")?.click();
      await load();

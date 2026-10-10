@@ -1,0 +1,69 @@
+{
+  "status": "DRAFT_UNVERIFIED_NOT_FOR_PUBLICATION",
+  "notice": "These are preliminary conservative trilingual drafts. Each requires pack or owner review before publishing. Do not automatically merge or deploy.",
+  "products": {
+    "olive-oil-soap": {
+      "nameEn": "Olive Oil Soap",
+      "descriptionEn": "An olive-oil soap for washing the hands and body. A traditional everyday cleansing product, distinct from the edible olive oils in our collection. For external use only.",
+      "descriptionAr": "صابون بزيت الزيتون لتنظيف اليدين والجسم. خيار تقليدي للعناية اليومية والنظافة، ويختلف عن زيت الزيتون المخصّص للطعام. للاستعمال الخارجي فقط.",
+      "descriptionFr": "Savon à l’huile d’olive destiné au lavage des mains et du corps. Un produit de toilette traditionnel, distinct des huiles d’olive alimentaires de notre boutique. Usage externe uniquement.",
+      "verification": "packaging_review_required"
+    },
+    "honey-soap": {
+      "nameEn": "Honey Soap",
+      "descriptionEn": "A honey-themed cleansing soap for everyday hand and body washing. Sold as a personal-care product, not as edible honey. Use externally and rinse after washing; the full formulation should be checked against the package.",
+      "descriptionAr": "صابون للعناية بالنظافة اليومية لليدين والجسم، يحمل تسمية العسل. هو منتج للعناية الشخصية وليس عسلاً صالحاً للأكل. يُستعمل خارجياً ويُشطف بعد الغسل. تُراجع التركيبة على العبوة.",
+      "descriptionFr": "Savon de toilette au miel pour le lavage quotidien des mains et du corps. Il s’agit d’un produit de soin, et non de miel alimentaire. Utiliser uniquement sur la peau et rincer. Composition exacte à vérifier sur l’emballage.",
+      "verification": "packaging_review_required"
+    },
+    "honey-vingar": {
+      "nameEn": "Honey Vinegar",
+      "descriptionEn": "Honey vinegar is a vinegar product associated with honey, intended for culinary use when confirmed as food-grade. Its tangy character can complement dressings and marinades. The exact ingredients and fermentation method require confirmation from the bottle label.",
+      "descriptionAr": "خلّ العسل منتج من فئة الخلّ يرتبط بالعسل. إذا أكدت العبوة أنه غذائي، يمكن استخدام نكهته الحامضة في التتبيلات والصلصات. يجب التأكد من المكوّنات وطريقة التحضير من الملصق.",
+      "descriptionFr": "Le vinaigre de miel appartient à la famille des vinaigres associés au miel. Lorsque son usage alimentaire est confirmé, sa saveur acidulée accompagne vinaigrettes et marinades. La composition et la méthode de fabrication restent à vérifier sur l’étiquette.",
+      "verification": "packaging_review_required"
+    },
+    "warak-enab-bil-labneh": {
+      "nameEn": "Grape Leaves with Labneh",
+      "descriptionEn": "A Lebanese mouneh specialty combining grape leaves with labneh. It brings together the character of preserved vine leaves and the creamy, tangy taste associated with strained yogurt. Check the package for the exact filling, preservation method and storage instructions.",
+      "descriptionAr": "صنف مونة لبناني يجمع ورق العنب واللبنة، بنكهة تجمع طابع الورق المحفوظ ومذاق اللبنة الكريمي الحامض. يجب مراجعة العبوة للتأكد من الحشوة الدقيقة وطريقة الحفظ وتعليمات التخزين.",
+      "descriptionFr": "Une spécialité de mouneh libanaise associant feuilles de vigne et labné. Elle réunit le caractère des feuilles de vigne conservées et la saveur crémeuse et acidulée du labné. Garniture exacte et conditions de conservation à confirmer sur l’emballage.",
+      "verification": "packaging_review_required"
+    },
+    "peanut-butter-and-molasses": {
+      "nameEn": "Peanut Butter and Molasses",
+      "descriptionEn": "A spread pairing peanut butter with molasses for a rich, nutty and sweet flavor. Enjoy it as a spread or with breakfast foods. Contains peanuts; the type of molasses, full ingredients and any added-sugar claim require label verification.",
+      "descriptionAr": "خليط قابل للدهن يجمع زبدة الفول السوداني والدبس، بمذاق غني يجمع نكهة المكسرات والحلاوة. مناسب للدهن مع أطعمة الفطور. يحتوي على الفول السوداني، ويجب التأكد من نوع الدبس والمكوّنات وأي ادعاء عن السكر من العبوة.",
+      "descriptionFr": "Une pâte à tartiner associant beurre de cacahuète et mélasse, au goût riche, doux et délicatement grillé. À déguster sur du pain ou au petit-déjeuner. Contient des arachides ; la nature de la mélasse et les éventuelles allégations sur le sucre doivent être vérifiées.",
+      "verification": "packaging_review_required"
+    },
+    "bitter-almond-oil": {
+      "nameEn": "Bitter Almond Oil",
+      "descriptionEn": "An oil labeled bitter almond oil. Its precise formulation, processing and intended application must be verified before recommending use. Do not ingest or use it in food unless the label explicitly confirms food-grade safety and appropriate instructions.",
+      "descriptionAr": "زيت يحمل اسم زيت اللوز المر. يجب التأكد من تركيبته وطريقة تصنيعه والاستعمال المخصّص له قبل تقديم أي نصائح استخدام. لا يُستهلك أو يُضاف إلى الطعام ما لم تؤكد العبوة صلاحيته الغذائية وتعليماته.",
+      "descriptionFr": "Huile commercialisée sous le nom d’huile d’amande amère. Sa composition, son procédé de fabrication et son usage prévu doivent être confirmés. Ne pas ingérer ni employer en cuisine sans indication explicite d’un usage alimentaire sûr sur l’étiquette.",
+      "verification": "packaging_review_required"
+    },
+    "termos-morr": {
+      "nameEn": "Bitter Lupini Beans",
+      "descriptionEn": "Bitter lupini beans are a legume traditionally prepared for snacking after careful processing. Unlike sweet lupini varieties, bitter beans can contain harmful alkaloids and must be properly debittered before consumption. Do not eat them raw or inadequately prepared.",
+      "descriptionAr": "الترمس المرّ من البقوليات التي تُحضّر تقليدياً للتسالي بعد معالجة دقيقة لإزالة المرارة. بخلاف الترمس الحلو، قد يحتوي على قلويدات ضارّة، لذا يجب إزالة مرارته بالطريقة الصحيحة قبل تناوله. لا يؤكل نيئاً أو غير مجهّز جيداً.",
+      "descriptionFr": "Le lupin amer est une légumineuse consommée traditionnellement après une préparation rigoureuse. Contrairement au lupin doux, il peut contenir des alcaloïdes nocifs et nécessite une désamérisation appropriée avant consommation. Ne pas consommer cru ni insuffisamment préparé.",
+      "verification": "packaging_review_required"
+    },
+    "bee-pollen": {
+      "nameEn": "Bee Pollen",
+      "descriptionEn": "Bee pollen is a bee-collected product sold in granule form, with a naturally varied appearance. Its exact floral origin and recommended use depend on the specific product. People with pollen or bee-product allergies should avoid it unless advised otherwise by a qualified professional.",
+      "descriptionAr": "حبوب لقاح النحل منتج يجمعه النحل ويباع على شكل حبيبات تختلف ألوانها طبيعياً. يتوقف مصدرها الزهري وطريقة استعمالها على المنتج المحدد. على من لديهم حساسية من حبوب اللقاح أو منتجات النحل تجنّبها إلا وفق توجيه مختص.",
+      "descriptionFr": "Le pollen d’abeille est un produit récolté par les abeilles, présenté en granulés naturellement variés. Son origine florale et ses conseils d’utilisation dépendent du produit. Les personnes allergiques au pollen ou aux produits de la ruche doivent l’éviter sans avis professionnel.",
+      "verification": "packaging_review_required"
+    },
+    "mix-and-eat-chickpeas": {
+      "nameEn": "Mix and Eat Chickpeas",
+      "descriptionEn": "A Debsy product presented as Mix and Eat Chickpeas. The name identifies chickpeas, but does not establish whether they are cooked, seasoned or intended for immediate consumption. Preparation instructions and the ingredient list must be confirmed before describing it as ready to eat.",
+      "descriptionAr": "منتج من دبسي يحمل اسم «حمص Mix and Eat». يشير الاسم إلى الحمص، لكنه لا يوضح وحده إذا كان مطبوخاً أو متبّلاً أو جاهزاً للأكل مباشرةً. يجب مراجعة المكوّنات وتعليمات التحضير قبل اعتماد وصف أدق.",
+      "descriptionFr": "Produit Debsy vendu sous le nom « Mix and Eat Chickpeas ». Son nom évoque les pois chiches, sans préciser s’ils sont cuits, assaisonnés ou prêts à consommer. La liste d’ingrédients et les instructions de préparation restent à confirmer.",
+      "verification": "packaging_review_required"
+    }
+  }
+}

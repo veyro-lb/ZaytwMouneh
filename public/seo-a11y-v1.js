@@ -7,7 +7,7 @@ var ORIGIN="https://zaytwmouneh.com";
 var LOCALE_KEY="zwm-locale-v3";
 var LANG_KEY="zwm-lang-v2";
 var FR_KEY="zwm:french:v1";
-var DEFAULT_IMAGE=ORIGIN+"//assets/harvest-2026/1l.webp";
+var DEFAULT_IMAGE=ORIGIN+"/assets/harvest-2026/1l.webp";
 var INDEXABLE={"/":1,"/shop":1,"/gift":1,"/recipes":1,"/about":1,"/contact":1,"/wholesale":1,"/privacy":1,"/terms":1};
 var CLEAN_ALIASES={
   "/index.html":"/","/index":"/",

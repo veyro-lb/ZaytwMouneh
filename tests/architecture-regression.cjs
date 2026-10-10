@@ -35,7 +35,7 @@ for(const name of htmlFiles){
     // Reject all other unrecognized CSS additions after the canonical stylesheet.
     for(const style of styles.slice(shellIndex+1)){
       const href=style.match(/href=["']([^"']+)/i)?.[1]||"";
-      const allowed=/(?:^|\/)(?:mouneh-decor-v1|shop-extras-v1)\.css(?:[?#]|$)/.test(href) || href.startsWith("https://fonts.googleapis.com/");
+      const allowed=/(?:^|\/)(?:mouneh-decor-v1|shop-extras-v1|about-story-panel-v1|provenance-atlas-v1)\.css(?:[?#]|$)/.test(href) || href.startsWith("https://fonts.googleapis.com/");
       assert.ok(allowed,name+" has an unexpected stylesheet after the canonical shell: "+href);
     }
   }
@@ -50,9 +50,13 @@ for(const name of ["product.html","checkout.html","order.html"]){
   const html=read("public/"+name);
   for(const route of ["/terms","/privacy","/returns","/contact"])assert.ok(html.includes('href="'+route+'"'),name+" missing "+route);
 }
+// The runtime URL has its own asset cache pin (distinct from release.json).
+// Ensure it is versioned and consistent across customer entry pages.
+const homeRuntimePin=read("public/index.html").match(/site-runtime-v9\.js\?v=(\d{8}-[a-z0-9-]+)/)?.[1];
+assert.ok(homeRuntimePin,"homepage runtime must carry a versioned cache token");
 for(const name of ["index.html","shop.html","account.html","checkout.html","product.html","returns.html","wholesale.html"]){
   const html=read("public/"+name);
-  if(html.includes("site-runtime-v9.js"))assert.ok(html.includes("site-runtime-v9.js?v="+release),name+" runtime cache token drift");
+  if(html.includes("site-runtime-v9.js"))assert.ok(html.includes("site-runtime-v9.js?v="+homeRuntimePin),name+" runtime cache token drift");
   if(html.includes("mouneh-rewards-v8.js"))assert.ok(html.includes("mouneh-rewards-v8.js?v="+release),name+" rewards cache token drift");
 }
 const runtime=read("public/site-runtime-v9.js");

@@ -66,9 +66,9 @@ assert(!conversion.includes("injectAccountReorder();modalLink()"),"Quick View se
 // The public A–Z directory is HTML-first, so crawlers can find product pages without shop JS.
 const directory=read("catalogue.html");
 assert(/<meta name="robots" content="index,follow/.test(directory),"A–Z directory must be indexable");
-assert.equal(count(directory,/href="\\/product\\//g),331,"A–Z directory should link to 331 public product records (one owner-hidden)");
-assert.equal(count(directory,/href="\\/ar\\/product\\//g),331,"Arabic product links incomplete");
-assert.equal(count(directory,/href="\\/fr\\/product\\//g),331,"French product links incomplete");
+assert.equal(count(directory,/href="[/]product[/]/g),331,"A–Z directory should link to 331 public product records (one owner-hidden)");
+assert.equal(count(directory,/href="[/]ar[/]product[/]/g),331,"Arabic product links incomplete");
+assert.equal(count(directory,/href="[/]fr[/]product[/]/g),331,"French product links incomplete");
 assert(!directory.includes('href="/product/sekar-nabet"'),"hidden product must not be promoted in directory");
 assert(read("shop.html").includes('href="/catalogue"'),"shop must link to A–Z product directory");
 assert(fs.existsSync(path.join(process.cwd(),"docs/seo-product-audit-2026-10-10.csv")),"332-product SEO audit missing");

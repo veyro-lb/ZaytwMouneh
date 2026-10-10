@@ -1395,6 +1395,21 @@ function filteredProducts(){
   return rows.map(x=>x.p);
 }
 
+// Show the actual per-product catalogue description, not generic category claims.
+function productDescriptionFor(p){
+  if(!p)return "";
+  // An owner-supplied translation wins; do not silently replace Arabic/French
+  // with English or the generic “What it is / Use it for” template.
+  const code=lang==="ar"?"Ar":lang==="fr"?"Fr":"En";
+  const fields=["description"+code,"details"+code];
+  if(code==="En")fields.push("description","details");
+  for(const key of fields){
+    const value=p[key];
+    if(typeof value==="string"&&value.trim())return value.replace(/\\s+/g," ").trim();
+  }
+  return "";
+}
+
 function productPriceSummary(p){
   const prices=p.variants.map(v=>Number(v.price));
   const min=Math.min(...prices);
@@ -1411,13 +1426,11 @@ function renderProducts(){
   const resultCount=$("#resultCount");if(resultCount)resultCount.textContent=filtered.length;
 
   grid.innerHTML=shown.map((p,index)=>{
-    const info=infoFor(p);
-    const badges=badgesFor(p);
+    const summary=productDescriptionFor(p);
     const isFav=favorites.has(p.id);
     const selected=cardVariantFor(p);
     const q=qtyFor("card:"+p.id);
     const ps=productPriceSummary(p);
-    const listingNote=lang==="en"?repeatedListingNote(p):"";
     const availability=productAvailability(p);
     const canOrder=availability==="in_stock";
     const variants=viewVariants(p);
@@ -1433,10 +1446,10 @@ function renderProducts(){
           <button class="product-view" type="button" data-view="${escapeHtml(p.id)}" aria-label="${escapeHtml(t.view+" "+currentName(p))}">${uiIcon("eye")}</button>
         </div>
       </div>
-      <div class="product-badges">${badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("")}<span class="availability-chip availability-${availability}">${escapeHtml(availabilityLabel(p))}</span></div>
-      <p class="product-category">${escapeHtml(categoryName(p.category))}</p>\n      ${originFor(p)?`<p class="product-origin">${escapeHtml(originFor(p))}</p>`:""}\n      ${listingNote?`<p class="product-listing-note">${escapeHtml(listingNote)}</p>`:""}\n      <h3 class="product-name"><a href="${escapeHtml((lang==="ar"?"/ar":lang==="fr"?"/fr":"")+quickViewProductUrl(p.id))}" aria-label="${escapeHtml(currentName(p))}">${escapeHtml(currentName(p))}</a></h3>
-      <p class="product-description"><strong>${escapeHtml(t.what)}:</strong> ${escapeHtml(info.what)}</p>
-      <p class="product-use"><strong>${escapeHtml(t.use)}:</strong> ${escapeHtml(info.use)}</p>
+      ${availability!=="in_stock"?`<div class="zwm-card-status"><span class="availability-chip availability-${availability}">${escapeHtml(availabilityLabel(p))}</span></div>`:""}
+      <p class="product-category">${escapeHtml(categoryName(p.category))}</p>
+      <h3 class="product-name"><a href="${escapeHtml((lang==="ar"?"/ar":lang==="fr"?"/fr":"")+quickViewProductUrl(p.id))}" aria-label="${escapeHtml(currentName(p))}">${escapeHtml(currentName(p))}</a></h3>
+      ${summary?`<p class="zwm-card-summary" title="${escapeHtml(summary)}">${escapeHtml(summary)}</p>`:""}
       <div class="product-price-row">
         <div class="product-price"><small>${p.variants.length>1&&p.id!=="extra-virgin-olive-oil"?escapeHtml(t.from):""}</small><strong class="money">${escapeHtml(p.id==="extra-virgin-olive-oil"?viewPrice(selected):money(ps.min))}</strong></div>
         <div class="product-size-summary">${p.variants.length>1?`${variants.length} ${escapeHtml(t.sizeOptions)}`:escapeHtml(currentSize(selected))}</div>
@@ -1607,7 +1620,7 @@ function syncProductUrl(id){
   history.replaceState({product:id||null},"",url.pathname+url.search+url.hash);
 }
 function quickViewRequiredNodes(){
-  const ids=["productModal","cartBackdrop","productModalMark","productModalCategory","productModalTitle","productModalOriginal","modalBadges","relatedProducts","productModalDescription","productModalUse","nutritionPanel","productNutrition","modalPrice","productModalQty","productModalAdd","variantOptions","productModalClose"];
+  const ids=["productModal","cartBackdrop","productModalMark","productModalCategory","productModalTitle","modalBadges","relatedProducts","productModalDescription","nutritionPanel","productNutrition","modalPrice","productModalQty","productModalAdd","variantOptions","productModalClose"];
   const missing=ids.filter(id=>!document.getElementById(id));
   return {missing,modal:document.getElementById("productModal"),backdrop:document.getElementById("cartBackdrop")};
 }
@@ -1692,20 +1705,18 @@ function renderModal(productId,variantId){
   if(!v)return false;
   currentModalProduct=p;
   currentModalVariant=v;
-  const t=UI[lang],info=infoFor(p),facts=verifiedProductFacts(p),badges=badgesFor(p);
+  const t=UI[lang],summary=productDescriptionFor(p),facts=verifiedProductFacts(p).filter(item=>item.key!=="details"&&item.key!=="origin"),availability=productAvailability(p);
   $("#productModalMark").innerHTML=productVisualMarkup(p,"product-modal-image",v.id);
   $("#productModalCategory").textContent=categoryName(p.category);
   $("#productModalTitle").textContent=currentName(p);
-  $("#productModalOriginal").textContent=lang==="en"&&normalize(p.nameEn)!==normalize(p.original)?`Catalogue name: ${p.original}`:"";
-  $("#modalBadges").innerHTML=badges.map(b=>`<span>${escapeHtml(b)}</span>`).join("");
+  $("#modalBadges").innerHTML=availability!=="in_stock"?`<span class="availability-chip availability-${availability}">${escapeHtml(availabilityLabel(p))}</span>`:"";
   const fav=$("#modalFavorite");
   if(fav){const saved=favorites.has(p.id);fav.classList.toggle("is-active",saved);fav.setAttribute("aria-pressed",String(saved));fav.innerHTML=`${uiIcon("heart",saved)} <span id="modalFavoriteLabel">${escapeHtml(saved?EXTRA_UI[lang].favorited:EXTRA_UI[lang].favorite)}</span>`;}
   if($("#relatedLabel"))$("#relatedLabel").textContent=EXTRA_UI[lang].related;
-  const origin=$("#productOrigin");if(origin){origin.textContent="";origin.hidden=true;}
+  const origin=$("#productOrigin");if(origin){const value=originFor(p);origin.textContent=value;origin.hidden=!value;}
   $("#relatedProducts").innerHTML=PRODUCTS_DATA.filter(x=>x.category===p.category&&x.id!==p.id).slice(0,4).map(x=>`<button type="button" data-related="${escapeHtml(x.id)}"><span>${escapeHtml(currentName(x))}</span><strong>${money(productPriceSummary(x).min)}</strong></button>`).join("");
   $$("[data-related]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.related,btn)));
-  $("#productModalDescription").textContent=info.what;
-  $("#productModalUse").textContent=info.use;
+  $("#productModalDescription").textContent=summary||currentName(p);
   $("#nutritionPanel").hidden=!facts.length;
   $("#productNutrition").textContent=facts.map(item=>`${item.label}: ${item.value}`).join(" · ");
   $("#modalPrice").textContent=viewPrice(v);

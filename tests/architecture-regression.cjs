@@ -52,7 +52,7 @@ for(const name of ["product.html","checkout.html","order.html"]){
 }
 // The runtime URL has its own asset cache pin (distinct from release.json).
 // Ensure it is versioned and consistent across customer entry pages.
-const homeRuntimePin=read("public/index.html").match(/site-runtime-v9\\.js\\?v=(\\d{8}-[a-z0-9-]+)/)?.[1];
+const homeRuntimePin=read("public/index.html").match(/site-runtime-v9\.js\?v=(\d{8}-[a-z0-9-]+)/)?.[1];
 assert.ok(homeRuntimePin,"homepage runtime must carry a versioned cache token");
 for(const name of ["index.html","shop.html","account.html","checkout.html","product.html","returns.html","wholesale.html"]){
   const html=read("public/"+name);

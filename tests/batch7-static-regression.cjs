@@ -63,7 +63,18 @@ assert(!conversion.includes("View full product page"),"Quick View full-product C
 assert(conversion.includes('if(a)a.remove()'),"Quick View legacy full-product CTA cleanup missing");
 assert(!conversion.includes("injectAccountReorder();modalLink()"),"Quick View self-triggering body observer regression returned");
 
+// The public A–Z directory is HTML-first, so crawlers can find product pages without shop JS.
+const directory=read("catalogue.html");
+assert(/<meta name="robots" content="index,follow/.test(directory),"A–Z directory must be indexable");
+assert.equal(count(directory,/href="\\/product\\//g),331,"A–Z directory should link to 331 public product records (one owner-hidden)");
+assert.equal(count(directory,/href="\\/ar\\/product\\//g),331,"Arabic product links incomplete");
+assert.equal(count(directory,/href="\\/fr\\/product\\//g),331,"French product links incomplete");
+assert(!directory.includes('href="/product/sekar-nabet"'),"hidden product must not be promoted in directory");
+assert(read("shop.html").includes('href="/catalogue"'),"shop must link to A–Z product directory");
+assert(fs.existsSync(path.join(process.cwd(),"docs/seo-product-audit-2026-10-10.csv")),"332-product SEO audit missing");
+
 const app=read("app.js");
+assert(app.includes('<h3 class="product-name"><a href="'),"product card titles must be crawlable links");
 assert(app.includes('function money(n){const value=`$${Number(n).toFixed(2)}`'),"Storefront prices must keep the dollar symbol");
 const appLines=app.split(/\r?\n/).map(line=>line.trim());
 assert(!appLines.some(line=>/^\$\("\[data-modal-variant\]"\)\.forEach/.test(line)),"Quick View single-element forEach crash returned");

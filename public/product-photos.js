@@ -153,10 +153,10 @@
     "quality": "original-supplied"
   },
   "extra-virgin-olive-oil": {
-    "url": "assets/products/originals/extra-virgin-olive-oil.jpg",
-    "width": 1024,
-    "height": 1536,
-    "quality": "original-supplied"
+    "url": "/assets/harvest-2026/1l.webp",
+    "width": 1122,
+    "height": 1402,
+    "quality": "2026-owner-supplied"
   },
   "aadas-aarid": {
     "url": "assets/products/originals/aadas-aarid.jpg",

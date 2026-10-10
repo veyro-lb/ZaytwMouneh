@@ -7,7 +7,7 @@ var ORIGIN="https://zaytwmouneh.com";
 var LOCALE_KEY="zwm-locale-v3";
 var LANG_KEY="zwm-lang-v2";
 var FR_KEY="zwm:french:v1";
-var DEFAULT_IMAGE=ORIGIN+"/assets/products/originals/extra-virgin-olive-oil.jpg";
+var DEFAULT_IMAGE=ORIGIN+"//assets/harvest-2026/1l.webp";
 var INDEXABLE={"/":1,"/shop":1,"/gift":1,"/recipes":1,"/about":1,"/contact":1,"/wholesale":1,"/privacy":1,"/terms":1};
 var CLEAN_ALIASES={
   "/index.html":"/","/index":"/",
@@ -100,8 +100,8 @@ function updateSeo(){
   upsertMeta('meta[property="og:locale"]',{property:"og:locale",content:locale==="ar"?"ar_LB":locale==="fr"?"fr_LB":"en_LB"});
   if(basePath.indexOf("/product/")!==0){
   upsertMeta('meta[property="og:image"]',{property:"og:image",content:DEFAULT_IMAGE});
-  upsertMeta('meta[property="og:image:width"]',{property:"og:image:width",content:"1024"});
-  upsertMeta('meta[property="og:image:height"]',{property:"og:image:height",content:"1536"});
+  upsertMeta('meta[property="og:image:width"]',{property:"og:image:width",content:"1122"});
+  upsertMeta('meta[property="og:image:height"]',{property:"og:image:height",content:"1402"});
   upsertMeta('meta[property="og:image:alt"]',{property:"og:image:alt",content:"Zayt w Mouneh Lebanese pantry"});
   upsertMeta('meta[name="twitter:card"]',{name:"twitter:card",content:"summary_large_image"});
   upsertMeta('meta[name="twitter:title"]',{name:"twitter:title",content:title});

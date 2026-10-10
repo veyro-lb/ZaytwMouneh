@@ -3275,14 +3275,17 @@
   async function hideCurrentProduct() {
     const id=state.editingId;if(!id)return;
     const p=state.products.find(x=>x.id===id);if(!p)return;
-    await saveProductRevision(p,"hide");
-    const existing=state.overrides.get(id);
-    const payload={...clone(p),status:"hidden"};
-    delete payload.__status;delete payload.__source;delete payload.__updated;
-    const {error}=await state.client.from(cfg.tables.products).upsert({product_id:id,action:"upsert",payload,updated_at:new Date().toISOString(),updated_by:state.user.id},{onConflict:"product_id"});
-    if(error){toast(error.message,"error");return;}
-    await logActivity("hide_product","product",id,{});
-    closeProductEditor();toast("Product hidden from customers.");await refreshAll();
+    try{
+      if(!await ensureOwnerFresh())throw Error("Owner session unavailable. Sign in again.");
+      await saveProductRevision(p,"hide");
+      const payload={...clone(p),status:"hidden"};
+      delete payload.__status;delete payload.__source;delete payload.__updated;
+      const {error}=await state.client.from(cfg.tables.products).upsert({product_id:id,action:"upsert",payload,updated_at:new Date().toISOString(),updated_by:state.user.id},{onConflict:"product_id"});
+      if(error)throw error;
+      await logActivity("hide_product","product",id,{}).catch(err=>console.warn("Activity logging failed",err));
+      closeProductEditor();toast("Product hidden from customers.");
+      await refreshAll().catch(err=>console.warn("Refresh after hiding failed",err));
+    }catch(err){toast(err?.message||"Could not hide product. Check your connection and retry.","error");}
   }
 
   async function restoreCurrentProduct() {
@@ -3290,10 +3293,14 @@
     if(!baseById.has(id)){
       toast("New dashboard products cannot be restored to a base version.","error");return;
     }
-    const {error}=await state.client.from(cfg.tables.products).delete().eq("product_id",id);
-    if(error){toast(error.message,"error");return;}
-    await logActivity("restore_base_product","product",id,{});
-    closeProductEditor();toast("Base catalogue version restored.");await refreshAll();
+    try{
+      if(!await ensureOwnerFresh())throw Error("Owner session unavailable. Sign in again.");
+      const {error}=await state.client.from(cfg.tables.products).delete().eq("product_id",id);
+      if(error)throw error;
+      await logActivity("restore_base_product","product",id,{}).catch(err=>console.warn("Activity logging failed",err));
+      closeProductEditor();toast("Base catalogue version restored.");
+      await refreshAll().catch(err=>console.warn("Refresh after restoring failed",err));
+    }catch(err){toast(err?.message||"Could not restore product. Check your connection and retry.","error");}
   }
 
   async function deleteCurrentProduct() {

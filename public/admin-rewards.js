@@ -53,6 +53,7 @@
     }catch{return "";}
   }
   async function rpc(action,p={},retry=true){
+    if(typeof window.ZWM_ENSURE_OWNER_FRESH==="function" && !await window.ZWM_ENSURE_OWNER_FRESH())throw new Error(tr("Owner session unavailable. Sign in again.","جلسة المالك غير متاحة. سجّل الدخول مجدداً."));
     const s=session();
     if(!s)throw new Error(tr("Owner session required.","يلزم تسجيل دخول المالك."));
     const r=await fetch(String(cfg.supabaseUrl||"").replace(/\/$/,"")+"/rest/v1/rpc/mouneh_api",{
@@ -71,6 +72,7 @@
   }
 
   async function ownerFunction(name,payload={},retry=true){
+    if(typeof window.ZWM_ENSURE_OWNER_FRESH==="function" && !await window.ZWM_ENSURE_OWNER_FRESH())throw new Error(tr("Owner session unavailable. Sign in again.","جلسة المالك غير متاحة. سجّل الدخول مجدداً."));
     const s=session();
     if(!s)throw new Error(tr("Owner session required.","يلزم تسجيل دخول المالك."));
     const endpoint=String(cfg.supabaseUrl||"").replace(/\/$/,"")+"/functions/v1/"+name;

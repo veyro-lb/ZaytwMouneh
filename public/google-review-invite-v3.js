@@ -24,7 +24,6 @@
       later: "Maybe later", close: "Close review invitation",
       footerTitle: "How was your Zayt w Mouneh experience?",
       footerHint: "Tap a star to share an honest Google review.",
-      starNote: "You'll choose your rating again on Google.",
       starLabel: "star", googleRating: "Google Rating"
     },
     ar: {
@@ -33,7 +32,6 @@
       later: "ربما لاحقاً", close: "إغلاق دعوة التقييم",
       footerTitle: "كيف كانت تجربتك مع زيت ومونة؟",
       footerHint: "اختار عدد النجوم وشارك تقييمك الصادق على Google.",
-      starNote: "ستختار تقييمك من جديد على Google.",
       starLabel: "نجمة", googleRating: "تقييم Google"
     },
     fr: {
@@ -42,7 +40,6 @@
       later: "Peut-être plus tard", close: "Fermer l'invitation",
       footerTitle: "Comment s'est passée votre expérience chez Zayt w Mouneh ?",
       footerHint: "Touchez une étoile pour partager un avis sincère sur Google.",
-      starNote: "Vous choisirez à nouveau votre note sur Google.",
       starLabel: "étoile", googleRating: "Note Google"
     }
   };
@@ -90,7 +87,6 @@
     return '<div class="zwm-gr-stars" role="group" aria-label="' + t.footerHint + '" dir="ltr">' +
       stars + '</div>';
   }
-  function starInfo() { return '<small class="zwm-gr-star-note">' + tr().starNote + '</small>'; }
   function paintStars(group, rating) {
     group.querySelectorAll("[data-gr-star]").forEach(function (star) {
       star.classList.toggle("is-active", Number(star.dataset.grStar) <= rating);
@@ -114,10 +110,10 @@
   }
   function footerMarkup() {
     var t = tr();
-    return '<span class="zwm-gr-emblem" aria-hidden="true">G</span>' +
+    return '<span class="zwm-gr-emblem" aria-hidden="true"><img src="/assets/logo.svg?v=20261002-1005" alt="" width="52" height="52" decoding="async"></span>' +
       '<span class="zwm-gr-footer-copy"><strong>' + t.footerTitle +
       '</strong><small>' + t.footerHint + '</small></span>' +
-      '<span class="zwm-gr-footer-choice">' + starLinks() + starInfo() + '</span>';
+      '<span class="zwm-gr-footer-choice">' + starLinks() + '</span>';
   }
   function showFooter() {
     if (!footer) {
@@ -139,10 +135,10 @@
   function popupMarkup() {
     var t = tr();
     return '<button type="button" class="zwm-gr-close" data-gr-close aria-label="' + t.close + '">×</button>' +
-      '<div class="zwm-gr-kicker"><span class="zwm-gr-emblem" aria-hidden="true">G</span><span>' + t.eyebrow + '</span></div>' +
+      '<div class="zwm-gr-kicker"><span class="zwm-gr-emblem" aria-hidden="true"><img src="/assets/logo.svg?v=20261002-1005" alt="" width="52" height="52" decoding="async"></span><span>' + t.eyebrow + '</span></div>' +
       '<h2 id="zwmGoogleReviewTitle">' + t.title + '</h2>' +
       '<p id="zwmGoogleReviewDescription">' + t.description + '</p>' +
-      '<div class="zwm-gr-popup-choice">' + starLinks() + starInfo() + '</div>' +
+      '<div class="zwm-gr-popup-choice">' + starLinks() + '</div>' +
       '<button type="button" class="zwm-gr-later" data-gr-close>' + t.later + '</button>';
   }
   function close(days) {

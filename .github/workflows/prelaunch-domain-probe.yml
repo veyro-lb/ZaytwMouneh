@@ -18,7 +18,7 @@ jobs:
         run: |
           import urllib.error
           import urllib.request
-          for path, marker in [('/', 'id="main-content"'), ('/shop', 'id="productGrid"')]:
+          for path, marker in [('/', 'data-page="home"'), ('/shop', 'id="productGrid"')]:
               url = 'https://zaytwmouneh.com' + path
               request = urllib.request.Request(url, headers={
                   'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',

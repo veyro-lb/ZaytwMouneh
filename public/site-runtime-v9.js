@@ -580,7 +580,7 @@
     const rev=current.searchParams.get("rev");
     if(page==="terms"){
       const rewards=document.getElementById("terms-rewards");
-      const complete=!!(rewards&&rewards.querySelector(".legal-rule-grid")&&rewards.querySelector(".legal-reward-table")&&/What counts toward points/i.test(rewards.textContent||""));
+      const complete=!!(rewards&&rewards.querySelector(".legal-rule-grid")&&rewards.querySelector(".legal-reward-table"));
       if(!complete){
         if(rev!=="20261004-legal7"){
           location.replace("/terms-and-rewards.html?rev=20261004-legal7#terms-rewards");
@@ -593,7 +593,7 @@
     }
     if(page==="privacy"){
       const rewards=document.getElementById("privacy-rewards");
-      const complete=!!(rewards&&/Mouneh Points data and automated calculations/i.test(rewards.textContent||""));
+      const complete=!!(rewards&&rewards.querySelector(".legal-data-table"));
       if(!complete){
         if(rev!=="20261004-legal7"){
           location.replace("/privacy-and-data.html?rev=20261004-legal7#privacy-rewards");

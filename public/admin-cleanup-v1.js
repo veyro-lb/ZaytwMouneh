@@ -23,11 +23,26 @@
    const s=session();if(!s?.access_token)throw Error(tr("Sign in again first.","سجّل الدخول مجدداً."));
    const base=String(cfg.supabaseUrl||"").replace(/\/$/,"");
    if(!base)throw Error("Connection unavailable");
-   const r=await fetch(base+(edge?"/functions/v1/":"/rest/v1/rpc/")+path,{
-     method:"POST",headers:{apikey:cfg.supabasePublishableKey,
-       Authorization:"Bearer "+s.access_token,"Content-Type":"application/json"},
-     body:JSON.stringify(body||{})
-   });
+   const url=base+(edge?"/functions/v1/":"/rest/v1/rpc/")+path;
+   let r;
+   for(let attempt=0;attempt<(edge?1:2);attempt++){
+     const controller=new AbortController();
+     const timer=setTimeout(()=>controller.abort(),18000);
+     try{
+       r=await fetch(url,{
+         method:"POST",mode:"cors",cache:"no-store",signal:controller.signal,
+         headers:{apikey:cfg.supabasePublishableKey,
+           Authorization:"Bearer "+s.access_token,"Content-Type":"application/json"},
+         body:JSON.stringify(body||{})
+       });
+       break;
+     }catch(err){
+       if(attempt===(edge?0:1)){
+         throw Error(tr("Could not reach Supabase. Check your internet connection and try again; sign in again if the problem continues.",
+           "تعذّر الاتصال بقاعدة البيانات. تحقّق من الإنترنت وأعد المحاولة ثم سجّل الدخول مجدداً إذا استمرت المشكلة."));
+       }
+     }finally{clearTimeout(timer);}
+   }
    const d=await r.json().catch(()=>({}));
    if(!r.ok||edge&&d.ok===false)throw Error(d.error||d.message||d.details||tr("Operation failed.","تعذّر تنفيذ العملية."));
    return d;

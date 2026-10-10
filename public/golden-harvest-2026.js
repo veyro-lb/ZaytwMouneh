@@ -86,8 +86,8 @@
   function esc(value){return String(value==null?"":value).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
   function formatUSD(value){return new Intl.NumberFormat(language()==="fr"?"fr-LB":"en-LB",{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}).format(value)}
   function reduceMotion(){return !!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)}
-  function getFlag(){try{return localStorage.getItem(POPUP_KEY)==="1"}catch(e){return Boolean(window.__ZWM_GH_POPUP_SEEN__)}}
-  function setFlag(){try{localStorage.setItem(POPUP_KEY,"1")}catch(e){window.__ZWM_GH_POPUP_SEEN__=true}}
+  function getFlag(){try{return sessionStorage.getItem(POPUP_KEY)==="1"}catch(e){return Boolean(window.__ZWM_GH_POPUP_SEEN__)}}
+  function setFlag(){try{sessionStorage.setItem(POPUP_KEY,"1")}catch(e){window.__ZWM_GH_POPUP_SEEN__=true}}
   function catalogueProduct(){try{return typeof PRODUCTS_DATA!=="undefined"&&Array.isArray(PRODUCTS_DATA)?PRODUCTS_DATA.find(function(p){return p.id===OIL_ID}):null}catch(e){return null}}
   function variantFor(size){
     var p=catalogueProduct();

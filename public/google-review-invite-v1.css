@@ -1,0 +1,27 @@
+/* Small, non-intrusive Google review invitation; no fabricated stars or scores. */
+.zwm-gr-footer{margin-top:18px;max-width:620px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:15px 16px;border:1px solid rgba(200,158,75,.4);border-radius:16px;background:rgba(247,239,211,.075);color:inherit}
+.zwm-gr-emblem{flex:none;display:grid;place-items:center;width:39px;height:39px;border-radius:13px;background:#fff;color:#4285f4;font-family:Arial,sans-serif;font-size:24px;font-weight:800;box-shadow:0 3px 12px rgba(0,0,0,.12)}
+.zwm-gr-footer-copy{flex:1 1 185px;min-width:0;display:grid;gap:3px}
+.zwm-gr-footer-copy strong{font-size:14px;line-height:1.35;color:inherit}
+.zwm-gr-footer-copy small{font-size:12px;line-height:1.55;opacity:.86;color:inherit}
+.zwm-gr-footer-action{flex:none;display:inline-flex;justify-content:center;align-items:center;padding:10px 14px;border-radius:999px;border:1px solid rgba(198,158,82,.55);background:#e8ca84;color:#193922!important;text-decoration:none!important;font-weight:750;font-size:12px;line-height:1.4;white-space:normal;text-align:center}
+.zwm-gr-footer-action:hover,.zwm-gr-footer-action:focus-visible{background:#f5daa2;outline-offset:3px}
+.zwm-gr-invite[hidden]{display:none!important}
+.zwm-gr-invite{position:fixed;z-index:8700;right:max(18px,env(safe-area-inset-right));bottom:max(22px,env(safe-area-inset-bottom));box-sizing:border-box;width:min(410px,calc(100vw - 36px));max-height:calc(100dvh - 42px);overflow-y:auto;padding:26px 26px 20px;border:1px solid #d7b36d;border-top:4px solid #b9954e;border-radius:23px;background:#fffaf0;color:#193e2d;box-shadow:0 20px 65px rgba(20,39,27,.23);font-family:inherit;animation:zwm-gr-enter .36s ease-out both;text-align:start}
+.zwm-gr-invite *{box-sizing:border-box}
+.zwm-gr-kicker{display:flex;align-items:center;gap:11px;padding-inline-end:30px;color:#8f6532;font-size:10px;font-weight:800;letter-spacing:.11em;line-height:1.4}
+.zwm-gr-kicker .zwm-gr-emblem{width:34px;height:34px;font-size:21px}
+.zwm-gr-invite h2{margin:17px 0 9px;color:#16472c;font-family:"DM Serif Display",Georgia,serif;font-size:clamp(26px,3vw,31px);font-weight:500;line-height:1.2}
+.zwm-gr-invite[dir=rtl] h2{font-family:"Noto Kufi Arabic",sans-serif;font-size:24px;font-weight:700;line-height:1.5}
+.zwm-gr-invite p{margin:0 0 19px;font-size:14px;line-height:1.75;color:#476050}
+.zwm-gr-action{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;padding:12px 16px;border:0;border-radius:12px;background:#225437;color:#fff!important;font-family:inherit;font-size:14px;font-weight:750;line-height:1.4;text-decoration:none!important;text-align:center}
+.zwm-gr-action:hover,.zwm-gr-action:focus-visible{background:#113b25;outline:2px solid #d4ab59;outline-offset:3px}
+.zwm-gr-later{display:block;width:100%;min-height:39px;margin-top:7px;padding:8px 14px;border:0;background:transparent;color:#65736b;cursor:pointer;font-family:inherit;font-weight:600;font-size:13px}
+.zwm-gr-later:hover,.zwm-gr-later:focus-visible{text-decoration:underline}
+.zwm-gr-close{position:absolute;top:12px;right:12px;display:grid;place-items:center;width:36px;height:36px;padding:0;border:0;border-radius:50%;background:rgba(29,80,52,.07);color:#33503e;cursor:pointer;font-family:inherit;font-size:25px;line-height:1}
+.zwm-gr-close:hover,.zwm-gr-close:focus-visible{background:rgba(29,80,52,.16);outline-offset:2px}
+.zwm-gr-invite[dir=rtl] .zwm-gr-close{right:auto;left:12px}
+.zwm-gr-invite[dir=rtl] .zwm-gr-kicker{letter-spacing:0}
+@keyframes zwm-gr-enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:600px){.zwm-gr-footer{padding:13px;gap:10px}.zwm-gr-footer-action{width:100%;min-height:42px}.zwm-gr-invite{right:0;left:0;bottom:0;width:100%;max-height:calc(100dvh - 18px);padding:22px 21px max(13px,env(safe-area-inset-bottom));border-radius:20px 20px 0 0;border-inline:0;border-bottom:0}.zwm-gr-invite h2{font-size:27px}.zwm-gr-invite[dir=rtl] h2{font-size:22px}.zwm-gr-invite p{font-size:13.5px}}
+@media(prefers-reduced-motion:reduce){.zwm-gr-invite{animation:none!important}}

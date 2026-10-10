@@ -184,8 +184,19 @@ function setAlternate(hreflang,href){
 }
 function updateSeo(){
  var p=state.product,name=productName(p),variants=p.variants||[],min=variants.length?Math.min.apply(null,variants.map(function(v){return Number(v.price)||0})):0;
- var title=name+" | Zayt w Mouneh";
- var desc=state.locale==="ar"?"تسوّق "+name+" من زيت ومونة. الأحجام والأسعار الحالية من الكتالوج.":state.locale==="fr"?"Achetez "+name+" chez Zayt w Mouneh. Formats et prix actuels du catalogue.":"Shop "+name+" at Zayt w Mouneh. Current catalogue sizes and prices.";
+ // Build relevant product-specific search copy from verified catalogue fields only.
+ // Do not claim an origin, ingredient, health benefit or certification without product evidence.
+ name=String(name||"").replace(/[\\u202a-\\u202e\\u2066-\\u2069]/g,"").trim();
+ var category=String(p.category||"Pantry product");
+ var categoryAr={"Olive Oil":"زيت الزيتون","Oils":"زيوت","Mouneh":"مونة لبنانية","Olives":"زيتون","Pickles":"مخللات","Honey":"عسل","Herbs":"أعشاب","Spices":"بهارات وتوابل","Nuts + Seeds":"مكسرات وبذور","Grains":"حبوب","Pulses":"بقوليات","Flour":"طحين","Debsy Carob":"خروب ودبس","Molasses":"دبس","Dates":"تمر","Vinegars":"خل","Dried Foods":"منتجات مجففة","Condiments":"مواد غذائية","Distillates + Syrups":"مقطرات وشراب","Soap":"صابون","Sweets + Candy":"حلويات"}[category]||category;
+ var categoryFr={"Olive Oil":"huile d'olive","Oils":"huiles","Mouneh":"mouneh libanaise","Olives":"olives","Pickles":"pickles","Honey":"miel","Herbs":"herbes","Spices":"épices","Nuts + Seeds":"noix et graines","Grains":"céréales","Pulses":"légumineuses","Flour":"farines","Debsy Carob":"caroube","Molasses":"mélasses","Dates":"dattes","Vinegars":"vinaigres","Dried Foods":"produits séchés","Condiments":"condiments","Distillates + Syrups":"sirops et distillats","Soap":"savons","Sweets + Candy":"confiseries"}[category]||category;
+ var sizes=variants.map(function(v){return String(state.locale==="ar"?(v.sizeAr||v.sizeEn):state.locale==="fr"?(v.sizeFr||v.sizeEn):(v.sizeEn||"")).trim()}).filter(Boolean).join(state.locale==="ar"?"، ":", ");
+ var verifiedDetails=valueFor(p,"details").replace(/\\s+/g," ").trim();
+ var title=name+" | "+(state.locale==="ar"?categoryAr:state.locale==="fr"?categoryFr:category)+" | Zayt w Mouneh";
+ var intro=state.locale==="ar"?"تعرّف إلى "+name+" ضمن "+categoryAr+" لدى زيت ومونة في لبنان.":state.locale==="fr"?"Découvrez "+name+" dans la catégorie "+categoryFr+" chez Zayt w Mouneh au Liban.":"Explore "+name+" in "+category+" at Zayt w Mouneh in Lebanon.";
+ var desc=verifiedDetails?(intro+" "+verifiedDetails).slice(0,240):intro;
+ if(sizes)desc+=state.locale==="ar"?" الأحجام: "+sizes+".":state.locale==="fr"?" Formats : "+sizes+".":" Available sizes: "+sizes+".";
+ desc=desc.slice(0,300);
  document.title=title;
  var md=qs('meta[name="description"]');if(md)md.content=desc;
  var robots=qs('meta[name="robots"]');if(robots)robots.content="index,follow,max-image-preview:large";
@@ -204,7 +215,7 @@ function updateSeo(){
  setMeta('meta[name="twitter:card"]',{name:"twitter:card",content:"summary_large_image"});
  setMeta('meta[name="twitter:title"]',{name:"twitter:title",content:title});
  setMeta('meta[name="twitter:description"]',{name:"twitter:description",content:desc});
- var ld={"@context":"https://schema.org","@type":"Product","name":name,"sku":p.id,"category":p.category||undefined,"url":canonical()};
+ var ld={"@context":"https://schema.org","@type":"Product","name":name,"sku":p.id,"category":p.category||undefined,"description":desc,"url":canonical()};
  var photo=window.ZWM_PRODUCT_PHOTOS&&window.ZWM_PRODUCT_PHOTOS.sourceFor?window.ZWM_PRODUCT_PHOTOS.sourceFor(p.id):null;
  if(photo&&photo.url){
   var photoUrl=new URL(photo.url,location.origin).href;ld.image=[photoUrl];

@@ -66,3 +66,48 @@ jobs:
                   assert response.status == 200, f'Alternate domain failed: {alternate}'
                   print(f'PASS: {alternate} resolves to {response.url}')
 
+      - name: Verify live guest checkout configuration without creating an order
+        shell: python
+        run: |
+          import json
+          import re
+          import urllib.request
+
+          home = 'https://zaytwmouneh.com'
+          browser_headers = {
+              'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/131.0 Safari/537.36',
+              'Accept': 'application/javascript,application/json,*/*;q=0.8'
+          }
+
+          # Use the same publishable, client-side configuration the shop uses.
+          # No private keys, customer data, payment, or order submission.
+          js_request = urllib.request.Request(home + '/admin-config.js', headers=browser_headers)
+          with urllib.request.urlopen(js_request, timeout=25) as response:
+              config_js = response.read().decode('utf-8')
+          url_match = re.search(r'supabaseUrl:\s*"([^"]+)"', config_js)
+          key_match = re.search(r'supabasePublishableKey:\s*"([^"]+)"', config_js)
+          assert url_match and key_match, 'Live Supabase client configuration is incomplete'
+          api_url, publishable_key = url_match.group(1).rstrip('/'), key_match.group(1)
+
+          request = urllib.request.Request(
+              api_url + '/rest/v1/rpc/zwm_checkout',
+              data=json.dumps({'action': 'config', 'p': {}}).encode(),
+              headers={
+                  **browser_headers,
+                  'apikey': publishable_key,
+                  'Content-Type': 'application/json',
+                  'Origin': home
+              },
+              method='POST'
+          )
+          with urllib.request.urlopen(request, timeout=30) as response:
+              assert response.status == 200, 'Checkout configuration RPC did not succeed'
+              data = json.load(response)
+              allow_origin = response.headers.get('Access-Control-Allow-Origin', '')
+          assert allow_origin in ('*', home), 'Checkout RPC missing storefront CORS permission'
+          assert isinstance(data, dict), 'Checkout configuration must be an object'
+          assert data.get('delivery', {}).get('enabled') is True, 'Delivery is not enabled'
+          assert data.get('delivery', {}).get('zones'), 'No delivery zones are configured'
+          assert any(m.get('code') == 'cash_on_delivery' and m.get('active') is True
+                     for m in data.get('payment_methods', [])), 'Cash on Delivery unavailable'
+          print('PASS: Live guest checkout API, storefront CORS, delivery zones and COD are available; no order was created')

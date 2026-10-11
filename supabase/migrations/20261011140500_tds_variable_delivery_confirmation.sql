@@ -50,7 +50,7 @@ begin
   if v_order.status not in ('new','confirmed','preparing') then
     raise exception 'Cannot reprice a dispatched, delivered or cancelled order.';
   end if;
-  if v_order.payment_status <> 'pending' then
+  if v_order.payment_status is distinct from 'pending' then
     raise exception 'Cannot reprice after payment processing.';
   end if;
   v_old_fee := coalesce(v_order.delivery_fee,0);

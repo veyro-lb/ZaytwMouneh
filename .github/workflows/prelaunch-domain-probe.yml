@@ -151,11 +151,14 @@ jobs:
           for attempt in range(12):
               with urllib.request.urlopen(urllib.request.Request(base + '/checkout', headers=headers), timeout=20) as response:
                   html = response.read().decode('utf-8')
-              if asset in html and re.search(r'<button\b(?=[^>]*id="placeOrderButton")(?=[^>]*\bdisabled)[^>]*>', html):
+              if asset in html and '/commerce-v1.css?v=20261011-checkout-loading1' in html and re.search(r'<button\b(?=[^>]*id="placeOrderButton")(?=[^>]*\bdisabled)[^>]*>', html):
                   with urllib.request.urlopen(urllib.request.Request(base + asset, headers=headers), timeout=20) as response:
                       js = response.read().decode('utf-8')
                   assert 'function loadingJson(' in js, 'Live checkout loader missing'
                   assert 'if(!state.ready||state.busy||!state.catalogVerified' in js, 'Live checkout submission guard missing'
+                  with urllib.request.urlopen(urllib.request.Request(base + '/commerce-v1.css?v=20261011-checkout-loading1', headers=headers), timeout=20) as response:
+                      css = response.read().decode('utf-8')
+                  assert 'body[data-page="checkout"] .zwm-returns-fallback-tab{display:none!important}' in css, 'Live checkout overlay fix missing'
                   print('PASS: Deployed checkout disables early ordering and serves bounded loading / submission guards')
                   break
               if attempt == 11:

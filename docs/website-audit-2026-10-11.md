@@ -6,6 +6,7 @@ Baseline: `6877bd446b23d5d3c8e9ebb4da5469baa7804d7b` on `main`. Scope: promoted 
 
 | Area | Finding | Action / evidence |
 | --- | --- | --- |
+| Mobile checkout overlay | Source screenshots showed the floating Returns & Issues tab overlapping form fields. | Hide this duplicate floating tab on checkout; retain the footer Returns link and require the tab to be hidden in browser checks. |
 | Checkout startup | Place Order was enabled in the initial HTML before its submission handler was attached. During slow initialization, the form could use native GET submission instead of the checkout API. | Disable the button in HTML, bind the submit handler at startup, and require readiness before accepting submission. |
 | Checkout slow connections | Catalogue verification, optional account lookup and delivery-directory loading lacked bounded failure paths. | Abort the two JSON loaders after 20 seconds; settle directory loading after 10 seconds. Catalogue verification still blocks ordering and offers retry; optional identity lookup can fail without blocking the guest form. |
 | Checkout regression coverage | Existing responsive checks could inspect an empty basket rather than the populated checkout form. | Seed one real catalogue item and return a valid mocked checkout configuration. Require the form and basket line to be visible. |

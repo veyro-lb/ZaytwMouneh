@@ -2,7 +2,7 @@
 (function(){
 "use strict";
 var CART_KEY="zwm-cart-v5",GIFT_KEY="zwm-gift-items-v1",GIFT_META_KEY="zwm:native-gift:meta:v1",LANG_KEY="zwm-lang-v2",AUTH_KEY="zwm:mouneh:session:v1",CLAIMS_KEY="zwm:mouneh:claims:v1",WALLET_KEY="zwm:mouneh:selected-wallet:v1",REQUEST_KEY="zwm:native-checkout:request:v1",AREA_DRAFT_KEY="zwm:native-checkout:area:v1";
-var state={lang:"en",kind:"order",giftMeta:{},config:null,products:[],cart:{},rows:[],dashboard:null,addresses:[],authUser:null,walletId:"",busy:false,areaRecord:null,areaText:"",catalogVerified:false,cartIssues:[]};
+var state={lang:"en",kind:"order",giftMeta:{},config:null,products:[],cart:{},rows:[],dashboard:null,addresses:[],authUser:null,walletId:"",busy:false,ready:false,areaRecord:null,areaText:"",catalogVerified:false,cartIssues:[]};
 var T={
 en:{backCart:"← Back to cart",account:"My Account",eyebrow:"Website order",title:"Checkout",intro:"Review your items, delivery details and Cash on Delivery total before placing your order.",emptyTitle:"Your cart is empty.",emptyCopy:"Add products before starting checkout.",startShopping:"Start shopping",customerTitle:"Customer",customerHelp:"We only collect what is needed to fulfil your order.",name:"Full name",phone:"Phone / WhatsApp",email:"Email (optional for guests)",whatsappUpdates:"Send me order status updates on WhatsApp",whatsappUpdatesHelp:"Order updates only — confirmation, preparation, delivery and completion.",recipientName:"Recipient name",recipientPhone:"Recipient phone",giftDeliveryHelp:"Use the recipient contact if the driver should call them directly.",deliveryTitle:"Delivery",deliveryHelp:"Use the details a local driver would need in Lebanon.",savedAddress:"Deliver to a saved address",anotherAddress:"Use another",area:"Area / City",street:"Street / Neighborhood",building:"Building / Residence",floor:"Floor / Apartment",landmark:"Nearby landmark",instructions:"Delivery instructions",saveAddress:"Save this address to my account",rewardsTitle:"Rewards",rewardsHelp:"Mouneh Points are finalized only after delivery and payment are confirmed.",paymentTitle:"Payment",paymentHelp:"Payment is made in cash when your order is delivered.",cod:"Cash on Delivery",codHelp:"Pay the final order total when your delivery arrives.",paymentSummary:"Payment",codDue:"You’ll pay this total in cash when your order is delivered.",notesTitle:"Order note",notesHelp:"Optional — tell us anything useful for this delivery.",notes:"Anything we should know?",reviewTitle:"Review & place order",reviewHelp:"Prices, availability and the final total are rechecked before the order is created.",summaryTitle:"Order summary",subtotal:"Subtotal",reward:"Reward",delivery:"Delivery",total:"Total payable",placeOrder:"Place Order",needHelp:"Need help?",whatsappSupport:"Chat with us on WhatsApp",termsConsent:"I agree to the Terms of Service, Privacy Policy and applicable order/delivery terms.",termsLink:"Open Terms of Service ↗",privacyLink:"Open Privacy Policy ↗",terms:'I agree to the <a href="/terms" target="_blank" rel="noopener">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a> and applicable order/delivery terms.'},
 ar:{backCart:"العودة للسلة →",account:"حسابي",eyebrow:"طلب عبر الموقع",title:"إتمام الطلب",intro:"راجع المنتجات وتفاصيل التوصيل والمجموع المستحق عند الاستلام قبل إرسال الطلب.",emptyTitle:"سلتك فارغة.",emptyCopy:"أضف منتجات قبل بدء إتمام الطلب.",startShopping:"ابدأ التسوق",customerTitle:"العميل",customerHelp:"نجمع فقط البيانات اللازمة لتنفيذ الطلب.",name:"الاسم الكامل",phone:"رقم الهاتف / واتساب",email:"البريد الإلكتروني (اختياري للضيف)",whatsappUpdates:"أرسل لي تحديثات حالة الطلب عبر واتساب",whatsappUpdatesHelp:"تحديثات خاصة بالطلب فقط — التأكيد والتحضير والتوصيل والإكمال.",recipientName:"اسم المستلم",recipientPhone:"هاتف المستلم",giftDeliveryHelp:"استخدم رقم المستلم إذا كان على السائق الاتصال به مباشرة.",deliveryTitle:"التوصيل",deliveryHelp:"استخدم التفاصيل التي يحتاجها سائق التوصيل في لبنان.",savedAddress:"التوصيل إلى عنوان محفوظ",anotherAddress:"استخدام عنوان آخر",area:"المنطقة / المدينة",street:"الشارع / الحي",building:"المبنى / السكن",floor:"الطابق / الشقة",landmark:"معلم قريب",instructions:"تعليمات التوصيل",saveAddress:"حفظ هذا العنوان في حسابي",rewardsTitle:"المكافآت",rewardsHelp:"تُعتمد نقاط المونة فقط بعد تأكيد التسليم واستلام الدفع.",paymentTitle:"الدفع",paymentHelp:"يتم الدفع نقداً عند استلام طلبك.",cod:"الدفع عند الاستلام",codHelp:"ادفع المجموع النهائي عند وصول طلبك.",paymentSummary:"طريقة الدفع",codDue:"ستدفع هذا المجموع نقداً عند استلام الطلب.",notesTitle:"ملاحظة الطلب",notesHelp:"اختياري — أخبرنا بما يفيد في هذا التوصيل.",notes:"هل هناك شيء يجب أن نعرفه؟",reviewTitle:"المراجعة وإرسال الطلب",reviewHelp:"تُراجع الأسعار والتوفر والمجموع النهائي قبل إنشاء الطلب.",summaryTitle:"ملخص الطلب",subtotal:"المجموع الفرعي",reward:"المكافأة",delivery:"التوصيل",total:"المجموع المستحق",placeOrder:"إرسال الطلب",needHelp:"تحتاج مساعدة؟",whatsappSupport:"تواصل معنا عبر واتساب",termsConsent:"أوافق على شروط الخدمة وسياسة الخصوصية وشروط الطلب والتوصيل المطبقة.",termsLink:"فتح شروط الخدمة ↗",privacyLink:"فتح سياسة الخصوصية ↗",terms:'أوافق على <a href="/terms" target="_blank" rel="noopener">شروط الخدمة</a> و<a href="/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a> وشروط الطلب والتوصيل المطبقة.'}
@@ -33,6 +33,15 @@ function uuid(){return crypto.randomUUID?crypto.randomUUID():"xxxxxxxx-xxxx-4xxx
 function token(){var a=new Uint8Array(32);crypto.getRandomValues(a);return Array.from(a,function(n){return n.toString(16).padStart(2,"0")}).join("")}
 function productBase(){try{return typeof PRODUCTS_DATA!=="undefined"?JSON.parse(JSON.stringify(PRODUCTS_DATA)):[]}catch{return []}}
 function config(){return window.ZWM_CMS_CONFIG||{}}
+async function loadingJson(url,options){
+  var controller=typeof AbortController==="function"?new AbortController():null,timer=null;
+  try{
+    if(controller)timer=setTimeout(function(){controller.abort()},20000);
+    var response=await fetch(url,Object.assign({},options,{signal:controller?controller.signal:undefined}));
+    if(!response.ok)throw new Error("Checkout loading request failed");
+    return await response.json()
+  }finally{if(timer)clearTimeout(timer)}
+}
 async function rpc(name,body,retry){
   var c=config(),s=session(),headers={"apikey":c.supabasePublishableKey,"Content-Type":"application/json","Prefer":"return=representation"},controller=typeof AbortController==="function"?new AbortController():null,timer=null,r;
   if(s&&s.access_token)headers.Authorization="Bearer "+s.access_token;
@@ -55,15 +64,13 @@ async function rpc(name,body,retry){
 }
 async function authUser(){
   var s=session(),c=config();if(!s||!s.access_token)return null;
-  try{var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/auth/v1/user",{headers:{"apikey":c.supabasePublishableKey,"Authorization":"Bearer "+s.access_token}});if(!r.ok)return null;return await r.json()}catch{return null}
+  try{return await loadingJson(String(c.supabaseUrl).replace(/\/$/,"")+"/auth/v1/user",{headers:{"apikey":c.supabasePublishableKey,"Authorization":"Bearer "+s.access_token}})}catch{return null}
 }
 async function loadOverrides(){
   var c=config(),base=productBase(),map=new Map(base.map(function(p){return [p.id,p]}));
   state.catalogVerified=false;
   try{
-    var r=await fetch(String(c.supabaseUrl).replace(/\/$/,"")+"/rest/v1/product_overrides?select=product_id,action,payload",{headers:{"apikey":c.supabasePublishableKey}});
-    if(!r.ok)throw new Error("Catalogue verification failed");
-    var rows=await r.json();
+    var rows=await loadingJson(String(c.supabaseUrl).replace(/\/$/,"")+"/rest/v1/product_overrides?select=product_id,action,payload",{headers:{"apikey":c.supabasePublishableKey}});
     rows.forEach(function(o){var p=map.get(o.product_id)||{id:o.product_id};if(o.action==="hide"){p.__hidden=true}else if(o.payload&&typeof o.payload==="object"){p=Object.assign({},p,o.payload);p.__hidden=o.action==="hide"}map.set(o.product_id,p)});
     state.catalogVerified=true
   }catch{}
@@ -107,10 +114,17 @@ function ensureAreaDirectory(){
   if(areaDirectoryPromise)return areaDirectoryPromise;
   areaDirectoryPromise=new Promise(function(resolve){
     var script=document.createElement("script");
+    var settled=false,timer=setTimeout(function(){finish(false)},10000);
+    function finish(loaded){
+      if(settled)return;settled=true;clearTimeout(timer);
+      script.onload=script.onerror=null;
+      if(!loaded){areaDirectoryPromise=null;script.remove()}
+      resolve(areaDirectory())
+    }
     script.src="/lebanon-areas.js?v=20261004-deliveryarea6";
     script.async=true;
-    script.onload=function(){resolve(areaDirectory())};
-    script.onerror=function(){areaDirectoryPromise=null;resolve([])};
+    script.onload=function(){finish(true)};
+    script.onerror=function(){finish(false)};
     document.head.appendChild(script)
   });
   return areaDirectoryPromise
@@ -291,7 +305,7 @@ function renderSummary(){
   else msg=t("Add ","أضف ","Ajoutez ")+money(remain)+t(" more for FREE delivery 🚚"," للتوصيل المجاني"," de plus pour la livraison GRATUITE 🚚");
   $("freeDeliveryBox").innerHTML='<strong>'+esc(msg)+'</strong><div class="free-delivery-track"><span style="width:'+pct+'%"></span></div>'+(q.minimum>0?'<small>'+esc(t("Minimum order ","الحد الأدنى للطلب ","Commande minimum ")+money(q.minimum))+'</small>':'');
   var btn=$("placeOrderButton");btn.textContent=t("Place Order — ","إرسال الطلب — ","Commander — ")+money(total);
-  btn.disabled=state.busy||!state.catalogVerified||!q.available||!q.hasArea||!state.rows.length||!!state.cartIssues.length||state.rows.some(function(r){return !r.available})
+  btn.disabled=!state.ready||state.busy||!state.catalogVerified||!q.available||!q.hasArea||!state.rows.length||!!state.cartIssues.length||state.rows.some(function(r){return !r.available})
 }
 function renderGiftFields(){
   var box=$("giftCheckoutFields");if(!box)return;
@@ -371,7 +385,7 @@ async function maybeSaveAddress(){
   var d=addressPayload();await rpc("mouneh_addresses",{action:"upsert",p:{label:t("Home","المنزل","Maison"),area:d.area,street:d.street,building:d.building,floor_apartment:d.floor_apartment,landmark:d.landmark,delivery_notes:d.instructions,is_default:state.addresses.length===0}})
 }
 async function submit(e){
-  e.preventDefault();if(state.busy)return;await ensureAreaDirectory();var form=$("nativeCheckoutForm");if(!validateCheckout())return;
+  e.preventDefault();if(!state.ready||state.busy||!state.catalogVerified||state.cartIssues.length)return;await ensureAreaDirectory();var form=$("nativeCheckoutForm");if(!validateCheckout())return;
   var d=addressPayload(),zones=activeZones();if(!d.area){$("checkoutStatus").textContent=t("Please select or enter a delivery area.","اختر أو اكتب منطقة التوصيل.","Sélectionnez ou saisissez une zone de livraison.");$("checkoutArea").focus();return}if(zones.length&&!selectedZone()){$("checkoutStatus").textContent=t("Delivery is not currently available for this area. Choose another area or contact us.","التوصيل غير متاح حالياً لهذه المنطقة. اختر منطقة أخرى أو تواصل معنا.","La livraison n’est pas disponible pour cette zone. Choisissez une autre zone ou contactez-nous.");return}
   var q=quote();if(!q.available){$("checkoutStatus").textContent=t("Delivery is temporarily paused. Contact us for help.","التوصيل متوقف مؤقتاً. تواصل معنا للمساعدة.","La livraison est temporairement suspendue. Contactez-nous si besoin.");return}if(q.minimum>0&&q.eligible<q.minimum){$("checkoutStatus").textContent=t("Minimum order is ","الحد الأدنى للطلب هو ","Commande minimum : ")+money(q.minimum)+".";return}
   if(state.rows.some(function(r){return !r.available})){$("checkoutStatus").textContent=t("One item is no longer available. Return to your cart to review it.","هناك منتج غير متوفر. عد إلى السلة لمراجعته.","Un article n’est plus disponible. Revenez au panier pour le vérifier.");return}
@@ -409,7 +423,7 @@ async function init(){
   }
   state.walletId=String(read(WALLET_KEY,"")||"");
   var remembered=readArea();if(remembered&&!$("checkoutArea").value)$("checkoutArea").value=remembered;
-  renderAll();
+  state.ready=true;renderAll();
   if(!state.catalogVerified){
     $("checkoutStatus").textContent=t("We couldn't verify the latest prices and availability. Retry before placing the order.","تعذّر التحقق من أحدث الأسعار والتوفر. أعد المحاولة قبل إرسال الطلب.","Impossible de vérifier les derniers prix et disponibilités. Réessayez avant de commander.");
     var retry=document.createElement("button");retry.type="button";retry.className="checkout-retry";retry.textContent=t("Retry","إعادة المحاولة","Réessayer");
@@ -418,7 +432,6 @@ async function init(){
   }
   window.ZWM_CMS&&window.ZWM_CMS.track&&window.ZWM_CMS.track("checkout_started",{items:state.rows.length,signed_in:!!state.dashboard});
   document.querySelectorAll("[data-commerce-lang]").forEach(function(b){b.addEventListener("click",function(){setLang(b.dataset.commerceLang)})});
-  $("nativeCheckoutForm").addEventListener("submit",submit);
   $("savedAddressSelect").addEventListener("change",function(){var a=state.addresses.find(function(x){return x.id===$("savedAddressSelect").value});fillAddress(a)});
   $("clearSavedAddress").addEventListener("click",function(){$("savedAddressSelect").value="";state.areaRecord=null;rememberArea("");["checkoutArea","checkoutStreet","checkoutBuilding","checkoutFloor","checkoutLandmark","checkoutInstructions"].forEach(function(id){$(id).value=""});renderAreaMeta();renderSummary()});
   var areaInput=$("checkoutArea"),areaBox=$("areaSuggestions");
@@ -450,6 +463,6 @@ function showCheckoutLoadError(err){
   }
   console.error("Checkout initialization failed",err)
 }
-function start(){init().catch(showCheckoutLoadError)}
+function start(){var form=$("nativeCheckoutForm");if(form)form.addEventListener("submit",submit);init().catch(showCheckoutLoadError)}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});else start()
 })();

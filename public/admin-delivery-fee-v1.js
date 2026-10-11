@@ -84,9 +84,15 @@
       current=$("tdsCurrentQuote"),preview=$("tdsDraftPreview"),help=$("tdsFeeHelp"),
       messageHint=$("tdsMessageHint");
     if(!panel||!fee||!send||!accept||!save||!status||!current||!api?.client)return;
-    const preserve=options?.preserve===true&&panel.dataset.orderReference===String(order.reference);
+    // Live order refreshes must not erase an in-progress quote if the order hasn't changed.
+    // A new updated_at revision invalidates the draft/consent to prevent stale approvals.
+    const sameRevision=!!order.updated_at&&panel.dataset.orderReference===String(order.reference)&&
+      panel.dataset.orderRevision===String(order.updated_at);
+    const preserve=sameRevision&&options?.preserve!==false&&!saving;
     const priorFee=fee.value,priorConsent=accept.checked;
-    lastOrder=order;lastApi=api;panel.dataset.orderReference=String(order.reference);
+    lastOrder=order;lastApi=api;
+    panel.dataset.orderReference=String(order.reference);
+    panel.dataset.orderRevision=String(order.updated_at||"");
     const info=order.extra?.delivery_fee_confirmation||{};
     const quoted=Number(order.delivery_fee)||0;
     const isFree=order.created_source==="website"&&(quoted===0||order.extra?.delivery_quote?.free_delivery===true);

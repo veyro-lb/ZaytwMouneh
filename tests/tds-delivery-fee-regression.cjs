@@ -35,16 +35,24 @@ assert.match(checkout,/no higher amount is charged without your approval/);
 assert.match(checkoutHtml,/checkoutDeliveryNotice/);
 assert.match(receipt,/o\.delivery_fee_confirmation\?\.status/);
 assert.match(receiptHtml,/orderDeliveryConfirmationNote/);
+assert.match(receipt,/freePending=feeStatus==="pending"/,"Guaranteed free delivery must never be labelled estimated");
+assert.match(checkout,/no higher amount is charged without your approval/);
+assert.match(adminHtml,/tdsDraftPreview/);
+assert.match(adminHtml,/data-no-i18n/);
 
 (async ()=>{
   const dom=new JSDOM(`<!doctype html><div id="tdsDeliveryPanel"></div>
+    <span id="tdsPanelEyebrow"></span><h3 id="tdsPanelHeading"></h3>
+    <span id="tdsFeeInputLabel"></span><span id="tdsAcceptLabel"></span>
+    <p id="tdsDraftPreview"></p><p id="tdsMessageHint"></p>
     <p id="tdsFeeStatus"></p><p id="tdsCurrentQuote"></p><p id="tdsFeeHelp"></p>
     <input id="tdsFinalFee"><input type="checkbox" id="tdsFeeAccepted">
     <button id="tdsSendFee"></button><button id="tdsConfirmFee"></button>`,
     {url:"https://zaytwmouneh.com/admin",runScripts:"outside-only"});
   const w=dom.window, $=id=>w.document.getElementById(id);
   w.eval(read("public/admin-delivery-fee-v1.js"));
-  const calls=[], messages=[];
+  const calls=[], messages=[], opened=[];
+  w.open=url=>{opened.push(url);return {}};
   const api={
     client:{rpc:async(name,args)=>{calls.push({name,args});return {data:{delivery_fee:6,total:31},error:null};}},
     toast:(msg)=>messages.push(msg),
@@ -55,19 +63,39 @@ assert.match(receiptHtml,/orderDeliveryConfirmationNote/);
     updated_at:"2026-10-11T10:00:00.000Z",
     extra:{delivery_fee_confirmation:{status:"pending"},delivery_quote:{free_delivery:false}}};
   w.ZWM_TDS_DELIVERY.render(base,api);
-  assert.match($("tdsFeeStatus").textContent,/Waiting for the owner/);
+  assert.match($("tdsFeeStatus").textContent,/Pending:/);
+  assert.match($("tdsMessageHint").textContent,/English/);
   assert.equal($("tdsFinalFee").value,"5.00");
   $("tdsFinalFee").value="6.00";
   $("tdsFinalFee").oninput();
   assert.equal($("tdsFeeAccepted").checked,false,"Changing quote invalidates previous consent");
   $("tdsFeeAccepted").checked=true;
+  w.document.documentElement.lang="ar";
+  w.document.dispatchEvent(new w.CustomEvent("zwm:admin-language"));
+  assert.match($("tdsPanelHeading").textContent,/تأكيد رسوم التوصيل/,"Arabic owner interface");
+  assert.equal($("tdsFinalFee").value,"6.00","Language switching preserves the draft fee");
+  assert.equal($("tdsFeeAccepted").checked,true,"Language switching preserves approval");
+  assert.match($("tdsDraftPreview").textContent,/31.00/,"Arabic owner sees accurate total preview");
+  w.document.documentElement.lang="en";
+  w.document.dispatchEvent(new w.CustomEvent("zwm:admin-language"));
+  await $("tdsSendFee").onclick();
+  assert.match(decodeURIComponent(opened.at(-1)),/Confirmed TDS delivery/,"English customer message");
   await $("tdsConfirmFee").onclick();
   assert.equal(calls[0].name,"zwm_admin_confirm_delivery_fee");
   assert.equal(calls[0].args.p_fee,6);
   assert.equal(calls[0].args.p_customer_approved,true);
   assert.equal(calls[0].args.p_expected_updated_at,base.updated_at);
   assert.equal(calls[1].name,"refresh");
-  w.ZWM_TDS_DELIVERY.render({...base,delivery_fee:0,total:25,extra:{delivery_quote:{free_delivery:true}}},api);
+  w.ZWM_TDS_DELIVERY.render({...base,language:"ar"},api);
+  await $("tdsSendFee").onclick();
+  assert.match(decodeURIComponent(opened.at(-1)),/رسوم توصيل TDS النهائية/,"Arabic customer message");
+  w.ZWM_TDS_DELIVERY.render({...base,language:"fr"},api);
+  await $("tdsSendFee").onclick();
+  assert.match(decodeURIComponent(opened.at(-1)),/Livraison TDS confirmée/,"French customer message");
+  w.ZWM_TDS_DELIVERY.render({...base,language:"fr",extra:{delivery_fee_confirmation:{status:"confirmed",confirmed_at:"2026-10-11T10:00:00Z"}}},api);
+  assert.match($("tdsFeeStatus").textContent,/confirmed with the customer/,"Owner sees the saved confirmation state");
+  w.ZWM_TDS_DELIVERY.render({...base,delivery_fee:0,total:25,extra:{delivery_quote:{free_delivery:true},delivery_fee_confirmation:{status:"pending"}}},api);
+  assert.match($("tdsFeeHelp").textContent,/Free delivery was promised/);
   assert.equal($("tdsFinalFee").disabled,true,"Promised free delivery cannot be repriced");
   w.ZWM_TDS_DELIVERY.render({...base,status:"out_for_delivery"},api);
   assert.equal($("tdsConfirmFee").disabled,true,"Dispatched orders are locked");

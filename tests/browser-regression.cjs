@@ -35,6 +35,28 @@ if(/ (390x844|desktop) /.test(label)&&["/index.html","/shop.html","/checkout.htm
  await page.screenshot({path:"browser-artifacts/"+label.replace(/[^a-zA-Z0-9]+/g,"-")+".png",fullPage:new URL(url).pathname==="/checkout.html"});
 }}
 async function menuAudit(page,base,name,w,h){await page.goto(base+"/index.html",{waitUntil:"domcontentloaded"});await page.waitForTimeout(180);const toggle=page.locator("#navToggle"),cart=page.locator("#cartButton"),menu=page.locator("#navLinks");await toggle.waitFor({state:"visible"});if(w<=760){for(const [label,loc] of [["menu",toggle],["cart",cart]]){const b=await loc.boundingBox();assert(b&&b.width>=43.99&&b.height>=43.99,name+" "+label+" target below 44px"+(b?" ("+Math.round(b.width)+"x"+Math.round(b.height)+")":""))}}else{const g=await page.evaluate(()=>{const t=document.getElementById("navToggle").getBoundingClientRect(),l=document.querySelector("#navToggle .menu-label").getBoundingClientRect(),i=document.querySelector("#navToggle .menu-icon").getBoundingClientRect();return{tw:t.width,tl:t.left,tr:t.right,ll:l.left,lr:l.right,il:i.left,ir:i.right}});assert(g.tw>=84,name+" desktop menu button too narrow: "+g.tw);assert(g.ll>=g.tl-1&&g.lr<=g.tr+1,name+" desktop menu label escaped button");assert(g.il>=g.tl-1&&g.ir<=g.tr+1,name+" desktop menu icon escaped button")}await toggle.click();await menu.waitFor({state:"visible"});assert(await page.evaluate(()=>document.body.classList.contains("menu-open")),name+" body menu class missing");assert.equal(await page.evaluate(()=>getComputedStyle(document.body).overflow),"hidden",name+" scroll not locked");const layers=await page.evaluate(()=>{const menu=document.getElementById("navLinks"),header=document.querySelector(".site-header"),toggle=document.getElementById("navToggle"),mr=menu.getBoundingClientRect(),hr=header.getBoundingClientRect(),tr=toggle.getBoundingClientRect(),hit=document.elementFromPoint(Math.min(innerWidth-1,Math.max(1,mr.left+Math.min(28,mr.width/2))),Math.min(innerHeight-1,Math.max(1,mr.top+Math.min(28,mr.height/2)))),after=getComputedStyle(document.body,"::after"),hs=getComputedStyle(header);return{menuHit:!!(hit&&menu.contains(hit)),headerZ:parseInt(hs.zIndex,10)||0,backdropZ:parseInt(after.zIndex,10)||0,backdropFilter:after.backdropFilter||after.webkitBackdropFilter||"",headerHeight:hr.height,toggleLeft:tr.left,toggleRight:tr.right}});assert(layers.menuHit,name+" menu must stay above its backdrop");assert(layers.headerZ>layers.backdropZ,name+" header/menu stacking context fell behind backdrop");assert(layers.backdropFilter==="none"||layers.backdropFilter==="",name+" menu backdrop must not blur the storefront");if(w<=760){assert(layers.headerHeight<=100,name+" mobile header unexpectedly tall: "+layers.headerHeight);assert(layers.toggleLeft>=-1&&layers.toggleRight<=w+1,name+" mobile menu button clipped outside viewport")}const b=await menu.boundingBox();assert(b&&b.x>=-1&&b.x+b.width<=w+1&&b.y>=0&&b.y+b.height<=h+1,name+" menu outside viewport");if(w>760){const gap=await page.evaluate(()=>document.getElementById("navLinks").getBoundingClientRect().top-document.querySelector(".site-header").getBoundingClientRect().bottom);assert(gap>=8&&gap<=28,name+" desktop menu/header gap out of range: "+gap);assert(b.width<=440,name+" desktop menu unexpectedly wide: "+b.width)}await page.keyboard.press("Escape");assert.equal(await menu.getAttribute("aria-hidden"),"true",name+" Escape close failed");assert(await page.evaluate(()=>document.getElementById("navLinks").inert),name+" closed menu not inert");await toggle.click();await page.mouse.click(w-4,h-4);await page.waitForTimeout(50);assert.equal(await menu.getAttribute("aria-hidden"),"true",name+" outside click close failed")}
+async function pointsCardAudit(page,base,label,name,w,h,locale){
+ // Retire the previous page's pending notification before resetting history.
+ await page.goto(base+'/terms-and-rewards.html',{waitUntil:'domcontentloaded'});
+ await page.evaluate(()=>{localStorage.removeItem('zwm:first-order-reward:history:v2');localStorage.removeItem('zwm:first-order-reward:seen:v1');sessionStorage.removeItem('zwm:first-order-reward:history:v2');sessionStorage.removeItem('zwm:first-order-reward:visit:v2')});
+ await page.goto(base+'/shop.html?welcome=points',{waitUntil:'domcontentloaded'});
+ const card=page.locator('.fob-card');try{await card.waitFor({state:'visible',timeout:10000})}catch(error){const state=await page.evaluate(()=>({url:location.href,body:document.body.className,history:localStorage.getItem('zwm:first-order-reward:history:v2'),visit:sessionStorage.getItem('zwm:first-order-reward:visit:v2'),dialogs:[...document.querySelectorAll('[role=dialog]')].map(el=>({id:el.id,hidden:el.closest('[hidden],[aria-hidden="true"],[inert]')?.id,display:getComputedStyle(el).display}))}));throw Error(error.message+' '+JSON.stringify(state))};
+ const box=await card.boundingBox();
+ assert(box&&box.x>=0&&box.x+box.width<=w+1&&box.y>=0&&box.y+box.height<=h,label+' '+name+' points card outside viewport');
+ if(w<=600)assert(h-box.y-box.height>=70,label+' points card must clear the mobile order bar');
+ for(const selector of ['.fob-close','.fob-shop','.fob-join','summary']){
+  const rect=await card.locator(selector).boundingBox();assert(rect&&rect.height>=43.99,label+' '+selector+' touch target below 44px');
+ }
+ assert.equal(await card.getAttribute('dir'),locale==='ar'?'rtl':'ltr');
+ assert.equal(await card.locator('.fob-reward strong').textContent(),'+20');
+ await card.locator('summary').click();
+ const overflow=await card.evaluate(el=>el.scrollWidth-el.clientWidth);assert(overflow<=1,label+' points card has horizontal overflow');
+ fs.mkdirSync('browser-artifacts',{recursive:true});await card.screenshot({path:'browser-artifacts/points-card-'+label+'-'+name+'-'+locale+'.png'});
+ await card.locator('.fob-close').click();await page.reload({waitUntil:'domcontentloaded'});await page.waitForTimeout(1200);
+ assert.equal(await page.locator('.fob-card').count(),0,label+' reminder returned on refresh');
+ await page.goto(base+'/product.html?product=baking-powder',{waitUntil:'domcontentloaded'});await page.waitForTimeout(1200);
+ assert.equal(await page.locator('.fob-card').count(),0,label+' reminder returned on another page');
+}
 async function run(type,label,base){
  const browser=await type.launch({headless:true});
  const failures=[];
@@ -54,6 +76,7 @@ async function run(type,label,base){
     const before=failures.length;
     for(const route of routes){const routePage=await context.newPage();await prep(routePage,base);try{await audit(routePage,base+route,label+" "+name+" "+route+" "+locale)}catch(error){failures.push(label+" "+name+" "+route+" "+locale+": "+error.message)}finally{await routePage.close()}}
     try{await menuAudit(page,base,label+" "+name+" "+locale,w,h)}catch(error){failures.push(error.message)}
+    try{await pointsCardAudit(page,base,label,name,w,h,locale)}catch(error){failures.push(label+' '+name+' '+locale+' points card: '+error.message)}
     console.log(label+" "+name+" "+locale+": "+routes.length+" pages and menu checked; "+(failures.length-before)+" failures");
     await context.close();
    }

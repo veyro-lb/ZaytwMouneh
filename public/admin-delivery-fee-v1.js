@@ -6,7 +6,7 @@
 
   const COPY={
     en:{
-      eyebrow:"TDS delivery",heading:"Confirm final delivery fee",feeLabel:"Confirmed TDS delivery fee (USD)",
+      eyebrow:"TDS delivery",heading:"Confirm final delivery fee",feeLabel:"Final TDS delivery fee (USD)",
       approval:"Prepare WhatsApp approval message",copy:"Copy approval message",
       consent:"I told the customer the final delivery fee and order total, and they agreed before dispatch.",
       confirm:"Confirm final fee",saving:"Saving…",
@@ -66,16 +66,16 @@
     const fmt=value=>"$"+(Number(value)||0).toFixed(2);
     const language=customerLang(order);
     if(language==="ar")return "زيت ومونة — الطلب "+orderNumber+
-      "\nرسوم توصيل TDS النهائية: "+fmt(fee)+
-      "\nالمجموع النهائي للطلب: "+fmt(total)+
+      "\nرسوم توصيل TDS المقترحة: "+fmt(fee)+
+      "\nالمجموع المقترح للطلب: "+fmt(total)+
       "\nيرجى الرد بالموافقة على هذا المجموع قبل إرسال الطلب. لن نغيّر المبلغ من دون موافقتك. شكراً لك.";
     if(language==="fr")return "Zayt W Mouneh — commande "+orderNumber+
-      "\nLivraison TDS confirmée : "+fmt(fee)+
-      "\nTotal final de la commande : "+fmt(total)+
+      "\nFrais de livraison TDS proposés : "+fmt(fee)+
+      "\nTotal proposé de la commande : "+fmt(total)+
       "\nMerci de répondre pour confirmer votre accord avant l'expédition. Aucun changement de montant sans votre accord.";
     return "Zayt W Mouneh — order "+orderNumber+
-      "\nConfirmed TDS delivery: "+fmt(fee)+
-      "\nFinal order total: "+fmt(total)+
+      "\nProposed TDS delivery fee: "+fmt(fee)+
+      "\nProposed order total: "+fmt(total)+
       "\nPlease reply to approve this total before dispatch. We will not change the amount without your approval. Thank you.";
   }
   function render(order,api,options){

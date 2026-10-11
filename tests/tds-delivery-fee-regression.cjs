@@ -102,6 +102,8 @@ assert.match(adminHtml,/data-no-i18n/);
   assert.match($("tdsFeeStatus").textContent,/confirmed with the customer/,"Owner sees the saved confirmation state");
   w.ZWM_TDS_DELIVERY.render({...base,delivery_fee:0,total:25,extra:{delivery_quote:{free_delivery:true},delivery_fee_confirmation:{status:"pending"}}},api);
   assert.match($("tdsFeeHelp").textContent,/Free delivery was promised/);
+  assert.equal($("tdsFinalFee").value,"0.00","Repricing state must refresh when the server fee changes");
+  assert.equal($("tdsFeeAccepted").checked,false,"Fee changes invalidate stale consent");
   assert.equal($("tdsFinalFee").disabled,true,"Promised free delivery cannot be repriced");
   w.ZWM_TDS_DELIVERY.render({...base,status:"out_for_delivery"},api);
   assert.equal($("tdsConfirmFee").disabled,true,"Dispatched orders are locked");

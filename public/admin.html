@@ -817,18 +817,20 @@
         </div>
 
         
-        <article class="order-detail-section tds-fee-panel" id="tdsDeliveryPanel">
-          <div class="order-detail-section-head"><div><span>TDS delivery</span><h3>Confirm final delivery fee</h3></div></div>
+        <article class="order-detail-section tds-fee-panel" id="tdsDeliveryPanel" data-no-i18n>
+          <div class="order-detail-section-head"><div><span id="tdsPanelEyebrow">TDS delivery</span><h3 id="tdsPanelHeading">Confirm final delivery fee</h3></div></div>
           <p id="tdsFeeStatus" class="field-help" aria-live="polite">Loading delivery status…</p>
           <p id="tdsCurrentQuote" class="field-help"></p>
           <div class="tds-fee-grid">
-            <label for="tdsFinalFee">Final delivery fee (USD)
-              <input id="tdsFinalFee" type="number" min="0" max="200" step="0.01" inputmode="decimal">
+            <label for="tdsFinalFee"><span id="tdsFeeInputLabel">Confirmed TDS delivery fee (USD)</span>
+              <input id="tdsFinalFee" type="number" min="0" max="200" step="0.01" inputmode="decimal" dir="ltr">
             </label>
-            <button type="button" class="button-secondary" id="tdsSendFee">Request approval on WhatsApp</button>
+            <button type="button" class="button-secondary" id="tdsSendFee">Prepare WhatsApp approval message</button>
           </div>
+          <p id="tdsDraftPreview" class="field-help" aria-live="polite"></p>
+          <p id="tdsMessageHint" class="field-help"></p>
           <p id="tdsFeeHelp" class="field-help"></p>
-          <label class="tds-confirm-label"><input type="checkbox" id="tdsFeeAccepted"> I have informed the customer of the final delivery fee and total, and they agreed.</label>
+          <label class="tds-confirm-label"><input type="checkbox" id="tdsFeeAccepted"><span id="tdsAcceptLabel">I told the customer the final delivery fee and total, and they agreed before dispatch.</span></label>
           <button type="button" class="button-primary" id="tdsConfirmFee">Confirm final fee</button>
         </article>
 
@@ -899,7 +901,7 @@
   <script src="products-data.js?v=20261009-harvest-live1"></script>
   <script src="product-photos.js?v=20261009-harvest-live1"></script>
 
-  <script src="admin-delivery-fee-v1.js?v=20261011-tds1"></script>
+  <script src="admin-delivery-fee-v1.js?v=20261011-tds-i18n2"></script>
   <script src="admin.js?v=20261009-website-visits1"></script>
   <script src="admin-notifications-v1.js?v=20261009-owner-multidevice1"></script>
   <script src="admin-rewards.js?v=20261005-account-deletefix2"></script>

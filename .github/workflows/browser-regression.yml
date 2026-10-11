@@ -52,8 +52,8 @@ jobs:
       - name: Run responsive browser regression
         run: npm run test:browser
 
-      - name: Save screenshots of layout failures
-        if: failure()
+      - name: Save responsive audit screenshots
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: responsive-layout-failures-${{ matrix.viewport }}

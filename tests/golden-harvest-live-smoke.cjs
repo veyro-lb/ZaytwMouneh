@@ -35,8 +35,10 @@ assert.match(campaign,/var ENABLED=true;/,"Live release must enable popup withou
 const home=read("public/index.html"),shop=read("public/shop.html"),app=read("public/app.js"),checkout=read("public/checkout.js");
 assert.ok(home.indexOf('id="ghPicksStage"')>=0&&home.indexOf('id="ghPicksStage"')<home.indexOf('id="featured"'),"Harvest must be before Pantry Favourites");
 assert.ok(home.includes('class="page-intro page-intro-shop home-pantry-hero"'),"Existing homepage hero must remain");
-assert.match(home,/golden-harvest-2026\.js\?v=20261009-live1/);
-assert.match(shop,/golden-harvest-2026\.js\?v=20261009-live1/);
+const homePin=home.match(/golden-harvest-2026\.js\?v=(\d{8}-[a-z0-9-]+)/)?.[1];
+const shopPin=shop.match(/golden-harvest-2026\.js\?v=(\d{8}-[a-z0-9-]+)/)?.[1];
+assert.ok(homePin,"Homepage must use a versioned live harvest script");
+assert.equal(shopPin,homePin,"Homepage and shop must use the same harvest script version");
 assert.match(app,/window\.ZWM_HARVEST_CART=\{/,"Existing cart bridge required");
 assert.match(app,/productVisualMarkup\(p,"product-modal-image",v\.id\)/,"Selected quick-view photo required");
 assert.match(checkout,/productPhoto\(r\.p,r\.v\.id\)/,"Selected checkout photo required");

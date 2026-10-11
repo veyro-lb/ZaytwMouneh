@@ -1,6 +1,7 @@
 (() => {
   'use strict';
   const KEY='zwm:first-order-reward:seen:v1';
+  const PREVIEW=new URL(location.href).searchParams.get('welcome')==='points';
   const page=document.body.dataset.page;
   if(!['home','shop','product','about','recipes','gift'].includes(page))return;
   let card=null,shown=false,closed=false,observer=null,timer=null;
@@ -12,9 +13,21 @@
   const language=()=>window.ZWM_LOCALE?.get?.()||document.documentElement.lang||'en';
   const text=()=>copy[language()]||copy.en;
   const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  function seen(){try{return localStorage.getItem(KEY)==='1'}catch{return false}}
-  function memberHasOrdered(){const s=window.ZWM_REWARDS?.getState?.();return !!s?.dashboard?.orders?.length;}
-  function busy(){return document.hidden||document.body.classList.contains('welcome-open')||!!document.querySelector('#languageWelcome:not([hidden]),#ghCampaignPopup:not([hidden]),[role="dialog"][aria-modal="true"]:not([hidden])')&&Array.from(document.querySelectorAll('[role="dialog"][aria-modal="true"]:not([hidden])')).some(e=>e.getAttribute('aria-hidden')!=='true'&&!e.closest('[hidden]')&&getComputedStyle(e).display!=='none');}
+  function seen(){if(PREVIEW)return false;try{return localStorage.getItem(KEY)==='1'}catch{return false}}
+  function memberHasOrdered(){if(PREVIEW)return false;const s=window.ZWM_REWARDS?.getState?.();return !!s?.dashboard?.orders?.length;}
+  function busy(){
+    if(document.hidden||document.body.classList.contains('welcome-open'))return true;
+    return Array.from(document.querySelectorAll('[role="dialog"][aria-modal="true"]')).some(dialog=>{
+      // Closed Quick View keeps its inner dialog mounted. Inspect the whole
+      // ancestor chain so a hidden shell does not block the welcome forever.
+      if(dialog.closest('[hidden],[aria-hidden="true"],[inert]'))return false;
+      for(let node=dialog;node&&node!==document.body;node=node.parentElement){
+        const style=getComputedStyle(node);
+        if(style.display==='none'||style.visibility==='hidden'||style.visibility==='collapse')return false;
+      }
+      return true;
+    });
+  }
   function render(){
     if(!card)return;
     const t=text(),lang=language();
@@ -34,7 +47,7 @@
     if(busy())return;
     timer=setTimeout(()=>{
       if(closed||seen()||busy()||memberHasOrdered())return;
-      shown=true;try{localStorage.setItem(KEY,'1')}catch{}
+      shown=true;if(!PREVIEW){try{localStorage.setItem(KEY,'1')}catch{}}
       card=document.createElement('aside');card.className='fob-card';card.setAttribute('aria-labelledby','fobTitle');
       render();document.body.appendChild(card);
       // Non-modal notification: browsing and keyboard focus remain uninterrupted.
@@ -44,6 +57,6 @@
   document.addEventListener('zwm:account-updated',check);
   document.addEventListener('visibilitychange',check);
   document.addEventListener('zwm:localechange',()=>{render();check();});
-  window.addEventListener('storage',e=>{if(e.key===KEY&&e.newValue==='1'&&!shown)dismiss()});
+  window.addEventListener('storage',e=>{if(!PREVIEW&&e.key===KEY&&e.newValue==='1'&&!shown)dismiss()});
   check();
 })();

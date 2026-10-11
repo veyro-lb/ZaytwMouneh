@@ -24,9 +24,15 @@ concurrency:
 
 jobs:
   browser:
-    name: Chromium and WebKit responsive gate
+    name: Chromium and WebKit responsive gate (${{ matrix.viewport }})
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        viewport: ["360x800", "390x844", "430x932", "tablet", "desktop"]
+    env:
+      ZWM_VIEWPORTS: ${{ matrix.viewport }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -43,14 +49,13 @@ jobs:
         run: npm run test:browser
         env:
           ZWM_ROUTES: "/product.html?product=baking-powder,/wholesale.html,/gift.html"
-          ZWM_VIEWPORTS: "360x800,tablet,desktop"
       - name: Run responsive browser regression
         run: npm run test:browser
 
-      - name: Save screenshots of layout failures
-        if: failure()
+      - name: Save responsive audit screenshots
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: responsive-layout-failures
+          name: responsive-layout-failures-${{ matrix.viewport }}
           path: browser-artifacts/
           if-no-files-found: ignore

@@ -20,7 +20,16 @@ async function stability(page){
  try{
   w.eval(read('site-runtime-v9.js'));
   w.eval(read('commerce-v1.js'));
-  await wait(160);const start=frames();await wait(160);
+  // Include the runtime's intentional 500ms/1500ms footer setup before
+  // measuring idle work, then wait for startup mutations to drain.
+  await wait(1700);
+  let quiet=0,previous=frames();
+  for(let attempt=0;attempt<12&&quiet<2;attempt++){
+   await wait(120);const current=frames();
+   quiet=current===previous?quiet+1:0;previous=current;
+  }
+  if(!baseline)assert.equal(quiet,2,'startup observers must settle');
+  const start=frames();await wait(160);
   const extra=frames()-start;
   console.log(page+' idle observer frames:',extra);
   if(!baseline)assert.equal(extra,0,'observers must stop scheduling work when idle');

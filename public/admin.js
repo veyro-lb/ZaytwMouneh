@@ -2208,6 +2208,9 @@
       setText("orderDetailCode",order.reference||reference||"—");
     }
 
+    try{window.ZWM_TDS_DELIVERY?.render(order,{client:state.client,refresh:refreshOrdersLive,toast});}
+    catch(err){console.warn("TDS delivery panel failed:",err);}
+
     requestAnimationFrame(()=>{
       try{modal.scrollIntoView({behavior:"smooth",block:"start"});}catch{}
     });

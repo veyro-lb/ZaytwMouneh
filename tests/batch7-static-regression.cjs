@@ -104,7 +104,9 @@ if(prelaunchHeaders.includes("/*\n  X-Robots-Tag: noindex, nofollow, noarchive")
 
 const sitemap=read("sitemap.xml");
 assert(sitemap.includes('xmlns:xhtml="http://www.w3.org/1999/xhtml"'),"sitemap hreflang namespace missing");
-assert.equal(count(sitemap,/<url>/g),1021,"sitemap must cover 331 visible products in 3 locales, 9 public pages in 3 locales and the A–Z catalogue");
+const collectionSlugs=["olive-oil","zaatar","honey","mouneh","spices","pickles","olives"];
+assert.equal(count(sitemap,/<url>/g),1021+collectionSlugs.length,"sitemap must cover 331 visible products in 3 locales, 9 public pages in 3 locales, the A–Z catalogue and curated collections");
+for(const slug of collectionSlugs)assert(sitemap.includes("<loc>"+origin+"/"+slug+"</loc>"),"sitemap missing curated collection: "+slug);
 assert.equal(count(sitemap,/hreflang="en-LB"/g),1020,"sitemap English alternates incomplete for localized public pages");
 assert.equal(count(sitemap,/hreflang="ar-LB"/g),1020,"sitemap Arabic alternates incomplete for localized public pages");
 assert.equal(count(sitemap,/hreflang="fr-LB"/g),1020,"sitemap French alternates incomplete for localized public pages");
@@ -122,4 +124,4 @@ assert(headers.includes("Cache-Control: public, max-age=86400, stale-while-reval
 assert(headers.includes("Cache-Control: public, max-age=2592000, immutable"),"asset immutable cache policy missing");
 assert(headers.includes("X-Content-Type-Options: nosniff"),"security headers missing");
 
-console.log("Batch 7 static production regression passed:",customerPages.length,"customer shells, 1021 sitemap URLs, Quick View guards, SEO/a11y/cache rules.");
+console.log("Batch 7 static production regression passed:",customerPages.length,"customer shells,",count(sitemap,/<url>/g),"sitemap URLs, Quick View guards, SEO/a11y/cache rules.");

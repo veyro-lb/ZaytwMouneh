@@ -22,7 +22,7 @@ assert.match(sql,/tg_op='INSERT' or old\.created_source is distinct from 'websit
   "Website quotes must always be restamped server-side");
 assert.match(sql,/- 'delivery_fee_confirmation'/,
   "User-controlled checkout metadata must never preapprove the fee");
-assert.match(sql,/o\.extra#>>'\\{delivery_fee_confirmation,status\\}'/,
+assert.ok(sql.includes("o.extra#>>'{delivery_fee_confirmation,status}'"),
   "Customer receives only the confirmation status, not internal audit metadata");
 
 assert.doesNotMatch(sql,/delete\s+from\s+public\.orders/i,"No destructive order changes");

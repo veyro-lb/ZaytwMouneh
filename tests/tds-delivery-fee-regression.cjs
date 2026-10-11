@@ -1,0 +1,68 @@
+"use strict";
+const assert=require("node:assert/strict");
+const fs=require("node:fs");
+const path=require("node:path");
+const {JSDOM}=require("jsdom");
+const root=path.join(__dirname,"..");
+const read=name=>fs.readFileSync(path.join(root,name),"utf8");
+const sql=read("supabase/migrations/20261011140500_tds_variable_delivery_confirmation.sql");
+const admin=read("public/admin.js"), adminHtml=read("public/admin.html");
+const checkout=read("public/checkout.js"), checkoutHtml=read("public/checkout.html");
+const receipt=read("public/order.js"), receiptHtml=read("public/order.html");
+assert.match(sql,/security invoker/i,"Fee changes must use existing admin RLS");
+assert.match(sql,/auth\.uid\(\)/,"Owner identity is required");
+assert.match(sql,/p_expected_updated_at/,"Concurrent order edits must be checked");
+assert.match(sql,/p_customer_approved is distinct from true/,"Customer consent is mandatory");
+assert.match(sql,/payment_status <> 'pending'/,"Paid orders must be immutable");
+assert.match(sql,/out_for_delivery|dispatched/,"Dispatched orders must be immutable");
+assert.match(sql,/Free delivery was promised/,"Free delivery promises must be honored");
+assert.match(sql,/insert into public\.admin_activity/,"Price changes require an audit record");
+assert.match(sql,/delivery_fee_confirmation/,"Customer must see the confirmed status");
+assert.doesNotMatch(sql,/delete\s+from\s+public\.orders/i,"No destructive order changes");
+assert.match(admin,/ZWM_TDS_DELIVERY\?\.render/);
+assert.match(adminHtml,/tdsDeliveryPanel/);
+assert.match(adminHtml,/admin-delivery-fee-v1\.js/);
+assert.match(checkout,/Estimated delivery/);
+assert.match(checkout,/no higher amount is charged without your approval/);
+assert.match(checkoutHtml,/checkoutDeliveryNotice/);
+assert.match(receipt,/o\.delivery_fee_confirmation\?\.status/);
+assert.match(receiptHtml,/orderDeliveryConfirmationNote/);
+
+(async ()=>{
+  const dom=new JSDOM(`<!doctype html><div id="tdsDeliveryPanel"></div>
+    <p id="tdsFeeStatus"></p><p id="tdsCurrentQuote"></p><p id="tdsFeeHelp"></p>
+    <input id="tdsFinalFee"><input type="checkbox" id="tdsFeeAccepted">
+    <button id="tdsSendFee"></button><button id="tdsConfirmFee"></button>`,
+    {url:"https://zaytwmouneh.com/admin",runScripts:"outside-only"});
+  const w=dom.window, $=id=>w.document.getElementById(id);
+  w.eval(read("public/admin-delivery-fee-v1.js"));
+  const calls=[], messages=[];
+  const api={
+    client:{rpc:async(name,args)=>{calls.push({name,args});return {data:{delivery_fee:6,total:31},error:null};}},
+    toast:(msg)=>messages.push(msg),
+    refresh:async()=>calls.push({name:"refresh"})
+  };
+  const base={reference:"ZW-2610110000-ABCD",delivery_fee:5,total:30,status:"new",
+    payment_status:"pending",created_source:"website",customer_phone:"03000000",
+    updated_at:"2026-10-11T10:00:00.000Z",
+    extra:{delivery_fee_confirmation:{status:"pending"},delivery_quote:{free_delivery:false}}};
+  w.ZWM_TDS_DELIVERY.render(base,api);
+  assert.match($("tdsFeeStatus").textContent,/Waiting for the owner/);
+  assert.equal($("tdsFinalFee").value,"5.00");
+  $("tdsFinalFee").value="6.00";
+  $("tdsFinalFee").oninput();
+  assert.equal($("tdsFeeAccepted").checked,false,"Changing quote invalidates previous consent");
+  $("tdsFeeAccepted").checked=true;
+  await $("tdsConfirmFee").onclick();
+  assert.equal(calls[0].name,"zwm_admin_confirm_delivery_fee");
+  assert.equal(calls[0].args.p_fee,6);
+  assert.equal(calls[0].args.p_customer_approved,true);
+  assert.equal(calls[0].args.p_expected_updated_at,base.updated_at);
+  assert.equal(calls[1].name,"refresh");
+  w.ZWM_TDS_DELIVERY.render({...base,delivery_fee:0,total:25,extra:{delivery_quote:{free_delivery:true}}},api);
+  assert.equal($("tdsFinalFee").disabled,true,"Promised free delivery cannot be repriced");
+  w.ZWM_TDS_DELIVERY.render({...base,status:"out_for_delivery"},api);
+  assert.equal($("tdsConfirmFee").disabled,true,"Dispatched orders are locked");
+  w.close();
+  console.log("TDS delivery fee regression checks passed");
+})().catch(err=>{console.error(err);process.exitCode=1});

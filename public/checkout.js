@@ -298,13 +298,27 @@ function renderSummary(){
   $("summaryRewardRow").hidden=disc<=0;$("summaryReward").textContent="-"+money(disc);
   $("summaryDelivery").textContent=!q.hasArea?t("Select area","اختر المنطقة","Choisir la zone"):(!q.zoneAvailable?t("Unavailable","غير متاح","Indisponible"):(q.fee===0?t("Free","مجاني","Gratuite"):money(q.fee)));
   $("summaryTotal").textContent=money(total);
+  var quotePending=q.hasArea&&q.available&&!q.free;
+  var shippingLabel=$("summaryDelivery")?.parentElement?.querySelector("span");
+  var totalLabel=$("summaryTotal")?.parentElement?.querySelector("span");
+  if(shippingLabel)shippingLabel.textContent=quotePending?t("Estimated delivery","التوصيل التقديري","Livraison estimée"):t("Delivery","التوصيل","Livraison");
+  if(totalLabel)totalLabel.textContent=quotePending?t("Estimated total","المجموع التقديري","Total estimé"):t("Total payable","المجموع المستحق","Total à payer");
+  var due=document.querySelector(".checkout-pay-note[data-i18n=codDue]");
+  if(due)due.textContent=quotePending
+    ?t("Cash on delivery after you approve the confirmed total.","الدفع نقداً عند الاستلام بعد موافقتك على المجموع النهائي.","Paiement à la livraison après validation du total final.")
+    :t("Pay the confirmed total in cash on delivery.","ادفع المجموع المؤكد نقداً عند الاستلام.","Payez le total confirmé à la livraison.");
+  var notice=$("checkoutDeliveryNotice");
+  if(notice)notice.textContent=!q.hasArea?"":q.free
+    ?t("Your free-delivery offer will be honored.","سيتم احترام عرض التوصيل المجاني الخاص بك.","Votre offre de livraison gratuite sera respectée.")
+    :t("TDS delivery is estimated here. The final fee depends on area, parcel size and weight. We will confirm the exact total with you before dispatch; no higher amount is charged without your approval.","رسوم توصيل TDS هنا تقديرية وقد تختلف بحسب المنطقة وحجم ووزن الطرد. سنؤكد المجموع النهائي معك قبل الإرسال، ولن تُفرض زيادة دون موافقتك.","La livraison TDS est estimée. Le tarif final dépend de la zone, du volume et du poids. Nous confirmerons le total avant l'expédition ; aucun supplément sans votre accord.");
+
   var remain=Math.max(0,q.threshold-q.eligible),pct=q.threshold>0?Math.min(100,q.eligible/q.threshold*100):100,msg="";
   if(!q.deliveryEnabled)msg=t("Delivery is temporarily paused","التوصيل متوقف مؤقتاً","La livraison est temporairement suspendue");
   else if(q.hasArea&&!q.zoneAvailable)msg=t("Delivery is not currently available for this area","التوصيل غير متاح حالياً لهذه المنطقة","La livraison n’est pas disponible pour cette zone");
   else if(q.free)msg=t("You unlocked FREE delivery ✓","حصلت على التوصيل المجاني ✓","Livraison GRATUITE débloquée ✓");
   else msg=t("Add ","أضف ","Ajoutez ")+money(remain)+t(" more for FREE delivery 🚚"," للتوصيل المجاني"," de plus pour la livraison GRATUITE 🚚");
   $("freeDeliveryBox").innerHTML='<strong>'+esc(msg)+'</strong><div class="free-delivery-track"><span style="width:'+pct+'%"></span></div>'+(q.minimum>0?'<small>'+esc(t("Minimum order ","الحد الأدنى للطلب ","Commande minimum ")+money(q.minimum))+'</small>':'');
-  var btn=$("placeOrderButton");btn.textContent=t("Place Order — ","إرسال الطلب — ","Commander — ")+money(total);
+  var btn=$("placeOrderButton");btn.textContent=(q.hasArea&&!q.free?t("Place order · est. ","أرسل الطلب · تقديري ","Commander · est. "):t("Place Order — ","إرسال الطلب — ","Commander — "))+money(total);
   btn.disabled=!state.ready||state.busy||!state.catalogVerified||!q.available||!q.hasArea||!state.rows.length||!!state.cartIssues.length||state.rows.some(function(r){return !r.available})
 }
 function renderGiftFields(){

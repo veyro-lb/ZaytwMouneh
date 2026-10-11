@@ -2208,6 +2208,9 @@
       setText("orderDetailCode",order.reference||reference||"—");
     }
 
+    try{window.ZWM_TDS_DELIVERY?.render(order,{client:state.client,refresh:refreshOrdersLive,toast});}
+    catch(err){console.warn("TDS delivery panel failed:",err);}
+
     requestAnimationFrame(()=>{
       try{modal.scrollIntoView({behavior:"smooth",block:"start"});}catch{}
     });
@@ -2348,6 +2351,12 @@
     if(!ORDER_STATUS_LABELS[status])return;
     const order=state.orders.find(o=>o.reference===reference);
     if(!order||order.status===status)return;
+    if(status==="out_for_delivery"&&order.created_source==="website"&&order.extra?.delivery_fee_confirmation?.status==="pending"){
+      toast("Confirm the final TDS delivery fee with the customer before dispatching this order.","error");
+      renderOrders();
+      if(state.selectedOrderReference===reference)openOrderDetails(reference);
+      return;
+    }
     if(!(ORDER_NEXT_STATUS[order.status]||[]).includes(status)){
       toast("That status change is not allowed. Move the order through the next delivery step.","error");
       renderOrders();

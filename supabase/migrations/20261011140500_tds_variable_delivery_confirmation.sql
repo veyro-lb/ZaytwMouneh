@@ -2,9 +2,10 @@
 create or replace function private.zwm_stamp_delivery_estimate()
 returns trigger language plpgsql set search_path = '' as $$
 begin
+  -- Ignore delivery-confirmation flags supplied by checkout clients.
   if new.created_source='website'
-     and not (coalesce(new.extra,'{}'::jsonb) ? 'delivery_fee_confirmation') then
-    new.extra := coalesce(new.extra,'{}'::jsonb) ||
+     and (tg_op='INSERT' or old.created_source is distinct from 'website') then
+    new.extra := (coalesce(new.extra,'{}'::jsonb) - 'delivery_fee_confirmation') ||
       jsonb_build_object('delivery_fee_confirmation',jsonb_build_object(
         'status','pending','estimated_fee',coalesce(new.delivery_fee,0),
         'created_at',now()
@@ -80,7 +81,7 @@ revoke all on function public.zwm_admin_confirm_delivery_fee(text,numeric,boolea
 grant execute on function public.zwm_admin_confirm_delivery_fee(text,numeric,boolean,timestamptz) to authenticated;
 
 -- Expose only the delivery-confirmation state to the authorized order viewer.
-CREATE OR REPLACE FUNCTION private.zwm_customer_order_payload(o orders, l mouneh.order_links, p_user uuid DEFAULT NULL::uuid)
+CREATE OR REPLACE FUNCTION private.zwm_customer_order_payload(o public.orders, l mouneh.order_links, p_user uuid DEFAULT NULL::uuid)
  RETURNS jsonb
  LANGUAGE plpgsql
  STABLE SECURITY DEFINER
@@ -146,7 +147,10 @@ begin
     'items',coalesce(o.items,'[]'::jsonb),'item_count',item_count,
     'subtotal',coalesce(o.subtotal,0),'discount_total',coalesce(o.discount_total,0),
     'reward_discount',coalesce(l.discount,o.reward_discount,0),'delivery_fee',coalesce(o.delivery_fee,0),
-    'delivery_fee_confirmation',coalesce(o.extra->'delivery_fee_confirmation',jsonb_build_object('status','legacy')),
+    'delivery_fee_confirmation',jsonb_build_object(
+      'status',coalesce(o.extra#>>'{delivery_fee_confirmation,status}','legacy'),
+      'confirmed_at',o.extra#>>'{delivery_fee_confirmation,confirmed_at}'
+    ),
     'total',coalesce(o.total,0),'currency',o.currency,'language',o.language,
     'delivery_area',coalesce(o.delivery_address->>'area',o.area),'delivery_address',coalesce(o.delivery_address,'{}'::jsonb),
     'payment_method',coalesce(o.payment_method,'cash_on_delivery'),'payment_status',coalesce(o.payment_status,'pending'),

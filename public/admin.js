@@ -2352,7 +2352,7 @@
     const order=state.orders.find(o=>o.reference===reference);
     if(!order||order.status===status)return;
     if(status==="out_for_delivery"&&order.created_source==="website"&&order.extra?.delivery_fee_confirmation?.status==="pending"){
-      toast("Confirm the final TDS delivery fee with the customer before dispatching this order.","error");
+      toast(state.lang==="ar"?"أكّد رسوم توصيل TDS النهائية مع العميل قبل إرسال هذا الطلب.":"Confirm the final TDS delivery fee with the customer before dispatching this order.","error");
       renderOrders();
       if(state.selectedOrderReference===reference)openOrderDetails(reference);
       return;

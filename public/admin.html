@@ -132,7 +132,7 @@
           </section>
 
           <div class="metric-grid">
-            <article class="metric-card"><span class="metric-icon">◉</span><div><small>Page views · 7 days</small><strong id="metricViews">—</strong><em id="metricViewsHint">Loading</em></div></article>
+            <article class="metric-card"><span class="metric-icon">↗</span><div><small>Visits · last 24 hours</small><strong id="metricViews">—</strong><em id="metricViewsHint">Rolling 24-hour window</em></div></article>
             <article class="metric-card"><span class="metric-icon">⌁</span><div><small>Unique visitors · 7 days</small><strong id="metricSessions">—</strong><em id="metricSessionsHint">Loading</em></div></article>
             <article class="metric-card"><span class="metric-icon">↗</span><div><small>WhatsApp clicks · 7 days</small><strong id="metricWhatsApp">—</strong><em>High-intent customer action</em></div></article>
             <article class="metric-card"><span class="metric-icon">▦</span><div><small>Live catalogue</small><strong id="metricProducts">—</strong><em id="metricProductsHint">Products visible</em></div></article>
@@ -439,7 +439,7 @@
         <section class="dashboard-view" data-view-panel="analytics">
           <div class="analytics-head">
             <div><p>Website analytics</p><h2>Live traffic and customer activity from one synchronized event stream.</h2><span class="analytics-freshness" id="analyticsFreshness">Loading analytics…</span></div>
-            <select id="analyticsRange"><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select>
+            <select id="analyticsRange" aria-label="Analytics period"><option value="1" selected>Last 24 hours</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select>
           </div>
           <section class="panel website-visits-panel" aria-labelledby="websiteVisitsHeading">
             <div class="panel-head">
@@ -462,7 +462,7 @@
             <article class="metric-card"><div><small>WhatsApp clicks</small><strong id="analyticsWhatsApp">—</strong><em>Order/contact intent</em></div></article>
           </div>
           <div class="overview-grid">
-            <article class="panel panel-wide"><div class="panel-head"><div><p>Daily traffic</p><h3>Page views & sessions</h3></div></div><div id="analyticsChart" class="analytics-chart"></div></article>
+            <article class="panel panel-wide"><div class="panel-head"><div><p>Traffic over time</p><h3>Page views & sessions</h3></div></div><div id="analyticsChart" class="analytics-chart"></div></article>
             <article class="panel"><div class="panel-head"><div><p>Top pages</p><h3>Most viewed</h3></div></div><div id="analyticsPages" class="rank-list"></div></article>
           </div>
           <div class="metric-grid analytics-metrics order-business-metrics">
@@ -902,7 +902,7 @@
   <script src="product-photos.js?v=20261009-harvest-live1"></script>
 
   <script src="admin-delivery-fee-v1.js?v=20261011-tds-i18n2"></script>
-  <script src="admin.js?v=20261011-tds-locale2"></script>
+  <script src="admin.js?v=20261012-visits24h1"></script>
   <script src="admin-notifications-v1.js?v=20261009-owner-multidevice1"></script>
   <script src="admin-rewards.js?v=20261005-account-deletefix2"></script>
   <script src="admin-wholesale.js?v=20261009-wholesale-i18n2"></script>

@@ -18,6 +18,13 @@ assert.match(sql,/out_for_delivery|dispatched/,"Dispatched orders must be immuta
 assert.match(sql,/Free delivery was promised/,"Free delivery promises must be honored");
 assert.match(sql,/insert into public\.admin_activity/,"Price changes require an audit record");
 assert.match(sql,/delivery_fee_confirmation/,"Customer must see the confirmed status");
+assert.match(sql,/tg_op='INSERT' or old\.created_source is distinct from 'website'/,
+  "Website quotes must always be restamped server-side");
+assert.match(sql,/- 'delivery_fee_confirmation'/,
+  "User-controlled checkout metadata must never preapprove the fee");
+assert.match(sql,/o\.extra#>>'\\{delivery_fee_confirmation,status\\}'/,
+  "Customer receives only the confirmation status, not internal audit metadata");
+
 assert.doesNotMatch(sql,/delete\s+from\s+public\.orders/i,"No destructive order changes");
 assert.match(admin,/ZWM_TDS_DELIVERY\?\.render/);
 assert.match(admin,/status==="out_for_delivery"&&order\.created_source==="website"&&order\.extra\?\.delivery_fee_confirmation\?\.status==="pending"/);

@@ -768,6 +768,19 @@
     </section>
   </div>
 
+
+  <style>
+    .tds-fee-panel{border-inline-start:3px solid #647a45}
+    .tds-fee-grid{display:grid;grid-template-columns:minmax(140px,1fr) minmax(160px,1fr);gap:12px;align-items:end;margin:12px 0}
+    .tds-fee-grid label{display:block;min-width:0;font-size:13px;font-weight:700}
+    .tds-fee-grid input{box-sizing:border-box;width:100%;margin-top:6px;min-height:44px;padding:9px 11px}
+    .tds-fee-grid button{min-height:44px;white-space:normal}
+    .tds-confirm-label{display:flex;gap:10px;align-items:flex-start;max-width:640px;line-height:1.5;margin:12px 0;font-size:13px}
+    .tds-confirm-label input{margin-top:3px;width:18px;height:18px;flex:none}
+    .tds-fee-panel #tdsConfirmFee{min-height:44px}
+    @media(max-width:600px){.tds-fee-grid{grid-template-columns:minmax(0,1fr)}.tds-fee-panel #tdsConfirmFee{width:100%}}
+  </style>
+
   <div class="modal-backdrop" id="orderModal" hidden>
     <section class="order-detail-modal" role="dialog" aria-modal="true" aria-labelledby="orderDetailTitle">
       <header class="editor-head">
@@ -802,6 +815,22 @@
           <article class="order-detail-section"><span>Customer notes</span><p id="orderDetailNotes">No notes.</p></article>
           <article class="order-detail-section" id="orderGiftDetails"><span>Gift details</span><div id="orderDetailGift" class="order-gift-details"></div></article>
         </div>
+
+        
+        <article class="order-detail-section tds-fee-panel" id="tdsDeliveryPanel">
+          <div class="order-detail-section-head"><div><span>TDS delivery</span><h3>Confirm final delivery fee</h3></div></div>
+          <p id="tdsFeeStatus" class="field-help" aria-live="polite">Loading delivery status…</p>
+          <p id="tdsCurrentQuote" class="field-help"></p>
+          <div class="tds-fee-grid">
+            <label for="tdsFinalFee">Final delivery fee (USD)
+              <input id="tdsFinalFee" type="number" min="0" max="200" step="0.01" inputmode="decimal">
+            </label>
+            <button type="button" class="button-secondary" id="tdsSendFee">Request approval on WhatsApp</button>
+          </div>
+          <p id="tdsFeeHelp" class="field-help"></p>
+          <label class="tds-confirm-label"><input type="checkbox" id="tdsFeeAccepted"> I have informed the customer of the final delivery fee and total, and they agreed.</label>
+          <button type="button" class="button-primary" id="tdsConfirmFee">Confirm final fee</button>
+        </article>
 
         <article class="order-detail-section">
           <div class="order-detail-section-head"><div><span>WhatsApp tools</span><h3>Customer updates</h3></div></div>
@@ -870,6 +899,7 @@
   <script src="products-data.js?v=20261009-harvest-live1"></script>
   <script src="product-photos.js?v=20261009-harvest-live1"></script>
 
+  <script src="admin-delivery-fee-v1.js?v=20261011-tds1"></script>
   <script src="admin.js?v=20261009-website-visits1"></script>
   <script src="admin-notifications-v1.js?v=20261009-owner-multidevice1"></script>
   <script src="admin-rewards.js?v=20261005-account-deletefix2"></script>

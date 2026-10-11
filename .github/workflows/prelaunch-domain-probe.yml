@@ -39,6 +39,14 @@ jobs:
               ('/checkout', 'data-page="checkout"'),
               ('/gift', 'data-page="gift"'),
               ('/contact', 'data-page="contact"'),
+              ('/catalogue', '331 listed products'),
+              ('/olive-oil', 'name="description"'),
+              ('/zaatar', 'name="description"'),
+              ('/honey', 'name="description"'),
+              ('/mouneh', 'name="description"'),
+              ('/spices', 'name="description"'),
+              ('/pickles', 'name="description"'),
+              ('/olives', 'name="description"'),
               ('/account', 'data-page="account"'),
               ('/robots.txt', 'Sitemap: https://zaytwmouneh.com/sitemap.xml'),
               ('/sitemap.xml', '<urlset'),
@@ -62,6 +70,15 @@ jobs:
                       assert 'name="zwm-release"' in html, f'{url}: not a storefront release'
                   assert marker in html, f'{url}: missing customer content'
                   print(f'PASS: {response.url} serves the storefront over HTTPS')
+
+          # Confirm production serves the new SEO collections and sitemap references.
+          sitemap_request = urllib.request.Request('https://zaytwmouneh.com/sitemap.xml', headers={'User-Agent': 'Mozilla/5.0'})
+          with urllib.request.urlopen(sitemap_request, timeout=30) as response:
+              xml = response.read().decode('utf-8')
+          for slug in ('olive-oil', 'zaatar', 'honey', 'mouneh', 'spices', 'pickles', 'olives'):
+              assert '<loc>https://zaytwmouneh.com/' + slug + '</loc>' in xml, 'Live sitemap missing: ' + slug
+          assert xml.count('<loc>') >= 1028, 'Live sitemap has not received SEO collection URLs'
+          print('PASS: All seven SEO collections appear in the live sitemap')
 
           # All public links should resolve to the preferred secure hostname.
           for alternate in ('https://www.zaytwmouneh.com/', 'http://zaytwmouneh.com/'):

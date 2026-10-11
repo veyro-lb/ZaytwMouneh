@@ -13,7 +13,7 @@ assert.match(sql,/security invoker/i,"Fee changes must use existing admin RLS");
 assert.match(sql,/auth\.uid\(\)/,"Owner identity is required");
 assert.match(sql,/p_expected_updated_at/,"Concurrent order edits must be checked");
 assert.match(sql,/p_customer_approved is distinct from true/,"Customer consent is mandatory");
-assert.match(sql,/payment_status <> 'pending'/,"Paid orders must be immutable");
+assert.match(sql,/payment_status is distinct from 'pending'/,"Paid orders must be immutable");
 assert.match(sql,/out_for_delivery|dispatched/,"Dispatched orders must be immutable");
 assert.match(sql,/Free delivery was promised/,"Free delivery promises must be honored");
 assert.match(sql,/insert into public\.admin_activity/,"Price changes require an audit record");

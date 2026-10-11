@@ -20,6 +20,7 @@ assert.match(sql,/insert into public\.admin_activity/,"Price changes require an 
 assert.match(sql,/delivery_fee_confirmation/,"Customer must see the confirmed status");
 assert.doesNotMatch(sql,/delete\s+from\s+public\.orders/i,"No destructive order changes");
 assert.match(admin,/ZWM_TDS_DELIVERY\?\.render/);
+assert.match(admin,/status==="out_for_delivery"&&order\.created_source==="website"&&order\.extra\?\.delivery_fee_confirmation\?\.status==="pending"/);
 assert.match(adminHtml,/tdsDeliveryPanel/);
 assert.match(adminHtml,/admin-delivery-fee-v1\.js/);
 assert.match(checkout,/Estimated delivery/);

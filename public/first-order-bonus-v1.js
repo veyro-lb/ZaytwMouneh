@@ -71,13 +71,13 @@
     observer?.disconnect();clearTimeout(timer);
   }
   function check(){
-    clearTimeout(timer);
     if(closed)return;
     if(memberHasOrdered()){dismiss(false);return;}
     if(card){if(busy())dismiss(false);return;}
     if(shown||seen())return;
-    if(busy())return;
+    if(busy()||timer)return;
     timer=setTimeout(()=>{
+      timer=null;
       if(closed||seen()||busy()||memberHasOrdered())return;
       shown=true;recordAppearance();
       card=document.createElement('aside');card.className='fob-card';card.setAttribute('aria-labelledby','fobTitle');

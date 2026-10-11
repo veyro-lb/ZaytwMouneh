@@ -25,6 +25,9 @@ function setup({page='shop',lang='en',seen=false,orders=[],modal=false,preview=f
   doc.querySelector('.fob-join').click();assert.equal(w.joined,true);assert.equal(doc.querySelector('.fob-card'),null);
   assert.equal(JSON.parse(w.localStorage.getItem(KEY)).dismissed,true,'signup ends reminders');dom.window.close();
  }
+ const active=setup({lang:'ar'});
+ const updates=setInterval(()=>active.doc.body.classList.toggle('translation-refresh'),40);await wait();clearInterval(updates);
+ assert.ok(active.doc.querySelector('.fob-card'),'ongoing locale DOM updates must not restart the display delay');active.w.close();
  const old=Date.now()-8*24*60*60*1000;
  for(const options of [{seen:true},{orders:[{reference:'existing'}]},{page:'checkout'},{page:'admin'},{page:'account'},
   {visit:true},{preview:true,visit:true},{history:{count:2,lastShown:old}},{preview:true,history:{count:2,lastShown:old}},

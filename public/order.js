@@ -206,14 +206,18 @@ function render(){
   $("orderDeliveryFee").textContent=Number(o.delivery_fee||0)===0?tr("Free","مجاني","Gratuite"):money(o.delivery_fee);
   $("orderTotal").textContent=money(o.total);
   var feeStatus=o.delivery_fee_confirmation?.status||"legacy";
+  var freePending=feeStatus==="pending"&&Number(o.delivery_fee||0)===0;
   var feeNote=$("orderDeliveryConfirmationNote");
   if(feeNote){
     feeNote.hidden=feeStatus==="legacy";
     feeNote.textContent=feeStatus==="confirmed"
       ?tr("Delivery fee confirmed with you. The total above is final.","تم تأكيد رسوم التوصيل معك. المجموع أعلاه نهائي.","Les frais de livraison sont confirmés. Le total affiché est définitif.")
-      :tr("Delivery fee and total are estimates until we contact you to confirm the TDS charge before dispatch. Any change requires your approval.","رسوم التوصيل والمجموع تقديريان حتى نتواصل معك لتأكيد تكلفة TDS قبل الإرسال. أي تغيير يحتاج موافقتك.","Les frais et le total restent estimatifs jusqu'à notre confirmation avant expédition. Votre accord est requis pour tout changement.");
-    $("delLabel").textContent=feeStatus==="pending"?tr("Estimated delivery","التوصيل التقديري","Livraison estimée"):tr("Delivery","التوصيل","Livraison");
-    $("totalLabel").textContent=feeStatus==="pending"?tr("Estimated total","المجموع التقديري","Total estimé"):tr("Total","الإجمالي","Total");
+      :freePending
+        ?tr("Your free delivery is guaranteed. You will not be charged a delivery fee.","التوصيل المجاني مضمون لطلبك، ولن تُفرض عليك أي رسوم توصيل.","Votre livraison gratuite est garantie. Aucun frais de livraison ne sera ajouté.")
+        :tr("Delivery fee and total are estimates until we contact you to confirm the TDS charge before dispatch. Any change requires your approval.","رسوم التوصيل والمجموع تقديريان حتى نتواصل معك لتأكيد تكلفة TDS قبل الإرسال. أي تغيير يحتاج موافقتك.","Les frais et le total restent estimatifs jusqu'à notre confirmation avant expédition. Votre accord est requis pour tout changement.");
+    var isEstimate=feeStatus==="pending"&&!freePending;
+    $("delLabel").textContent=isEstimate?tr("Estimated delivery","التوصيل التقديري","Livraison estimée"):tr("Delivery","التوصيل","Livraison");
+    $("totalLabel").textContent=isEstimate?tr("Estimated total","المجموع التقديري","Total estimé"):tr("Total","الإجمالي","Total");
   }
 
 

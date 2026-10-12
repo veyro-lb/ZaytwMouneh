@@ -58,6 +58,12 @@ assert(!/no added sugar|sweetened only (?:with|by) carob/i.test(JSON.stringify(d
 for (const name of fs.readdirSync('public').filter(file => file.endsWith('.html'))) {
   const html = fs.readFileSync('public/' + name, 'utf8');
   const icons = [...html.matchAll(/<link\b[^>]*\brel="(?:shortcut icon|icon)"[^>]*>/g)].map(match => match[0]);
-  assert(icons.every(icon => icon.includes('href="/favicon.jpg"')), name + ': favicon must match the homepage logo');
+  // Every supported icon links to a real branded asset; modern browsers prefer ICO/PNG.
+  const allowedIcons=new Set(['/favicon.jpg','/favicon.ico','/favicon-96x96.png','/favicon-192x192.png']);
+  for(const icon of icons){
+    const href=icon.match(/\bhref="([^"]+)"/)?.[1];
+    assert(allowedIcons.has(href), name + ': unexpected favicon URL '+href);
+    assert(fs.existsSync('public'+href), name + ': referenced favicon file missing '+href);
+  }
 }
 console.log('Product-description regression: PASS (332 drafts, 329 runtime records, 49 holds, 280 eligible)');

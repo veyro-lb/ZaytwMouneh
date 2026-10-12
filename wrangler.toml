@@ -1,9 +1,12 @@
 name = "zaytwmouneh"
 compatibility_date = "2026-10-03"
+main = "./worker/product-seo.mjs"
 
 [assets]
 directory = "./public"
 html_handling = "none"
+binding = "ASSETS"
+run_worker_first = ["/product/*", "/ar/product/*", "/fr/product/*"]
 
 # PR preview builds only; production settings remain top-level.
 [previews]

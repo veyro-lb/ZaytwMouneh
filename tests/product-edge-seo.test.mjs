@@ -19,6 +19,7 @@ const makeEnv = () => ({
 test("catalogue can be parsed from shipped JavaScript without executing it", () => {
   assert.ok(catalogue.size >= 300);
   assert.equal(catalogue.get("baking-powder").nameEn, "Baking Powder");
+  assert.equal(catalogue.get("brown-sugar").nameAr, "سكر بني");
 });
 test("three product locales have crawlable titles, content, canonical and hreflang", async () => {
   for (const lang of ["en", "ar", "fr"]) {

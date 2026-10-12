@@ -5,7 +5,12 @@
  */
 const ORIGIN = "https://zaytwmouneh.com";
 const CATALOGUE_PREFIX = "const PRODUCTS_DATA=";
-const HIDDEN_IDS = new Set(["sekar-nabet"]); // owner-hidden as of 2026-10-10; update if visibility changes
+// Mirrors the runtime's explicit catalogue alias map so Google never indexes duplicate slugs.
+const PRODUCT_ALIASES = new Map([
+  ["barly-flour", "barley-flour"],
+  ["bezer-el-kettan", "bezer-al-ketan"],
+  ["sekar-nabet", "secar-nabat"]
+]);
 let cataloguePromise;
 
 function clean(value) {
@@ -122,8 +127,12 @@ export default {
     if (!shell.ok) return env.ASSETS.fetch(request);
     const html = await shell.text();
     if (!html.includes("<strong>Loading product…</strong>")) return htmlResponse(html, shell, shell.status);
+    const canonicalId = PRODUCT_ALIASES.get(matched[2]);
+    if (canonicalId) {
+      return Response.redirect(ORIGIN + productPath(canonicalId, locale), 301);
+    }
     const product = products.get(matched[2]);
-    if (!product || HIDDEN_IDS.has(matched[2])) return htmlResponse(notFoundHTML(html), shell, 404);
+    if (!product) return htmlResponse(notFoundHTML(html), shell, 404);
     return htmlResponse(seoProductHTML(html, product, locale), shell, 200);
   }
 };

@@ -40,12 +40,26 @@ test("three product locales have crawlable titles, content, canonical and hrefla
     }
   }
 });
-test("hidden and nonexistent products are noindex 404 rather than phantom sitemap content", async () => {
-  for (const slug of ["sekar-nabet", "made-up-product"]) {
+test("nonexistent products are noindex 404 rather than phantom sitemap content", async () => {
+  for (const slug of ["made-up-product", "does-not-exist"]) {
     const response = await seoWorker.fetch(new Request("https://zaytwmouneh.com/product/" + slug), makeEnv());
     assert.equal(response.status, 404);
     assert.match(response.headers.get("X-Robots-Tag"), /noindex/);
     assert.match(await response.text(), /<meta name="robots" content="noindex,follow">/);
+  }
+});
+test("legacy catalogue aliases issue permanent redirects rather than duplicate HTML", async () => {
+  for (const [oldId, canonicalId] of [
+    ["barly-flour", "barley-flour"],
+    ["bezer-el-kettan", "bezer-al-ketan"],
+    ["sekar-nabet", "secar-nabat"]
+  ]) {
+    assert.ok(source.includes('"' + oldId + '":"' + canonicalId + '"'));
+    const response = await seoWorker.fetch(
+      new Request("https://zaytwmouneh.com/ar/product/" + oldId), makeEnv());
+    assert.equal(response.status, 301);
+    assert.equal(response.headers.get("location"),
+      "https://zaytwmouneh.com/ar/product/" + canonicalId);
   }
 });
 test("nonproduct traffic, including checkout and admin, bypasses product SEO", async () => {

@@ -923,13 +923,19 @@
   }
 
   function localBusinessSchema(){
-    if(q("#premiumBusinessSchema"))return;
+    // The homepage already provides canonical, server-rendered business data.
+    if(q("#premiumBusinessSchema")||q("#zwmBusinessSchema"))return;
     var data={
-      "@context":"https://schema.org","@type":"Store","name":"Zayt w Mouneh",
-      "url":"https://zaytwmouneh.com/",
-      "telephone":"+96170381412","currenciesAccepted":"USD",
+      "@context":"https://schema.org","@id":"https://zaytwmouneh.com/#business",
+      "@type":["Store","OnlineStore"],
+      "name":"Zayt W Mouneh","alternateName":["زيت ومونة","Zayt w Mouneh"],
+      "description":"Shop Lebanese mouneh, olive oil, zaatar, honey, spices and pantry gifts online, with delivery across Lebanon.",
+      "url":"https://zaytwmouneh.com/","logo":"https://zaytwmouneh.com/favicon.jpg",
+      "foundingDate":"2006","telephone":"+96170381412","currenciesAccepted":"USD",
+      "areaServed":{"@type":"Country","name":"Lebanon"},
       "address":{"@type":"PostalAddress","addressLocality":"Sebline","addressCountry":"LB"},
-      "sameAs":["https://instagram.com/zaytwmouneh"]
+      "sameAs":["https://instagram.com/zaytwmouneh"],
+      "hasOfferCatalog":{"@type":"OfferCatalog","name":"Lebanese pantry catalogue","url":"https://zaytwmouneh.com/shop"}
     };
     var s=document.createElement("script");s.type="application/ld+json";s.id="premiumBusinessSchema";s.textContent=JSON.stringify(data);document.head.appendChild(s);
   }

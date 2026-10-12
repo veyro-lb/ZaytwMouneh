@@ -26,6 +26,12 @@ export function parseCatalogue(source) {
   if (until < 0) throw new Error("PRODUCTS_DATA closing delimiter not found");
   const products = JSON.parse(source.slice(from, until + 1));
   if (!Array.isArray(products) || products.length < 300) throw new Error("Catalogue invalid");
+  // Match the catalogue's published Arabic spelling fixes rather than raw PDF RTL/OCR text.
+  const arBlock = source.match(/const AR_PRODUCT_NAME_FIXES=Object\.freeze\((\{[\s\S]*?\})\);/);
+  if (arBlock) {
+    const fixes = JSON.parse(arBlock[1].replace(/,\s*}/g, "}"));
+    products.forEach(p => { if (fixes[p.id]) p.nameAr = fixes[p.id]; });
+  }
   return new Map(products.map(p => [p.id, p]));
 }
 async function getCatalogue(env, request) {

@@ -35,6 +35,7 @@ function setup(width,locale){
   w.eval([
     read("products-data.js"),
     read("product-photos.js"),
+    read("product-search-v1.js"),
     read("app.js"),
     read("fr-runtime-v1.js"),
     read("conversion-v1.js")
@@ -92,6 +93,17 @@ async function exercise(width,locale){
     const search=d.getElementById("productSearch");search.value="sugar";search.dispatchEvent(new w.Event("input",{bubbles:true}));await wait(30);
     views=Array.from(d.querySelectorAll("[data-view]"));assert(views.length,"search returned no Quick View");
     await assertOpen(ctx,views[0],width+" "+locale+" search");await closeByButton(ctx,"search");
+    // Search suggestions must remain usable by keyboard in every locale and viewport.
+    search.focus();search.dispatchEvent(new w.KeyboardEvent("keydown",{key:"ArrowDown",bubbles:true}));
+    const suggestion=d.activeElement;assert(suggestion.matches("[data-suggest]"),"ArrowDown focuses a suggestion");
+    await wait(5);assert(!d.getElementById("searchSuggestions").hidden,"focus inside suggestions keeps them open");
+    suggestion.dispatchEvent(new w.KeyboardEvent("keydown",{key:"Escape",bubbles:true}));
+    assert.equal(d.activeElement,search,"Escape returns focus to search");
+    assert.equal(search.getAttribute("aria-expanded"),"false");
+    search.value="huile d'olive";search.dispatchEvent(new w.Event("input",{bubbles:true}));
+    const oil=d.querySelector('[data-suggest="extra-virgin-olive-oil"]');assert(oil,"French search works independently of locale");
+    oil.click();await wait(15);assert(d.getElementById("productModal").classList.contains("is-open"),"keyboard-generated click opens suggestion");
+    await closeByButton(ctx,"suggestion");
     // Category filter then Quick View.
     search.value="";search.dispatchEvent(new w.Event("input",{bubbles:true}));await wait(20);
     const select=d.getElementById("categorySelect");

@@ -281,18 +281,18 @@
         </div>
 
         <div class="catalog-toolbar reveal" data-sticky-catalogue>
-          <label class="search-box" for="productSearch">
+          <div class="search-box">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg>
-            <input id="productSearch" type="search" placeholder="Search zaatar, lentils, honey, grains, spices…" autocomplete="off" />
+            <input id="productSearch" type="search" dir="auto" enterkeyhint="search" aria-label="Search all products" aria-controls="searchSuggestions" aria-expanded="false" placeholder="Search zaatar, lentils, honey, grains, spices…" autocomplete="off" />
             <kbd>⌘ K</kbd>
-            <div class="search-suggestions" id="searchSuggestions" hidden></div>
-          </label>
+            <div class="search-suggestions" id="searchSuggestions" role="group" aria-label="Product suggestions" hidden></div>
+          </div>
           <label class="category-select-wrap" for="categorySelect">
             <span id="categorySelectLabel">Category</span>
             <select id="categorySelect" aria-label="Filter catalogue by category"></select>
           </label>
           <button class="favorites-filter" id="favoritesOnly" type="button" aria-pressed="false"><span aria-hidden="true">♡</span><strong id="favoritesFilterLabel">Saved</strong><em id="favoritesCount">0</em></button>
-          <div class="catalog-meta"><strong id="resultCount">332</strong><span id="resultLabel">products</span></div>
+          <div class="catalog-meta" role="status" aria-live="polite" aria-atomic="true"><strong id="resultCount">332</strong><span id="resultLabel">products</span></div>
         </div>
 
         <div class="zwm-budget-filter" role="group" aria-labelledby="zwmPriceLabel">
@@ -522,7 +522,8 @@
   <script src="products-data.js?v=20261009-harvest-live1"></script>
   <script src="/product-descriptions-v1.js?v=20261010-copyreview1"></script>
   <script src="product-photos.js?v=20261010-newolivephoto1"></script>
-  <script src="app.js?v=20261021-arrivals1"></script>
+  <script src="/product-search-v1.js?v=20261021-search1"></script>
+  <script src="app.js?v=20261021-search1"></script>
   <script src="/golden-harvest-2026.js?v=20261010-popupvisit1"></script>
   <script src="/shop-extras-v1.js?v=20261008-budgetzoom1"></script>
   <script src="premium-v2.js?v=20261010-newolivephoto1"></script>

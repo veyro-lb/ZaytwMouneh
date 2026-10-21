@@ -6940,3 +6940,14 @@ body.modal-open .product-modal-card{
     height:100%!important;
   }
 }
+
+/* Saved cart quantities remain editable directly on shopping cards, including mobile. */
+body .card-qty:not([hidden]),body .shopping-qty:not([hidden]){display:grid!important;grid-template-columns:44px minmax(28px,1fr) 44px!important;align-items:center;direction:ltr;border:1px solid var(--line);border-radius:12px;background:#f8f1e5;overflow:hidden;min-width:116px}
+body[data-page="shop"] .product-buy-row .card-qty:not([hidden]){width:100%}
+body .card-qty button,body .shopping-qty button{min-height:44px!important;min-width:44px;border:0;border-radius:0;background:transparent;color:var(--green);font-size:1.2rem;padding:0!important;cursor:pointer}
+body .shopping-qty span{text-align:center;font-weight:900;color:var(--green);font-variant-numeric:tabular-nums}
+body .card-qty button:focus-visible,body .shopping-qty button:focus-visible{outline:2px solid var(--green);outline-offset:-3px}
+body .shopping-qty button:disabled{opacity:.5;cursor:not-allowed}
+body .card-qty[hidden],body .shopping-qty[hidden],body [data-add][hidden],body [data-featured-add][hidden],body [data-arrival-add][hidden]{display:none!important}
+body .featured-product-foot{flex-wrap:wrap}
+body .shopping-qty{flex-shrink:0}

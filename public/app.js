@@ -1433,7 +1433,7 @@ function renderProducts(){
     const summary=productDescriptionFor(p);
     const isFav=favorites.has(p.id);
     const selected=cardVariantFor(p);
-    const q=qtyFor("card:"+p.id);
+    const q=cart[cartKey(p.id,selected.id)]?.qty||0;
     const ps=productPriceSummary(p);
     const availability=productAvailability(p);
     const canOrder=availability==="in_stock";
@@ -1460,12 +1460,12 @@ function renderProducts(){
       <div class="product-actions">
         ${sizeOptions}
         <div class="product-buy-row">
-          <div class="card-qty">
+          <div class="card-qty" ${q?"":"hidden"}>
             <button type="button" data-card-q="-1" data-id="${escapeHtml(p.id)}" ${canOrder&&!selected.quoteOnly?"":"disabled"} aria-label="${escapeHtml(lang==="ar"?"تقليل الكمية":"Decrease quantity")}">−</button>
-            <span data-card-qty="${escapeHtml(p.id)}">${q}</span>
+            <span data-card-qty="${escapeHtml(p.id)}" aria-live="polite" aria-atomic="true">${q}</span>
             <button type="button" data-card-q="1" data-id="${escapeHtml(p.id)}" ${canOrder&&!selected.quoteOnly?"":"disabled"} aria-label="${escapeHtml(lang==="ar"?"زيادة الكمية":"Increase quantity")}">+</button>
           </div>
-          <button class="add-button" type="button" data-add="${escapeHtml(p.id)}" ${canOrder||selected.quoteOnly?"":"disabled"}>${escapeHtml(selected.quoteOnly?harvestQuoteAction():canOrder?t.add:availabilityLabel(p))}</button>
+          <button class="add-button" type="button" data-add="${escapeHtml(p.id)}" ${q&&!selected.quoteOnly?"hidden":""} ${canOrder||selected.quoteOnly?"":"disabled"}>${escapeHtml(selected.quoteOnly?harvestQuoteAction():canOrder?t.add:availabilityLabel(p))}</button>
         </div>
       </div>
     </article>`;
@@ -1501,13 +1501,12 @@ function renderProducts(){
       if(button){button.disabled=!variant?.quoteOnly&&!productCanOrder(p);button.textContent=variant?.quoteOnly?harvestQuoteAction():productCanOrder(p)?t.add:availabilityLabel(p);}
       card?.querySelectorAll("[data-card-q]").forEach(btn=>{btn.disabled=!!variant?.quoteOnly||!productCanOrder(p)});
     }
+    syncShoppingQuantities();
   }));
   $$("[data-card-q]").forEach(btn=>btn.addEventListener("click",e=>{
     e.stopPropagation();
-    const key="card:"+btn.dataset.id;
-    draftQty[key]=Math.max(1,qtyFor(key)+Number(btn.dataset.cardQ));
-    const display=$(`[data-card-qty="${cssEscape(btn.dataset.id)}"]`);
-    if(display)display.textContent=draftQty[key];
+    const p=productById(btn.dataset.id);
+    if(p)changeShoppingQty(p,cardVariantFor(p),Number(btn.dataset.cardQ));
   }));
   $$("[data-add]").forEach(btn=>btn.addEventListener("click",e=>{
     e.stopPropagation();
@@ -1516,13 +1515,62 @@ function renderProducts(){
     if(!p)return;
     const chosen=cardVariantFor(p);
     if(chosen?.quoteOnly){location.href=harvestQuoteUrl();return}
-    if(addToCart(p,chosen,qtyFor("card:"+p.id),true))animateAddToCart(btn,p);
+    if(addToCart(p,chosen,1,true))animateAddToCart(btn,p);
   }));
+  syncShoppingQuantities();
   $$("[data-view]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,260))return;openProduct(btn.dataset.view,btn)}));
   $$("[data-product]").forEach(card=>{
     // Genuine product links should navigate; the rest of the card still opens Quick View.
     card.addEventListener("click",e=>{if(!e.target.closest("button,select,a"))openProduct(card.dataset.product,card)});
     card.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!e.target.closest("button,select,a")){e.preventDefault();openProduct(card.dataset.product,card)}});
+  });
+}
+
+// Shopping steppers always reflect the selected variant's saved cart quantity.
+function changeShoppingQty(p,v,delta){
+  if(!v||v.quoteOnly||!productCanOrder(p))return false;
+  const key=cartKey(p.id,v.id),previous=cart[key];
+  const qty=Math.max(0,Math.min(99,(previous?.qty||0)+delta));
+  if(qty===(previous?.qty||0))return false;
+  if(qty)cart[key]={productId:p.id,variantId:v.id,qty};
+  else delete cart[key];
+  if(!saveCart()){
+    if(previous)cart[key]=previous;else delete cart[key];
+    toast(lang==="ar"?"تعذّر حفظ السلة. حاول مجدداً.":lang==="fr"?"Impossible d’enregistrer le panier. Réessayez.":"Couldn't save your cart. Please try again.");
+    return false;
+  }
+  renderCart();
+  if(delta>0)window.ZWM_CMS?.track?.("add_to_cart",{product_id:p.id,source:"storefront"});
+  if(!qty)document.querySelector(`[data-add="${cssEscape(p.id)}"],[data-featured-add="${cssEscape(p.id)}"],[data-arrival-add="${cssEscape(p.id)}"]`)?.focus({preventScroll:true});
+  return true;
+}
+function syncShoppingQuantities(){
+  document.querySelectorAll("[data-card-qty]").forEach(display=>{
+    const p=productById(display.dataset.cardQty);if(!p)return;
+    const v=cardVariantFor(p),qty=cart[cartKey(p.id,v.id)]?.qty||0;
+    const card=display.closest(".product-card"),stepper=display.closest(".card-qty"),add=card?.querySelector("[data-add]");
+    display.textContent=qty;
+    stepper.hidden=!qty||!!v.quoteOnly;
+    if(add)add.hidden=qty>0&&!v.quoteOnly;
+    stepper.querySelectorAll("[data-card-q]").forEach(btn=>{btn.disabled=!productCanOrder(p)||!!v.quoteOnly||(Number(btn.dataset.cardQ)>0&&qty>=99)});
+  });
+  document.querySelectorAll("[data-featured-add],[data-arrival-add]").forEach(add=>{
+    const p=productById(add.dataset.featuredAdd||add.dataset.arrivalAdd);if(!p)return;
+    const v=defaultVariant(p),qty=cart[cartKey(p.id,v.id)]?.qty||0;
+    let stepper=add.parentElement.querySelector(".shopping-qty");
+    if(!stepper){
+      stepper=document.createElement("div");stepper.className="shopping-qty";
+      stepper.innerHTML='<button type="button" data-shopping-delta="-1">−</button><span aria-live="polite" aria-atomic="true"></span><button type="button" data-shopping-delta="1">+</button>';
+      stepper.querySelectorAll("button").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();changeShoppingQty(p,defaultVariant(p),Number(btn.dataset.shoppingDelta));if(!cart[cartKey(p.id,defaultVariant(p).id)])add.focus({preventScroll:true})}));
+      add.after(stepper);
+    }
+    stepper.hidden=!qty||!!v.quoteOnly;add.hidden=qty>0&&!v.quoteOnly;
+    stepper.querySelector("span").textContent=qty;
+    stepper.querySelectorAll("button").forEach(btn=>{
+      const plus=Number(btn.dataset.shoppingDelta)>0;
+      btn.disabled=!productCanOrder(p)||!!v.quoteOnly||(plus&&qty>=99);
+      btn.setAttribute("aria-label",(lang==="ar"?(plus?"زيادة الكمية":"تقليل الكمية"):lang==="fr"?(plus?"Augmenter la quantité":"Diminuer la quantité"):(plus?"Increase quantity":"Decrease quantity"))+" · "+currentName(p));
+    });
   });
 }
 
@@ -1577,6 +1625,7 @@ function cartRows(){
 }
 
 function renderCart(){
+  syncShoppingQuantities();
   const t=UI[lang];
   const rows=cartRows();
   const unavailable=rows.filter(r=>!productCanOrder(r.p));
@@ -1862,7 +1911,8 @@ function renderFeaturedProducts(){
       </div>
     </article>`;
   }).join("");
-  $$("[data-featured-view]").forEach(card=>card.addEventListener("click",e=>{if(!e.target.closest("button"))openProduct(card.dataset.featuredView,card)}));
+  $$("[data-featured-view]").forEach(card=>card.addEventListener("click",e=>{if(!e.target.closest("button,.shopping-qty"))openProduct(card.dataset.featuredView,card)}));
+  syncShoppingQuantities();
   $$("[data-featured-add]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,320))return;const p=productById(btn.dataset.featuredAdd);if(p&&addToCart(p,defaultVariant(p),1,true))animateAddToCart(btn,p)}));
 }
 

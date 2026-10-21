@@ -94,7 +94,7 @@ new Function("assert",[
 ].join("\n"))(assert);
 assert(storefront.includes('function saveCart(){return safeStorageSet('),"saveCart should report persistence");
 for(const marker of [
-  'addToCart(p,chosen,qtyFor("card:"+p.id),true)',
+  'addToCart(p,chosen,1,true)',
   'addToCart(p,defaultVariant(p),1,true)',
   'addToCart(currentModalProduct,currentModalVariant,qtyFor("modal"),true)'
 ])assert(storefront.includes(marker),"purchase CTA should accumulate quantity: "+marker);

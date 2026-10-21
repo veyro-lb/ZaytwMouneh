@@ -257,6 +257,7 @@
   <link rel="stylesheet" href="/golden-harvest-2026.css?v=20261009-goldframe1">
   <link rel="stylesheet" href="/google-review-invite-v3.css?v=20261010-brand2">
   <link rel="stylesheet" href="/new-arrivals-v1.css?v=20261021-arrivals1">
+  <link rel="stylesheet" href="/instant-shop-v1.css?v=20261022-instantshop1">
   <link rel="stylesheet" href="/store-gallery-v1.css?v=20261021-gallery1">
   <link rel="stylesheet" href="/storefront-shell.css?v=20261010-mobile-rtl-nav1">
   <link rel="stylesheet" href="/mouneh-decor-v1.css?v=20261009-photo3">
@@ -415,8 +416,8 @@
           <p class="page-intro-copy only-en">Prepared with care to bring the taste of the Lebanese village to your table.</p>
           <p class="page-intro-copy only-ar" lang="ar">لتضلّ نكهة الضيعة حاضرة ع سفرتكن.</p>
           <div class="page-intro-actions">
-            <a class="intro-primary only-en home-hero-cta" href="/shop#shop"><span class="home-cta-text">Shop &amp; order now</span><span class="home-cta-arrow" aria-hidden="true">↘</span></a>
-            <a class="intro-primary only-ar home-hero-cta" lang="ar" href="/shop#shop"><span class="home-cta-text">ابدأ التسوق واطلب الآن</span><span class="home-cta-arrow" aria-hidden="true">↙</span></a>
+            <a class="intro-primary only-en home-hero-cta" href="#instant-shop"><span class="home-cta-text">Shop &amp; order now</span><span class="home-cta-arrow" aria-hidden="true">↘</span></a>
+            <a class="intro-primary only-ar home-hero-cta" lang="ar" href="#instant-shop"><span class="home-cta-text">ابدأ التسوق واطلب الآن</span><span class="home-cta-arrow" aria-hidden="true">↙</span></a>
             <a class="intro-secondary only-en home-hero-cta" href="/shop#categories"><span class="home-cta-text">Shop by category</span></a>
             <a class="intro-secondary only-ar home-hero-cta" lang="ar" href="/shop#categories"><span class="home-cta-text">تسوّق حسب القسم</span></a>
           </div>
@@ -451,6 +452,53 @@
             </a>
           </div>
         </div>
+      </div>
+    </section>
+
+
+    <!-- Buy-now browsing uses the canonical live catalogue and normal checkout. -->
+    <section id="instant-shop" aria-labelledby="instantShopTitle">
+      <div class="iq-inner">
+        <div class="iq-heading">
+          <div>
+            <p class="iq-eyebrow" data-iq-eyebrow>Your pantry, your way</p>
+            <h2 id="instantShopTitle" data-iq-title>Good food. <em>One easy order.</em></h2>
+            <p class="iq-description" data-iq-description>Choose your favourites, pick the right size and add them straight to your basket.</p>
+          </div>
+          <a class="iq-catalogue-link" data-iq-full href="/shop">Explore the full shop ↗</a>
+        </div>
+        <div class="iq-promise-row" aria-label="Shopping information">
+          <span class="iq-promise" data-iq-cash>Cash on Delivery</span>
+          <span class="iq-promise" data-iq-fees>Clear sizes &amp; prices</span>
+          <span class="iq-promise" data-iq-delivery>Delivery across Lebanon</span>
+        </div>
+        <div class="iq-filters" data-iq-filters role="group" aria-label="Browse products"></div>
+        <p class="iq-results" data-iq-results>Choose your favourites — prices shown for each size</p>
+        <div class="iq-grid" data-iq-grid>
+          <p class="iq-no-results">Browse the product selection below or <a href="/shop">visit the complete catalogue</a>.</p>
+        </div>
+        <div style="text-align:center;margin-top:19px">
+          <button type="button" class="iq-filter" data-iq-more hidden>Show more products</button>
+        </div>
+        <div class="iq-basket" aria-live="polite" aria-label="Shopping basket summary">
+          <div class="iq-basket-main">
+            <div class="iq-basket-line"><strong data-iq-cart-total>Your basket · $0.00</strong><span aria-label="Basket item count" data-iq-cart-count>0</span></div>
+            <p class="iq-basket-meta" data-iq-progress-note>Choose something you love to get started.</p>
+            <div class="iq-progress" role="progressbar" aria-label="Progress toward free delivery" aria-valuemin="0" aria-valuemax="100"><div class="iq-progress-bar" data-iq-progress></div></div>
+          </div>
+          <div class="iq-basket-actions">
+            <button type="button" class="iq-review" data-iq-review>Review basket →</button>
+            <a class="iq-checkout" data-iq-checkout href="/checkout" hidden>Checkout now ↗</a>
+          </div>
+        </div>
+        <div class="iq-bonus">
+          <span class="iq-bonus-mark" aria-hidden="true">🌿</span>
+          <div><strong data-iq-bonus-title>A little thank-you for your first order</strong>
+            <p><span data-iq-bonus-copy>Join Mouneh Points before ordering and earn 20 bonus points after your first paid and delivered order.</span>
+            <a href="/terms#terms-rewards" data-iq-bonus-link>How it works ↗</a></p>
+          </div>
+        </div>
+        <p class="sr-only" role="status" aria-live="polite" data-iq-live-status></p>
       </div>
     </section>
 
@@ -759,7 +807,8 @@
   <script src="/product-descriptions-v1.js?v=20261010-copyreview1"></script>
   <script src="product-photos.js?v=20261010-newolivephoto1"></script>
   <script src="/product-search-v1.js?v=20261021-search1"></script>
-  <script src="app.js?v=20261022-storefrontfix1"></script>
+  <script src="app.js?v=20261022-instantshop1"></script>
+  <script src="/instant-shop-v1.js?v=20261022-instantshop1"></script>
   <script src="/golden-harvest-2026.js?v=20261010-popupvisit1"></script>
   <script src="premium-v2.js?v=20261022-storefrontfix1"></script>
   <script src="/commerce-v1.js?v=20261007-mobileblank1"></script>

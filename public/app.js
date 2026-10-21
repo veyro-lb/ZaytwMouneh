@@ -972,7 +972,7 @@ function loadCart(){
     return valid;
   }catch{return{}}
 }
-function saveCart(){safeStorageSet(CART_KEY,JSON.stringify(cart))}
+function saveCart(){return safeStorageSet(CART_KEY,JSON.stringify(cart))}
 function loadGiftItems(){
   try{
     const raw=JSON.parse(safeStorageGet(GIFT_KEY)||"{}"),valid={};
@@ -1516,8 +1516,7 @@ function renderProducts(){
     if(!p)return;
     const chosen=cardVariantFor(p);
     if(chosen?.quoteOnly){location.href=harvestQuoteUrl();return}
-    addToCart(p,chosen,qtyFor("card:"+p.id));
-    animateAddToCart(btn,p);
+    if(addToCart(p,chosen,qtyFor("card:"+p.id),true))animateAddToCart(btn,p);
   }));
   $$("[data-view]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,260))return;openProduct(btn.dataset.view,btn)}));
   $$("[data-product]").forEach(card=>{
@@ -1527,13 +1526,22 @@ function renderProducts(){
   });
 }
 
-function addToCart(p,v,qty){
-  if(!v||v.quoteOnly||!p?.variants?.some(row=>row.id===v.id&&row.price!=null&&Number.isFinite(Number(row.price))))return;
-  if(!productCanOrder(p)){toast(availabilityLabel(p));return;}
+function addToCart(p,v,qty,increment=false){
+  if(!v||v.quoteOnly||!p?.variants?.some(row=>row.id===v.id&&row.price!=null&&Number.isFinite(Number(row.price))))return false;
+  if(!productCanOrder(p)){toast(availabilityLabel(p));return false;}
   const key=cartKey(p.id,v.id);
-  cart[key]={productId:p.id,variantId:v.id,qty:Math.max(1,Number(qty)||1)};
-  saveCart();
+  const previous=cart[key];
+  const requested=Math.max(1,Math.min(99,Number(qty)||1));
+  const nextQty=increment?Math.min(99,(previous?.qty||0)+requested):requested;
+  cart[key]={productId:p.id,variantId:v.id,qty:nextQty};
+  if(!saveCart()){
+    if(previous)cart[key]=previous;else delete cart[key];
+    toast(lang==="ar"?"تعذّر حفظ المنتج في السلة. تحقق من إعدادات المتصفح وحاول مجدداً.":"Couldn't save your cart. Check your browser settings and try again.");
+    return false;
+  }
   renderCart();
+  // Measure a completed cart mutation, not an attempted button click.
+  window.ZWM_CMS?.track?.("add_to_cart",{product_id:p.id,source:"storefront"});
   const cartTotal=cartRows().reduce((sum,row)=>sum+row.qty*Number(row.v.price),0);
   const delivery=deliveryQuoteFor(cartTotal,$("#customerArea")?.value||"");
   const threshold=delivery.freeAbove||50;
@@ -1542,8 +1550,8 @@ function addToCart(p,v,qty){
     ?(lang==="ar"?"باقي "+money(remaining)+" للتوصيل المجاني":money(remaining)+" away from free delivery")
     :(lang==="ar"?"التوصيل المجاني أصبح متاحاً ✓":"Free delivery unlocked ✓");
   toast(`${currentName(p)} · ${currentSize(v)} — ${UI[lang].added} · ${deliveryCopy}`,{cartAction:true});
+  return true;
 }
-
 function changeCartQty(key,delta){
   if(!cart[key])return;
   cart[key].qty=Math.max(1,cart[key].qty+delta);
@@ -1832,7 +1840,7 @@ function renderNewArrivals(){
   grid.querySelectorAll("[data-arrival-add]").forEach(btn=>btn.addEventListener("click",()=>{
     if(!acceptSingleTap(btn,320))return;
     const p=productById(btn.dataset.arrivalAdd);
-    if(p&&productCanOrder(p)){addToCart(p,defaultVariant(p),1);animateAddToCart(btn,p);}
+    if(p&&productCanOrder(p)&&addToCart(p,defaultVariant(p),1,true))animateAddToCart(btn,p);
   }));
 }
 
@@ -1855,7 +1863,7 @@ function renderFeaturedProducts(){
     </article>`;
   }).join("");
   $$("[data-featured-view]").forEach(card=>card.addEventListener("click",e=>{if(!e.target.closest("button"))openProduct(card.dataset.featuredView,card)}));
-  $$("[data-featured-add]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,320))return;const p=productById(btn.dataset.featuredAdd);if(p){addToCart(p,defaultVariant(p),1);animateAddToCart(btn,p)}}));
+  $$("[data-featured-add]").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();if(!acceptSingleTap(btn,320))return;const p=productById(btn.dataset.featuredAdd);if(p&&addToCart(p,defaultVariant(p),1,true))animateAddToCart(btn,p)}));
 }
 
 function renderGiftPresets(){
@@ -1988,7 +1996,6 @@ async function sendGiftOrder(){
     hide_prices:$("#giftHidePrices")?.checked!==false
   };
   try{sessionStorage.setItem("zwm:native-gift:meta:v1",JSON.stringify(meta))}catch{}
-  window.ZWM_CMS?.track?.("checkout_started",{source:"gift_builder"});
   location.href="/checkout.html?kind=gift";
 }
 function renderMobileOrderBar(){
@@ -2199,7 +2206,6 @@ function orderReference(prefix="ZW"){
 async function order(){
   const rows=cartRows();
   if(!rows.length)return;
-  window.ZWM_CMS?.track?.("checkout_started",{source:"cart"});
   location.href="/checkout.html";
 }
 function openCart(){
@@ -2561,7 +2567,7 @@ function init(){
   if($("#productModalClose"))$("#productModalClose").addEventListener("click",closeProduct);
   if($("#modalQtyMinus"))$("#modalQtyMinus").addEventListener("click",()=>{draftQty.modal=Math.max(1,qtyFor("modal")-1);$("#productModalQty").textContent=draftQty.modal});
   if($("#modalQtyPlus"))$("#modalQtyPlus").addEventListener("click",()=>{draftQty.modal=qtyFor("modal")+1;$("#productModalQty").textContent=draftQty.modal});
-  if($("#productModalAdd"))$("#productModalAdd").addEventListener("click",e=>{const btn=e.currentTarget;if(!acceptSingleTap(btn,320))return;if(currentModalProduct&&currentModalVariant){if(currentModalVariant.quoteOnly){location.href=harvestQuoteUrl();return}addToCart(currentModalProduct,currentModalVariant,qtyFor("modal"));animateAddToCart(btn,currentModalProduct)}});
+  if($("#productModalAdd"))$("#productModalAdd").addEventListener("click",e=>{const btn=e.currentTarget;if(!acceptSingleTap(btn,320))return;if(currentModalProduct&&currentModalVariant){if(currentModalVariant.quoteOnly){location.href=harvestQuoteUrl();return}if(addToCart(currentModalProduct,currentModalVariant,qtyFor("modal"),true))animateAddToCart(btn,currentModalProduct)}});
   if($("#modalFavorite"))$("#modalFavorite").addEventListener("click",e=>{if(!acceptSingleTap(e.currentTarget,300))return;if(currentModalProduct)toggleFavorite(currentModalProduct.id)});
 
   $$("[data-scene-dot]").forEach(btn=>btn.addEventListener("click",()=>showScene(Number(btn.dataset.sceneDot),true)));

@@ -181,7 +181,7 @@
 
         <section class="dashboard-view" data-view-panel="products">
           <div class="toolbar">
-            <div class="search-field"><span>⌕</span><input id="productSearch" type="search" placeholder="Search product, category or ID…" /></div>
+            <div class="search-field"><span>⌕</span><input id="productSearch" type="search" dir="auto" enterkeyhint="search" placeholder="Search product, category or ID…" /></div>
             <select id="productCategoryFilter" aria-label="Filter category"><option value="">All categories</option></select>
             <select id="productStatusFilter" aria-label="Filter status"><option value="">All statuses</option><option value="live">Live</option><option value="edited">Edited</option><option value="new">New</option><option value="hidden">Hidden</option><option value="draft">Draft</option><option value="missing-photo">Missing photo</option><option value="needs-attention">Needs attention</option></select>
             <select id="productAvailabilityFilter" aria-label="Filter availability"><option value="">All availability</option><option value="in_stock">In stock</option><option value="out_of_stock">Out of stock</option><option value="coming_soon">Coming soon</option></select>
@@ -635,7 +635,7 @@
     <section class="search-command-modal" role="dialog" aria-modal="true" aria-labelledby="globalSearchTitle">
       <header class="editor-head"><div><p>Search everything</p><h2 id="globalSearchTitle">Find anything fast</h2></div><button id="closeGlobalSearch" type="button" aria-label="Close">×</button></header>
       <div class="search-command-body">
-        <div class="search-field search-command-input"><span>⌕</span><input id="globalSearchInput" type="search" placeholder="Product, order code, customer, area…" autocomplete="off" /></div>
+        <div class="search-field search-command-input"><span>⌕</span><input id="globalSearchInput" type="search" dir="auto" enterkeyhint="search" placeholder="Product, order code, customer, area…" autocomplete="off" /></div>
         <div id="globalSearchResults" class="global-search-results"><p class="empty-state">Start typing to search products, orders and customers.</p></div>
       </div>
     </section>
@@ -902,7 +902,8 @@
   <script src="product-photos.js?v=20261009-harvest-live1"></script>
 
   <script src="admin-delivery-fee-v1.js?v=20261011-tds-i18n2"></script>
-  <script src="admin.js?v=20261021-arrivals1"></script>
+  <script src="/product-search-v1.js?v=20261021-search1"></script>
+  <script src="admin.js?v=20261021-search1"></script>
   <script src="admin-notifications-v1.js?v=20261009-owner-multidevice1"></script>
   <script src="admin-rewards.js?v=20261005-account-deletefix2"></script>
   <script src="admin-wholesale.js?v=20261009-wholesale-i18n2"></script>

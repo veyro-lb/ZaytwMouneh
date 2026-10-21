@@ -1678,7 +1678,7 @@
       if(status&& !["missing-photo","needs-attention"].includes(status) && st!==status)return false;
       if(term){
         const hay=[p.id,p.nameEn,p.nameAr,p.category,p.original,availabilityFor(p)].join(" ").toLowerCase();
-        if(!hay.includes(term))return false;
+        if(window.ZWM_PRODUCT_SEARCH?!window.ZWM_PRODUCT_SEARCH.score(p,term):!hay.includes(term))return false;
       }
       return true;
     });
@@ -4112,7 +4112,7 @@
     const q=safeText(query).trim().toLowerCase();
     const root=$("globalSearchResults");
     if(q.length<2){root.innerHTML='<p class="empty-state">Start typing to search products, orders and customers.</p>';return;}
-    const products=state.products.filter(p=>[p.id,p.nameEn,p.nameAr,p.category].join(" ").toLowerCase().includes(q)).slice(0,6);
+    const products=state.products.map(p=>({p,score:window.ZWM_PRODUCT_SEARCH?window.ZWM_PRODUCT_SEARCH.score(p,q):[p.id,p.nameEn,p.nameAr,p.category].join(" ").toLowerCase().includes(q)?1:0})).filter(row=>row.score>0).sort((a,b)=>b.score-a.score).slice(0,6).map(row=>row.p);
     const orders=state.orders.filter(o=>orderSearchText(o).includes(q)).slice(0,6);
     const customers=customerGroups().filter(c=>[c.name,c.phone,c.area].join(" ").toLowerCase().includes(q)).slice(0,6);
     const sections=[];

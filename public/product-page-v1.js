@@ -329,12 +329,15 @@ function renderNotFound(){
  qs("#c6ProductRoot").innerHTML='<main class="c6-product-main"><div class="c6-shell"><div class="c6-purchase-box" style="max-width:720px;margin:70px auto;text-align:center"><h1 class="c6-product-title">'+esc(t("notFound"))+'</h1><p>'+esc(t("notFoundCopy"))+'</p><a class="c6-button" href="'+localePrefix(state.locale)+'/shop">'+esc(t("allProducts"))+'</a></div></div></main>';
 }
 function readCart(){try{return JSON.parse(localStorage.getItem(CART_KEY)||"{}")||{}}catch(e){return {}}}
-function writeCart(cart){try{localStorage.setItem(CART_KEY,JSON.stringify(cart));window.dispatchEvent(new Event("zwm:cart-updated"))}catch(e){}}
+function writeCart(cart){try{localStorage.setItem(CART_KEY,JSON.stringify(cart));window.dispatchEvent(new Event("zwm:cart-updated"));return true}catch(e){return false}}
 function addProduct(p,v,qty){
  if(!p||!v)return false;
  var cart=readCart(),key=p.id+"::"+v.id,old=cart[key]&&Number(cart[key].qty)||0;
  cart[key]={productId:p.id,variantId:v.id,qty:Math.min(99,Math.max(1,old+Math.max(1,Number(qty)||1)))};
- writeCart(cart);updateCartCount();return true;
+ if(!writeCart(cart))return false;
+ updateCartCount();
+ window.ZWM_CMS?.track?.("add_to_cart",{product_id:p.id,source:"product_page"});
+ return true;
 }
 function updateCartCount(){
  var cart=readCart(),n=Object.keys(cart).reduce(function(s,k){return s+(Number(cart[k].qty)||0)},0),el=qs("#c6CartCount");if(el)el.textContent=String(n);

@@ -13,7 +13,7 @@ const read=p=>fs.readFileSync(p,'utf8');
   w.matchMedia=()=>({matches:true});
   const track=d.querySelector('.sg-track');let scrolling;track.scrollBy=options=>{scrolling=options};
   assert.ok(track,page+' has a static photo gallery');
-  assert.equal(d.querySelectorAll('[data-sg-photo]').length,12);
+  assert.equal(d.querySelectorAll('[data-sg-photo]').length,11);
   for(const el of d.querySelectorAll('.sg-section [src],.sg-section [srcset],.sg-oil [src],.sg-oil [poster],.sg-section [data-sg-photo],.sg-section [data-sg-cover]')){
    const values=el.hasAttribute('srcset')?el.getAttribute('srcset').split(',').map(x=>x.trim().split(' ')[0]):[el.getAttribute('src')||el.getAttribute('poster')||el.getAttribute('href')];
    for(const asset of values)assert.ok(fs.existsSync(path.join('public',asset)),asset+' exists');

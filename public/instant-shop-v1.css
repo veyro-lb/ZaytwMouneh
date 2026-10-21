@@ -1,0 +1,88 @@
+/* Zayt w Mouneh – homepage quick-shop. Isolated to #instant-shop. */
+#instant-shop{margin:0 auto;padding:clamp(34px,5vw,66px) 0 36px;position:relative;background:linear-gradient(180deg,#f7f7f1 0%,#fdfcf8 100%);color:#1e3d28;scroll-margin-top:100px}
+#instant-shop *,#instant-shop *::before,#instant-shop *::after{box-sizing:border-box}
+#instant-shop .iq-inner{max-width:1260px;width:min(100% - 36px,1260px);margin-inline:auto}
+#instant-shop .iq-heading{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:22px}
+#instant-shop .iq-eyebrow{color:#86936f;text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:800;margin:0 0 9px}
+#instant-shop h2{font-family:"DM Serif Display",Georgia,serif;font-size:clamp(31px,4vw,52px);font-weight:400;line-height:1.1;letter-spacing:-.035em;margin:0}
+#instant-shop h2 em{color:#978346;font-style:italic}
+#instant-shop .iq-description{font-size:14px;color:#677461;line-height:1.65;margin:10px 0 0;max-width:590px}
+#instant-shop .iq-catalogue-link{white-space:nowrap;color:#274b31;text-decoration:none;border-bottom:1px solid #799072;font-size:13px;font-weight:800;padding-bottom:6px;margin-bottom:6px}
+#instant-shop .iq-promise-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+#instant-shop .iq-promise{display:inline-flex;gap:7px;align-items:center;font-size:12px;font-weight:750;color:#526b52}
+#instant-shop .iq-promise:before{content:"✓";display:grid;place-items:center;width:18px;height:18px;border-radius:50%;color:#295236;background:#e5eddf;font-size:11px}
+#instant-shop .iq-promise:not(:last-child){padding-inline-end:14px;border-inline-end:1px solid #dfe5d7}
+#instant-shop .iq-filters{display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:thin;scrollbar-color:#b2c0a6 transparent;padding:0 0 15px;scroll-snap-type:x proximity}
+#instant-shop .iq-filter{scroll-snap-align:start;border:1px solid #d9e2d7;border-radius:999px;background:#fffefa;color:#425943;padding:10px 16px;min-height:42px;cursor:pointer;font-size:12px;font-weight:750;white-space:nowrap;transition:background .15s,border-color .15s}
+#instant-shop .iq-filter[aria-pressed="true"]{background:#264b31;color:#fff;border-color:#264b31}
+#instant-shop .iq-filter:hover{border-color:#809e7b}
+#instant-shop .iq-results{font-size:12px;color:#71806d;margin:0 0 11px}
+#instant-shop .iq-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+#instant-shop .iq-card{min-width:0;overflow:hidden;border:1px solid #e1e6dc;border-radius:16px;background:#fff;display:flex;flex-direction:column;box-shadow:0 7px 25px rgba(20,53,28,.035);transition:border-color .18s,transform .18s}
+@media(hover:hover){#instant-shop .iq-card:hover{border-color:#a5b99d;transform:translateY(-2px)}}
+#instant-shop .iq-art{height:190px;position:relative;background:radial-gradient(ellipse at center,#f4f5ec,#eaf0e4);display:flex;align-items:center;justify-content:center;padding:16px}
+#instant-shop .iq-art img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 9px 12px rgba(38,49,25,.1))}
+#instant-shop .iq-placeholder{font-size:52px;line-height:1;color:#638265}
+#instant-shop .iq-tag{position:absolute;top:12px;inset-inline-start:12px;border:1px solid #dedfc9;background:#fffff7;color:#466343;border-radius:5px;font-size:10px;padding:5px 8px;letter-spacing:.05em;font-weight:800}
+#instant-shop .iq-card-body{padding:15px;flex:1;display:flex;flex-direction:column;gap:0}
+#instant-shop .iq-category{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#879481;font-weight:800}
+#instant-shop .iq-name{font-size:14px;color:#243d2a;font-weight:800;line-height:1.45;margin:7px 0 12px;min-height:41px;text-decoration:none}
+#instant-shop .iq-name:hover{text-decoration:underline;text-underline-offset:3px}
+#instant-shop .iq-card-foot{margin-top:auto}
+#instant-shop .iq-select{width:100%;padding:9px 10px;border:1px solid #dde6d9;border-radius:8px;background:#f8faf5;color:#395139;font-size:13px;min-height:42px;direction:inherit}
+#instant-shop .iq-card-purchase{display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:12px}
+#instant-shop .iq-price{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums;color:#1e3e29;white-space:nowrap}
+#instant-shop .iq-add{border:0;border-radius:8px;padding:11px 12px;background:#275033;color:white;font-size:12px;font-weight:800;min-height:43px;cursor:pointer;white-space:nowrap}
+#instant-shop .iq-add:hover{background:#193a25}
+#instant-shop .iq-add:disabled{opacity:.55;cursor:default}
+#instant-shop .iq-add.iq-added{background:#4d7643}
+#instant-shop .iq-no-results{padding:28px;color:#4c6150;border:1px dashed #cbd9c7;border-radius:12px}
+#instant-shop .iq-basket{margin-top:22px;border-radius:14px;background:#1f402c;color:#f8f8ef;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:22px;box-shadow:0 16px 34px rgba(24,62,34,.14)}
+#instant-shop .iq-basket-main{min-width:0;flex:1}
+#instant-shop .iq-basket-line{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:15px;font-weight:800}
+#instant-shop .iq-basket-meta{font-size:12px;line-height:1.55;color:#d6e0cf;margin:6px 0 10px}
+#instant-shop .iq-progress{height:6px;max-width:440px;background:#4f6d58;border-radius:20px;overflow:hidden}
+#instant-shop .iq-progress-bar{height:100%;width:0%;background:#e9ca7d;border-radius:20px;transition:width .22s ease}
+#instant-shop .iq-basket-actions{display:flex;gap:9px;flex-wrap:wrap}
+#instant-shop .iq-review,#instant-shop .iq-checkout{display:inline-flex;align-items:center;justify-content:center;border-radius:7px;border:1px solid #dfce9b;min-height:45px;padding:11px 16px;font-size:12px;font-weight:800;white-space:nowrap;cursor:pointer;text-decoration:none}
+#instant-shop .iq-review{background:#f0dfb0;color:#1d3d29}
+#instant-shop .iq-checkout{background:transparent;color:#fbfaeb;border-color:#a0b499}
+#instant-shop .iq-checkout[hidden]{display:none}
+#instant-shop .iq-bonus{display:flex;gap:12px;align-items:center;background:#ebf1e5;border:1px solid #d9e5d3;border-radius:12px;padding:15px 18px;margin-top:14px}
+#instant-shop .iq-bonus-mark{font-size:23px}
+#instant-shop .iq-bonus strong{font-size:13px;display:block}
+#instant-shop .iq-bonus p{font-size:12px;color:#5b6b58;line-height:1.55;margin:4px 0 0}
+#instant-shop .iq-bonus a{color:#225332;text-underline-offset:2px}
+#instant-shop button:focus-visible,#instant-shop a:focus-visible,#instant-shop select:focus-visible{outline:3px solid #bd9d56;outline-offset:3px}
+html[dir="rtl"] #instant-shop .iq-heading,html[dir="rtl"] #instant-shop .iq-basket{direction:rtl}
+@media(max-width:1050px){#instant-shop .iq-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:680px){
+  #instant-shop{padding:30px 0 28px}
+  #instant-shop .iq-inner{width:min(100% - 24px,1260px)}
+  #instant-shop .iq-heading{display:block;margin-bottom:14px}
+  #instant-shop h2{font-size:33px}
+  #instant-shop .iq-description{font-size:13px}
+  #instant-shop .iq-catalogue-link{display:inline-block;margin-top:14px}
+  #instant-shop .iq-promise-row{gap:7px;margin:10px 0 16px}
+  #instant-shop .iq-promise{font-size:11px}
+  #instant-shop .iq-promise:not(:last-child){padding-inline-end:9px}
+  #instant-shop .iq-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  #instant-shop .iq-art{height:145px;padding:9px}
+  #instant-shop .iq-card-body{padding:11px}
+  #instant-shop .iq-name{font-size:12px;min-height:51px;margin-bottom:9px}
+  #instant-shop .iq-select{font-size:12px;padding:8px}
+  #instant-shop .iq-card-purchase{gap:4px}
+  #instant-shop .iq-price{font-size:17px}
+  #instant-shop .iq-add{font-size:11px;padding:10px 9px}
+  #instant-shop .iq-basket{padding:14px;gap:11px;flex-wrap:wrap}
+  #instant-shop .iq-basket-actions{width:100%;display:grid;grid-template-columns:1fr 1fr}
+  #instant-shop .iq-review,#instant-shop .iq-checkout{width:100%}
+  #instant-shop .iq-bonus{padding:12px}
+}
+@media(max-width:360px){
+  #instant-shop .iq-art{height:125px}
+  #instant-shop .iq-price{font-size:15px}
+  #instant-shop .iq-add{padding:9px 7px}
+  #instant-shop .iq-promise-row{gap:8px}
+}
+@media(prefers-reduced-motion:reduce){#instant-shop .iq-card,#instant-shop .iq-progress-bar{transition:none!important}}

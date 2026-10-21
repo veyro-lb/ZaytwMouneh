@@ -53,13 +53,15 @@
   function renderCopy(){
     const c=copy();
     const ids={
-      "[data-iq-eyebrow]":c.eyebrow,"[data-iq-title]":c.title,"[data-iq-description]":c.description,
+      "[data-iq-eyebrow]":c.eyebrow,"[data-iq-description]":c.description,
       "[data-iq-full]":c.full,"[data-iq-cash]":c.cash,"[data-iq-fees]":c.fees,
       "[data-iq-delivery]":c.delivery,"[data-iq-results]":c.results,"[data-iq-bonus-title]":c.bonusTitle,
       "[data-iq-bonus-copy]":c.bonus,"[data-iq-bonus-link]":c.bonusLink,
       "[data-iq-review]":c.review,"[data-iq-checkout]":c.checkout
     };
     Object.entries(ids).forEach(([selector,text])=>{const el=$(selector);if(el)el.textContent=text});
+    const title=$("[data-iq-title]");
+    if(title)title.innerHTML=language()==="ar"?"كل شي بتحبّه… <em>بطلب واحد.</em>":language()==="fr"?"Le goût du Liban. <em>Une commande simple.</em>":"Good food. <em>One easy order.</em>";
     root.dir=language()==="ar"?"rtl":"ltr";
     const accountLink=$("[data-iq-bonus-link]");
     if(accountLink)accountLink.href=(language()==="ar"?"/ar":language()==="fr"?"/fr":"")+"/terms#terms-rewards";

@@ -25,15 +25,15 @@ jobs:
           for attempt in $(seq 1 15); do
             echo "Production publish probe $attempt/15"
             if html="$(curl --retry 1 -fsSL --max-time 15 -H 'Cache-Control: no-cache' "$base/?instant_check=$(date +%s)" 2>/dev/null)"; then
-              if printf '%s' "$html" | grep -q 'id="instant-shop"' &&
-                 printf '%s' "$html" | grep -q 'instant-shop-v1.js?v=20261022-instantshop1' &&
-                 printf '%s' "$html" | grep -q 'app.js?v=20261022-instantshop1'; then
+              if [[ "$html" == *'id="instant-shop"'* ]] &&
+                 [[ "$html" == *'instant-shop-v1.js?v=20261022-instantshop1'* ]] &&
+                 [[ "$html" == *'app.js?v=20261022-instantshop1'* ]]; then
                 js="$(curl -fsSL --max-time 15 "$base/instant-shop-v1.js?v=20261022-instantshop1")"
                 css="$(curl -fsSL --max-time 15 "$base/instant-shop-v1.css?v=20261022-instantshop1")"
                 app="$(curl -fsSL --max-time 15 "$base/app.js?v=20261022-instantshop1")"
-                if printf '%s' "$js" | grep -q 'Homepage quick-shop' &&
-                   printf '%s' "$css" | grep -q 'homepage quick-shop' &&
-                   printf '%s' "$app" | grep -q 'window.ZWM_INSTANT_SHOP=Object.freeze'; then
+                if [[ "$js" == *'Homepage quick-shop'* ]] &&
+                   [[ "$css" == *'homepage quick-shop'* ]] &&
+                   [[ "$app" == *'window.ZWM_INSTANT_SHOP=Object.freeze'* ]]; then
                   echo "Production verified: HTML, current shared cart bridge, quick-shop JS and CSS all live."
                   exit 0
                 fi

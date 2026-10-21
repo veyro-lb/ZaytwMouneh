@@ -1222,3 +1222,17 @@ body .contact-brand img{max-width:100%;height:auto}
  html[lang="fr"] .site-header .nav.shell>.brand{min-width:0!important;flex-shrink:1!important}
  html[lang="fr"] .site-header .nav.shell>.nav-actions #languageSwitch.fr-language-ready{overflow:hidden!important}
 }
+
+/* Route CTAs: language visibility must not turn flex buttons into inline text. */
+body[data-page]:not([data-page="home"]) .page-intro .page-intro-actions>a{
+  align-items:center!important;justify-content:center!important;gap:8px!important;
+  min-height:48px!important;line-height:1.35!important;text-align:center!important;
+}
+html:not([lang="ar"]):not([dir="rtl"]) body[data-page]:not([data-page="home"]) .page-intro-actions>a.only-en,
+html:is([lang="ar"],[dir="rtl"]) body[data-page]:not([data-page="home"]) .page-intro-actions>a.only-ar{
+  display:inline-flex!important;
+}
+body[data-page]:not([data-page="home"]) .page-intro-actions>a>span{
+  position:static!important;align-self:center!important;margin:0!important;
+  padding:0!important;line-height:inherit!important;transform:none!important;
+}

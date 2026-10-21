@@ -2253,8 +2253,8 @@ function showScene(i,manual=false){
     video.muted=true;
     video.defaultMuted=true;
     video.playsInline=true;
-    video.preload=shouldLimitHeroMedia()&&!manual&&!heroManualPlayback?"none":"metadata";
-    if(activeNow&&video.readyState===0){try{video.load()}catch{}}
+    video.preload=activeNow&&(!shouldLimitHeroMedia()||manual||heroManualPlayback)?"metadata":"none";
+    if(activeNow&&video.readyState===0&&(!shouldLimitHeroMedia()||manual||heroManualPlayback)){try{video.load()}catch{}}
     if(activeNow&&heroVisible&&!document.hidden&&(manual||heroManualPlayback||!shouldLimitHeroMedia())){
       if(changed||video.ended){try{video.currentTime=0}catch{}}
       const play=video.play();
@@ -2274,7 +2274,7 @@ function startScenes(){
     if(!video||video.dataset.sequenceBound==="1")return;
     video.dataset.sequenceBound="1";
     video.loop=false;
-    video.preload=shouldLimitHeroMedia()?"none":"metadata";
+    video.preload=index===sceneIndex&&!shouldLimitHeroMedia()?"metadata":"none";
     video.addEventListener("playing",()=>{if(index===sceneIndex&&button)button.hidden=true;});
     video.addEventListener("pause",()=>{if(index===sceneIndex&&button)button.hidden=false;});
     video.addEventListener("error",()=>{if(index===sceneIndex&&button)button.hidden=false;});

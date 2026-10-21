@@ -113,7 +113,9 @@ function normalizeInternalLinks(root){
   var locale=activeLocale();
   (root||document).querySelectorAll("a[href]").forEach(function(a){
     var raw=a.getAttribute("href");
-    if(!raw||raw[0]==="#"||/^(mailto:|tel:|sms:|whatsapp:|javascript:|data:)/i.test(raw))return;
+    if(!raw||/^(mailto:|tel:|sms:|whatsapp:|javascript:|data:)/i.test(raw))return;
+    // Resolve section links against this page, not the document's root <base>.
+    if(raw[0]==="#"||a.hasAttribute("data-page-section"))raw=location.pathname+location.search+raw.slice(raw.indexOf("#"));
     var u;try{u=new URL(raw,location.origin)}catch(e){return}
     if(u.origin!==location.origin)return;
     var path=cleanPath(u.pathname);
@@ -245,6 +247,11 @@ function syncUrlToLocale(code){
   if(next!==location.pathname)history.replaceState(history.state,"",next+location.search+location.hash);
   updateSeo();ensureWholesaleLinks();normalizeInternalLinks(document);
 }
+// Dynamic section links added after the initial observer window still need the current page.
+document.addEventListener("click",function(e){
+  var a=e.target.closest&&e.target.closest("a[href]");
+  if(a&&a.getAttribute("href").charAt(0)==="#"&&a.parentNode)normalizeInternalLinks(a.parentNode);
+},true);
 document.addEventListener("click",function(e){
   var b=e.target.closest&&e.target.closest("[data-lang],[data-commerce-lang],[data-c6-lang]");
   if(!b)return;

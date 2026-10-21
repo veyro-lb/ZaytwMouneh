@@ -1011,8 +1011,8 @@
     video.muted=true;
     video.defaultMuted=true;
     video.playsInline=true;
-    video.autoplay=true;
-    video.preload="auto";
+    video.autoplay=!shouldLimitHeroMedia();
+    video.preload=shouldLimitHeroMedia()?"none":"metadata";
     function play(){
       if(!visible||document.hidden||(!manual&&shouldLimitHeroMedia()))return;
       if(video.readyState===0){try{video.load()}catch(e){}}

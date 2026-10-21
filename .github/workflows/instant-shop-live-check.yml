@@ -1,0 +1,45 @@
+name: Instant shop production verification
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "public/index.html"
+      - "public/app.js"
+      - "public/instant-shop-v1.js"
+      - "public/instant-shop-v1.css"
+      - ".github/workflows/instant-shop-live-check.yml"
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: Verify instant shop on zaytwmouneh.com
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Confirm published HTML and feature assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://zaytwmouneh.com"
+          for attempt in $(seq 1 15); do
+            echo "Production publish probe $attempt/15"
+            if html="$(curl --retry 1 -fsSL --max-time 15 -H 'Cache-Control: no-cache' "$base/?instant_check=$(date +%s)" 2>/dev/null)"; then
+              if printf '%s' "$html" | grep -q 'id="instant-shop"' &&
+                 printf '%s' "$html" | grep -q 'instant-shop-v1.js?v=20261022-instantshop1' &&
+                 printf '%s' "$html" | grep -q 'app.js?v=20261022-instantshop1'; then
+                js="$(curl -fsSL --max-time 15 "$base/instant-shop-v1.js?v=20261022-instantshop1")"
+                css="$(curl -fsSL --max-time 15 "$base/instant-shop-v1.css?v=20261022-instantshop1")"
+                app="$(curl -fsSL --max-time 15 "$base/app.js?v=20261022-instantshop1")"
+                if printf '%s' "$js" | grep -q 'Homepage quick-shop' &&
+                   printf '%s' "$css" | grep -q 'homepage quick-shop' &&
+                   printf '%s' "$app" | grep -q 'window.ZWM_INSTANT_SHOP=Object.freeze'; then
+                  echo "Production verified: HTML, current shared cart bridge, quick-shop JS and CSS all live."
+                  exit 0
+                fi
+              fi
+            fi
+            sleep 12
+          done
+          echo "::error::Code is on main but Cloudflare has not published the instant-shop feature at the custom domain. Inspect the Cloudflare Workers deployment and production Git integration."
+          exit 1

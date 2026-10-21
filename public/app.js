@@ -704,7 +704,7 @@ function applyCachedOwnerCatalog(){
       if(!id)return;
       const payload=row?.payload&&typeof row.payload==="object"?row.payload:{};
       const status=payload.status||(row.action==="hide"?"hidden":"live");
-      if(status==="hidden"||status==="draft"){hidden.add(id);return;}
+      if(payload.deleted===true||status==="hidden"||status==="draft"){hidden.add(id);return;}
       const at=index.get(id);
       const merged={...(Number.isInteger(at)?PRODUCTS_DATA[at]:{}),...payload,id};
       if(Array.isArray(payload.variants))merged.variants=payload.variants;
@@ -1039,6 +1039,7 @@ function renderFavoritesCount(){
 }
 function badgesFor(p){
   const t=EXTRA_UI[lang],n=p.nameEn.toLowerCase(),badges=[];
+  if(isNewArrival(p))badges.push(newArrivalCopy().badge);
   if(FEATURED_IDS.includes(p.id))badges.push(lang==="ar"?"شائع":"Popular");
   if(p.variants.length>1)badges.push(t.badgeMulti);
   if(["Mouneh","Pickles","Olives"].includes(p.category))badges.push(t.badgeTraditional);
@@ -1757,7 +1758,52 @@ function renderSearchSuggestions(){
   $$("[data-suggest]").forEach(btn=>btn.addEventListener("pointerdown",e=>{e.preventDefault();if(!acceptSingleTap(btn,260))return;box.hidden=true;openProduct(btn.dataset.suggest,btn)}));
 }
 
+// Only dated owner additions qualify; catalogue edits and legacy imports do not.
+const NEW_ARRIVAL_WINDOW_MS=14*24*60*60*1000;
+function isNewArrival(p,now=Date.now()){
+  if(!p||BASE_PRODUCTS.some(base=>base.id===p.id)||p.deleted===true||["hidden","draft"].includes(p.status))return false;
+  const added=typeof p.addedAt==="string"?Date.parse(p.addedAt):NaN;
+  return Number.isFinite(added)&&added<=now&&now-added<NEW_ARRIVAL_WINDOW_MS;
+}
+function newArrivalCopy(){
+  return lang==="ar"?{eyebrow:"جديد عالرفّ",title:"وصل جديد عَ مونتنا",copy:"نكهات جديدة لتنضمّ لسفرتكن. اكتشفوا آخر إضافاتنا.",badge:"وصل جديد",view:"اكتشف المنتج"}
+    :lang==="fr"?{eyebrow:"Tout juste en rayon",title:"Du nouveau dans notre mouneh",copy:"De nouvelles saveurs pour votre table. Découvrez nos derniers ajouts.",badge:"Nouveau",view:"Découvrir le produit"}
+    :{eyebrow:"Fresh on the shelf",title:"New to our pantry",copy:"A little something new for your table. Discover our latest additions.",badge:"Just arrived",view:"Discover this product"};
+}
+function renderNewArrivals(){
+  const section=$("#newArrivals"),grid=$("#newArrivalsGrid");
+  if(!section||!grid)return;
+  const items=PRODUCTS_DATA.filter(p=>isNewArrival(p)&&Array.isArray(p.variants)&&p.variants.length)
+    .sort((a,b)=>Date.parse(b.addedAt)-Date.parse(a.addedAt));
+  section.hidden=!items.length;
+  if(!items.length){grid.innerHTML="";return;}
+  const copy=newArrivalCopy();
+  $("#newArrivalsEyebrow").textContent=copy.eyebrow;
+  $("#newArrivalsTitle").textContent=copy.title;
+  $("#newArrivalsCopy").textContent=copy.copy;
+  grid.innerHTML=items.map(p=>{
+    const v=defaultVariant(p),canOrder=productCanOrder(p);
+    return `<article class="featured-product arrival-card">
+      <div class="featured-product-media">${productVisualMarkup(p,"featured-product-image")}<span class="featured-product-badge arrival-badge">${escapeHtml(copy.badge)}</span></div>
+      <div class="featured-product-copy"><p>${escapeHtml(categoryName(p.category))}</p>
+        <h3><a href="${escapeHtml(quickViewProductUrl(p.id))}" data-arrival-view="${escapeHtml(p.id)}">${escapeHtml(currentName(p))}</a></h3>
+        <div class="featured-product-foot"><span><strong>${money(productPriceSummary(p).min)}</strong><small>${escapeHtml(currentSize(v))}</small></span>
+          <button type="button" data-arrival-add="${escapeHtml(p.id)}" ${canOrder?"":"disabled"} aria-label="${escapeHtml((canOrder?UI[lang].add:availabilityLabel(p))+" · "+currentName(p))}">${escapeHtml(canOrder?UI[lang].add:availabilityLabel(p))}${canOrder?" +":""}</button></div>
+      </div></article>`;
+  }).join("");
+  grid.querySelectorAll("[data-arrival-view]").forEach(link=>link.addEventListener("click",e=>{
+    if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    e.preventDefault();openProduct(link.dataset.arrivalView,link);
+  }));
+  grid.querySelectorAll("[data-arrival-add]").forEach(btn=>btn.addEventListener("click",()=>{
+    if(!acceptSingleTap(btn,320))return;
+    const p=productById(btn.dataset.arrivalAdd);
+    if(p&&productCanOrder(p)){addToCart(p,defaultVariant(p),1);animateAddToCart(btn,p);}
+  }));
+}
+
 function renderFeaturedProducts(){
+  renderNewArrivals();
   const grid=$("#featuredGrid");if(!grid)return;
   const items=FEATURED_IDS.map(productById).filter(Boolean);
   grid.innerHTML=items.map((p,index)=>{
@@ -2559,3 +2605,6 @@ document.addEventListener("DOMContentLoaded",init);
 /* Load exactly one owner CMS/analytics bridge without delaying the storefront.
    Current pages ship site-runtime-v7 directly; this is only a safe fallback. */
 (()=>{if(document.querySelector('script[data-zwm-site-runtime],script[src*="site-runtime-v7.js"]'))return;const s=document.createElement("script");s.src="site-runtime-v7.js?v=20261004-shell3";s.async=true;s.dataset.zwmSiteRuntime="1";document.head.appendChild(s);})();
+
+setInterval(()=>{if(!document.hidden)renderNewArrivals();},60000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)renderNewArrivals();});

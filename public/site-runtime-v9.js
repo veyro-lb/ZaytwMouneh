@@ -357,7 +357,7 @@
       const id=visitorId();
       if(id)row.visitor_id=id;
     }
-    api(encodeURIComponent(c.tables?.events||"site_events"),{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify(row)}).catch(()=>{});
+    api(encodeURIComponent(c.tables?.events||"site_events"),{method:"POST",keepalive:eventName==="add_to_cart",headers:{Prefer:"return=minimal"},body:JSON.stringify(row)}).catch(()=>{});
   }
 
   function recordOrder(order){
@@ -402,12 +402,9 @@
     document.addEventListener("click",e=>{
       const a=e.target.closest("a");
       if(a&&/wa\.me|whatsapp\.com/i.test(a.href||""))track("whatsapp_click",{source:"link"});
-      const add=e.target.closest("#productModalAdd,[data-add-to-cart],[data-add-product],.add-to-cart");
-      if(add){
-        const card=add.closest("[data-product-id],[data-product]");
-        const id=card?.dataset.productId||card?.dataset.product||document.querySelector("[data-current-product]")?.dataset.currentProduct||"";
-        track("add_to_cart",id?{product_id:id}:{});
-      }
+      // Do not count Add button clicks here: only successful cart writes are
+      // measured by app.js and product-page-v1.js, avoiding missing buttons,
+      // rejected adds, and duplicate counts.
       const product=e.target.closest("[data-product-id]");
       if(product?.dataset.productId)track("product_view",{product_id:product.dataset.productId});
     },{passive:true});

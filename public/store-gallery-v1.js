@@ -46,7 +46,7 @@
   }
   var video=document.querySelector('.sg-oil video'),film=document.getElementById('shop-olive-oil-film'),stage=document.getElementById('ghPicksStage');
   // The harvest collection redraws on language changes; keep this independent film beside it.
-  function placeFilm(){if(stage&&film&&stage.nextElementSibling!==film)stage.after(film)}
+  function placeFilm(){if(stage&&film&&film.parentNode!==stage)stage.appendChild(film)}
   if(stage&&film){placeFilm();new MutationObserver(placeFilm).observe(stage,{childList:true})}
   if(video){
     if('IntersectionObserver' in window)new IntersectionObserver(function(entries){if(!entries[0].isIntersecting)video.pause()},{threshold:.05}).observe(video);

@@ -20,6 +20,15 @@ const read=p=>fs.readFileSync(p,'utf8');
   }
   const ids=[...d.querySelectorAll('[id]')].map(el=>el.id);assert.equal(ids.length,new Set(ids).size,'no duplicate IDs');
   w.eval(read('public/store-gallery-v1.js'));
+  if(page==='index.html'){
+   w.HTMLMediaElement.prototype.play=function(){return Promise.resolve()};
+   w.HTMLMediaElement.prototype.pause=function(){};
+   w.HTMLElement.prototype.scrollIntoView=function(){};
+   w.PRODUCTS_DATA=[];
+   w.eval(read('public/golden-harvest-2026.js'));
+   d.dispatchEvent(new w.Event('DOMContentLoaded',{bubbles:true}));
+   await new Promise(r=>setTimeout(r,0));
+  }
   assert.equal(d.querySelector('.sg-arrows').hidden,false);
   const first=d.querySelector('[data-sg-photo]');first.click();
   const dialog=d.querySelector('.sg-lightbox');assert.ok(dialog.open);assert.ok(dialog.querySelector('img').src.endsWith('/inside-store.jpg'));
@@ -35,9 +44,11 @@ const read=p=>fs.readFileSync(p,'utf8');
   d.documentElement.lang='fr';d.documentElement.dir='ltr';await new Promise(r=>setTimeout(r,0));
   assert.equal(d.querySelector('#sgTitle').textContent,'Entrez dans notre boutique.');
   if(page==='index.html'){
-   assert.equal(d.querySelector('#ghPicksStage').nextElementSibling.id,'shop-olive-oil-film');
+   assert.equal(d.querySelector('#ghPicksStage').nextElementSibling.id,'featured');
+   assert.equal(d.querySelector('#shop-olive-oil-film').parentNode,d.querySelector('#ghPicksStage'));
    const stage=d.querySelector('#ghPicksStage'),film=d.querySelector('#shop-olive-oil-film');
-   d.querySelector('#featured').before(stage);stage.replaceChildren(d.createElement('section'));await new Promise(r=>setTimeout(r,0));assert.equal(stage.nextElementSibling,film,'film follows harvest redraw');
+   d.querySelector('#featured').before(stage);stage.replaceChildren(d.createElement('section'));await new Promise(r=>setTimeout(r,0));assert.equal(film.parentNode,stage,'film survives harvest redraw');
+   assert.equal(stage.nextElementSibling.id,'featured','harvest placement invariant is preserved');
    const video=d.querySelector('.sg-oil video');assert.equal(video.preload,'none');assert.equal(video.autoplay,false);assert.ok(video.controls);assert.ok(video.playsInline);
    assert.ok(d.querySelector('#featured').compareDocumentPosition(d.querySelector('#inside-our-shop'))&w.Node.DOCUMENT_POSITION_FOLLOWING);
   }

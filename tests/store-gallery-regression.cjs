@@ -31,14 +31,14 @@ const read=p=>fs.readFileSync(p,'utf8');
   }
   assert.equal(d.querySelector('.sg-arrows').hidden,false);
   const first=d.querySelector('[data-sg-photo]');first.click();
-  const dialog=d.querySelector('.sg-lightbox');assert.ok(dialog.open);assert.ok(dialog.querySelector('img').src.endsWith('/inside-store.jpg'));
+  const dialog=d.querySelector('.sg-lightbox');assert.ok(dialog.open);assert.ok(dialog.querySelector('img').src.endsWith('/store-sign.jpg'));
   assert.equal(d.activeElement,dialog.querySelector('.sg-lightbox-close'));
-  dialog.querySelector('.sg-lightbox-next').click();assert.ok(dialog.querySelector('img').src.endsWith('/store-sign.jpg'));
+  dialog.querySelector('.sg-lightbox-next').click();assert.ok(dialog.querySelector('img').src.endsWith('/inside-store.jpg'));
   d.documentElement.lang='ar';d.documentElement.dir='rtl';await new Promise(r=>setTimeout(r,0));
   assert.equal(d.querySelector('#sgTitle').textContent,'تعرّفوا ع محلّنا عن قريب.');
   assert.equal(dialog.querySelector('.sg-lightbox-close').getAttribute('aria-label'),'إغلاق الصورة');
-  assert.equal(dialog.querySelector('img').alt,'اسمنا ومحلّنا');
-  dialog.dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowLeft',bubbles:true}));assert.ok(dialog.querySelector('img').src.endsWith('/inside-store.jpg'));
+  assert.equal(dialog.querySelector('img').alt,'من قلب محلّنا');
+  dialog.dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowLeft',bubbles:true}));assert.ok(dialog.querySelector('img').src.endsWith('/store-sign.jpg'));
   dialog.querySelector('.sg-lightbox-close').click();assert.equal(dialog.open,false);assert.equal(d.activeElement,first);assert.equal(d.body.style.overflow,'');
   d.querySelector('[data-sg-next]').click();assert.equal(scrolling.behavior,'auto');
   d.documentElement.lang='fr';d.documentElement.dir='ltr';await new Promise(r=>setTimeout(r,0));

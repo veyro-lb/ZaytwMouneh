@@ -6951,3 +6951,16 @@ body .shopping-qty button:disabled{opacity:.5;cursor:not-allowed}
 body .card-qty[hidden],body .shopping-qty[hidden],body [data-add][hidden],body [data-featured-add][hidden],body [data-arrival-add][hidden]{display:none!important}
 body .featured-product-foot{flex-wrap:wrap}
 body .shopping-qty{flex-shrink:0}
+
+/* Keep the saved cart within reach on desktop, using the mobile bar's live totals. */
+@media(min-width:761px){
+  body .mobile-order-bar:not([hidden]){
+    display:flex;left:50%;right:auto;bottom:20px;width:360px;max-width:calc(100vw - 40px);
+    transform:translateX(-50%);min-height:58px;padding:12px 20px;border-radius:18px;
+  }
+  body .mobile-order-bar:focus-visible{outline:3px solid var(--gold2);outline-offset:4px}
+  body.cart-open .mobile-order-bar,body.modal-open .mobile-order-bar,
+  body.welcome-open .mobile-order-bar,body.menu-open .mobile-order-bar{display:none!important}
+  body:has(#mobileOrderBar:not([hidden])){padding-bottom:96px}
+  body:has(#mobileOrderBar:not([hidden])):not(.cart-open):not(.modal-open) .toast{bottom:94px}
+}

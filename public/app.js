@@ -1670,7 +1670,8 @@ function renderCart(){
 
   $$("[data-cart-q]").forEach(btn=>btn.addEventListener("click",()=>changeCartQty(btn.dataset.key,Number(btn.dataset.cartQ))));
   $$("[data-remove]").forEach(btn=>btn.addEventListener("click",()=>removeCart(btn.dataset.remove)));
-  $$("[data-cart-view]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.cartView,btn)));
+  document.querySelectorAll("[data-cart-view]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.cartView,btn)));
+  window.dispatchEvent(new Event("zwm:cart-rendered"));
 }
 
 function syncProductUrl(id){
@@ -2667,6 +2668,50 @@ function syncLiveCatalogFromCache(){
   }
 }
 window.addEventListener("zwm:catalog-cache-updated",syncLiveCatalogFromCache);
+
+/* Homepage quick-shop uses the SAME catalogue, live owner overrides, product
+   image map, validated cart mutation, and checkout as the main storefront. */
+window.ZWM_INSTANT_SHOP=Object.freeze({
+  products(){
+    return PRODUCTS_DATA.filter(p=>p&&Array.isArray(p.variants)&&p.variants.length&&productCanOrder(p))
+      .map(p=>{
+        const variants=p.variants
+          .filter(v=>v&&v.price!=null&&Number.isFinite(Number(v.price))&&Number(v.price)>=0&&!v.quoteOnly)
+          .map(v=>({id:v.id,label:currentSize(v),price:Number(v.price)}));
+        if(!variants.length)return null;
+        return {
+          id:p.id,
+          name:currentName(p),
+          category:p.category,
+          categoryLabel:categoryName(p.category),
+          variants,
+          imageFor(variantId){
+            try{return window.ZWM_PRODUCT_PHOTOS?.sourceFor?.(p.id,variantId)?.url||""}catch{return ""}
+          }
+        };
+      }).filter(Boolean);
+  },
+  add(productId,variantId){
+    const p=productById(productId);
+    const v=p?.variants?.find(item=>item.id===variantId);
+    if(!p||!productCanOrder(p)||!v||v.price==null||!Number.isFinite(Number(v.price))||v.quoteOnly)return false;
+    return addToCart(p,v,1,true)===true;
+  },
+  cart(){
+    const rows=cartRows();
+    const subtotal=rows.reduce((total,row)=>total+row.qty*Number(row.v.price||0),0);
+    const settings=liveCmsSettings().delivery||{};
+    const quote=deliveryQuoteFor(subtotal);
+    return {
+      count:rows.reduce((total,row)=>total+row.qty,0),
+      subtotal,
+      freeAbove:settings.freeEnabled===false?0:Math.max(0,Number(quote?.freeAbove)||0),
+      canCheckout:rows.length>0&&rows.every(row=>productCanOrder(row.p))
+    };
+  },
+  locale(){return lang},
+  openCart(){openCart();}
+});
 
 window.chooseWelcomeLanguage=chooseWelcomeLanguage;
 window.applyLanguage=applyLanguage;

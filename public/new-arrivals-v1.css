@@ -1,0 +1,21 @@
+/* A quiet shelf of owner-added products, using the existing pantry card design. */
+.new-arrivals[hidden]{display:none!important}
+.new-arrivals{margin-block:24px 40px;padding:28px!important;border:1px solid #d7ddc5;border-radius:28px;background:linear-gradient(125deg,#f0f2e5,#fffaf1 65%);box-sizing:border-box}
+.arrival-heading{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:22px}
+.arrival-heading .eyebrow{color:#7b3040;margin:0 0 8px;font-size:.72rem;font-weight:800;letter-spacing:.12em}
+.arrival-heading h2{margin:0;color:var(--green,#0b4b25);font-family:"DM Serif Display",Georgia,serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:400;line-height:1.2}
+.arrival-heading>p{max-width:340px;margin:0;color:#52604c;font-size:.9rem;line-height:1.65}
+.arrival-grid{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 48px)/4);gap:16px;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x proximity;padding:5px 3px 16px;scrollbar-width:thin;scrollbar-color:#a4af8b transparent}
+.new-arrivals .arrival-card{scroll-snap-align:start;min-height:0;cursor:default;grid-column:auto;grid-row:auto}
+.new-arrivals .featured-product-media{height:210px}
+.new-arrivals .arrival-badge{background:#7b3040;color:#fff8e9;inset-inline-start:12px;left:auto;letter-spacing:.04em}
+.arrival-card h3 a{color:inherit;text-decoration:none}
+.arrival-card h3 a:hover{text-decoration:underline;text-underline-offset:4px}
+.arrival-card a:focus-visible,.arrival-card button:focus-visible{outline:3px solid #9c701b;outline-offset:4px}
+.new-arrivals .featured-product-foot{flex-wrap:wrap}
+.new-arrivals button:disabled{opacity:.65;cursor:default}
+html[lang="ar"] .arrival-heading h2{font-family:"Noto Kufi Arabic",sans-serif;font-size:clamp(1.45rem,3vw,2.1rem);line-height:1.65}
+html[lang="ar"] .arrival-heading .eyebrow{letter-spacing:0}
+@media(max-width:1000px){.arrival-grid{grid-auto-columns:calc((100% - 32px)/3)}}
+@media(max-width:760px){.new-arrivals{width:calc(100% - 28px);margin-inline:auto;padding:20px 16px!important;border-radius:22px}.arrival-heading{display:block}.arrival-heading>p{margin-top:10px}.arrival-grid{grid-auto-columns:78%;gap:12px}.new-arrivals .featured-product-media{height:205px}.new-arrivals .featured-product-copy h3{font-size:1.35rem}}
+@media(prefers-reduced-motion:reduce){.new-arrivals .featured-product,.new-arrivals .featured-product-image{transition:none}}

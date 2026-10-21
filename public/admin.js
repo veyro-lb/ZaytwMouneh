@@ -3263,6 +3263,8 @@
       if(previous)await saveProductRevision(previous,"edit");
       const payload={
         id,category,
+        // Preserve the original addition date; ordinary edits never renew New Arrivals.
+        ...(originalId?(previous?.addedAt?{addedAt:previous.addedAt}:{}):{addedAt:new Date().toISOString()}),
         nameEn:$("productNameEn").value.trim(),
         nameAr:$("productNameAr").value.trim(),
         original:$("productOriginal").value.trim()||$("productNameEn").value.trim().toUpperCase(),

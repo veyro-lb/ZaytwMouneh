@@ -122,7 +122,7 @@ function enhance(){
 }
 function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(enhance)}
 document.addEventListener("submit",function(e){
-  if(e.target&&e.target.id==="orderForm"){e.preventDefault();e.stopImmediatePropagation();window.ZWM_CMS&&window.ZWM_CMS.track&&window.ZWM_CMS.track("checkout_started",{source:"cart"});location.href="/checkout.html";return}
+  if(e.target&&e.target.id==="orderForm"){e.preventDefault();e.stopImmediatePropagation();location.href="/checkout.html";return}
   if(e.target&&e.target.id==="giftForm"){
     e.preventDefault();e.stopImmediatePropagation();
     var selected={};try{selected=JSON.parse(localStorage.getItem("zwm-gift-items-v1")||"{}")||{}}catch{}
@@ -141,7 +141,7 @@ document.addEventListener("submit",function(e){
       requested_delivery_note:(document.getElementById("c6GiftDeliveryNote")||{}).value||""
     };
     try{sessionStorage.setItem("zwm:native-gift:meta:v1",JSON.stringify(meta))}catch{}
-    window.ZWM_CMS&&window.ZWM_CMS.track&&window.ZWM_CMS.track("checkout_started",{source:"gift_builder"});
+    
     location.href="/checkout.html?kind=gift";
   }
 },true);

@@ -1670,7 +1670,7 @@ function renderCart(){
 
   $$("[data-cart-q]").forEach(btn=>btn.addEventListener("click",()=>changeCartQty(btn.dataset.key,Number(btn.dataset.cartQ))));
   $$("[data-remove]").forEach(btn=>btn.addEventListener("click",()=>removeCart(btn.dataset.remove)));
-  $("[data-cart-view]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.cartView,btn)));
+  document.querySelectorAll("[data-cart-view]").forEach(btn=>btn.addEventListener("click",()=>openProduct(btn.dataset.cartView,btn)));
   window.dispatchEvent(new Event("zwm:cart-rendered"));
 }
 

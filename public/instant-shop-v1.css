@@ -86,3 +86,41 @@ html[dir="rtl"] #instant-shop .iq-heading,html[dir="rtl"] #instant-shop .iq-bask
   #instant-shop .iq-promise-row{gap:8px}
 }
 @media(prefers-reduced-motion:reduce){#instant-shop .iq-card,#instant-shop .iq-progress-bar{transition:none!important}}
+/* Match the storefront's ivory, forest green and warm gold system. */
+#instant-shop{background:var(--cream,#f7f0e2);color:var(--green,#0f4a20);padding-block:clamp(40px,6vw,80px)}
+#instant-shop .iq-inner{width:var(--shell,min(1240px,calc(100% - 48px)))}
+#instant-shop h2{color:var(--green);font-size:clamp(34px,4.5vw,60px)}
+#instant-shop h2 em,#instant-shop .iq-eyebrow{color:#99751c}
+#instant-shop .iq-description{color:var(--muted)}
+#instant-shop .iq-card{border-color:var(--line);border-radius:22px;background:var(--paper,#fffaf0);box-shadow:0 12px 32px #082d1308;animation:iq-enter .45s ease both}
+#instant-shop .iq-card:nth-child(4n+2){animation-delay:.04s}#instant-shop .iq-card:nth-child(4n+3){animation-delay:.08s}#instant-shop .iq-card:nth-child(4n){animation-delay:.12s}
+#instant-shop .iq-art{background:radial-gradient(ellipse at center,#fffcf4,#eee7d5);height:220px;padding-bottom:38px}
+#instant-shop .iq-art img{transition:transform .35s ease}
+#instant-shop .iq-select{background:#fffaf0;border-color:var(--line);border-radius:12px}
+#instant-shop .iq-add,#instant-shop .iq-filter[aria-pressed="true"]{background:var(--green)}
+#instant-shop .iq-filter{min-height:44px;background:var(--paper);border-color:var(--line);font-family:inherit}
+#instant-shop .iq-add{min-height:44px;border-radius:12px}
+#instant-shop .iq-view{position:absolute;bottom:10px;inset-inline:12px;margin-inline:auto;width:max-content;max-width:calc(100% - 24px);padding:5px 12px;min-height:32px;border-radius:999px;border:1px solid var(--line);background:#fffaf0ed;color:var(--green);font:inherit;font-size:11px;font-weight:700;cursor:pointer}
+#instant-shop .iq-quantity{display:flex;align-items:center;justify-content:space-between;gap:1px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fffaf0}
+#instant-shop .iq-quantity button{width:34px;min-height:44px;border:0;background:transparent;color:var(--green);font-size:18px}
+#instant-shop .iq-quantity span{min-width:18px;text-align:center;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}
+#instant-shop .iq-quantity button:disabled{opacity:.4;cursor:default}
+#instant-shop .iq-review:disabled{opacity:.55;cursor:default}
+#instant-shop .iq-basket{background:var(--deep,#082d13);border:1px solid #d3a32355;border-radius:22px}
+#instant-shop .iq-bonus{display:block;background:transparent;border-color:var(--line);padding:0 16px;color:var(--green)}
+#instant-shop .iq-bonus summary{cursor:pointer;padding:15px 0;font-size:13px;font-weight:700;min-height:44px}
+#instant-shop .iq-bonus>div{padding-bottom:15px}
+#instant-shop .iq-bonus summary:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+@media(hover:hover){#instant-shop .iq-card:hover .iq-art img{transform:scale(1.04)}#instant-shop .iq-view:hover{background:var(--green);color:#fff}}
+@keyframes iq-enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:680px){
+ #instant-shop .iq-inner{width:calc(100% - 24px)}
+ #instant-shop .iq-art{height:165px;padding:9px 9px 38px}
+ #instant-shop .iq-card{border-radius:16px}
+ #instant-shop .iq-card-purchase{flex-wrap:wrap;gap:8px}
+ #instant-shop .iq-quantity{margin-inline-start:auto}
+ #instant-shop .iq-quantity button{width:32px}
+ #instant-shop .iq-quantity span{min-width:16px}
+ #instant-shop .iq-basket-actions:has(.iq-checkout[hidden]){grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){#instant-shop .iq-card{animation:none!important}#instant-shop .iq-art img{transition:none!important}}

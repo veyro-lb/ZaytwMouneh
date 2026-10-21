@@ -257,7 +257,7 @@
   <link rel="stylesheet" href="/golden-harvest-2026.css?v=20261009-goldframe1">
   <link rel="stylesheet" href="/google-review-invite-v3.css?v=20261010-brand2">
   <link rel="stylesheet" href="/new-arrivals-v1.css?v=20261021-arrivals1">
-  <link rel="stylesheet" href="/instant-shop-v1.css?v=20261022-instantshop1">
+  <link rel="stylesheet" href="/instant-shop-v1.css?v=20261022-pantryshop2">
   <link rel="stylesheet" href="/store-gallery-v1.css?v=20261021-gallery1">
   <link rel="stylesheet" href="/storefront-shell.css?v=20261010-mobile-rtl-nav1">
   <link rel="stylesheet" href="/mouneh-decor-v1.css?v=20261009-photo3">
@@ -456,50 +456,7 @@
     </section>
 
     <!-- Buy-now browsing uses the canonical live catalogue and normal checkout. -->
-    <section id="instant-shop" aria-labelledby="instantShopTitle">
-      <div class="iq-inner">
-        <div class="iq-heading">
-          <div>
-            <p class="iq-eyebrow" data-iq-eyebrow>Your pantry, your way</p>
-            <h2 id="instantShopTitle" data-iq-title>Good food. <em>One easy order.</em></h2>
-            <p class="iq-description" data-iq-description>Choose your favourites, pick the right size and add them straight to your basket.</p>
-          </div>
-          <a class="iq-catalogue-link" data-iq-full href="/shop">Explore the full shop ↗</a>
-        </div>
-        <div class="iq-promise-row" aria-label="Shopping information">
-          <span class="iq-promise" data-iq-cash>Cash on Delivery</span>
-          <span class="iq-promise" data-iq-fees>Clear sizes &amp; prices</span>
-          <span class="iq-promise" data-iq-delivery>Delivery across Lebanon</span>
-        </div>
-        <div class="iq-filters" data-iq-filters role="group" aria-label="Browse products"></div>
-        <p class="iq-results" data-iq-results>Choose your favourites — prices shown for each size</p>
-        <div class="iq-grid" data-iq-grid>
-          <p class="iq-no-results">Browse the product selection below or <a href="/shop">visit the complete catalogue</a>.</p>
-        </div>
-        <div style="text-align:center;margin-top:19px">
-          <button type="button" class="iq-filter" data-iq-more hidden>Show more products</button>
-        </div>
-        <div class="iq-basket" aria-live="polite" aria-label="Shopping basket summary">
-          <div class="iq-basket-main">
-            <div class="iq-basket-line"><strong data-iq-cart-total>Your basket · $0.00</strong><span aria-label="Basket item count" data-iq-cart-count>0</span></div>
-            <p class="iq-basket-meta" data-iq-progress-note>Choose something you love to get started.</p>
-            <div class="iq-progress" role="progressbar" aria-label="Progress toward free delivery" aria-valuemin="0" aria-valuemax="100"><div class="iq-progress-bar" data-iq-progress></div></div>
-          </div>
-          <div class="iq-basket-actions">
-            <button type="button" class="iq-review" data-iq-review>Review basket →</button>
-            <a class="iq-checkout" data-iq-checkout href="/checkout" hidden>Checkout now ↗</a>
-          </div>
-        </div>
-        <div class="iq-bonus">
-          <span class="iq-bonus-mark" aria-hidden="true">🌿</span>
-          <div><strong data-iq-bonus-title>A little thank-you for your first order</strong>
-            <p><span data-iq-bonus-copy>Join Mouneh Points before ordering and earn 20 bonus points after your first paid and delivered order.</span>
-            <a href="/terms#terms-rewards" data-iq-bonus-link>How it works ↗</a></p>
-          </div>
-        </div>
-        <p class="sr-only" role="status" aria-live="polite" data-iq-live-status></p>
-      </div>
-    </section>
+
 
     <!-- Permanent homepage collection. Statically rendered so sign-in, preview flags,
          slow scripts or campaign-popup dismissal cannot remove these featured products.
@@ -555,16 +512,52 @@
 </div>
     </section>
 
-    <section class="section shell featured-section" id="featured">
-      <div class="section-heading reveal">
-        <div><p class="eyebrow only-en">Start here</p><p class="eyebrow only-ar" lang="ar">ابدأ من هنا</p>
-          <h2 class="only-en">Pantry <em>favourites.</em></h2><h2 class="only-ar" lang="ar">مختارات من <em>المونة.</em></h2></div>
-        <p class="only-en">A curated starting point across za’atar, olive oil, honey, kishk, debes, olives, grains and spices.</p>
-        <p class="only-ar" lang="ar">بداية مختارة من الزعتر وزيت الزيتون والعسل والكشك والدبس والزيتون والحبوب والبهارات.</p>
+    <div id="featured">
+    <section id="instant-shop" aria-labelledby="instantShopTitle">
+      <div class="iq-inner">
+        <div class="iq-heading motion-reveal">
+          <div>
+            <p class="iq-eyebrow" data-iq-eyebrow>Your pantry, your way</p>
+            <h2 id="instantShopTitle" data-iq-title>Good food. <em>One easy order.</em></h2>
+            <p class="iq-description" data-iq-description>Choose your favourites, pick the right size and add them straight to your basket.</p>
+          </div>
+          <a class="iq-catalogue-link" data-iq-full href="/shop">Explore the full shop ↗</a>
+        </div>
+        <div class="iq-promise-row" aria-label="Shopping information">
+          <span class="iq-promise" data-iq-cash>Cash on Delivery</span>
+          <span class="iq-promise" data-iq-fees>Clear sizes &amp; prices</span>
+          <span class="iq-promise" data-iq-delivery>Delivery across Lebanon</span>
+        </div>
+        <div class="iq-filters" data-iq-filters role="group" aria-label="Browse products"></div>
+        <p class="iq-results" data-iq-results>Choose your favourites — prices shown for each size</p>
+        <div class="iq-grid" data-iq-grid>
+          <p class="iq-no-results">Browse the product selection below or <a href="/shop">visit the complete catalogue</a>.</p>
+        </div>
+        <div style="text-align:center;margin-top:19px">
+          <button type="button" class="iq-filter" data-iq-more hidden>Show more products</button>
+        </div>
+        <div class="iq-basket" aria-live="polite" aria-label="Shopping basket summary">
+          <div class="iq-basket-main">
+            <div class="iq-basket-line"><strong data-iq-cart-total>Your basket · $0.00</strong><span aria-label="Basket item count" data-iq-cart-count>0</span></div>
+            <p class="iq-basket-meta" data-iq-progress-note>Choose something you love to get started.</p>
+            <div class="iq-progress" role="progressbar" aria-label="Progress toward free delivery" aria-valuemin="0" aria-valuemax="100"><div class="iq-progress-bar" data-iq-progress></div></div>
+          </div>
+          <div class="iq-basket-actions">
+            <button type="button" class="iq-review" data-iq-review>Review basket →</button>
+            <a class="iq-checkout" data-iq-checkout href="/checkout" hidden>Checkout now ↗</a>
+          </div>
+        </div>
+        <details class="iq-bonus">
+          <summary data-iq-bonus-title>A little thank-you for your first order</summary>
+          <div>
+            <p><span data-iq-bonus-copy>Join Mouneh Points before ordering and earn 20 bonus points after your first paid and delivered order.</span>
+            <a href="/terms#terms-rewards" data-iq-bonus-link>How it works ↗</a></p>
+          </div>
+        </details>
+        <p class="sr-only" role="status" aria-live="polite" data-iq-live-status></p>
       </div>
-      <div class="featured-grid" id="featuredGrid"></div>
-      <div class="section-cta-row"><a class="button button-outline" href="/shop"><span class="only-en">Browse all products ↗</span><span class="only-ar" lang="ar">تصفّح كل المنتجات ↖</span></a></div>
     </section>
+    </div>
 <section class="sg-section" id="inside-our-shop" aria-labelledby="sgTitle" data-no-fr><div class="shell">
 <div class="sg-intro"><div><p class="eyebrow" data-sg-en="Visit our shop · Sebline, Lebanon" data-sg-ar="زوروا محلّنا · سبلين، لبنان" data-sg-fr="Notre boutique · Sebline, Liban" data-no-fr>Visit our shop · Sebline, Lebanon</p><h2 id="sgTitle" data-sg-en="A little closer to our pantry." data-sg-ar="تعرّفوا ع محلّنا عن قريب." data-sg-fr="Entrez dans notre boutique." data-no-fr>A little closer to our pantry.</h2></div><p class="sg-description" data-sg-en="Take a look around Zayt w Mouneh: the shelves, the jars and the details that make our shop feel like home." data-sg-ar="خدوا جولة بزيت ومونة: رفوفنا، مرطباناتنا والتفاصيل اللي بتخلّي محلّنا قريب ع القلب." data-sg-fr="Découvrez Zayt w Mouneh : nos étagères, nos bocaux et les petits détails de notre boutique." data-no-fr>Take a look around Zayt w Mouneh: the shelves, the jars and the details that make our shop feel like home.</p></div>
 <div class="sg-feature"><a class="sg-cover" href="/assets/store-gallery/shop-interior.webp" data-sg-cover><img src="/assets/store-gallery/shop-interior-small.webp" srcset="/assets/store-gallery/shop-interior-small.webp 900w, /assets/store-gallery/shop-interior.webp 1672w" sizes="(max-width: 760px) 92vw, 60vw" width="1672" height="941" loading="lazy" decoding="async" alt="Inside Zayt w Mouneh in Sebline, with shelves of olive oil and mouneh" data-sg-alt-en="Inside Zayt w Mouneh in Sebline, with shelves of olive oil and mouneh" data-sg-alt-ar="داخل محل زيت ومونة في سبلين، رفوف زيت الزيتون والمونة" data-sg-alt-fr="L’intérieur de Zayt w Mouneh à Sebline, avec ses étagères d’huile d’olive et de mouneh"><span class="sg-expand" aria-hidden="true">⤢</span></a><div class="sg-feature-copy"><span class="eyebrow" data-sg-en="From our shelves to your home" data-sg-ar="من رفوفنا لعندكن" data-sg-fr="De nos étagères à chez vous" data-no-fr>From our shelves to your home</span><h3 data-sg-en="Come in. Have a look around." data-sg-ar="تفضّلوا، المحلّ محلّكن." data-sg-fr="Entrez, prenez le temps." data-no-fr>Come in. Have a look around.</h3><p data-sg-en="Explore our Lebanese pantry online, or visit us in Sebline and discover the selection in person." data-sg-ar="تصفّحوا مونتنا اللبنانية أونلاين، أو زورونا بسبلين وتعرّفوا ع تشكيلتنا عن قريب." data-sg-fr="Explorez notre sélection en ligne ou venez la découvrir sur place à Sebline." data-no-fr>Explore our Lebanese pantry online, or visit us in Sebline and discover the selection in person.</p><a class="button button-green" href="https://www.google.com/maps/place/JC9Q%2BQ7X+Zayt+w+Mouneh,+Sebline/data=!4m2!3m1!1s0x151ee5003a80dda9:0xfd1d4309d0331f15!18m1!1e1?utm_source=mstt_1&amp;entry=gps" target="_blank" rel="noopener" data-sg-en="Visit us in Sebline ↗" data-sg-ar="زورونا بسبلين ↗" data-sg-fr="Nous trouver à Sebline ↗" data-no-fr>Visit us in Sebline ↗</a><a class="sg-shop-link" href="/shop" data-sg-en="Browse the pantry ↗" data-sg-ar="تصفّحوا المونة ↗" data-sg-fr="Découvrir les produits ↗" data-no-fr>Browse the pantry ↗</a></div></div>
@@ -806,8 +799,8 @@
   <script src="/product-descriptions-v1.js?v=20261010-copyreview1"></script>
   <script src="product-photos.js?v=20261010-newolivephoto1"></script>
   <script src="/product-search-v1.js?v=20261021-search1"></script>
-  <script src="app.js?v=20261022-instantshop1"></script>
-  <script src="/instant-shop-v1.js?v=20261022-instantshop1"></script>
+  <script src="app.js?v=20261022-pantryshop2"></script>
+  <script src="/instant-shop-v1.js?v=20261022-pantryshop2"></script>
   <script src="/golden-harvest-2026.js?v=20261010-popupvisit1"></script>
   <script src="premium-v2.js?v=20261022-storefrontfix1"></script>
   <script src="/commerce-v1.js?v=20261007-mobileblank1"></script>

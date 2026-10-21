@@ -2691,11 +2691,22 @@ window.ZWM_INSTANT_SHOP=Object.freeze({
         };
       }).filter(Boolean);
   },
-  add(productId,variantId){
+  quantity(productId,variantId){return cart[cartKey(productId,variantId)]?.qty||0},
+  changeQuantity(productId,variantId,delta){
+    const p=productById(productId),v=p?.variants?.find(item=>item.id===variantId);
+    return !!p&&[1,-1].includes(delta)&&changeShoppingQty(p,v,delta);
+  },
+  view(productId,variantId,trigger){
+    openProduct(productId,trigger);
+    if(variantId)renderModal(productId,variantId);
+  },
+  add(productId,variantId,source){
     const p=productById(productId);
     const v=p?.variants?.find(item=>item.id===variantId);
     if(!p||!productCanOrder(p)||!v||v.price==null||!Number.isFinite(Number(v.price))||v.quoteOnly)return false;
-    return addToCart(p,v,1,true)===true;
+    const added=addToCart(p,v,1,true)===true;
+    if(added&&source)animateAddToCart(source.closest("[data-iq-product]")||source,p);
+    return added;
   },
   cart(){
     const rows=cartRows();

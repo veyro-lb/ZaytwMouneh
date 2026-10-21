@@ -45,6 +45,9 @@ jobs:
         run: |
           npm install --no-save --ignore-scripts playwright@1.55.0
           npx playwright install --with-deps chromium webkit
+      - name: Verify homepage shopping journey
+        if: matrix.viewport == '360x800'
+        run: node tests/instant-shop-browser.cjs
       - name: Check the affected layouts first
         run: npm run test:browser
         env:

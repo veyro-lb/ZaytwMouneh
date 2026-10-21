@@ -14,7 +14,7 @@
       all:"All products",budget:"Under $10",results:"Choose your favourites — prices shown for each size",size:"Choose size",add:"+ Add",added:"✓ Added",unavailable:"Unavailable",
       cart:"Your basket",empty:"Choose something you love to get started.",remaining:"away from free delivery",unlocked:"Free delivery unlocked ✓",
       shipping:"Delivery fee confirmed at checkout",review:"Review basket →",checkout:"Checkout now ↗",
-      load:"Show more products",bonusTitle:"A little thank-you for your first order",bonus:"Join Mouneh Points before ordering and earn 20 bonus points after your first paid and delivered order.",bonusLink:"How it works ↗",noItems:"No matching available products right now.",error:"Could not add the item. Please try again."
+      load:"Show more products",bonusTitle:"A little thank-you for your first order",bonus:"Join Mouneh Points before ordering and earn 20 bonus points after your first paid and delivered order.",bonusLink:"How it works ↗",noItems:"No matching available products right now.",view:"Quick view",minus:"Decrease quantity",plus:"Increase quantity",error:"Could not add the item. Please try again."
     },
     ar:{
       eyebrow:"مونتك على ذوقك",title:"كل شي بتحبّه… بطلب واحد.",description:"اختار منتجاتك والأحجام اللي بتناسبك، وضيفها عالسلّة دغري.",
@@ -22,7 +22,7 @@
       all:"كل المنتجات",budget:"أقل من ١٠$",results:"اختار اللي بتحبّه — السعر واضح لكل حجم",size:"اختار الحجم",add:"+ ضيف",added:"✓ انضاف",unavailable:"غير متوفر",
       cart:"سلّة المونة",empty:"ضيف شغلة بتحبّها وبلّش.",remaining:"للتوصيل المجاني",unlocked:"صار التوصيل مجاني ✓",
       shipping:"رسوم التوصيل النهائية بتظهر عند إتمام الطلب",review:"راجع السلّة ←",checkout:"كمّل الطلب ↖",
-      load:"عرض منتجات إضافية",bonusTitle:"هديّة صغيرة على أول طلب",bonus:"اشترك بنقاط المونة قبل الطلب وخد ٢٠ نقطة إضافية بعد دفع وتسليم أول طلب إلك.",bonusLink:"تفاصيل المكافأة ↖",noItems:"ما في منتجات متوفرة بهالقسم حالياً.",error:"تعذّرت إضافة المنتج. جرّب مرّة تانية."
+      load:"عرض منتجات إضافية",bonusTitle:"هديّة صغيرة على أول طلب",bonus:"اشترك بنقاط المونة قبل الطلب وخد ٢٠ نقطة إضافية بعد دفع وتسليم أول طلب إلك.",bonusLink:"تفاصيل المكافأة ↖",noItems:"ما في منتجات متوفرة بهالقسم حالياً.",view:"نظرة سريعة",minus:"تقليل الكمية",plus:"زيادة الكمية",error:"تعذّرت إضافة المنتج. جرّب مرّة تانية."
     },
     fr:{
       eyebrow:"Votre épicerie, à votre façon",title:"Le goût du Liban. Une commande simple.",description:"Choisissez vos produits, vos formats et ajoutez-les directement au panier.",
@@ -30,7 +30,7 @@
       all:"Tous les produits",budget:"Moins de 10 $",results:"Choisissez vos produits — prix selon le format",size:"Choisir le format",add:"+ Ajouter",added:"✓ Ajouté",unavailable:"Indisponible",
       cart:"Votre panier",empty:"Choisissez un produit pour commencer.",remaining:"avant la livraison gratuite",unlocked:"Livraison gratuite débloquée ✓",
       shipping:"Frais de livraison confirmés au paiement",review:"Voir le panier →",checkout:"Commander ↗",
-      load:"Voir plus de produits",bonusTitle:"Un merci pour votre première commande",bonus:"Rejoignez Mouneh Points avant de commander et obtenez 20 points bonus après paiement et livraison de votre première commande.",bonusLink:"Conditions de l’offre ↗",noItems:"Aucun produit disponible pour le moment.",error:"Impossible d’ajouter le produit. Veuillez réessayer."
+      load:"Voir plus de produits",bonusTitle:"Un merci pour votre première commande",bonus:"Rejoignez Mouneh Points avant de commander et obtenez 20 points bonus après paiement et livraison de votre première commande.",bonusLink:"Conditions de l’offre ↗",noItems:"Aucun produit disponible pour le moment.",view:"Aperçu rapide",minus:"Diminuer la quantité",plus:"Augmenter la quantité",error:"Impossible d’ajouter le produit. Veuillez réessayer."
     }
   };
   const esc=value=>String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
@@ -47,7 +47,7 @@
   }
   function activeItems(){
     if(filter==="all")return data;
-    if(filter==="budget")return data.filter(p=>minPrice(p)<10);
+    if(filter==="budget")return data.map(p=>({...p,variants:p.variants.filter(v=>v.price<10)})).filter(p=>p.variants.length);
     return data.filter(p=>p.category===filter);
   }
   function renderCopy(){
@@ -73,7 +73,9 @@
     const order=[...wanted.filter(x=>distinct.has(x)),...Array.from(distinct.keys()).filter(x=>!wanted.includes(x))];
     const choices=[["all",c.all],["budget",c.budget],...order.map(key=>[key,distinct.get(key)])];
     const area=$("[data-iq-filters]");
+    const scroll=area.scrollLeft;
     area.innerHTML=choices.map(([key,label])=>'<button class="iq-filter" type="button" data-iq-filter="'+esc(key)+'" aria-pressed="'+String(filter===key)+'">'+esc(label)+'</button>').join("");
+    area.scrollLeft=scroll;
   }
   function selectedVariant(product){
     const chosen=product.variants.find(v=>v.id===selected.get(product.id));
@@ -92,11 +94,12 @@
     const permalink=(language()==="ar"?"/ar":language()==="fr"?"/fr":"")+"/product/"+encodeURIComponent(p.id);
     return '<article class="iq-card" data-iq-product="'+esc(p.id)+'"><div class="iq-art">'+photo+
       (p.id==="extra-virgin-olive-oil"?'<span class="iq-tag">2026 HARVEST</span>':"")+
-      '</div><div class="iq-card-body"><span class="iq-category">'+esc(p.categoryLabel)+'</span>'+
+      '<button class="iq-view" type="button" data-iq-view="'+esc(p.id)+'" aria-label="'+esc(copy().view+' — '+p.name)+'">'+esc(copy().view)+'</button></div><div class="iq-card-body"><span class="iq-category">'+esc(p.categoryLabel)+'</span>'+
       '<a class="iq-name" href="'+esc(permalink)+'">'+esc(p.name)+'</a><div class="iq-card-foot">'+
       '<select class="iq-select" data-iq-select aria-label="'+esc(copy().size+' — '+p.name)+'">'+options+'</select>'+
       '<div class="iq-card-purchase"><strong class="iq-price" dir="ltr">'+esc(money(v.price))+'</strong>'+
-      '<button class="iq-add" type="button" data-iq-add="'+esc(p.id)+'">'+esc(copy().add)+'</button></div></div></div></article>';
+      '<button class="iq-add" type="button" data-iq-add="'+esc(p.id)+'">'+esc(copy().add)+'</button>'+
+      '<div class="iq-quantity" hidden><button type="button" data-iq-delta="-1" aria-label="'+esc(copy().minus+' — '+p.name)+'">−</button><span data-iq-quantity aria-live="polite">0</span><button type="button" data-iq-delta="1" aria-label="'+esc(copy().plus+' — '+p.name)+'">+</button></div></div></div></div></article>';
   }
   function renderProducts(){
     const items=activeItems();
@@ -104,15 +107,27 @@
     const grid=$("[data-iq-grid]");
     const current=items.slice(0,visible);
     grid.innerHTML=current.length?current.map(cardMarkup).join(""):'<div class="iq-no-results">'+esc(c.noItems)+'</div>';
+    syncQuantities();
     const more=$("[data-iq-more]");
     more.hidden=items.length<=visible;
     more.textContent=c.load+(items.length>visible?" · "+(items.length-visible):"");
     $("[data-iq-results]").textContent=c.results;
   }
+  function syncQuantities(){
+    root.querySelectorAll("[data-iq-product]").forEach(card=>{
+      const qty=api()?.quantity?.(card.dataset.iqProduct,card.querySelector("[data-iq-select]").value)||0;
+      card.querySelector("[data-iq-quantity]").textContent=String(qty);
+      card.querySelector(".iq-quantity").hidden=!qty;
+      card.querySelector("[data-iq-add]").hidden=qty>0;
+      card.querySelector('[data-iq-delta="1"]').disabled=qty>=99;
+    });
+  }
   function updateBasket(){
+    syncQuantities();
     const c=copy();
     const summary=api()?.cart?.()||{count:0,subtotal:0,freeAbove:0,canCheckout:false};
     const price=money(summary.subtotal);
+    $("[data-iq-review]").disabled=summary.count===0;
     $("[data-iq-cart-total]").textContent=c.cart+" · "+price;
     $("[data-iq-cart-count]").textContent=String(summary.count);
     const threshold=Number(summary.freeAbove)||0;
@@ -121,11 +136,14 @@
     if(threshold>0){
       const remaining=Math.max(0,threshold-summary.subtotal);
       note.textContent=summary.count===0?c.empty:remaining>0?(language()==="ar"?"باقي "+money(remaining)+" "+c.remaining:money(remaining)+" "+c.remaining):c.unlocked;
+      progress.parentElement.hidden=false;
+      progress.parentElement.setAttribute("aria-valuenow",String(Math.round(Math.min(100,summary.subtotal/threshold*100))));
       progress.hidden=false;
       progress.style.width=Math.max(0,Math.min(100,summary.subtotal/threshold*100))+"%";
     }else{
       note.textContent=summary.count===0?c.empty:c.shipping;
       progress.hidden=true;
+      progress.parentElement.hidden=true;
     }
     const checkout=$("[data-iq-checkout]");
     checkout.hidden=!summary.canCheckout;
@@ -146,6 +164,7 @@
     filter=btn.dataset.iqFilter;
     visible=8;
     renderFilters();renderProducts();
+    Array.from(root.querySelectorAll("[data-iq-filter]")).find(btn=>btn.dataset.iqFilter===filter)?.focus({preventScroll:true});
   });
   $("[data-iq-grid]").addEventListener("change",event=>{
     const select=event.target.closest("[data-iq-select]");
@@ -156,18 +175,29 @@
     if(!v)return;
     selected.set(p.id,v.id);
     card.querySelector(".iq-price").textContent=money(v.price);
+    syncQuantities();
     const image=card.querySelector(".iq-art img");
     const src=p.imageFor?.(v.id);
     if(image&&src){image.src=src;image.hidden=false;const fallback=image.nextElementSibling;if(fallback)fallback.hidden=true}
   });
   $("[data-iq-grid]").addEventListener("click",event=>{
+    const view=event.target.closest("[data-iq-view]");
+    if(view){const card=view.closest("[data-iq-product]");api()?.view?.(card.dataset.iqProduct,card.querySelector("[data-iq-select]").value,view);return}
+    const step=event.target.closest("[data-iq-delta]");
+    if(step){
+      const card=step.closest("[data-iq-product]"),add=card.querySelector("[data-iq-add]");
+      if(api()?.changeQuantity?.(card.dataset.iqProduct,card.querySelector("[data-iq-select]").value,Number(step.dataset.iqDelta))){
+        updateBasket();if(!add.hidden)add.focus({preventScroll:true});
+      }
+      return;
+    }
     const btn=event.target.closest("[data-iq-add]");
     if(!btn)return;
     const card=btn.closest("[data-iq-product]");
     const p=data.find(x=>x.id===card.dataset.iqProduct);
     const variant=p?.variants.find(v=>v.id===card.querySelector("[data-iq-select]").value);
     if(!p||!variant)return;
-    const saved=api()?.add?.(p.id,variant.id);
+    const saved=api()?.add?.(p.id,variant.id,btn);
     if(saved){
       btn.classList.add("iq-added");
       btn.textContent=copy().added;

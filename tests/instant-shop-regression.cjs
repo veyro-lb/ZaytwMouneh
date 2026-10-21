@@ -9,15 +9,16 @@ const app=fs.readFileSync("public/app.js","utf8");
 
 assert(html.includes('id="instant-shop"'),"homepage quick-shop exists");
 assert(html.indexOf('id="instant-shop"')>html.indexOf("home-pantry-hero"),"shop follows hero");
-assert(html.indexOf('id="instant-shop"')<html.indexOf('id="harvest-picks"'),"shop must appear before long collections");
+assert(html.indexOf('id="instant-shop"')>html.indexOf('id="shop-olive-oil-film"'),"shop follows olive oil showcase and film");
+assert(!html.includes('id="featuredGrid"'),"duplicate Pantry Favorites removed");
 assert(html.includes('href="#instant-shop"'),"homepage hero CTA links to the instant-shop");
-assert(html.includes("/instant-shop-v1.css?v=20261022-instantshop1"),"homepage CSS cache-busted");
-assert(html.includes("/instant-shop-v1.js?v=20261022-instantshop1"),"homepage script cache-busted");
-assert(html.includes("app.js?v=20261022-instantshop1"),"cached main cart integration refreshed");
+assert(html.includes("/instant-shop-v1.css?v=20261022-pantryshop2"),"homepage CSS cache-busted");
+assert(html.includes("/instant-shop-v1.js?v=20261022-pantryshop2"),"homepage script cache-busted");
+assert(html.includes("app.js?v=20261022-pantryshop2"),"cached main cart integration refreshed");
 assert(!html.includes("No account needed")&&!html.includes("Real shop in Lebanon"),"remove undesired claims");
 assert(html.includes('data-iq-checkout href="/checkout"'),"use actual checkout route");
 assert(app.includes("window.ZWM_INSTANT_SHOP=Object.freeze("),"feature uses live storefront commerce API");
-assert(app.includes('return addToCart(p,v,1,true)===true'),"homepage add uses native validated cart");
+assert(app.includes('const added=addToCart(p,v,1,true)===true'),"homepage add uses native validated cart");
 assert(app.includes('window.dispatchEvent(new Event("zwm:cart-rendered"))'),"cart updates are reflected");
 assert(!code.includes("localStorage.setItem"),"separate localStorage cart must not be used");
 assert(css.includes("@media(max-width:680px)"),"responsive layout is included");
@@ -27,7 +28,7 @@ const dom=new JSDOM('<!doctype html><html lang="en"><body>'+section+'</body></ht
   url:"https://zaytwmouneh.com/",runScripts:"outside-only",pretendToBeVisual:true
 });
 const w=dom.window,d=w.document;
-let cart=[],opened=0,locale="en",events=[];
+let cart=[],opened=0,viewed=null,locale="en",events=[];
 const products=[
   {id:"extra-virgin-olive-oil",name:"Extra Virgin Olive Oil",category:"Olive Oil",categoryLabel:"Olive Oil",variants:[{id:"500ml",label:"500 ml",price:6},{id:"1l",label:"1 L",price:12}],imageFor:()=>"/assets/harvest-2026/1l.webp"},
   {id:"flower-honey",name:"Flower Honey",category:"Honey",categoryLabel:"Honey",variants:[{id:"500g",label:"500 g",price:19}],imageFor:()=>"/assets/products/originals/flower-honey.jpg"},
@@ -35,6 +36,15 @@ const products=[
 ];
 w.ZWM_INSTANT_SHOP={
   products:()=>products,
+  quantity:(id,variant)=>cart.filter(x=>x.id===id&&x.variant===variant).length,
+  changeQuantity:(id,variant,delta)=>{
+    const i=cart.findIndex(x=>x.id===id&&x.variant===variant);
+    if(delta<0&&i>=0)cart.splice(i,1);
+    else if(delta>0){const p=products.find(x=>x.id===id);cart.push({id,variant,price:p.variants.find(x=>x.id===variant).price})}
+    else return false;
+    w.dispatchEvent(new w.Event("zwm:cart-rendered"));return true;
+  },
+  view:(id,variant)=>{viewed={id,variant}},
   locale:()=>locale,
   add:(id,variant)=>{
     const p=products.find(x=>x.id===id),v=p?.variants.find(x=>x.id===variant);
@@ -58,9 +68,21 @@ assert.equal(d.querySelector("[data-iq-cart-count]").textContent,"1");
 assert.equal(d.querySelector("[data-iq-checkout]").hidden,false,"checkout CTA available once cart is ready");
 d.querySelector("[data-iq-review]").click();
 assert.equal(opened,1,"review opens native cart");
+assert.equal(oil.querySelector(".iq-quantity").hidden,false,"quantity controls replace Add");
+oil.querySelector('[data-iq-delta="1"]').click();
+assert.equal(oil.querySelector("[data-iq-quantity]").textContent,"2","increment updates card and basket");
+oil.querySelector('[data-iq-delta="-1"]').click();
+assert.equal(cart.length,1,"decrement updates native cart");
+oil.querySelector("[data-iq-view]").click();
+assert.deepEqual(viewed,{id:"extra-virgin-olive-oil",variant:"1l"},"quick view preserves selected size");
+size.value="500ml";size.dispatchEvent(new w.Event("change",{bubbles:true}));
+assert.equal(oil.querySelector("[data-iq-add]").hidden,false,"different size has its own quantity");
+size.value="1l";size.dispatchEvent(new w.Event("change",{bubbles:true}));
+assert.equal(oil.querySelector("[data-iq-quantity]").textContent,"1");
 const budget=d.querySelector('[data-iq-filter="budget"]');
 budget.click();
 assert.equal(d.querySelectorAll(".iq-card").length,2,"budget filter respects real prices");
+assert.equal(d.querySelector('[data-iq-product="extra-virgin-olive-oil"] [data-iq-select]').options.length,1,"Under $10 excludes expensive sizes too");
 locale="ar";w.dispatchEvent(new w.Event("zwm:cart-rendered"));
 assert.equal(d.querySelector("[data-iq-title]").textContent,"كل شي بتحبّه… بطلب واحد.");
 assert.equal(d.querySelector("[data-iq-checkout]").textContent,"كمّل الطلب ↖");

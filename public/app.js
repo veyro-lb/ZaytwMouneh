@@ -1393,7 +1393,7 @@ function filteredProducts(){
       const catOk=activeCategory==="All"||p.category===activeCategory;
       const favOk=!favoritesOnly||favorites.has(p.id);
       const budgetOk=!window.ZWM_CATALOGUE_ENHANCEMENTS||window.ZWM_CATALOGUE_ENHANCEMENTS.allowsPrice(p);
-      return catOk&&favOk&&budgetOk&&(!q||score>0);
+      return catOk&&favOk&&budgetOk&&(!window.ZWM_PANTRY_TOOLS||window.ZWM_PANTRY_TOOLS.matches(p))&&(!q||score>0);
     });
   rows.sort((a,b)=>q?b.score-a.score:a.index-b.index);
   return rows.map(x=>x.p);
@@ -1769,6 +1769,11 @@ function renderModal(productId,variantId){
   if(!v)return false;
   currentModalProduct=p;
   currentModalVariant=v;
+  let ask=$("#modalProductAsk");
+  if(!ask){ask=document.createElement("a");ask.id="modalProductAsk";ask.className="zwm-product-ask";ask.target="_blank";ask.rel="noopener noreferrer";ask.dataset.noFr="";$("#productModalAdd").closest(".product-modal-actions").after(ask)}
+  ask.textContent=lang==="ar"?"اسأل عن هالمنتج عالواتساب ↗":lang==="fr"?"Une question sur ce produit ? WhatsApp ↗":"Ask about this product on WhatsApp ↗";
+  const askIntro=lang==="ar"?"مرحبا، عندي سؤال عن هالمنتج:":lang==="fr"?"Bonjour, j’ai une question sur ce produit :":"Hello, I have a question about this product:";
+  ask.href="https://wa.me/"+currentWhatsAppNumber()+"?text="+encodeURIComponent(askIntro+"\n"+currentName(p)+" · "+currentSize(v)+"\n"+location.origin+"/product/"+encodeURIComponent(p.id));
   const t=UI[lang],summary=productDescriptionFor(p),facts=verifiedProductFacts(p).filter(item=>item.key!=="details"&&item.key!=="origin"),availability=productAvailability(p);
   $("#productModalMark").innerHTML=productVisualMarkup(p,"product-modal-image",v.id);
   $("#productModalCategory").textContent=categoryName(p.category);
@@ -2581,7 +2586,7 @@ function init(){
   }
   if($("#categorySelect"))$("#categorySelect").addEventListener("change",e=>activateShopCategory(e.target.value,{scroll:false}));
   if($("#loadMore"))$("#loadMore").addEventListener("click",()=>{visibleLimit+=catalogPageSize();renderProducts()});
-  if($("#clearSearch"))$("#clearSearch").addEventListener("click",()=>activateShopCategory("All",{scroll:false}));
+  if($("#clearSearch"))$("#clearSearch").addEventListener("click",()=>{window.ZWM_PANTRY_TOOLS?.resetTaste?.();activateShopCategory("All",{scroll:false})});
   if($("#favoritesOnly"))$("#favoritesOnly").addEventListener("click",e=>{if(!acceptSingleTap(e.currentTarget,260))return;favoritesOnly=!favoritesOnly;visibleLimit=catalogPageSize();renderFavoritesCount();renderProducts()});
   if($("#clearRecent"))$("#clearRecent").addEventListener("click",()=>{recentViews=[];saveRecent();renderRecent()});
 
@@ -2690,6 +2695,24 @@ window.ZWM_INSTANT_SHOP=Object.freeze({
           }
         };
       }).filter(Boolean);
+  },
+  addBundle(items,budget){
+    if(!Array.isArray(items)||!items.length||items.length>5||![15,25,50].includes(budget))return false;
+    const previous={...cart},next={...cart};let total=0;const seen=new Set();
+    for(const item of items){
+      const p=productById(item.productId),v=p?.variants?.find(v=>v.id===item.variantId);
+      if(!p||!productCanOrder(p)||!v||v.quoteOnly||v.price==null||!Number.isFinite(Number(v.price))||Number(v.price)<=0)return false;
+      const cents=Math.round(Number(v.price)*100),key=cartKey(p.id,v.id);
+      if(cents!==Math.round(Number(item.price)*100)||seen.has(key)||(next[key]?.qty||0)>=99)return false;
+      seen.add(key);total+=cents;
+      next[key]={productId:p.id,variantId:v.id,qty:(next[key]?.qty||0)+1};
+    }
+    if(total>budget*100)return false;
+    cart=next;
+    if(!saveCart()){cart=previous;return false}
+    renderCart();
+    for(const item of items)window.ZWM_CMS?.track?.("add_to_cart",{product_id:item.productId,source:"budget_selection"});
+    return true;
   },
   quantity(productId,variantId){return cart[cartKey(productId,variantId)]?.qty||0},
   changeQuantity(productId,variantId,delta){

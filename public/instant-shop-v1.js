@@ -46,9 +46,10 @@
     data.sort((a,b)=>productOrder(a)-productOrder(b));
   }
   function activeItems(){
-    if(filter==="all")return data;
-    if(filter==="budget")return data.map(p=>({...p,variants:p.variants.filter(v=>v.price<10)})).filter(p=>p.variants.length);
-    return data.filter(p=>p.category===filter);
+    const available=data.filter(p=>!window.ZWM_PANTRY_TOOLS||window.ZWM_PANTRY_TOOLS.matches(p));
+    if(filter==="all")return available;
+    if(filter==="budget")return available.map(p=>({...p,variants:p.variants.filter(v=>v.price<10)})).filter(p=>p.variants.length);
+    return available.filter(p=>p.category===filter);
   }
   function renderCopy(){
     const c=copy();
@@ -214,6 +215,7 @@
     if(language()!==locale)renderAll();
     else updateBasket();
   });
+  document.addEventListener("zwm:tastechange",()=>{visible=8;renderProducts()});
   window.addEventListener("zwm:catalog-cache-updated",()=>setTimeout(renderAll,0));
   document.addEventListener("zwm:localechange",()=>setTimeout(renderAll,0));
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",renderAll,{once:true});else renderAll();

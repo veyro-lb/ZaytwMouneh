@@ -316,7 +316,7 @@ function render(){
  var min=(p.variants||[]).length?Math.min.apply(null,p.variants.map(function(v){return Number(v.price)||0})):0;
  var av=availability(p),badgeClass=av==="out_of_stock"||av==="coming_soon"?" is-unavailable":av==="low_stock"?" is-low":"";
  qs("#c6ProductRoot").innerHTML=
- '<main class="c6-product-main"><div class="c6-shell"><nav class="c6-breadcrumb"><a href="'+localePrefix(state.locale)+'/shop">'+esc(t("back"))+'</a><span>›</span><span>'+esc(productName(p))+'</span></nav><div class="c6-product-grid"><div class="c6-product-visual">'+photoMarkup(p,state.selectedVariant&&state.selectedVariant.id)+'</div><div class="c6-product-copy"><p class="c6-eyebrow">'+esc(p.category||t("category"))+'</p><h1 class="c6-product-title">'+esc(productName(p))+'</h1>'+(summary?'<p class="c6-product-summary">'+esc(summary)+'</p>':"")+(av!=="in_stock"?'<div class="c6-badges"><span class="c6-badge'+badgeClass+'">'+esc(t(av))+'</span></div>':"")+'<div class="c6-price" id="c6SelectedPrice">'+(p.id==="extra-virgin-olive-oil"?money(state.selectedVariant?state.selectedVariant.price:min):esc(t("from"))+' '+money(min))+'</div><div class="c6-purchase-box"><div class="c6-purchase-row"><label class="c6-field"><span>'+esc(t("size"))+'</span><select id="c6Variant">'+variantsMarkup(p)+'</select></label><label class="c6-field"><span>'+esc(t("qty"))+'</span><input id="c6Qty" type="number" min="1" max="99" value="1"></label></div><div class="c6-purchase-actions"><button class="c6-button" id="c6Add" type="button"'+(isOrderable(p)?"":" disabled")+'>'+esc(isOrderable(p)?t("add"):t("unavailable"))+'</button><button class="c6-button is-secondary" id="c6Share" type="button">'+esc(t("share"))+'</button></div>'+alertMarkup(p)+'</div>'+(facts?'<div class="c6-product-facts"><p class="c6-eyebrow">'+esc(t("facts"))+'</p>'+facts+'</div>':"")+'<div class="c6-service-grid"><div class="c6-service-card"><strong>'+esc(t("payment"))+'</strong><div style="margin-top:7px">'+paymentMarkup()+'</div><p>'+esc(t("paymentNote"))+'</p></div>'+deliveryMarkup()+'</div></div></div></div></main>'+
+ '<main class="c6-product-main"><div class="c6-shell"><nav class="c6-breadcrumb"><a href="'+localePrefix(state.locale)+'/shop">'+esc(t("back"))+'</a><span>›</span><span>'+esc(productName(p))+'</span></nav><div class="c6-product-grid"><div class="c6-product-visual">'+photoMarkup(p,state.selectedVariant&&state.selectedVariant.id)+'</div><div class="c6-product-copy"><p class="c6-eyebrow">'+esc(p.category||t("category"))+'</p><h1 class="c6-product-title">'+esc(productName(p))+'</h1>'+(summary?'<p class="c6-product-summary">'+esc(summary)+'</p>':"")+(av!=="in_stock"?'<div class="c6-badges"><span class="c6-badge'+badgeClass+'">'+esc(t(av))+'</span></div>':"")+'<div class="c6-price" id="c6SelectedPrice">'+(p.id==="extra-virgin-olive-oil"?money(state.selectedVariant?state.selectedVariant.price:min):esc(t("from"))+' '+money(min))+'</div><div class="c6-purchase-box"><div class="c6-purchase-row"><label class="c6-field"><span>'+esc(t("size"))+'</span><select id="c6Variant">'+variantsMarkup(p)+'</select></label><label class="c6-field"><span>'+esc(t("qty"))+'</span><input id="c6Qty" type="number" min="1" max="99" value="1"></label></div><div class="c6-purchase-actions"><button class="c6-button" id="c6Add" type="button"'+(isOrderable(p)?"":" disabled")+'>'+esc(isOrderable(p)?t("add"):t("unavailable"))+'</button><button class="c6-button is-secondary" id="c6Share" type="button">'+esc(t("share"))+'</button></div><a id="c6ProductAsk" class="zwm-product-ask" target="_blank" rel="noopener noreferrer"></a>'+alertMarkup(p)+'</div>'+(facts?'<div class="c6-product-facts"><p class="c6-eyebrow">'+esc(t("facts"))+'</p>'+facts+'</div>':"")+'<div class="c6-service-grid"><div class="c6-service-card"><strong>'+esc(t("payment"))+'</strong><div style="margin-top:7px">'+paymentMarkup()+'</div><p>'+esc(t("paymentNote"))+'</p></div>'+deliveryMarkup()+'</div></div></div></div></main>'+
  bundleMarkup()+recipeMarkup()+relatedProducts()+reviewsMarkup();
  bind();
  updateCartCount();
@@ -364,9 +364,20 @@ async function submitAlert(e){
  }catch(err){status.textContent=err&&err.status===409?t("duplicate"):t("error")}
  finally{btn.disabled=false}
 }
+function updateProductAsk(){
+ var link=qs("#c6ProductAsk"),p=state.product,v=state.selectedVariant;if(!link||!p||!v)return;
+ var code=state.locale,phone=String(state.settings?.contact?.whatsapp||"96170381412").replace(/\D/g,"");
+ if(!phone||phone==="96181581230")phone="96170381412";
+ var label=code==="ar"?"اسأل عن هالمنتج عالواتساب ↗":code==="fr"?"Une question sur ce produit ? WhatsApp ↗":"Ask about this product on WhatsApp ↗";
+ var intro=code==="ar"?"مرحبا، عندي سؤال عن هالمنتج:":code==="fr"?"Bonjour, j’ai une question sur ce produit :":"Hello, I have a question about this product:";
+ var size=code==="ar"?(v.sizeAr||v.sizeEn):code==="fr"?(v.sizeFr||v.sizeEn):v.sizeEn;
+ link.textContent=label;link.href="https://wa.me/"+phone+"?text="+encodeURIComponent(intro+"\n"+productName(p)+" · "+size+"\n"+canonical());
+}
 function bind(){
+ updateProductAsk();
  var sel=qs("#c6Variant");if(sel){sel.addEventListener("change",function(){
    state.selectedVariant=(state.product.variants||[]).find(function(v){return v.id===sel.value})||state.selectedVariant;
+   updateProductAsk();
    if(state.product.id==="extra-virgin-olive-oil"){
      var visual=qs(".c6-product-visual");
      if(visual)visual.innerHTML=photoMarkup(state.product,state.selectedVariant&&state.selectedVariant.id);

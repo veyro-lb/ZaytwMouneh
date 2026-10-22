@@ -8,6 +8,8 @@ on:
       - "public/app.js"
       - "public/instant-shop-v1.js"
       - "public/instant-shop-v1.css"
+      - "public/pantry-tools-v1.js"
+      - "public/pantry-tools-v1.css"
       - ".github/workflows/instant-shop-live-check.yml"
   workflow_dispatch:
 
@@ -27,11 +29,15 @@ jobs:
             if html="$(curl --retry 1 -fsSL --max-time 15 -H 'Cache-Control: no-cache' "$base/?instant_check=$(date +%s)" 2>/dev/null)"; then
               if [[ "$html" == *'id="instant-shop"'* ]] &&
                  [[ "$html" == *'instant-shop-v1.js?v=20261022-pantryshop2'* ]] &&
-                 [[ "$html" == *'app.js?v=20261022-pantryshop2'* ]]; then
-                js="$(curl -fsSL --max-time 15 "$base/instant-shop-v1.js?v=20261022-pantryshop2")"
+                 [[ "$html" == *'app.js?v=20261022-pantryshop2'* ]] &&
+                 [[ "$html" == *'pantry-tools-v1.js?v=20261022-shopping1'* ]]; then
+                js="$(curl -fsSL --max-time 15 "$base/instant-shop-v1.js?v=20261022-pantryshop2&tools=20261022-shopping1")"
                 css="$(curl -fsSL --max-time 15 "$base/instant-shop-v1.css?v=20261022-pantryshop2")"
-                app="$(curl -fsSL --max-time 15 "$base/app.js?v=20261022-pantryshop2")"
-                if [[ "$js" == *'Homepage quick-shop'* ]] &&
+                app="$(curl -fsSL --max-time 15 "$base/app.js?v=20261022-pantryshop2&tools=20261022-shopping1")"
+                tools="$(curl -fsSL --max-time 15 "$base/pantry-tools-v1.js?v=20261022-shopping1")"
+                if [[ "$tools" == *'Budget selections and curated taste filters'* ]] &&
+                   [[ "$app" == *'addBundle(items,budget)'* ]] &&
+                   [[ "$js" == *'Homepage quick-shop'* ]] &&
                    [[ "$css" == *'homepage quick-shop'* ]] &&
                    [[ "$app" == *'window.ZWM_INSTANT_SHOP=Object.freeze'* ]]; then
                   echo "Production verified: HTML, current shared cart bridge, quick-shop JS and CSS all live."

@@ -26,15 +26,15 @@ jobs:
           base="https://zaytwmouneh.com"
           for attempt in $(seq 1 18); do
             echo "Checking Gift page deployment: attempt $attempt/18"
-            html="$(curl -fsSL --retry 1 --max-time 15 -H 'Cache-Control: no-cache' "$base/gift.html?gift_photo_version=20261031" 2>/dev/null || true)"
+            html="$(curl -fsSL --retry 1 --max-time 15 -H 'Cache-Control: no-cache' "$base/gift.html?gift_photo_version=20261031_hd2" 2>/dev/null || true)"
             if [[ "$html" == *'id="giftPresentation"'* ]] &&
                [[ "$html" == *'gift-example-v1.css?v=20261031-giftphoto1'* ]] &&
                [[ "$html" == *'href="/gift#gift"'* ]]; then
               css="$(curl -fsSL --max-time 15 "$base/gift-example-v1.css?v=20261031-giftphoto1" 2>/dev/null || true)"
               if [[ "$css" == *'.gift-example-card'* ]] &&
-                 curl -fsSL --max-time 15 "$base/assets/gifts/gift-wrapped-olive-oil-example.webp?v=20261031-giftphoto1" -o /tmp/zwm-gift-photo.webp 2>/dev/null &&
+                 curl -fsSL --max-time 15 "$base/assets/gifts/gift-wrapped-olive-oil-example.webp?v=20261031-gifthd2" -o /tmp/zwm-gift-photo.webp 2>/dev/null &&
                  [[ "$(head -c 4 /tmp/zwm-gift-photo.webp)" == "RIFF" ]] &&
-                 [[ "$(wc -c < /tmp/zwm-gift-photo.webp)" -ge 8000 ]]; then
+                 [[ "$(wc -c < /tmp/zwm-gift-photo.webp)" -ge 60000 ]]; then
                 echo "PASS: Live Gift HTML, styles, genuine photo, and builder link are published."
                 exit 0
               fi

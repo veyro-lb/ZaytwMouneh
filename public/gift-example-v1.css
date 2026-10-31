@@ -30,7 +30,7 @@ body[data-page="gift"] .gift-example-visual{
 }
 body[data-page="gift"] .gift-example-photo-frame{
   width:min(100%,310px);
-  aspect-ratio:300/534;
+  aspect-ratio:2/3;
   overflow:hidden;
   border:7px solid rgba(255,253,246,.96);
   border-radius:19px;

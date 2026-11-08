@@ -25,9 +25,9 @@ function injectShopTrust(){
  var anchor=q(".catalogue-intro-card")||q("#shop .shop-head");if(!anchor)return;
  var wrap=document.createElement("div");wrap.id="c6ShopTrust";wrap.className="c6-trust-strip";
  wrap.innerHTML=
-  '<div class="c6-trust-card"><strong>'+esc(tr("Permanent product pages","صفحات دائمة للمنتجات","Fiches produit permanentes"))+'</strong><small>'+esc(tr("Open a dedicated page for current sizes, prices, verified reviews and supplied product facts.","افتح صفحة مخصصة للأحجام والأسعار الحالية والمراجعات الموثقة ومعلومات المنتج المتوفرة.","Ouvrez une fiche dédiée avec formats, prix, avis vérifiés et informations disponibles."))+'</small></div>'+
-  '<div class="c6-trust-card"><strong>'+esc(tr("Cash on Delivery","الدفع عند الاستلام","Paiement à la livraison"))+'</strong><small>'+esc(tr("The current checkout is configured for payment when the order arrives.","الدفع الحالي في الموقع مضبوط عند استلام الطلب.","Le paiement actuel est configuré à la réception de la commande."))+'</small></div>'+
-  '<div class="c6-trust-card"><strong>'+esc(tr("Delivery calculated from real settings","التوصيل من الإعدادات الفعلية","Livraison selon les réglages réels"))+'</strong><small>'+esc(tr("Fees and ETA appear only when configured for the entered area.","لا تظهر الرسوم والمدة إلا عندما تكون مضبوطة فعلياً للمنطقة.","Les frais et délais ne s’affichent que s’ils sont réellement configurés pour la zone."))+'</small></div>';
+  '<div class="c6-trust-card"><strong>'+esc(tr("Product details","تفاصيل المنتجات","Détails des produits"))+'</strong><small>'+esc(tr("View sizes, prices and product information before you choose.","اطّلع على الأحجام والأسعار ومعلومات المنتج قبل الاختيار.","Consultez les formats, les prix et les informations avant de choisir."))+'</small></div>'+
+  '<div class="c6-trust-card"><strong>'+esc(tr("Cash on Delivery","الدفع عند الاستلام","Paiement à la livraison"))+'</strong><small>'+esc(tr("Pay when you receive your order.","ادفع عند استلام طلبك.","Payez à la réception de votre commande."))+'</small></div>'+
+  '<div class="c6-trust-card"><strong>'+esc(tr("Delivery details","تفاصيل التوصيل","Informations de livraison"))+'</strong><small>'+esc(tr("Delivery details are confirmed at checkout.","يتم تأكيد تفاصيل التوصيل عند إتمام الطلب.","Les informations de livraison sont confirmées lors de la commande."))+'</small></div>';
  anchor.insertAdjacentElement("afterend",wrap);
 }
 function tomorrow(){

@@ -286,10 +286,10 @@
 
   // Scoped provenance spotlight. Region photography is editorial and not a supplier address.
   var atlasRegionPhotos={
-    "Bekaa":"/assets/atlas/zwm-atlas-bekaa.webp",
-    "Koura":"/assets/atlas/zwm-atlas-koura.webp",
-    "Mount Lebanon":"/assets/atlas/zwm-atlas-mount-lebanon.webp",
-    "Chouf":"/assets/atlas/zwm-atlas-chouf.webp"
+    "Bekaa":"/assets/atlas/zwm-atlas-bekaa.webp?v=20261108-atlas-fullres1",
+    "Koura":"/assets/atlas/zwm-atlas-koura.webp?v=20261108-atlas-fullres1",
+    "Mount Lebanon":"/assets/atlas/zwm-atlas-mount-lebanon.webp?v=20261108-atlas-fullres1",
+    "Chouf":"/assets/atlas/zwm-atlas-chouf.webp?v=20261108-atlas-fullres1"
   };
   function renderRegion(region,root){
     if(!atlasRegions[region])return;
@@ -367,7 +367,7 @@
           '<p class="zwm-atlas-map-caption">'+esc(atlasT("Markers show approximate regions, not exact supplier locations.","العلامات تشير إلى مناطق تقريبية وليست مواقع الموردين الدقيقة.","Les repères sont approximatifs et n’indiquent pas les adresses précises des fournisseurs."))+'</p>'+
         '</div>'+
         '<div class="zwm-atlas-detail" aria-live="polite" aria-atomic="false">'+
-          '<div class="zwm-atlas-photo"><img class="zwm-atlas-photo-image" src="/assets/atlas/zwm-atlas-bekaa.webp" alt="" loading="lazy" decoding="async"></div>'+
+          '<div class="zwm-atlas-photo"><img class="zwm-atlas-photo-image" width="1536" height="1024" src="/assets/atlas/zwm-atlas-bekaa.webp?v=20261108-atlas-fullres1" alt="" loading="lazy" decoding="async"></div>'+
           '<div class="zwm-atlas-spotlight">'+
             '<span class="zwm-atlas-label">'+esc(atlasT("Region spotlight","إضاءة على المنطقة","Région à l’honneur"))+'</span>'+
             '<h3 class="zwm-atlas-name"></h3>'+

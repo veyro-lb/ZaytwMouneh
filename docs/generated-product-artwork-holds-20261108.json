@@ -1,11 +1,5 @@
 [
   {
-    "id": "carbonate",
-    "name": "Carbonate",
-    "ar": "كربونات",
-    "reason": "Confirm exact substance and product form before illustrating."
-  },
-  {
     "id": "pakmaya-yeast",
     "name": "Pakmaya Yeast",
     "ar": "خميرة باكمايا",
@@ -70,36 +64,6 @@
     "name": "Spicy Stuffed Green Olives — 2.5 kg",
     "ar": "زيتون أخضر محشي حار — 2.5 كغ",
     "reason": "Needs visible filling and pack reference."
-  },
-  {
-    "id": "bhar-aswad-har",
-    "name": "Hot Black Pepper",
-    "ar": "فلفل أسود حار",
-    "reason": "Confirm ground/whole form and exact blend."
-  },
-  {
-    "id": "bhar-crispy",
-    "name": "Crispy Seasoning",
-    "ar": "بهار مقرمش",
-    "reason": "Needs blend colour/texture reference."
-  },
-  {
-    "id": "bhar-dajaj",
-    "name": "Chicken Seasoning",
-    "ar": "بهار دجاج",
-    "reason": "Needs blend colour/texture reference."
-  },
-  {
-    "id": "bhar-lahme",
-    "name": "Meat Seasoning",
-    "ar": "بهار لحمة",
-    "reason": "Needs blend colour/texture reference."
-  },
-  {
-    "id": "bhar-mashawe",
-    "name": "Grilling Seasoning",
-    "ar": "بهار مشاوي",
-    "reason": "Needs blend colour/texture reference."
   },
   {
     "id": "sabo",

@@ -1904,6 +1904,48 @@
     "height": 1541,
     "fit": "contain",
     "quality": "ai-generated-product-artwork"
+},
+  "carbonate": {
+    "url": "assets/products/seasoning-20261108/carbonate.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "bhar-crispy": {
+    "url": "assets/products/seasoning-20261108/bhar-crispy.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "bhar-aswad-har": {
+    "url": "assets/products/seasoning-20261108/bhar-aswad-har.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "bhar-mashawe": {
+    "url": "assets/products/seasoning-20261108/bhar-mashawe.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "bhar-dajaj": {
+    "url": "assets/products/seasoning-20261108/bhar-dajaj.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "bhar-lahme": {
+    "url": "assets/products/seasoning-20261108/bhar-lahme.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
 }
 };
   // Exact owner-supplied 2026 harvest photography, indexed by catalogue variant.

@@ -1200,7 +1200,7 @@ body .contact-panel>*,body .footer .footer-grid>*{min-width:0;max-width:100%}
 body .contact-brand img{max-width:100%;height:auto}
 @media(max-width:760px){
  body .contact-panel{grid-template-columns:minmax(0,1fr)!important}
- html body .site-header .nav.shell>.nav-actions>#languageSwitch.fr-language-ready{overflow:hidden!important}
+ html body .site-header .nav.shell>.nav-actions>#languageSwitch.fr-language-ready{overflow:visible!important}
 }
 @media(max-width:600px){
  body .footer .footer-grid{grid-template-columns:minmax(0,1fr)!important}
@@ -1220,7 +1220,7 @@ body .contact-brand img{max-width:100%;height:auto}
  html[lang="fr"] .site-header .nav.shell{gap:12px!important}
  html[lang="fr"] .site-header .nav.shell>.nav-actions{gap:8px!important;min-width:0!important}
  html[lang="fr"] .site-header .nav.shell>.brand{min-width:0!important;flex-shrink:1!important}
- html[lang="fr"] .site-header .nav.shell>.nav-actions #languageSwitch.fr-language-ready{overflow:hidden!important}
+ html[lang="fr"] .site-header .nav.shell>.nav-actions #languageSwitch.fr-language-ready{overflow:visible!important}
 }
 
 /* Route CTAs: language visibility must not turn flex buttons into inline text. */

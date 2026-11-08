@@ -364,6 +364,63 @@
       html[lang] #villageHero .intro-category-chips b{font-size:15px!important}
       html[lang="ar"] #villageHero .intro-category-chips b{font-size:14px!important}
     }
+
+    /* Mobile proportions: keep readable copy and compact, centered actions. */
+    @media(max-width:1000px){
+      html[lang] #villageHero .page-intro-grid{
+        box-sizing:border-box!important;width:100%!important;max-width:100%!important;
+        margin:0!important;padding-inline:20px!important;
+        left:auto!important;right:auto!important;transform:none!important;
+      }
+      html[lang] #villageHero .page-intro-copy-wrap,
+      html[lang] #villageHero .shop-intro-board{
+        box-sizing:border-box!important;min-width:0!important;max-width:660px!important;
+      }
+      html[lang] #villageHero .page-intro-actions{
+        width:fit-content!important;max-width:100%!important;
+        margin:20px 0 0!important;align-self:flex-start!important;
+      }
+      html[lang] #villageHero .page-intro-actions>a.home-hero-cta{
+        flex:0 1 auto!important;width:auto!important;min-width:210px!important;
+        min-height:46px!important;height:auto!important;max-height:none!important;
+        padding:11px 22px!important;font-size:15px!important;line-height:1.45!important;
+      }
+      html[lang] #villageHero .village-board-actions{
+        margin:14px 0 0!important;justify-content:center!important;
+      }
+      html[lang] #villageHero .village-board-actions>a.home-hero-cta{
+        width:fit-content!important;min-width:0!important;max-width:100%!important;
+        min-height:44px!important;height:auto!important;padding:10px 22px!important;
+        margin:0!important;font-size:15px!important;line-height:1.5!important;
+        border:1px solid #e8dfc8!important;background:#fff9ec!important;
+        color:#17482b!important;font-weight:700!important;text-align:center!important;
+      }
+      html[lang] #villageHero .page-intro-copy{
+        font-size:17px!important;font-weight:600!important;line-height:1.6!important;
+      }
+      html[lang] #villageHero .eyebrow{font-size:11px!important;line-height:1.6!important}
+      html[lang] #villageHero .intro-category-chips b{
+        font-size:16px!important;font-weight:700!important;line-height:1.35!important;
+      }
+      html[lang] #villageHero .intro-category-chips a{
+        min-height:64px!important;padding:9px 10px!important;gap:8px!important;
+        box-sizing:border-box!important;
+      }
+      html[lang] #villageHero .intro-category-chips a>span.intro-chip-icon{
+        width:32px!important;flex-basis:32px!important;height:44px!important;
+      }
+      html[lang="ar"] #villageHero .page-intro-actions{align-self:flex-start!important}
+      html[lang="ar"] #villageHero .page-intro-copy{font-size:16px!important}
+      html[lang="ar"] #villageHero .intro-category-chips b{font-size:15px!important}
+    }
+    @media(max-width:600px){
+      html[lang] #villageHero h1{
+        font-size:clamp(34px,8.7vw,40px)!important;line-height:1.12!important;
+      }
+      html[lang="ar"] #villageHero h1 [data-hero-lang="ar"]{
+        font-size:clamp(34px,8.7vw,40px)!important;line-height:1.35!important;
+      }
+    }
   </style>
 </head>
 <body data-page="home" data-release="pantry-icons-2" class="zwm-harvest-active">
@@ -829,3 +886,4 @@
   <script src="/pantry-tools-v1.js?v=20261022-shopping1"></script>
 </body>
 </html>
+

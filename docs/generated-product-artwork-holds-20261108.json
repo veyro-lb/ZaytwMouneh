@@ -24,12 +24,6 @@
     "reason": "Confirm dry instant, active dry, or fresh yeast and its packaging."
   },
   {
-    "id": "kameh-makshour",
-    "name": "Cracked Wheat",
-    "ar": "قمح مجروش",
-    "reason": "Confirm peeled whole wheat versus cracked wheat; slug/name conflict."
-  },
-  {
     "id": "makhlotet-hboub",
     "name": "Mixed Grains",
     "ar": "خلطة حبوب",
@@ -52,18 +46,6 @@
     "name": "Ground Wild Thyme Flowers",
     "ar": "زهرة زعتر بري مطحونة",
     "reason": "Needs reference for exact ground thyme-flower product."
-  },
-  {
-    "id": "zaytoun-akhdar-mahshe-har",
-    "name": "Spicy Stuffed Green Olives — 360 g",
-    "ar": "زيتون أخضر محشي حار — 360 غ",
-    "reason": "Needs visible filling and jar reference."
-  },
-  {
-    "id": "zaytoun-akhdar-mehshe-har",
-    "name": "Spicy Stuffed Green Olives — 2.5 kg",
-    "ar": "زيتون أخضر محشي حار — 2.5 كغ",
-    "reason": "Needs visible filling and pack reference."
   },
   {
     "id": "sabo",

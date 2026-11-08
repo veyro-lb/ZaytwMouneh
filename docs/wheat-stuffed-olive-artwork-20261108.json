@@ -1,0 +1,23 @@
+[
+  {
+    "asset": "spicy-stuffed-green-olives",
+    "productIds": [
+      "zaytoun-akhdar-mahshe-har",
+      "zaytoun-akhdar-mehshe-har"
+    ],
+    "url": "assets/products/wheat-stuffed-olive-20261108/spicy-stuffed-green-olives.webp",
+    "width": 1024,
+    "height": 1536,
+    "bytes": 258330
+  },
+  {
+    "asset": "kameh-makshour",
+    "productIds": [
+      "kameh-makshour"
+    ],
+    "url": "assets/products/wheat-stuffed-olive-20261108/kameh-makshour.webp",
+    "width": 1045,
+    "height": 1505,
+    "bytes": 283092
+  }
+]

@@ -1946,6 +1946,27 @@
     "height": 1536,
     "fit": "contain",
     "quality": "ai-generated-product-artwork"
+},
+  "zaytoun-akhdar-mahshe-har": {
+    "url": "assets/products/wheat-stuffed-olive-20261108/spicy-stuffed-green-olives.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "zaytoun-akhdar-mehshe-har": {
+    "url": "assets/products/wheat-stuffed-olive-20261108/spicy-stuffed-green-olives.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "kameh-makshour": {
+    "url": "assets/products/wheat-stuffed-olive-20261108/kameh-makshour.webp",
+    "width": 1045,
+    "height": 1505,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
 }
 };
   // Exact owner-supplied 2026 harvest photography, indexed by catalogue variant.

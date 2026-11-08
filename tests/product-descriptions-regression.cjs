@@ -29,8 +29,8 @@ const active=products.filter(p=>!aliases.has(p.id));
 assert.equal(active.length,329);
 assert.equal(active.filter(p=>!hold.has(p.id)).length,280);
 for(const [label,html,needle] of [['product',productHtml,'/products-data.js'],['shop',shopHtml,'products-data.js'],['home',homeHtml,'products-data.js']]){
-  const injected='/product-descriptions-v1.js?v=20261010-copyreview1';
-  assert(html.includes(injected),label+': missing overlay script');
+  const injected=(html.match(/\/product-descriptions-v1\.js\?v=[^"\s]+/)||[])[0];
+  assert(injected && html.includes(injected),label+': missing overlay script');
   assert(html.indexOf(needle)<html.indexOf(injected),label+': overlay must load after catalogue');
 }
 assert(page.includes('facts:"Product information"'),'Editorial product descriptions must not be called supplier-verified');

@@ -1967,6 +1967,13 @@
     "height": 1505,
     "fit": "contain",
     "quality": "ai-generated-product-artwork"
+},
+  "zaatar-zahra-mathoun": {
+    "url": "assets/products/thyme-20261108/zaatar-zahra-mathoun.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
 }
 };
   // Exact owner-supplied 2026 harvest photography, indexed by catalogue variant.

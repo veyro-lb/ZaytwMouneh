@@ -1,0 +1,13 @@
+{
+  "productId": "zaatar-zahra-mathoun",
+  "method": "Built-in image generation",
+  "source": "exec-1b913034-9e69-462f-813c-27dcb0d28f67.png",
+  "reference": "public/assets/products/originals/zaatar-baladi-extra.jpg",
+  "prompt": "Create ONE finished portrait 2:3 Zayt w Mouneh product artwork using the attached zaatar-family DESIGN reference. Product: ground wild thyme flowers, visibly finely minced/ground dried zaatar/thyme herb, muted olive-green and greenish-brown fine flecks/powder. NOT a ready-made zaatar spice mix: no sesame seeds, sumac, nuts, salt crystals or whole flower heads. Use EXACTLY ONE upright kraft golden-brown resealable pouch, full package visible, with a broad clear lower window showing the finely ground herb. Preserve the reference's exact circular cream wheat-and-olive Zayt w Mouneh logo on the pouch and wording زيت ومونة / Zayt w Mouneh / 70 381 412, same warm natural kitchen counter scene, softly blurred tiled kitchen background, gentle olive/gold tones, realistic paper and herb texture. Replace the old product title with the exact clear Arabic heading \"زهرة زعتر بري مطحونة\", arranged neatly on two lines without clipping. A small wooden spoon containing the SAME finely ground herb may sit beside the single pouch. Keep restrained family-style typography and layout. Matching discreet WhatsApp footer 70 381 412. No old 'zaatar baladi extra' text, no second pouch, no claims, ingredients list, prices, weights, certifications, slogans or health benefits. This is generated representative catalogue artwork, not a verified physical package photograph.",
+  "url": "assets/products/thyme-20261108/zaatar-zahra-mathoun.webp",
+  "width": 1024,
+  "height": 1536,
+  "fit": "contain",
+  "quality": "ai-generated-product-artwork",
+  "bytes": 279900
+}

@@ -1,0 +1,110 @@
+[
+  {
+    "id": "carbonate",
+    "name": "Carbonate",
+    "ar": "كربونات",
+    "reason": "Confirm exact substance and product form before illustrating."
+  },
+  {
+    "id": "pakmaya-yeast",
+    "name": "Pakmaya Yeast",
+    "ar": "خميرة باكمايا",
+    "reason": "Needs actual branded package reference."
+  },
+  {
+    "id": "peanuts-carob-bar",
+    "name": "Peanuts Carob Bar",
+    "ar": "لوح الخروب والفول السوداني",
+    "reason": "Needs actual Debsy product and wrapper reference."
+  },
+  {
+    "id": "dora-flour",
+    "name": "Dora Flour (Corn Flour)",
+    "ar": "طحين الذرة (دورا)",
+    "reason": "Confirm exact Dora product/package and flour type."
+  },
+  {
+    "id": "yeast",
+    "name": "Yeast",
+    "ar": "خميرة",
+    "reason": "Confirm dry instant, active dry, or fresh yeast and its packaging."
+  },
+  {
+    "id": "kameh-makshour",
+    "name": "Cracked Wheat",
+    "ar": "قمح مجروش",
+    "reason": "Confirm peeled whole wheat versus cracked wheat; slug/name conflict."
+  },
+  {
+    "id": "makhlotet-hboub",
+    "name": "Mixed Grains",
+    "ar": "خلطة حبوب",
+    "reason": "Needs mixture contents or a clear product reference."
+  },
+  {
+    "id": "habaa",
+    "name": "Habaa Herb",
+    "ar": "حبة",
+    "reason": "Product identity is unclear."
+  },
+  {
+    "id": "lokmet-el-nahel",
+    "name": "Bee Bite",
+    "ar": "لقمة النحل",
+    "reason": "Product identity/appearance is unclear."
+  },
+  {
+    "id": "zaatar-zahra-mathoun",
+    "name": "Ground Wild Thyme Flowers",
+    "ar": "زهرة زعتر بري مطحونة",
+    "reason": "Needs reference for exact ground thyme-flower product."
+  },
+  {
+    "id": "zaytoun-akhdar-mahshe-har",
+    "name": "Spicy Stuffed Green Olives — 360 g",
+    "ar": "زيتون أخضر محشي حار — 360 غ",
+    "reason": "Needs visible filling and jar reference."
+  },
+  {
+    "id": "zaytoun-akhdar-mehshe-har",
+    "name": "Spicy Stuffed Green Olives — 2.5 kg",
+    "ar": "زيتون أخضر محشي حار — 2.5 كغ",
+    "reason": "Needs visible filling and pack reference."
+  },
+  {
+    "id": "bhar-aswad-har",
+    "name": "Hot Black Pepper",
+    "ar": "فلفل أسود حار",
+    "reason": "Confirm ground/whole form and exact blend."
+  },
+  {
+    "id": "bhar-crispy",
+    "name": "Crispy Seasoning",
+    "ar": "بهار مقرمش",
+    "reason": "Needs blend colour/texture reference."
+  },
+  {
+    "id": "bhar-dajaj",
+    "name": "Chicken Seasoning",
+    "ar": "بهار دجاج",
+    "reason": "Needs blend colour/texture reference."
+  },
+  {
+    "id": "bhar-lahme",
+    "name": "Meat Seasoning",
+    "ar": "بهار لحمة",
+    "reason": "Needs blend colour/texture reference."
+  },
+  {
+    "id": "bhar-mashawe",
+    "name": "Grilling Seasoning",
+    "ar": "بهار مشاوي",
+    "reason": "Needs blend colour/texture reference."
+  },
+  {
+    "id": "sabo",
+    "name": "Sabo",
+    "ar": "سابو",
+    "reason": "Product identity/appearance is unclear."
+  }
+]

@@ -1,0 +1,167 @@
+{
+  "method": "Built-in image generation",
+  "designBrief": "Create ONE separate finished portrait product artwork for Zayt w Mouneh. Use attached image ONLY as existing product-family DESIGN reference. Preserve its warm photorealistic Lebanese pantry style, typography/layout, circular wheat-and-olive logo artwork and brand wording زيت ومونة / Zayt w Mouneh, and bottom WhatsApp footer 70 381 412. Exactly ONE package or product unit, fully visible, centered, large. Correct natural contents and texture. Replace ALL old product-specific titles, props and claims. Only exact new Arabic product title at top, no subtitle. No extra sizes, prices, certifications, nutrition, purity, benefit claims or invented brand. Keep established family colours, lighting and rustic look. No collage. Generated product artwork based on catalogue, not a documented photograph.",
+  "products": [
+    {
+      "id": "white-sugar",
+      "title": "سكر أبيض",
+      "subject": "white sparkling granulated table sugar crystals, not icing sugar",
+      "reference": "public/assets/products/originals/all-use-flour.jpg",
+      "composition": "one clear bag with circular logo; sugar bowl and spoon; bright warm pantry"
+    },
+    {
+      "id": "hamod-el-laymoun",
+      "title": "ملح الليمون",
+      "subject": "white granular citric acid crystals, small coarse crystals, not liquid lemon juice",
+      "reference": "public/assets/products/originals/all-use-flour.jpg",
+      "composition": "one clear small bag with circular logo; a small bowl of crystals and a cut lemon as ingredient cue; no usage or health claims"
+    },
+    {
+      "id": "corn-flour",
+      "title": "طحين الذرة",
+      "subject": "fine pale yellow corn flour, NOT white cornstarch, not coarse polenta",
+      "reference": "public/assets/products/originals/all-use-flour.jpg",
+      "composition": "one clear bag with circular logo; spoon of fine pale yellow flour and modest corn cob ingredient cue"
+    },
+    {
+      "id": "popcorn",
+      "title": "فشار",
+      "subject": "unpopped golden yellow popcorn kernels",
+      "reference": "public/assets/products/originals/humus-baladi.jpg",
+      "composition": "one clear sealed bag of raw kernels; small bowl of kernels and a few popped pieces as serving suggestion; single package"
+    },
+    {
+      "id": "dried-rosemary",
+      "title": "إكليل الجبل المجفف",
+      "subject": "dried muted green rosemary needle-like leaves only",
+      "reference": "public/assets/products/originals/zhourat.jpg",
+      "composition": "single cellophane herb bag tied with twine; small loose dried rosemary pile and subtle fresh sprig for recognition; no other herbs, flowers or tea blends"
+    },
+    {
+      "id": "silani-tea",
+      "title": "شاي سيلاني",
+      "subject": "loose dried black Ceylon tea leaves",
+      "reference": "public/assets/products/originals/zhourat.jpg",
+      "composition": "one tied clear tea bag, no mixed herbs; small dark tea leaf pile and glass of brewed amber tea; no invented origin certification"
+    },
+    {
+      "id": "teen-hibal",
+      "title": "تين حبال",
+      "subject": "whole naturally dried tan figs pierced and threaded together on a natural cotton string",
+      "reference": "public/assets/products/originals/teen-mjafaf.jpg",
+      "composition": "one single loop/string of dried figs as main product, no plastic packages, no stacks; warm pantry scene"
+    },
+    {
+      "id": "humus-amreeki",
+      "title": "حمص أمريكي",
+      "subject": "dry beige chickpeas, moderately large round chickpeas, uncooked",
+      "reference": "public/assets/products/originals/humus-baladi.jpg",
+      "composition": "exactly one clear sealed bag of dry chickpeas; small wooden bowl of loose chickpeas"
+    },
+    {
+      "id": "somsom-nay",
+      "title": "سمسم نيّئ",
+      "subject": "raw unroasted pale ivory hulled sesame seeds",
+      "reference": "public/assets/products/originals/humus-baladi.jpg",
+      "composition": "one clear sealed bag with circular logo; wooden spoon of pale raw sesame seeds"
+    },
+    {
+      "id": "somsom-mhamas",
+      "title": "سمسم محمص",
+      "subject": "toasted warm golden sesame seeds, slightly darker than raw sesame",
+      "reference": "public/assets/products/originals/humus-baladi.jpg",
+      "composition": "one clear sealed bag with circular logo; wooden spoon of toasted sesame seeds"
+    },
+    {
+      "id": "hail-naem",
+      "title": "هيل ناعم",
+      "subject": "fine muted beige-green ground cardamom powder",
+      "reference": "public/assets/products/originals/bhar-batata.jpg",
+      "composition": "one transparent resealable stand-up pouch with exact circular logo; small powder spoon and a few green cardamom pods as cue"
+    },
+    {
+      "id": "helbah-hab",
+      "title": "حلبة حب",
+      "subject": "small angular golden ochre fenugreek seeds, not powder",
+      "reference": "public/assets/products/originals/bhar-batata.jpg",
+      "composition": "one transparent resealable stand-up pouch with exact circular logo; small spoon of angular fenugreek seeds"
+    },
+    {
+      "id": "jozet-el-teeb-hab",
+      "title": "جوزة الطيب حب",
+      "subject": "whole brown oval wrinkled nutmegs, not powder",
+      "reference": "public/assets/products/originals/bhar-batata.jpg",
+      "composition": "one transparent resealable stand-up pouch with exact circular logo; three whole nutmegs and one half nutmeg displaying marbled interior"
+    },
+    {
+      "id": "loumi",
+      "title": "لومي",
+      "subject": "whole dried dark brown to near-black limes",
+      "reference": "public/assets/products/originals/bhar-batata.jpg",
+      "composition": "one transparent resealable stand-up pouch with exact circular logo; whole dried limes and one cut dried lime, no fresh lemons"
+    },
+    {
+      "id": "waraq-enab-bel-may",
+      "title": "ورق عنب بالماء",
+      "subject": "preserved folded grape leaves visibly submerged in clear pale brine/water, no stuffed rolls",
+      "reference": "public/assets/products/originals/kabees-left.jpg",
+      "composition": "one clear tall glass jar, red-white gingham cover and twine; natural olive-green grape leaves, clear pale liquid; fresh vine leaf cue"
+    },
+    {
+      "id": "kabees-el-loz",
+      "title": "كبيس اللوز",
+      "subject": "whole young green almonds pickled in clear pale brine, oval green almond fruits",
+      "reference": "public/assets/products/originals/kabees-left.jpg",
+      "composition": "one clear tall glass jar, red-white gingham cover and twine; whole green almond fruits, NOT brown shelled nuts or turnip strips"
+    },
+    {
+      "id": "makdous-el-beqaa-har",
+      "title": "مكدوس البقاع الحار",
+      "subject": "small preserved baby eggplants stuffed in the traditional makdous manner, oily red pepper flecks",
+      "reference": "public/assets/products/originals/makdous-el-beqaa-seda.jpg",
+      "composition": "exactly ONE glass jar with black lid centered, filled with small preserved baby eggplants in golden oil, a small red chilli as flavour cue; no recipe ingredients list"
+    },
+    {
+      "id": "zaytoun-akhdar-beqaa",
+      "title": "زيتون أخضر البقاع",
+      "subject": "plain preserved green olives in clear brine",
+      "reference": "public/assets/products/originals/zaytoun-akhdar-baladi.jpg",
+      "composition": "exactly ONE glass jar with red-white gingham and twine, no weights or size callouts; small bowl of plain green olives; soft olive grove background"
+    },
+    {
+      "id": "zaytoun-aswad-beqaa",
+      "title": "زيتون أسود البقاع",
+      "subject": "preserved naturally dark purple-black olives",
+      "reference": "public/assets/products/originals/zaytoun-akhdar-baladi.jpg",
+      "composition": "exactly ONE glass jar with red-white gingham and twine, no weights or size callouts; small bowl of black olives; soft olive grove background"
+    },
+    {
+      "id": "castor-seeds-oil",
+      "title": "زيت الخروع",
+      "subject": "pale golden castor oil in a single amber glass bottle",
+      "reference": "public/assets/products/originals/bitter-almond-oil.jpg",
+      "composition": "one amber bottle ONLY, no box or second bottle; cream olive-green simple label 'CASTOR OIL' and 'زيت الخروع', no brand apart from Zayt w Mouneh; no quantity, health/cosmetic claims, ingredients or dosage; use leaves only as backdrop, no castor seeds or serving food"
+    },
+    {
+      "id": "hamod-el-hosrum-beqaa",
+      "title": "حامض الحصرم – البقاع",
+      "subject": "pale yellow-green verjuice pressed from unripe green grapes",
+      "reference": "public/assets/products/originals/khal-el-enab.jpg",
+      "composition": "one tall clear bottle with black cap, pale yellow-green liquid, green unripe grape cluster as cue, rustic vineyard backdrop; no vinegar or wine styling or claims"
+    },
+    {
+      "id": "hamod-el-hosrum-koura",
+      "title": "حامض الحصرم – الكورة",
+      "subject": "pale yellow-green verjuice pressed from unripe green grapes",
+      "reference": "public/assets/products/originals/khal-el-enab.jpg",
+      "composition": "one tall clear bottle with black cap, pale yellow-green liquid, green unripe grape cluster as cue, warm soft vineyard backdrop; distinct title for Koura; no vinegar or wine styling or claims"
+    }
+  ],
+  "garlic": {
+    "id": "bodret-el-thoumm",
+    "note": "Garlic-powder preview from this conversation, matched to bhar-batata.jpg.",
+    "heading": "بودرة الثوم",
+    "subtitle": "نكهة الثوم لوصفاتك"
+  },
+  "castorCorrection": "Removed leftover almond motif; preserved castor bottle, title, label, logo and footer."
+}

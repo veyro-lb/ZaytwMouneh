@@ -1,4 +1,5 @@
-/* Product artwork matched to exact catalog items. Original supplied photos are retained.
+/* Product artwork matched to catalog items.
+   Missing-item artwork generated on 2026-11-08 is marked ai-generated-product-artwork; these are illustrations, not supplied photographs. Original supplied photos are retained.
    The owner-supplied individual 2026-11-08 artwork uses full-resolution optimized WebP copies.
    Shared artwork is used only when the supplied artwork explicitly covers both catalog items; official supplier imagery is used for exact Debsy products. */
 (function(){
@@ -1742,7 +1743,168 @@
     "width": 1023,
     "height": 1486,
     "quality": "original-supplied-shared"
-  }
+  },
+  "white-sugar": {
+    "url": "assets/products/generated-20261108/white-sugar.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "corn-flour": {
+    "url": "assets/products/generated-20261108/corn-flour.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "hamod-el-laymoun": {
+    "url": "assets/products/generated-20261108/hamod-el-laymoun.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "popcorn": {
+    "url": "assets/products/generated-20261108/popcorn.webp",
+    "width": 1254,
+    "height": 1254,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "dried-rosemary": {
+    "url": "assets/products/generated-20261108/dried-rosemary.webp",
+    "width": 971,
+    "height": 1619,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "silani-tea": {
+    "url": "assets/products/generated-20261108/silani-tea.webp",
+    "width": 972,
+    "height": 1619,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "teen-hibal": {
+    "url": "assets/products/generated-20261108/teen-hibal.webp",
+    "width": 1025,
+    "height": 1535,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "hail-naem": {
+    "url": "assets/products/generated-20261108/hail-naem.webp",
+    "width": 1020,
+    "height": 1541,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "somsom-nay": {
+    "url": "assets/products/generated-20261108/somsom-nay.webp",
+    "width": 1254,
+    "height": 1254,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "humus-amreeki": {
+    "url": "assets/products/generated-20261108/humus-amreeki.webp",
+    "width": 1254,
+    "height": 1254,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "somsom-mhamas": {
+    "url": "assets/products/generated-20261108/somsom-mhamas.webp",
+    "width": 1254,
+    "height": 1254,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "helbah-hab": {
+    "url": "assets/products/generated-20261108/helbah-hab.webp",
+    "width": 1020,
+    "height": 1541,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "loumi": {
+    "url": "assets/products/generated-20261108/loumi.webp",
+    "width": 1020,
+    "height": 1541,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "waraq-enab-bel-may": {
+    "url": "assets/products/generated-20261108/waraq-enab-bel-may.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "jozet-el-teeb-hab": {
+    "url": "assets/products/generated-20261108/jozet-el-teeb-hab.webp",
+    "width": 1020,
+    "height": 1541,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "kabees-el-loz": {
+    "url": "assets/products/generated-20261108/kabees-el-loz.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "zaytoun-aswad-beqaa": {
+    "url": "assets/products/generated-20261108/zaytoun-aswad-beqaa.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "makdous-el-beqaa-har": {
+    "url": "assets/products/generated-20261108/makdous-el-beqaa-har.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "zaytoun-akhdar-beqaa": {
+    "url": "assets/products/generated-20261108/zaytoun-akhdar-beqaa.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "hamod-el-hosrum-beqaa": {
+    "url": "assets/products/generated-20261108/hamod-el-hosrum-beqaa.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "castor-seeds-oil": {
+    "url": "assets/products/generated-20261108/castor-seeds-oil.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "hamod-el-hosrum-koura": {
+    "url": "assets/products/generated-20261108/hamod-el-hosrum-koura.webp",
+    "width": 1024,
+    "height": 1536,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+},
+  "bodret-el-thoumm": {
+    "url": "assets/products/generated-20261108/bodret-el-thoumm.webp",
+    "width": 1020,
+    "height": 1541,
+    "fit": "contain",
+    "quality": "ai-generated-product-artwork"
+}
 };
   // Exact owner-supplied 2026 harvest photography, indexed by catalogue variant.
   // The 500 ml bottle has its own supplied photo, not the older generic fallback.

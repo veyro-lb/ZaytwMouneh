@@ -12,7 +12,7 @@ var RECIPES=[
 ];
 var COPY={
  en:{
-  language:"Language",shop:"Shop",gifts:"Gifts",recipes:"Recipes",about:"About",account:"Account",terms:"Terms",privacy:"Privacy",returns:"Returns",contactPage:"Contact",back:"Shop",pantry:"My pantry",
+  language:"Language",home:"Home",menu:"Menu",explore:"Explore Zayt w Mouneh",menuSubtitle:"Everything has its own place.",announcement:"Authentic Lebanese pantry essentials · Since 2006",browseShop:"Continue shopping",viewCart:"View my cart",wholesale:"Wholesale & Business",decreaseQty:"Decrease quantity",increaseQty:"Increase quantity",shop:"Shop",gifts:"Gifts",recipes:"Recipes",about:"About",account:"Account",terms:"Terms",privacy:"Privacy",returns:"Returns",contactPage:"Contact",back:"Shop",pantry:"My pantry",
   category:"Pantry product",size:"Choose size",qty:"Quantity",add:"Add to cart",unavailable:"Not currently orderable",
   verified:"Verified purchase reviews",verifiedCopy:"Only reviews tied to delivered purchases are shown here.",noReviews:"No verified reviews yet.",
   facts:"Product information",factsNote:"Descriptions reflect the catalogue listing. Please check packaging for ingredients, allergens, origin and directions; missing facts are not guessed.",
@@ -28,7 +28,7 @@ var COPY={
   paymentCod:"Cash on Delivery",paymentNote:"Pay when your order arrives.",from:"From"
  },
  ar:{
-  language:"اللغة",shop:"المتجر",gifts:"الهدايا",recipes:"الوصفات",about:"من نحن",account:"الحساب",terms:"الشروط",privacy:"الخصوصية",returns:"المرتجعات",contactPage:"تواصل معنا",back:"المتجر",pantry:"سلّتي",
+  language:"اللغة",home:"الرئيسية",menu:"القائمة",explore:"اكتشف زيت ومونة",menuSubtitle:"كل شي بمحلّه.",announcement:"مونة لبنانية أصيلة · من سنة ٢٠٠٦",browseShop:"كمّل تسوّق",viewCart:"عرض السلة",wholesale:"طلبات الجملة والشركات",decreaseQty:"خفّض الكمية",increaseQty:"زِد الكمية",shop:"المتجر",gifts:"الهدايا",recipes:"الوصفات",about:"من نحن",account:"الحساب",terms:"الشروط",privacy:"الخصوصية",returns:"المرتجعات",contactPage:"تواصل معنا",back:"المتجر",pantry:"سلّتي",
   category:"منتج من المونة",size:"اختر الحجم",qty:"الكمية",add:"أضف إلى السلة",unavailable:"غير متاح للطلب حالياً",
   verified:"مراجعات شراء موثّقة",verifiedCopy:"تظهر هنا فقط المراجعات المرتبطة بطلبات تم تسليمها.",noReviews:"لا توجد مراجعات موثّقة بعد.",
   facts:"تفاصيل المنتج",factsNote:"تعتمد الأوصاف على بيانات الكتالوج. يُرجى مراجعة العبوة لمعرفة المكوّنات ومسبّبات الحساسية والمنشأ وتعليمات الاستخدام. لا نضيف معلومات غير مؤكدة.",
@@ -44,7 +44,7 @@ var COPY={
   paymentCod:"الدفع عند الاستلام",paymentNote:"ادفع عند وصول طلبك.",from:"ابتداءً من"
  },
  fr:{
-  language:"Langue",shop:"Boutique",gifts:"Cadeaux",recipes:"Recettes",about:"À propos",account:"Compte",terms:"Conditions",privacy:"Confidentialité",returns:"Retours",contactPage:"Contact",back:"Boutique",pantry:"Mon panier",
+  language:"Langue",home:"Accueil",menu:"Menu",explore:"Explorer Zayt w Mouneh",menuSubtitle:"Chaque chose à sa place.",announcement:"Épicerie libanaise authentique · Depuis 2006",browseShop:"Continuer mes achats",viewCart:"Voir mon panier",wholesale:"Grossiste & professionnels",decreaseQty:"Diminuer la quantité",increaseQty:"Augmenter la quantité",shop:"Boutique",gifts:"Cadeaux",recipes:"Recettes",about:"À propos",account:"Compte",terms:"Conditions",privacy:"Confidentialité",returns:"Retours",contactPage:"Contact",back:"Boutique",pantry:"Mon panier",
   category:"Produit de la mouneh",size:"Choisir le format",qty:"Quantité",add:"Ajouter au panier",unavailable:"Non commandable actuellement",
   verified:"Avis d’achat vérifié",verifiedCopy:"Seuls les avis liés à des commandes livrées sont affichés ici.",noReviews:"Aucun avis vérifié pour le moment.",
   facts:"Détails du produit",factsNote:"Les descriptions reposent sur le catalogue. Vérifiez sur l’emballage les ingrédients, allergènes, l’origine et le mode d’emploi ; aucune donnée manquante n’est inventée.",
@@ -316,7 +316,7 @@ function render(){
  var min=(p.variants||[]).length?Math.min.apply(null,p.variants.map(function(v){return Number(v.price)||0})):0;
  var av=availability(p),badgeClass=av==="out_of_stock"||av==="coming_soon"?" is-unavailable":av==="low_stock"?" is-low":"";
  qs("#c6ProductRoot").innerHTML=
- '<main class="c6-product-main"><div class="c6-shell"><nav class="c6-breadcrumb"><a href="'+localePrefix(state.locale)+'/shop">'+esc(t("back"))+'</a><span>›</span><span>'+esc(productName(p))+'</span></nav><div class="c6-product-grid"><div class="c6-product-visual">'+photoMarkup(p,state.selectedVariant&&state.selectedVariant.id)+'</div><div class="c6-product-copy"><p class="c6-eyebrow">'+esc(p.category||t("category"))+'</p><h1 class="c6-product-title">'+esc(productName(p))+'</h1>'+(summary?'<p class="c6-product-summary">'+esc(summary)+'</p>':"")+(av!=="in_stock"?'<div class="c6-badges"><span class="c6-badge'+badgeClass+'">'+esc(t(av))+'</span></div>':"")+'<div class="c6-price" id="c6SelectedPrice">'+(p.id==="extra-virgin-olive-oil"?money(state.selectedVariant?state.selectedVariant.price:min):esc(t("from"))+' '+money(min))+'</div><div class="c6-purchase-box"><div class="c6-purchase-row"><label class="c6-field"><span>'+esc(t("size"))+'</span><select id="c6Variant">'+variantsMarkup(p)+'</select></label><label class="c6-field"><span>'+esc(t("qty"))+'</span><input id="c6Qty" type="number" min="1" max="99" value="1"></label></div><div class="c6-purchase-actions"><button class="c6-button" id="c6Add" type="button"'+(isOrderable(p)?"":" disabled")+'>'+esc(isOrderable(p)?t("add"):t("unavailable"))+'</button><button class="c6-button is-secondary" id="c6Share" type="button">'+esc(t("share"))+'</button></div><a id="c6ProductAsk" class="zwm-product-ask" target="_blank" rel="noopener noreferrer"></a>'+alertMarkup(p)+'</div>'+(facts?'<div class="c6-product-facts"><p class="c6-eyebrow">'+esc(t("facts"))+'</p>'+facts+'</div>':"")+'<div class="c6-service-grid"><div class="c6-service-card"><strong>'+esc(t("payment"))+'</strong><div style="margin-top:7px">'+paymentMarkup()+'</div><p>'+esc(t("paymentNote"))+'</p></div>'+deliveryMarkup()+'</div></div></div></div></main>'+
+ '<main class="c6-product-main"><div class="c6-shell"><nav class="c6-breadcrumb" aria-label="Breadcrumb"><a href="'+localePrefix(state.locale)+'/">'+esc(t("home"))+'</a><span aria-hidden="true">›</span><a href="'+localePrefix(state.locale)+'/shop">'+esc(t("shop"))+'</a><span aria-hidden="true">›</span><span aria-current="page">'+esc(productName(p))+'</span></nav><div class="c6-product-grid"><div class="c6-product-visual">'+photoMarkup(p,state.selectedVariant&&state.selectedVariant.id)+'</div><div class="c6-product-copy"><p class="c6-eyebrow">'+esc(p.category||t("category"))+'</p><h1 class="c6-product-title">'+esc(productName(p))+'</h1>'+(summary?'<p class="c6-product-summary">'+esc(summary)+'</p>':"")+(av!=="in_stock"?'<div class="c6-badges"><span class="c6-badge'+badgeClass+'">'+esc(t(av))+'</span></div>':"")+'<div class="c6-price" id="c6SelectedPrice">'+money(state.selectedVariant?state.selectedVariant.price:min)+'</div><div class="c6-purchase-box"><div class="c6-purchase-row"><label class="c6-field"><span>'+esc(t("size"))+'</span><select id="c6Variant">'+variantsMarkup(p)+'</select></label><label class="c6-field"><span>'+esc(t("qty"))+'</span><div class="c6-qty-control"><button type="button" id="c6QtyMinus" aria-label="'+esc(t("decreaseQty"))+'">−</button><input id="c6Qty" type="number" min="1" max="99" value="1" inputmode="numeric"><button type="button" id="c6QtyPlus" aria-label="'+esc(t("increaseQty"))+'">+</button></div></label></div><div class="c6-purchase-actions"><button class="c6-button" id="c6Add" type="button"'+(isOrderable(p)?"":" disabled")+'>'+esc(isOrderable(p)?t("add"):t("unavailable"))+'</button><button class="c6-button is-secondary" id="c6Share" type="button">'+esc(t("share"))+'</button></div><div class="c6-direct-links"><a id="c6CartShortcut" href="'+localePrefix(state.locale)+'/shop?open=cart">'+esc(t("viewCart"))+' →</a><a href="'+localePrefix(state.locale)+'/shop">'+esc(t("browseShop"))+' →</a></div><a id="c6ProductAsk" class="zwm-product-ask" target="_blank" rel="noopener noreferrer"></a>'+alertMarkup(p)+'</div>'+(facts?'<div class="c6-product-facts"><p class="c6-eyebrow">'+esc(t("facts"))+'</p>'+facts+'</div>':"")+'<div class="c6-service-grid"><div class="c6-service-card"><strong>'+esc(t("payment"))+'</strong><div style="margin-top:7px">'+paymentMarkup()+'</div><p>'+esc(t("paymentNote"))+'</p></div>'+deliveryMarkup()+'</div></div></div></div></main>'+
  bundleMarkup()+recipeMarkup()+relatedProducts()+reviewsMarkup();
  bind();
  updateCartCount();
@@ -340,7 +340,7 @@ function addProduct(p,v,qty){
  return true;
 }
 function updateCartCount(){
- var cart=readCart(),n=Object.keys(cart).reduce(function(s,k){return s+(Number(cart[k].qty)||0)},0),el=qs("#c6CartCount");if(el)el.textContent=String(n);
+ var cart=readCart(),n=Object.keys(cart).reduce(function(s,k){return s+(Number(cart[k].qty)||0)},0);["#cartCount","#c6CartCount"].forEach(function(id){var el=qs(id);if(el)el.textContent=String(n)});
 }
 function cheapest(p){return (p.variants||[]).slice().sort(function(a,b){return Number(a.price)-Number(b.price)})[0]||null}
 function toast(msg){var el=qs("#c6Toast");if(!el)return;el.textContent=msg;el.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(function(){el.hidden=true},2200)}
@@ -381,23 +381,29 @@ function bind(){
    if(state.product.id==="extra-virgin-olive-oil"){
      var visual=qs(".c6-product-visual");
      if(visual)visual.innerHTML=photoMarkup(state.product,state.selectedVariant&&state.selectedVariant.id);
-     var price=qs("#c6SelectedPrice");
-     if(price&&state.selectedVariant)price.textContent=money(state.selectedVariant.price);
    }
+   var price=qs("#c6SelectedPrice");if(price&&state.selectedVariant)price.textContent=money(state.selectedVariant.price);
  })}
- var qty=qs("#c6Qty");if(qty){qty.addEventListener("change",function(){state.qty=Math.max(1,Math.min(99,Number(qty.value)||1));qty.value=state.qty})}
- var add=qs("#c6Add");if(add)add.addEventListener("click",function(){if(isOrderable(state.product)&&addProduct(state.product,state.selectedVariant,state.qty))toast(t("added"))});
+ var qty=qs("#c6Qty");if(qty){var syncQty=function(value){state.qty=Math.max(1,Math.min(99,Math.round(Number(value)||1)));qty.value=String(state.qty)};qty.addEventListener("change",function(){syncQty(qty.value)});var minus=qs("#c6QtyMinus"),plus=qs("#c6QtyPlus");if(minus)minus.addEventListener("click",function(){syncQty(state.qty-1)});if(plus)plus.addEventListener("click",function(){syncQty(state.qty+1)})}
+ var add=qs("#c6Add");if(add)add.addEventListener("click",function(){if(isOrderable(state.product)&&addProduct(state.product,state.selectedVariant,state.qty)){toast(t("added"));var shortcut=qs("#c6CartShortcut");if(shortcut)shortcut.classList.add("is-added")}});
  var share=qs("#c6Share");if(share)share.addEventListener("click",async function(){var url=canonical();try{if(navigator.share){await navigator.share({title:productName(state.product),url:url})}else{await navigator.clipboard.writeText(url);toast(t("copied"))}}catch(e){}});
  var est=qs("#c6Estimate");if(est)est.addEventListener("click",estimateDelivery);
  var alert=qs("#c6AlertForm");if(alert)alert.addEventListener("submit",submitAlert);
  var bundle=qs("#c6AddBundle");if(bundle)bundle.addEventListener("click",function(){var b=bundleData(),added=0;b.products.forEach(function(p){if(isOrderable(p)){var v=cheapest(p);if(v&&addProduct(p,v,1))added++}});if(added)toast(t("added"))});
 }
 function bindHeader(){
- var btn=qs("#c6LanguageButton"),menu=qs("#c6LanguageMenu");if(btn&&menu){btn.addEventListener("click",function(){menu.hidden=!menu.hidden;btn.setAttribute("aria-expanded",String(!menu.hidden))});qsa("[data-c6-lang]",menu).forEach(function(b){b.addEventListener("click",function(){setLocale(b.dataset.c6Lang)})});document.addEventListener("click",function(e){if(!e.target.closest(".c6-lang"))menu.hidden=true})}
- var labels={en:"Language",ar:"اللغة",fr:"Langue"};var l=qs("#c6LanguageLabel");if(l)l.textContent=labels[locale()]||labels.en;
+ var current=state.locale||locale();
  qsa("[data-c6-copy]").forEach(function(el){var key=el.dataset.c6Copy;if(key)el.textContent=t(key)});
- updateCartCount();
+ qsa("[data-c6-lang]").forEach(function(b){b.classList.toggle("is-active",b.dataset.c6Lang===current);b.setAttribute("aria-pressed",String(b.dataset.c6Lang===current));b.addEventListener("click",function(){setLocale(b.dataset.c6Lang)})});
+ // The canonical site-runtime-v9 menu controller owns #navToggle and #navLinks.
+ // Do not bind a competing click handler here: product entry pages share the shop menu.
+ var cartLink=qs("#cartButton");if(cartLink)cartLink.href=localePrefix(current)+"/shop?open=cart";
+ qsa(".site-header a[href='/shop']").forEach(function(el){el.href=localePrefix(current)+"/shop"});
+ qsa(".site-header a[href='/']").forEach(function(el){el.href=localePrefix(current)+"/"});
+ var account=qs("#mounehAccountButton");if(account)account.href=localePrefix(current)+"/account?auth=signin#signin";
+ window.addEventListener("storage",function(e){if(e.key===CART_KEY)updateCartCount()});
+ window.addEventListener("pageshow",updateCartCount);updateCartCount();
 }
-function init(){bindHeader();loadData()}
+function init(){state.locale=locale();bindHeader();loadData()}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();

@@ -4,11 +4,10 @@
   if (window.__ZWM_GOOGLE_REVIEW_INVITE__) return;
   window.__ZWM_GOOGLE_REVIEW_INVITE__ = true;
 
-  // Google's Place ID is verified for the Zayt w Mouneh listing in Sebline.
+  // Direct Google review link supplied by the business owner.
   // All five star choices lead to exactly the same public Google review form.
   // No rating is submitted, prefilled, filtered or stored by our site.
-  var GOOGLE_WRITE_REVIEW = "https://search.google.com/local/writereview?placeid=ChIJqd2AOgDlHhURFR8z0AlDHf0";
-  var GOOGLE_LISTING = "https://www.google.com/maps/place/Zayt+w+Mouneh/@33.6194906,35.438234,631m/data=!3m1!1e3!4m8!3m7!1s0x151ee5003a80dda9:0xfd1d4309d0331f15!8m2!3d33.6194906!4d35.438234!9m1!1b1!16s%2Fg%2F11z3jj30wq!18m1!1e1?entry=ttu";
+  var GOOGLE_WRITE_REVIEW = "https://g.page/r/CRUfM9AJQx39EBM/review";
   // Verified snapshot, NOT live: confirmed from the public business listing on 2026-10-10.
   // Manually confirmed rating snapshot on 2026-10-10.
   var GOOGLE_RATING_SNAPSHOT = "5.0/5";
@@ -172,7 +171,7 @@
     var t = tr();
     // One compact, fully-clickable Google rating link; not an interactive rating control.
     // The five stars reflect the dated verified snapshot, not the visitor's choice.
-    return '<a class="zwm-gr-home-link" href="' + GOOGLE_LISTING +
+    return '<a class="zwm-gr-home-link" href="' + GOOGLE_WRITE_REVIEW +
       '" target="_blank" rel="noopener noreferrer" aria-label="' +
       t.googleRating + ': ' + GOOGLE_RATING_SNAPSHOT + '">' +
       '<span class="zwm-gr-home-stars" aria-hidden="true">★★★★★</span>' +

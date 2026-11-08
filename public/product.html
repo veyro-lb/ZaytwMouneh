@@ -20,37 +20,66 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css?v=20261004-mobileheader1">
+  <link rel="stylesheet" href="/premium.css?v=20261022-desktopcart1">
+  <link rel="stylesheet" href="/ui-copy-polish-v1.css?v=20261022-storefrontfix1">
+  <link rel="stylesheet" href="/mobile-header-brand-v1.css?v=20261010-launchreview3">
+  <link rel="stylesheet" href="/storefront-shell.css?v=20261010-mobile-rtl-nav1">
   <link rel="stylesheet" href="/conversion-v1.css?v=20261010-launchreview3">
   <meta name="zwm-release" content="20261007-architecture1" />
   <script src="/storefront-release.js?v=20261010-mobile-rtl-nav1" defer></script>
-  <link rel="stylesheet" href="/mobile-header-brand-v1.css?v=20261010-launchreview3">
   <link rel="stylesheet" href="/product-copy-ui-v1.css?v=20261010-productcopy2">
+  <link rel="stylesheet" href="/product-detail-v2.css?v=20261108-product1">
   <script src="/first-order-bonus-v1.js?v=20261011-firstbonus4" defer></script>
 </head>
 <body data-page="product">
-  <header class="c6-product-header">
-    <nav class="c6-shell c6-product-nav" aria-label="Product navigation">
-      <a class="c6-brand" href="/">
-        <img src="/assets/logo.svg?v=20261002-1005" alt="Zayt w Mouneh">
-        <span>Zayt w Mouneh</span>
-      </a>
-      <div class="c6-nav-links">
-        <a href="/shop" data-c6-copy="shop">Shop</a>
-        <a href="/gift" data-c6-copy="gifts">Gifts</a>
-        <a href="/recipes" data-c6-copy="recipes">Recipes</a>
-        <a href="/about" data-c6-copy="about">About</a>
+  <a class="skip-link" href="#c6ProductRoot" id="skipLink">Skip to product</a>
+  <header class="site-header" id="top">
+    <div class="announcement">
+      <div class="shell announcement-inner">
+        <span data-c6-copy="announcement">Authentic Lebanese pantry essentials · Since 2006</span>
+        <a href="/shop" data-c6-copy="browseShop">Browse the shop</a>
       </div>
-      <div class="c6-nav-actions">
-        <div class="c6-lang">
-          <button class="c6-button is-secondary" id="c6LanguageButton" type="button" aria-haspopup="true" aria-expanded="false">🌐 <span id="c6LanguageLabel">Language</span></button>
-          <div class="c6-lang-menu" id="c6LanguageMenu" hidden>
-            <button type="button" data-c6-lang="en">English</button>
-            <button type="button" data-c6-lang="ar">العربية</button>
-            <button type="button" data-c6-lang="fr">Français</button>
-          </div>
+    </div>
+    <nav class="nav shell" aria-label="Primary navigation">
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-controls="navLinks" aria-expanded="false">
+        <span class="menu-label" id="menuLabel" data-c6-copy="menu">Menu</span>
+        <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+      </button>
+      <div class="nav-links" id="navLinks" inert aria-hidden="true">
+        <div class="menu-heading">
+          <span data-c6-copy="explore">Explore Zayt w Mouneh</span>
+          <small data-c6-copy="menuSubtitle">Everything has its own place.</small>
         </div>
-        <a class="c6-button is-secondary" href="/account" data-c6-copy="account">Account</a>
-        <a class="c6-button" href="/shop?open=cart">🛒 <span id="c6CartCount">0</span></a>
+        <a href="/"><span>01</span><strong data-c6-copy="home">Home</strong><b>↗</b></a>
+        <a href="/shop"><span>02</span><strong data-c6-copy="shop">Shop</strong><b>↗</b></a>
+        <a href="/gift"><span>03</span><strong data-c6-copy="gifts">Gifts</strong><b>↗</b></a>
+        <a href="/recipes"><span>04</span><strong data-c6-copy="recipes">Recipes</strong><b>↗</b></a>
+        <a href="/about"><span>05</span><strong data-c6-copy="about">Our Story</strong><b>↗</b></a>
+        <a href="/contact"><span>06</span><strong data-c6-copy="contactPage">Contact</strong><b>↗</b></a>
+        <a href="/wholesale"><span>07</span><strong data-c6-copy="wholesale">Wholesale &amp; Business</strong><b>↗</b></a>
+      </div>
+      <a class="brand" href="/" aria-label="Zayt w Mouneh home">
+        <span class="brand-logo"><img src="/assets/logo.svg?v=20261002-1005" alt="Zayt w Mouneh logo"></span>
+        <span class="brand-wordmark">Zayt w Mouneh</span>
+      </a>
+      <div class="nav-actions">
+        <a class="nav-search" href="/shop#shop" aria-label="Search the pantry" title="Search the shop">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+        </a>
+        <div class="language-switch" id="languageSwitch" aria-label="Language">
+          <button type="button" data-c6-lang="en" lang="en" aria-label="English">EN</button>
+          <button type="button" data-c6-lang="ar" lang="ar" aria-label="العربية">عربي</button>
+          <button type="button" data-c6-lang="fr" lang="fr" aria-label="Français">FR</button>
+        </div>
+        <a id="mounehAccountButton" class="mouneh-account-nav" href="/account?auth=signin#signin" aria-label="Sign in to My Account">
+          <span class="mr-account-nav-avatar is-guest" aria-hidden="true"></span>
+          <span class="mr-account-nav-copy" data-c6-copy="account">Account</span>
+        </a>
+        <a class="cart-button" id="cartButton" href="/shop?open=cart" aria-label="View cart">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l1.6 10.2a2 2 0 0 0 2 1.7h7.9a2 2 0 0 0 1.9-1.4L21 7H6.1M9 20h.01M17 20h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="cart-label" data-c6-copy="pantry">My pantry</span>
+          <span class="cart-count" id="cartCount">0</span>
+        </a>
       </div>
     </nav>
   </header>
@@ -79,6 +108,6 @@
   <script src="/product-descriptions-v1.js?v=20261010-copyreview1"></script>
   <script src="/product-photos.js?v=20261009-harvest-live1"></script>
   <script src="/site-runtime-v9.js?v=20261010-launchreview2" data-zwm-site-runtime="1"></script>
-  <script src="/product-page-v1.js?v=20261009-harvest-live1&amp;tools=20261022-shopping1"></script>
+  <script src="/product-page-v1.js?v=20261108-product1"></script>
 </body>
 </html>

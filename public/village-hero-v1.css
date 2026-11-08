@@ -119,79 +119,6 @@ html #villageHero .page-intro-actions>a[data-hero-lang]{display:none!important}
 html[lang="en"] #villageHero .page-intro-actions>a[data-hero-lang="en"],html[lang="ar"] #villageHero .page-intro-actions>a[data-hero-lang="ar"],html[lang="fr"] #villageHero .page-intro-actions>a[data-hero-lang="fr"]{display:flex!important}
 @media(prefers-reduced-motion:reduce){#villageHero *,#villageHero *::before,#villageHero *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}#villageHero .village-hero-scene{transform:none!important}}
 
-/* Arabic desktop hero only. Keep the <=1000px layout owned by mobile work. */
-@media (min-width:1001px){
- html[lang="ar"] #villageHero .page-intro-copy-wrap{
-  inset:10% auto 8% 3.1%!important;
-  width:28%!important;
-  min-width:0!important;
-  box-sizing:border-box!important;
-  justify-content:center!important;
-  align-items:stretch!important;
-  direction:rtl!important;
-  text-align:right!important;
- }
- html[lang="ar"] #villageHero .eyebrow{
-  width:100%!important;
-  margin:0 0 18px!important;
-  font-size:clamp(10px,.72vw,14px)!important;
-  line-height:1.9!important;
- }
- html[lang="ar"] #villageHero h1,
- html[lang="ar"] #villageHero h1 [data-hero-lang="ar"],
- html[lang="ar"] #villageHero h1 em{
-  font-family:Amiri,serif!important;
-  font-size:clamp(32px,3vw,60px)!important;
-  font-style:normal!important;
-  line-height:1.4!important;
-  letter-spacing:0!important;
-  text-align:right!important;
-  text-wrap:initial!important;
- }
- html[lang="ar"] #villageHero h1{
-  width:100%!important;
-  max-width:100%!important;
-  flex-shrink:0!important;
- }
- html[lang="ar"] #villageHero h1::after{
-  width:58%;
-  height:12px;
-  margin:12px 0 0 auto;
- }
- html[lang="ar"] #villageHero .page-intro-copy{
-  width:100%!important;
-  max-width:100%!important;
-  margin:14px 0 0!important;
-  font-size:clamp(12px,.9vw,18px)!important;
-  line-height:1.9!important;
-  text-align:right!important;
-  overflow-wrap:normal!important;
- }
- html[lang="ar"] #villageHero .page-intro-actions{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr)!important;
-  width:100%!important;
-  max-width:320px!important;
-  gap:10px!important;
-  margin:24px 0 0 auto!important;
-  direction:rtl!important;
-  box-sizing:border-box!important;
- }
- html[lang="ar"] #villageHero .page-intro-actions>a.home-hero-cta{
-  width:100%!important;
-  min-width:0!important;
-  height:auto!important;
-  min-height:48px!important;
-  max-height:none!important;
-  padding:10px 16px!important;
-  box-sizing:border-box!important;
-  font-size:clamp(12px,.85vw,16px)!important;
-  line-height:1.65!important;
-  white-space:normal!important;
-  text-align:center!important;
- }
-}
-
 /* Inactive translations must stay hidden even when a component sets display:flex/block. */
 html[lang="en"] body[data-page="home"] #villageHero [data-hero-lang]:not([data-hero-lang="en"]),
 html[lang="ar"] body[data-page="home"] #villageHero [data-hero-lang]:not([data-hero-lang="ar"]),
@@ -200,111 +127,77 @@ html[lang="fr"] body[data-page="home"] #villageHero [data-hero-lang]:not([data-h
  visibility:hidden!important;
  pointer-events:none!important;
 }
-/* Fit longer French copy and keep both actions inside the desktop text column. */
-@media(min-width:1001px){
- html[lang="fr"] #villageHero .page-intro-copy-wrap{
-  inset:10% auto 8% 3.1%!important;
-  min-width:0!important;
-  justify-content:center!important;
- }
- html[lang="fr"] #villageHero h1{
-  font-size:clamp(34px,3.2vw,66px)!important;
-  line-height:1.08!important;
-  flex-shrink:0!important;
- }
- html[lang="fr"] #villageHero .page-intro-actions{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr)!important;
-  width:100%!important;
-  max-width:320px!important;
-  gap:10px!important;
-  margin:24px 0 0!important;
- }
- html[lang="fr"] #villageHero .page-intro-actions>a.home-hero-cta{
-  width:100%!important;
-  height:auto!important;
-  min-height:48px!important;
-  max-height:none!important;
-  padding:10px 14px!important;
-  box-sizing:border-box!important;
-  font-size:clamp(12px,.85vw,16px)!important;
-  line-height:1.4!important;
-  white-space:normal!important;
- }
-}
 
-/* Keep localized desktop copy in the clear left side of the scene. */
+/* Desktop languages share the English composition and spacing. */
 @media(min-width:1001px){
  html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero .page-intro-copy-wrap{
-  inset:9% auto 8% 3%!important;
-  width:25%!important;
+  inset:14% auto 5.3% 3.1%!important;
+  width:28%!important;
   max-width:none!important;
-  display:flex!important;
-  flex-direction:column!important;
-  justify-content:center!important;
-  align-items:stretch!important;
+  min-width:0!important;
+  justify-content:flex-start!important;
   gap:0!important;
- }
- html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero .eyebrow{
-  flex:0 0 auto!important;
-  width:100%!important;
-  margin:0 0 18px!important;
-  font-size:clamp(11px,.85vw,16px)!important;
-  line-height:1.65!important;
-  white-space:normal!important;
+  align-items:flex-start!important;
  }
  html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero h1{
   flex:0 0 auto!important;
   width:100%!important;
+  max-width:none!important;
   margin:0!important;
-  max-width:100%!important;
+ }
+ html[lang="fr"] body[data-page="home"] #villageHero h1,
+ html[lang="fr"] body[data-page="home"] #villageHero h1 em{
+  font-size:clamp(42px,3.65vw,76px)!important;
+  line-height:1.02!important;
  }
  html[lang="ar"] body[data-page="home"] #villageHero h1,
  html[lang="ar"] body[data-page="home"] #villageHero h1 [data-hero-lang="ar"],
  html[lang="ar"] body[data-page="home"] #villageHero h1 em{
-  font-size:clamp(38px,3.7vw,76px)!important;
-  line-height:1.32!important;
-  letter-spacing:0!important;
+  font-family:Amiri,serif!important;
+  font-size:clamp(44px,4.2vw,88px)!important;
+  line-height:1.22!important;
   font-style:normal!important;
+  letter-spacing:0!important;
  }
- html[lang="fr"] body[data-page="home"] #villageHero h1,
- html[lang="fr"] body[data-page="home"] #villageHero h1 em{
-  font-size:clamp(36px,3.45vw,70px)!important;
-  line-height:1.06!important;
+ html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero .eyebrow{
+  flex:0 0 auto!important;
+  width:100%!important;
+  margin:0 0 1.6vw!important;
+  font-size:clamp(11px,.85vw,16px)!important;
+  line-height:1.6!important;
+  white-space:normal!important;
  }
  html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero .page-intro-copy{
   flex:0 0 auto!important;
   width:100%!important;
-  max-width:100%!important;
-  margin:20px 0 0!important;
+  max-width:390px!important;
+  margin:12px 0 0!important;
   padding:0!important;
-  font-size:clamp(16px,1.15vw,23px)!important;
+  font-size:clamp(16px,1.17vw,23px)!important;
+  line-height:1.5!important;
   font-weight:600!important;
-  line-height:1.65!important;
-  text-shadow:0 2px 10px #0008!important;
+ }
+ html[lang="ar"] body[data-page="home"] #villageHero .page-intro-copy{
+  max-width:100%!important;
+  line-height:1.7!important;
  }
  html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero .page-intro-actions{
   flex:0 0 auto!important;
-  align-self:stretch!important;
   width:100%!important;
-  max-width:none!important;
-  margin:24px 0 0!important;
+  max-width:320px!important;
   display:flex!important;
-  justify-content:stretch!important;
+  align-self:flex-start!important;
+  margin:22px 0 0!important;
  }
  html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero .page-intro-actions>a.home-hero-cta{
   flex:1 1 auto!important;
   width:100%!important;
+  box-sizing:border-box!important;
   min-height:52px!important;
   height:auto!important;
   max-height:none!important;
-  padding:14px 20px!important;
+  padding:12px 18px!important;
   font-size:clamp(15px,1vw,20px)!important;
-  font-weight:800!important;
-  line-height:1.5!important;
- }
- html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero .village-board-actions>a.home-hero-cta{
-  width:100%!important;
-  font-size:clamp(15px,1vw,20px)!important;
+  line-height:1.45!important;
  }
 }

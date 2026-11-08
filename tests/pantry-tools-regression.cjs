@@ -114,15 +114,7 @@ function setup(width,locale,page){
    assert(d.querySelector('.c6-delivery-note').textContent.length>70,'verified delivery policy must be readable');
    assert(!d.querySelector('#c6Estimate,#c6Area,#c6DeliveryResult'),'inaccurate product delivery calculator removed');
    const price=d.querySelector('#c6SelectedPrice');
-   assert.equal(price.textContent,'
- }
- console.log('Pantry tools passed: home/shop EN/AR/FR, strict budgets, preview edits, native-cart atomic saves, taste filters and size-specific WhatsApp questions.');
-})().catch(e=>{console.error(e);process.exitCode=1});
-+Number(select.value&&select.options[select.selectedIndex].textContent.split('
- }
- console.log('Pantry tools passed: home/shop EN/AR/FR, strict budgets, preview edits, native-cart atomic saves, taste filters and size-specific WhatsApp questions.');
-})().catch(e=>{console.error(e);process.exitCode=1});
-).pop()).toFixed(2),'selected pack price matches visible option');
+   assert.equal(price.textContent,'$'+Number(select.options[select.selectedIndex].textContent.split('$').pop()).toFixed(2),'selected pack price matches visible option');
    const qty=d.querySelector('#c6Qty');
    d.querySelector('#c6QtyPlus').click();assert.equal(qty.value,'2','plus works');
    d.querySelector('#c6QtyMinus').click();assert.equal(qty.value,'1','minus works');

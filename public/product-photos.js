@@ -1969,7 +1969,7 @@
     "quality": "ai-generated-product-artwork"
 },
   "zaatar-zahra-mathoun": {
-    "url": "assets/products/thyme-20261108/zaatar-zahra-mathoun.webp",
+    "url": "assets/products/thyme-20261108/zaatar-zahra-mathoun-v2.webp",
     "width": 1024,
     "height": 1536,
     "fit": "contain",

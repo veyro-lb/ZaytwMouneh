@@ -444,11 +444,90 @@
       background:#ffd232!important;border-color:#ffd232!important;
     }
   </style>
-  <style id="village-arabic-copy-position">
-    /* Keep RTL copy in the same clear left-side space as the English composition. */
+  <style id="village-hero-generous-copy">
+    /* Natural text flow gives each translation room to fill the hero. */
+    html[lang] body[data-page="home"] #villageHero h1,
+    html[lang] body[data-page="home"] #villageHero .page-intro-copy{
+      max-width:100%!important;white-space:normal!important;
+      overflow-wrap:normal!important;word-break:normal!important;
+    }
+    html[lang] body[data-page="home"] #villageHero h1 em{
+      display:block!important;margin-top:.12em!important;
+      line-height:inherit!important;
+    }
     @media(min-width:1001px){
-      html[lang="ar"] body[data-page="home"] #villageHero .page-intro-copy-wrap{
-        left:3.1%!important;right:auto!important;width:24%!important;
+      html[lang] body[data-page="home"] #villageHero{
+        height:auto!important;min-height:clamp(640px,48vw,1080px)!important;
+        max-height:none!important;
+      }
+      html[lang] body[data-page="home"] #villageHero .page-intro-grid{
+        position:relative!important;inset:auto!important;
+        display:grid!important;grid-template-columns:28% minmax(0,1fr) 34.3%!important;
+        align-items:start!important;gap:0!important;
+        width:100%!important;height:auto!important;min-height:inherit!important;
+        box-sizing:border-box!important;margin:0!important;
+        padding:clamp(48px,6vw,120px) 1.7% clamp(40px,4vw,80px) 1%!important;
+      }
+      html[lang] body[data-page="home"] #villageHero .page-intro-copy-wrap{
+        position:relative!important;inset:auto!important;grid-column:1!important;
+        width:100%!important;max-width:none!important;height:auto!important;
+        min-width:0!important;margin:0!important;padding:0!important;
+        justify-content:flex-start!important;align-items:stretch!important;
+        align-self:start!important;
+      }
+      html[lang] body[data-page="home"] #villageHero h1,
+      html[lang] body[data-page="home"] #villageHero h1 em{
+        font-size:clamp(48px,4.35vw,92px)!important;
+        line-height:1.1!important;letter-spacing:-.025em!important;
+        margin:0!important;flex-shrink:0!important;text-wrap:balance!important;
+      }
+      html[lang="ar"] body[data-page="home"] #villageHero h1,
+      html[lang="ar"] body[data-page="home"] #villageHero h1 [data-hero-lang="ar"],
+      html[lang="ar"] body[data-page="home"] #villageHero h1 em{
+        font-size:clamp(52px,4.8vw,100px)!important;line-height:1.24!important;
+        letter-spacing:0!important;
+      }
+      html[lang] body[data-page="home"] #villageHero .eyebrow{
+        width:100%!important;font-size:clamp(12px,.95vw,18px)!important;
+        line-height:1.6!important;white-space:normal!important;
+        margin:0 0 clamp(18px,1.6vw,30px)!important;
+      }
+      html[lang] body[data-page="home"] #villageHero .page-intro-copy{
+        width:100%!important;max-width:none!important;flex-shrink:0!important;
+        font-size:clamp(19px,1.4vw,28px)!important;font-weight:600!important;
+        line-height:1.6!important;margin:20px 0 0!important;
+      }
+      html[lang="ar"] body[data-page="home"] #villageHero .page-intro-copy{
+        line-height:1.8!important;
+      }
+      html[lang] body[data-page="home"] #villageHero .shop-intro-board{
+        position:relative!important;inset:auto!important;grid-column:3!important;
+        width:100%!important;box-sizing:border-box!important;align-self:start!important;
+        margin:2vw 0 0!important;
+      }
+    }
+    @media(max-width:1000px){
+      html[lang] body[data-page="home"] #villageHero .page-intro-copy-wrap{
+        width:100%!important;max-width:660px!important;height:auto!important;
+        min-width:0!important;align-items:stretch!important;
+      }
+      html[lang] body[data-page="home"] #villageHero h1,
+      html[lang] body[data-page="home"] #villageHero h1 em{
+        width:100%!important;max-width:none!important;
+        font-size:clamp(38px,8.8vw,60px)!important;
+        line-height:1.12!important;text-wrap:balance!important;
+      }
+      html[lang="ar"] body[data-page="home"] #villageHero h1 [data-hero-lang="ar"],
+      html[lang="ar"] body[data-page="home"] #villageHero h1 em{
+        font-size:clamp(40px,9.2vw,64px)!important;line-height:1.32!important;
+      }
+      html[lang] body[data-page="home"] #villageHero .page-intro-copy{
+        width:100%!important;max-width:none!important;
+        font-size:clamp(18px,3.6vw,22px)!important;font-weight:600!important;
+        line-height:1.65!important;margin-top:20px!important;
+      }
+      html[lang="ar"] body[data-page="home"] #villageHero .page-intro-copy{
+        font-size:clamp(17px,3.5vw,21px)!important;line-height:1.9!important;
       }
     }
   </style>
@@ -561,7 +640,7 @@
       <picture class="village-hero-backdrop" aria-hidden="true"><source media="(max-width:1000px)" srcset="/assets/hero-village/village-pantry-mobile.webp"><img class="village-hero-scene" src="/assets/hero-village/village-pantry-hd.webp" alt="" width="1808" height="870" fetchpriority="high" decoding="async" aria-hidden="true"></picture>
       <div class="shell page-intro-grid">
         <div class="page-intro-copy-wrap">
-<p class="eyebrow only-en" data-hero-lang="en" lang="en">Village-made · No preservatives</p><p class="eyebrow only-ar" data-hero-lang="ar" lang="ar">منتجات بلدية · من دون مواد حافظة</p><p class="eyebrow village-fr" data-hero-lang="fr" lang="fr">Du village · Sans conservateurs</p><h1><span class=" only-en" data-hero-lang="en" lang="en">Village-made<br>  mouneh,<br> <em>with love<br>  and care.</em></span><span class=" only-ar" data-hero-lang="ar" lang="ar">مونة بلدية<br> <em>محضّرة بكل<br> عناية ومحبة</em></span><span class=" village-fr" data-hero-lang="fr" lang="fr">La mouneh<br> du village,<br> <em>faite avec<br> amour.</em></span></h1><p class="page-intro-copy only-en" data-hero-lang="en" lang="en">Prepared with care to bring the taste of the Lebanese village to your table.</p><p class="page-intro-copy only-ar" data-hero-lang="ar" lang="ar">نكهة الضيعة اللبنانية، محضّرة بعناية لتوصل لعندكن.</p><p class="page-intro-copy village-fr" data-hero-lang="fr" lang="fr">Le goût du village libanais, préparé avec soin pour votre table.</p><div class="village-scene-space" aria-hidden="true"></div></div><div class="page-intro-side shop-intro-board"><div class="intro-stat-pair"><div><svg class="village-stat-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 27 24 5M12 21C3 20 5 13 6 12c6 0 8 3 6 9ZM17 16c-5-7 0-10 1-11 5 5 3 8-1 11ZM17 16c5-7 9-5 11-4-1 6-5 7-11 4ZM12 22c6-6 10-4 12-2-3 5-7 5-12 2Z"/></svg><strong data-count-up="332">332</strong><span class=" only-en" data-hero-lang="en" lang="en">products</span><span class=" only-ar" data-hero-lang="ar" lang="ar">منتج</span><span class=" village-fr" data-hero-lang="fr" lang="fr">produits</span></div><div><svg class="village-stat-icon" viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="5" width="9" height="9" rx="2"/><rect x="19" y="5" width="9" height="9" rx="2"/><rect x="5" y="19" width="9" height="9" rx="2"/><rect x="19" y="19" width="9" height="9" rx="2"/></svg><strong data-count-up="21">21</strong><span class=" only-en" data-hero-lang="en" lang="en">categories</span><span class=" only-ar" data-hero-lang="ar" lang="ar">قسم</span><span class=" village-fr" data-hero-lang="fr" lang="fr">catégories</span></div></div><div class="intro-category-chips"><a href="/shop?category=Honey#shop"><span class="intro-chip-icon intro-chip-icon-honey" aria-hidden="true"><img src="/assets/hero-village/honey.webp" alt="" width="100" height="130" decoding="async"></span><span class="village-category-name"><b class=" only-en" data-hero-lang="en" lang="en">Honey</b><b class=" only-ar" data-hero-lang="ar" lang="ar">عسل</b><b class=" village-fr" data-hero-lang="fr" lang="fr">Miel</b></span><i aria-hidden="true">→</i></a><a href="/shop?category=Olive%20Oil#shop"><span class="intro-chip-icon intro-chip-icon-oil" aria-hidden="true"><img src="/assets/hero-village/oil.webp" alt="" width="100" height="130" decoding="async"></span><span class="village-category-name"><b class=" only-en" data-hero-lang="en" lang="en">Olive oil</b><b class=" only-ar" data-hero-lang="ar" lang="ar">زيت زيتون</b><b class=" village-fr" data-hero-lang="fr" lang="fr">Huile d’olive</b></span><i aria-hidden="true">→</i></a><a href="/shop?category=Mouneh#shop"><span class="intro-chip-icon intro-chip-icon-mouneh" aria-hidden="true"><img src="/assets/hero-village/mouneh-bag.webp" alt="" width="100" height="130" decoding="async"></span><span class="village-category-name"><b class=" only-en" data-hero-lang="en" lang="en">Mouneh</b><b class=" only-ar" data-hero-lang="ar" lang="ar">مونة</b><b class=" village-fr" data-hero-lang="fr" lang="fr">Mouneh</b></span><i aria-hidden="true">→</i></a><a href="/shop?category=Spices#shop"><span class="intro-chip-icon intro-chip-icon-spices" aria-hidden="true"><img src="/assets/hero-village/spices.webp" alt="" width="100" height="130" decoding="async"></span><span class="village-category-name"><b class=" only-en" data-hero-lang="en" lang="en">Spices</b><b class=" only-ar" data-hero-lang="ar" lang="ar">بهارات</b><b class=" village-fr" data-hero-lang="fr" lang="fr">Épices</b></span><i aria-hidden="true">→</i></a></div><div class="village-board-actions"><a class="intro-secondary home-hero-cta only-en" data-hero-lang="en" lang="en" href="/shop#shop"><span class="home-cta-text">Shop now</span></a><a class="intro-secondary home-hero-cta only-ar" data-hero-lang="ar" lang="ar" href="/shop#shop"><span class="home-cta-text">تسوّق الآن</span></a><a class="intro-secondary home-hero-cta village-fr" data-hero-lang="fr" lang="fr" href="/shop#shop"><span class="home-cta-text">Acheter</span></a></div></div></div></section>
+<p class="eyebrow only-en" data-hero-lang="en" lang="en">Village-made · No preservatives</p><p class="eyebrow only-ar" data-hero-lang="ar" lang="ar">منتجات بلدية · من دون مواد حافظة</p><p class="eyebrow village-fr" data-hero-lang="fr" lang="fr">Du village · Sans conservateurs</p><h1><span class=" only-en" data-hero-lang="en" lang="en">Village-made mouneh, <em>with love and care.</em></span><span class=" only-ar" data-hero-lang="ar" lang="ar">مونة بلدية <em>محضّرة بكل عناية ومحبة</em></span><span class=" village-fr" data-hero-lang="fr" lang="fr">La mouneh du village, <em>faite avec amour.</em></span></h1><p class="page-intro-copy only-en" data-hero-lang="en" lang="en">Prepared with care to bring the taste of the Lebanese village to your table.</p><p class="page-intro-copy only-ar" data-hero-lang="ar" lang="ar">نكهة الضيعة اللبنانية، محضّرة بعناية لتوصل لعندكن.</p><p class="page-intro-copy village-fr" data-hero-lang="fr" lang="fr">Le goût du village libanais, préparé avec soin pour votre table.</p><div class="village-scene-space" aria-hidden="true"></div></div><div class="page-intro-side shop-intro-board"><div class="intro-stat-pair"><div><svg class="village-stat-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 27 24 5M12 21C3 20 5 13 6 12c6 0 8 3 6 9ZM17 16c-5-7 0-10 1-11 5 5 3 8-1 11ZM17 16c5-7 9-5 11-4-1 6-5 7-11 4ZM12 22c6-6 10-4 12-2-3 5-7 5-12 2Z"/></svg><strong data-count-up="332">332</strong><span class=" only-en" data-hero-lang="en" lang="en">products</span><span class=" only-ar" data-hero-lang="ar" lang="ar">منتج</span><span class=" village-fr" data-hero-lang="fr" lang="fr">produits</span></div><div><svg class="village-stat-icon" viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="5" width="9" height="9" rx="2"/><rect x="19" y="5" width="9" height="9" rx="2"/><rect x="5" y="19" width="9" height="9" rx="2"/><rect x="19" y="19" width="9" height="9" rx="2"/></svg><strong data-count-up="21">21</strong><span class=" only-en" data-hero-lang="en" lang="en">categories</span><span class=" only-ar" data-hero-lang="ar" lang="ar">قسم</span><span class=" village-fr" data-hero-lang="fr" lang="fr">catégories</span></div></div><div class="intro-category-chips"><a href="/shop?category=Honey#shop"><span class="intro-chip-icon intro-chip-icon-honey" aria-hidden="true"><img src="/assets/hero-village/honey.webp" alt="" width="100" height="130" decoding="async"></span><span class="village-category-name"><b class=" only-en" data-hero-lang="en" lang="en">Honey</b><b class=" only-ar" data-hero-lang="ar" lang="ar">عسل</b><b class=" village-fr" data-hero-lang="fr" lang="fr">Miel</b></span><i aria-hidden="true">→</i></a><a href="/shop?category=Olive%20Oil#shop"><span class="intro-chip-icon intro-chip-icon-oil" aria-hidden="true"><img src="/assets/hero-village/oil.webp" alt="" width="100" height="130" decoding="async"></span><span class="village-category-name"><b class=" only-en" data-hero-lang="en" lang="en">Olive oil</b><b class=" only-ar" data-hero-lang="ar" lang="ar">زيت زيتون</b><b class=" village-fr" data-hero-lang="fr" lang="fr">Huile d’olive</b></span><i aria-hidden="true">→</i></a><a href="/shop?category=Mouneh#shop"><span class="intro-chip-icon intro-chip-icon-mouneh" aria-hidden="true"><img src="/assets/hero-village/mouneh-bag.webp" alt="" width="100" height="130" decoding="async"></span><span class="village-category-name"><b class=" only-en" data-hero-lang="en" lang="en">Mouneh</b><b class=" only-ar" data-hero-lang="ar" lang="ar">مونة</b><b class=" village-fr" data-hero-lang="fr" lang="fr">Mouneh</b></span><i aria-hidden="true">→</i></a><a href="/shop?category=Spices#shop"><span class="intro-chip-icon intro-chip-icon-spices" aria-hidden="true"><img src="/assets/hero-village/spices.webp" alt="" width="100" height="130" decoding="async"></span><span class="village-category-name"><b class=" only-en" data-hero-lang="en" lang="en">Spices</b><b class=" only-ar" data-hero-lang="ar" lang="ar">بهارات</b><b class=" village-fr" data-hero-lang="fr" lang="fr">Épices</b></span><i aria-hidden="true">→</i></a></div><div class="village-board-actions"><a class="intro-secondary home-hero-cta only-en" data-hero-lang="en" lang="en" href="/shop#shop"><span class="home-cta-text">Shop now</span></a><a class="intro-secondary home-hero-cta only-ar" data-hero-lang="ar" lang="ar" href="/shop#shop"><span class="home-cta-text">تسوّق الآن</span></a><a class="intro-secondary home-hero-cta village-fr" data-hero-lang="fr" lang="fr" href="/shop#shop"><span class="home-cta-text">Acheter</span></a></div></div></div></section>
 
     <!-- Buy-now browsing uses the canonical live catalogue and normal checkout. -->
 

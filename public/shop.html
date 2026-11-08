@@ -88,8 +88,10 @@
     body[data-page="shop"] #shop.shop.section{
       margin-top:0!important;padding-top:16px!important;
     }
-    body[data-page="shop"] #shop>.shell>.catalog-toolbar[data-sticky-catalogue]{
-      margin-top:0!important;
+    body[data-page="shop"] #shop>.shell>.catalog-toolbar{
+      position:relative!important;top:auto!important;inset-block-start:auto!important;
+      margin-top:0!important;transform:none!important;opacity:1!important;
+      z-index:2!important;
     }
     body[data-page="shop"] #newArrivals:not([hidden]){
       margin-bottom:16px!important;
@@ -286,7 +288,7 @@
     </section>
     <section class="shop section" id="shop">
       <div class="shell">
-        <div class="catalog-toolbar reveal" data-sticky-catalogue>
+        <div class="catalog-toolbar">
           <div class="search-box">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg>
             <input id="productSearch" type="search" dir="auto" enterkeyhint="search" aria-label="Search all products" aria-controls="searchSuggestions" aria-expanded="false" placeholder="Search zaatar, lentils, honey, grains, spices…" autocomplete="off" />

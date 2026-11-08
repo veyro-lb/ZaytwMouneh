@@ -87,6 +87,7 @@ var EXACT=Object.freeze({
 "Explore Zayt w Mouneh":"Explorer Zayt w Mouneh",
 "Open the pantry ↗":"Ouvrir la mouneh ↗",
 "Jump into the pantry":"Entrer dans la mouneh",
+"Shop now":"Acheter maintenant",
 "Start here":"Commencer ici",
 "Make a gift":"Composer un cadeau",
 "Build a gift ↓":"Composer un cadeau ↓",

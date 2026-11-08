@@ -395,23 +395,8 @@ function bindHeader(){
  var current=state.locale||locale();
  qsa("[data-c6-copy]").forEach(function(el){var key=el.dataset.c6Copy;if(key)el.textContent=t(key)});
  qsa("[data-c6-lang]").forEach(function(b){b.classList.toggle("is-active",b.dataset.c6Lang===current);b.setAttribute("aria-pressed",String(b.dataset.c6Lang===current));b.addEventListener("click",function(){setLocale(b.dataset.c6Lang)})});
- var menu=qs("#navLinks"),button=qs("#navToggle"),header=qs(".site-header");
- if(button&&menu){
-  var menuOpen=false;
-  function setMenu(open){
-   menuOpen=!!open;menu.classList.toggle("is-open",menuOpen);
-   menu.setAttribute("aria-hidden",String(!menuOpen));
-   if(menuOpen)menu.removeAttribute("inert");else menu.setAttribute("inert","");
-   button.setAttribute("aria-expanded",String(menuOpen));document.body.classList.toggle("menu-open",menuOpen);
-   if(header)document.documentElement.style.setProperty("--zwm-menu-top",Math.ceil(header.getBoundingClientRect().bottom)+"px");
-  }
-  button.addEventListener("click",function(){setMenu(!menuOpen)});
-  qsa("a",menu).forEach(function(link){link.addEventListener("click",function(){setMenu(false)})});
-  document.addEventListener("click",function(e){if(menuOpen&&!e.target.closest("#navToggle")&&!e.target.closest("#navLinks"))setMenu(false)});
-  document.addEventListener("keydown",function(e){if(menuOpen&&e.key==="Escape"){setMenu(false);button.focus()}});
-  window.addEventListener("resize",function(){if(menuOpen)setMenu(false)});
-  setMenu(false);
- }
+ // The canonical site-runtime-v9 menu controller owns #navToggle and #navLinks.
+ // Do not bind a competing click handler here: product entry pages share the shop menu.
  var cartLink=qs("#cartButton");if(cartLink)cartLink.href=localePrefix(current)+"/shop?open=cart";
  qsa(".site-header a[href='/shop']").forEach(function(el){el.href=localePrefix(current)+"/shop"});
  qsa(".site-header a[href='/']").forEach(function(el){el.href=localePrefix(current)+"/"});

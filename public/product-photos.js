@@ -1,4 +1,5 @@
-/* Product artwork matched to exact catalog items. Uploaded originals are kept without resizing or recompression.
+/* Product artwork matched to exact catalog items. Original supplied photos are retained.
+   The owner-supplied individual 2026-11-08 artwork uses full-resolution optimized WebP copies.
    Shared artwork is used only when the supplied artwork explicitly covers both catalog items; official supplier imagery is used for exact Debsy products. */
 (function(){
   const map = {
@@ -93,10 +94,10 @@
     "quality": "original-supplied"
   },
   "burglur-abyad-kheshen": {
-    "url": "assets/products/originals/burglur-abyad-kheshen.jpg",
-    "width": 1024,
-    "height": 1464,
-    "quality": "original-supplied"
+    "url": "assets/products/individual-20261108/burglur-abyad-kheshen.webp",
+    "width": 1049,
+    "height": 1500,
+    "quality": "owner-supplied-individual-artwork"
   },
   "fasolya-snoubareye": {
     "url": "assets/products/originals/fasolya-snoubareye.jpg",
@@ -141,10 +142,10 @@
     "quality": "original-supplied"
   },
   "maa-ward": {
-    "url": "assets/products/originals/maa-ward.jpg",
+    "url": "assets/products/individual-20261108/maa-ward.webp",
     "width": 1024,
     "height": 1536,
-    "quality": "original-supplied"
+    "quality": "owner-supplied-individual-artwork"
   },
   "rub-el-bandoura": {
     "url": "assets/products/originals/rub-el-bandoura.jpg",
@@ -327,10 +328,10 @@
     "quality": "original-supplied"
   },
   "khal-el-enab": {
-    "url": "assets/products/originals/khal-el-enab.jpg",
+    "url": "assets/products/individual-20261108/khal-el-enab.webp",
     "width": 1024,
     "height": 1536,
-    "quality": "original-supplied"
+    "quality": "owner-supplied-individual-artwork"
   },
   "mraba-sfarjel": {
     "url": "assets/products/originals/mraba-sfarjel.jpg",
@@ -933,10 +934,10 @@
     "quality": "original-supplied"
   },
   "roasted-cheese-corn": {
-    "url": "assets/products/originals/roasted-cheese-corn.jpg",
-    "width": 917,
-    "height": 1444,
-    "quality": "original-supplied"
+    "url": "assets/products/individual-20261108/roasted-cheese-corn.webp",
+    "width": 1000,
+    "height": 1573,
+    "quality": "owner-supplied-individual-artwork"
   },
   "krikri": {
     "url": "assets/products/originals/krikri.jpg",
@@ -1023,10 +1024,10 @@
     "quality": "original-supplied"
   },
   "proplis-with-ethanol": {
-    "url": "assets/products/originals/proplis-with-ethanol.jpg",
-    "width": 987,
-    "height": 1480,
-    "quality": "original-supplied"
+    "url": "assets/products/individual-20261108/proplis-with-ethanol.webp",
+    "width": 1024,
+    "height": 1535,
+    "quality": "owner-supplied-individual-artwork"
   },
   "raw-proplis": {
     "url": "assets/products/originals/raw-proplis.jpg",
@@ -1137,10 +1138,10 @@
     "quality": "original-supplied"
   },
   "debes-el-fleyfleh": {
-    "url": "assets/products/originals/debes-el-fleyfleh.jpg",
+    "url": "assets/products/individual-20261108/debes-el-fleyfleh.webp",
     "width": 1086,
     "height": 1448,
-    "quality": "original-supplied"
+    "quality": "owner-supplied-individual-artwork"
   },
   "date-paste": {
     "url": "assets/products/originals/date-paste.jpg",
@@ -1371,10 +1372,10 @@
     "quality": "original-supplied"
   },
   "labneh-mkaazleh-habet-barakeh": {
-    "url": "assets/products/originals/labneh-mkaazleh-habet-barakeh.jpg",
+    "url": "assets/products/individual-20261108/labneh-mkaazleh-habet-barakeh.webp",
     "width": 1024,
     "height": 1536,
-    "quality": "original-supplied"
+    "quality": "owner-supplied-individual-artwork"
   },
   "sugar-free-rose-jam": {
     "url": "assets/products/originals/sugar-free-rose-jam.jpg",
@@ -1491,10 +1492,10 @@
     "quality": "original-supplied"
   },
   "kishek-bakari-beqaa": {
-    "url": "assets/products/originals/kishek-bakari-beqaa.jpg",
+    "url": "assets/products/individual-20261108/kishek-bakari-beqaa.webp",
     "width": 1086,
     "height": 1448,
-    "quality": "original-supplied"
+    "quality": "owner-supplied-individual-artwork"
   },
   "zaytoun-akhdar-koura": {
     "url": "assets/products/originals/zaytoun-akhdar-koura.jpg",
@@ -1683,46 +1684,46 @@
     "quality": "original-supplied-shared"
   },
   "maa-zaher": {
-    "url": "assets/products/originals/maa-ward.jpg",
+    "url": "assets/products/individual-20261108/maa-zaher.webp",
     "width": 1024,
     "height": 1536,
-    "quality": "original-supplied-shared"
+    "quality": "owner-supplied-individual-artwork"
   },
   "burglur-abyad-neeme": {
-    "url": "assets/products/originals/burglur-abyad-kheshen.jpg",
-    "width": 1024,
-    "height": 1464,
-    "quality": "original-supplied-shared"
+    "url": "assets/products/individual-20261108/burglur-abyad-neeme.webp",
+    "width": 1049,
+    "height": 1500,
+    "quality": "owner-supplied-individual-artwork"
   },
   "kishek-meeza-beqaa": {
-    "url": "assets/products/originals/kishek-bakari-beqaa.jpg",
+    "url": "assets/products/individual-20261108/kishek-meeza-beqaa.webp",
     "width": 1086,
     "height": 1448,
-    "quality": "original-supplied-shared"
+    "quality": "owner-supplied-individual-artwork"
   },
   "propolis-with-olive-oil": {
-    "url": "assets/products/originals/proplis-with-ethanol.jpg",
-    "width": 987,
-    "height": 1480,
-    "quality": "original-supplied-shared"
+    "url": "assets/products/individual-20261108/propolis-with-olive-oil.webp",
+    "width": 1025,
+    "height": 1535,
+    "quality": "owner-supplied-individual-artwork"
   },
   "debes-el-fleyfleh-har": {
-    "url": "assets/products/originals/debes-el-fleyfleh.jpg",
+    "url": "assets/products/individual-20261108/debes-el-fleyfleh-har.webp",
     "width": 1086,
     "height": 1448,
-    "quality": "original-supplied-shared"
+    "quality": "owner-supplied-individual-artwork"
   },
   "labneh-mkaazleh-zaatar": {
-    "url": "assets/products/originals/labneh-mkaazleh-habet-barakeh.jpg",
+    "url": "assets/products/individual-20261108/labneh-mkaazleh-zaatar.webp",
     "width": 1024,
     "height": 1536,
-    "quality": "original-supplied-shared"
+    "quality": "owner-supplied-individual-artwork"
   },
   "khal-el-tefeh": {
-    "url": "assets/products/originals/khal-el-enab.jpg",
+    "url": "assets/products/individual-20261108/khal-el-tefeh.webp",
     "width": 1024,
     "height": 1536,
-    "quality": "original-supplied-shared"
+    "quality": "owner-supplied-individual-artwork"
   },
   "sun-dried-tomatoes": {
     "url": "assets/products/originals/sun-dried-tomatoes.jpg",
@@ -1731,10 +1732,10 @@
     "quality": "original-supplied"
   },
   "roasted-salted-corn": {
-    "url": "assets/products/originals/roasted-cheese-corn.jpg",
-    "width": 917,
-    "height": 1444,
-    "quality": "original-supplied-shared"
+    "url": "assets/products/individual-20261108/roasted-salted-corn.webp",
+    "width": 1000,
+    "height": 1573,
+    "quality": "owner-supplied-individual-artwork"
   },
   "zayt-w-mouneh-white-honey-blend": {
     "url": "assets/products/originals/white-honey-blend.jpg",

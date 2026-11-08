@@ -287,9 +287,9 @@
   // Scoped provenance spotlight. Region photography is editorial and not a supplier address.
   var atlasRegionPhotos={
     "Bekaa":"/assets/atlas/zwm-atlas-bekaa.webp",
-    "Koura":"/assets/atlas/zwm-atlas-bekaa.webp",
-    "Mount Lebanon":"/assets/atlas/zwm-atlas-bekaa.webp",
-    "Chouf":"/assets/atlas/zwm-atlas-bekaa.webp"
+    "Koura":"/assets/atlas/zwm-atlas-koura.webp",
+    "Mount Lebanon":"/assets/atlas/zwm-atlas-mount-lebanon.webp",
+    "Chouf":"/assets/atlas/zwm-atlas-chouf.webp"
   };
   function renderRegion(region,root){
     if(!atlasRegions[region])return;

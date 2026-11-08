@@ -17,8 +17,7 @@ var COPY={
   verified:"Verified purchase reviews",verifiedCopy:"Only reviews tied to delivered purchases are shown here.",noReviews:"No verified reviews yet.",
   facts:"Product information",factsNote:"Descriptions reflect the catalogue listing. Please check packaging for ingredients, allergens, origin and directions; missing facts are not guessed.",
   origin:"Origin",ingredients:"Ingredients",storage:"Storage",allergens:"Allergens",details:"Product-specific details",nutrition:"Nutrition",
-  payment:"Accepted payment",delivery:"Delivery estimate",deliveryPlaceholder:"Enter your area",estimate:"Check",deliveryUnknown:"Enter your area at checkout to see the delivery amount currently applied to your order. Delivery timing may not be available for every area.",
-  freeAbove:"Free delivery threshold",eta:"Estimated delivery",fee:"Delivery fee",free:"Free",
+  payment:"Accepted payment",delivery:"Delivery across Lebanon",deliveryNote:"We deliver across Lebanon, subject to service availability. Checkout shows an estimated delivery fee for your area. The final total is confirmed before dispatch, and any increase requires your approval.",deliveryDetails:"Delivery & ordering information",copyLink:"Copy this product link:",shareFailed:"Select and copy the product link.",
   related:"Related products",relatedCopy:"More products from the same catalogue category.",
   recipe:"Related recipes",recipeCopy:"Recipes that use this exact pantry item.",viewRecipe:"Open recipes",
   bundle:"Smart pantry bundle",bundleRecipe:"Add the pantry ingredients for this recipe in one click. Fresh ingredients are not added.",bundleCategory:"A transparent same-category set using current catalogue products; no discount is assumed.",addBundle:"Add bundle to cart",
@@ -33,8 +32,7 @@ var COPY={
   verified:"مراجعات شراء موثّقة",verifiedCopy:"تظهر هنا فقط المراجعات المرتبطة بطلبات تم تسليمها.",noReviews:"لا توجد مراجعات موثّقة بعد.",
   facts:"تفاصيل المنتج",factsNote:"تعتمد الأوصاف على بيانات الكتالوج. يُرجى مراجعة العبوة لمعرفة المكوّنات ومسبّبات الحساسية والمنشأ وتعليمات الاستخدام. لا نضيف معلومات غير مؤكدة.",
   origin:"المنشأ",ingredients:"المكونات",storage:"الحفظ",allergens:"مسببات الحساسية",details:"تفاصيل خاصة بالمنتج",nutrition:"معلومات غذائية",
-  payment:"طرق الدفع المقبولة",delivery:"تقدير التوصيل",deliveryPlaceholder:"اكتب منطقتك",estimate:"تحقق",deliveryUnknown:"أدخل منطقتك عند إتمام الطلب لعرض قيمة التوصيل المطبّقة حالياً على طلبك. قد لا يتوفر وقت توصيل مقدّر لكل منطقة.",
-  freeAbove:"حد التوصيل المجاني",eta:"مدة التوصيل المتوقعة",fee:"رسم التوصيل",free:"مجاني",
+  payment:"طرق الدفع المقبولة",delivery:"التوصيل إلى مختلف مناطق لبنان",deliveryNote:"منوصّل إلى مختلف المناطق بلبنان حسب توفر الخدمة. عند إتمام الطلب بتشوف رسوم التوصيل التقديرية لمنطقتك. منأكد معك المجموع النهائي قبل إرسال الطلب، وأي زيادة بتحتاج موافقتك.",deliveryDetails:"تفاصيل التوصيل والطلب",copyLink:"انسخ رابط المنتج:",shareFailed:"حدّد رابط المنتج وانسخه.",
   related:"منتجات مرتبطة",relatedCopy:"منتجات أخرى من الفئة نفسها في الكتالوج.",
   recipe:"وصفات مرتبطة",recipeCopy:"وصفات تستخدم هذا المنتج تحديداً.",viewRecipe:"افتح الوصفات",
   bundle:"حزمة مونة ذكية",bundleRecipe:"أضف مكونات المونة لهذه الوصفة بنقرة واحدة. لا تتم إضافة المكونات الطازجة.",bundleCategory:"تشكيلة واضحة من الفئة نفسها باستخدام منتجات وأسعار الكتالوج الحالية، من دون افتراض أي خصم.",addBundle:"أضف الحزمة إلى السلة",
@@ -49,8 +47,7 @@ var COPY={
   verified:"Avis d’achat vérifié",verifiedCopy:"Seuls les avis liés à des commandes livrées sont affichés ici.",noReviews:"Aucun avis vérifié pour le moment.",
   facts:"Détails du produit",factsNote:"Les descriptions reposent sur le catalogue. Vérifiez sur l’emballage les ingrédients, allergènes, l’origine et le mode d’emploi ; aucune donnée manquante n’est inventée.",
   origin:"Origine",ingredients:"Ingrédients",storage:"Conservation",allergens:"Allergènes",details:"Détails spécifiques au produit",nutrition:"Informations nutritionnelles",
-  payment:"Paiement accepté",delivery:"Estimation de livraison",deliveryPlaceholder:"Saisissez votre zone",estimate:"Vérifier",deliveryUnknown:"Indiquez votre zone lors du paiement pour voir le montant de livraison actuellement appliqué à votre commande. Un délai de livraison peut ne pas être disponible pour toutes les zones.",
-  freeAbove:"Seuil de livraison gratuite",eta:"Délai estimé",fee:"Frais de livraison",free:"Gratuite",
+  payment:"Paiement accepté",delivery:"Livraison partout au Liban",deliveryNote:"Livraison dans les régions du Liban, selon la disponibilité du service. Les frais de livraison estimés s’affichent à la commande. Nous confirmons le total définitif avant l’expédition ; toute augmentation exige votre accord.",deliveryDetails:"Informations sur la livraison",copyLink:"Copiez ce lien produit :",shareFailed:"Sélectionnez et copiez le lien du produit.",
   related:"Produits associés",relatedCopy:"Autres produits de la même catégorie du catalogue.",
   recipe:"Recettes associées",recipeCopy:"Recettes utilisant exactement ce produit.",viewRecipe:"Voir les recettes",
   bundle:"Assortiment intelligent",bundleRecipe:"Ajoutez en un clic les ingrédients de mouneh de cette recette. Les produits frais ne sont pas ajoutés.",bundleCategory:"Assortiment transparent de la même catégorie, basé sur le catalogue actuel, sans remise supposée.",addBundle:"Ajouter l’assortiment",
@@ -84,8 +81,9 @@ function setLocale(code){
    if(code==="fr")localStorage.setItem("zwm:french:v1","1");else localStorage.removeItem("zwm:french:v1");
   }
  }catch(e){}
- if(state.product){location.assign(productPath(state.product.id,code)+(location.hash||""));return}
- location.reload();
+ var selectedId=state.product&&state.product.id||slug();
+ if(selectedId){location.assign(productPath(selectedId,code)+(location.hash||""));return}
+ location.assign(localePrefix(code)+"/shop");
 }
 function productName(p){
  if(state.locale==="ar")return p.nameAr||p.nameEn||p.id;
@@ -162,7 +160,7 @@ async function loadData(){
  state.product=base;
  state.selectedVariant=(base.variants||[])[0]||null;
  try{
-  var settings=await rest("site_settings?select=key,value&key=in.(commerce,delivery,contact)");
+  var settings=await rest("site_settings?select=key,value&key=in.(commerce,contact)");
   (settings||[]).forEach(function(row){state.settings[row.key]=row.value||{}});
  }catch(e){}
  try{state.reviews=await rest("storefront_reviews?select=id,product_id,rating,body,created_at,verified_purchase&product_id=eq."+encodeURIComponent(id)+"&verified_purchase=eq.true&order=created_at.desc&limit=50")||[]}catch(e){state.reviews=[]}
@@ -257,13 +255,12 @@ function factsMarkup(p){
 }
 function paymentMarkup(){
  var methods=(state.settings.commerce&&state.settings.commerce.payment_methods)||[];
- methods=methods.filter(function(m){return m&&m.enabled!==false});
+ methods=Array.isArray(methods)?methods.filter(function(m){return m&&m.enabled!==false}):[];
  if(!methods.length)methods=[{id:"cash_on_delivery",label_en:t("paymentCod"),label_ar:t("paymentCod"),label_fr:t("paymentCod")}];
  return methods.map(function(m){var label=state.locale==="ar"?(m.label_ar||m.label_en):state.locale==="fr"?(m.label_fr||m.label_en):(m.label_en||m.id);return '<strong>'+esc(label)+'</strong>'}).join("");
 }
 function deliveryMarkup(){
- var d=state.settings.delivery||{},freeAbove=Number(d.freeAbove)||0;
- return '<div class="c6-service-card"><strong>'+esc(t("delivery"))+'</strong><p id="c6DeliveryResult">'+esc(t("deliveryUnknown"))+'</p><div class="c6-estimator"><input id="c6Area" type="text" aria-label="'+esc(t("deliveryPlaceholder"))+'" placeholder="'+esc(t("deliveryPlaceholder"))+'" autocomplete="address-level2"><button class="c6-button is-secondary" type="button" id="c6Estimate">'+esc(t("estimate"))+'</button></div>'+(freeAbove>0?'<p>'+esc(t("freeAbove"))+': <b>'+money(freeAbove)+'</b></p>':"")+'</div>';
+ return '<div class="c6-service-card c6-delivery-note"><strong>'+esc(t("delivery"))+'</strong><p>'+esc(t("deliveryNote"))+'</p><a class="c6-delivery-more" href="'+localePrefix(state.locale)+'/contact#delivery">'+esc(t("deliveryDetails"))+' →</a></div>';
 }
 function variantsMarkup(p){
  var vars=p.variants||[];
@@ -344,15 +341,6 @@ function updateCartCount(){
 }
 function cheapest(p){return (p.variants||[]).slice().sort(function(a,b){return Number(a.price)-Number(b.price)})[0]||null}
 function toast(msg){var el=qs("#c6Toast");if(!el)return;el.textContent=msg;el.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(function(){el.hidden=true},2200)}
-function estimateDelivery(){
- var out=qs("#c6DeliveryResult"),area=(qs("#c6Area")||{}).value||"",d=state.settings.delivery||{},zones=Array.isArray(d.zones)?d.zones:[];
- if(!area.trim()||(!zones.length&&d.fee==null&&d.eta==null)){out.textContent=t("deliveryUnknown");return}
- var amount=state.selectedVariant?Number(state.selectedVariant.price)*state.qty:0,normalized=area.trim().toLowerCase();
- var zone=zones.find(function(z){var key=String(z.area||"").trim().toLowerCase();return key&&(normalized.indexOf(key)>=0||key.indexOf(normalized)>=0)});
- if(zones.length&&!zone){out.textContent=t("deliveryUnknown");return}
- var fee=Number((zone&&zone.fee)!=null?zone.fee:d.fee)||0,freeAbove=Number(d.freeAbove)||0;if(freeAbove>0&&amount>=freeAbove)fee=0;
- var eta=String((zone&&zone.eta)||d.eta||"").trim(),parts=[t("fee")+": "+(fee===0?t("free"):money(fee))];if(eta)parts.push(t("eta")+": "+eta);out.textContent=parts.join(" · ");
-}
 async function submitAlert(e){
  e.preventDefault();var form=e.currentTarget,status=qs("#c6AlertStatus"),data=new FormData(form),channel=String(data.get("channel")||"email"),contact=String(data.get("contact")||"").trim();
  status.textContent="";
@@ -384,10 +372,18 @@ function bind(){
    }
    var price=qs("#c6SelectedPrice");if(price&&state.selectedVariant)price.textContent=money(state.selectedVariant.price);
  })}
- var qty=qs("#c6Qty");if(qty){var syncQty=function(value){state.qty=Math.max(1,Math.min(99,Math.round(Number(value)||1)));qty.value=String(state.qty)};qty.addEventListener("change",function(){syncQty(qty.value)});var minus=qs("#c6QtyMinus"),plus=qs("#c6QtyPlus");if(minus)minus.addEventListener("click",function(){syncQty(state.qty-1)});if(plus)plus.addEventListener("click",function(){syncQty(state.qty+1)})}
- var add=qs("#c6Add");if(add)add.addEventListener("click",function(){if(isOrderable(state.product)&&addProduct(state.product,state.selectedVariant,state.qty)){toast(t("added"));var shortcut=qs("#c6CartShortcut");if(shortcut)shortcut.classList.add("is-added")}});
- var share=qs("#c6Share");if(share)share.addEventListener("click",async function(){var url=canonical();try{if(navigator.share){await navigator.share({title:productName(state.product),url:url})}else{await navigator.clipboard.writeText(url);toast(t("copied"))}}catch(e){}});
- var est=qs("#c6Estimate");if(est)est.addEventListener("click",estimateDelivery);
+ var qty=qs("#c6Qty");if(qty){var syncQty=function(value){state.qty=Math.max(1,Math.min(99,Math.round(Number(value)||1)));qty.value=String(state.qty)};qty.addEventListener("input",function(){if(qty.value!=="")state.qty=Math.max(1,Math.min(99,Math.round(Number(qty.value)||1)))});qty.addEventListener("change",function(){syncQty(qty.value)});var minus=qs("#c6QtyMinus"),plus=qs("#c6QtyPlus");if(minus)minus.addEventListener("click",function(){syncQty(qty.value);syncQty(state.qty-1)});if(plus)plus.addEventListener("click",function(){syncQty(qty.value);syncQty(state.qty+1)})}
+ var add=qs("#c6Add");if(add)add.addEventListener("click",function(){if(qty)syncQty(qty.value);if(isOrderable(state.product)&&addProduct(state.product,state.selectedVariant,state.qty)){toast(t("added"));var shortcut=qs("#c6CartShortcut");if(shortcut)shortcut.classList.add("is-added")}});
+ var share=qs("#c6Share");if(share)share.addEventListener("click",async function(){
+  var url=canonical();
+  if(navigator.share){try{await navigator.share({title:productName(state.product),url:url});return}catch(e){if(e&&e.name==="AbortError")return}}
+  try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(url);toast(t("copied"));return}}catch(e){}
+  var field=document.createElement("textarea");field.value=url;field.readOnly=true;field.setAttribute("aria-label",t("copyLink"));
+  field.style.cssText="position:fixed;left:-9999px;top:0;";document.body.appendChild(field);field.select();
+  var copied=false;try{copied=!!document.execCommand&&document.execCommand("copy")}catch(e){}field.remove();
+  if(copied){toast(t("copied"));return}
+  if(typeof window.prompt==="function")window.prompt(t("copyLink"),url);else toast(t("shareFailed"));
+ });
  var alert=qs("#c6AlertForm");if(alert)alert.addEventListener("submit",submitAlert);
  var bundle=qs("#c6AddBundle");if(bundle)bundle.addEventListener("click",function(){var b=bundleData(),added=0;b.products.forEach(function(p){if(isOrderable(p)){var v=cheapest(p);if(v&&addProduct(p,v,1))added++}});if(added)toast(t("added"))});
 }
@@ -397,9 +393,13 @@ function bindHeader(){
  qsa("[data-c6-lang]").forEach(function(b){b.classList.toggle("is-active",b.dataset.c6Lang===current);b.setAttribute("aria-pressed",String(b.dataset.c6Lang===current));b.addEventListener("click",function(){setLocale(b.dataset.c6Lang)})});
  // The canonical site-runtime-v9 menu controller owns #navToggle and #navLinks.
  // Do not bind a competing click handler here: product entry pages share the shop menu.
+ // Keep every header/footer link in the selected storefront locale, retaining its query and hash.
+ qsa(".site-header a[href],.c6-footer a[href]").forEach(function(el){
+  var href=el.getAttribute("href");if(!href||href.charAt(0)!=="/"||href.slice(0,2)==="//")return;
+  var clean=href.replace(/^\/(?:ar|fr)(?=\/|$)/,"")||"/";
+  var target=localePrefix(current)+clean;if(href!==target)el.setAttribute("href",target);
+ });
  var cartLink=qs("#cartButton");if(cartLink)cartLink.href=localePrefix(current)+"/shop?open=cart";
- qsa(".site-header a[href='/shop']").forEach(function(el){el.href=localePrefix(current)+"/shop"});
- qsa(".site-header a[href='/']").forEach(function(el){el.href=localePrefix(current)+"/"});
  var account=qs("#mounehAccountButton");if(account)account.href=localePrefix(current)+"/account?auth=signin#signin";
  window.addEventListener("storage",function(e){if(e.key===CART_KEY)updateCartCount()});
  window.addEventListener("pageshow",updateCartCount);updateCartCount();

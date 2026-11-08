@@ -99,6 +99,39 @@ function setup(width,locale,page){
    select.selectedIndex=1;select.dispatchEvent(new w.Event('change',{bubbles:true}));
    assert.notEqual(link.href,first,'standalone question follows selected size');
    assert(new URL(link.href).searchParams.get('text').includes(locale==='ar'?'4 لتر':'4 L'));
+   const prefix=locale==='en'?'':'/'+locale;
+   const headerRoutes=['/','/shop','/gift','/recipes','/about','/contact','/wholesale'];
+   for(const route of headerRoutes){
+    const matches=[...d.querySelectorAll('.site-header a[href]')].filter(a=>new URL(a.href).pathname===prefix+(route==='/'?'/':route));
+    assert(matches.length>0,'product navigation retains '+locale+' route '+route);
+   }
+   assert.equal(new URL(d.querySelector('#cartButton').href).pathname,prefix+'/shop');
+   assert.equal(new URL(d.querySelector('#cartButton').href).search,'?open=cart');
+   assert.equal(new URL(d.querySelector('#c6CartShortcut').href).search,'?open=cart');
+   assert.equal(new URL(d.querySelector('.c6-footer a[data-c6-copy="terms"]').href).pathname,prefix+'/terms');
+   assert.equal(new URL(d.querySelector('.c6-delivery-more').href).pathname,prefix+'/contact');
+   assert.equal(new URL(d.querySelector('.c6-delivery-more').href).hash,'#delivery');
+   assert(d.querySelector('.c6-delivery-note').textContent.length>70,'verified delivery policy must be readable');
+   assert(!d.querySelector('#c6Estimate,#c6Area,#c6DeliveryResult'),'inaccurate product delivery calculator removed');
+   const price=d.querySelector('#c6SelectedPrice');
+   assert.equal(price.textContent,'$'+Number(select.options[select.selectedIndex].textContent.split('$').pop()).toFixed(2),'selected pack price matches visible option');
+   const qty=d.querySelector('#c6Qty');
+   d.querySelector('#c6QtyPlus').click();assert.equal(qty.value,'2','plus works');
+   d.querySelector('#c6QtyMinus').click();assert.equal(qty.value,'1','minus works');
+   qty.value='3';qty.dispatchEvent(new w.Event('input',{bubbles:true}));
+   d.querySelector('#c6Add').click();
+   const cart=JSON.parse(w.localStorage.getItem('zwm-cart-v5'));
+   assert.equal(cart['extra-virgin-olive-oil::'+select.value].qty,3,'Add to cart uses manually typed quantity and chosen variant');
+   assert.equal(d.querySelector('#cartCount').textContent,'3','header cart badge updates');
+   assert(d.querySelector('#c6CartShortcut').classList.contains('is-added'),'cart shortcut follows add action');
+   d.execCommand=command=>command==='copy';
+   d.querySelector('#c6Share').click();await wait(0);
+   assert.match(d.querySelector('#c6Toast').textContent,/copied|نسخ|copié/i,'share button offers copy fallback');
+   if(d.querySelector('#c6AddBundle')){
+    const before=Number(d.querySelector('#cartCount').textContent);
+    d.querySelector('#c6AddBundle').click();
+    assert(Number(d.querySelector('#cartCount').textContent)>before,'bundle button adds products');
+   }
   }finally{w.close()}
  }
  console.log('Pantry tools passed: home/shop EN/AR/FR, strict budgets, preview edits, native-cart atomic saves, taste filters and size-specific WhatsApp questions.');

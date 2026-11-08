@@ -123,3 +123,76 @@ html[lang="en"] #villageHero [data-hero-lang="en"],html[lang="ar"] #villageHero 
 html #villageHero .page-intro-actions>a[data-hero-lang]{display:none!important}
 html[lang="en"] #villageHero .page-intro-actions>a[data-hero-lang="en"],html[lang="ar"] #villageHero .page-intro-actions>a[data-hero-lang="ar"],html[lang="fr"] #villageHero .page-intro-actions>a[data-hero-lang="fr"]{display:flex!important}
 @media(prefers-reduced-motion:reduce){#villageHero *,#villageHero *::before,#villageHero *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}#villageHero .village-hero-scene{transform:none!important}}
+
+/* Arabic desktop hero only. Keep the <=1000px layout owned by mobile work. */
+@media (min-width:1001px){
+ html[lang="ar"] #villageHero .page-intro-copy-wrap{
+  inset:10% auto 8% 3.1%!important;
+  width:28%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+  justify-content:center!important;
+  align-items:stretch!important;
+  direction:rtl!important;
+  text-align:right!important;
+ }
+ html[lang="ar"] #villageHero .eyebrow{
+  width:100%!important;
+  margin:0 0 18px!important;
+  font-size:clamp(10px,.72vw,14px)!important;
+  line-height:1.9!important;
+ }
+ html[lang="ar"] #villageHero h1,
+ html[lang="ar"] #villageHero h1 [data-hero-lang="ar"],
+ html[lang="ar"] #villageHero h1 em{
+  font-family:Amiri,serif!important;
+  font-size:clamp(32px,3vw,60px)!important;
+  font-style:normal!important;
+  line-height:1.4!important;
+  letter-spacing:0!important;
+  text-align:right!important;
+  text-wrap:initial!important;
+ }
+ html[lang="ar"] #villageHero h1{
+  width:100%!important;
+  max-width:100%!important;
+  flex-shrink:0!important;
+ }
+ html[lang="ar"] #villageHero h1::after{
+  width:58%;
+  height:12px;
+  margin:12px 0 0 auto;
+ }
+ html[lang="ar"] #villageHero .page-intro-copy{
+  width:100%!important;
+  max-width:100%!important;
+  margin:14px 0 0!important;
+  font-size:clamp(12px,.9vw,18px)!important;
+  line-height:1.9!important;
+  text-align:right!important;
+  overflow-wrap:normal!important;
+ }
+ html[lang="ar"] #villageHero .page-intro-actions{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  width:100%!important;
+  max-width:320px!important;
+  gap:10px!important;
+  margin:24px 0 0 auto!important;
+  direction:rtl!important;
+  box-sizing:border-box!important;
+ }
+ html[lang="ar"] #villageHero .page-intro-actions>a.home-hero-cta{
+  width:100%!important;
+  min-width:0!important;
+  height:auto!important;
+  min-height:48px!important;
+  max-height:none!important;
+  padding:10px 16px!important;
+  box-sizing:border-box!important;
+  font-size:clamp(12px,.85vw,16px)!important;
+  line-height:1.65!important;
+  white-space:normal!important;
+  text-align:center!important;
+ }
+}

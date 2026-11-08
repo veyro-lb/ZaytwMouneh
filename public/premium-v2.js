@@ -283,6 +283,14 @@
       ' data-label="'+esc(label)+'" aria-label="'+esc(atlasT("Explore ","استكشف ","Explorer ")+label)+'" aria-pressed="false"></button>';
   }
 
+
+  // Scoped provenance spotlight. Region photography is editorial and not a supplier address.
+  var atlasRegionPhotos={
+    "Bekaa":"/assets/atlas/zwm-atlas-bekaa.webp",
+    "Koura":"/assets/atlas/zwm-atlas-bekaa.webp",
+    "Mount Lebanon":"/assets/atlas/zwm-atlas-bekaa.webp",
+    "Chouf":"/assets/atlas/zwm-atlas-bekaa.webp"
+  };
   function renderRegion(region,root){
     if(!atlasRegions[region])return;
     atlasSelected=region;
@@ -297,8 +305,18 @@
     var meta=atlasRegions[region],locale=atlasLocale(),index=locale==="ar"?1:locale==="fr"?2:0;
     var detail=q(".zwm-atlas-detail",root),items=regionProducts(region);
     if(!detail)return;
+    var photo=q(".zwm-atlas-photo-image",detail);
+    if(photo){
+      photo.src=atlasRegionPhotos[region];
+      photo.alt=atlasT("Lebanese countryside landscape inspired by ","مشهد من الريف اللبناني مستوحى من ","Paysage de campagne libanaise inspiré de ")+meta.name[index];
+    }
     detail.querySelector(".zwm-atlas-name").textContent=meta.name[index];
-    detail.querySelector(".zwm-atlas-description").textContent=meta.description[index];
+    detail.querySelector(".zwm-atlas-description").textContent=atlasT(
+      "Explore products with a recorded origin in this region.",
+      "استكشف المنتجات التي سُجّل مصدرها من هذه المنطقة.",
+      "Explorez les produits dont l’origine est indiquée dans cette région."
+    );
+    detail.querySelector(".zwm-atlas-story").textContent=meta.description[index];
     detail.querySelector(".zwm-atlas-tags").innerHTML=meta.tags.map(function(tag){
       return '<span class="zwm-atlas-tag">'+esc(tag[index])+'</span>';
     }).join("");
@@ -317,6 +335,9 @@
         else window.location.href="/shop";
       });
     });
+    var expanded=q(".zwm-atlas-expanded",detail),explore=q("[data-atlas-explore]",detail);
+    if(expanded)expanded.hidden=true;
+    if(explore)explore.setAttribute("aria-expanded","false");
   }
 
   function injectProvenance(){
@@ -332,32 +353,44 @@
     sec.innerHTML='<div class="shell">'+
       '<div class="premium-head"><div><p class="premium-kicker">'+esc(atlasT("A pantry rooted in place","مونة مرتبطة بأرضها","Une mouneh ancrée dans son terroir"))+'</p>'+
       '<h2>'+esc(atlasT("Explore our roots","اكتشف جذور المونة","Explorez nos origines"))+' <em>'+esc(atlasT("across Lebanon.","في لبنان.","à travers le Liban."))+'</em></h2></div>'+
-      '<p>'+esc(atlasT("Discover the Lebanese regions connected to our pantry, and explore products with a region of origin recorded in our catalogue.","تعرّف إلى المناطق اللبنانية المرتبطة بالمونة واستكشف المنتجات التي يحدّد الكتالوج مصدرها الإقليمي.","Découvrez les régions libanaises liées à notre mouneh et les produits dont l’origine régionale est indiquée dans notre catalogue."))+'</p></div>'+
+      '<p>'+esc(atlasT("Discover the regions connected to our pantry.","اكتشف المناطق المرتبطة بمونتنا اللبنانية.","Découvrez les régions qui font partie de notre mouneh."))+'</p></div>'+
       '<div class="zwm-atlas">'+
         '<div class="zwm-atlas-mapcard">'+
           '<div class="zwm-atlas-map-top"><span class="zwm-atlas-kicker">'+esc(atlasT("A journey through Lebanon","رحلة عبر لبنان","Un voyage à travers le Liban"))+'</span>'+
           '<h3 class="zwm-atlas-map-title">'+esc(atlasT("Four places. One Lebanese pantry.","أربع مناطق، ومونة لبنانية واحدة.","Quatre régions, une seule mouneh libanaise."))+'</h3>'+
-          '<p class="zwm-atlas-map-note">'+esc(atlasT("Choose a marker or a region below.","اختر علامة على الخريطة أو منطقة أدناه.","Choisissez un repère ou une région ci-dessous."))+'</p></div>'+
+          '<p class="zwm-atlas-map-note">'+esc(atlasT("Choose a region to explore.","اختر منطقة لتكتشفها.","Choisissez une région à explorer."))+'</p></div>'+
           '<div class="zwm-atlas-maparea">'+atlasMapSvg()+atlasOrder.map(atlasMarker).join("")+'</div>'+
           '<div class="zwm-atlas-options" role="group" aria-label="'+esc(atlasT("Select a Lebanese region","اختر منطقة لبنانية","Choisir une région du Liban"))+'">'+
           atlasOrder.map(function(region){var n=atlasRegions[region].name;return '<button class="zwm-atlas-select" type="button" data-atlas-select data-region="'+esc(region)+'" aria-pressed="false"><span>'+esc(atlasT(n[0],n[1],n[2]))+'</span></button>';}).join("")+'</div>'+
           '<p class="zwm-atlas-map-caption">'+esc(atlasT("Markers show approximate regions, not exact supplier locations.","العلامات تشير إلى مناطق تقريبية وليست مواقع الموردين الدقيقة.","Les repères sont approximatifs et n’indiquent pas les adresses précises des fournisseurs."))+'</p>'+
         '</div>'+
         '<div class="zwm-atlas-detail" aria-live="polite" aria-atomic="false">'+
-          '<div class="zwm-atlas-detail-top"><span class="zwm-atlas-label">'+esc(atlasT("Origin focus","المنطقة المختارة","Région à découvrir"))+'</span></div>'+
-          '<h3 class="zwm-atlas-name"></h3>'+
-          '<p class="zwm-atlas-description"></p>'+
-          '<div class="zwm-atlas-divider" aria-hidden="true"></div>'+
-          '<h4 class="zwm-atlas-detail-heading">'+esc(atlasT("Known for","من منتجات المنطقة","Produits emblématiques"))+'</h4>'+
-          '<div class="zwm-atlas-tags"></div>'+
-          '<div class="zwm-atlas-product-header"><h4 class="zwm-atlas-detail-heading">'+esc(atlasT("Products with recorded origins","منتجات ذات مصدر محدّد","Produits à l’origine précisée"))+'</h4><span class="zwm-atlas-count"></span></div>'+
-          '<div class="zwm-atlas-products"></div>'+
-          '<a class="zwm-atlas-shop" href="/shop">'+esc(atlasT("Explore the full catalogue","استكشف جميع المنتجات","Explorer tout le catalogue"))+' <span aria-hidden="true">↗</span></a>'+
+          '<div class="zwm-atlas-photo"><img class="zwm-atlas-photo-image" src="/assets/atlas/zwm-atlas-bekaa.webp" alt="" loading="lazy" decoding="async"></div>'+
+          '<div class="zwm-atlas-spotlight">'+
+            '<span class="zwm-atlas-label">'+esc(atlasT("Region spotlight","إضاءة على المنطقة","Région à l’honneur"))+'</span>'+
+            '<h3 class="zwm-atlas-name"></h3>'+
+            '<p class="zwm-atlas-description"></p>'+
+            '<button class="zwm-atlas-shop" type="button" data-atlas-explore aria-controls="zwm-atlas-expanded" aria-expanded="false">'+esc(atlasT("Explore the region","استكشف المنطقة","Explorer la région"))+' <span aria-hidden="true">→</span></button>'+
+          '</div>'+
+          '<div class="zwm-atlas-expanded" id="zwm-atlas-expanded" hidden>'+
+            '<p class="zwm-atlas-story"></p>'+
+            '<div class="zwm-atlas-tags"></div>'+
+            '<div class="zwm-atlas-product-header"><h4 class="zwm-atlas-detail-heading">'+esc(atlasT("Products with recorded origins","منتجات ذات مصدر محدّد","Produits à l’origine précisée"))+'</h4><span class="zwm-atlas-count"></span></div>'+
+            '<div class="zwm-atlas-products"></div>'+
+            '<a class="zwm-atlas-all-products" href="/shop">'+esc(atlasT("Browse the full catalogue","تسوّق جميع المنتجات","Voir tout le catalogue"))+' <span aria-hidden="true">↗</span></a>'+
+          '</div>'+
         '</div>'+
       '</div></div>';
     anchor.after(sec);
     qa("[data-atlas-select]",sec).forEach(function(btn){
       btn.addEventListener("click",function(){renderRegion(btn.dataset.region,sec)});
+    });
+    var explore=q("[data-atlas-explore]",sec);
+    if(explore)explore.addEventListener("click",function(){
+      var area=q(".zwm-atlas-expanded",sec);
+      if(!area)return;
+      area.hidden=!area.hidden;
+      explore.setAttribute("aria-expanded",area.hidden?"false":"true");
     });
     renderRegion(atlasSelected,sec);
   }

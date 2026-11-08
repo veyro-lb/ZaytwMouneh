@@ -79,6 +79,25 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&amp;display=swap">
   <script src="/first-order-bonus-v1.js?v=20261011-firstbonus4" defer></script>
   
+
+  <style id="catalogue-section-spacing">
+    /* One compact transition from the category strip to product search. */
+    body[data-page="shop"] #categories.shop-category-hub{
+      padding-bottom:8px!important;
+    }
+    body[data-page="shop"] #shop.shop.section{
+      margin-top:0!important;padding-top:16px!important;
+    }
+    body[data-page="shop"] #shop>.shell>.catalog-toolbar[data-sticky-catalogue]{
+      margin-top:0!important;
+    }
+    body[data-page="shop"] #newArrivals:not([hidden]){
+      margin-bottom:16px!important;
+    }
+    @media(max-width:760px){
+      body[data-page="shop"] #shop.shop.section{padding-top:12px!important}
+    }
+  </style>
 </head>
 <body data-page="shop">
   <a class="skip-link" data-page-section href="/shop#shop" id="skipLink">Skip to catalogue</a>

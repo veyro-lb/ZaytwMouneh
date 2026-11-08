@@ -307,6 +307,8 @@
     if(!detail)return;
     var photo=q(".zwm-atlas-photo-image",detail);
     if(photo){
+      var photoWrap=q(".zwm-atlas-photo",detail);
+      if(photoWrap)photoWrap.style.setProperty("--zwm-atlas-photo-url",'url("'+atlasRegionPhotos[region]+'")');
       photo.src=atlasRegionPhotos[region];
       photo.alt=atlasT("Lebanese countryside landscape inspired by ","مشهد من الريف اللبناني مستوحى من ","Paysage de campagne libanaise inspiré de ")+meta.name[index];
     }

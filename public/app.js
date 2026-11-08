@@ -568,8 +568,8 @@ const PAGE_I18N={
     ar:{title:"زيت ومونة | مونة لبنانية أصيلة",description:"مونة لبنانية أصيلة وهدايا منذ 2006، مع أسعار واضحة وتوصيل إلى مختلف المناطق في لبنان.",skip:"الانتقال إلى المنتجات"}
   },
   shop:{
-    en:{title:"Shop Lebanese Pantry Essentials | Zayt w Mouneh",description:"Browse 300+ Lebanese pantry products with clear sizes, prices, favourites and secure website checkout.",skip:"Skip to catalogue"},
-    ar:{title:"تسوّق المونة اللبنانية | زيت ومونة",description:"تصفّح أكثر من 300 منتج من المونة اللبنانية مع أحجام وأسعار واضحة ومفضّلات وإتمام طلب آمن عبر الموقع.",skip:"الانتقال إلى المنتجات"}
+    en:{title:"Zayt w Mouneh | Online Shop – Lebanese Mouneh & Olive Oil",description:"Shop Zayt w Mouneh online: Lebanese mouneh, olive oil, zaatar, honey, spices and pantry gifts. Choose your sizes and order with delivery across Lebanon.",skip:"Skip to catalogue"},
+    ar:{title:"زيت ومونة | المتجر الإلكتروني للمونة اللبنانية وزيت الزيتون",description:"تسوّق أونلاين من زيت ومونة: مونة لبنانية، زيت زيتون، زعتر، عسل، بهارات وهدايا. اختر الأحجام واطلب مع التوصيل إلى مختلف المناطق في لبنان.",skip:"الانتقال إلى المنتجات"}
   },
   about:{
     en:{title:"Our Story & Provenance | Zayt w Mouneh",description:"Learn about Zayt w Mouneh since 2006 and the origins behind the pantry: Bekaa, Koura, Mount Lebanon and Chouf.",skip:"Skip to our story"},
@@ -605,8 +605,8 @@ const PAGE_FR_COPY={
     "skip": "Aller au catalogue"
   },
   "shop": {
-    "title": "Acheter des produits d’épicerie libanaise | Zayt w Mouneh",
-    "description": "Découvrez plus de 300 produits d’épicerie libanaise avec formats et prix clairement indiqués, favoris et commande sécurisée.",
+    "title": "Zayt w Mouneh | Boutique en ligne – Mouneh et huile d’olive",
+    "description": "Commandez chez Zayt w Mouneh : mouneh libanaise, huile d’olive, zaatar, miel, épices et cadeaux, avec livraison dans tout le Liban.",
     "skip": "Aller au catalogue"
   },
   "about": {
@@ -1252,6 +1252,9 @@ function applyLanguage(next,{immediate=false}={}){
 
   const htmlMap={heroTitle:"heroTitle",heroExplore:"heroExplore",categoriesTitle:"categoriesTitle",aboutTitle:"aboutTitle",signTitle:"signTitle",signCta:"signCta",shopTitle:"shopTitle",orderTitle:"orderTitle",contactTitle:"contactTitle",sendOrderButton:"sendOrder"};
   Object.entries(htmlMap).forEach(([id,key])=>{const el=$("#"+id);if(el&&t[key]!==undefined)el.innerHTML=t[key]});
+  if(CURRENT_PAGE==="shop"&&$("#heroTitle")){
+    $("#heroTitle").innerHTML=lang==="ar"?'زيت ومونة<br><em>تسوّق أونلاين.</em>':lang==="fr"?'Zayt w Mouneh<br><em>Boutique en ligne.</em>':'Zayt w Mouneh<br><em>Online shop.</em>';
+  }
 
   if($("#productSearch"))$("#productSearch").placeholder=t.searchPlaceholder;
   if($("#customerName"))$("#customerName").placeholder=t.namePlaceholder;

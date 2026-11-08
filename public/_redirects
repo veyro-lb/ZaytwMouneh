@@ -1,3 +1,11 @@
+# Consolidate duplicate shop addresses into the public shop URL.
+/shop.html /shop 301
+/shop/ /shop 301
+/ar/shop.html /ar/shop 301
+/fr/shop.html /fr/shop 301
+/ar/shop/ /ar/shop 301
+/fr/shop/ /fr/shop 301
+
 # Canonical public URLs: static asset rewrites preserve the incoming URL with html_handling=none
 / /index.html 200
 /index / 301

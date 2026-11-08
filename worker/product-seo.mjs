@@ -1,3 +1,5 @@
+import {productLoadingHTML} from "./product-loading.mjs";
+
 /**
  * Product-route-only HTML SEO enhancement for the existing Cloudflare static storefront.
  * Does not handle checkout, admin, accounts, inventory, prices or other URLs.
@@ -93,11 +95,8 @@ export function seoProductHTML(html, product, locale) {
     .replace(/<title>[^<]*<\/title>/i, "<title>" + escapeHTML(title) + "</title>")
     .replace(/<meta name="description" content="[^"]*">/i, '<meta name="description" content="' + escapeHTML(description) + '">')
     .replace(/<\/head>/i, tags + "\n</head>")
-    .replace("<strong>Loading product…</strong>",
-      '<h1 class="c6-product-title">' + escapeHTML(name) + '</h1>' +
-      '<p class="c6-product-summary">' + escapeHTML(description) + '</p>' +
-      '<p><a href="' + escapeHTML(locale === "ar" ? "/ar/shop" : locale === "fr" ? "/fr/shop" : "/shop") + '">' +
-      (locale === "ar" ? "تصفّح المتجر" : locale === "fr" ? "Voir la boutique" : "Browse the shop") + '</a></p>');
+    .replace(/<div class="c6-purchase-box"[^>]*>\s*<strong>Loading product…<\/strong>\s*<\/div>/,
+      () => productLoadingHTML({name, category, sizes: sizePart, description, locale}));
 }
 function notFoundHTML(html) {
   return html.replace(/<meta name="robots" content="[^"]*">/i, '<meta name="robots" content="noindex,follow">')

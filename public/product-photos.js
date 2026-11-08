@@ -1372,7 +1372,7 @@
     "quality": "original-supplied"
   },
   "labneh-mkaazleh-habet-barakeh": {
-    "url": "assets/products/individual-20261108/labneh-mkaazleh-habet-barakeh.webp",
+    "url": "assets/products/individual-20261108/labneh-mkaazleh-habet-barakeh-v2.webp",
     "width": 1024,
     "height": 1536,
     "quality": "owner-supplied-individual-artwork"
@@ -1492,7 +1492,7 @@
     "quality": "original-supplied"
   },
   "kishek-bakari-beqaa": {
-    "url": "assets/products/individual-20261108/kishek-bakari-beqaa.webp",
+    "url": "assets/products/individual-20261108/kishek-bakari-beqaa-v2.webp",
     "width": 1086,
     "height": 1448,
     "quality": "owner-supplied-individual-artwork"

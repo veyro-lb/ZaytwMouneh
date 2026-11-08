@@ -1,0 +1,109 @@
+/* Reference hero. Scoped to Home so shared shop/navigation work remains independent. */
+#villageHero{position:relative!important;isolation:isolate!important;overflow:hidden!important;height:48vw!important;min-height:580px!important;max-height:1000px!important;padding:0!important;margin:0!important;background:#203019!important;color:#fffaf0!important}
+#villageHero::before,#villageHero::after{display:none!important}
+#villageHero .village-hero-scene{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:center;pointer-events:none;transform:translate3d(var(--hero-x,0px),var(--hero-y,0px),0) scale(1.015);transition:transform .7s ease-out}
+#villageHero .page-intro-grid{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;min-height:0!important;max-width:none!important;margin:0!important;padding:0!important;direction:ltr!important;z-index:2!important}
+#villageHero .page-intro-copy-wrap{position:absolute!important;inset:16.5% auto 5.3% 3.1%!important;width:27%!important;max-width:none!important;margin:0!important;padding:0!important;text-align:left!important;animation:village-enter .85s .05s both!important}
+#villageHero .eyebrow{margin:0 0 1.6vw!important;padding:0!important;color:#ffd00a!important;text-align:left!important;font-size:clamp(10px,.91vw,17px)!important;font-weight:800!important;letter-spacing:.2em!important;line-height:1.5!important;white-space:nowrap!important}
+#villageHero h1{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;font-family:Georgia,'Times New Roman',serif!important;font-size:clamp(48px,4.65vw,90px)!important;font-weight:700!important;line-height:.96!important;letter-spacing:-.035em!important;text-align:left!important;text-wrap:initial!important;text-shadow:0 2px 20px #0002!important}
+#villageHero h1 em{font-family:inherit!important;color:#ffc500!important;font-weight:700!important;line-height:.96!important}
+#villageHero h1::after{content:"";display:block;width:63%;height:17px;margin:12px 0 0 10%;border-top:5px solid #fbc400;border-radius:55% 70% 0 0;transform:rotate(-3deg)}
+#villageHero .page-intro-copy{width:100%!important;max-width:390px!important;padding:0!important;margin:12px 0 0!important;color:#fffaf0!important;font-size:clamp(15px,1.3vw,25px)!important;line-height:1.5!important;text-align:left!important;text-wrap:pretty!important;overflow-wrap:normal!important}
+#villageHero .page-intro-actions{position:absolute!important;bottom:0!important;left:0!important;display:flex!important;flex-wrap:nowrap!important;gap:1.15vw!important;width:36vw!important;max-width:none!important;margin:0!important;padding:0!important}
+#villageHero .page-intro-actions>a.home-hero-cta{display:flex!important;align-items:center!important;justify-content:center!important;gap:5px!important;flex:1 1 0!important;width:auto!important;min-width:0!important;height:4vw!important;min-height:50px!important;max-height:74px!important;padding:0 14px!important;border:1.5px solid #f7eed0!important;border-radius:999px!important;font-size:clamp(13px,1.2vw,23px)!important;font-weight:800!important;line-height:1.2!important;white-space:nowrap!important;text-decoration:none!important;box-shadow:0 8px 24px #0002!important;transition:transform .25s,box-shadow .25s,background .25s!important}
+#villageHero .page-intro-actions>a.intro-primary{background:#ffc400!important;color:#073f22!important;border-color:#ffc400!important}
+#villageHero .page-intro-actions>a.intro-secondary{background:#4c4729c7!important;color:#fffaf0!important;backdrop-filter:blur(8px)}
+#villageHero .page-intro-actions>a:hover{transform:translateY(-3px)!important;box-shadow:0 12px 30px #0004!important}
+#villageHero .shop-intro-board{position:absolute!important;inset:16.5% 1.7% auto auto!important;width:34.3%!important;max-width:none!important;min-height:0!important;margin:0!important;padding:2.2vw 1.1vw 2.1vw!important;border:3px solid #b19b38!important;outline:2px solid #fff1c0!important;outline-offset:3px!important;border-radius:3.6vw!important;background:linear-gradient(120deg,#fff9e9,#f7f0dc)!important;color:#0b4428!important;box-shadow:0 20px 38px #0004,inset 0 0 26px #dfc8871c!important;backdrop-filter:none!important;transform:none!important;animation:village-enter .9s .18s both!important;direction:ltr!important}
+#villageHero .shop-intro-board::before,#villageHero .shop-intro-board::after{display:none!important}
+#villageHero .intro-stat-pair{display:grid!important;grid-template-columns:1fr 1fr!important;gap:0!important;margin:0 0 2.1vw!important;padding:0!important;background:none!important}
+#villageHero .intro-stat-pair>div{display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;min-height:0!important;margin:0!important;padding:0 0 0 2.2vw!important;background:none!important;border:0!important;border-radius:0!important;position:relative!important}
+#villageHero .intro-stat-pair>div+div{border-left:2px solid #bd9322!important}
+#villageHero .intro-stat-pair>div::before{position:absolute;left:1.2vw;top:25%;content:'❧';font:clamp(24px,3vw,57px) Georgia,serif;color:#174b2a;transform:rotate(-35deg)}
+#villageHero .intro-stat-pair>div+div::before{content:'▦';font-size:2.4vw;transform:none;left:3vw}
+#villageHero .intro-stat-pair strong{font-family:Georgia,'Times New Roman',serif!important;font-size:clamp(36px,3.4vw,65px)!important;font-weight:700!important;line-height:1!important;color:#123f25!important;letter-spacing:0!important}
+#villageHero .intro-stat-pair span{font-size:clamp(14px,1.2vw,23px)!important;color:#696758!important;line-height:1.5!important}
+#villageHero .intro-board-kicker{display:flex;align-items:center;justify-content:center;gap:1.3vw;margin:0 0 1.35vw!important;padding:0!important;color:#0b4428!important;font-size:clamp(12px,1.2vw,23px)!important;line-height:1.4!important;font-weight:800!important;letter-spacing:.12em!important;text-align:center!important;white-space:nowrap!important}
+#villageHero .intro-board-kicker::before,#villageHero .intro-board-kicker::after{content:"";height:1.5px;flex:1;background:#d8a11a}
+#villageHero .intro-category-chips{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:.85vw!important;margin:0!important;padding:0!important}
+#villageHero .intro-category-chips a{position:relative!important;display:flex!important;align-items:center!important;gap:.65vw!important;min-width:0!important;min-height:7.6vw!important;margin:0!important;padding:.55vw .65vw!important;border:1px solid #d8cbb0!important;border-radius:1.55vw!important;background:linear-gradient(135deg,#fffcf5,#faf3e3)!important;box-shadow:0 4px 8px #6f5b2314!important;color:#0b4428!important;text-decoration:none!important;transition:transform .25s,box-shadow .25s,border-color .25s!important}
+#villageHero .intro-category-chips a:hover{transform:translateY(-4px)!important;box-shadow:0 9px 20px #77622529!important;border-color:#b5a14a!important}
+#villageHero .intro-category-chips a>span.intro-chip-icon{display:flex!important;align-items:center!important;justify-content:center!important;flex:0 0 35%!important;width:35%!important;height:6.5vw!important;max-height:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;overflow:visible!important;box-shadow:none!important}
+#villageHero .intro-chip-icon img{width:100%!important;height:100%!important;object-fit:contain!important;filter:drop-shadow(0 4px 3px #66441122);transition:transform .3s!important}
+#villageHero .intro-category-chips a:hover img{transform:rotate(-3deg) scale(1.05)}
+#villageHero .intro-category-chips a>span.village-category-name{display:block!important;flex:1 1 auto!important;width:auto!important;height:auto!important;min-width:0!important;padding:0!important;margin:0!important;border:0!important;border-radius:0!important;background:none!important;overflow:visible!important;text-align:left!important}
+#villageHero .intro-category-chips b{color:#0b4428!important;font-size:clamp(14px,1.22vw,23px)!important;line-height:1.2!important;white-space:nowrap!important;font-weight:800!important}
+#villageHero .village-category-name small{display:block;color:#726f61;font-family:Amiri,serif;font-size:clamp(17px,1.4vw,27px);line-height:1.4;margin-top:4px}
+#villageHero .intro-category-chips i{display:grid!important;place-items:center!important;flex:0 0 2.15vw!important;width:2.15vw!important;height:2.15vw!important;min-width:24px!important;min-height:24px!important;margin:0!important;padding:0!important;border-radius:50%!important;background:#ece2a2!important;color:#0b4428!important;font-size:clamp(18px,1.4vw,27px)!important;font-style:normal!important;transition:transform .25s}
+#villageHero .intro-category-chips a:hover i{transform:translateX(2px)}
+#villageHero a:focus-visible{outline:3px solid #df9e00!important;outline-offset:5px!important}
+html[dir="rtl"] #villageHero .page-intro-copy-wrap{direction:rtl!important;text-align:right!important}
+html[dir="rtl"] #villageHero :is(h1,.eyebrow,.page-intro-copy){text-align:right!important}
+html[dir="rtl"] #villageHero h1 .home-hero-ar-title{font-size:clamp(40px,4.1vw,78px)!important;line-height:1.18!important;font-family:Amiri,serif!important}
+html[dir="rtl"] #villageHero .eyebrow{white-space:normal!important;letter-spacing:0!important}
+html[dir="rtl"] #villageHero .intro-category-chips a>span.village-category-name{text-align:right!important;direction:rtl!important}
+@keyframes village-enter{from{opacity:0;translate:0 18px}to{opacity:1;translate:0 0}}
+@media(min-width:2000px){#villageHero .page-intro-copy-wrap{inset-block-start:15%!important}#villageHero .shop-intro-board{max-width:690px!important}#villageHero .page-intro-actions{max-width:740px!important}}
+/* Keep the complete product still life visible between the copy and panel on small screens. */
+@media(max-width:1000px){
+ #villageHero{height:auto!important;min-height:0!important;max-height:none!important;padding:0 0 28px!important;background:#1e301b!important}
+ #villageHero .village-hero-scene{height:640px;object-position:center;object-fit:cover;opacity:.9;transform:none}
+ #villageHero::after{display:block!important;content:""!important;position:absolute!important;inset:0!important;z-index:1!important;pointer-events:none!important;background:linear-gradient(90deg,#0d231cbb,transparent 58%),linear-gradient(0deg,#1e301b 0%,transparent 45%)!important}
+ #villageHero .page-intro-grid{position:relative!important;height:auto!important;padding:58px 24px 0!important;display:grid!important;grid-template-columns:1fr!important;gap:0!important}
+ #villageHero .page-intro-copy-wrap{position:relative!important;inset:auto!important;width:100%!important;padding:0!important;min-height:530px!important;text-align:left!important}
+ #villageHero .eyebrow{font-size:11px!important;letter-spacing:.12em!important;margin-bottom:20px!important}
+ #villageHero h1{width:48%!important;font-size:clamp(44px,7vw,68px)!important}
+ #villageHero h1::after{height:13px;margin-top:12px;border-top-width:4px}
+ #villageHero .page-intro-copy{width:44%!important;max-width:320px!important;font-size:16px!important;margin-top:10px!important}
+ #villageHero .page-intro-actions{position:absolute!important;bottom:15px!important;width:min(100%,550px)!important;gap:12px!important}
+ #villageHero .page-intro-actions>a.home-hero-cta{height:52px!important;font-size:15px!important;white-space:normal!important;padding:0 13px!important}
+ #villageHero .shop-intro-board{position:relative!important;inset:auto!important;width:100%!important;max-width:660px!important;margin:10px auto 0!important;padding:24px 18px!important;border-radius:34px!important}
+ #villageHero .intro-stat-pair{margin-bottom:24px!important}
+ #villageHero .intro-stat-pair>div{padding-left:25px!important}
+ #villageHero .intro-stat-pair>div::before{left:12%;font-size:40px}
+ #villageHero .intro-stat-pair>div+div::before{left:16%;font-size:30px}
+ #villageHero .intro-stat-pair strong{font-size:44px!important}
+ #villageHero .intro-stat-pair span{font-size:16px!important}
+ #villageHero .intro-board-kicker{font-size:15px!important;gap:15px;margin-bottom:18px!important}
+ #villageHero .intro-category-chips{gap:12px!important}
+ #villageHero .intro-category-chips a{min-height:112px!important;gap:8px!important;padding:8px!important;border-radius:22px!important}
+ #villageHero .intro-category-chips a>span.intro-chip-icon{height:92px!important;flex-basis:32%!important;width:32%!important}
+ #villageHero .intro-category-chips b{font-size:18px!important}
+ #villageHero .village-category-name small{font-size:21px}
+ #villageHero .intro-category-chips i{width:28px!important;height:28px!important;flex-basis:28px!important;font-size:21px!important}
+ html[dir="rtl"] #villageHero h1 .home-hero-ar-title{font-size:clamp(36px,6vw,58px)!important}
+}
+@media(max-width:600px){
+ #villageHero .village-hero-scene{top:220px;height:355px;width:100%;max-width:none;left:0;object-fit:cover;object-position:48% center}
+ #villageHero::after{background:linear-gradient(180deg,#1e301b 0%,transparent 32%,transparent 68%,#1e301b 86%)!important}
+ #villageHero .page-intro-grid{padding:30px 16px 0!important}
+ #villageHero .page-intro-copy-wrap{min-height:650px!important}
+ #villageHero .eyebrow{text-align:center!important;font-size:9px!important;letter-spacing:.15em!important;margin:0 0 14px!important}
+ #villageHero h1{width:100%!important;font-size:42px!important;line-height:.97!important;text-align:center!important}
+ #villageHero h1 br{display:none}
+ #villageHero h1 em{display:block;margin-top:6px}
+ #villageHero h1::after{width:130px;margin:12px auto 0;height:8px}
+ #villageHero .page-intro-copy{width:100%!important;max-width:320px!important;margin:8px auto 0!important;text-align:center!important;font-size:14px!important;line-height:1.5!important}
+ #villageHero .page-intro-actions{bottom:10px!important;display:grid!important;grid-template-columns:1fr!important;gap:10px!important;width:100%!important;max-width:none!important}
+ #villageHero .page-intro-actions>a.home-hero-cta{min-height:48px!important;height:48px!important;font-size:15px!important}
+ #villageHero .shop-intro-board{margin-top:10px!important;padding:22px 12px 16px!important;border-radius:29px!important}
+ #villageHero .intro-stat-pair{margin-bottom:20px!important}
+ #villageHero .intro-stat-pair>div::before{left:8%;font-size:34px}
+ #villageHero .intro-stat-pair>div+div::before{left:12%;font-size:27px}
+ #villageHero .intro-stat-pair strong{font-size:37px!important}
+ #villageHero .intro-stat-pair span{font-size:14px!important}
+ #villageHero .intro-board-kicker{font-size:12px!important;letter-spacing:.08em!important;gap:10px;margin-bottom:16px!important}
+ #villageHero .intro-category-chips{gap:9px!important}
+ #villageHero .intro-category-chips a{gap:5px!important;min-height:92px!important;padding:7px 5px!important;border-radius:17px!important}
+ #villageHero .intro-category-chips a>span.intro-chip-icon{height:75px!important;width:32%!important;flex-basis:32%!important}
+ #villageHero .intro-category-chips b{font-size:13px!important}
+ #villageHero .village-category-name small{font-size:17px;margin-top:3px}
+ #villageHero .intro-category-chips i{min-width:21px!important;min-height:21px!important;width:21px!important;height:21px!important;flex-basis:21px!important;font-size:17px!important}
+ html[dir="rtl"] #villageHero :is(h1,.eyebrow,.page-intro-copy){text-align:center!important}
+ html[dir="rtl"] #villageHero h1 .home-hero-ar-title{font-size:35px!important;line-height:1.2!important}
+}
+@media(prefers-reduced-motion:reduce){#villageHero *,#villageHero *::before,#villageHero *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}#villageHero .village-hero-scene{transform:none!important}}
+
+/* Locale visibility must win over layout rules on translated links. */
+html:not([lang="ar"]) #villageHero .only-ar{display:none!important}
+html[lang="ar"] #villageHero .only-en{display:none!important}

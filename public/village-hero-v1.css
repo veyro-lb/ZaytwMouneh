@@ -232,3 +232,79 @@ html[lang="fr"] body[data-page="home"] #villageHero [data-hero-lang]:not([data-h
   white-space:normal!important;
  }
 }
+
+/* Keep localized desktop copy in the clear left side of the scene. */
+@media(min-width:1001px){
+ html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero .page-intro-copy-wrap{
+  inset:9% auto 8% 3%!important;
+  width:25%!important;
+  max-width:none!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:stretch!important;
+  gap:0!important;
+ }
+ html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero .eyebrow{
+  flex:0 0 auto!important;
+  width:100%!important;
+  margin:0 0 18px!important;
+  font-size:clamp(11px,.85vw,16px)!important;
+  line-height:1.65!important;
+  white-space:normal!important;
+ }
+ html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero h1{
+  flex:0 0 auto!important;
+  width:100%!important;
+  margin:0!important;
+  max-width:100%!important;
+ }
+ html[lang="ar"] body[data-page="home"] #villageHero h1,
+ html[lang="ar"] body[data-page="home"] #villageHero h1 [data-hero-lang="ar"],
+ html[lang="ar"] body[data-page="home"] #villageHero h1 em{
+  font-size:clamp(38px,3.7vw,76px)!important;
+  line-height:1.32!important;
+  letter-spacing:0!important;
+  font-style:normal!important;
+ }
+ html[lang="fr"] body[data-page="home"] #villageHero h1,
+ html[lang="fr"] body[data-page="home"] #villageHero h1 em{
+  font-size:clamp(36px,3.45vw,70px)!important;
+  line-height:1.06!important;
+ }
+ html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero .page-intro-copy{
+  flex:0 0 auto!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:20px 0 0!important;
+  padding:0!important;
+  font-size:clamp(16px,1.15vw,23px)!important;
+  font-weight:600!important;
+  line-height:1.65!important;
+  text-shadow:0 2px 10px #0008!important;
+ }
+ html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero .page-intro-actions{
+  flex:0 0 auto!important;
+  align-self:stretch!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:24px 0 0!important;
+  display:flex!important;
+  justify-content:stretch!important;
+ }
+ html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero .page-intro-actions>a.home-hero-cta{
+  flex:1 1 auto!important;
+  width:100%!important;
+  min-height:52px!important;
+  height:auto!important;
+  max-height:none!important;
+  padding:14px 20px!important;
+  font-size:clamp(15px,1vw,20px)!important;
+  font-weight:800!important;
+  line-height:1.5!important;
+ }
+ html:is([lang="ar"],[lang="fr"]) body[data-page="home"] #villageHero .village-board-actions>a.home-hero-cta{
+  width:100%!important;
+  font-size:clamp(15px,1vw,20px)!important;
+ }
+}

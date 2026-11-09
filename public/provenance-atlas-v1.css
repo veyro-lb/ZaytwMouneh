@@ -689,14 +689,12 @@ html[lang="fr"] #premiumProvenance.premium-provenance-atlas .zwm-atlas-name{font
   height:100%;
   max-width:100%;
   display:block;
-  object-fit:contain;
+  object-fit:cover;
   object-position:center center;
   transform:none!important;
   filter:none!important;
   image-rendering:auto;
 }
 @media(max-width:600px) {
-  #premiumProvenance.premium-provenance-atlas .zwm-atlas-photo {
-    aspect-ratio:16 / 10;
-  }
+  #premiumProvenance.premium-provenance-atlas .zwm-atlas-photo {aspect-ratio:16 / 9;}
 }
